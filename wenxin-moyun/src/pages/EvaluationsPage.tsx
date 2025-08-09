@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Filter, RefreshCw, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { useEvaluations } from '../hooks/useEvaluations';
+import { useLoginPrompt } from '../hooks/useLoginPrompt';
 import type { EvaluationTask } from '../types/types';
 import CreateEvaluationModal from '../components/evaluation/CreateEvaluationModal';
 import EvaluationCard from '../components/evaluation/EvaluationCard';
+import LoginPrompt from '../components/auth/LoginPrompt';
+import { hasReachedDailyLimit, getRemainingUsage, addEvaluationToGuest, isGuestMode } from '../utils/guestSession';
 
 const EvaluationsPage: React.FC = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -26,6 +29,18 @@ const EvaluationsPage: React.FC = () => {
     undefined,
     selectedType === 'all' ? undefined : selectedType
   );
+
+  // Login prompt management
+  const {
+    isPromptOpen,
+    promptTrigger,
+    remainingUsage,
+    isGuestMode: isGuest,
+    hidePrompt,
+    checkLimitReached,
+    checkSaveProgress,
+    checkSmartPrompt
+  } = useLoginPrompt();
 
   const filteredEvaluations = evaluations.filter(e => {
     if (selectedStatus !== 'all' && e.status !== selectedStatus) {
@@ -66,11 +81,38 @@ const EvaluationsPage: React.FC = () => {
 
   const handleCreateEvaluation = async (data: any) => {
     try {
-      await createEvaluation(data);
+      // Check if guest user has reached limit
+      if (isGuest && hasReachedDailyLimit()) {
+        checkLimitReached();
+        return;
+      }
+
+      const evaluation = await createEvaluation(data);
       setShowCreateModal(false);
+      
+      // Track guest usage
+      if (isGuest && evaluation) {
+        addEvaluationToGuest(evaluation.id);
+      }
+      
+      // Smart prompts for guest users
+      if (isGuest) {
+        const currentCount = evaluations.length + 1;
+        checkSaveProgress(currentCount);
+        checkSmartPrompt();
+      }
     } catch (err) {
       console.error('Failed to create evaluation:', err);
     }
+  };
+
+  const handleCreateButtonClick = () => {
+    // Check guest limit before showing modal
+    if (isGuest && hasReachedDailyLimit()) {
+      checkLimitReached();
+      return;
+    }
+    setShowCreateModal(true);
   };
 
   return (
@@ -101,11 +143,16 @@ const EvaluationsPage: React.FC = () => {
               </button>
               
               <button
-                onClick={() => setShowCreateModal(true)}
+                onClick={handleCreateButtonClick}
                 className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2"
               >
                 <Plus className="w-5 h-5" />
                 创建评测
+                {isGuest && (
+                  <span className="ml-2 px-2 py-1 bg-white bg-opacity-20 rounded-full text-xs">
+                    剩余 {remainingUsage} 次
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -141,8 +188,15 @@ const EvaluationsPage: React.FC = () => {
                 </select>
               </div>
 
-              <div className="ml-auto text-sm text-gray-600">
-                共 {total} 个任务
+              <div className="ml-auto flex items-center space-x-4">
+                {isGuest && (
+                  <div className="text-sm text-orange-600 bg-orange-50 px-3 py-1 rounded-full">
+                    游客模式 · 今日剩余 {remainingUsage} 次
+                  </div>
+                )}
+                <div className="text-sm text-gray-600">
+                  共 {total} 个任务
+                </div>
               </div>
             </div>
           </div>
@@ -162,10 +216,13 @@ const EvaluationsPage: React.FC = () => {
               <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <p className="text-gray-600">暂无评测任务</p>
               <button
-                onClick={() => setShowCreateModal(true)}
+                onClick={handleCreateButtonClick}
                 className="mt-4 px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg"
               >
                 创建第一个评测任务
+                {isGuest && (
+                  <span className="ml-2">({remainingUsage} 次免费)</span>
+                )}
               </button>
             </div>
           ) : (
@@ -209,6 +266,14 @@ const EvaluationsPage: React.FC = () => {
           onCreate={handleCreateEvaluation}
         />
       )}
+
+      {/* Login Prompt */}
+      <LoginPrompt
+        isOpen={isPromptOpen}
+        onClose={hidePrompt}
+        trigger={promptTrigger}
+        remainingUsage={remainingUsage}
+      />
     </div>
   );
 };
