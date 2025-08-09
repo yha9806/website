@@ -81,14 +81,21 @@ const LoginPage: React.FC = () => {
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
+<<<<<<< HEAD
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+=======
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+>>>>>>> 3dbb6b603b16b831e83f07d804a072c7b83929c0
                 用户名
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
+<<<<<<< HEAD
                   id="username"
                   name="username"
+=======
+>>>>>>> 3dbb6b603b16b831e83f07d804a072c7b83929c0
                   type="text"
                   value={formData.username}
                   onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
@@ -100,14 +107,21 @@ const LoginPage: React.FC = () => {
             </div>
 
             <div>
+<<<<<<< HEAD
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+=======
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+>>>>>>> 3dbb6b603b16b831e83f07d804a072c7b83929c0
                 密码
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
+<<<<<<< HEAD
                   id="password"
                   name="password"
+=======
+>>>>>>> 3dbb6b603b16b831e83f07d804a072c7b83929c0
                   type="password"
                   value={formData.password}
                   onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}

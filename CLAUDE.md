@@ -10,49 +10,47 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Quick Start (Windows)
 ```bash
-start.bat                                              # One-click startup (recommended)
-
-# Or manual startup in separate terminals:
-cd wenxin-backend && python init_db.py                # Initialize database
+# Manual startup in separate terminals:
+cd wenxin-backend && python init_db.py                # Initialize database (first time only)
 cd wenxin-backend && python -m uvicorn app.main:app --reload --port 8001
-cd wenxin-moyun && npm run dev                        # Frontend (auto-detects available port 5173+)
+cd wenxin-moyun && npm run dev                        # Frontend (auto-detects port from 5173+)
 ```
 
 ### Frontend (wenxin-moyun)
 ```bash
 npm install          # Install dependencies
 npm run dev          # Start Vite dev server (auto-increments port from 5173)
-npm run build        # TypeScript check + production build (may need --skipLibCheck for type issues)
+npm run build        # TypeScript check + production build
 npm run lint         # ESLint validation
 npm run preview      # Preview production build
-npx vite build       # Build without TypeScript check if needed
+npx vite build       # Build without TypeScript check if type errors occur
 ```
 
 ### Backend (wenxin-backend)
 ```bash
 pip install -r requirements.txt                        # Install dependencies
-python -m uvicorn app.main:app --reload --port 8001   # Start API server
+python -m uvicorn app.main:app --reload --port 8001   # Start API server with hot reload
 python init_db.py                                     # Reset database with sample data
 pytest                                                 # Run unit tests
 pytest tests/test_auth.py -v                         # Run specific test verbose
 ```
 
-### Production Deployment
+### Windows Process Management
 ```bash
-# Docker-based deployment
-./deploy.sh --init                                    # First deployment with data initialization
-./deploy.sh                                          # Update deployment
+# Check port usage
+netstat -ano | findstr :8001                         # Check what's using port 8001
+netstat -ano | findstr :5173                         # Check what's using port 5173
 
-# Manual deployment
-docker-compose -f docker-compose.prod.yml up -d      # Start production services
-docker-compose -f docker-compose.prod.yml logs -f     # Monitor logs
+# Kill Python processes
+wmic process where "name='python.exe'" delete        # Kill all Python processes
+taskkill /F /IM python.exe                           # Alternative method (may have issues)
 ```
 
 ## Architecture Overview
 
 ### Three-Layer Architecture
 ```
-Frontend (React 19/TypeScript)     Backend (FastAPI/Python)      Database (SQLite/PostgreSQL)
+Frontend (React 19/TypeScript)     Backend (FastAPI/Python)      Database (SQLite)
         ↓                               ↓                              ↓
     Components                      Routers                        Tables
         ↓                               ↓                              ↓
@@ -237,7 +235,7 @@ import { v4 as uuidv4 } from 'uuid';
 **No migrations system** - schema changes require database recreation:
 ```bash
 cd wenxin-backend
-rm wenxin.db                    # Delete existing database
+rm wenxin.db                    # Delete existing database (Windows: del wenxin.db)
 python init_db.py               # Recreate with new schema + sample data
 ```
 
@@ -367,14 +365,16 @@ rm -rf node_modules package-lock.json && npm install
 
 ### Backend URL Access
 **Important**: Users may accidentally access backend URL (http://localhost:8001/) instead of frontend
-- Backend now serves HTML redirect page pointing to frontend
-- Proper frontend URL: http://localhost:5175 (or auto-assigned port)
+- Backend now serves HTML redirect page pointing to frontend (http://localhost:5173/)
+- Backend HTML includes Safari-compatible CSS with vendor prefixes
+- Proper frontend URL: http://localhost:5173 (or auto-assigned port)
 - Backend API docs: http://localhost:8001/docs
 
 ### Windows-Specific Development
 - Use `python -m uvicorn` instead of `uvicorn` directly
-- Kill stuck processes: `taskkill /F /IM python.exe`
+- Kill stuck processes: `wmic process where "name='python.exe'" delete`
 - Reserved device names (nul, con, aux) added to .gitignore
+- PowerShell doesn't support `&&`, use `;` or separate commands
 
 ## Security & Quality Assurance
 
@@ -386,12 +386,12 @@ Backend includes comprehensive security middleware:
 - Cache-Control: no-cache, no-store, must-revalidate
 
 ### Accessibility Features
-- Proper HTML lang attributes
+- Proper HTML lang attributes (lang="zh-CN")
 - Form labels with htmlFor associations
 - Semantic HTML structure
 - Keyboard navigation support
 
 ### Browser Compatibility
-- CSS vendor prefix handling in `browser-compat.css`
+- CSS vendor prefix handling (e.g., `-webkit-backdrop-filter` for Safari)
 - Mobile-responsive design
 - Cross-browser testing considerations
