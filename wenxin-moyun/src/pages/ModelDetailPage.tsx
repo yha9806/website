@@ -1,14 +1,23 @@
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, Tag, Trophy, Zap } from 'lucide-react';
+import { ArrowLeft, Calendar, Tag, Trophy, Zap, Loader2 } from 'lucide-react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { mockModels } from '../data/mockData';
 import { motion } from 'framer-motion';
+import { useModelDetail } from '../hooks/useModelDetail';
 
 export default function ModelDetailPage() {
   const { id } = useParams();
-  const model = mockModels.find(m => m.id === id);
+  const { model, artworks, loading, error } = useModelDetail(id);
 
-  if (!model) {
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
+      </div>
+    );
+  }
+
+  if (error || !model) {
     return (
       <div className="text-center py-20">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">模型未找到</h2>
@@ -167,7 +176,7 @@ export default function ModelDetailPage() {
       </div>
 
       {/* Sample Works */}
-      {model.works.length > 0 && (
+      {artworks.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -178,7 +187,7 @@ export default function ModelDetailPage() {
             代表作品
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {model.works.map((work) => (
+            {artworks.map((work) => (
               <div
                 key={work.id}
                 className="border border-gray-200 dark:border-gray-700 rounded-lg p-6"

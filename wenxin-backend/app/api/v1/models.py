@@ -45,7 +45,7 @@ async def get_models(
 
 @router.get("/{model_id}", response_model=AIModelWithStats)
 async def get_model(
-    model_id: UUID,
+    model_id: str,  # 改为str以支持SQLite
     db: AsyncSession = Depends(get_db)
 ) -> Any:
     """Get AI model by ID with statistics"""
@@ -116,7 +116,7 @@ async def create_model(
 
 @router.put("/{model_id}", response_model=AIModelSchema)
 async def update_model(
-    model_id: UUID,
+    model_id: str,  # 改为str以支持SQLite
     model_in: AIModelUpdate,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_superuser)
@@ -146,7 +146,7 @@ async def update_model(
 
 @router.delete("/{model_id}")
 async def delete_model(
-    model_id: UUID,
+    model_id: str,  # 改为str以支持SQLite
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_superuser)
 ) -> Any:

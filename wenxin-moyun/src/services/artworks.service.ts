@@ -83,6 +83,13 @@ class ArtworksService {
     await api.delete(`/artworks/${id}`);
   }
 
+  async getArtworksByModel(modelId: string): Promise<{ artworks: Artwork[] }> {
+    const response = await this.getArtworks(modelId);
+    return {
+      artworks: response.artworks.map(a => this.convertToFrontendArtwork(a))
+    };
+  }
+
   // Convert API response to frontend Artwork type
   convertToFrontendArtwork(apiArtwork: ArtworkResponse): Artwork {
     return {
@@ -98,4 +105,6 @@ class ArtworksService {
   }
 }
 
-export default new ArtworksService();
+const artworksService = new ArtworksService();
+export { artworksService };
+export default artworksService;

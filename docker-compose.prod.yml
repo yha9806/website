@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: wenxin_postgres
+    environment:
+      POSTGRES_USER: wenxin
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: wenxin_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - wenxin_network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: wenxin_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - wenxin_network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./wenxin-backend
+      dockerfile: Dockerfile
+    container_name: wenxin_backend
+    environment:
+      DATABASE_URL: postgresql+asyncpg://wenxin:${DB_PASSWORD}@postgres:5432/wenxin_db
+      SECRET_KEY: ${SECRET_KEY}
+      USE_REDIS: "true"
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8001:8001"
+    networks:
+      - wenxin_network
+    restart: unless-stopped
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8001
+
+  frontend:
+    build:
+      context: ./wenxin-moyun
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${API_BASE_URL}
+    container_name: wenxin_frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - wenxin_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  wenxin_network:
+    driver: bridge

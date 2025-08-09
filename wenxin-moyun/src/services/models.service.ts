@@ -66,6 +66,11 @@ class ModelsService {
     await apiClient.delete(`/models/${id}`);
   }
 
+  async getModel(id: string): Promise<Model> {
+    const apiModel = await this.getModelById(id);
+    return this.convertToFrontendModel(apiModel);
+  }
+
   // Convert API response to frontend Model type
   convertToFrontendModel(apiModel: AIModelResponse): Model {
     return {
@@ -85,4 +90,6 @@ class ModelsService {
   }
 }
 
-export default new ModelsService();
+const modelsService = new ModelsService();
+export { modelsService };
+export default modelsService;
