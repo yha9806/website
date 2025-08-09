@@ -1,4 +1,4 @@
-import { LayoutGrid, List, Layers } from 'lucide-react';
+import { LayoutGrid, List, Layers, Table } from 'lucide-react';
 import { useUIStore } from '../../store/uiStore';
 import type { ViewMode } from '../../store/uiStore';
 
@@ -6,13 +6,14 @@ export default function ViewModeToggle() {
   const { viewMode, setViewMode } = useUIStore();
 
   const modes: { value: ViewMode; icon: React.ReactNode; label: string }[] = [
+    { value: 'table', icon: <Table className="w-4 h-4" />, label: '表格' },
     { value: 'card', icon: <LayoutGrid className="w-4 h-4" />, label: '卡片' },
     { value: 'compact', icon: <List className="w-4 h-4" />, label: '紧凑' },
     { value: 'detailed', icon: <Layers className="w-4 h-4" />, label: '详细' },
   ];
 
   return (
-    <div className="flex items-center bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-1">
+    <div className="flex items-center bg-neutral-50 dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-1">
       {modes.map((mode) => (
         <button
           key={mode.value}

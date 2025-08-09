@@ -218,10 +218,10 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
   };
 
   const getStatusColor = () => {
-    if (evaluation.status === 'completed') return 'text-green-500';
-    if (evaluation.status === 'failed') return 'text-red-500';
-    if (evaluation.status === 'processing') return 'text-blue-500';
-    return 'text-yellow-500';
+    if (evaluation.status === 'completed') return 'text-success-500';
+    if (evaluation.status === 'failed') return 'text-error-500';
+    if (evaluation.status === 'processing') return 'text-primary-500';
+    return 'text-warning-500';
   };
 
   const formatTime = (seconds: number) => {
@@ -232,30 +232,30 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+    <div className="card">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
           <div className={`p-2 rounded-full ${
-            evaluation.status === 'completed' ? 'bg-green-100' :
-            evaluation.status === 'failed' ? 'bg-red-100' : 
-            'bg-blue-100'
+            evaluation.status === 'completed' ? 'bg-success-100' :
+            evaluation.status === 'failed' ? 'bg-error-100' : 
+            'bg-primary-100'
           }`}>
             {evaluation.status === 'completed' ? (
-              <CheckCircle className="w-5 h-5 text-green-500" />
+              <CheckCircle className="w-5 h-5 text-success-500" />
             ) : evaluation.status === 'failed' ? (
-              <AlertCircle className="w-5 h-5 text-red-500" />
+              <AlertCircle className="w-5 h-5 text-error-500" />
             ) : (
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
               >
-                <RefreshCw className="w-5 h-5 text-blue-500" />
+                <RefreshCw className="w-5 h-5 text-primary-500" />
               </motion.div>
             )}
           </div>
           <div>
-            <h3 className="font-semibold text-gray-800">评测进度</h3>
-            <p className="text-sm text-gray-600">
+            <h3 className="text-h3 text-neutral-900">评测进度</h3>
+            <p className="text-caption text-neutral-600">
               {evaluation.status === 'completed' ? '评测已完成' :
                evaluation.status === 'failed' ? '评测失败' :
                evaluation.status === 'processing' ? '正在进行评测...' : '等待开始'}
@@ -265,11 +265,11 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
         
         {evaluation.status === 'processing' && estimatedTimeRemaining > 0 && (
           <div className="text-right">
-            <div className="flex items-center text-sm text-gray-500">
+            <div className="flex items-center text-caption text-neutral-600">
               <Clock className="w-4 h-4 mr-1" />
               剩余约 {formatTime(estimatedTimeRemaining)}
             </div>
-            <div className="text-xs text-gray-400">
+            <div className="text-caption text-neutral-500">
               已用时 {formatTime(elapsedTime)}
             </div>
           </div>
@@ -279,14 +279,14 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
       {/* Progress bar */}
       <div className="mb-6">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium text-gray-700">总体进度</span>
-          <span className="text-sm text-gray-500">
+          <span className="text-body font-medium text-neutral-700">总体进度</span>
+          <span className="text-caption text-neutral-600">
             {Math.round((elapsedTime / totalDuration) * 100)}%
           </span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
+        <div className="progress-bar">
           <motion.div
-            className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full"
+            className="progress-fill"
             initial={{ width: 0 }}
             animate={{ 
               width: `${Math.min(100, (elapsedTime / totalDuration) * 100)}%` 
@@ -310,14 +310,14 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
               className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                isActive ? 'bg-blue-50 border border-blue-200' :
-                isCompleted ? 'bg-green-50' : 'bg-gray-50'
+                isActive ? 'bg-primary-50 border border-primary-200' :
+                isCompleted ? 'bg-success-50' : 'bg-neutral-100'
               }`}
             >
               <div className={`flex-shrink-0 p-2 rounded-full ${
-                isCompleted ? 'bg-green-500 text-white' :
-                isActive ? 'bg-blue-500 text-white' :
-                'bg-gray-300 text-gray-500'
+                isCompleted ? 'bg-success-500 text-white' :
+                isActive ? 'bg-primary-500 text-white' :
+                'bg-neutral-400 text-neutral-200'
               }`}>
                 <AnimatePresence mode="wait">
                   {isActive && (
@@ -340,24 +340,24 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
               <div className="flex-grow">
                 <div className="flex items-center justify-between mb-1">
                   <h4 className={`font-medium ${
-                    isActive ? 'text-blue-800' :
-                    isCompleted ? 'text-green-700' :
-                    'text-gray-600'
+                    isActive ? 'text-primary-800' :
+                    isCompleted ? 'text-success-700' :
+                    'text-neutral-600'
                   }`}>
                     {stage.name}
                   </h4>
                   {(isActive || isCompleted) && (
-                    <span className={`text-xs font-medium ${
-                      isCompleted ? 'text-green-600' : 'text-blue-600'
+                    <span className={`text-caption font-medium ${
+                      isCompleted ? 'text-success-600' : 'text-primary-600'
                     }`}>
                       {isCompleted ? '完成' : `${Math.round(progress)}%`}
                     </span>
                   )}
                 </div>
-                <p className={`text-sm ${
-                  isActive ? 'text-blue-600' :
-                  isCompleted ? 'text-green-600' :
-                  'text-gray-500'
+                <p className={`text-caption ${
+                  isActive ? 'text-primary-600' :
+                  isCompleted ? 'text-success-600' :
+                  'text-neutral-500'
                 }`}>
                   {stage.description}
                 </p>
@@ -365,9 +365,9 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
                 {/* Stage progress bar for active stage */}
                 {isActive && progress > 0 && (
                   <div className="mt-2">
-                    <div className="w-full bg-blue-200 rounded-full h-1">
+                    <div className="w-full bg-primary-200 rounded-full h-1">
                       <motion.div
-                        className="bg-blue-500 h-1 rounded-full"
+                        className="bg-primary-500 h-1 rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 0.3 }}

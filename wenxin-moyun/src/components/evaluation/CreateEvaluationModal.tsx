@@ -74,9 +74,9 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-neutral-50 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
       >
-        <div className="sticky top-0 bg-white border-b p-6 flex items-center justify-between">
+        <div className="sticky top-0 bg-neutral-50 border-b p-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold gradient-text">创建评测任务</h2>
           <button
             onClick={onClose}

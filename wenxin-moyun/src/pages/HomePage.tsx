@@ -12,35 +12,66 @@ export default function HomePage() {
     <div className="space-y-16">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-100/20 to-secondary-100/20 dark:from-primary-900/20 dark:to-secondary-900/20" />
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="relative text-center py-20"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative bg-gradient-to-br from-white/80 via-rose-50/60 to-indigo-50/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-16 text-center"
+          style={{
+            transform: 'perspective(1000px) rotateX(2deg)',
+            transformStyle: 'preserve-3d'
+          }}
         >
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="gradient-text">文心墨韵</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-            专业的 AI 艺术创作能力评测平台
-          </p>
-          <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-            评测 AI 在诗歌、绘画、叙事等领域的创造力与美学价值，用数据赋能艺术创作
-          </p>
+          <motion.h1 
+            className="text-7xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-rose-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent"
+            style={{ fontFamily: 'serif' }}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            文心墨韵
+          </motion.h1>
+          <motion.p 
+            className="text-2xl md:text-3xl text-slate-700 mb-8 max-w-3xl mx-auto"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
+            融合传统美学与现代AI的艺术评测平台
+          </motion.p>
+          <motion.p 
+            className="text-lg text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+          >
+            如水墨丹青，评AI之美 · 似诗词歌赋，鉴机器之智
+          </motion.p>
           <div className="flex gap-4 justify-center">
-            <Link
-              to="/leaderboard"
-              className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+            <motion.div
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.95 }}
             >
-              查看排行榜 <Trophy className="ml-2 w-5 h-5" />
-            </Link>
-            <Link
-              to="/battle"
-              className="inline-flex items-center px-6 py-3 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              <Link
+                to="/leaderboard"
+                className="inline-flex items-center px-10 py-5 bg-gradient-to-r from-rose-500 to-purple-600 text-white rounded-2xl shadow-2xl font-semibold text-lg mr-4 hover:from-rose-600 hover:to-purple-700 transition-all duration-300"
+                style={{ boxShadow: '0 10px 30px rgba(236, 72, 153, 0.3)' }}
+              >
+                探索榜单 <Trophy className="ml-2 w-5 h-5" />
+              </Link>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.95 }}
             >
-              模型对决 <Swords className="ml-2 w-5 h-5" />
-            </Link>
+              <Link
+                to="/battle"
+                className="inline-flex items-center px-10 py-5 bg-neutral-50/90 backdrop-blur-md text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-purple-600 border-2 border-gradient-to-r from-rose-200 to-purple-200 rounded-2xl font-semibold text-lg hover:bg-neutral-50 transition-all duration-300"
+                style={{ boxShadow: '0 10px 30px rgba(147, 51, 234, 0.1)' }}
+              >
+                模型对决 <Swords className="ml-2 w-5 h-5 text-purple-600" />
+              </Link>
+            </motion.div>
           </div>
         </motion.div>
       </section>
@@ -67,7 +98,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+              className="card hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center">
@@ -99,7 +130,7 @@ export default function HomePage() {
                 {entry.model.tags.slice(0, 3).map((tag) => (
                   <span
                     key={tag}
-                    className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs rounded-full text-gray-600 dark:text-gray-300"
+                    className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 text-xs rounded-full text-neutral-600 dark:text-neutral-400 font-medium"
                   >
                     {tag}
                   </span>
@@ -108,7 +139,7 @@ export default function HomePage() {
 
               <Link
                 to={`/model/${entry.model.id}`}
-                className="block text-center py-2 bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-colors"
+                className="btn-primary btn text-center"
               >
                 查看详情
               </Link>
@@ -128,7 +159,7 @@ export default function HomePage() {
             <Link
               key={category.id}
               to={`/leaderboard/${category.id}`}
-              className="bg-white dark:bg-gray-800 rounded-lg p-4 text-center hover:shadow-lg transition-all hover:-translate-y-1"
+              className="card p-6 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2 hover:scale-105"
             >
               <div className="text-3xl mb-2">{category.icon}</div>
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -158,7 +189,7 @@ export default function HomePage() {
           {mockBattles.slice(0, 2).map((battle) => (
             <div
               key={battle.id}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6"
+              className="card hover:shadow-xl transition-all duration-300"
             >
               <div className="flex justify-between items-center mb-4">
                 <span className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full text-sm font-medium">
@@ -195,7 +226,7 @@ export default function HomePage() {
 
               <Link
                 to="/battle"
-                className="block mt-4 text-center py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="btn-secondary btn text-center mt-4"
               >
                 参与投票
               </Link>
@@ -205,9 +236,9 @@ export default function HomePage() {
       </section>
 
       {/* Stats */}
-      <section className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-8 text-center">
-          <TrendingUp className="inline-block w-8 h-8 mr-2 text-green-500" />
+      <section className="card p-12 bg-gradient-to-br from-white to-neutral-50 dark:from-neutral-800 dark:to-neutral-900">
+        <h2 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200 mb-12 text-center">
+          <TrendingUp className="inline-block w-8 h-8 mr-2 text-success" />
           平台数据
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">

@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/common/Layout';
 import HomePage from './pages/HomePage';
 import LeaderboardPage from './pages/LeaderboardPage';
@@ -8,11 +9,13 @@ import AboutPage from './pages/AboutPage';
 import ComparePage from './pages/ComparePage';
 import DashboardPage from './pages/DashboardPage';
 import EvaluationsPage from './pages/EvaluationsPage';
+import EvaluationDetailPage from './pages/EvaluationDetailPage';
 import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
-    <Router>
+    <ThemeProvider>
+      <Router>
       <Routes>
         {/* Login page without Layout */}
         <Route path="/login" element={<LoginPage />} />
@@ -27,10 +30,12 @@ function App() {
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/evaluations" element={<EvaluationsPage />} />
+          <Route path="/evaluations/:id" element={<EvaluationDetailPage />} />
           <Route path="/about" element={<AboutPage />} />
         </Route>
       </Routes>
     </Router>
+    </ThemeProvider>
   );
 }
 

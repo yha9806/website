@@ -135,7 +135,7 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 max-w-md"
+      className="bg-neutral-50 rounded-lg shadow-lg border border-gray-200 p-4 max-w-md"
     >
       <div className="flex items-center space-x-2 mb-4">
         <HelpCircle className="w-5 h-5 text-blue-500" />

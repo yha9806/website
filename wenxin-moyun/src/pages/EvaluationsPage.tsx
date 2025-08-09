@@ -136,7 +136,7 @@ const EvaluationsPage: React.FC = () => {
             <div className="flex gap-4">
               <button
                 onClick={refreshEvaluations}
-                className="px-4 py-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+                className="px-4 py-2 bg-neutral-50 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2"
               >
                 <RefreshCw className="w-5 h-5" />
                 刷新
@@ -149,7 +149,7 @@ const EvaluationsPage: React.FC = () => {
                 <Plus className="w-5 h-5" />
                 创建评测
                 {isGuest && (
-                  <span className="ml-2 px-2 py-1 bg-white bg-opacity-20 rounded-full text-xs">
+                  <span className="ml-2 px-2 py-1 bg-neutral-50 bg-opacity-20 rounded-full text-xs">
                     剩余 {remainingUsage} 次
                   </span>
                 )}
@@ -166,7 +166,7 @@ const EvaluationsPage: React.FC = () => {
                 <select
                   value={selectedType}
                   onChange={(e) => setSelectedType(e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="px-4 py-2 rounded-lg border border-gray-200 bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">所有类型</option>
                   <option value="poem">诗歌创作</option>
@@ -178,7 +178,7 @@ const EvaluationsPage: React.FC = () => {
                 <select
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="px-4 py-2 rounded-lg border border-gray-200 bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">所有状态</option>
                   <option value="pending">待处理</option>
@@ -248,7 +248,7 @@ const EvaluationsPage: React.FC = () => {
                   className={`px-4 py-2 rounded-lg ${
                     p === page
                       ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-100'
+                      : 'bg-neutral-50 text-gray-700 hover:bg-gray-100'
                   }`}
                 >
                   {p}

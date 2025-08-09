@@ -105,7 +105,7 @@ export default function ComparePage() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ delay: index * 0.05 }}
-                className="relative bg-white dark:bg-gray-800 rounded-lg shadow-md p-4"
+                className="relative bg-neutral-50 dark:bg-gray-800 rounded-lg shadow-md p-4"
               >
                 <button
                   onClick={() => handleRemoveModel(model.id)}
@@ -157,7 +157,7 @@ export default function ComparePage() {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="mb-8 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg"
+          className="mb-8 p-6 bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg"
         >
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
             选择模型
@@ -210,7 +210,7 @@ export default function ComparePage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6"
+            className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6"
           >
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
               详细数据对比

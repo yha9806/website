@@ -34,23 +34,46 @@ class EvaluationEngine:
             # Update status to running
             task.status = TaskStatus.RUNNING
             task.started_at = datetime.utcnow()
+            task.progress = 0.0
             await self.db.commit()
             
             # Add realistic delay to simulate processing time
-            stage_delays = {
-                "poem": [15, 45, 30, 20],      # analyzing, generating, refining, evaluating
-                "story": [20, 35, 60, 25],     # analyzing, structuring, writing, evaluating  
-                "painting": [18, 40, 80, 22],  # analyzing, composing, rendering, evaluating
-                "music": [25, 70, 50, 18]      # analyzing, composing, arranging, evaluating
+            stage_configs = {
+                "poem": {
+                    "delays": [15, 45, 30, 20],      # analyzing, generating, refining, evaluating
+                    "stages": ["分析提示词", "构思创作", "润色优化", "质量评估"]
+                },
+                "story": {
+                    "delays": [20, 35, 60, 25],     # analyzing, structuring, writing, evaluating  
+                    "stages": ["理解需求", "构建框架", "内容创作", "综合评估"]
+                },
+                "painting": {
+                    "delays": [18, 40, 80, 22],  # analyzing, composing, rendering, evaluating
+                    "stages": ["主题分析", "构图设计", "图像生成", "美学评估"]
+                },
+                "music": {
+                    "delays": [25, 70, 50, 18],      # analyzing, composing, arranging, evaluating
+                    "stages": ["风格分析", "旋律创作", "编曲制作", "音乐评估"]
+                }
             }
             
-            delays = stage_delays.get(task.task_type, [15, 45, 30, 20])
+            config = stage_configs.get(task.task_type, {
+                "delays": [15, 45, 30, 20],
+                "stages": ["分析中", "生成中", "优化中", "评估中"]
+            })
+            delays = config["delays"]
+            stages = config["stages"]
             
-            # Simulate stages with delays (shortened for demo)
-            for i, delay in enumerate(delays):
+            # Simulate stages with delays and progress updates (shortened for demo)
+            for i, (delay, stage) in enumerate(zip(delays, stages)):
+                # Update current stage and progress
+                task.current_stage = stage
+                task.progress = (i / len(delays)) * 100
+                await self.db.commit()
+                print(f"Task {task_id} - Stage {i+1}/{len(delays)}: {stage} ({task.progress:.1f}%)")
+                
                 # Use shorter delays for demo (divide by 3)
                 await asyncio.sleep(delay / 3)
-                print(f"Task {task_id} - Stage {i+1}/{len(delays)} completed")
             
             # Execute based on task type
             if task.task_type == "poem":
@@ -66,6 +89,8 @@ class EvaluationEngine:
             
             # Update task with results
             task.status = TaskStatus.COMPLETED
+            task.progress = 100.0
+            task.current_stage = "已完成"
             task.completed_at = datetime.utcnow()
             task.result = result["content"]
             task.raw_response = result["raw"]
@@ -74,7 +99,7 @@ class EvaluationEngine:
             task.final_score = result["score"]  # Use auto score as initial final score
             
             await self.db.commit()
-            print(f"Task {task_id} completed successfully")
+            print(f"Task {task_id} completed successfully with score {result['score']:.1f}")
             
         except Exception as e:
             print(f"Error executing task {task_id}: {str(e)}")

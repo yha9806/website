@@ -7,7 +7,8 @@ interface ComparisonRadarProps {
   title?: string;
 }
 
-const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+// 使用设计系统的颜色
+const COLORS = ['#0052CC', '#FF8B00', '#36B37E', '#FFAB00']; // primary, accent, success, warning
 
 export default function ComparisonRadar({ models, title = "模型能力对比" }: ComparisonRadarProps) {
   // 准备雷达图数据
@@ -53,9 +54,9 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6"
+      className="card-hover"
     >
-      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
+      <h3 className="text-h3 text-neutral-900 mb-4">
         {title}
       </h3>
 
@@ -64,19 +65,19 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
           <PolarGrid 
             gridType="polygon"
             radialLines={true}
-            stroke="#e5e7eb"
+            stroke="#DFE1E6"
             strokeWidth={1}
           />
           <PolarAngleAxis 
             dataKey="dimension"
-            tick={{ fill: '#6b7280', fontSize: 12 }}
+            tick={{ fill: '#6B778C', fontSize: 12 }}
             className="font-medium"
           />
           <PolarRadiusAxis
             angle={90}
             domain={[0, 100]}
             tickCount={5}
-            tick={{ fill: '#9ca3af', fontSize: 10 }}
+            tick={{ fill: '#A5ADBA', fontSize: 10 }}
           />
           
           {models.map((model, index) => (

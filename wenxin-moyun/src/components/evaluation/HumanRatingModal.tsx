@@ -51,9 +51,9 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-neutral-50 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
       >
-        <div className="sticky top-0 bg-white border-b p-6 flex items-center justify-between">
+        <div className="sticky top-0 bg-neutral-50 border-b p-6 flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold gradient-text">人工评分</h2>
             <p className="text-sm text-gray-600 mt-1">为AI创作内容打分并提供反馈</p>

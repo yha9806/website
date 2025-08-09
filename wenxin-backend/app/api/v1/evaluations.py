@@ -1,9 +1,10 @@
 from typing import Any, List, Optional, Union
-from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks, Query
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks, Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update
 from sqlalchemy.orm import selectinload
 from datetime import datetime
+import json
 
 from app.core.database import get_db
 from app.api.deps import get_current_user_optional, get_current_user_or_guest, is_guest_user
@@ -25,6 +26,7 @@ router = APIRouter()
 async def create_evaluation(
     task_in: EvaluationTaskCreate,
     background_tasks: BackgroundTasks,
+    response: Response,
     db: AsyncSession = Depends(get_db),
     current_user_or_guest: Union[User, Any] = Depends(get_current_user_or_guest)
 ) -> Any:
@@ -32,10 +34,22 @@ async def create_evaluation(
     
     # Check if guest user has reached daily limit
     if is_guest_user(current_user_or_guest):
-        # In real implementation, you'd check Redis/cache for daily count
-        # For now, we'll allow guest users with a simple check
         guest_session = current_user_or_guest
-        # TODO: Implement proper daily limit checking with Redis/database
+        
+        # Add guest session info to response headers
+        response.headers["X-Guest-Session"] = json.dumps(guest_session.to_dict())
+        
+        # Check daily limit
+        if guest_session.remaining_uses <= 0:
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="Daily limit reached for guest users. Please login to continue.",
+                headers={"X-Guest-Session": json.dumps(guest_session.to_dict())}
+            )
+        
+        # Increment usage count for next request (in real app, this would be in Redis/DB)
+        guest_session.usage_count += 1
+        guest_session.remaining_uses -= 1
     
     # Verify model exists
     result = await db.execute(
@@ -86,6 +100,7 @@ async def create_evaluation(
 
 @router.get("/", response_model=List[EvaluationTaskResponse])
 async def get_evaluations(
+    response: Response,
     db: AsyncSession = Depends(get_db),
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=100),
@@ -94,7 +109,11 @@ async def get_evaluations(
     status: Optional[TaskStatus] = None,
     current_user_or_guest: Union[User, Any] = Depends(get_current_user_or_guest)
 ) -> Any:
-    """Get list of evaluation tasks"""
+    """Get list of evaluation tasks - supports both authenticated and guest users"""
+    
+    # Add guest session info to response headers if guest
+    if is_guest_user(current_user_or_guest):
+        response.headers["X-Guest-Session"] = json.dumps(current_user_or_guest.to_dict())
     
     query = select(EvaluationTask).options(
         selectinload(EvaluationTask.model)
@@ -111,12 +130,20 @@ async def get_evaluations(
     # Filter by user or guest
     if is_guest_user(current_user_or_guest):
         guest_session = current_user_or_guest
-        query = query.where(EvaluationTask.guest_id == guest_session.guest_id)
-    elif current_user_or_guest:
+        # For guests, show their own tasks plus some public examples
+        from sqlalchemy import or_
+        query = query.where(
+            or_(
+                EvaluationTask.guest_id == guest_session.guest_id,
+                EvaluationTask.status == TaskStatus.COMPLETED  # Show completed tasks as examples
+            )
+        )
+    elif current_user_or_guest and hasattr(current_user_or_guest, 'id'):
+        # Authenticated user - show their tasks
         query = query.where(EvaluationTask.user_id == current_user_or_guest.id)
     else:
-        # No filter for anonymous access - show all public tasks or handle as needed
-        pass
+        # Anonymous access - show only completed public examples
+        query = query.where(EvaluationTask.status == TaskStatus.COMPLETED)
     
     query = query.order_by(EvaluationTask.created_at.desc())
     query = query.offset(skip).limit(limit)
@@ -219,6 +246,114 @@ async def score_evaluation(
         task_dict['model_organization'] = task.model.organization
     
     return EvaluationTaskResponse(**task_dict)
+
+
+@router.get("/{task_id}/progress", response_model=dict)
+async def get_evaluation_progress(
+    task_id: str,
+    db: AsyncSession = Depends(get_db)
+) -> Any:
+    """Get current progress of an evaluation task"""
+    
+    result = await db.execute(
+        select(EvaluationTask).where(EvaluationTask.id == task_id)
+    )
+    task = result.scalar_one_or_none()
+    
+    if not task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Evaluation task not found"
+        )
+    
+    # Return progress information
+    return {
+        "task_id": task.id,
+        "status": task.status.value if task.status else "pending",
+        "progress": task.progress if hasattr(task, 'progress') else 0,
+        "current_stage": task.current_stage if hasattr(task, 'current_stage') else None,
+        "started_at": task.started_at.isoformat() if task.started_at else None,
+        "completed_at": task.completed_at.isoformat() if task.completed_at else None,
+        "error_message": task.error_message
+    }
+
+
+@router.get("/{task_id}/scoring-advice", response_model=dict)
+async def get_scoring_advice(
+    task_id: str,
+    db: AsyncSession = Depends(get_db)
+) -> Any:
+    """Get AI scoring advice based on similar evaluations"""
+    
+    # Get the evaluation task
+    result = await db.execute(
+        select(EvaluationTask).where(EvaluationTask.id == task_id)
+    )
+    task = result.scalar_one_or_none()
+    
+    if not task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Evaluation task not found"
+        )
+    
+    # Get similar completed tasks for reference
+    similar_tasks_query = select(EvaluationTask).where(
+        EvaluationTask.task_type == task.task_type,
+        EvaluationTask.status == TaskStatus.COMPLETED,
+        EvaluationTask.auto_score.isnot(None)
+    ).limit(20)
+    
+    result = await db.execute(similar_tasks_query)
+    similar_tasks = result.scalars().all()
+    
+    # Calculate statistics
+    if similar_tasks:
+        scores = [t.auto_score for t in similar_tasks if t.auto_score]
+        if scores:
+            import statistics
+            mean_score = statistics.mean(scores)
+            std_dev = statistics.stdev(scores) if len(scores) > 1 else 0
+            
+            # Task-specific scoring ranges
+            task_ranges = {
+                "poem": {"creativity": (85, 95), "rhythm": (80, 90), "imagery": (82, 92)},
+                "story": {"plot": (75, 90), "characters": (78, 88), "narrative": (80, 92)},
+                "painting": {"composition": (82, 93), "aesthetics": (85, 95), "technique": (80, 90)},
+                "music": {"melody": (78, 88), "harmony": (75, 85), "arrangement": (80, 90)}
+            }
+            
+            advice = {
+                "reference_score": round(mean_score, 1),
+                "score_range": {
+                    "min": max(0, round(mean_score - std_dev, 1)),
+                    "max": min(100, round(mean_score + std_dev, 1))
+                },
+                "confidence": "high" if len(scores) >= 10 else "medium" if len(scores) >= 5 else "low",
+                "sample_size": len(scores),
+                "task_specific_ranges": task_ranges.get(task.task_type, {}),
+                "suggestion": f"基于{len(scores)}个同类作品分析，建议评分范围为{round(mean_score - std_dev/2, 0)}-{round(mean_score + std_dev/2, 0)}分"
+            }
+        else:
+            advice = {
+                "reference_score": 85,
+                "score_range": {"min": 75, "max": 95},
+                "confidence": "low",
+                "sample_size": 0,
+                "task_specific_ranges": {},
+                "suggestion": "暂无足够的历史数据，建议参考默认评分标准"
+            }
+    else:
+        advice = {
+            "reference_score": 85,
+            "score_range": {"min": 75, "max": 95},
+            "confidence": "low", 
+            "sample_size": 0,
+            "task_specific_ranges": {},
+            "suggestion": "暂无历史数据，建议参考默认评分标准"
+        }
+    
+    return advice
 
 
 @router.delete("/{task_id}")

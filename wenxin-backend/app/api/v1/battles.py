@@ -19,6 +19,7 @@ from app.schemas.battle import (
 from app.schemas.ai_model import AIModelResponse
 from app.api.deps import get_current_user_optional, get_current_admin
 from app.models.user import User
+from app.api.v1.websocket import manager
 
 router = APIRouter()
 
@@ -260,6 +261,13 @@ async def vote_for_battle(
     db.add(vote)
     await db.commit()
     await db.refresh(battle)
+    
+    # 发送实时更新到WebSocket
+    await manager.update_battle_votes(
+        battle_id=battle_id,
+        model1_votes=battle.votes_a,
+        model2_votes=battle.votes_b
+    )
     
     return BattleVoteResponse(
         success=True,

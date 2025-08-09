@@ -78,7 +78,7 @@ export default function DashboardPage() {
   }) => (
     <motion.div
       whileHover={{ scale: 1.02 }}
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6"
+      className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6"
     >
       <div className="flex items-start justify-between">
         <div>
@@ -127,7 +127,7 @@ export default function DashboardPage() {
         
         <button
           onClick={handleRefresh}
-          className={`p-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-all ${
+          className={`p-3 bg-neutral-50 dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-all ${
             refreshing ? 'animate-spin' : ''
           }`}
         >
@@ -192,7 +192,7 @@ export default function DashboardPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6"
+          className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6"
         >
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
             <Globe className="w-5 h-5 text-blue-500" />
@@ -226,7 +226,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6"
+          className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6"
         >
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
             <BarChart className="w-5 h-5 text-green-500" />
@@ -268,7 +268,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6"
+          className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6"
         >
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
             <Zap className="w-5 h-5 text-orange-500" />
@@ -315,7 +315,7 @@ export default function DashboardPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6"
+        className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6"
       >
         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
           🏆 顶尖模型表现

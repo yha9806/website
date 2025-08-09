@@ -110,7 +110,7 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden relative"
+              className="bg-neutral-50 rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden relative"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close button */}
@@ -124,7 +124,7 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
               {/* Header with gradient background */}
               <div className={`bg-gradient-to-r ${styles.gradient} p-6 text-white relative`}>
                 <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-white bg-opacity-20 rounded-lg">
+                  <div className="p-2 bg-neutral-50 bg-opacity-20 rounded-lg">
                     <IconComponent className="w-6 h-6" />
                   </div>
                   <div>
@@ -136,8 +136,8 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
                 {/* Usage indicator for limit_reached */}
                 {trigger === 'limit_reached' && (
                   <div className="mt-4 flex items-center space-x-2">
-                    <div className="flex-1 bg-white bg-opacity-20 rounded-full h-2">
-                      <div className="h-full bg-white rounded-full" style={{ width: '100%' }} />
+                    <div className="flex-1 bg-neutral-50 bg-opacity-20 rounded-full h-2">
+                      <div className="h-full bg-neutral-50 rounded-full" style={{ width: '100%' }} />
                     </div>
                     <span className="text-sm font-medium">3/3</span>
                   </div>

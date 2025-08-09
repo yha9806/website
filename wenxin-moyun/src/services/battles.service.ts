@@ -45,7 +45,7 @@ class BattlesService {
       params.append('status', status);
     }
     
-    const response = await api.get<BattlesListResponse>(`/battles?${params}`);
+    const response = await api.get<BattlesListResponse>(`/battles/?${params}`);
     return response.data;
   }
 
@@ -74,7 +74,7 @@ class BattlesService {
     task_category: string;
     difficulty: 'easy' | 'medium' | 'hard';
   }): Promise<BattleResponse> {
-    const response = await api.post<BattleResponse>('/battles', battleData);
+    const response = await api.post<BattleResponse>('/battles/', battleData);
     return response.data;
   }
 

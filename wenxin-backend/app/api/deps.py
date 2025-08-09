@@ -121,15 +121,67 @@ async def get_current_admin(
 
 
 class GuestSession:
-    """Guest session for temporary access"""
-    def __init__(self, guest_id: str):
+    """Guest session for temporary access with usage tracking"""
+    def __init__(self, guest_id: str, usage_count: int = 0, first_activity: datetime = None):
         self.guest_id = guest_id
         self.is_guest = True
-        self.daily_limit = 3
-        self.created_at = datetime.utcnow()
+        self.daily_limit = 3  # Daily evaluation limit for guests
+        self.usage_count = usage_count
+        self.remaining_uses = max(0, self.daily_limit - usage_count)
+        self.created_at = first_activity or datetime.utcnow()
+        self.session_duration = int((datetime.utcnow() - self.created_at).total_seconds() / 60)  # minutes
+        self.evaluations_created = usage_count
+        self.trigger_scenarios = self._check_trigger_scenarios()
         
     def __str__(self):
         return f"Guest({self.guest_id[:8]}...)"
+    
+    def _check_trigger_scenarios(self):
+        """Check which login trigger scenarios are active"""
+        scenarios = []
+        
+        # Scenario 1: Daily limit reached
+        if self.remaining_uses <= 0:
+            scenarios.append({
+                "type": "limit_reached",
+                "urgency": "high",
+                "message": "您已达到今日免费评测次数上限"
+            })
+        
+        # Scenario 2: Multiple evaluations without saving
+        elif self.evaluations_created >= 2:
+            scenarios.append({
+                "type": "save_progress",
+                "urgency": "medium",
+                "message": "登录以保存您的评测历史"
+            })
+        
+        # Scenario 3: Extended session time
+        if self.session_duration >= 10:
+            scenarios.append({
+                "type": "extended_use",
+                "urgency": "low",
+                "message": "您已使用超过10分钟，注册账号享受更多功能"
+            })
+        
+        return scenarios
+    
+    def to_dict(self):
+        """Convert to dictionary for API responses"""
+        return {
+            "guest_id": self.guest_id,
+            "is_guest": True,
+            "daily_limit": self.daily_limit,
+            "usage_count": self.usage_count,
+            "remaining_uses": self.remaining_uses,
+            "created_at": self.created_at.isoformat(),
+            "session_duration": self.session_duration,
+            "trigger_scenarios": self.trigger_scenarios,
+            "suggestions": {
+                "show_login_prompt": len(self.trigger_scenarios) > 0,
+                "primary_scenario": self.trigger_scenarios[0] if self.trigger_scenarios else None
+            }
+        }
 
 
 async def get_current_user_or_guest(

@@ -4,16 +4,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-文心墨韵 (Wenxin Moyun) - AI art creation evaluation platform for assessing model capabilities in poetry, painting, and narrative arts. Full-stack application with React 19 frontend and FastAPI backend, featuring dual authentication (JWT + guest mode), async AI evaluation engine, and real-time progress visualization.
+文心墨韵 (Wenxin Moyun) - AI art creation evaluation platform that combines traditional Chinese aesthetics with modern AI technology. Full-stack application with React 19 frontend featuring artistic Chinese-style visual design, and FastAPI backend with dual authentication (JWT + guest mode), async AI evaluation engine, and real-time progress visualization.
 
 ## Essential Commands
 
 ### Quick Start (Windows)
 ```bash
-# Manual startup in separate terminals:
+start.bat                                              # One-click startup (recommended)
+
+# Or manual startup in separate terminals:
 cd wenxin-backend && python init_db.py                # Initialize database (first time only)
 cd wenxin-backend && python -m uvicorn app.main:app --reload --port 8001
-cd wenxin-moyun && npm run dev                        # Frontend (auto-detects port from 5173+)
+cd wenxin-moyun && npm run dev                        # Frontend (auto-increments port from 5173)
+```
+
+### MCP Server Management
+```bash
+claude mcp list                                       # Check MCP server status
+claude mcp add playwright npx @playwright/mcp@latest  # Add Playwright MCP
+claude mcp get <name>                                 # Get MCP server details
+claude mcp remove <name>                              # Remove MCP server
 ```
 
 ### Frontend (wenxin-moyun)
@@ -23,34 +33,71 @@ npm run dev          # Start Vite dev server (auto-increments port from 5173)
 npm run build        # TypeScript check + production build
 npm run lint         # ESLint validation
 npm run preview      # Preview production build
-npx vite build       # Build without TypeScript check if type errors occur
+npx vite build       # Build without TypeScript check if needed
 ```
 
 ### Backend (wenxin-backend)
 ```bash
 pip install -r requirements.txt                        # Install dependencies
-python -m uvicorn app.main:app --reload --port 8001   # Start API server with hot reload
+python -m uvicorn app.main:app --reload --port 8001   # Start API server
 python init_db.py                                     # Reset database with sample data
-pytest                                                 # Run unit tests
+pytest                                                 # Run all tests
 pytest tests/test_auth.py -v                         # Run specific test verbose
+pytest -k "test_login" -v                            # Run tests matching pattern
+```
+
+### Testing with MCP Tools
+```bash
+# Visual regression testing with Playwright MCP
+# (Use Playwright MCP tools in Claude Code to automate browser testing)
+
+# Design validation with Figma MCP  
+# (Requires FIGMA_PERSONAL_ACCESS_TOKEN environment variable)
+```
+
+### Database Operations
+```bash
+cd wenxin-backend
+rm wenxin.db                    # Delete existing database
+python init_db.py               # Recreate with new schema + sample data
 ```
 
 ### Windows Process Management
 ```bash
-# Check port usage
 netstat -ano | findstr :8001                         # Check what's using port 8001
-netstat -ano | findstr :5173                         # Check what's using port 5173
-
-# Kill Python processes
+netstat -ano | findstr :517                          # Check all ports 5173-5179
+taskkill /F /PID <PID>                              # Kill specific process
+cmd /c "taskkill /F /PID 12345"                     # Kill process with cmd wrapper
 wmic process where "name='python.exe'" delete        # Kill all Python processes
-taskkill /F /IM python.exe                           # Alternative method (may have issues)
 ```
+
+### Vite Cache Management
+```bash
+cd wenxin-moyun && rm -rf node_modules/.vite        # Clear Vite cache
+```
+
+## Tech Stack Summary
+
+### Frontend
+- **React 19.1** + **TypeScript 5.8** + **Vite 7.1**
+- **Tailwind CSS 4.1** (with custom artistic theme)
+- **Zustand 4.4** for state management
+- **Framer Motion 12.23** for animations
+- **@tanstack/react-table v8** for data tables
+- **Recharts 3.1** for data visualization
+
+### Backend  
+- **FastAPI 0.109** + **Python 3.9+**
+- **SQLAlchemy 2.0** async ORM
+- **Pydantic v2** for validation
+- **JWT** + Guest session authentication
+- **LangChain 0.1** (prepared but unused)
 
 ## Architecture Overview
 
 ### Three-Layer Architecture
 ```
-Frontend (React 19/TypeScript)     Backend (FastAPI/Python)      Database (SQLite)
+Frontend (React 19/TypeScript)     Backend (FastAPI/Python)      Database (SQLite/PostgreSQL)
         ↓                               ↓                              ↓
     Components                      Routers                        Tables
         ↓                               ↓                              ↓
@@ -61,6 +108,28 @@ Frontend (React 19/TypeScript)     Backend (FastAPI/Python)      Database (SQLit
     Axios Client                   SQLAlchemy Models              - artworks
         ↓                               ↓                          - evaluation_tasks
     API Calls ──────────────→     Async Handlers                 - evaluation_results
+```
+
+### Visual Design System (Artistic Chinese Style)
+
+**Design Philosophy**: Combines modern artistic creativity with traditional Chinese aesthetics
+- **Background**: Dynamic ink-wash gradient effects with floating orbs
+- **Color Palette**: Traditional Chinese colors (朱红, 金黄, 翡翠绿) + modern gradients
+- **Typography**: Serif fonts for Chinese text, maintaining calligraphy feel
+- **Animations**: Floating water-ink effects (20-30s loops)
+- **3D Effects**: Perspective transforms, hover rotations, depth shadows
+
+**Key Visual Components**:
+```typescript
+// Layout.tsx - Multi-layer background system
+- Fixed gradient base (slate-50 → rose-50 → indigo-50)
+- Animated floating orbs with blur effects
+- Chinese pattern overlay (subtle wave patterns)
+
+// Color System (tailwind.config.js)
+- Intelligent color scale generation (50-900)
+- Traditional Chinese colors: chinese.red, chinese.gold, chinese.jade
+- HSL-based dynamic color generation preserving main brand colors
 ```
 
 ### Backend Service-Oriented Architecture
@@ -131,25 +200,24 @@ async def get_current_user_or_guest(
         return GuestSession(guest_id)
 ```
 
-### Evaluation Task Processing System
-**Async Background Processing:**
-```python
-# EvaluationEngine handles task execution with realistic progress simulation
-class EvaluationEngine:
-    async def execute_evaluation(self, task_id: str):
-        # Multi-stage progress with task-specific delays
-        stage_delays = {
-            "poem": [15, 45, 30, 20],      # analyzing, generating, refining, evaluating
-            "story": [20, 35, 60, 25],     # analyzing, structuring, writing, evaluating
-            "painting": [18, 40, 80, 22],  # analyzing, composing, rendering, evaluating
-            "music": [25, 70, 50, 18]      # analyzing, composing, arranging, evaluating
-        }
+### Visual System CSS Architecture
+**Animation Classes (index.css):**
+```css
+/* Water-ink animations */
+@keyframes float { /* 20s floating motion */ }
+@keyframes float-delayed { /* 25s with 5s delay */ }
+@keyframes float-slow { /* 30s with 10s delay */ }
+
+.animate-float, .animate-float-delayed, .animate-float-slow
+.bg-gradient-radial { /* Radial gradient support */ }
 ```
 
-**Frontend Progress Visualization:**
-- Real-time multi-stage progress tracking with animations
-- Task-specific stage definitions and estimated durations
-- Progress state synchronization with backend task status
+**Component Style Classes:**
+```css
+.card { /* Glass morphism with backdrop blur */ }
+.btn-primary, .btn-secondary { /* Gradient buttons with 3D transforms */ }
+.text-h1 through .text-caption { /* Typography system */ }
+```
 
 ### Database Schema Design
 **Dynamic ID Support** for SQLite/PostgreSQL compatibility:
@@ -157,32 +225,11 @@ class EvaluationEngine:
 # Models support both database types
 if settings.DATABASE_URL.startswith("sqlite"):
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    model_id = Column(String, ForeignKey("ai_models.id"))
 else:
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    model_id = Column(UUID(as_uuid=True), ForeignKey("ai_models.id"))
-```
-
-**Guest Support in Data Models:**
-```python
-# evaluation_task.py supports both authenticated and guest users
-user_id = Column(String, ForeignKey("users.id"), nullable=True)
-guest_id = Column(String, nullable=True)  # For anonymous evaluation sessions
 ```
 
 ### API Data Format Patterns
-**Backend Response Structure:**
-- Most endpoints return arrays directly (not wrapped in pagination objects)
-- Status field mapping: `running` → `processing` (frontend), `pending` → `pending`
-- Snake_case backend fields converted to camelCase on frontend
-
-**Critical API Response Handling:**
-```typescript
-// evaluations.service.ts - Handle direct array responses
-const response = await apiClient.get<EvaluationTaskResponse[]>('/evaluations/');
-const evaluationsArray = Array.isArray(response.data) ? response.data : [];
-```
-
 **URL Requirements:**
 ```typescript
 // FastAPI requires trailing slashes to avoid 307 redirects
@@ -191,19 +238,14 @@ await apiClient.get('/models');     // ✗ Causes 307 redirect
 ```
 
 ### React 19 Specific Requirements
-**UUID Generation Compatibility:**
+**UUID Generation:**
 ```typescript
-// ✓ Use native crypto API - React 19 compatible
+// ✓ Use native crypto API
 const id = crypto.randomUUID();
 
-// ✗ Avoid uuid package - causes peer dependency conflicts
+// ✗ Avoid uuid package (causes peer dependency conflicts)
 import { v4 as uuidv4 } from 'uuid';
 ```
-
-**Package Version Requirements:**
-- `framer-motion`: 12.23+ for React 19 support
-- `tailwindcss`: 4.1+ for latest features
-- Avoid UUID dependencies that conflict with React 19
 
 ## API Endpoints
 
@@ -213,31 +255,16 @@ import { v4 as uuidv4 } from 'uuid';
 
 ### Core Resources (all require trailing slashes)
 - `/api/v1/models/` - AI model management
-- `/api/v1/battles/` - Battle system with voting  
+- `/api/v1/battles/` - Battle system with voting
 - `/api/v1/artworks/` - Creative works
 - `/api/v1/evaluations/` - AI evaluation tasks (supports guest mode)
-- `/api/v1/scoring-advice/` - AI scoring advice and templates
+- `/api/v1/evaluations/{id}/progress` - Real-time progress tracking
+- `/api/v1/evaluations/{id}/scoring-advice` - AI scoring recommendations
+- `/api/v1/leaderboard/` - Model rankings
 
 ### Documentation
 - Swagger UI: http://localhost:8001/docs
 - ReDoc: http://localhost:8001/redoc
-
-## Database Management
-
-### Sample Data (via init_db.py)
-- 10 AI models (GPT-4, Claude, Qwen, etc.)
-- 4 sample battles with voting data
-- 6 sample artworks across different categories
-- 4 evaluation tasks with status progression (pending → running → completed)
-- Admin account: username="admin", password="admin123"
-
-### Schema Change Management
-**No migrations system** - schema changes require database recreation:
-```bash
-cd wenxin-backend
-rm wenxin.db                    # Delete existing database (Windows: del wenxin.db)
-python init_db.py               # Recreate with new schema + sample data
-```
 
 ## Environment Configuration
 
@@ -253,38 +280,46 @@ VITE_API_TIMEOUT=30000
 DATABASE_URL=sqlite+aiosqlite:///./wenxin.db
 SECRET_KEY=your-secret-key-here
 ACCESS_TOKEN_EXPIRE_MINUTES=10080  # 7 days
-USE_REDIS=False                    # Simplified deployment - no Redis dependency
-USE_QDRANT=False                  # No vector database integration
-```
-
-## Smart UI System Components
-
-### Multi-Trigger Login Prompts
-**Trigger Scenarios with Urgency Levels:**
-- `limit_reached`: Guest daily limit hit (urgency: high, immediate action required)
-- `save_progress`: After 2+ evaluations (urgency: medium, suggest account creation)
-- `extended_use`: After 10+ minutes session (urgency: low, gentle encouragement)
-- `quality_feedback`: When viewing detailed results (urgency: low, value-add suggestion)
-
-### Progress Visualization System
-**Task-Specific Stage Definitions:**
-```typescript
-const progressStages = {
-  poem: ['分析提示词', '构思创作', '润色优化', '质量评估'],
-  story: ['理解需求', '构建框架', '内容创作', '综合评估'],
-  painting: ['主题分析', '构图设计', '图像生成', '美学评估'],
-  music: ['风格分析', '旋律创作', '编曲制作', '音乐评估']
-};
+USE_REDIS=False                    # Simplified deployment
+USE_QDRANT=False                  # No vector database
 ```
 
 ## Development Patterns & Conventions
+
+### Project Structure
+```
+wenxin-moyun/               # Frontend React app
+├── src/
+│   ├── components/         # UI components (common/, charts/, filters/, etc.)
+│   ├── pages/             # Route-level components
+│   ├── hooks/             # Custom React hooks
+│   ├── services/          # API service layer
+│   ├── store/             # Zustand state stores
+│   ├── types/             # TypeScript type definitions
+│   └── utils/             # Helper functions
+
+wenxin-backend/            # Backend FastAPI app
+├── app/
+│   ├── api/v1/           # API endpoints
+│   ├── core/             # Core configuration
+│   ├── models/           # SQLAlchemy models
+│   ├── schemas/          # Pydantic schemas
+│   └── services/         # Business logic
+```
 
 ### Adding New Features
 1. **Backend**: Model → Schema → Router → Service → Register in `__init__.py`
 2. **Frontend**: Types → Service → Hook → Component → Route → UI Integration
 
+### Visual Component Development
+When creating new UI components:
+1. Use existing color scales from `tailwind.config.js` (neutral, primary, accent, etc.)
+2. Apply glass morphism effects for cards: `bg-neutral-50/80 backdrop-blur-xl` 
+3. Add hover animations: `whileHover={{ scale: 1.02, rotateX: -5 }}`
+4. Use gradient text for headings: `bg-gradient-to-r from-rose-600 to-indigo-600 bg-clip-text text-transparent`
+5. **Important**: Use `neutral-50` instead of `white` for Tailwind v4 compatibility
+
 ### SQLAlchemy Best Practices
-**Always use eager loading for relationships:**
 ```python
 from sqlalchemy.orm import selectinload
 query = select(EvaluationTask).options(
@@ -293,105 +328,100 @@ query = select(EvaluationTask).options(
 )
 ```
 
-### Service Layer Pattern
-**Frontend Service Layer Structure:**
-```typescript
-// services/*.service.ts - Consistent pattern across all services
-class ServiceName {
-  async getResource(): Promise<Resource[]> {
-    const response = await apiClient.get<ResourceResponse[]>('/resource/');
-    return Array.isArray(response.data) ? response.data.map(convert) : [];
-  }
-}
-```
-
-### TypeScript Configuration Considerations
-**Build Issues**: If encountering TypeScript strict checking errors during build:
+### TypeScript Build Configuration
 ```bash
-# Temporary solution for type conflicts
+# If TypeScript errors during build:
 npx vite build                    # Build without TypeScript check
-# Or modify tsconfig.app.json to disable strict unused variable checking
+# Or modify tsconfig.app.json:
 "noUnusedLocals": false,
 "noUnusedParameters": false,
 ```
+
+## Test Accounts
+- **Demo User**: username=`demo`, password=`demo123`
+- **Admin User**: username=`admin`, password=`admin123`
 
 ## System Status & Limitations
 
 ### Operational Components
 - Frontend: React 19 + TypeScript + Tailwind CSS 4.1 + Framer Motion
 - Backend: FastAPI + SQLAlchemy async + SQLite + Background Tasks
-- Authentication: Dual mode (JWT + Guest sessions)
-- Task Processing: Async evaluation engine with progress simulation
-- State Management: Zustand for global state, React hooks for local state
+- Visual System: Artistic Chinese design with dynamic animations
+- Authentication: Dual mode (JWT + Guest sessions with daily limits)
+- MCP Integration: Playwright MCP for browser automation, Figma MCP for design integration
 
-### Known Limitations & Design Decisions
-- **Mock AI Provider Only**: No real LLM integration (uses simulated responses)
-- **SQLite Database**: Simplified deployment, no migration system
+### Known Limitations
+- **Mock AI Provider Only**: No real LLM integration
+- **SQLite Database**: No migration system
 - **No Real-time Updates**: Uses polling instead of WebSocket
-- **No File Upload**: Artwork images are URL references only
-- **Simplified Task Queue**: FastAPI BackgroundTasks instead of Redis/Celery
-- **No Vector Database**: Qdrant integration disabled for simplified deployment
+- **Guest Limits**: 3 evaluations per day for anonymous users
 
 ## Troubleshooting Guide
 
-### API Authentication Issues
-**Common Problem**: `/api/v1/evaluations/` returns 401 errors despite guest mode
-**Solutions**:
-1. Verify `oauth2_scheme` has `auto_error=False` in `deps.py`
-2. Check `X-Guest-ID` header is being sent from frontend
-3. Restart FastAPI server completely (auto-reload may miss dependency changes)
-4. Test API manually: `curl -H "X-Guest-ID: test-123" http://localhost:8001/api/v1/evaluations/`
-
-### Frontend Data Fetching Errors
-**Common Problem**: `TypeError: Cannot read properties of undefined (reading 'map')`
-**Root Cause**: API response structure mismatch (backend returns array, frontend expects wrapped object)
-**Solution**: Ensure service layer handles direct array responses with `Array.isArray()` checks
-
-### React 19 Compatibility Issues
-**Package Conflicts**: Clear cache and reinstall if peer dependency errors occur
+### Port Conflicts
+Frontend auto-increments ports if occupied:
 ```bash
-rm -rf node_modules package-lock.json && npm install
+# Check all potentially used ports
+netstat -ano | findstr :517
+# Typical sequence: 5173 → 5174 → 5175 → 5176 → 5177 → 5178 → 5179 → 5180 → 5181
 ```
 
-### Port Conflicts
-- Frontend auto-increments ports: 5173 → 5174 → 5175 → 5176...
-- Backend fixed on port 8001
-- Check processes: `netstat -ano | findstr :5173` (Windows)
+### CORS Configuration Updates
+When frontend starts on a new port, update backend CORS:
+1. Edit `wenxin-backend/app/main.py`
+2. Add new port to `cors_origins` list (both localhost and 127.0.0.1)
+3. Backend auto-reloads with new configuration
 
-### Build Configuration Issues
-**TypeScript Build Failures**: Common with unused imports/variables
-- Use `npx vite build` to bypass TypeScript checking
-- Or temporarily modify `tsconfig.app.json` to relax strict checking
+### Visual System Not Updating
+1. Clear Vite cache: `rm -rf node_modules/.vite`
+2. Kill all old dev servers
+3. Access the latest port (check console output)
+4. Force refresh browser: `Ctrl + F5`
 
-### Backend URL Access
-**Important**: Users may accidentally access backend URL (http://localhost:8001/) instead of frontend
-- Backend now serves HTML redirect page pointing to frontend (http://localhost:5173/)
-- Backend HTML includes Safari-compatible CSS with vendor prefixes
-- Proper frontend URL: http://localhost:5173 (or auto-assigned port)
-- Backend API docs: http://localhost:8001/docs
+### API Authentication Issues
+If `/api/v1/evaluations/` returns 401:
+1. Verify `X-Guest-ID` header is sent
+2. Check `oauth2_scheme` has `auto_error=False`
+3. Restart FastAPI server completely
 
-### Windows-Specific Development
+### Windows-Specific Issues
 - Use `python -m uvicorn` instead of `uvicorn` directly
-- Kill stuck processes: `wmic process where "name='python.exe'" delete`
-- Reserved device names (nul, con, aux) added to .gitignore
-- PowerShell doesn't support `&&`, use `;` or separate commands
+- Kill processes: `cmd /c "taskkill /F /PID <PID>"`
+- Reserved device names (nul, con, aux) in .gitignore
 
-## Security & Quality Assurance
+### Build Errors
+- TypeScript errors: Use `npx vite build` to bypass
+- Tailwind CSS errors: Check for missing utility classes, use `neutral-50` instead of `white`
+- React 19 conflicts: Ensure no uuid package dependency, use `--legacy-peer-deps` for npm installs
 
-### Security Headers Implementation
-Backend includes comprehensive security middleware:
-- X-Content-Type-Options: nosniff
-- X-Frame-Options: DENY
-- X-XSS-Protection: 1; mode=block
-- Cache-Control: no-cache, no-store, must-revalidate
+### Docker Deployment
+```bash
+# Development environment
+docker-compose -f docker-compose.dev.yml up
 
-### Accessibility Features
-- Proper HTML lang attributes (lang="zh-CN")
-- Form labels with htmlFor associations
-- Semantic HTML structure
-- Keyboard navigation support
+# Production environment  
+docker-compose -f docker-compose.prod.yml up
+```
 
-### Browser Compatibility
-- CSS vendor prefix handling (e.g., `-webkit-backdrop-filter` for Safari)
-- Mobile-responsive design
-- Cross-browser testing considerations
+## MCP Integration Configuration
+
+### Currently Configured MCP Servers
+1. **Playwright MCP**: Browser automation and testing
+   - Command: `npx @playwright/mcp@latest`
+   - Use for E2E testing, visual regression, performance monitoring
+   
+2. **Figma MCP**: Design system integration
+   - Command: `node C:\Users\MyhrDyzy\AppData\Roaming\npm\node_modules\figma-mcp\dist\index.cjs`
+   - Requires FIGMA_PERSONAL_ACCESS_TOKEN environment variable
+
+### MCP Usage Examples
+```javascript
+// Playwright: Automated testing
+await browser.navigate('http://localhost:5181');
+await browser.click('text=开始评测');
+await browser.snapshot();  // Capture accessibility tree
+
+// Figma: Design token extraction
+await figma.add_figma_file('your-figma-url');
+await figma.view_node('file_key', 'node_id');
+```

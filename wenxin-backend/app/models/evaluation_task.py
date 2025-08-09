@@ -38,6 +38,8 @@ class EvaluationTask(Base):
     
     # Status and timing
     status = Column(SQLEnum(TaskStatus), default=TaskStatus.PENDING)
+    progress = Column(Float, default=0.0)  # Progress percentage (0-100)
+    current_stage = Column(String, nullable=True)  # Current processing stage description
     created_at = Column(DateTime, default=datetime.utcnow)
     started_at = Column(DateTime, nullable=True)
     completed_at = Column(DateTime, nullable=True)

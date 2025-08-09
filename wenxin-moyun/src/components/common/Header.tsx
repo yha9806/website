@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Trophy, Swords, Info, Home, BarChart3, GitCompare, FlaskConical } from 'lucide-react';
 import { useState } from 'react';
+import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,19 +23,22 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+    <header className="bg-neutral-50 dark:bg-[#161B22] border-b border-gray-200 dark:border-[#30363D] sticky top-0 z-50 shadow-sm dark:shadow-none transition-colors duration-200">
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">文</span>
+          <Link to="/" className="flex items-center space-x-4 group">
+            <div className="relative w-14 h-14">
+              <div className="absolute inset-0 bg-gradient-to-br from-rose-400 to-indigo-600 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500" />
+              <div className="relative w-14 h-14 bg-gradient-to-br from-rose-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-all duration-300">
+                <span className="text-white font-bold text-2xl" style={{ fontFamily: 'serif' }}>文</span>
+              </div>
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-rose-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent" style={{ fontFamily: 'serif' }}>
                 文心墨韵
               </h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">AI 艺术创作评测平台</p>
+              <p className="text-xs text-slate-600">AI 艺术创作评测平台</p>
             </div>
           </Link>
 
@@ -47,10 +51,10 @@ export default function Header() {
                   key={item.name}
                   to={item.href}
                   className={`
-                    flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all
+                    flex items-center space-x-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
                     ${isActive(item.href)
-                      ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      ? 'bg-gradient-to-r from-primary-100 to-primary-50 dark:from-primary-900/30 dark:to-primary-800/20 text-primary-600 dark:text-primary-300 shadow-md'
+                      : 'text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:shadow-sm'
                     }
                   `}
                 >
@@ -59,6 +63,11 @@ export default function Header() {
                 </Link>
               );
             })}
+          </div>
+
+          {/* Theme Toggle */}
+          <div className="hidden md:block">
+            <ThemeToggle />
           </div>
 
           {/* Mobile menu button */}
@@ -81,10 +90,10 @@ export default function Header() {
                   to={item.href}
                   onClick={() => setIsMenuOpen(false)}
                   className={`
-                    flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all
+                    flex items-center space-x-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
                     ${isActive(item.href)
-                      ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      ? 'bg-gradient-to-r from-primary-100 to-primary-50 dark:from-primary-900/30 dark:to-primary-800/20 text-primary-600 dark:text-primary-300 shadow-md'
+                      : 'text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:shadow-sm'
                     }
                   `}
                 >
@@ -93,6 +102,11 @@ export default function Header() {
                 </Link>
               );
             })}
+            
+            {/* Mobile Theme Toggle */}
+            <div className="px-4 py-2">
+              <ThemeToggle />
+            </div>
           </div>
         )}
       </nav>

@@ -82,7 +82,7 @@ export default function FilterPanel({ onFilterChange, organizations, tags }: Fil
       {/* Filter Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:shadow-md transition-all"
+        className="flex items-center gap-2 px-4 py-2 bg-neutral-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:shadow-md transition-all"
       >
         <Filter className="w-5 h-5" />
         <span>筛选</span>
@@ -105,7 +105,7 @@ export default function FilterPanel({ onFilterChange, organizations, tags }: Fil
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
       >
-        <div className="absolute top-full mt-2 left-0 right-0 md:left-auto md:right-auto md:w-96 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 p-6">
+        <div className="absolute top-full mt-2 left-0 right-0 md:left-auto md:right-auto md:w-96 bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
@@ -141,7 +141,7 @@ export default function FilterPanel({ onFilterChange, organizations, tags }: Fil
                 value={filters.search}
                 onChange={(e) => updateFilters({ search: e.target.value })}
                 placeholder="输入模型名称..."
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-neutral-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -250,7 +250,7 @@ export default function FilterPanel({ onFilterChange, organizations, tags }: Fil
             <select
               value={filters.dateRange}
               onChange={(e) => updateFilters({ dateRange: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-neutral-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary-500"
             >
               {dateOptions.map((option) => (
                 <option key={option.value} value={option.value}>

@@ -37,6 +37,8 @@ class EvaluationTaskUpdate(BaseModel):
 class EvaluationTaskInDB(EvaluationTaskBase):
     id: str
     status: TaskStatus
+    progress: Optional[float] = 0.0
+    current_stage: Optional[str] = None
     created_at: datetime
     started_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
@@ -48,6 +50,7 @@ class EvaluationTaskInDB(EvaluationTaskBase):
     evaluation_metrics: Optional[Dict[str, Any]] = None
     evaluation_notes: Optional[str] = None
     user_id: Optional[str] = None
+    guest_id: Optional[str] = None
     
     class Config:
         from_attributes = True

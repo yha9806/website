@@ -2,13 +2,22 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { LeaderboardEntry } from '../types/types';
 
+export interface Weight {
+  name: string;
+  key: string;
+  value: number;
+  color: string;
+}
+
 export interface FilterState {
   search: string;
   organizations: string[];
   categories: string[];
   scoreRange: [number, number];
-  dateRange: string;
+  winRateRange: [number, number];
+  dateRange: [Date | null, Date | null];
   tags: string[];
+  weights: Weight[];
 }
 
 interface FilterStore extends FilterState {
@@ -17,8 +26,10 @@ interface FilterStore extends FilterState {
   toggleOrganization: (org: string) => void;
   toggleCategory: (category: string) => void;
   setScoreRange: (range: [number, number]) => void;
-  setDateRange: (range: string) => void;
+  setWinRateRange: (range: [number, number]) => void;
+  setDateRange: (range: [Date | null, Date | null]) => void;
   toggleTag: (tag: string) => void;
+  setWeights: (weights: Weight[]) => void;
   clearFilters: () => void;
   setFilters: (filters: Partial<FilterState>) => void;
   
@@ -26,13 +37,24 @@ interface FilterStore extends FilterState {
   filterEntries: (entries: LeaderboardEntry[]) => LeaderboardEntry[];
 }
 
+const initialWeights: Weight[] = [
+  { name: '韵律', key: 'rhythm', value: 16.67, color: '#FF6B6B' },
+  { name: '构图', key: 'composition', value: 16.67, color: '#4ECDC4' },
+  { name: '叙事', key: 'narrative', value: 16.67, color: '#45B7D1' },
+  { name: '情感', key: 'emotion', value: 16.67, color: '#96CEB4' },
+  { name: '创新', key: 'creativity', value: 16.67, color: '#FECA57' },
+  { name: '文化', key: 'cultural', value: 16.67, color: '#9B59B6' }
+];
+
 const initialState: FilterState = {
   search: '',
   organizations: [],
   categories: [],
   scoreRange: [0, 100],
-  dateRange: 'all',
+  winRateRange: [0, 100],
+  dateRange: [null, null],
   tags: [],
+  weights: initialWeights,
 };
 
 export const useFilterStore = create<FilterStore>()(
@@ -56,6 +78,8 @@ export const useFilterStore = create<FilterStore>()(
       
       setScoreRange: (range) => set({ scoreRange: range }),
       
+      setWinRateRange: (range) => set({ winRateRange: range }),
+      
       setDateRange: (range) => set({ dateRange: range }),
       
       toggleTag: (tag) => set((state) => ({
@@ -63,6 +87,8 @@ export const useFilterStore = create<FilterStore>()(
           ? state.tags.filter(t => t !== tag)
           : [...state.tags, tag]
       })),
+      
+      setWeights: (weights) => set({ weights }),
       
       clearFilters: () => set(initialState),
       
@@ -99,25 +125,22 @@ export const useFilterStore = create<FilterStore>()(
             return false;
           }
           
+          // Win rate range filter
+          const winRate = entry.winRate || 0;
+          if (winRate < state.winRateRange[0] || winRate > state.winRateRange[1]) {
+            return false;
+          }
+          
           // Date range filter
-          if (state.dateRange !== 'all') {
+          if (state.dateRange[0] || state.dateRange[1]) {
             const releaseDate = new Date(entry.model.releaseDate);
-            const now = new Date();
-            const daysDiff = Math.floor((now.getTime() - releaseDate.getTime()) / (1000 * 60 * 60 * 24));
             
-            switch (state.dateRange) {
-              case '7d':
-                if (daysDiff > 7) return false;
-                break;
-              case '30d':
-                if (daysDiff > 30) return false;
-                break;
-              case '90d':
-                if (daysDiff > 90) return false;
-                break;
-              case '365d':
-                if (daysDiff > 365) return false;
-                break;
+            if (state.dateRange[0] && releaseDate < state.dateRange[0]) {
+              return false;
+            }
+            
+            if (state.dateRange[1] && releaseDate > state.dateRange[1]) {
+              return false;
             }
           }
           

@@ -53,7 +53,7 @@ export default function ModelDetailPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-8"
+        className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-8"
       >
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
           <div className="flex items-center space-x-4">
@@ -113,7 +113,7 @@ export default function ModelDetailPage() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8"
+          className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-8"
         >
           <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">
             能力雷达图
@@ -147,7 +147,7 @@ export default function ModelDetailPage() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8"
+          className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-8"
         >
           <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">
             详细评分
@@ -181,7 +181,7 @@ export default function ModelDetailPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8"
+          className="mt-8 bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-8"
         >
           <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">
             代表作品
@@ -237,7 +237,7 @@ export default function ModelDetailPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8"
+        className="mt-8 bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-8"
       >
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">
           相似模型

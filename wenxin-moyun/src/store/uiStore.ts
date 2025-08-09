@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
-export type ViewMode = 'card' | 'compact' | 'detailed';
+export type ViewMode = 'table' | 'card' | 'compact' | 'detailed';
 export type SortBy = 'rank' | 'score' | 'winRate' | 'battles' | 'recent';
 
 interface UIState {
@@ -26,7 +26,7 @@ interface UIState {
 }
 
 const initialState = {
-  viewMode: 'card' as ViewMode,
+  viewMode: 'table' as ViewMode,
   sortBy: 'rank' as SortBy,
   sortOrder: 'asc' as const,
   isSidebarOpen: false,

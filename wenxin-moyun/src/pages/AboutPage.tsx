@@ -68,7 +68,7 @@ export default function AboutPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-12"
+        className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-12"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
@@ -115,7 +115,7 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + index * 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-lg p-6 text-center hover:shadow-xl transition-shadow"
+                className="bg-neutral-50 dark:bg-gray-800 rounded-lg p-6 text-center hover:shadow-xl transition-shadow"
               >
                 <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/30 dark:to-secondary-900/30 rounded-full flex items-center justify-center">
                   <Icon className="w-8 h-8 text-primary-600 dark:text-primary-400" />
@@ -189,7 +189,7 @@ export default function AboutPage() {
             <div
               key={index}
               className={`
-                relative bg-white dark:bg-gray-800 rounded-lg p-6 
+                relative bg-neutral-50 dark:bg-gray-800 rounded-lg p-6 
                 ${phase.status === 'current' ? 'ring-2 ring-primary-500' : ''}
               `}
             >
@@ -239,10 +239,10 @@ export default function AboutPage() {
           无论您是 AI 研究者、艺术创作者还是技术爱好者，都欢迎加入文心墨韵社区
         </p>
         <div className="flex gap-4 justify-center">
-          <button className="px-6 py-3 bg-white text-primary-600 rounded-lg font-medium hover:shadow-lg transition-shadow">
+          <button className="px-6 py-3 bg-neutral-50 text-primary-600 rounded-lg font-medium hover:shadow-lg transition-shadow">
             提交模型
           </button>
-          <button className="px-6 py-3 bg-white/20 backdrop-blur-sm rounded-lg font-medium hover:bg-white/30 transition-colors">
+          <button className="px-6 py-3 bg-neutral-50/20 backdrop-blur-sm rounded-lg font-medium hover:bg-neutral-50/30 transition-colors">
             联系我们
           </button>
         </div>

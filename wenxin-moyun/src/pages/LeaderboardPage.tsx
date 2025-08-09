@@ -6,7 +6,8 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { categories, mockModels } from '../data/mockData';
 import { useLeaderboard } from '../hooks/useLeaderboard';
 import LeaderboardCard from '../components/leaderboard/LeaderboardCard';
-import FilterPanel from '../components/filters/FilterPanel';
+import LeaderboardTable from '../components/leaderboard/LeaderboardTable';
+import AdvancedFilterPanel from '../components/filters/AdvancedFilterPanel';
 import ViewModeToggle from '../components/leaderboard/ViewModeToggle';
 import { useUIStore } from '../store/uiStore';
 import { useFilterStore } from '../store/filterStore';
@@ -20,9 +21,21 @@ export default function LeaderboardPage() {
   const [listRef] = useAutoAnimate();
   
   const { viewMode } = useUIStore();
-  const { filterEntries, setFilters } = useFilterStore();
+  const { 
+    filterEntries, 
+    setFilters,
+    organizations: selectedOrgs,
+    tags: selectedTags,
+    categories: selectedCategories,
+    scoreRange,
+    winRateRange,
+    dateRange,
+    weights,
+    setWeights,
+    clearFilters
+  } = useFilterStore();
 
-  // Get unique organizations and tags for filter options
+  // Get unique values for filter options
   const organizations = useMemo(() => {
     const orgs = new Set<string>();
     mockModels.forEach(model => orgs.add(model.organization));
@@ -37,6 +50,10 @@ export default function LeaderboardPage() {
     return Array.from(allTags);
   }, []);
   
+  const categoryNames = useMemo(() => {
+    return categories.filter(cat => cat.id !== 'overall').map(cat => cat.name);
+  }, []);
+  
   // Apply filters
   const filteredData = useMemo(() => {
     return filterEntries(entries);
@@ -48,8 +65,16 @@ export default function LeaderboardPage() {
     }
   }, [error]);
 
-  const handleFilterChange = (filters: any) => {
-    setFilters(filters);
+  const handleFilterChange = (values: any) => {
+    setFilters({
+      organizations: values.organizations,
+      tags: values.tags,
+      categories: values.categories,
+      scoreRange: values.scoreRange,
+      winRateRange: values.winRateRange,
+      dateRange: values.dateRange,
+      weights: values.weights
+    });
   };
 
   return (
@@ -78,14 +103,27 @@ export default function LeaderboardPage() {
       {/* Controls Bar */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div className="flex items-center gap-3">
-          <FilterPanel 
-            onFilterChange={handleFilterChange}
-            organizations={organizations}
-            tags={tags}
+          <AdvancedFilterPanel 
+            config={{
+              organizations,
+              tags,
+              categories: categoryNames
+            }}
+            values={{
+              organizations: selectedOrgs,
+              tags: selectedTags,
+              categories: selectedCategories,
+              scoreRange,
+              winRateRange,
+              dateRange,
+              weights
+            }}
+            onChange={handleFilterChange}
+            onReset={clearFilters}
           />
           <ViewModeToggle />
         </div>
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-gray-500 dark:text-gray-400">
           显示 {filteredData.length} / {entries.length} 个模型
         </div>
       </div>
@@ -101,7 +139,7 @@ export default function LeaderboardPage() {
                 px-4 py-2 rounded-lg font-medium transition-all flex items-center space-x-2
                 ${selectedCategory === cat.id
                   ? 'bg-primary-600 text-white'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  : 'bg-neutral-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                 }
               `}
             >
@@ -129,7 +167,13 @@ export default function LeaderboardPage() {
       {/* Leaderboard Display */}
       {!loading && !error && (
         <div ref={listRef}>
-          {viewMode === 'card' || viewMode === 'detailed' ? (
+          {viewMode === 'table' ? (
+            <LeaderboardTable 
+              data={filteredData}
+              loading={loading}
+              onRowClick={(entry) => window.location.href = `/model/${entry.model.id}`}
+            />
+          ) : viewMode === 'card' || viewMode === 'detailed' ? (
             <div className={`
               grid gap-6
               ${viewMode === 'card' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 lg:grid-cols-2'}
@@ -175,19 +219,19 @@ export default function LeaderboardPage() {
 
       {/* Stats Summary */}
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 text-center">
+        <div className="bg-neutral-50 dark:bg-gray-800 rounded-lg p-6 text-center">
           <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">
             {filteredData.length}
           </div>
           <p className="text-gray-600 dark:text-gray-400 mt-2">参评模型</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 text-center">
+        <div className="bg-neutral-50 dark:bg-gray-800 rounded-lg p-6 text-center">
           <div className="text-3xl font-bold text-secondary-600 dark:text-secondary-400">
             {filteredData[0]?.score.toFixed(1) || 0}
           </div>
           <p className="text-gray-600 dark:text-gray-400 mt-2">最高分</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 text-center">
+        <div className="bg-neutral-50 dark:bg-gray-800 rounded-lg p-6 text-center">
           <div className="text-3xl font-bold text-green-600 dark:text-green-400">
             {(filteredData.reduce((acc, e) => acc + e.score, 0) / filteredData.length).toFixed(1)}
           </div>

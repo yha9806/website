@@ -43,7 +43,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: index * 0.03 }}
-        className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition-all"
+        className="flex items-center justify-between p-3 bg-neutral-50 dark:bg-gray-800 rounded-lg hover:shadow-md transition-all"
         onMouseEnter={() => onHover?.(entry)}
         onMouseLeave={() => onHover?.(null)}
       >
@@ -70,7 +70,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
       <motion.div
         whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
         className={`
-          bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden
+          bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden
           hover:shadow-2xl transition-all duration-300 cursor-pointer
           ${viewMode === 'detailed' ? 'p-6' : 'p-4'}
         `}
