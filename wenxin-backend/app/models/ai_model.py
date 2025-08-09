@@ -38,3 +38,7 @@ class AIModel(Base):
     # Additional metadata
     tags = Column(JSON, default=[])
     avatar_url = Column(String(500))
+    
+    # Relationships
+    from sqlalchemy.orm import relationship
+    evaluation_tasks = relationship("EvaluationTask", back_populates="model")

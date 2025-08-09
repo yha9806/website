@@ -43,7 +43,7 @@ export interface ModelListParams {
 
 class ModelsService {
   async getModels(params?: ModelListParams): Promise<AIModelResponse[]> {
-    const response = await apiClient.get<AIModelResponse[]>('/models', { params });
+    const response = await apiClient.get<AIModelResponse[]>('/models/', { params });
     return response.data;
   }
 
@@ -53,7 +53,7 @@ class ModelsService {
   }
 
   async createModel(data: Partial<AIModelResponse>): Promise<AIModelResponse> {
-    const response = await apiClient.post<AIModelResponse>('/models', data);
+    const response = await apiClient.post<AIModelResponse>('/models/', data);
     return response.data;
   }
 

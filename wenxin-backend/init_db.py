@@ -18,6 +18,7 @@ from app.core.security import get_password_hash
 from app.models import User, AIModel, EvaluationDimension
 from app.models.battle import Battle, BattleVote, BattleStatus, TaskType, Difficulty, VoteChoice
 from app.models.artwork import Artwork, ArtworkType
+from app.models.evaluation_task import EvaluationTask, TaskStatus
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime, timedelta
@@ -397,6 +398,85 @@ async def init_artworks(session: AsyncSession, models):
     await session.commit()
     print(f"[OK] Created {len(artworks_data)} sample artworks")
 
+async def init_evaluation_tasks(session: AsyncSession, models):
+    """Initialize sample evaluation tasks"""
+    tasks_data = [
+        {
+            "model_id": models[0].id,  # Qwen2-72B
+            "task_type": "poem",
+            "prompt": "创作一首描写秋天的五言绝句",
+            "parameters": {"style": "唐诗"},
+            "status": TaskStatus.COMPLETED,
+            "result": {
+                "title": "秋思",
+                "content": "秋风起叶落，雁字向南飞。\n独坐窗前望，霜华满地辉。"
+            },
+            "auto_score": 88.5,
+            "human_score": 92.0,
+            "final_score": 89.9,
+            "evaluation_metrics": {
+                "rhythm": 0.9,
+                "imagery": 0.85,
+                "emotion": 0.88,
+                "creativity": 0.86,
+                "cultural_relevance": 0.92
+            }
+        },
+        {
+            "model_id": models[1].id,  # Claude 3 Opus
+            "task_type": "story",
+            "prompt": "写一个关于时间旅行的300字短篇故事",
+            "parameters": {"max_length": 300},
+            "status": TaskStatus.COMPLETED,
+            "result": {
+                "title": "最后一秒",
+                "content": "当我按下时间机器的按钮时，世界突然静止了。街道上的行人定格在半空中，飞鸟悬停在云端...",
+                "word_count": 298
+            },
+            "auto_score": 91.2,
+            "final_score": 91.2,
+            "evaluation_metrics": {
+                "narrative_structure": 0.92,
+                "character_development": 0.88,
+                "plot_coherence": 0.91,
+                "creativity": 0.93,
+                "engagement": 0.90
+            }
+        },
+        {
+            "model_id": models[2].id,  # GPT-4 Vision
+            "task_type": "painting",
+            "prompt": "创作一幅赛博朋克风格的未来城市",
+            "parameters": {"style": "cyberpunk"},
+            "status": TaskStatus.RUNNING,
+            "started_at": datetime.utcnow()
+        },
+        {
+            "model_id": models[3].id,  # 文心一言 4.0
+            "task_type": "poem",
+            "prompt": "以'梅花'为题创作一首词",
+            "parameters": {"style": "宋词"},
+            "status": TaskStatus.PENDING
+        }
+    ]
+    
+    for task_data in tasks_data:
+        # Handle datetime fields
+        if task_data["status"] == TaskStatus.COMPLETED:
+            task_data["completed_at"] = datetime.utcnow() - timedelta(hours=random.randint(1, 48))
+            task_data["started_at"] = task_data["completed_at"] - timedelta(minutes=random.randint(1, 10))
+            task_data["created_at"] = task_data["started_at"] - timedelta(minutes=random.randint(1, 30))
+        elif "started_at" not in task_data and task_data["status"] == TaskStatus.RUNNING:
+            task_data["created_at"] = datetime.utcnow() - timedelta(minutes=random.randint(5, 60))
+        else:
+            task_data["created_at"] = datetime.utcnow() - timedelta(hours=random.randint(1, 24))
+        
+        task = EvaluationTask(**task_data)
+        session.add(task)
+    
+    await session.commit()
+    print(f"[OK] Created {len(tasks_data)} sample evaluation tasks")
+
 async def main():
     """Main initialization function"""
     print("[INFO] Initializing database...")
@@ -414,6 +494,7 @@ async def main():
         await init_admin_user(session)
         await init_battles(session, models)
         await init_artworks(session, models)
+        await init_evaluation_tasks(session, models)
     
     print("[DONE] Database initialization complete!")
 

@@ -1,9 +1,10 @@
 from datetime import timedelta
-from typing import Any
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import Any, Optional
+from fastapi import APIRouter, Depends, HTTPException, status, Form
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from pydantic import BaseModel
 
 from app.core.config import settings
 from app.core.database import get_db
@@ -14,6 +15,10 @@ from app.core.security import (
 )
 from app.models.user import User
 from app.schemas.user import User as UserSchema, UserCreate, Token
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
 
 router = APIRouter()
 
@@ -54,16 +59,20 @@ async def register(
 @router.post("/login", response_model=Token)
 async def login(
     db: AsyncSession = Depends(get_db),
-    form_data: OAuth2PasswordRequestForm = Depends()
+    form_data: OAuth2PasswordRequestForm = Depends(OAuth2PasswordRequestForm)
 ) -> Any:
     """OAuth2 compatible token login"""
+    # Get credentials from form
+    login_username = form_data.username
+    login_password = form_data.password
+    
     # Get user
     result = await db.execute(
-        select(User).where(User.username == form_data.username)
+        select(User).where(User.username == login_username)
     )
     user = result.scalar_one_or_none()
     
-    if not user or not verify_password(form_data.password, user.hashed_password):
+    if not user or not verify_password(login_password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
