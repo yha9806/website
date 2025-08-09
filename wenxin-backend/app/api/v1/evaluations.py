@@ -1,4 +1,4 @@
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Union
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update
@@ -6,7 +6,7 @@ from sqlalchemy.orm import selectinload
 from datetime import datetime
 
 from app.core.database import get_db
-from app.api.deps import get_current_user_optional
+from app.api.deps import get_current_user_optional, get_current_user_or_guest, is_guest_user
 from app.models.evaluation_task import EvaluationTask, TaskStatus
 from app.models.ai_model import AIModel
 from app.models.user import User
@@ -26,9 +26,16 @@ async def create_evaluation(
     task_in: EvaluationTaskCreate,
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
-    current_user: Optional[User] = Depends(get_current_user_optional)
+    current_user_or_guest: Union[User, Any] = Depends(get_current_user_or_guest)
 ) -> Any:
     """Create a new evaluation task"""
+    
+    # Check if guest user has reached daily limit
+    if is_guest_user(current_user_or_guest):
+        # In real implementation, you'd check Redis/cache for daily count
+        # For now, we'll allow guest users with a simple check
+        guest_session = current_user_or_guest
+        # TODO: Implement proper daily limit checking with Redis/database
     
     # Verify model exists
     result = await db.execute(
@@ -43,13 +50,22 @@ async def create_evaluation(
         )
     
     # Create evaluation task
+    user_id = None
+    guest_id = None
+    
+    if is_guest_user(current_user_or_guest):
+        guest_id = current_user_or_guest.guest_id
+    else:
+        user_id = current_user_or_guest.id if current_user_or_guest else None
+    
     task = EvaluationTask(
         model_id=task_in.model_id,
         task_type=task_in.task_type.value,
         prompt=task_in.prompt,
         parameters=task_in.parameters,
         status=TaskStatus.PENDING,
-        user_id=current_user.id if current_user else None
+        user_id=user_id,
+        guest_id=guest_id
     )
     
     db.add(task)
@@ -76,7 +92,7 @@ async def get_evaluations(
     model_id: Optional[str] = None,
     task_type: Optional[TaskType] = None,
     status: Optional[TaskStatus] = None,
-    current_user: Optional[User] = Depends(get_current_user_optional)
+    current_user_or_guest: Union[User, Any] = Depends(get_current_user_or_guest)
 ) -> Any:
     """Get list of evaluation tasks"""
     
@@ -91,8 +107,16 @@ async def get_evaluations(
         query = query.where(EvaluationTask.task_type == task_type.value)
     if status:
         query = query.where(EvaluationTask.status == status)
-    if current_user:
-        query = query.where(EvaluationTask.user_id == current_user.id)
+    
+    # Filter by user or guest
+    if is_guest_user(current_user_or_guest):
+        guest_session = current_user_or_guest
+        query = query.where(EvaluationTask.guest_id == guest_session.guest_id)
+    elif current_user_or_guest:
+        query = query.where(EvaluationTask.user_id == current_user_or_guest.id)
+    else:
+        # No filter for anonymous access - show all public tasks or handle as needed
+        pass
     
     query = query.order_by(EvaluationTask.created_at.desc())
     query = query.offset(skip).limit(limit)

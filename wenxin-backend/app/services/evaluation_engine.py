@@ -19,7 +19,7 @@ class EvaluationEngine:
         self.provider = MockProvider()  # Use mock provider for now
         
     async def execute_evaluation(self, task_id: str):
-        """Execute a single evaluation task"""
+        """Execute a single evaluation task with simulated progress stages"""
         try:
             # Get task
             result = await self.db.execute(
@@ -35,6 +35,22 @@ class EvaluationEngine:
             task.status = TaskStatus.RUNNING
             task.started_at = datetime.utcnow()
             await self.db.commit()
+            
+            # Add realistic delay to simulate processing time
+            stage_delays = {
+                "poem": [15, 45, 30, 20],      # analyzing, generating, refining, evaluating
+                "story": [20, 35, 60, 25],     # analyzing, structuring, writing, evaluating  
+                "painting": [18, 40, 80, 22],  # analyzing, composing, rendering, evaluating
+                "music": [25, 70, 50, 18]      # analyzing, composing, arranging, evaluating
+            }
+            
+            delays = stage_delays.get(task.task_type, [15, 45, 30, 20])
+            
+            # Simulate stages with delays (shortened for demo)
+            for i, delay in enumerate(delays):
+                # Use shorter delays for demo (divide by 3)
+                await asyncio.sleep(delay / 3)
+                print(f"Task {task_id} - Stage {i+1}/{len(delays)} completed")
             
             # Execute based on task type
             if task.task_type == "poem":

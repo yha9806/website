@@ -8,12 +8,17 @@ import AboutPage from './pages/AboutPage';
 import ComparePage from './pages/ComparePage';
 import DashboardPage from './pages/DashboardPage';
 import EvaluationsPage from './pages/EvaluationsPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
     <Router>
-      <Layout>
-        <Routes>
+      <Routes>
+        {/* Login page without Layout */}
+        <Route path="/login" element={<LoginPage />} />
+        
+        {/* Other pages with Layout */}
+        <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/leaderboard/:category" element={<LeaderboardPage />} />
@@ -23,8 +28,8 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/evaluations" element={<EvaluationsPage />} />
           <Route path="/about" element={<AboutPage />} />
-        </Routes>
-      </Layout>
+        </Route>
+      </Routes>
     </Router>
   );
 }

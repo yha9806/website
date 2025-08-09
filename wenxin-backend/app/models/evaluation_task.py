@@ -24,10 +24,12 @@ class EvaluationTask(Base):
         id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
         model_id = Column(String, ForeignKey("ai_models.id"))
         user_id = Column(String, ForeignKey("users.id"), nullable=True)
+        guest_id = Column(String, nullable=True)  # For guest users
     else:
         id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
         model_id = Column(UUID(as_uuid=True), ForeignKey("ai_models.id"))
         user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
+        guest_id = Column(String, nullable=True)  # For guest users
     
     # Task details
     task_type = Column(String, nullable=False)  # poem, story, painting, music
