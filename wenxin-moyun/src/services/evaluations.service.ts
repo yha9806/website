@@ -1,4 +1,4 @@
-import { apiClient } from './api';
+import apiClient from './api';
 import type { EvaluationTask } from '../types/types';
 
 interface EvaluationTaskResponse {
