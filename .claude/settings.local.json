@@ -21,7 +21,10 @@
       "Bash(docker-compose:*)",
       "Bash(docker compose:*)",
       "Bash(dir:*)",
-      "Bash(del nul)"
+      "Bash(del nul)",
+      "Bash(git pull:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
