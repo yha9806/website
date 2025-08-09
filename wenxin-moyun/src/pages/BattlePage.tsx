@@ -1,42 +1,104 @@
-import { useState } from 'react';
-import { Swords, RefreshCw, Users, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Swords, RefreshCw, Users, Clock, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { mockBattles } from '../data/mockData';
+import { useBattles } from '../hooks/useBattles';
+import type { Battle, VoteChoice } from '../types/types';
 
 export default function BattlePage() {
+  const { battles, loading, error, voteBattle, getRandomBattle } = useBattles();
+  const [currentBattle, setCurrentBattle] = useState<Battle | null>(null);
   const [currentBattleIndex, setCurrentBattleIndex] = useState(0);
   const [userVote, setUserVote] = useState<'A' | 'B' | null>(null);
   const [votedBattles, setVotedBattles] = useState<Set<string>>(new Set());
+  const [voteLoading, setVoteLoading] = useState(false);
 
-  const currentBattle = mockBattles[currentBattleIndex];
+  // Initialize with random battle or first battle
+  useEffect(() => {
+    const loadInitialBattle = async () => {
+      const randomBattle = await getRandomBattle();
+      if (randomBattle) {
+        setCurrentBattle(randomBattle);
+      } else if (battles.length > 0) {
+        setCurrentBattle(battles[0]);
+      }
+    };
+    loadInitialBattle();
+  }, [battles, getRandomBattle]);
 
-  const handleVote = (choice: 'A' | 'B') => {
-    if (votedBattles.has(currentBattle.id)) return;
+  const handleVote = async (choice: 'A' | 'B') => {
+    if (!currentBattle || votedBattles.has(currentBattle.id)) return;
     
-    setUserVote(choice);
-    setVotedBattles(new Set([...votedBattles, currentBattle.id]));
-    
-    // In a real app, this would send the vote to the backend
-    if (choice === 'A') {
-      currentBattle.votesA += 1;
-    } else {
-      currentBattle.votesB += 1;
+    setVoteLoading(true);
+    try {
+      const voteChoice: VoteChoice = choice === 'A' ? 'model_a' : 'model_b';
+      const result = await voteBattle(currentBattle.id, voteChoice);
+      
+      if (result.success) {
+        setUserVote(choice);
+        setVotedBattles(new Set([...votedBattles, currentBattle.id]));
+        
+        // Update local vote counts
+        setCurrentBattle({
+          ...currentBattle,
+          votesA: result.votes_a,
+          votesB: result.votes_b
+        });
+      } else {
+        console.error('Vote failed:', result.message);
+      }
+    } catch (error) {
+      console.error('Error voting:', error);
+    } finally {
+      setVoteLoading(false);
     }
   };
 
   const nextBattle = () => {
-    if (currentBattleIndex < mockBattles.length - 1) {
-      setCurrentBattleIndex(currentBattleIndex + 1);
-      setUserVote(null);
+    if (currentBattleIndex < battles.length - 1) {
+      const nextIndex = currentBattleIndex + 1;
+      setCurrentBattleIndex(nextIndex);
+      setCurrentBattle(battles[nextIndex]);
+      setUserVote(votedBattles.has(battles[nextIndex].id) ? 'A' : null); // Restore vote state if already voted
     }
   };
 
   const prevBattle = () => {
     if (currentBattleIndex > 0) {
-      setCurrentBattleIndex(currentBattleIndex - 1);
-      setUserVote(null);
+      const prevIndex = currentBattleIndex - 1;
+      setCurrentBattleIndex(prevIndex);
+      setCurrentBattle(battles[prevIndex]);
+      setUserVote(votedBattles.has(battles[prevIndex].id) ? 'A' : null); // Restore vote state if already voted
     }
   };
+
+  const refreshBattle = async () => {
+    const randomBattle = await getRandomBattle();
+    if (randomBattle) {
+      setCurrentBattle(randomBattle);
+      setUserVote(votedBattles.has(randomBattle.id) ? 'A' : null);
+      // Find index of this battle
+      const index = battles.findIndex(b => b.id === randomBattle.id);
+      if (index !== -1) {
+        setCurrentBattleIndex(index);
+      }
+    }
+  };
+
+  if (loading || !currentBattle) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-red-600 dark:text-red-400">
+        加载失败: {error}
+      </div>
+    );
+  }
 
   const totalVotes = currentBattle.votesA + currentBattle.votesB;
   const percentageA = totalVotes > 0 ? (currentBattle.votesA / totalVotes) * 100 : 50;
@@ -69,13 +131,13 @@ export default function BattlePage() {
         
         <div className="text-center">
           <span className="text-sm text-gray-600 dark:text-gray-400">
-            对决 {currentBattleIndex + 1} / {mockBattles.length}
+            对决 {currentBattleIndex + 1} / {battles.length}
           </span>
         </div>
         
         <button
           onClick={nextBattle}
-          disabled={currentBattleIndex === mockBattles.length - 1}
+          disabled={currentBattleIndex === battles.length - 1}
           className="p-2 rounded-lg bg-white dark:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transition-shadow"
         >
           <ChevronRight className="w-6 h-6" />
@@ -150,8 +212,15 @@ export default function BattlePage() {
 
               {/* Vote Button or Results */}
               {!hasVoted ? (
-                <button className="w-full py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
-                  投票给模型 A
+                <button 
+                  className="w-full py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  disabled={voteLoading}
+                >
+                  {voteLoading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    '投票给模型 A'
+                  )}
                 </button>
               ) : (
                 <div>
@@ -211,8 +280,15 @@ export default function BattlePage() {
 
               {/* Vote Button or Results */}
               {!hasVoted ? (
-                <button className="w-full py-3 bg-secondary-600 text-white rounded-lg hover:bg-secondary-700 transition-colors">
-                  投票给模型 B
+                <button 
+                  className="w-full py-3 bg-secondary-600 text-white rounded-lg hover:bg-secondary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  disabled={voteLoading}
+                >
+                  {voteLoading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    '投票给模型 B'
+                  )}
                 </button>
               ) : (
                 <div>
@@ -245,7 +321,10 @@ export default function BattlePage() {
               <Clock className="w-4 h-4 mr-2" />
               <span>状态: {currentBattle.status === 'active' ? '进行中' : '已结束'}</span>
             </div>
-            <button className="flex items-center hover:text-primary-600 dark:hover:text-primary-400">
+            <button 
+              onClick={refreshBattle}
+              className="flex items-center hover:text-primary-600 dark:hover:text-primary-400"
+            >
               <RefreshCw className="w-4 h-4 mr-2" />
               <span>刷新对决</span>
             </button>

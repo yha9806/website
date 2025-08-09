@@ -53,6 +53,8 @@ export interface BattleTask {
   difficulty: 'easy' | 'medium' | 'hard';
 }
 
+export type VoteChoice = 'model_a' | 'model_b';
+
 export interface LeaderboardEntry {
   rank: number;
   model: Model;
