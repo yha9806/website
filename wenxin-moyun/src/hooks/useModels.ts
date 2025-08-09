@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import modelsService, { AIModelResponse } from '../services/models.service';
+import modelsService from '../services/models.service';
 import type { Model } from '../types/types';
 
 export const useModels = (category?: string) => {

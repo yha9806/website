@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Swords, RefreshCw, Users, Clock, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useBattles } from '../hooks/useBattles';
-import type { Battle, VoteChoice } from '../types/types';
+import type { Battle } from '../types/types';
 
 export default function BattlePage() {
   const { battles, loading, error, voteBattle, getRandomBattle } = useBattles();
@@ -30,7 +30,7 @@ export default function BattlePage() {
     
     setVoteLoading(true);
     try {
-      const voteChoice: VoteChoice = choice === 'A' ? 'model_a' : 'model_b';
+      const voteChoice = choice === 'A' ? 'model_a' : 'model_b';
       const result = await voteBattle(currentBattle.id, voteChoice);
       
       if (result.success) {

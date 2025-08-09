@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import artworksService, { ArtworkResponse } from '../services/artworks.service';
+import artworksService from '../services/artworks.service';
 import type { Artwork } from '../types/types';
 
 export function useArtworks(
