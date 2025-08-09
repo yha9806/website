@@ -65,3 +65,46 @@ async def get_current_active_superuser(
             detail="Not enough permissions"
         )
     return current_user
+
+
+async def get_current_user_optional(
+    db: AsyncSession = Depends(get_db),
+    token: Optional[str] = Depends(oauth2_scheme)
+) -> Optional[User]:
+    """Get current user if authenticated, otherwise None"""
+    if not token:
+        return None
+    
+    try:
+        payload = jwt.decode(
+            token,
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM]
+        )
+        username: str = payload.get("sub")
+        if username is None:
+            return None
+        token_data = TokenData(username=username)
+    except JWTError:
+        return None
+    
+    result = await db.execute(
+        select(User).where(User.username == token_data.username)
+    )
+    user = result.scalar_one_or_none()
+    
+    if user and user.is_active:
+        return user
+    return None
+
+
+async def get_current_admin(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    """Get current admin user (alias for superuser)"""
+    if not current_user.is_superuser:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required"
+        )
+    return current_user

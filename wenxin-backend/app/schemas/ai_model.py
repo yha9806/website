@@ -54,6 +54,19 @@ class AIModel(AIModelBase):
         from_attributes = True
 
 
+class AIModelResponse(AIModelBase):
+    id: str
+    overall_score: float
+    metrics: ModelMetrics
+    is_active: bool
+    is_verified: bool
+    created_at: datetime
+    updated_at: Optional[datetime]
+    
+    class Config:
+        from_attributes = True
+
+
 class AIModelWithStats(AIModel):
     total_evaluations: int = 0
     total_battles: int = 0
