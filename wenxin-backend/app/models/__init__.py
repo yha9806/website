@@ -1,7 +1,10 @@
 from .user import User
 from .ai_model import AIModel
-from .evaluation import EvaluationTask, EvaluationDimension, EvaluationResult
+from .evaluation import EvaluationDimension, EvaluationResult
+from .evaluation_task import EvaluationTask
 from .work import Work
+from .battle import Battle, BattleVote
+from .artwork import Artwork
 
 __all__ = [
     "User",
@@ -9,5 +12,8 @@ __all__ = [
     "EvaluationTask",
     "EvaluationDimension",
     "EvaluationResult",
-    "Work"
+    "Work",
+    "Battle",
+    "BattleVote",
+    "Artwork"
 ]

@@ -1,71 +1,69 @@
 {
-  "test_time": "2025-08-09T13:41:54.097086",
+  "test_time": "2025-08-09T14:35:29.954167",
   "base_url": "http://localhost:8001/api/v1",
   "summary": {
     "total": 10,
-    "success": 7,
-    "failed": 3
+    "success": 8,
+    "failed": 2
   },
   "results": [
     {
       "name": "获取模型列表",
       "status": "[OK] 成功",
       "code": 200,
-      "time": 2.052817
+      "time": 2.072856
     },
     {
       "name": "获取单个模型详情",
-      "status": "[FAIL] 失败",
-      "code": 404,
-      "time": 2.053859
+      "status": "[OK] 成功",
+      "code": 200,
+      "time": 2.058846
     },
     {
       "name": "获取对战列表",
       "status": "[OK] 成功",
       "code": 200,
-      "time": 2.060253
+      "time": 2.066442
     },
     {
       "name": "获取随机对战",
       "status": "[OK] 成功",
       "code": 200,
-      "time": 2.052413
+      "time": 2.034029
     },
     {
       "name": "获取单个对战详情",
       "status": "[OK] 成功",
       "code": 200,
-      "time": 2.049166
+      "time": 2.030164
     },
     {
       "name": "获取作品列表",
       "status": "[OK] 成功",
       "code": 200,
-      "time": 2.050449
+      "time": 2.050771
     },
     {
       "name": "获取诗歌作品",
       "status": "[OK] 成功",
       "code": 200,
-      "time": 2.050967
+      "time": 2.03491
     },
     {
       "name": "获取单个作品详情",
       "status": "[OK] 成功",
       "code": 200,
-      "time": 2.0488
+      "time": 2.055934
     },
     {
       "name": "测试登录（错误凭证）",
-      "status": "[FAIL] 失败",
-      "code": 422,
-      "time": 2.035718
+      "status": "[ERROR] 错误",
+      "error": "requests.api.request() got multiple values for keyword argument 'headers'"
     },
     {
       "name": "管理员登录",
-      "status": "[FAIL] 失败",
-      "code": 422,
-      "time": 2.03451
+      "status": "[ERROR] 错误",
+      "error": "requests.api.request() got multiple values for keyword argument 'headers'"
     }
   ]
 }

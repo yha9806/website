@@ -65,3 +65,36 @@ export interface LeaderboardEntry {
 }
 
 export type LeaderboardCategory = 'overall' | 'text' | 'visual' | 'multimodal' | 'poetry' | 'painting' | 'narrative';
+
+// Evaluation related types
+export interface EvaluationTask {
+  id: string;
+  modelId: string;
+  modelName?: string;
+  taskType: 'poem' | 'story' | 'painting' | 'music';
+  prompt: string;
+  parameters?: Record<string, any>;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  result?: EvaluationResult;
+  createdAt: string;
+  updatedAt: string;
+  userId?: string;
+  humanScore?: number;
+  humanFeedback?: string;
+}
+
+export interface EvaluationResult {
+  content?: string;
+  imageUrl?: string;
+  audioUrl?: string;
+  score: number;
+  metrics: {
+    creativity: number;
+    quality: number;
+    relevance: number;
+    cultural: number;
+    technical?: number;
+  };
+  analysis?: string;
+  processingTime?: number;
+}

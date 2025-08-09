@@ -7,8 +7,8 @@ from app.core.database import Base
 from app.core.config import settings
 
 
-class EvaluationTask(Base):
-    __tablename__ = "evaluation_tasks"
+class OldEvaluationTask(Base):
+    __tablename__ = "old_evaluation_tasks"
     
     # Use String for SQLite, UUID for PostgreSQL
     if settings.DATABASE_URL.startswith("sqlite"):
@@ -37,8 +37,8 @@ class EvaluationTask(Base):
     error_message = Column(Text)
     
     # Relationships
-    model = relationship("AIModel", backref="evaluation_tasks")
-    user = relationship("User", backref="evaluation_tasks")
+    model = relationship("AIModel", backref="old_evaluation_tasks")
+    user = relationship("User", backref="old_evaluation_tasks")
 
 
 class EvaluationDimension(Base):

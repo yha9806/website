@@ -26,7 +26,10 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(git merge:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(start.bat)",
+      "Bash(cmd:*)"
     ],
     "deny": []
   }

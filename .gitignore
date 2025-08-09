@@ -90,3 +90,15 @@ bin/
 include/
 Scripts/
 pyvenv.cfg
+
+# Windows reserved names (cannot be used as files)
+nul
+con
+prn
+aux
+com[1-9]
+lpt[1-9]
+**/nul
+**/con
+**/prn
+**/aux
