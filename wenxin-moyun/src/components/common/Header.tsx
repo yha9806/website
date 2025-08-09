@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Trophy, Swords, Info, Home, BarChart3, GitCompare } from 'lucide-react';
+import { Menu, X, Trophy, Swords, Info, Home, BarChart3, GitCompare, FlaskConical } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Header() {
@@ -11,6 +11,7 @@ export default function Header() {
     { name: '排行榜', href: '/leaderboard', icon: Trophy },
     { name: '模型对决', href: '/battle', icon: Swords },
     { name: '模型对比', href: '/compare', icon: GitCompare },
+    { name: '评测任务', href: '/evaluations', icon: FlaskConical },
     { name: '数据看板', href: '/dashboard', icon: BarChart3 },
     { name: '关于', href: '/about', icon: Info },
   ];

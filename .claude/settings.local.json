@@ -27,9 +27,13 @@
       "Bash(git push:*)",
       "Bash(git merge:*)",
       "Bash(npm run build:*)",
+<<<<<<< HEAD
       "WebFetch(domain:localhost)",
       "Bash(start.bat)",
       "Bash(cmd:*)"
+=======
+      "WebFetch(domain:localhost)"
+>>>>>>> 0dbd5aa32b734b77654a9795d78754220569be77
     ],
     "deny": []
   }

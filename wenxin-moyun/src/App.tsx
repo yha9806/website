@@ -7,6 +7,7 @@ import BattlePage from './pages/BattlePage';
 import AboutPage from './pages/AboutPage';
 import ComparePage from './pages/ComparePage';
 import DashboardPage from './pages/DashboardPage';
+import EvaluationsPage from './pages/EvaluationsPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/battle" element={<BattlePage />} />
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/evaluations" element={<EvaluationsPage />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
       </Layout>
