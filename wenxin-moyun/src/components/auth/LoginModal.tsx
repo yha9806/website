@@ -14,66 +14,66 @@ const triggerConfigs = {
   limit_reached: {
     icon: AlertCircle,
     iconColor: 'text-red-500',
-    title: '您已达到今日免费评测限额',
-    subtitle: '登录后可无限制使用所有功能',
+    title: 'Daily Free Evaluation Limit Reached',
+    subtitle: 'Sign in for unlimited access to all features',
     urgency: 'high',
     benefits: [
-      '解锁无限评测次数',
-      '保存评测历史记录',
-      '获得AI专业评分建议',
-      '参与模型投票对战'
+      'Unlock unlimited evaluations',
+      'Save evaluation history',
+      'Get AI professional scoring advice',
+      'Participate in model voting battles'
     ]
   },
   save_progress: {
     icon: Save,
     iconColor: 'text-blue-500',
-    title: '保存您的评测进度',
-    subtitle: '创建账号，永久保存您的创作成果',
+    title: 'Save Your Evaluation Progress',
+    subtitle: 'Create an account to permanently save your creations',
     urgency: 'medium',
     benefits: [
-      '云端同步评测记录',
-      '跨设备访问历史',
-      '建立个人作品集',
-      '获得个性化推荐'
+      'Cloud sync evaluation records',
+      'Cross-device access history',
+      'Build personal portfolio',
+      'Get personalized recommendations'
     ]
   },
   extended_use: {
     icon: Clock,
     iconColor: 'text-green-500',
-    title: '您已体验10分钟了',
-    subtitle: '注册账号，解锁完整功能体验',
+    title: "You've Experienced 10 Minutes",
+    subtitle: 'Register to unlock full feature experience',
     urgency: 'low',
     benefits: [
-      '专属用户仪表盘',
-      '高级筛选和搜索',
-      '批量评测功能',
-      '导出评测报告'
+      'Exclusive user dashboard',
+      'Advanced filtering and search',
+      'Batch evaluation function',
+      'Export evaluation reports'
     ]
   },
   quality_feedback: {
     icon: Star,
     iconColor: 'text-yellow-500',
-    title: '想要更专业的评测反馈？',
-    subtitle: '登录后获得AI深度分析报告',
+    title: 'Want More Professional Evaluation Feedback?',
+    subtitle: 'Sign in for AI deep analysis reports',
     urgency: 'low',
     benefits: [
-      'AI评分详细解析',
-      '作品改进建议',
-      '同类作品对比',
-      '趋势分析图表'
+      'AI scoring detailed analysis',
+      'Work improvement suggestions',
+      'Similar works comparison',
+      'Trend analysis charts'
     ]
   },
   auth_required: {
     icon: AlertCircle,
     iconColor: 'text-orange-500',
-    title: '此功能需要登录',
-    subtitle: '登录后即可使用全部功能',
+    title: 'This Feature Requires Login',
+    subtitle: 'Sign in to use all features',
     urgency: 'high',
     benefits: [
-      '访问所有功能',
-      '个性化体验',
-      '数据永久保存',
-      '专属用户权益'
+      'Access all features',
+      'Personalized experience',
+      'Permanent data storage',
+      'Exclusive user benefits'
     ]
   }
 };
@@ -102,7 +102,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
       // Refresh current page to update UI
       window.location.reload();
     } catch (err) {
-      setError('登录失败，请检查用户名和密码');
+      setError('Login failed, please check username and password');
     } finally {
       setIsLoading(false);
     }
@@ -118,7 +118,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
       onClose();
       window.location.reload();
     } catch (err) {
-      setError('演示账号登录失败');
+      setError('Demo account login failed');
     } finally {
       setIsLoading(false);
     }
@@ -165,7 +165,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
 
             {/* Benefits */}
             <div className="p-6 bg-gray-50">
-              <h3 className="text-sm font-semibold text-gray-600 mb-3">登录后您将获得：</h3>
+              <h3 className="text-sm font-semibold text-gray-600 mb-3">After login you will get:</h3>
               <div className="grid grid-cols-2 gap-2">
                 {config.benefits.map((benefit, index) => (
                   <div key={index} className="flex items-center gap-2">
@@ -187,28 +187,28 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    用户名
+                    Username
                   </label>
                   <input
                     type="text"
                     value={formData.username}
                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                    placeholder="请输入用户名"
+                    placeholder="Enter username"
                     required
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    密码
+                    Password
                   </label>
                   <input
                     type="password"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                    placeholder="请输入密码"
+                    placeholder="Enter password"
                     required
                   />
                 </div>
@@ -220,7 +220,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
                   disabled={isLoading}
                   className="w-full py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium hover:shadow-lg transition-all disabled:opacity-50"
                 >
-                  {isLoading ? '登录中...' : '立即登录'}
+                  {isLoading ? 'Signing in...' : 'Sign In Now'}
                 </button>
 
                 <button
@@ -230,15 +230,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
                   className="w-full py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
                 >
                   <Gift className="w-4 h-4 inline mr-2" />
-                  使用演示账号
+                  Use Demo Account
                 </button>
               </div>
 
               <div className="mt-4 text-center">
                 <span className="text-sm text-gray-600">
-                  还没有账号？
+                  Don't have an account?
                   <a href="/register" className="text-primary hover:underline ml-1">
-                    立即注册
+                    Sign Up Now
                   </a>
                 </span>
               </div>

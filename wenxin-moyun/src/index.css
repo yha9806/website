@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* iOS San Francisco inspired font stack */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&display=swap');
 @import './styles/browser-compat.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @layer base {
   body {
-    @apply antialiased transition-colors duration-200;
-    @apply bg-neutral-50 dark:bg-[#0D1117];
+    @apply antialiased transition-colors duration-300;
+    /* 移除背景色，由 Layout 组件控制 */
     @apply text-gray-900 dark:text-[#F0F6FC];
   }
   
@@ -32,83 +32,128 @@
   }
 }
 
-@layer components {
-  /* 字体排版系统 Typography System */
-  .text-h1 {
-    @apply text-[32px] leading-[1.2] font-bold text-neutral-900;
-  }
-  
-  .text-h2 {
-    @apply text-[24px] leading-[1.3] font-bold text-neutral-900;
-  }
-  
-  .text-h3 {
-    @apply text-[18px] leading-[1.4] font-semibold text-neutral-900;
-  }
-  
+/* iOS Typography System - San Francisco inspired */
+.text-h1 {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Roboto', 'Inter', sans-serif;
+  font-size: 34px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  color: #1D1D1F;
+}
+
+.dark .text-h1 {
+  color: #F5F5F7;
+}
+
+.text-h2 {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Roboto', 'Inter', sans-serif;
+  font-size: 28px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: #1D1D1F;
+}
+
+.dark .text-h2 {
+  color: #F5F5F7;
+}
+
+.text-h3 {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Roboto', 'Inter', sans-serif;
+  font-size: 22px;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: #1D1D1F;
+}
+
+.dark .text-h3 {
+  color: #F5F5F7;
+}
+
+.text-body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Roboto', 'Inter', sans-serif;
+  font-size: 17px;
+  line-height: 1.47;
+  font-weight: 400;
+  color: #86868B;
+}
+
+.dark .text-body {
+  color: #98989D;
+}
+
+@media (max-width: 768px) {
   .text-body {
-    @apply text-[14px] md:text-[16px] leading-[1.5] text-neutral-700;
-  }
-  
-  .text-caption {
-    @apply text-[12px] leading-[1.4] text-neutral-600;
-  }
-  
-  /* 按钮系统 Button System */
-  .btn {
-    @apply px-4 py-2 rounded-[8px] font-medium transition-all duration-200 inline-flex items-center justify-center;
-  }
-  
-  .btn-primary {
-    @apply btn bg-primary-500 text-white hover:bg-primary-600 active:scale-[0.96];
-  }
-  
-  .btn-secondary {
-    @apply btn bg-transparent border-2 border-primary-500 text-primary-500 hover:bg-primary-50 active:scale-[0.96];
-  }
-  
-  .btn-accent {
-    @apply btn bg-accent-500 text-white hover:bg-accent-600 active:scale-[0.96];
-  }
-  
-  .btn-disabled {
-    @apply btn bg-neutral-400 text-neutral-200 cursor-not-allowed opacity-60;
-  }
-  
-  /* 卡片系统 Card System - 适配深色主题 */
-  .card {
-    @apply bg-neutral-50 dark:bg-[#161B22] rounded-xl p-6;
-    @apply border border-gray-200 dark:border-[#30363D];
-    @apply shadow-sm dark:shadow-none;
-  }
-  
-  .card-hover {
-    @apply card transition-all duration-200;
-    @apply hover:bg-gray-50 dark:hover:bg-[#1C2128];
-    @apply hover:border-gray-300 dark:hover:border-[#48545F];
-  }
-  
-  /* 进度条系统 Progress Bar System */
-  .progress-bar {
-    @apply h-2 bg-neutral-200 rounded-full overflow-hidden;
-  }
-  
-  .progress-fill {
-    @apply h-full rounded-full transition-all duration-[400ms] ease-in-out;
-    background: linear-gradient(90deg, #0052CC, #36B37E);
-  }
-  
-  /* 数据高亮动效 Data Highlight Animation */
-  .highlight-flash {
-    animation: highlightFlash 0.6s ease-out;
+    font-size: 16px;
   }
 }
 
-/* 专业动画效果 - 移除水墨动画 */
-@keyframes shimmer {
-  0% { background-position: -1000px 0; }
-  100% { background-position: 1000px 0; }
+.text-caption {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Roboto', 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.38;
+  font-weight: 400;
+  color: #86868B;
 }
+
+.dark .text-caption {
+  color: #98989D;
+}
+
+/* iOS Large Title */
+.text-large-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Roboto', 'Inter', sans-serif;
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  color: #1D1D1F;
+}
+
+.dark .text-large-title {
+  color: #F5F5F7;
+}
+
+/* iOS Footnote */
+.text-footnote {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Roboto', 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.38;
+  font-weight: 400;
+  color: #8E8E93;
+}
+
+.dark .text-footnote {
+  color: #8E8E93;
+}
+
+/* Legacy button classes removed - Use IOSButton component instead */
+
+/* Legacy card classes removed - Use IOSCard component instead */
+
+/* 进度条系统 Progress Bar System */
+.progress-bar {
+  height: 0.5rem;
+  background-color: rgb(235 236 240);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: all 400ms ease-in-out;
+  background: linear-gradient(90deg, #0052CC, #36B37E);
+}
+
+/* 数据高亮动效 Data Highlight Animation */
+.highlight-flash {
+  animation: highlightFlash 0.6s ease-out;
+}
+
+/* 专业动画效果 - 移除水墨动画 */
 
 /* Loading 骨架屏效果 */
 .skeleton {
@@ -159,16 +204,113 @@
   .element-spacing {
     @apply space-y-4;
   }
+  
+  /* iOS 26 Liquid Glass System - Enhanced */
+  .ios-glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(200%) blur(30px);
+    -webkit-backdrop-filter: saturate(200%) blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.08),
+      inset 0 1px 1px rgba(255, 255, 255, 0.5),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+  }
+  
+  .dark .ios-glass {
+    background: rgba(28, 28, 30, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 1px rgba(255, 255, 255, 0.1),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+  }
+  
+  .ios-surface {
+    background: rgba(242, 242, 247, 0.7);
+    backdrop-filter: saturate(180%) blur(25px);
+    -webkit-backdrop-filter: saturate(180%) blur(25px);
+  }
+  
+  .dark .ios-surface {
+    background: rgba(28, 28, 30, 0.7);
+  }
+  
+  /* Liquid Glass Background - Primary */
+  .liquid-glass-bg {
+    position: relative;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.7) 40%,
+      rgba(242, 242, 247, 0.8) 100%
+    );
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+  }
+  
+  .dark .liquid-glass-bg {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(28, 28, 30, 0.9) 40%,
+      rgba(44, 44, 46, 0.85) 100%
+    );
+  }
+  
+  /* Liquid Glass Container - Cards and Panels */
+  .liquid-glass-container {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 
+      0 16px 48px rgba(0, 0, 0, 0.12),
+      inset 0 2px 2px rgba(255, 255, 255, 0.3);
+  }
+  
+  .dark .liquid-glass-container {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 
+      0 16px 48px rgba(0, 0, 0, 0.4),
+      inset 0 2px 2px rgba(255, 255, 255, 0.08);
+  }
+  
+  /* Liquid Glass Hero Section */
+  .liquid-glass-hero {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(242, 242, 247, 0.85) 100%
+    );
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+      0 24px 64px rgba(0, 0, 0, 0.08),
+      0 8px 16px rgba(0, 0, 0, 0.04),
+      inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  }
+  
+  .dark .liquid-glass-hero {
+    background: linear-gradient(
+      135deg,
+      rgba(28, 28, 30, 0.92) 0%,
+      rgba(44, 44, 46, 0.85) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+      0 24px 64px rgba(0, 0, 0, 0.5),
+      0 8px 16px rgba(0, 0, 0, 0.3),
+      inset 0 2px 4px rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Legacy Chinese button styles removed - Use IOSButton component instead */
+  
+  /* Legacy Chinese card styles removed - Use IOSCard component instead */
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
 
 @keyframes glow {
   0%, 100% {
@@ -202,4 +344,83 @@
 
 .animate-shimmer {
   animation: shimmer 2s infinite;
+}
+
+/* Legacy Chinese animations removed */
+
+/* Theme transition animation */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition: background-color 300ms ease-in-out, 
+              color 300ms ease-in-out,
+              border-color 300ms ease-in-out,
+              fill 300ms ease-in-out,
+              stroke 300ms ease-in-out !important;
+}
+
+/* iOS Emoji System Styles */
+.emoji-nav {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.emoji-header {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.emoji-card {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.emoji-large {
+  font-size: 32px;
+  line-height: 1;
+}
+
+/* iOS-style emoji hover effects */
+.emoji-hover {
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: inline-block;
+}
+
+.emoji-hover:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* iOS-style emoji tap feedback */
+.emoji-tap:active {
+  transform: scale(0.95);
+  transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Emoji bounce animation for special occasions */
+@keyframes emojiPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.emoji-pulse {
+  animation: emojiPulse 2s ease-in-out infinite;
+}
+
+/* Emoji float animation */
+@keyframes emojiFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.emoji-float {
+  animation: emojiFloat 3s ease-in-out infinite;
 }

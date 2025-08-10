@@ -72,20 +72,20 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
   const getTaskTypeName = () => {
     switch (evaluation.taskType) {
       case 'poem':
-        return '诗歌创作';
+        return 'Poetry Creation';
       case 'painting':
-        return '绘画创作';
+        return 'Painting Creation';
       case 'story':
-        return '故事创作';
+        return 'Story Creation';
       case 'music':
-        return '音乐创作';
+        return 'Music Creation';
       default:
-        return '未知类型';
+        return 'Unknown Type';
     }
   };
 
   const handleDelete = async () => {
-    if (window.confirm('确定要删除这个评测任务吗？')) {
+    if (window.confirm('Are you sure you want to delete this evaluation task?')) {
       setIsDeleting(true);
       try {
         await onDelete(evaluation.id);
@@ -138,9 +138,9 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
         </div>
 
         {evaluation.result && (
-          <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+          <div className="mb-4 p-3 ios-glass rounded-lg">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-600">AI评分</span>
+              <span className="text-sm font-medium text-gray-600">AI Score</span>
               <span className="text-xl font-bold gradient-text">
                 {evaluation.result.score}/100
               </span>
@@ -148,7 +148,7 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
             
             {evaluation.humanScore && (
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-600">人工评分</span>
+                <span className="text-sm font-medium text-gray-600">Human Score</span>
                 <span className="text-xl font-bold text-purple-600">
                   {evaluation.humanScore}/100
                 </span>
@@ -158,13 +158,13 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
         )}
 
         <div className="flex items-center justify-between text-sm text-gray-500">
-          <span>{new Date(evaluation.createdAt).toLocaleString('zh-CN')}</span>
+          <span>{new Date(evaluation.createdAt).toLocaleString()}</span>
           
           <div className="flex gap-2">
             <button
               onClick={() => setShowDetail(true)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              title="查看详情"
+              className="p-2 hover:bg-gray-100/50 rounded-lg transition-colors backdrop-blur-sm"
+              title="View Details"
             >
               <Eye className="w-4 h-4" />
             </button>
@@ -172,8 +172,8 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
             {evaluation.status === 'completed' && (
               <button
                 onClick={() => setShowRating(true)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                title="人工评分"
+                className="p-2 hover:bg-gray-100/50 rounded-lg transition-colors backdrop-blur-sm"
+                title="Human Rating"
               >
                 <Star className="w-4 h-4" />
               </button>
@@ -183,7 +183,7 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
               onClick={handleDelete}
               disabled={isDeleting}
               className="p-2 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors"
-              title="删除"
+              title="Delete"
             >
               <Trash2 className="w-4 h-4" />
             </button>

@@ -43,7 +43,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: index * 0.03 }}
-        className="flex items-center justify-between p-3 bg-neutral-50 dark:bg-gray-800 rounded-lg hover:shadow-md transition-all"
+        className="flex items-center justify-between p-3 ios-glass liquid-glass-container rounded-lg hover:shadow-md transition-all"
         onMouseEnter={() => onHover?.(entry)}
         onMouseLeave={() => onHover?.(null)}
       >
@@ -70,7 +70,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
       <motion.div
         whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
         className={`
-          bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden
+          ios-glass liquid-glass-container rounded-xl shadow-lg overflow-hidden
           hover:shadow-2xl transition-all duration-300 cursor-pointer
           ${viewMode === 'detailed' ? 'p-6' : 'p-4'}
         `}
@@ -128,33 +128,33 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
 
         {/* Score Display */}
         <div className="grid grid-cols-3 gap-3 mb-4">
-          <div className="text-center p-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
+          <div className="text-center p-3 ios-glass rounded-lg">
             <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
               {entry.score.toFixed(1)}
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1">
               <Star className="w-3 h-3" />
-              综合评分
+              Overall Score
             </div>
           </div>
           
-          <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+          <div className="text-center p-3 ios-glass rounded-lg">
             <div className="text-2xl font-bold text-green-600 dark:text-green-400">
               {entry.winRate.toFixed(0)}%
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1">
               <Zap className="w-3 h-3" />
-              胜率
+              Win Rate
             </div>
           </div>
           
-          <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+          <div className="text-center p-3 ios-glass rounded-lg">
             <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
               {entry.battles}
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1">
               <Users className="w-3 h-3" />
-              对战数
+              Battles
             </div>
           </div>
         </div>
@@ -162,7 +162,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
         {/* Win Rate Progress Bar */}
         <div className="mb-4">
           <div className="flex justify-between text-xs text-gray-500 mb-1">
-            <span>胜率分布</span>
+            <span>Win Rate Distribution</span>
             <span>{entry.winRate.toFixed(1)}%</span>
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
@@ -191,9 +191,9 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
         {viewMode === 'detailed' && (
           <div className="grid grid-cols-3 gap-2 mb-4 pt-4 border-t border-gray-200 dark:border-gray-700">
             {Object.entries({
-              '韵律': entry.model.metrics.rhythm,
-              '构图': entry.model.metrics.composition,
-              '叙事': entry.model.metrics.narrative,
+              'Rhythm': entry.model.metrics.rhythm,
+              'Composition': entry.model.metrics.composition,
+              'Narrative': entry.model.metrics.narrative,
             }).map(([key, value]) => (
               <div key={key} className="text-center">
                 <div className="text-xs text-gray-500 dark:text-gray-400">{key}</div>
@@ -210,7 +210,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
           to={`/model/${entry.model.id}`}
           className="flex items-center justify-center gap-2 w-full py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all duration-200 transform hover:scale-[1.02]"
         >
-          <span className="text-sm font-medium">查看详情</span>
+          <span className="text-sm font-medium">View Details</span>
           <ChevronRight className="w-4 h-4" />
         </Link>
       </motion.div>

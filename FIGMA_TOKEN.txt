@@ -1,0 +1,14 @@
+Figma Personal Access Token
+生成时间: 2025-08-11
+Token名称: Claude MCP Access
+权限: File content (Read-only)
+
+Token:
+figd_eoWZ5lMY1TUz0w_KVQdJbCz_RkLQpnD84Md5If6i
+
+注意：请妥善保管此Token，不要分享给他人。
+过期时间：30天后（2025年9月10日）
+
+使用方法：
+1. 在MCP配置文件中使用此Token
+2. 配置示例见 FIGMA_MCP_CONFIG_EXAMPLE.json

@@ -1,12 +1,223 @@
 /**
- * 性能优化工具集
- * 提供代码分割、懒加载、缓存等优化功能
+ * Performance Optimization Toolkit
+ * Provides code splitting, lazy loading, caching and other optimization features
  */
 
-import { lazy, Suspense, ComponentType } from 'react';
+import { lazy, Suspense, type ComponentType, useEffect, useRef } from 'react';
+
+// Performance level types
+export type PerformanceLevel = 'high' | 'medium' | 'low';
+
+// Performance configuration interface
+export interface PerformanceConfig {
+  emojiSizes: string[];
+  animationComplexity: 'full' | 'medium' | 'simple';
+  durations: number[];
+  enableRotation: boolean;
+  enableBlur: boolean;
+  opacity: number;
+  darkOpacity: number;
+}
+
+// Detect device performance capabilities
+export function detectDevicePerformance(): PerformanceLevel {
+  // Check hardware concurrency (CPU cores)
+  const cores = navigator.hardwareConcurrency || 2;
+  
+  // Check device memory if available (Chrome only)
+  // @ts-ignore - navigator.deviceMemory is not in TypeScript types yet
+  const memory = navigator.deviceMemory || 4;
+  
+  // Check pixel ratio (high DPI screens need more resources)
+  const pixelRatio = window.devicePixelRatio || 1;
+  
+  // Check if mobile device
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+  // Check max touch points (mobile/tablet indicator)
+  const touchPoints = navigator.maxTouchPoints || 0;
+  
+  // Calculate performance score
+  let score = 0;
+  
+  // CPU score (0-3 points)
+  if (cores >= 8) score += 3;
+  else if (cores >= 4) score += 2;
+  else if (cores >= 2) score += 1;
+  
+  // Memory score (0-3 points)
+  if (memory >= 8) score += 3;
+  else if (memory >= 4) score += 2;
+  else if (memory >= 2) score += 1;
+  
+  // Screen score (0-2 points)
+  if (pixelRatio <= 1.5) score += 2;
+  else if (pixelRatio <= 2) score += 1;
+  
+  // Device type penalty
+  if (isMobile || touchPoints > 0) score -= 2;
+  
+  // Determine performance level
+  if (score >= 6) return 'high';
+  if (score >= 3) return 'medium';
+  return 'low';
+}
+
+// Get performance configuration based on level
+export function getPerformanceConfig(level: PerformanceLevel): PerformanceConfig {
+  switch (level) {
+    case 'high':
+      return {
+        emojiSizes: ['text-[500px] md:text-[700px]', 'text-[400px] md:text-[600px]', 'text-[350px] md:text-[500px]'],
+        animationComplexity: 'full',
+        durations: [25, 30, 35],
+        enableRotation: true,
+        enableBlur: true,
+        opacity: 0.4,
+        darkOpacity: 0.3
+      };
+    
+    case 'medium':
+      return {
+        emojiSizes: ['text-[300px] md:text-[400px]', 'text-[250px] md:text-[350px]', 'text-[200px] md:text-[300px]'],
+        animationComplexity: 'medium',
+        durations: [20, 25, 30],
+        enableRotation: true,
+        enableBlur: false,
+        opacity: 0.35,
+        darkOpacity: 0.25
+      };
+    
+    case 'low':
+      return {
+        emojiSizes: ['text-[200px] md:text-[250px]', 'text-[180px] md:text-[220px]', 'text-[150px] md:text-[200px]'],
+        animationComplexity: 'simple',
+        durations: [15, 20, 25],
+        enableRotation: false,
+        enableBlur: false,
+        opacity: 0.3,
+        darkOpacity: 0.2
+      };
+  }
+}
+
+// Custom hook for managing will-change property
+export function useWillChange(
+  ref: React.RefObject<HTMLElement>,
+  properties: string[] = ['transform', 'opacity'],
+  delay: number = 200
+) {
+  useEffect(() => {
+    if (!ref.current) return;
+    
+    const element = ref.current;
+    let timeoutId: NodeJS.Timeout;
+    
+    // Function to apply will-change
+    const applyWillChange = () => {
+      element.style.willChange = properties.join(', ');
+      
+      // Remove will-change after animation settles
+      timeoutId = setTimeout(() => {
+        element.style.willChange = 'auto';
+      }, delay);
+    };
+    
+    // Apply on mount
+    applyWillChange();
+    
+    // Cleanup
+    return () => {
+      clearTimeout(timeoutId);
+      if (element) {
+        element.style.willChange = 'auto';
+      }
+    };
+  }, [ref, properties, delay]);
+}
+
+// Generate optimized animation based on complexity
+export function getOptimizedAnimation(
+  complexity: 'full' | 'medium' | 'simple',
+  index: number
+) {
+  switch (complexity) {
+    case 'full':
+      // Full complex animation with rotation
+      if (index === 0) {
+        return {
+          x: [0, 100, -50, 0],
+          y: [0, -100, 50, 0],
+          rotate: [0, 15, -10, 0],
+        };
+      } else if (index === 1) {
+        return {
+          x: [0, -80, 60, 0],
+          y: [0, 80, -60, 0],
+          rotate: [0, -20, 15, 0],
+        };
+      } else {
+        return {
+          x: [-50, 50, -30, -50],
+          y: [-30, 30, -20, -30],
+          rotate: [0, 10, -15, 0],
+        };
+      }
+    
+    case 'medium':
+      // Medium complexity - less movement, keep rotation
+      if (index === 0) {
+        return {
+          x: [0, 50, -25, 0],
+          y: [0, -50, 25, 0],
+          rotate: [0, 10, -5, 0],
+        };
+      } else if (index === 1) {
+        return {
+          x: [0, -40, 30, 0],
+          y: [0, 40, -30, 0],
+          rotate: [0, -10, 8, 0],
+        };
+      } else {
+        return {
+          x: [-25, 25, -15, -25],
+          y: [-15, 15, -10, -15],
+          rotate: [0, 5, -8, 0],
+        };
+      }
+    
+    case 'simple':
+      // Simple animation - only position, no rotation
+      if (index === 0) {
+        return {
+          x: [0, 30, -15, 0],
+          y: [0, -30, 15, 0],
+        };
+      } else if (index === 1) {
+        return {
+          x: [0, -25, 20, 0],
+          y: [0, 25, -20, 0],
+        };
+      } else {
+        return {
+          x: [-15, 15, -10, -15],
+          y: [-10, 10, -5, -10],
+        };
+      }
+  }
+}
+
+// CSS optimization styles for GPU acceleration
+export const gpuAccelerationStyles: React.CSSProperties = {
+  transform: 'translateZ(0)',
+  backfaceVisibility: 'hidden',
+  perspective: 1000,
+  willChange: 'transform, opacity',
+  contain: 'layout style paint',
+};
 
 /**
- * 懒加载组件包装器
+ * Lazy load component wrapper
  */
 export function lazyLoadComponent<T extends ComponentType<any>>(
   importFunc: () => Promise<{ default: T }>,
@@ -22,7 +233,7 @@ export function lazyLoadComponent<T extends ComponentType<any>>(
 }
 
 /**
- * 默认加载组件
+ * Default loading component
  */
 function LoadingSpinner() {
   return (
@@ -33,7 +244,7 @@ function LoadingSpinner() {
 }
 
 /**
- * 图片懒加载
+ * Image lazy loading
  */
 export function lazyLoadImage(src: string, alt: string, className?: string) {
   return {
@@ -53,7 +264,7 @@ export function lazyLoadImage(src: string, alt: string, className?: string) {
 }
 
 /**
- * 防抖函数
+ * Debounce function
  */
 export function debounce<T extends (...args: any[]) => any>(
   func: T,
@@ -73,7 +284,7 @@ export function debounce<T extends (...args: any[]) => any>(
 }
 
 /**
- * 节流函数
+ * Throttle function
  */
 export function throttle<T extends (...args: any[]) => any>(
   func: T,
@@ -91,7 +302,7 @@ export function throttle<T extends (...args: any[]) => any>(
 }
 
 /**
- * 虚拟滚动配置
+ * Virtual scroll configuration
  */
 export interface VirtualScrollConfig {
   itemHeight: number;
@@ -100,7 +311,7 @@ export interface VirtualScrollConfig {
 }
 
 /**
- * 计算虚拟滚动可见项
+ * Calculate virtual scroll visible items
  */
 export function calculateVisibleItems<T>(
   items: T[],
@@ -124,7 +335,7 @@ export function calculateVisibleItems<T>(
 }
 
 /**
- * 预加载关键资源
+ * Preload critical resources
  */
 export function preloadResources(resources: string[]) {
   resources.forEach(resource => {
@@ -148,7 +359,7 @@ export function preloadResources(resources: string[]) {
 }
 
 /**
- * 性能监控
+ * Performance monitoring
  */
 export class PerformanceMonitor {
   private marks: Map<string, number> = new Map();
@@ -165,7 +376,7 @@ export class PerformanceMonitor {
       const duration = end - start;
       console.log(`Performance [${name}]: ${duration.toFixed(2)}ms`);
       
-      // 发送到分析服务（如果配置）
+      // Send to analytics service (if configured)
       if (window.gtag) {
         window.gtag('event', 'timing_complete', {
           name,
@@ -180,7 +391,7 @@ export class PerformanceMonitor {
     return 0;
   }
   
-  // 获取Web Vitals
+  // Get Web Vitals
   static getWebVitals() {
     const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
     const paint = performance.getEntriesByType('paint');
@@ -195,16 +406,16 @@ export class PerformanceMonitor {
       LCP: lcp?.startTime || 0,
       // Time to Interactive
       TTI: navigation.domInteractive - navigation.fetchStart,
-      // Total Blocking Time (需要额外计算)
+      // Total Blocking Time (requires additional calculation)
       TBT: 0,
-      // Cumulative Layout Shift (需要额外计算)
+      // Cumulative Layout Shift (requires additional calculation)
       CLS: 0
     };
   }
 }
 
 /**
- * 内存缓存
+ * Memory cache
  */
 export class MemoryCache<T> {
   private cache: Map<string, { value: T; expiry: number }> = new Map();
@@ -214,8 +425,8 @@ export class MemoryCache<T> {
     this.maxSize = maxSize;
   }
   
-  set(key: string, value: T, ttl = 300000) { // 默认5分钟
-    // 如果缓存满了，删除最早的项
+  set(key: string, value: T, ttl = 300000) { // Default 5 minutes
+    // If cache is full, delete the oldest item
     if (this.cache.size >= this.maxSize) {
       const firstKey = this.cache.keys().next().value;
       this.cache.delete(firstKey);
@@ -246,7 +457,7 @@ export class MemoryCache<T> {
 }
 
 /**
- * 请求去重
+ * Request deduplication
  */
 export class RequestDeduplicator {
   private pending: Map<string, Promise<any>> = new Map();
@@ -255,12 +466,12 @@ export class RequestDeduplicator {
     key: string,
     requestFunc: () => Promise<T>
   ): Promise<T> {
-    // 如果已有相同请求在进行，返回同一个Promise
+    // If the same request is in progress, return the same Promise
     if (this.pending.has(key)) {
       return this.pending.get(key)!;
     }
     
-    // 创建新请求
+    // Create new request
     const promise = requestFunc().finally(() => {
       this.pending.delete(key);
     });
@@ -271,7 +482,7 @@ export class RequestDeduplicator {
 }
 
 /**
- * 批量请求优化
+ * Batch request optimization
  */
 export class BatchRequestOptimizer<T, R> {
   private queue: Array<{ item: T; resolve: (value: R) => void; reject: (error: any) => void }> = [];
@@ -322,11 +533,11 @@ export class BatchRequestOptimizer<T, R> {
   }
 }
 
-// 导出性能监控实例
+// Export performance monitor instance
 export const perfMonitor = new PerformanceMonitor();
 
-// 导出全局缓存实例
+// Export global cache instance
 export const globalCache = new MemoryCache();
 
-// 导出请求去重器
+// Export request deduplicator
 export const requestDedup = new RequestDeduplicator();

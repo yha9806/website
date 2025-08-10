@@ -7,7 +7,7 @@ import sys
 import io
 from pathlib import Path
 
-# 设置标准输出为UTF-8编码
+# Set standard output to UTF-8 encoding
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 # Add parent directory to path
@@ -33,12 +33,12 @@ AsyncSessionLocal = sessionmaker(
 async def init_dimensions(session: AsyncSession):
     """Initialize evaluation dimensions"""
     dimensions = [
-        {"name": "rhythm", "category": "technical", "weight": 1.0, "description": "韵律和声"},
-        {"name": "composition", "category": "aesthetic", "weight": 1.0, "description": "构图美学"},
-        {"name": "narrative", "category": "content", "weight": 1.0, "description": "叙事能力"},
-        {"name": "emotion", "category": "content", "weight": 1.0, "description": "情感表达"},
-        {"name": "creativity", "category": "aesthetic", "weight": 1.0, "description": "创新性"},
-        {"name": "cultural", "category": "cultural", "weight": 1.0, "description": "文化内涵"},
+        {"name": "rhythm", "category": "technical", "weight": 1.0, "description": "Rhythm and Harmony"},
+        {"name": "composition", "category": "aesthetic", "weight": 1.0, "description": "Composition Aesthetics"},
+        {"name": "narrative", "category": "content", "weight": 1.0, "description": "Narrative Ability"},
+        {"name": "emotion", "category": "content", "weight": 1.0, "description": "Emotional Expression"},
+        {"name": "creativity", "category": "aesthetic", "weight": 1.0, "description": "Innovation"},
+        {"name": "cultural", "category": "cultural", "weight": 1.0, "description": "Cultural Connotation"},
     ]
     
     for dim in dimensions:
@@ -56,7 +56,7 @@ async def init_models(session: AsyncSession):
             "organization": "Alibaba",
             "version": "2.0",
             "category": "text",
-            "description": "通义千问第二代大模型，在中文文学创作领域表现卓越",
+            "description": "Qwen second-generation large model, excelling in Chinese literary creation",
             "overall_score": 92.5,
             "metrics": {
                 "rhythm": 95,
@@ -66,7 +66,7 @@ async def init_models(session: AsyncSession):
                 "creativity": 89,
                 "cultural": 96
             },
-            "tags": ["中文优秀", "文学创作", "诗词专精"],
+            "tags": ["Chinese Excellence", "Literary Creation", "Poetry Specialist"],
             "avatar_url": "https://picsum.photos/seed/qwen/200/200"
         },
         {
@@ -74,7 +74,7 @@ async def init_models(session: AsyncSession):
             "organization": "Anthropic",
             "version": "3.0",
             "category": "multimodal",
-            "description": "在创意写作和艺术理解方面展现出卓越能力",
+            "description": "Demonstrates exceptional ability in creative writing and artistic understanding",
             "overall_score": 90.8,
             "metrics": {
                 "rhythm": 87,
@@ -84,7 +84,7 @@ async def init_models(session: AsyncSession):
                 "creativity": 94,
                 "cultural": 85
             },
-            "tags": ["创意写作", "多模态", "叙事大师"],
+            "tags": ["Creative Writing", "Multimodal", "Narrative Master"],
             "avatar_url": "https://picsum.photos/seed/claude/200/200"
         },
         {
@@ -92,7 +92,7 @@ async def init_models(session: AsyncSession):
             "organization": "OpenAI",
             "version": "4.0",
             "category": "multimodal",
-            "description": "多模态理解与生成能力的标杆模型",
+            "description": "Benchmark model for multimodal understanding and generation capabilities",
             "overall_score": 89.2,
             "metrics": {
                 "rhythm": 84,
@@ -102,15 +102,15 @@ async def init_models(session: AsyncSession):
                 "creativity": 91,
                 "cultural": 83
             },
-            "tags": ["多模态", "视觉理解", "创意生成"],
+            "tags": ["Multimodal", "Visual Understanding", "Creative Generation"],
             "avatar_url": "https://picsum.photos/seed/gpt4/200/200"
         },
         {
-            "name": "文心一言 4.0",
+            "name": "ERNIE 4.0",
             "organization": "Baidu",
             "version": "4.0",
             "category": "text",
-            "description": "百度自研大模型，深谙中国文化精髓",
+            "description": "Baidu's self-developed large model, deeply understanding Chinese cultural essence",
             "overall_score": 88.7,
             "metrics": {
                 "rhythm": 92,
@@ -120,7 +120,7 @@ async def init_models(session: AsyncSession):
                 "creativity": 86,
                 "cultural": 94
             },
-            "tags": ["中文专长", "文化理解", "古诗词"],
+            "tags": ["Chinese Specialty", "Cultural Understanding", "Classical Poetry"],
             "avatar_url": "https://picsum.photos/seed/wenxin/200/200"
         },
         {
@@ -128,7 +128,7 @@ async def init_models(session: AsyncSession):
             "organization": "Google",
             "version": "1.5",
             "category": "multimodal",
-            "description": "谷歌最新多模态模型，视觉理解能力突出",
+            "description": "Google's latest multimodal model with outstanding visual understanding capabilities",
             "overall_score": 87.3,
             "metrics": {
                 "rhythm": 82,
@@ -138,7 +138,7 @@ async def init_models(session: AsyncSession):
                 "creativity": 90,
                 "cultural": 81
             },
-            "tags": ["多模态", "视觉分析", "创意设计"],
+            "tags": ["Multimodal", "Visual Analysis", "Creative Design"],
             "avatar_url": "https://picsum.photos/seed/gemini/200/200"
         },
         {
@@ -146,7 +146,7 @@ async def init_models(session: AsyncSession):
             "organization": "Zhipu AI",
             "version": "3.0",
             "category": "text",
-            "description": "清华智谱开源模型，轻量高效",
+            "description": "Tsinghua Zhipu open-source model, lightweight and efficient",
             "overall_score": 85.2,
             "metrics": {
                 "rhythm": 86,
@@ -156,7 +156,7 @@ async def init_models(session: AsyncSession):
                 "creativity": 83,
                 "cultural": 89
             },
-            "tags": ["开源", "轻量级", "中文优化"],
+            "tags": ["Open Source", "Lightweight", "Chinese Optimized"],
             "avatar_url": "https://picsum.photos/seed/chatglm/200/200"
         },
         {
@@ -164,7 +164,7 @@ async def init_models(session: AsyncSession):
             "organization": "Midjourney",
             "version": "6.0",
             "category": "image",
-            "description": "专注艺术创作的图像生成模型",
+            "description": "Image generation model focused on artistic creation",
             "overall_score": 91.5,
             "metrics": {
                 "rhythm": 78,
@@ -174,7 +174,7 @@ async def init_models(session: AsyncSession):
                 "creativity": 97,
                 "cultural": 88
             },
-            "tags": ["图像生成", "艺术创作", "风格化"],
+            "tags": ["Image Generation", "Artistic Creation", "Stylization"],
             "avatar_url": "https://picsum.photos/seed/midjourney/200/200"
         },
         {
@@ -182,7 +182,7 @@ async def init_models(session: AsyncSession):
             "organization": "OpenAI",
             "version": "3.0",
             "category": "image",
-            "description": "文本到图像生成的先驱模型",
+            "description": "Pioneer model for text-to-image generation",
             "overall_score": 88.9,
             "metrics": {
                 "rhythm": 75,
@@ -192,7 +192,7 @@ async def init_models(session: AsyncSession):
                 "creativity": 94,
                 "cultural": 84
             },
-            "tags": ["图像生成", "创意设计", "精准控制"],
+            "tags": ["Image Generation", "Creative Design", "Precise Control"],
             "avatar_url": "https://picsum.photos/seed/dalle/200/200"
         },
         {
@@ -200,7 +200,7 @@ async def init_models(session: AsyncSession):
             "organization": "Meta",
             "version": "2.0",
             "category": "text",
-            "description": "Meta开源的大语言模型",
+            "description": "Meta's open-source large language model",
             "overall_score": 86.4,
             "metrics": {
                 "rhythm": 83,
@@ -210,7 +210,7 @@ async def init_models(session: AsyncSession):
                 "creativity": 87,
                 "cultural": 82
             },
-            "tags": ["开源", "多语言", "通用"],
+            "tags": ["Open Source", "Multilingual", "General Purpose"],
             "avatar_url": "https://picsum.photos/seed/llama/200/200"
         },
         {
@@ -218,7 +218,7 @@ async def init_models(session: AsyncSession):
             "organization": "Stability AI",
             "version": "1.0",
             "category": "image",
-            "description": "开源图像生成模型的代表作",
+            "description": "Representative work of open-source image generation models",
             "overall_score": 87.1,
             "metrics": {
                 "rhythm": 72,
@@ -228,7 +228,7 @@ async def init_models(session: AsyncSession):
                 "creativity": 92,
                 "cultural": 83
             },
-            "tags": ["开源", "图像生成", "社区驱动"],
+            "tags": ["Open Source", "Image Generation", "Community Driven"],
             "avatar_url": "https://picsum.photos/seed/sdxl/200/200"
         }
     ]
@@ -269,8 +269,8 @@ async def init_battles(session: AsyncSession, models):
             "model_a_id": models[0].id,  # Qwen2-72B
             "model_b_id": models[1].id,  # Claude 3 Opus
             "task_type": TaskType.poem,
-            "task_prompt": "以'春江花月夜'为题，创作一首七言绝句",
-            "task_category": "古典诗词",
+            "task_prompt": "Create a seven-character quatrain on the theme of 'Spring River Flower Moon Night'",
+            "task_category": "Classical Poetry",
             "difficulty": Difficulty.medium,
             "votes_a": 156,
             "votes_b": 143,
@@ -278,10 +278,10 @@ async def init_battles(session: AsyncSession, models):
         },
         {
             "model_a_id": models[2].id,  # GPT-4 Vision
-            "model_b_id": models[3].id,  # 文心一言 4.0
+            "model_b_id": models[3].id,  # ERNIE 4.0
             "task_type": TaskType.painting,
-            "task_prompt": "创作一幅'千里江山图'风格的山水画",
-            "task_category": "山水画",
+            "task_prompt": "Create a landscape painting in the style of 'A Thousand Li of Rivers and Mountains'",
+            "task_category": "Landscape Painting",
             "difficulty": Difficulty.hard,
             "votes_a": 87,
             "votes_b": 102,
@@ -291,8 +291,8 @@ async def init_battles(session: AsyncSession, models):
             "model_a_id": models[4].id,  # DALL-E 3
             "model_b_id": models[5].id,  # Midjourney V6
             "task_type": TaskType.painting,
-            "task_prompt": "融合东西方艺术风格，创作'赛博朋克版清明上河图'",
-            "task_category": "创意绘画",
+            "task_prompt": "Merge Eastern and Western art styles to create a 'Cyberpunk Version of Along the River During Qingming Festival'",
+            "task_category": "Creative Painting",
             "difficulty": Difficulty.hard,
             "votes_a": 234,
             "votes_b": 267,
@@ -302,8 +302,8 @@ async def init_battles(session: AsyncSession, models):
             "model_a_id": models[1].id,  # Claude 3 Opus
             "model_b_id": models[6].id,  # Gemini Ultra
             "task_type": TaskType.story,
-            "task_prompt": "以'蝴蝶效应'为主题，创作一个500字的微小说",
-            "task_category": "现代文学",
+            "task_prompt": "Create a 500-word micro fiction on the theme of 'The Butterfly Effect'",
+            "task_category": "Modern Literature",
             "difficulty": Difficulty.medium,
             "votes_a": 178,
             "votes_b": 165,
@@ -330,42 +330,48 @@ async def init_artworks(session: AsyncSession, models):
         {
             "model_id": models[0].id,
             "type": ArtworkType.poem,
-            "title": "春江花月夜",
-            "content": """春江潮水连海平，海上明月共潮生。
-滟滟随波千万里，何处春江无月明。
-江流宛转绕芳甸，月照花林皆似霰。
-空里流霜不觉飞，汀上白沙看不见。""",
-            "prompt": "创作一首描写春江月夜美景的诗词",
+            "title": "Spring River Flower Moon Night",
+            "content": """The spring river's tide level with the sea,
+The bright moon rises with the ocean's swell.
+Waves shimmer for thousands of miles away,
+Where on the spring river is there no moonlight?
+The river winds around fragrant meadows,
+Moonlight on flowering trees like falling frost.
+Frost seems to fly through the empty air,
+White sand on the shore cannot be seen.""",
+            "prompt": "Create a poem describing the beautiful scenery of spring river under moonlight",
             "score": 95.5,
-            "extra_metadata": {"style": "唐诗", "meter": "七言古诗"}
+            "extra_metadata": {"style": "Tang Poetry", "meter": "Seven-character Ancient Poem"}
         },
         {
             "model_id": models[0].id,
             "type": ArtworkType.poem,
-            "title": "静夜思",
-            "content": """床前明月光，疑是地上霜。
-举头望明月，低头思故乡。""",
-            "prompt": "创作一首表达思乡之情的五言绝句",
+            "title": "Quiet Night Thoughts",
+            "content": """Bright moonlight before my bed,
+I suspect it is frost on the ground.
+Looking up, I gaze at the bright moon,
+Lowering my head, I think of my hometown.""",
+            "prompt": "Create a five-character quatrain expressing homesickness",
             "score": 93.2,
-            "extra_metadata": {"style": "唐诗", "meter": "五言绝句"}
+            "extra_metadata": {"style": "Tang Poetry", "meter": "Five-character Quatrain"}
         },
         # Claude 3 Opus works
         {
             "model_id": models[1].id,
             "type": ArtworkType.story,
-            "title": "最后一片叶子",
-            "content": "秋风瑟瑟，病房里的她望着窗外那棵老树。医生说她的生命如同树上的叶子，当最后一片落下时...但那片叶子始终没有落下，即使狂风暴雨。康复后她才知道，那是画家邻居在生命最后一夜画上去的。",
-            "prompt": "创作一个关于希望的微小说",
+            "title": "The Last Leaf",
+            "content": "The autumn wind rustled as she lay in the hospital room, gazing at the old tree outside. The doctor said her life was like the leaves on the tree - when the last one fell... But that leaf never fell, even through storms. Only after recovery did she learn it was painted by her artist neighbor on his last night of life.",
+            "prompt": "Create a micro fiction about hope",
             "score": 94.8,
-            "extra_metadata": {"genre": "感人故事", "word_count": 100}
+            "extra_metadata": {"genre": "Touching Story", "word_count": 100}
         },
         # GPT-4 Vision works
         {
             "model_id": models[2].id,
             "type": ArtworkType.painting,
-            "title": "赛博长安",
+            "title": "Cyber Chang'an",
             "image_url": "https://picsum.photos/seed/cyberchangan/800/600",
-            "prompt": "将唐代长安城与赛博朋克风格结合",
+            "prompt": "Combine Tang Dynasty Chang'an City with cyberpunk style",
             "score": 91.3,
             "extra_metadata": {"style": "Cyberpunk", "theme": "Ancient-Modern Fusion"}
         },
@@ -373,9 +379,9 @@ async def init_artworks(session: AsyncSession, models):
         {
             "model_id": models[4].id,
             "type": ArtworkType.painting,
-            "title": "梦境山水",
+            "title": "Dreamscape",
             "image_url": "https://picsum.photos/seed/dreamscape/800/600",
-            "prompt": "创作一幅超现实主义风格的中国山水画",
+            "prompt": "Create a surrealist-style Chinese landscape painting",
             "score": 92.7,
             "extra_metadata": {"style": "Surrealism", "medium": "Digital Art"}
         },
@@ -383,9 +389,9 @@ async def init_artworks(session: AsyncSession, models):
         {
             "model_id": models[5].id,
             "type": ArtworkType.painting,
-            "title": "东方神话",
+            "title": "Oriental Mythology",
             "image_url": "https://picsum.photos/seed/mythology/800/600",
-            "prompt": "描绘中国神话中的龙凤呈祥场景",
+            "prompt": "Depict the auspicious dragon and phoenix scene from Chinese mythology",
             "score": 94.1,
             "extra_metadata": {"style": "Fantasy Art", "theme": "Chinese Mythology"}
         }
@@ -404,12 +410,12 @@ async def init_evaluation_tasks(session: AsyncSession, models):
         {
             "model_id": models[0].id,  # Qwen2-72B
             "task_type": "poem",
-            "prompt": "创作一首描写秋天的五言绝句",
-            "parameters": {"style": "唐诗"},
+            "prompt": "Create a five-character quatrain describing autumn",
+            "parameters": {"style": "Tang Poetry"},
             "status": TaskStatus.COMPLETED,
             "result": {
-                "title": "秋思",
-                "content": "秋风起叶落，雁字向南飞。\n独坐窗前望，霜华满地辉。"
+                "title": "Autumn Thoughts",
+                "content": "Autumn wind rises, leaves fall,\nGeese fly south in formation.\nSitting alone by the window,\nFrost glimmers on the ground."
             },
             "auto_score": 88.5,
             "human_score": 92.0,
@@ -425,12 +431,12 @@ async def init_evaluation_tasks(session: AsyncSession, models):
         {
             "model_id": models[1].id,  # Claude 3 Opus
             "task_type": "story",
-            "prompt": "写一个关于时间旅行的300字短篇故事",
+            "prompt": "Write a 300-word short story about time travel",
             "parameters": {"max_length": 300},
             "status": TaskStatus.COMPLETED,
             "result": {
-                "title": "最后一秒",
-                "content": "当我按下时间机器的按钮时，世界突然静止了。街道上的行人定格在半空中，飞鸟悬停在云端...",
+                "title": "The Last Second",
+                "content": "When I pressed the button on the time machine, the world suddenly froze. Pedestrians on the street were suspended in mid-air, birds hovered in the clouds...",
                 "word_count": 298
             },
             "auto_score": 91.2,
@@ -446,16 +452,16 @@ async def init_evaluation_tasks(session: AsyncSession, models):
         {
             "model_id": models[2].id,  # GPT-4 Vision
             "task_type": "painting",
-            "prompt": "创作一幅赛博朋克风格的未来城市",
+            "prompt": "Create a cyberpunk-style future city",
             "parameters": {"style": "cyberpunk"},
             "status": TaskStatus.RUNNING,
             "started_at": datetime.utcnow()
         },
         {
-            "model_id": models[3].id,  # 文心一言 4.0
+            "model_id": models[3].id,  # ERNIE 4.0
             "task_type": "poem",
-            "prompt": "以'梅花'为题创作一首词",
-            "parameters": {"style": "宋词"},
+            "prompt": "Create a ci poem on the theme of 'Plum Blossoms'",
+            "parameters": {"style": "Song Ci"},
             "status": TaskStatus.PENDING
         }
     ]

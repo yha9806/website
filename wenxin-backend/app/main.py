@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
+import os
 
 from app.core.config import settings
 from app.core.database import init_db
@@ -68,6 +70,14 @@ async def add_security_headers(request: Request, call_next):
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
     return response
+
+# Mount static files for generated images
+static_dir = os.path.join(os.path.dirname(__file__), "..", "static")
+if os.path.exists(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+    print(f"Static files mounted at /static from {static_dir}")
+else:
+    print(f"Warning: Static directory not found at {static_dir}")
 
 # Include API router
 app.include_router(api_router, prefix=settings.API_V1_STR)

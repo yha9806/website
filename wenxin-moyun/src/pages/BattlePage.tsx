@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useBattles } from '../hooks/useBattles';
 import { useWebSocket, type BattleUpdateData } from '../hooks/useWebSocket';
 import type { Battle } from '../types/types';
+import { IOSButton, StatusEmoji, EmojiIcon } from '../components/ios';
 
 export default function BattlePage() {
   const { battles, loading, error, voteBattle, getRandomBattle } = useBattles();
@@ -161,7 +162,7 @@ export default function BattlePage() {
       <div className="flex justify-center items-center min-h-[400px]">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-primary-600 mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">正在加载对战数据...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading battle data...</p>
         </div>
       </div>
     );
@@ -171,13 +172,16 @@ export default function BattlePage() {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <div className="text-center">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">暂无可用的对战</p>
-          <button 
+          <p className="text-gray-600 dark:text-gray-400 mb-4">No battles available</p>
+          <IOSButton 
+            variant="primary"
+            size="md"
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+            emoji="refresh"
           >
-            重新加载
-          </button>
+            <EmojiIcon category="actions" name="refresh" size="sm" />
+            Reload
+          </IOSButton>
         </div>
       </div>
     );
@@ -188,7 +192,7 @@ export default function BattlePage() {
       <div className="flex justify-center items-center min-h-[400px]">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-primary-600 mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">正在获取随机对战...</p>
+          <p className="text-gray-600 dark:text-gray-400">Getting random battle...</p>
         </div>
       </div>
     );
@@ -197,7 +201,7 @@ export default function BattlePage() {
   if (error) {
     return (
       <div className="text-center text-red-600 dark:text-red-400">
-        加载失败: {error}
+        Loading failed: {error}
       </div>
     );
   }
@@ -212,14 +216,14 @@ export default function BattlePage() {
     <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="flex items-center justify-center space-x-4 mb-4">
-          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200">
-            <Swords className="inline-block w-10 h-10 mr-3 text-red-500" />
-            模型对决竞技场
+        <div className="flex flex-col items-center justify-center space-y-3 mb-4 md:flex-row md:space-y-0 md:space-x-4">
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-800 dark:text-gray-200 text-center">
+            <EmojiIcon category="navigation" name="battle" size="lg" />
+            AI Model Battle Arena
           </h1>
           
-          {/* 实时连接状态指示器 - 使用稳定的状态显示 */}
-          <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm transition-all duration-500 ${
+          {/* 实时连接状态指示器 - 使用iOS状态组件 */}
+          <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm transition-all duration-500 ios-glass ${
             isConnected 
               ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
               : useSSE
@@ -230,69 +234,73 @@ export default function BattlePage() {
           }`}>
             {isConnected ? (
               <>
-                <Wifi className="w-4 h-4" />
-                <span>实时连接</span>
-                <Zap className="w-3 h-3 animate-pulse" />
+                <StatusEmoji status="completed" size="sm" animated />
+                <span>Live Connection</span>
+                <EmojiIcon category="trend" name="hot" size="sm" animated />
               </>
             ) : useSSE ? (
               <>
-                <Wifi className="w-4 h-4" />
-                <span>备用连接</span>
+                <StatusEmoji status="warning" size="sm" />
+                <span>Backup Connection</span>
               </>
             ) : connectionError?.includes('retrying') ? (
               <>
-                <Wifi className="w-4 h-4 animate-spin" />
-                <span>重连中</span>
+                <StatusEmoji status="processing" size="sm" animated />
+                <span>Reconnecting</span>
               </>
             ) : (
               <>
-                <WifiOff className="w-4 h-4" />
-                <span>离线模式</span>
+                <StatusEmoji status="failed" size="sm" />
+                <span>Offline Mode</span>
               </>
             )}
           </div>
         </div>
         
         <p className="text-gray-600 dark:text-gray-400">
-          参与投票，帮助评选最优秀的 AI 艺术创作模型
+          Vote to help evaluate the best AI artistic creation models
         </p>
         
         {lastUpdateTime && (
           <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
-            最后更新: {lastUpdateTime.toLocaleTimeString()}
+            Last updated: {lastUpdateTime.toLocaleTimeString()}
           </p>
         )}
         
         {connectionError && (
           <p className="text-xs text-red-500 mt-2">
-            连接错误: {connectionError}
+            Connection error: {connectionError}
           </p>
         )}
       </div>
 
       {/* Battle Navigation */}
       <div className="flex items-center justify-between mb-6">
-        <button
+        <IOSButton
           onClick={prevBattle}
           disabled={currentBattleIndex === 0}
-          className="p-2 rounded-lg bg-gray-50 dark:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transition-shadow"
+          variant="secondary"
+          size="lg"
+          className="min-w-[44px] min-h-[44px]"
         >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
+          <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+        </IOSButton>
         
         <div className="text-center">
           <span className="text-sm text-gray-600 dark:text-gray-400">
-            对决 {currentBattleIndex + 1} / {battles.length}
+            Battle {currentBattleIndex + 1} / {battles.length}
           </span>
         </div>
         
-        <button
+        <IOSButton
           onClick={nextBattle}
           disabled={currentBattleIndex === battles.length - 1}
-          className="p-2 rounded-lg bg-gray-50 dark:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transition-shadow"
+          variant="secondary"
+          size="lg"
+          className="min-w-[44px] min-h-[44px]"
         >
-          <ChevronRight className="w-6 h-6" />
-        </button>
+          <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+        </IOSButton>
       </div>
 
       {/* Battle Arena */}
@@ -302,7 +310,7 @@ export default function BattlePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className="bg-gray-50 dark:bg-gray-800 rounded-xl shadow-xl p-8"
+          className="ios-glass liquid-glass-container rounded-xl shadow-xl p-8"
         >
           {/* Task Description */}
           <div className="text-center mb-8">
@@ -311,12 +319,12 @@ export default function BattlePage() {
                 {currentBattle.task.category}
               </span>
               <span className="text-xs px-2 py-1 bg-gray-50 dark:bg-gray-700 rounded-full">
-                {currentBattle.task.difficulty === 'easy' ? '简单' : 
-                 currentBattle.task.difficulty === 'medium' ? '中等' : '困难'}
+                {currentBattle.task.difficulty === 'easy' ? 'Easy' : 
+                 currentBattle.task.difficulty === 'medium' ? 'Medium' : 'Hard'}
               </span>
             </div>
             <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">
-              创作任务
+              Creation Task
             </h2>
             <p className="text-lg text-gray-700 dark:text-gray-300">
               {currentBattle.task.prompt}
@@ -324,7 +332,7 @@ export default function BattlePage() {
           </div>
 
           {/* Models Comparison */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
             {/* Model A */}
             <motion.div
               whileHover={{ scale: hasVoted ? 1 : 1.02 }}
@@ -340,10 +348,10 @@ export default function BattlePage() {
                 <img
                   src={currentBattle.modelA.avatar}
                   alt={currentBattle.modelA.name}
-                  className="w-20 h-20 rounded-xl mx-auto mb-3"
+                  className="w-16 h-16 md:w-20 md:h-20 rounded-xl mx-auto mb-3"
                 />
-                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">
-                  {hasVoted ? currentBattle.modelA.name : '模型 A'}
+                <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-200">
+                  {hasVoted ? currentBattle.modelA.name : 'Model A'}
                 </h3>
                 {hasVoted && (
                   <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -353,26 +361,32 @@ export default function BattlePage() {
               </div>
 
               {/* Sample Output (would be actual generated content in production) */}
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 mb-4">
+              <div className="ios-glass rounded-lg p-4 mb-4">
                 <p className="text-sm text-gray-700 dark:text-gray-300 italic">
                   {currentBattle.task.type === 'poem' ? 
                     '"秋月如霜照故园，梧桐叶落夜无眠..."' :
-                    '[此处展示模型A的创作内容]'}
+                    '[Model A\'s creation content will be displayed here]'}
                 </p>
               </div>
 
               {/* Vote Button or Results */}
               {!hasVoted ? (
-                <button 
-                  className="w-full py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                <IOSButton 
+                  variant="primary"
+                  size="lg"
+                  className="w-full min-h-[44px]"
                   disabled={voteLoading}
+                  glassMorphism
                 >
                   {voteLoading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (
-                    '投票给模型 A'
+                    <>
+                      <EmojiIcon category="actions" name="like" size="sm" />
+                      Vote for Model A
+                    </>
                   )}
-                </button>
+                </IOSButton>
               ) : (
                 <motion.div
                   animate={flashAnimation === 'A' ? { 
@@ -383,7 +397,7 @@ export default function BattlePage() {
                   className="rounded-lg p-2"
                 >
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">得票率</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Vote Rate</span>
                     <motion.span 
                       className="font-semibold"
                       animate={flashAnimation === 'A' ? { 
@@ -415,7 +429,7 @@ export default function BattlePage() {
                       fontWeight: [400, 700, 400]
                     } : {}}
                   >
-                    {currentBattle.votesA} 票
+                    {currentBattle.votesA} votes
                     {flashAnimation === 'A' && (
                       <motion.span 
                         initial={{ opacity: 0, x: 10 }}
@@ -446,10 +460,10 @@ export default function BattlePage() {
                 <img
                   src={currentBattle.modelB.avatar}
                   alt={currentBattle.modelB.name}
-                  className="w-20 h-20 rounded-xl mx-auto mb-3"
+                  className="w-16 h-16 md:w-20 md:h-20 rounded-xl mx-auto mb-3"
                 />
-                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">
-                  {hasVoted ? currentBattle.modelB.name : '模型 B'}
+                <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-200">
+                  {hasVoted ? currentBattle.modelB.name : 'Model B'}
                 </h3>
                 {hasVoted && (
                   <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -459,26 +473,32 @@ export default function BattlePage() {
               </div>
 
               {/* Sample Output */}
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 mb-4">
+              <div className="ios-glass rounded-lg p-4 mb-4">
                 <p className="text-sm text-gray-700 dark:text-gray-300 italic">
                   {currentBattle.task.type === 'poem' ? 
                     '"月华如水洒人间，秋思绵绵到天边..."' :
-                    '[此处展示模型B的创作内容]'}
+                    '[Model B\'s creation content will be displayed here]'}
                 </p>
               </div>
 
               {/* Vote Button or Results */}
               {!hasVoted ? (
-                <button 
-                  className="w-full py-3 bg-secondary-600 text-white rounded-lg hover:bg-secondary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                <IOSButton 
+                  variant="primary"
+                  size="lg"
+                  className="w-full min-h-[44px]"
                   disabled={voteLoading}
+                  glassMorphism
                 >
                   {voteLoading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (
-                    '投票给模型 B'
+                    <>
+                      <EmojiIcon category="actions" name="like" size="sm" />
+                      Vote for Model B
+                    </>
                   )}
-                </button>
+                </IOSButton>
               ) : (
                 <motion.div
                   animate={flashAnimation === 'B' ? { 
@@ -489,7 +509,7 @@ export default function BattlePage() {
                   className="rounded-lg p-2"
                 >
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">得票率</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Vote Rate</span>
                     <motion.span 
                       className="font-semibold"
                       animate={flashAnimation === 'B' ? { 
@@ -521,7 +541,7 @@ export default function BattlePage() {
                       fontWeight: [400, 700, 400]
                     } : {}}
                   >
-                    {currentBattle.votesB} 票
+                    {currentBattle.votesB} votes
                     {flashAnimation === 'B' && (
                       <motion.span 
                         initial={{ opacity: 0, x: 10 }}
@@ -541,45 +561,46 @@ export default function BattlePage() {
           {/* Battle Stats */}
           <div className="mt-8 flex justify-center space-x-8 text-sm text-gray-600 dark:text-gray-400">
             <div className="flex items-center">
-              <Users className="w-4 h-4 mr-2" />
-              <span>总投票数: {totalVotes}</span>
+              <EmojiIcon category="feedback" name="info" size="sm" />
+              <span className="ml-2">Total Votes: {totalVotes}</span>
             </div>
             <div className="flex items-center">
-              <Clock className="w-4 h-4 mr-2" />
-              <span>状态: {currentBattle.status === 'active' ? '进行中' : '已结束'}</span>
+              <StatusEmoji status={currentBattle.status === 'active' ? 'processing' : 'completed'} size="sm" />
+              <span className="ml-2">Status: {currentBattle.status === 'active' ? 'Active' : 'Completed'}</span>
             </div>
-            <button 
+            <IOSButton 
               onClick={refreshBattle}
-              className="flex items-center hover:text-primary-600 dark:hover:text-primary-400"
+              variant="text"
+              size="sm"
             >
-              <RefreshCw className="w-4 h-4 mr-2" />
-              <span>刷新对决</span>
-            </button>
+              <EmojiIcon category="actions" name="refresh" size="sm" />
+              <span>Refresh Battle</span>
+            </IOSButton>
           </div>
         </motion.div>
       </AnimatePresence>
 
       {/* Info Section */}
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-center">
+        <div className="ios-glass liquid-glass-container rounded-lg p-6 text-center">
           <div className="text-3xl mb-2">🎯</div>
-          <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">公平对决</h3>
+          <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Fair Battle</h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            投票前不显示模型信息，确保评判客观公正
+            Model information is hidden before voting to ensure objective and fair judgment
           </p>
         </div>
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-center">
+        <div className="ios-glass liquid-glass-container rounded-lg p-6 text-center">
           <div className="text-3xl mb-2">🔄</div>
-          <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">实时更新</h3>
+          <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Real-time Updates</h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            投票结果实时更新，影响模型排行榜排名
+            Voting results update in real-time, affecting model leaderboard rankings
           </p>
         </div>
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-center">
+        <div className="ios-glass liquid-glass-container rounded-lg p-6 text-center">
           <div className="text-3xl mb-2">🏆</div>
-          <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">多维评测</h3>
+          <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Multi-dimensional Evaluation</h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            涵盖诗歌、绘画、叙事等多个艺术创作维度
+            Covers multiple artistic creation dimensions including poetry, painting, and narrative
           </p>
         </div>
       </div>

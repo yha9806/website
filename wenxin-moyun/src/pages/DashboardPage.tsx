@@ -21,7 +21,7 @@ export default function DashboardPage() {
   const { entries, loading } = useLeaderboard();
   const [refreshing, setRefreshing] = useState(false);
 
-  // 计算统计数据
+  // Calculate statistics
   const stats = useMemo(() => {
     if (!entries.length) return null;
     
@@ -30,7 +30,7 @@ export default function DashboardPage() {
     const topScore = Math.max(...entries.map(e => e.score));
     const totalBattles = entries.reduce((acc, e) => acc + e.battles, 0);
     
-    // 按组织统计
+    // Statistics by organization
     const byOrg = entries.reduce((acc, entry) => {
       const org = entry.model.organization;
       if (!acc[org]) acc[org] = 0;
@@ -38,7 +38,7 @@ export default function DashboardPage() {
       return acc;
     }, {} as Record<string, number>);
     
-    // 按类别统计
+    // Statistics by category
     const byCategory = entries.reduce((acc, entry) => {
       const cat = entry.model.category;
       if (!acc[cat]) acc[cat] = 0;
@@ -78,7 +78,7 @@ export default function DashboardPage() {
   }) => (
     <motion.div
       whileHover={{ scale: 1.02 }}
-      className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6"
+      className="ios-glass liquid-glass-container rounded-xl shadow-lg p-6"
     >
       <div className="flex items-start justify-between">
         <div>
@@ -103,7 +103,7 @@ export default function DashboardPage() {
   if (loading || !stats) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">加载中...</div>
+        <div className="text-gray-500">Loading...</div>
       </div>
     );
   }
@@ -118,16 +118,16 @@ export default function DashboardPage() {
         >
           <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-2">
             <BarChart className="inline-block w-10 h-10 mr-3 text-primary-600" />
-            数据仪表板
+            Dashboard
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            AI模型评测平台实时数据概览
+            Real-time AI Model Evaluation Platform Overview
           </p>
         </motion.div>
         
         <button
           onClick={handleRefresh}
-          className={`p-3 bg-neutral-50 dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-all ${
+          className={`p-3 ios-glass liquid-glass-container rounded-lg shadow hover:shadow-md transition-all ${
             refreshing ? 'animate-spin' : ''
           }`}
         >
@@ -139,28 +139,28 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <MetricCard
           icon={Users}
-          label="参评模型"
+          label="Evaluated Models"
           value={stats.totalModels}
           change={12}
           color="bg-blue-500"
         />
         <MetricCard
           icon={Award}
-          label="最高评分"
+          label="Highest Score"
           value={stats.topScore.toFixed(1)}
           change={2.5}
           color="bg-green-500"
         />
         <MetricCard
           icon={Activity}
-          label="平均评分"
+          label="Average Score"
           value={stats.avgScore.toFixed(1)}
           change={-1.2}
           color="bg-purple-500"
         />
         <MetricCard
           icon={Zap}
-          label="总对战数"
+          label="Total Battles"
           value={stats.totalBattles.toLocaleString()}
           change={25}
           color="bg-orange-500"
@@ -174,14 +174,14 @@ export default function DashboardPage() {
           data={entries}
           xAxis="score"
           yAxis="winRate"
-          title="评分与胜率分布"
+          title="Score vs Win Rate Distribution"
           onModelClick={(entry) => navigate(`/model/${entry.model.id}`)}
         />
         
         {/* Bubble Chart */}
         <BubbleChart
           data={entries}
-          title="创意与文化维度分析"
+          title="Creativity and Cultural Dimension Analysis"
           onBubbleClick={(entry) => navigate(`/model/${entry.model.id}`)}
         />
       </div>
@@ -192,11 +192,11 @@ export default function DashboardPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6"
+          className="ios-glass liquid-glass-container rounded-xl shadow-lg p-6"
         >
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
             <Globe className="w-5 h-5 text-blue-500" />
-            组织分布
+            Organization Distribution
           </h3>
           <div className="space-y-3">
             {Object.entries(stats.byOrg)
@@ -226,19 +226,19 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6"
+          className="ios-glass liquid-glass-container rounded-xl shadow-lg p-6"
         >
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
             <BarChart className="w-5 h-5 text-green-500" />
-            类型分布
+            Category Distribution
           </h3>
           <div className="space-y-3">
             {Object.entries(stats.byCategory).map(([category, count]) => {
               const percentage = (count / stats.totalModels) * 100;
               const categoryNames: Record<string, string> = {
-                text: '文本生成',
-                visual: '视觉创作',
-                multimodal: '多模态'
+                text: 'Text Generation',
+                visual: 'Visual Creation',
+                multimodal: 'Multimodal'
               };
               
               return (
@@ -268,11 +268,11 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6"
+          className="ios-glass liquid-glass-container rounded-xl shadow-lg p-6"
         >
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
             <Zap className="w-5 h-5 text-orange-500" />
-            最新对战
+            Recent Battles
           </h3>
           <div className="space-y-3">
             {mockBattles.slice(0, 4).map((battle) => {
@@ -301,8 +301,8 @@ export default function DashboardPage() {
                     />
                   </div>
                   <div className="flex justify-between text-xs text-gray-500">
-                    <span>{battle.votesA} 票</span>
-                    <span>{battle.votesB} 票</span>
+                    <span>{battle.votesA} votes</span>
+                    <span>{battle.votesB} votes</span>
                   </div>
                 </div>
               );
@@ -315,10 +315,10 @@ export default function DashboardPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6"
+        className="ios-glass liquid-glass-container rounded-xl shadow-lg p-6"
       >
         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
-          🏆 顶尖模型表现
+          🏆 Top Model Performance
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {entries.slice(0, 3).map((entry, index) => {
@@ -326,7 +326,7 @@ export default function DashboardPage() {
             return (
               <div
                 key={entry.model.id}
-                className="flex items-center gap-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 rounded-lg"
+                className="flex items-center gap-4 p-4 ios-glass rounded-lg"
               >
                 <div className="text-3xl">{medals[index]}</div>
                 <img
@@ -343,10 +343,10 @@ export default function DashboardPage() {
                   </p>
                   <div className="flex items-center gap-4 mt-1">
                     <span className="text-sm font-medium text-primary-600">
-                      评分: {entry.score.toFixed(1)}
+                      Score: {entry.score.toFixed(1)}
                     </span>
                     <span className="text-sm text-gray-500">
-                      胜率: {entry.winRate.toFixed(1)}%
+                      Win Rate: {entry.winRate.toFixed(1)}%
                     </span>
                   </div>
                 </div>

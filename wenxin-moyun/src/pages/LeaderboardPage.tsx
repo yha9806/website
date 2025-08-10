@@ -61,7 +61,7 @@ export default function LeaderboardPage() {
   
   useEffect(() => {
     if (error) {
-      toast.error('加载数据失败，请稍后重试');
+      toast.error('Failed to load data, please try again later');
     }
   }, [error]);
 
@@ -88,7 +88,7 @@ export default function LeaderboardPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4"
         >
-          AI 艺术创作能力排行榜
+          AI Art Creation Leaderboard
         </motion.h1>
         <motion.p 
           initial={{ opacity: 0, y: -10 }}
@@ -96,7 +96,7 @@ export default function LeaderboardPage() {
           transition={{ delay: 0.1 }}
           className="text-gray-600 dark:text-gray-400"
         >
-          基于多维度评测的 AI 模型艺术创作能力综合排名
+          Comprehensive ranking of AI models' artistic creation capabilities based on multi-dimensional evaluation
         </motion.p>
       </div>
       
@@ -124,7 +124,7 @@ export default function LeaderboardPage() {
           <ViewModeToggle />
         </div>
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          显示 {filteredData.length} / {entries.length} 个模型
+          Showing {filteredData.length} / {entries.length} models
         </div>
       </div>
 
@@ -138,8 +138,8 @@ export default function LeaderboardPage() {
               className={`
                 px-4 py-2 rounded-lg font-medium transition-all flex items-center space-x-2
                 ${selectedCategory === cat.id
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-neutral-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  ? 'bg-primary-600 text-white shadow-lg'
+                  : 'ios-glass liquid-glass-container text-gray-700 dark:text-gray-300 hover:shadow-md'
                 }
               `}
             >
@@ -153,7 +153,7 @@ export default function LeaderboardPage() {
       {/* Loading State */}
       {loading && (
         <div className="flex justify-center items-center py-12">
-          <div className="text-gray-500">加载中...</div>
+          <div className="text-gray-500">Loading...</div>
         </div>
       )}
 
@@ -207,35 +207,35 @@ export default function LeaderboardPage() {
       {/* Empty State */}
       {!loading && !error && filteredData.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500 dark:text-gray-400">没有找到符合条件的模型</p>
+          <p className="text-gray-500 dark:text-gray-400">No models found matching the criteria</p>
           <button
             onClick={() => setFilters({})}
             className="mt-4 text-primary-600 hover:text-primary-700"
           >
-            清除所有筛选条件
+            Clear all filters
           </button>
         </div>
       )}
 
       {/* Stats Summary */}
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-neutral-50 dark:bg-gray-800 rounded-lg p-6 text-center">
+        <div className="ios-glass liquid-glass-container rounded-lg p-6 text-center">
           <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">
             {filteredData.length}
           </div>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">参评模型</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Evaluated Models</p>
         </div>
-        <div className="bg-neutral-50 dark:bg-gray-800 rounded-lg p-6 text-center">
+        <div className="ios-glass liquid-glass-container rounded-lg p-6 text-center">
           <div className="text-3xl font-bold text-secondary-600 dark:text-secondary-400">
             {filteredData[0]?.score.toFixed(1) || 0}
           </div>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">最高分</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Highest Score</p>
         </div>
-        <div className="bg-neutral-50 dark:bg-gray-800 rounded-lg p-6 text-center">
+        <div className="ios-glass liquid-glass-container rounded-lg p-6 text-center">
           <div className="text-3xl font-bold text-green-600 dark:text-green-400">
             {(filteredData.reduce((acc, e) => acc + e.score, 0) / filteredData.length).toFixed(1)}
           </div>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">平均分</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Average Score</p>
         </div>
       </div>
     </div>

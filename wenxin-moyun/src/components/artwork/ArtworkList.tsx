@@ -16,18 +16,18 @@ const ArtworkList: React.FC<ArtworkListProps> = ({
   artworks, 
   loading = false,
   error = null,
-  title = '作品展示',
+  title = 'Artwork Gallery',
   showFilters = true
 }) => {
   const [selectedType, setSelectedType] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'score' | 'date'>('score');
 
   const types = [
-    { value: 'all', label: '全部' },
-    { value: 'poem', label: '诗词' },
-    { value: 'painting', label: '绘画' },
-    { value: 'story', label: '故事' },
-    { value: 'music', label: '音乐' }
+    { value: 'all', label: 'All' },
+    { value: 'poem', label: 'Poetry' },
+    { value: 'painting', label: 'Painting' },
+    { value: 'story', label: 'Story' },
+    { value: 'music', label: 'Music' }
   ];
 
   const filteredArtworks = artworks.filter(artwork => 
@@ -87,8 +87,8 @@ const ArtworkList: React.FC<ArtworkListProps> = ({
               onChange={(e) => setSortBy(e.target.value as 'score' | 'date')}
               className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-neutral-50 dark:bg-gray-800 text-sm"
             >
-              <option value="score">按评分</option>
-              <option value="date">按时间</option>
+              <option value="score">By Score</option>
+              <option value="date">By Date</option>
             </select>
           </div>
         )}
@@ -97,7 +97,7 @@ const ArtworkList: React.FC<ArtworkListProps> = ({
       {sortedArtworks.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-xl">
           <p className="text-gray-500 dark:text-gray-400">
-            {selectedType === 'all' ? '暂无作品' : `暂无${types.find(t => t.value === selectedType)?.label}作品`}
+            {selectedType === 'all' ? 'No artworks yet' : `No ${types.find(t => t.value === selectedType)?.label} artworks yet`}
           </p>
         </div>
       ) : (

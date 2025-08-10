@@ -260,7 +260,7 @@ const EvaluationDetailPage: React.FC = () => {
             {evaluation.status === 'completed' && evaluation.result && (
               <div className="card bg-gradient-to-br from-blue-50 to-purple-50">
                 <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-full shadow-lg mb-4">
+                  <div className="inline-flex items-center justify-center w-16 h-16 ios-glass liquid-glass-container rounded-full shadow-lg mb-4">
                     <Award className="w-8 h-8 text-yellow-500" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">综合评分</h3>

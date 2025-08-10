@@ -1,0 +1,14 @@
+Figma Personal Access Token - CC MCP
+生成时间: 2025-08-11
+Token名称: CC MCP
+权限: Full Access (所有权限)
+
+Token:
+figd_VtCkQDgpoHkhsT7gTIpzyDbe8GOET6kPT1_k9M5T
+
+验证成功：
+- User ID: 1488907775076390377
+- Email: yuhaorui88@gmail.com
+- Handle: yu hr
+
+注意：请妥善保管此Token，不要分享给他人。

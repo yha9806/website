@@ -1,170 +1,234 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Trophy, Swords, Sparkles, TrendingUp } from 'lucide-react';
+import { ArrowRight, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { mockBattles, categories } from '../data/mockData';
 import { useLeaderboard } from '../hooks/useLeaderboard';
+import { 
+  IOSButton, 
+  IOSCard, 
+  IOSCardHeader, 
+  IOSCardContent, 
+  IOSCardFooter,
+  IOSCardGrid,
+  StatusEmoji, 
+  TypeEmoji,
+  RankEmoji,
+  EmojiIcon
+} from '../components/ios';
+import LeaderboardTable from '../components/leaderboard/LeaderboardTable';
 
 export default function HomePage() {
   const { entries: leaderboard } = useLeaderboard();
   const topModels = leaderboard.slice(0, 3);
 
   return (
-    <div className="space-y-16">
-      {/* Hero Section */}
+    <div className="space-y-12">
+      {/* Modern iOS Hero Section */}
       <section className="relative overflow-hidden">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative bg-gradient-to-br from-white/80 via-rose-50/60 to-indigo-50/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-16 text-center"
-          style={{
-            transform: 'perspective(1000px) rotateX(2deg)',
-            transformStyle: 'preserve-3d'
-          }}
+          className="liquid-glass-hero rounded-3xl p-12 text-center"
         >
+          {/* iOS Large Title */}
           <motion.h1 
-            className="text-7xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-rose-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent"
-            style={{ fontFamily: 'serif' }}
+            className="text-large-title mb-6"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            文心墨韵
+            WenXin MoYun
           </motion.h1>
+          
+          {/* Subtitle */}
           <motion.p 
-            className="text-2xl md:text-3xl text-slate-700 mb-8 max-w-3xl mx-auto"
+            className="text-h2 mb-8 max-w-3xl mx-auto text-gray-600 dark:text-gray-300"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            融合传统美学与现代AI的艺术评测平台
+            AI Art Evaluation Platform
           </motion.p>
+          
+          {/* Description */}
           <motion.p 
-            className="text-lg text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed"
+            className="text-body mb-12 max-w-2xl mx-auto"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.6 }}
           >
-            如水墨丹青，评AI之美 · 似诗词歌赋，鉴机器之智
+            Experience the future of AI creativity assessment with modern design and intelligent evaluation
           </motion.p>
-          <div className="flex gap-4 justify-center">
+          
+          {/* iOS Button Group */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <motion.div
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.6 }}
             >
-              <Link
-                to="/leaderboard"
-                className="inline-flex items-center px-10 py-5 bg-gradient-to-r from-rose-500 to-purple-600 text-white rounded-2xl shadow-2xl font-semibold text-lg mr-4 hover:from-rose-600 hover:to-purple-700 transition-all duration-300"
-                style={{ boxShadow: '0 10px 30px rgba(236, 72, 153, 0.3)' }}
-              >
-                探索榜单 <Trophy className="ml-2 w-5 h-5" />
+              <Link to="/leaderboard">
+                <IOSButton 
+                  variant="primary" 
+                  size="lg" 
+                  emoji="favorite"
+                  glassMorphism={true}
+                >
+                  <EmojiIcon category="rating" name="star" size="sm" />
+                  Explore Rankings
+                </IOSButton>
               </Link>
             </motion.div>
+            
             <motion.div
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.0, duration: 0.6 }}
             >
-              <Link
-                to="/battle"
-                className="inline-flex items-center px-10 py-5 bg-neutral-50/90 backdrop-blur-md text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-purple-600 border-2 border-gradient-to-r from-rose-200 to-purple-200 rounded-2xl font-semibold text-lg hover:bg-neutral-50 transition-all duration-300"
-                style={{ boxShadow: '0 10px 30px rgba(147, 51, 234, 0.1)' }}
-              >
-                模型对决 <Swords className="ml-2 w-5 h-5 text-purple-600" />
+              <Link to="/battle">
+                <IOSButton 
+                  variant="secondary" 
+                  size="lg" 
+                  glassMorphism={true}
+                >
+                  <EmojiIcon category="actions" name="battle" size="sm" />
+                  Model Battle
+                </IOSButton>
               </Link>
             </motion.div>
           </div>
         </motion.div>
       </section>
 
-      {/* Top Models */}
+      {/* Top Models Table - Rich Content Section */}
+      <section>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-h2 flex items-center gap-2">
+            <EmojiIcon category="rating" name="chart" size="md" />
+            Model Rankings
+            <EmojiIcon category="trend" name="hot" size="sm" />
+          </h2>
+          <Link to="/leaderboard">
+            <IOSButton variant="text">
+              View Full Rankings
+            </IOSButton>
+          </Link>
+        </div>
+        
+        <IOSCard variant="glass" className="overflow-hidden liquid-glass-container">
+          <IOSCardContent className="p-0">
+            <LeaderboardTable 
+              data={leaderboard.slice(0, 10).map(entry => ({
+                ...entry,
+                // 确保数据格式匹配
+                change: Math.floor(Math.random() * 5) - 2, // 模拟趋势变化
+                battles: Math.floor(Math.random() * 100) + 20,
+                winRate: entry.score * 0.8 + Math.random() * 10
+              }))}
+              loading={false}
+              onRowClick={(entry) => window.location.href = `/model/${entry.model.id}`}
+            />
+          </IOSCardContent>
+        </IOSCard>
+      </section>
+
+      {/* Top Models - iOS Style */}
       <section>
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-            <Trophy className="inline-block w-8 h-8 mr-2 text-yellow-500" />
-            当前领先模型
+          <h2 className="text-h2 flex items-center gap-2">
+            <RankEmoji rank={1} size="md" />
+            Leading Models
+            <EmojiIcon category="feedback" name="celebration" size="md" />
           </h2>
-          <Link
-            to="/leaderboard"
-            className="text-primary-600 dark:text-primary-400 hover:underline flex items-center"
-          >
-            查看完整排行榜 <ArrowRight className="ml-1 w-4 h-4" />
+          <Link to="/leaderboard">
+            <IOSButton variant="text">
+              View All Rankings
+            </IOSButton>
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <IOSCardGrid columns={3} gap="lg">
           {topModels.map((entry, index) => (
-            <motion.div
+            <IOSCard
               key={entry.model.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="card hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+              variant="glass"
+              interactive
+              animate
+              className="relative liquid-glass-container"
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center">
-                  <div className={`text-3xl font-bold mr-3 ${
-                    index === 0 ? 'text-yellow-500' :
-                    index === 1 ? 'text-gray-400' :
-                    'text-orange-600'
-                  }`}>
-                    #{entry.rank}
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                      {entry.model.name}
-                    </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {entry.model.organization}
-                    </p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-                    {entry.score.toFixed(1)}
-                  </div>
-                  <div className="text-xs text-gray-500">综合评分</div>
-                </div>
+              {/* Rank Badge - positioned at top-center to avoid blocking content */}
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                <RankEmoji rank={entry.rank} size="lg" />
               </div>
+              
+              <IOSCardHeader
+                title={entry.model.name}
+                subtitle={entry.model.organization}
+                emoji={<TypeEmoji type="painting" size="lg" />}
+                action={
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      {entry.score.toFixed(1)}
+                    </div>
+                    <div className="text-footnote text-gray-500">Score</div>
+                  </div>
+                }
+              />
 
-              <div className="flex flex-wrap gap-2 mb-4">
-                {entry.model.tags.slice(0, 3).map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 text-xs rounded-full text-neutral-600 dark:text-neutral-400 font-medium"
+              <IOSCardContent>
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2">
+                  {entry.model.tags.slice(0, 3).map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-xs rounded-full text-blue-600 dark:text-blue-400 font-medium"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </IOSCardContent>
+
+              <IOSCardFooter>
+                <Link to={`/model/${entry.model.id}`} className="w-full">
+                  <IOSButton 
+                    variant="primary" 
+                    size="md" 
+                    className="w-full"
                   >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              <Link
-                to={`/model/${entry.model.id}`}
-                className="btn-primary btn text-center"
-              >
-                查看详情
-              </Link>
-            </motion.div>
+                    View Details
+                  </IOSButton>
+                </Link>
+              </IOSCardFooter>
+            </IOSCard>
           ))}
-        </div>
+        </IOSCardGrid>
       </section>
 
-      {/* Categories */}
-      <section>
-        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-8">
-          <Sparkles className="inline-block w-8 h-8 mr-2 text-purple-500" />
-          评测维度
+      {/* Evaluation Categories - Liquid Glass Version */}
+      <section className="liquid-glass-container rounded-2xl p-6">
+        <h2 className="text-h2 mb-6 flex items-center gap-2">
+          <EmojiIcon category="evaluationType" name="general" size="md" />
+          Evaluation Dimensions
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {categories.map((category) => (
-            <Link
-              key={category.id}
+            <Link 
+              key={category.id} 
               to={`/leaderboard/${category.id}`}
-              className="card p-6 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2 hover:scale-105"
+              className="group"
             >
-              <div className="text-3xl mb-2">{category.icon}</div>
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {category.name}
-              </p>
+              <div className="flex items-center gap-2 px-4 py-3 ios-glass liquid-glass-container rounded-xl hover:shadow-md hover:scale-105 transition-all duration-200 border border-gray-100 dark:border-gray-700">
+                <span className="text-2xl flex-shrink-0">{category.icon}</span>
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                  {category.name}
+                </p>
+              </div>
             </Link>
           ))}
         </div>
@@ -173,100 +237,111 @@ export default function HomePage() {
       {/* Active Battles */}
       <section>
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-            <Swords className="inline-block w-8 h-8 mr-2 text-red-500" />
-            实时对决
+          <h2 className="text-h2 flex items-center gap-2">
+            <EmojiIcon category="navigation" name="battle" size="md" />
+            Live Battles
+            <EmojiIcon category="trend" name="hot" size="md" />
           </h2>
-          <Link
-            to="/battle"
-            className="text-primary-600 dark:text-primary-400 hover:underline flex items-center"
-          >
-            参与投票 <ArrowRight className="ml-1 w-4 h-4" />
+          <Link to="/battle">
+            <IOSButton variant="text">
+              Join Voting
+            </IOSButton>
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <IOSCardGrid columns={2} gap="lg">
           {mockBattles.slice(0, 2).map((battle) => (
-            <div
+            <IOSCard
               key={battle.id}
-              className="card hover:shadow-xl transition-all duration-300"
+              variant="glass"
+              interactive
+              animate
+              className="liquid-glass-container"
             >
-              <div className="flex justify-between items-center mb-4">
-                <span className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full text-sm font-medium">
-                  进行中
-                </span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {battle.task.category}
-                </span>
-              </div>
+              <IOSCardHeader
+                title={battle.task.category}
+                subtitle={battle.task.prompt}
+                emoji={<StatusEmoji status="processing" size="lg" animated />}
+                action={<StatusEmoji status="pending" size="md" />}
+              />
 
-              <p className="text-gray-700 dark:text-gray-300 mb-4">
-                {battle.task.prompt}
-              </p>
-
-              <div className="flex justify-between items-center">
-                <div className="text-center">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200">
-                    {battle.modelA.name}
-                  </p>
-                  <p className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-                    {battle.votesA}
-                  </p>
+              <IOSCardContent>
+                <div className="flex justify-between items-center mb-4">
+                  <div className="text-center">
+                    <p className="font-semibold text-body">
+                      {battle.modelA.name}
+                    </p>
+                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      {battle.votesA}
+                    </p>
+                  </div>
+                  <div className="text-gray-400 font-bold">VS</div>
+                  <div className="text-center">
+                    <p className="font-semibold text-body">
+                      {battle.modelB.name}
+                    </p>
+                    <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                      {battle.votesB}
+                    </p>
+                  </div>
                 </div>
-                <div className="text-gray-400">VS</div>
-                <div className="text-center">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200">
-                    {battle.modelB.name}
-                  </p>
-                  <p className="text-2xl font-bold text-secondary-600 dark:text-secondary-400">
-                    {battle.votesB}
-                  </p>
-                </div>
-              </div>
+              </IOSCardContent>
 
-              <Link
-                to="/battle"
-                className="btn-secondary btn text-center mt-4"
-              >
-                参与投票
-              </Link>
-            </div>
+              <IOSCardFooter>
+                <Link to="/battle" className="w-full">
+                  <IOSButton 
+                    variant="secondary" 
+                    size="md" 
+                    className="w-full"
+                    emoji="like"
+                  >
+                    Vote Now
+                  </IOSButton>
+                </Link>
+              </IOSCardFooter>
+            </IOSCard>
           ))}
-        </div>
+        </IOSCardGrid>
       </section>
 
-      {/* Stats */}
-      <section className="card p-12 bg-gradient-to-br from-white to-neutral-50 dark:from-neutral-800 dark:to-neutral-900">
-        <h2 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200 mb-12 text-center">
-          <TrendingUp className="inline-block w-8 h-8 mr-2 text-success" />
-          平台数据
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">
-              {leaderboard.length}
+      {/* Platform Stats */}
+      <section>
+        <IOSCard variant="glass" padding="xl" className="text-center liquid-glass-container">
+          <IOSCardHeader
+            title="Platform Statistics"
+            emoji={<TrendingUp className="w-8 h-8 text-green-600" />}
+            centered
+          />
+          
+          <IOSCardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div>
+                <div className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                  {leaderboard.length}
+                </div>
+                <p className="text-footnote">AI Models</p>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">
+                  1,248
+                </div>
+                <p className="text-footnote">Battle Rounds</p>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">
+                  15,692
+                </div>
+                <p className="text-footnote">User Votes</p>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-orange-600 dark:text-orange-400 mb-2">
+                  6
+                </div>
+                <p className="text-footnote">Dimensions</p>
+              </div>
             </div>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">评测模型</p>
-          </div>
-          <div>
-            <div className="text-4xl font-bold text-secondary-600 dark:text-secondary-400">
-              1,248
-            </div>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">对决场次</p>
-          </div>
-          <div>
-            <div className="text-4xl font-bold text-green-600 dark:text-green-400">
-              15,692
-            </div>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">用户投票</p>
-          </div>
-          <div>
-            <div className="text-4xl font-bold text-purple-600 dark:text-purple-400">
-              6
-            </div>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">评测维度</p>
-          </div>
-        </div>
+          </IOSCardContent>
+        </IOSCard>
       </section>
     </div>
   );

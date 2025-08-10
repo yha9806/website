@@ -1,84 +1,87 @@
 import { Github, Twitter, Mail, Heart } from 'lucide-react';
+import { IOSButton } from '../ios';
+import { EmojiIcon } from '../ios';
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-white to-neutral-50 dark:from-neutral-900 dark:to-neutral-950 border-t border-neutral-200/50 dark:border-neutral-700/50 mt-auto">
+    <footer className="ios-glass border-t border-gray-200/20 dark:border-gray-700/20 mt-auto">
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About Section */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-neutral-800 dark:text-neutral-200">关于文心墨韵</h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              专注于评测 AI 模型在诗歌、绘画、叙事等艺术领域的创造力、美学价值和文化契合度。
-              用量化数据赋能感性创作，连接技术开发者与艺术创作者。
+            <h3 className="text-h3 mb-4 flex items-center gap-2">
+              <EmojiIcon category="feedback" name="info" size="sm" />
+              About WenXin MoYun
+            </h3>
+            <p className="text-body">
+              Modern AI art evaluation platform focused on creativity assessment, aesthetic analysis, and intelligent evaluation.
+              Bridging the gap between technology and artistic expression.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-neutral-800 dark:text-neutral-200">快速链接</h3>
-            <ul className="space-y-2">
-              <li>
-                <a href="/leaderboard" className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400">
-                  模型排行榜
-                </a>
-              </li>
-              <li>
-                <a href="/battle" className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400">
-                  实时对决
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400">
-                  评测方法论
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400">
-                  API 文档
-                </a>
-              </li>
-            </ul>
+            <h3 className="text-h3 mb-4 flex items-center gap-2">
+              <EmojiIcon category="navigation" name="forward" size="sm" />
+              Quick Links
+            </h3>
+            <div className="space-y-2">
+              <a href="/leaderboard" className="block">
+                <IOSButton variant="text" size="sm" className="w-full justify-start">
+                  <EmojiIcon category="navigation" name="leaderboard" size="xs" />
+                  Model Rankings
+                </IOSButton>
+              </a>
+              <a href="/battle" className="block">
+                <IOSButton variant="text" size="sm" className="w-full justify-start">
+                  <EmojiIcon category="navigation" name="battle" size="xs" />
+                  Live Battles
+                </IOSButton>
+              </a>
+              <a href="/evaluations" className="block">
+                <IOSButton variant="text" size="sm" className="w-full justify-start">
+                  <EmojiIcon category="evaluationType" name="general" size="xs" />
+                  Evaluation Tasks
+                </IOSButton>
+              </a>
+              <a href="/about" className="block">
+                <IOSButton variant="text" size="sm" className="w-full justify-start">
+                  <EmojiIcon category="feedback" name="info" size="xs" />
+                  Documentation
+                </IOSButton>
+              </a>
+            </div>
           </div>
 
           {/* Contact */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-neutral-800 dark:text-neutral-200">联系我们</h3>
-            <div className="flex space-x-4">
-              <a
-                href="https://github.com"
-                className="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400"
-                aria-label="GitHub"
-              >
-                <Github className="w-5 h-5" />
-              </a>
-              <a
-                href="https://twitter.com"
-                className="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a
-                href="mailto:contact@wenxinmoyun.ai"
-                className="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400"
-                aria-label="Email"
-              >
-                <Mail className="w-5 h-5" />
-              </a>
+            <h3 className="text-h3 mb-4 flex items-center gap-2">
+              <EmojiIcon category="actions" name="share" size="sm" />
+              Connect With Us
+            </h3>
+            <div className="flex space-x-3 mb-4">
+              <IOSButton variant="glass" size="sm" className="p-3">
+                <Github className="w-4 h-4" />
+              </IOSButton>
+              <IOSButton variant="glass" size="sm" className="p-3">
+                <Twitter className="w-4 h-4" />
+              </IOSButton>
+              <IOSButton variant="glass" size="sm" className="p-3">
+                <Mail className="w-4 h-4" />
+              </IOSButton>
             </div>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-4">
-              contact@wenxinmoyun.ai
+            <p className="text-footnote text-gray-500 dark:text-gray-400">
+              hello@wenxinmoyun.ai
             </p>
           </div>
         </div>
 
-        <div className="border-t border-neutral-200 dark:border-neutral-700 mt-8 pt-8 text-center">
-          <p className="text-sm text-neutral-600 dark:text-neutral-400 flex items-center justify-center">
-            Made with <Heart className="w-4 h-4 mx-1 text-red-500" /> by WenXin MoYun Team
+        <div className="border-t border-gray-200/20 dark:border-gray-700/20 mt-8 pt-8 text-center">
+          <p className="text-footnote text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1 mb-2">
+            Made with <Heart className="w-4 h-4 text-red-500" /> by WenXin MoYun Team
           </p>
-          <p className="text-xs text-neutral-500 dark:text-neutral-500 mt-2">
-            © 2024 文心墨韵. All rights reserved.
+          <p className="text-footnote text-gray-500 dark:text-gray-500">
+            © 2024 WenXin MoYun. All rights reserved.
           </p>
         </div>
       </div>

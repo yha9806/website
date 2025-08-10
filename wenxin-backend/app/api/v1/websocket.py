@@ -57,13 +57,22 @@ class ConnectionManager:
             connections = list(self.active_connections[room])
         
         # 在锁外发送消息，避免长时间持有锁
-        disconnected = set()
+        disconnected = []
         for connection in connections:
             try:
-                await connection.send_json(message)
+                # Check if the connection is still open before sending
+                # Using application_state instead of client_state
+                if hasattr(connection, 'application_state') and connection.application_state.value == 1:
+                    await connection.send_json(message)
+                elif not hasattr(connection, 'application_state'):
+                    # Fallback: try to send and catch exceptions
+                    await connection.send_json(message)
             except Exception as e:
-                logger.error(f"Error sending message: {e}")
-                disconnected.add(connection)
+                # Only log actual errors, not expected disconnections
+                error_str = str(e)
+                if "Cannot call" not in error_str and "ASGI" not in error_str and "closed" not in error_str.lower():
+                    logger.error(f"Error sending message: {e}")
+                disconnected.append(connection)
         
         # 如果有断开的连接，再次获取锁进行清理
         if disconnected:
@@ -111,6 +120,10 @@ manager = ConnectionManager()
 async def websocket_endpoint(websocket: WebSocket, room: str):
     """WebSocket端点"""
     await manager.connect(websocket, room)
+    
+    # Add a small delay to ensure connection is established
+    await asyncio.sleep(0.1)
+    
     try:
         # 发送欢迎消息
         await manager.send_personal_message(
@@ -195,10 +208,8 @@ async def websocket_endpoint(websocket: WebSocket, room: str):
                 
     except WebSocketDisconnect:
         await manager.disconnect(websocket, room)
-        await manager.broadcast_to_room({
-            "type": "user_left",
-            "timestamp": datetime.now().isoformat()
-        }, room)
+        # Don't broadcast to the room after disconnect to avoid errors
+        logger.info(f"Client disconnected from {room} room")
 
 @router.websocket("/ws")
 async def websocket_global(websocket: WebSocket):

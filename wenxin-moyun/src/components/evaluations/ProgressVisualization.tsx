@@ -20,10 +20,10 @@ interface ProgressVisualizationProps {
 }
 
 const progressStages: Record<string, string[]> = {
-  poem: ['分析提示词', '构思创作', '润色优化', '质量评估'],
-  story: ['理解需求', '构建框架', '内容创作', '综合评估'],
-  painting: ['主题分析', '构图设计', '图像生成', '美学评估'],
-  music: ['风格分析', '旋律创作', '编曲制作', '音乐评估']
+  poem: ['Analyzing Prompt', 'Conceptualizing', 'Refining & Optimizing', 'Quality Assessment'],
+  story: ['Understanding Requirements', 'Building Framework', 'Content Creation', 'Comprehensive Evaluation'],
+  painting: ['Theme Analysis', 'Composition Design', 'Image Generation', 'Aesthetic Evaluation'],
+  music: ['Style Analysis', 'Melody Creation', 'Arrangement Production', 'Music Evaluation']
 };
 
 const stageDurations: Record<string, number[]> = {
@@ -94,17 +94,17 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
   };
 
   const getStatusText = () => {
-    if (!progressData) return '初始化中...';
+    if (!progressData) return 'Initializing...';
     
     switch (progressData.status) {
       case 'completed':
-        return '评测完成';
+        return 'Evaluation Complete';
       case 'failed':
-        return '评测失败';
+        return 'Evaluation Failed';
       case 'running':
-        return progressData.current_stage || '处理中';
+        return progressData.current_stage || 'Processing';
       default:
-        return '等待开始';
+        return 'Waiting to Start';
     }
   };
 
@@ -130,7 +130,7 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
         <div className="flex items-center gap-3">
           {getStatusIcon()}
           <div>
-            <h3 className="text-lg font-semibold text-neutral-800">评测进度</h3>
+            <h3 className="text-lg font-semibold text-neutral-800">Evaluation Progress</h3>
             <p className="text-sm text-neutral-600">{getStatusText()}</p>
           </div>
         </div>
@@ -202,7 +202,7 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
                     {stage}
                   </span>
                   <span className="text-xs text-neutral-500">
-                    预计 {durations[index]}秒
+                    Est. {durations[index]}s
                   </span>
                 </div>
                 {isActive && (
@@ -239,9 +239,9 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
       {/* Time Info */}
       {progressData?.started_at && (
         <div className="mt-4 flex items-center justify-between text-xs text-neutral-500">
-          <span>开始时间: {new Date(progressData.started_at).toLocaleTimeString()}</span>
+          <span>Start Time: {new Date(progressData.started_at).toLocaleTimeString()}</span>
           {progressData.completed_at && (
-            <span>完成时间: {new Date(progressData.completed_at).toLocaleTimeString()}</span>
+            <span>Completion Time: {new Date(progressData.completed_at).toLocaleTimeString()}</span>
           )}
         </div>
       )}

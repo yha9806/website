@@ -11,7 +11,7 @@ interface BubbleChartProps {
 
 export default function BubbleChart({ 
   data, 
-  title = "模型综合性能气泡图",
+  title = "Model Performance Bubble Chart",
   onBubbleClick 
 }: BubbleChartProps) {
   
@@ -121,7 +121,7 @@ export default function BubbleChart({
             textAnchor="middle"
             className="fill-gray-600 dark:fill-gray-400 text-sm font-medium"
           >
-            创意新颖度 →
+            Creativity Score →
           </text>
           <text
             x="40"
@@ -130,14 +130,14 @@ export default function BubbleChart({
             transform="rotate(-90, 40, 200)"
             className="fill-gray-600 dark:fill-gray-400 text-sm font-medium"
           >
-            文化契合度 →
+            Cultural Score →
           </text>
 
           {/* 象限标签 */}
-          <text x="150" y="100" className="fill-gray-400 text-xs" opacity="0.5">高文化低创意</text>
-          <text x="400" y="100" className="fill-gray-400 text-xs" opacity="0.5">双高区域</text>
-          <text x="150" y="300" className="fill-gray-400 text-xs" opacity="0.5">双低区域</text>
-          <text x="400" y="300" className="fill-gray-400 text-xs" opacity="0.5">高创意低文化</text>
+          <text x="150" y="100" className="fill-gray-400 text-xs" opacity="0.5">High Cultural/Low Creative</text>
+          <text x="400" y="100" className="fill-gray-400 text-xs" opacity="0.5">High in Both</text>
+          <text x="150" y="300" className="fill-gray-400 text-xs" opacity="0.5">Low in Both</text>
+          <text x="400" y="300" className="fill-gray-400 text-xs" opacity="0.5">High Creative/Low Cultural</text>
 
           {/* 气泡 */}
           {chartData.map((item, index) => (
@@ -213,7 +213,7 @@ export default function BubbleChart({
                   textAnchor="middle"
                   className="fill-gray-300 text-xs"
                 >
-                  综合: {item.entry.score.toFixed(1)}
+                  Score: {item.entry.score.toFixed(1)}
                 </text>
               </g>
             </motion.g>
@@ -222,7 +222,7 @@ export default function BubbleChart({
           {/* 图例 */}
           <g transform="translate(20, 20)">
             <rect x="0" y="0" width="140" height={Math.min(organizations.length * 20 + 10, 150)} fill="white" fillOpacity="0.95" rx="4" stroke="gray" strokeOpacity="0.2" />
-            <text x="10" y="15" className="fill-gray-700 text-xs font-bold">组织</text>
+            <text x="10" y="15" className="fill-gray-700 text-xs font-bold">Organization</text>
             {organizations.slice(0, 7).map((org, i) => (
               <g key={org} transform={`translate(10, ${25 + i * 18})`}>
                 <circle cx="0" cy="0" r="5" fill={getColorByOrg(org)} opacity="0.8" />
@@ -235,7 +235,7 @@ export default function BubbleChart({
 
           {/* 说明文字 */}
           <text x="300" y="380" textAnchor="middle" className="fill-gray-500 text-xs">
-            气泡大小代表综合评分，位置反映创意与文化维度表现
+            Bubble size represents overall score, position reflects creativity and cultural performance
           </text>
         </svg>
       </div>

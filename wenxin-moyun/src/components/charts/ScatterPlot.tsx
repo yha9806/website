@@ -15,7 +15,7 @@ export default function ScatterPlot({
   data, 
   xAxis, 
   yAxis, 
-  title = "模型性能分布",
+  title = "Model Performance Distribution",
   onModelClick 
 }: ScatterPlotProps) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -35,11 +35,11 @@ export default function ScatterPlot({
 
     const getAxisLabel = (axis: string) => {
       switch (axis) {
-        case 'score': return '综合评分';
-        case 'winRate': return '胜率 (%)';
-        case 'battles': return '对战场次';
-        case 'creativity': return '创意得分';
-        case 'cultural': return '文化契合度';
+        case 'score': return 'Overall Score';
+        case 'winRate': return 'Win Rate (%)';
+        case 'battles': return 'Battle Count';
+        case 'creativity': return 'Creativity Score';
+        case 'cultural': return 'Cultural Score';
         default: return '';
       }
     };
@@ -210,9 +210,9 @@ export default function ScatterPlot({
           <g transform="translate(440, 20)">
             <rect x="0" y="0" width="120" height="80" fill="white" fillOpacity="0.9" rx="4" />
             {[
-              { category: 'text', label: '文本', color: '#3b82f6' },
-              { category: 'visual', label: '视觉', color: '#10b981' },
-              { category: 'multimodal', label: '多模态', color: '#f59e0b' }
+              { category: 'text', label: 'Text', color: '#3b82f6' },
+              { category: 'visual', label: 'Visual', color: '#10b981' },
+              { category: 'multimodal', label: 'Multimodal', color: '#f59e0b' }
             ].map((item, i) => (
               <g key={item.category} transform={`translate(10, ${20 + i * 20})`}>
                 <circle cx="0" cy="0" r="4" fill={item.color} />
@@ -228,11 +228,11 @@ export default function ScatterPlot({
       {/* Axis Selector */}
       <div className="mt-4 flex items-center justify-center gap-4 text-sm">
         <div className="flex items-center gap-2">
-          <span className="text-gray-600 dark:text-gray-400">X轴:</span>
+          <span className="text-gray-600 dark:text-gray-400">X-Axis:</span>
           <span className="font-medium text-gray-800 dark:text-gray-200">{xLabel}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-gray-600 dark:text-gray-400">Y轴:</span>
+          <span className="text-gray-600 dark:text-gray-400">Y-Axis:</span>
           <span className="font-medium text-gray-800 dark:text-gray-200">{yLabel}</span>
         </div>
       </div>

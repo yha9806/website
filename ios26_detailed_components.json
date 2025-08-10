@@ -1,0 +1,2222 @@
+{
+  "total_components": 1539,
+  "filtered_components": 74,
+  "components": [
+    {
+      "id": "770:21905",
+      "name": "Notifications",
+      "type": "COMPONENT_SET",
+      "path": "Examples/iPhone/Notifications",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.5921568870544434,
+            "g": 0.27843138575553894,
+            "b": 1.0,
+            "a": 1.0
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5660:57680",
+      "name": "Tab Bar",
+      "type": "COMPONENT_SET",
+      "path": "Examples/iPhone/Tab Bar",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.5921568870544434,
+            "g": 0.27843138575553894,
+            "b": 1.0,
+            "a": 1.0
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5661:43611",
+      "name": "Slider",
+      "type": "COMPONENT",
+      "path": "Examples/iPhone/Slider",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 1.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "770:21908",
+      "name": "Sheets (Modals)",
+      "type": "COMPONENT_SET",
+      "path": "Examples/iPhone/Sheets (Modals)",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.5921568870544434,
+            "g": 0.27843138575553894,
+            "b": 1.0,
+            "a": 1.0
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "754:62668",
+      "name": "Context Menu",
+      "type": "COMPONENT",
+      "path": "Examples/iPhone/Context Menu",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 1.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "754:62559",
+      "name": "Action Sheet",
+      "type": "COMPONENT",
+      "path": "Examples/iPhone/Action Sheet",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 1.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "770:21906",
+      "name": "Notifications",
+      "type": "COMPONENT_SET",
+      "path": "Examples/iPad/Notifications",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.5921568870544434,
+            "g": 0.27843138575553894,
+            "b": 1.0,
+            "a": 1.0
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5735:66270",
+      "name": "Tab Bars",
+      "type": "COMPONENT_SET",
+      "path": "Examples/iPad/Tab Bars",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.5921568870544434,
+            "g": 0.27843138575553894,
+            "b": 1.0,
+            "a": 1.0
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "754:64609",
+      "name": "Sheets (Modals)",
+      "type": "COMPONENT",
+      "path": "Examples/iPad/Sheets (Modals)",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:508:77440"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "strokeWeight": 1.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "754:62748",
+      "name": "Context Menu",
+      "type": "COMPONENT",
+      "path": "Examples/iPad/Context Menu",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:508:77440"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "strokeWeight": 1.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "754:62590",
+      "name": "Action Sheet",
+      "type": "COMPONENT",
+      "path": "Examples/iPad/Action Sheet",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:508:77440"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "strokeWeight": 1.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5584:32504",
+      "name": "Liquid Glass - Large",
+      "type": "COMPONENT_SET",
+      "path": "Materials/Liquid Glass - Large",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.6666666865348816,
+            "g": 0.6666666865348816,
+            "b": 0.6666666865348816,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22730"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "opacity": 0.4000000059604645,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22728"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5584:32503",
+      "name": "Liquid Glass - Medium",
+      "type": "COMPONENT_SET",
+      "path": "Materials/Liquid Glass - Medium",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.6666666865348816,
+            "g": 0.6666666865348816,
+            "b": 0.6666666865348816,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22730"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "opacity": 0.4000000059604645,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22728"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5584:32505",
+      "name": "Liquid Glass - Small (BG Context = Bright)",
+      "type": "COMPONENT_SET",
+      "path": "Materials/Liquid Glass - Small (BG Context = Bright)",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.8509804010391235,
+            "g": 0.8509804010391235,
+            "b": 0.8509804010391235,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22727"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "opacity": 0.4000000059604645,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22728"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5584:32506",
+      "name": "Liquid Glass - Small (BG Context = Dim)",
+      "type": "COMPONENT_SET",
+      "path": "Materials/Liquid Glass - Small (BG Context = Dim)",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.20000000298023224,
+            "g": 0.20000000298023224,
+            "b": 0.20000000298023224,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22729"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "opacity": 0.4000000059604645,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22728"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5446:10266",
+      "name": "Action Sheet",
+      "type": "COMPONENT",
+      "path": "Action Sheets//Action Sheet",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 1.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5591:67812",
+      "name": "_Button - Liquid Glass",
+      "type": "COMPONENT_SET",
+      "path": "Activity Views/_Button - Liquid Glass",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.6666666865348816,
+            "g": 0.6666666865348816,
+            "b": 0.6666666865348816,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22730"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5473:21667",
+      "name": "Button - Liquid Glass - Text",
+      "type": "COMPONENT_SET",
+      "path": "Buttons/Button - Liquid Glass - Text",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.9607843160629272,
+            "g": 0.9607843160629272,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22725"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5522:11866",
+      "name": "Button - Liquid Glass - Symbol",
+      "type": "COMPONENT_SET",
+      "path": "Buttons/Button - Liquid Glass - Symbol",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.9607843160629272,
+            "g": 0.9607843160629272,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22725"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "128:76929",
+      "name": "Context Menu - Dimming Overlay",
+      "type": "COMPONENT",
+      "path": "Contextual Menus/Context Menu - Dimming Overlay",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.23000000417232513,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          }
+        }
+      ],
+      "effects": [
+        {
+          "type": "BACKGROUND_BLUR",
+          "visible": false,
+          "radius": 30.0
+        }
+      ],
+      "strokeWeight": 1.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "125:58750",
+      "name": "Context Menu",
+      "type": "COMPONENT_SET",
+      "path": "Contextual Menus/Context Menu",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.9607843160629272,
+            "g": 0.9607843160629272,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22725"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "135:73247",
+      "name": "Notification - Collapsed/Notification - List",
+      "type": "COMPONENT",
+      "path": "Notifications//Notification - Collapsed/Notification - List",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "135:67787",
+      "name": "Notification - Collapsed",
+      "type": "COMPONENT_SET",
+      "path": "Notifications//Notification - Collapsed",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "143:62847",
+      "name": "Notification - Expanded",
+      "type": "COMPONENT",
+      "path": "Notifications//Notification - Expanded",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 1.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5549:5660",
+      "name": "_Notification Banner BG",
+      "type": "COMPONENT_SET",
+      "path": "Notifications//_Notification Banner BG",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.6666666865348816,
+            "g": 0.6666666865348816,
+            "b": 0.6666666865348816,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22730"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "opacity": 0.4000000059604645,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22728"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5551:17897",
+      "name": "_Notification Menu BG",
+      "type": "COMPONENT_SET",
+      "path": "Notifications//_Notification Menu BG",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.6666666865348816,
+            "g": 0.6666666865348816,
+            "b": 0.6666666865348816,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22730"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "opacity": 0.4000000059604645,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22728"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "410:50387",
+      "name": "Popup Button",
+      "type": "COMPONENT_SET",
+      "path": "Pop-up Buttons/Popup Button",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.9607843160629272,
+            "g": 0.9607843160629272,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22725"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "6:57374",
+      "name": "Segmented control",
+      "type": "COMPONENT_SET",
+      "path": "Segmented Controls/Segmented control",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.9607843160629272,
+            "g": 0.9607843160629272,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22725"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "6:57505",
+      "name": "Segments=5, Selected=5",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=5, Selected=5",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:60807",
+      "name": "Segments=5, Selected=4",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=5, Selected=4",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:60837",
+      "name": "Segments=5, Selected=3",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=5, Selected=3",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:60852",
+      "name": "Segments=5, Selected=2",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=5, Selected=2",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:60882",
+      "name": "Segments=5, Selected=1",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=5, Selected=1",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:60942",
+      "name": "Segments=4, Selected=4",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=4, Selected=4",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:60957",
+      "name": "Segments=4, Selected=3",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=4, Selected=3",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:60972",
+      "name": "Segments=4, Selected=2",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=4, Selected=2",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:61092",
+      "name": "Segments=4, Selected=1",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=4, Selected=1",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:61017",
+      "name": "Segments=3, Selected=3",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=3, Selected=3",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:61032",
+      "name": "Segments=3, Selected=2",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=3, Selected=2",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:61122",
+      "name": "Segments=3, Selected=1",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=3, Selected=1",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:61062",
+      "name": "Segments=2, Selected=2",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=2, Selected=2",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "488:61152",
+      "name": "Segments=2, Selected=1",
+      "type": "COMPONENT",
+      "path": "Segmented Controls/Segmented control/Segments=2, Selected=1",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5551:41121",
+      "name": "Sheet - Inspector - iPhone",
+      "type": "COMPONENT",
+      "path": "Sheets//Sheet - Inspector - iPhone",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5584:48163",
+      "name": "Sheet - Full Screen - iPhone",
+      "type": "COMPONENT_SET",
+      "path": "Sheets//Sheet - Full Screen - iPhone",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5719:30145",
+      "name": "Sheet - iPad",
+      "type": "COMPONENT",
+      "path": "Sheets//Sheet - iPad",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5719:30767"
+            }
+          }
+        }
+      ],
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 0.18000000715255737
+          },
+          "blendMode": "NORMAL",
+          "offset": {
+            "x": 0.0,
+            "y": 15.0
+          },
+          "radius": 75.0,
+          "showShadowBehindNode": false
+        }
+      ],
+      "cornerRadius": 38.0,
+      "strokeWeight": 1.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH",
+      "shadow": {
+        "offset_x": 0.0,
+        "offset_y": 15.0,
+        "radius": 75.0,
+        "color": {
+          "r": 0.0,
+          "g": 0.0,
+          "b": 0.0,
+          "a": 0.18000000715255737
+        },
+        "spread": 0
+      }
+    },
+    {
+      "id": "7:53847",
+      "name": "Sliders",
+      "type": "COMPONENT_SET",
+      "path": "Sliders/Sliders",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.9607843160629272,
+            "g": 0.9607843160629272,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22725"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "2524:3301",
+      "name": "Tab Bar - iPad",
+      "type": "COMPONENT_SET",
+      "path": "Tab Bars/Tab Bar - iPad",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.9607843160629272,
+            "g": 0.9607843160629272,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22725"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "3:70967",
+      "name": "Tab Bar - iPhone",
+      "type": "COMPONENT_SET",
+      "path": "Tab Bars/Tab Bar - iPhone",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.9607843160629272,
+            "g": 0.9607843160629272,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22725"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5735:64660",
+      "name": "_Tab Bar Button - iPad - Text",
+      "type": "COMPONENT_SET",
+      "path": "Tab Bars/_Tab Bar Button - iPad - Text",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.6666666865348816,
+            "g": 0.6666666865348816,
+            "b": 0.6666666865348816,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22730"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5735:64661",
+      "name": "_Tab Bar Button - iPad - Symbol",
+      "type": "COMPONENT_SET",
+      "path": "Tab Bars/_Tab Bar Button - iPad - Symbol",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.6666666865348816,
+            "g": 0.6666666865348816,
+            "b": 0.6666666865348816,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22730"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5735:65306",
+      "name": "_Tab Bar Button - iPhone - Search",
+      "type": "COMPONENT_SET",
+      "path": "Tab Bars/_Tab Bar Button - iPhone - Search",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.6666666865348816,
+            "g": 0.6666666865348816,
+            "b": 0.6666666865348816,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22730"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5735:65307",
+      "name": "_Tab Bar Button - iPhone - Text",
+      "type": "COMPONENT_SET",
+      "path": "Tab Bars/_Tab Bar Button - iPhone - Text",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.6666666865348816,
+            "g": 0.6666666865348816,
+            "b": 0.6666666865348816,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22730"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:24523",
+      "name": "_Segmented Control Button - BG Context=Dim",
+      "type": "COMPONENT_SET",
+      "path": "Toolbars/_Segmented Control Button - BG Context=Dim",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.20000000298023224,
+            "g": 0.20000000298023224,
+            "b": 0.20000000298023224,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22729"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "opacity": 0.4000000059604645,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22728"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:24524",
+      "name": "_Segmented Control Button - BG Context=Bright",
+      "type": "COMPONENT_SET",
+      "path": "Toolbars/_Segmented Control Button - BG Context=Bright",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.8509804010391235,
+            "g": 0.8509804010391235,
+            "b": 0.8509804010391235,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22727"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "opacity": 0.4000000059604645,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22728"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:24372",
+      "name": "_Segmented Control - BG Context=Dim",
+      "type": "COMPONENT",
+      "path": "Toolbars/_Segmented Control - BG Context=Dim",
+      "description": "",
+      "fills": [
+        {
+          "opacity": 0.11999999731779099,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.4627451002597809,
+            "g": 0.4627451002597809,
+            "b": 0.501960813999176,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:509:77493"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 100.0,
+      "strokeWeight": 10.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:24384",
+      "name": "_Segmented Control - BG Context=Bright",
+      "type": "COMPONENT",
+      "path": "Toolbars/_Segmented Control - BG Context=Bright",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 1.0,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5720:27703",
+      "name": "_Buttons - Top - Sheets",
+      "type": "COMPONENT_SET",
+      "path": "Toolbars/_Buttons - Top - Sheets",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.6666666865348816,
+            "g": 0.6666666865348816,
+            "b": 0.6666666865348816,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22730"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "opacity": 0.4000000059604645,
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22728"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:25667",
+      "name": "BG Context=Dim, Style=Compact Large, Tab Bar=True",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Dim, Style=Compact Large, Tab Bar=True",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:25697",
+      "name": "BG Context=Dim, Style=Large Title, Tab Bar=True",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Dim, Style=Large Title, Tab Bar=True",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:25651",
+      "name": "BG Context=Dim, Style=Title 2 Line Left, Tab Bar=True",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Dim, Style=Title 2 Line Left, Tab Bar=True",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:25681",
+      "name": "BG Context=Dim, Style=Title 2 Line, Tab Bar=True",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Dim, Style=Title 2 Line, Tab Bar=True",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:25727",
+      "name": "BG Context=Dim, Style=Compact Large, Tab Bar=False",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Dim, Style=Compact Large, Tab Bar=False",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:25713",
+      "name": "BG Context=Dim, Style=Large Title, Tab Bar=False",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Dim, Style=Large Title, Tab Bar=False",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:25739",
+      "name": "BG Context=Dim, Style=Title 2 Line Left, Tab Bar=False",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Dim, Style=Title 2 Line Left, Tab Bar=False",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:25752",
+      "name": "BG Context=Dim, Style=Title 2 Line, Tab Bar=False",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Dim, Style=Title 2 Line, Tab Bar=False",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5573:24144",
+      "name": "BG Context=Bright, Style=Compact Large, Tab Bar=True",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Bright, Style=Compact Large, Tab Bar=True",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5572:23773",
+      "name": "BG Context=Bright, Style=Large Title, Tab Bar=True",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Bright, Style=Large Title, Tab Bar=True",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5571:23159",
+      "name": "BG Context=Bright, Style=Title 2 Line Left, Tab Bar=True",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Bright, Style=Title 2 Line Left, Tab Bar=True",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5572:23363",
+      "name": "BG Context=Bright, Style=Title 2 Line, Tab Bar=True",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Bright, Style=Title 2 Line, Tab Bar=True",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5564:42177",
+      "name": "BG Context=Bright, Style=Compact Large, Tab Bar=False",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Bright, Style=Compact Large, Tab Bar=False",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5564:42163",
+      "name": "BG Context=Bright, Style=Large Title, Tab Bar=False",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Bright, Style=Large Title, Tab Bar=False",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5564:41927",
+      "name": "BG Context=Bright, Style=Title 2 Line Left, Tab Bar=False",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Bright, Style=Title 2 Line Left, Tab Bar=False",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5564:41843",
+      "name": "BG Context=Bright, Style=Title 2 Line, Tab Bar=False",
+      "type": "COMPONENT",
+      "path": "Toolbars/Toobar - Top - iPad/BG Context=Bright, Style=Title 2 Line, Tab Bar=False",
+      "description": "",
+      "fills": [],
+      "effects": [],
+      "strokeWeight": 0.33329999446868896,
+      "strokes": [],
+      "blendMode": "PASS_THROUGH"
+    },
+    {
+      "id": "5726:33474",
+      "name": "Toobar - Top - Sheet",
+      "type": "COMPONENT_SET",
+      "path": "Toolbars/Toobar - Top - Sheet",
+      "description": "",
+      "fills": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.9607843160629272,
+            "g": 0.9607843160629272,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22725"
+            }
+          }
+        }
+      ],
+      "effects": [],
+      "cornerRadius": 5.0,
+      "strokeWeight": 1.0,
+      "strokes": [
+        {
+          "blendMode": "NORMAL",
+          "type": "SOLID",
+          "color": {
+            "r": 0.3803921639919281,
+            "g": 0.3333333432674408,
+            "b": 0.9607843160629272,
+            "a": 1.0
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:5565:22726"
+            }
+          }
+        }
+      ],
+      "blendMode": "PASS_THROUGH"
+    }
+  ]
+}

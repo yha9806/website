@@ -39,6 +39,12 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     ANTHROPIC_API_KEY: str = ""
     ZHIPU_API_KEY: str = ""
+    GEMINI_API_KEY: str = ""
+    HUGGINGFACE_API_KEY: str = ""
+    
+    # Cost Control
+    ENABLE_COST_CONTROL: bool = True
+    DAILY_COST_LIMIT: float = 10.0
     
     # File Storage
     UPLOAD_DIR: str = "./uploads"

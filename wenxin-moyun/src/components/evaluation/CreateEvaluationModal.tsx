@@ -32,14 +32,14 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
   }, [models]);
 
   const taskTypes = [
-    { value: 'poem', label: '诗歌创作', icon: BookOpen, 
-      placeholder: '请输入诗歌主题，如：春天、思乡、爱情等' },
-    { value: 'story', label: '故事创作', icon: Sparkles,
-      placeholder: '请输入故事主题或开头，如：一个关于勇气的故事' },
-    { value: 'painting', label: '绘画创作', icon: Palette,
-      placeholder: '请描述画面内容，如：山水画、人物肖像等' },
-    { value: 'music', label: '音乐创作', icon: Music,
-      placeholder: '请描述音乐风格或情感，如：欢快的民谣' }
+    { value: 'poem', label: 'Poetry Creation', icon: BookOpen, 
+      placeholder: 'Enter poetry theme, e.g., spring, nostalgia, love' },
+    { value: 'story', label: 'Story Creation', icon: Sparkles,
+      placeholder: 'Enter story theme or beginning, e.g., a story about courage' },
+    { value: 'painting', label: 'Painting Creation', icon: Palette,
+      placeholder: 'Describe the scene, e.g., landscape, portrait' },
+    { value: 'music', label: 'Music Creation', icon: Music,
+      placeholder: 'Describe music style or emotion, e.g., cheerful folk song' }
   ];
 
   const currentTaskType = taskTypes.find(t => t.value === formData.taskType);
@@ -77,7 +77,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
         className="bg-neutral-50 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
       >
         <div className="sticky top-0 bg-neutral-50 border-b p-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold gradient-text">创建评测任务</h2>
+          <h2 className="text-2xl font-bold gradient-text">Create Evaluation Task</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -90,7 +90,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
           {/* Model Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              选择AI模型
+              Select AI Model
             </label>
             {loading ? (
               <div className="animate-pulse h-10 bg-gray-200 rounded-lg"></div>
@@ -113,7 +113,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
           {/* Task Type Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              任务类型
+              Task Type
             </label>
             <div className="grid grid-cols-2 gap-3">
               {taskTypes.map(type => {
@@ -146,7 +146,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
           {/* Prompt Input */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              创作提示
+              Creation Prompt
             </label>
             <textarea
               value={formData.prompt}
@@ -160,16 +160,16 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
 
           {/* Additional Parameters */}
           <div className="space-y-4">
-            <h3 className="text-sm font-medium text-gray-700">高级参数（可选）</h3>
+            <h3 className="text-sm font-medium text-gray-700">Advanced Parameters (Optional)</h3>
             
             {(formData.taskType === 'poem' || formData.taskType === 'story') && (
               <div>
-                <label className="block text-sm text-gray-600 mb-1">风格</label>
+                <label className="block text-sm text-gray-600 mb-1">Style</label>
                 <input
                   type="text"
                   value={formData.style}
                   onChange={(e) => setFormData(prev => ({ ...prev, style: e.target.value }))}
-                  placeholder={formData.taskType === 'poem' ? '如：古典、现代、浪漫' : '如：科幻、奇幻、现实'}
+                  placeholder={formData.taskType === 'poem' ? 'e.g., classical, modern, romantic' : 'e.g., sci-fi, fantasy, realistic'}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
@@ -177,29 +177,29 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
 
             {formData.taskType === 'story' && (
               <div>
-                <label className="block text-sm text-gray-600 mb-1">长度</label>
+                <label className="block text-sm text-gray-600 mb-1">Length</label>
                 <select
                   value={formData.length}
                   onChange={(e) => setFormData(prev => ({ ...prev, length: e.target.value }))}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
-                  <option value="short">短篇（500字以内）</option>
-                  <option value="medium">中篇（1000字左右）</option>
-                  <option value="long">长篇（2000字以上）</option>
+                  <option value="short">Short (under 500 words)</option>
+                  <option value="medium">Medium (around 1000 words)</option>
+                  <option value="long">Long (over 2000 words)</option>
                 </select>
               </div>
             )}
 
             <div>
-              <label className="block text-sm text-gray-600 mb-1">语言</label>
+              <label className="block text-sm text-gray-600 mb-1">Language</label>
               <select
                 value={formData.language}
                 onChange={(e) => setFormData(prev => ({ ...prev, language: e.target.value }))}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
-                <option value="zh">中文</option>
+                <option value="zh">Chinese</option>
                 <option value="en">English</option>
-                <option value="ja">日本語</option>
+                <option value="ja">Japanese</option>
               </select>
             </div>
           </div>
@@ -211,14 +211,14 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
               onClick={onClose}
               className="px-6 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              取消
+              Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !formData.modelId || !formData.prompt.trim()}
               className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? '创建中...' : '创建任务'}
+              {isSubmitting ? 'Creating...' : 'Create Task'}
             </button>
           </div>
         </form>

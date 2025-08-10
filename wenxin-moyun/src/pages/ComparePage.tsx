@@ -12,15 +12,15 @@ export default function ComparePage() {
 
   const handleAddModel = (model: Model) => {
     if (selectedModels.length >= 4) {
-      toast.error('最多只能对比4个模型');
+      toast.error('Maximum 4 models can be compared');
       return;
     }
     if (selectedModels.find(m => m.id === model.id)) {
-      toast.error('该模型已在对比列表中');
+      toast.error('This model is already in the comparison list');
       return;
     }
     setSelectedModels([...selectedModels, model]);
-    toast.success(`已添加 ${model.name}`);
+    toast.success(`Added ${model.name}`);
   };
 
   const handleRemoveModel = (modelId: string) => {
@@ -30,15 +30,15 @@ export default function ComparePage() {
   const exportComparison = () => {
     // 简单的导出功能，实际应用中可以生成PDF或Excel
     const data = selectedModels.map(model => ({
-      名称: model.name,
-      组织: model.organization,
-      综合评分: model.overallScore,
-      格律韵律: model.metrics.rhythm,
-      构图色彩: model.metrics.composition,
-      叙事逻辑: model.metrics.narrative,
-      情感表达: model.metrics.emotion,
-      创意新颖: model.metrics.creativity,
-      文化契合: model.metrics.cultural,
+      Name: model.name,
+      Organization: model.organization,
+      OverallScore: model.overallScore,
+      Rhythm: model.metrics.rhythm,
+      Composition: model.metrics.composition,
+      Narrative: model.metrics.narrative,
+      Emotion: model.metrics.emotion,
+      Creativity: model.metrics.creativity,
+      Cultural: model.metrics.cultural,
     }));
     
     const json = JSON.stringify(data, null, 2);
@@ -49,7 +49,7 @@ export default function ComparePage() {
     a.download = `model-comparison-${Date.now()}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success('对比数据已导出');
+    toast.success('Comparison data exported');
   };
 
   return (
@@ -62,10 +62,10 @@ export default function ComparePage() {
       >
         <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4">
           <BarChart3 className="inline-block w-10 h-10 mr-3 text-primary-600" />
-          模型对比分析
+          Model Comparison Analysis
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          选择最多4个模型进行多维度能力对比分析
+          Select up to 4 models for multi-dimensional capability comparison
         </p>
       </motion.div>
 
@@ -73,7 +73,7 @@ export default function ComparePage() {
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-            已选模型 ({selectedModels.length}/4)
+            Selected Models ({selectedModels.length}/4)
           </h2>
           <div className="flex gap-2">
             <button
@@ -81,7 +81,7 @@ export default function ComparePage() {
               className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors flex items-center gap-2"
             >
               <Plus className="w-4 h-4" />
-              添加模型
+              Add Model
             </button>
             {selectedModels.length > 0 && (
               <button
@@ -89,7 +89,7 @@ export default function ComparePage() {
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
               >
                 <Download className="w-4 h-4" />
-                导出对比
+                Export Comparison
               </button>
             )}
           </div>
@@ -105,7 +105,7 @@ export default function ComparePage() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ delay: index * 0.05 }}
-                className="relative bg-neutral-50 dark:bg-gray-800 rounded-lg shadow-md p-4"
+                className="relative ios-glass liquid-glass-container rounded-lg shadow-md p-4"
               >
                 <button
                   onClick={() => handleRemoveModel(model.id)}
@@ -128,7 +128,7 @@ export default function ComparePage() {
                       {model.organization}
                     </p>
                     <p className="text-sm font-medium text-primary-600">
-                      评分: {model.overallScore}
+                      Score: {model.overallScore}
                     </p>
                   </div>
                 </div>
@@ -144,7 +144,7 @@ export default function ComparePage() {
             >
               <div className="text-center text-gray-400">
                 <Plus className="w-8 h-8 mx-auto mb-2" />
-                <p className="text-sm">空位</p>
+                <p className="text-sm">Empty Slot</p>
               </div>
             </div>
           ))}
@@ -157,10 +157,10 @@ export default function ComparePage() {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="mb-8 p-6 bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg"
+          className="mb-8 p-6 ios-glass liquid-glass-container rounded-xl shadow-lg"
         >
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
-            选择模型
+            Select Model
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {mockModels.map((model) => {
@@ -174,7 +174,7 @@ export default function ComparePage() {
                     p-3 rounded-lg text-left transition-all
                     ${isSelected
                       ? 'bg-gray-100 dark:bg-gray-700 opacity-50 cursor-not-allowed'
-                      : 'bg-gray-50 dark:bg-gray-700/50 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:shadow-md'
+                      : 'ios-glass hover:shadow-md hover:scale-105 transition-all'
                     }
                   `}
                 >
@@ -210,17 +210,17 @@ export default function ComparePage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6"
+            className="ios-glass liquid-glass-container rounded-xl shadow-lg p-6"
           >
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
-              详细数据对比
+              Detailed Data Comparison
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-200 dark:border-gray-700">
                     <th className="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">
-                      指标
+                      Metrics
                     </th>
                     {selectedModels.map(model => (
                       <th key={model.id} className="text-center py-3 px-4">
@@ -240,13 +240,13 @@ export default function ComparePage() {
                 </thead>
                 <tbody>
                   {[
-                    { key: 'overallScore', label: '综合评分', format: (v: number) => v.toFixed(1) },
-                    { key: 'rhythm', label: '格律韵律', format: (v: number) => v },
-                    { key: 'composition', label: '构图色彩', format: (v: number) => v },
-                    { key: 'narrative', label: '叙事逻辑', format: (v: number) => v },
-                    { key: 'emotion', label: '情感表达', format: (v: number) => v },
-                    { key: 'creativity', label: '创意新颖', format: (v: number) => v },
-                    { key: 'cultural', label: '文化契合', format: (v: number) => v },
+                    { key: 'overallScore', label: 'Overall Score', format: (v: number) => v.toFixed(1) },
+                    { key: 'rhythm', label: 'Rhythm & Harmony', format: (v: number) => v },
+                    { key: 'composition', label: 'Composition', format: (v: number) => v },
+                    { key: 'narrative', label: 'Narrative', format: (v: number) => v },
+                    { key: 'emotion', label: 'Emotion', format: (v: number) => v },
+                    { key: 'creativity', label: 'Creativity', format: (v: number) => v },
+                    { key: 'cultural', label: 'Cultural Relevance', format: (v: number) => v },
                   ].map((metric) => {
                     const values = selectedModels.map(model => 
                       metric.key === 'overallScore' 
@@ -293,7 +293,7 @@ export default function ComparePage() {
         <div className="text-center py-20">
           <BarChart3 className="w-20 h-20 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
           <p className="text-xl text-gray-500 dark:text-gray-400">
-            请选择至少2个模型开始对比
+            Please select at least 2 models to start comparison
           </p>
         </div>
       )}

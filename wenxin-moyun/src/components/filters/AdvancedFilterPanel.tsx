@@ -98,7 +98,7 @@ export default function AdvancedFilterPanel({
   if (values.organizations.length > 0) {
     filterTags.push({
       id: 'orgs',
-      label: '机构',
+      label: 'Organizations',
       value: values.organizations,
       color: 'blue' as const
     });
@@ -106,7 +106,7 @@ export default function AdvancedFilterPanel({
   if (values.tags.length > 0) {
     filterTags.push({
       id: 'tags',
-      label: '标签',
+      label: 'Tags',
       value: values.tags,
       color: 'green' as const
     });
@@ -114,16 +114,16 @@ export default function AdvancedFilterPanel({
   if (values.scoreRange[0] > 0 || values.scoreRange[1] < 100) {
     filterTags.push({
       id: 'score',
-      label: '评分',
+      label: 'Score',
       value: `${values.scoreRange[0]}-${values.scoreRange[1]}`,
       color: 'purple' as const
     });
   }
 
   const tabs = [
-    { id: 'basic', label: '基础筛选', icon: Filter },
-    { id: 'advanced', label: '高级筛选', icon: SlidersHorizontal },
-    { id: 'weights', label: '权重调整', icon: SlidersHorizontal }
+    { id: 'basic', label: 'Basic Filters', icon: Filter },
+    { id: 'advanced', label: 'Advanced Filters', icon: SlidersHorizontal },
+    { id: 'weights', label: 'Weight Adjustment', icon: SlidersHorizontal }
   ];
 
   return (
@@ -140,7 +140,7 @@ export default function AdvancedFilterPanel({
         `}
       >
         <Filter className="w-4 h-4" />
-        <span>筛选</span>
+        <span>Filter</span>
         {activeFilterCount > 0 && (
           <span className="ml-1 px-1.5 py-0.5 bg-neutral-50/20 rounded-full text-xs">
             {activeFilterCount}
@@ -177,7 +177,7 @@ export default function AdvancedFilterPanel({
             {/* 面板头部 */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-[#30363D]">
               <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                高级筛选
+                Advanced Filters
               </h3>
               <button
                 onClick={() => setIsOpen(false)}
@@ -219,27 +219,27 @@ export default function AdvancedFilterPanel({
                     className="space-y-4"
                   >
                     <MultiSelect
-                      label="机构"
+                      label="Organizations"
                       options={config.organizations}
                       value={values.organizations}
                       onChange={(value) => handleChange('organizations', value)}
-                      placeholder="选择机构..."
+                      placeholder="Select organizations..."
                     />
                     
                     <MultiSelect
-                      label="标签"
+                      label="Tags"
                       options={config.tags}
                       value={values.tags}
                       onChange={(value) => handleChange('tags', value)}
-                      placeholder="选择标签..."
+                      placeholder="Select tags..."
                     />
                     
                     <MultiSelect
-                      label="类别"
+                      label="Categories"
                       options={config.categories}
                       value={values.categories}
                       onChange={(value) => handleChange('categories', value)}
-                      placeholder="选择类别..."
+                      placeholder="Select categories..."
                     />
                   </motion.div>
                 )}
@@ -253,7 +253,7 @@ export default function AdvancedFilterPanel({
                     className="space-y-4"
                   >
                     <RangeSlider
-                      label="评分范围"
+                      label="Score Range"
                       min={0}
                       max={100}
                       value={values.scoreRange}
@@ -262,7 +262,7 @@ export default function AdvancedFilterPanel({
                     />
                     
                     <RangeSlider
-                      label="胜率范围"
+                      label="Win Rate Range"
                       min={0}
                       max={100}
                       value={values.winRateRange}
@@ -272,10 +272,10 @@ export default function AdvancedFilterPanel({
                     />
                     
                     <DateRangePicker
-                      label="更新时间"
+                      label="Update Time"
                       value={values.dateRange}
                       onChange={(value) => handleChange('dateRange', value)}
-                      placeholder="选择时间范围..."
+                      placeholder="Select time range..."
                     />
                   </motion.div>
                 )}
@@ -289,7 +289,7 @@ export default function AdvancedFilterPanel({
                     className="space-y-4"
                   >
                     <WeightSlider
-                      label="能力权重调整"
+                      label="Ability Weight Adjustment"
                       weights={values.weights}
                       onChange={(weights) => handleChange('weights', weights)}
                     />
@@ -304,20 +304,20 @@ export default function AdvancedFilterPanel({
                 onClick={resetFilters}
                 className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 transition-colors"
               >
-                重置所有筛选
+                Reset All Filters
               </button>
               <div className="flex gap-2">
                 <button
                   onClick={() => setIsOpen(false)}
                   className="px-4 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 transition-colors"
                 >
-                  取消
+                  Cancel
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
                   className="px-4 py-1.5 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
                 >
-                  应用筛选
+                  Apply Filters
                 </button>
               </div>
             </div>

@@ -8,6 +8,7 @@ import CreateEvaluationModal from '../components/evaluation/CreateEvaluationModa
 import EvaluationCard from '../components/evaluation/EvaluationCard';
 import LoginPrompt from '../components/auth/LoginPrompt';
 import { hasReachedDailyLimit, getRemainingUsage, addEvaluationToGuest, isGuestMode } from '../utils/guestSession';
+import { IOSButton, IOSCard, StatusEmoji } from '../components/ios';
 
 const EvaluationsPage: React.FC = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -126,20 +127,20 @@ const EvaluationsPage: React.FC = () => {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-4xl font-bold gradient-text mb-2">
-                AI 评测任务
+                AI Evaluation Tasks
               </h1>
               <p className="text-gray-600">
-                管理和查看AI模型的艺术创作评测任务
+                Manage and view AI model artistic creation evaluation tasks
               </p>
             </div>
             
             <div className="flex gap-4">
               <button
                 onClick={refreshEvaluations}
-                className="px-4 py-2 bg-neutral-50 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+                className="px-4 py-2 ios-glass liquid-glass-container rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2"
               >
                 <RefreshCw className="w-5 h-5" />
-                刷新
+                Refresh
               </button>
               
               <button
@@ -147,10 +148,10 @@ const EvaluationsPage: React.FC = () => {
                 className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2"
               >
                 <Plus className="w-5 h-5" />
-                创建评测
+                Create Task
                 {isGuest && (
                   <span className="ml-2 px-2 py-1 bg-neutral-50 bg-opacity-20 rounded-full text-xs">
-                    剩余 {remainingUsage} 次
+                    {remainingUsage} left
                   </span>
                 )}
               </button>
@@ -158,48 +159,48 @@ const EvaluationsPage: React.FC = () => {
           </div>
 
           {/* Filters */}
-          <div className="glass-effect rounded-xl p-4 mb-6">
+          <IOSCard variant="glass" padding="lg" className="mb-6">
             <div className="flex items-center gap-4">
-              <Filter className="w-5 h-5 text-gray-600" />
+              🔍
               
               <div className="flex gap-4">
                 <select
                   value={selectedType}
                   onChange={(e) => setSelectedType(e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-gray-200 bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="px-4 py-2 rounded-lg border border-gray-200 ios-glass focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
-                  <option value="all">所有类型</option>
-                  <option value="poem">诗歌创作</option>
-                  <option value="story">故事创作</option>
-                  <option value="painting">绘画创作</option>
-                  <option value="music">音乐创作</option>
+                  <option value="all">All Types</option>
+                  <option value="poem">Poetry Creation</option>
+                  <option value="story">Story Creation</option>
+                  <option value="painting">Painting Creation</option>
+                  <option value="music">Music Creation</option>
                 </select>
 
                 <select
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-gray-200 bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="px-4 py-2 rounded-lg border border-gray-200 ios-glass focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
-                  <option value="all">所有状态</option>
-                  <option value="pending">待处理</option>
-                  <option value="processing">处理中</option>
-                  <option value="completed">已完成</option>
-                  <option value="failed">失败</option>
+                  <option value="all">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="processing">Processing</option>
+                  <option value="completed">Completed</option>
+                  <option value="failed">Failed</option>
                 </select>
               </div>
 
               <div className="ml-auto flex items-center space-x-4">
                 {isGuest && (
-                  <div className="text-sm text-orange-600 bg-orange-50 px-3 py-1 rounded-full">
-                    游客模式 · 今日剩余 {remainingUsage} 次
+                  <div className="text-sm text-orange-600 ios-glass px-3 py-1 rounded-full">
+                    👤 Guest Mode · {remainingUsage} uses left today
                   </div>
                 )}
                 <div className="text-sm text-gray-600">
-                  共 {total} 个任务
+                  📊 Total {total} tasks
                 </div>
               </div>
             </div>
-          </div>
+          </IOSCard>
 
           {/* Evaluations List */}
           {loading ? (
@@ -214,14 +215,14 @@ const EvaluationsPage: React.FC = () => {
           ) : filteredEvaluations.length === 0 ? (
             <div className="glass-effect rounded-xl p-8 text-center">
               <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600">暂无评测任务</p>
+              <p className="text-gray-600">No evaluation tasks yet</p>
               <button
                 onClick={handleCreateButtonClick}
                 className="mt-4 px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg"
               >
-                创建第一个评测任务
+                Create your first evaluation task
                 {isGuest && (
-                  <span className="ml-2">({remainingUsage} 次免费)</span>
+                  <span className="ml-2">({remainingUsage} free)</span>
                 )}
               </button>
             </div>

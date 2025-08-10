@@ -9,7 +9,7 @@ const PageLoader = () => (
     <div className="text-center">
       <div className="inline-flex items-center space-x-2">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-        <span className="text-gray-600">加载中...</span>
+        <span className="text-gray-600">Loading...</span>
       </div>
     </div>
   </div>
@@ -100,13 +100,13 @@ const LoginPage = lazy(() => {
 const ErrorFallback = ({ error }: { error: Error }) => (
   <div className="min-h-screen flex items-center justify-center">
     <div className="text-center">
-      <h2 className="text-xl font-semibold text-red-600 mb-2">页面加载失败</h2>
+      <h2 className="text-xl font-semibold text-red-600 mb-2">Page Failed to Load</h2>
       <p className="text-gray-600 mb-4">{error.message}</p>
       <button
         onClick={() => window.location.reload()}
         className="btn-primary"
       >
-        重新加载
+        Reload
       </button>
     </div>
   </div>

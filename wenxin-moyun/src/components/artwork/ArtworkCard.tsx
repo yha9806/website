@@ -27,15 +27,15 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, onClick }) => {
   const getTypeLabel = () => {
     switch (artwork.type) {
       case 'poem':
-        return '诗词';
+        return 'Poetry';
       case 'painting':
-        return '绘画';
+        return 'Painting';
       case 'story':
-        return '故事';
+        return 'Story';
       case 'music':
-        return '音乐';
+        return 'Music';
       default:
-        return '作品';
+        return 'Artwork';
     }
   };
 
@@ -96,7 +96,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, onClick }) => {
 
       {artwork.prompt && (
         <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">创作提示</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Creation Prompt</p>
           <p className="text-sm text-gray-700 dark:text-gray-300">
             {artwork.prompt}
           </p>
@@ -104,7 +104,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, onClick }) => {
       )}
 
       <div className="mt-4 text-xs text-gray-400">
-        {new Date(artwork.createdAt).toLocaleDateString('zh-CN')}
+        {new Date(artwork.createdAt).toLocaleDateString('en-US')}
       </div>
     </motion.div>
   );

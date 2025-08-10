@@ -1,39 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { motion } from 'framer-motion';
+import { IOSToggle, EmojiIcon } from '../ios';
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
   
   return (
-    <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      onClick={toggleTheme}
-      className="relative p-2 rounded-lg bg-gray-100 dark:bg-[#21262D] border border-gray-200 dark:border-[#30363D] transition-all duration-200 hover:bg-gray-200 dark:hover:bg-[#30363D]"
-      aria-label={`切换到${theme === 'light' ? '深色' : '浅色'}模式`}
-    >
-      <div className="relative w-5 h-5">
-        {/* 太阳图标 - 浅色模式显示 */}
-        <Sun
-          className={`absolute inset-0 w-5 h-5 text-amber-500 transition-all duration-300 ${
-            theme === 'light' 
-              ? 'opacity-100 rotate-0 scale-100' 
-              : 'opacity-0 rotate-180 scale-0'
-          }`}
-        />
-        
-        {/* 月亮图标 - 深色模式显示 */}
-        <Moon
-          className={`absolute inset-0 w-5 h-5 text-blue-400 transition-all duration-300 ${
-            theme === 'dark' 
-              ? 'opacity-100 rotate-0 scale-100' 
-              : 'opacity-0 -rotate-180 scale-0'
-          }`}
-        />
-      </div>
-    </motion.button>
+    <IOSToggle
+      checked={theme === 'dark'}
+      onChange={() => toggleTheme()}
+      color="primary"
+      size="sm"
+      leftIcon={<Sun className="w-3 h-3 text-amber-500" />}
+      rightIcon={<Moon className="w-3 h-3 text-blue-400" />}
+    />
   );
 }
 
@@ -51,12 +33,12 @@ export function ThemeToggleWithLabel() {
       {theme === 'light' ? (
         <>
           <Sun className="w-4 h-4 text-amber-500" />
-          <span className="text-sm text-gray-700 dark:text-gray-300">浅色</span>
+          <span className="text-sm text-gray-700 dark:text-gray-300">Light</span>
         </>
       ) : (
         <>
           <Moon className="w-4 h-4 text-blue-400" />
-          <span className="text-sm text-gray-700 dark:text-gray-300">深色</span>
+          <span className="text-sm text-gray-700 dark:text-gray-300">Dark</span>
         </>
       )}
     </motion.button>
@@ -68,22 +50,48 @@ export function ThemeSwitch() {
   const { theme, toggleTheme } = useTheme();
   
   return (
-    <button
-      onClick={toggleTheme}
-      className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 dark:bg-[#30363D] transition-colors duration-200"
-      aria-label="切换主题"
-    >
-      <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-neutral-50 dark:bg-[#58A6FF] transition-transform duration-200 ${
-          theme === 'dark' ? 'translate-x-6' : 'translate-x-1'
-        }`}
-      >
-        {theme === 'light' ? (
-          <Sun className="w-4 h-4 text-amber-500" />
-        ) : (
-          <Moon className="w-4 h-4 text-white" />
-        )}
-      </span>
-    </button>
+    <IOSToggle
+      checked={theme === 'dark'}
+      onChange={() => toggleTheme()}
+      color="primary"
+      size="sm"
+      showLabel={false}
+      leftIcon={<Sun className="w-3 h-3 text-amber-500" />}
+      rightIcon={<Moon className="w-3 h-3 text-blue-400" />}
+    />
+  );
+}
+
+// 语言切换组件
+function LanguageToggle() {
+  const [language, setLanguage] = useState<'zh' | 'en'>(() => {
+    return (localStorage.getItem('language') as 'zh' | 'en') || 'en';
+  });
+
+  const toggleLanguage = () => {
+    const newLang = language === 'zh' ? 'en' : 'zh';
+    setLanguage(newLang);
+    localStorage.setItem('language', newLang);
+  };
+
+  return (
+    <IOSToggle
+      checked={language === 'en'}
+      onChange={toggleLanguage}
+      color="green"
+      size="sm"
+      leftIcon={<span className="text-xs font-medium">CN</span>}
+      rightIcon={<span className="text-xs font-medium">EN</span>}
+    />
+  );
+}
+
+// 整合的头部控制组件
+export function HeaderControls() {
+  return (
+    <div className="flex items-center gap-2">
+      <LanguageToggle />
+      <ThemeToggle />
+    </div>
   );
 }

@@ -80,7 +80,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
 
     // 排名列
     columnHelper.accessor('rank', {
-      header: '排名',
+      header: 'Rank',
       size: 80,
       cell: ({ getValue }) => {
         const rank = getValue();
@@ -104,7 +104,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
     // 模型信息列
     columnHelper.accessor('model.name', {
       id: 'model',
-      header: '模型',
+      header: 'Model',
       size: 250,
       cell: ({ row }) => {
         const model = row.original.model;
@@ -135,7 +135,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
 
     // 综合分数列
     columnHelper.accessor('score', {
-      header: '综合分',
+      header: 'Overall Score',
       size: 100,
       cell: ({ getValue }) => (
         <div className="text-center font-semibold text-lg">
@@ -146,7 +146,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
 
     // 各项指标列
     columnHelper.accessor('model.metrics.rhythm', {
-      header: '诗歌',
+      header: 'Poetry',
       size: 80,
       cell: ({ getValue }) => (
         <div className="text-center">{getValue()}</div>
@@ -154,7 +154,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
     }),
 
     columnHelper.accessor('model.metrics.composition', {
-      header: '绘画',
+      header: 'Painting',
       size: 80,
       cell: ({ getValue }) => (
         <div className="text-center">{getValue()}</div>
@@ -162,7 +162,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
     }),
 
     columnHelper.accessor('model.metrics.narrative', {
-      header: '叙事',
+      header: 'Narrative',
       size: 80,
       cell: ({ getValue }) => (
         <div className="text-center">{getValue()}</div>
@@ -171,7 +171,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
 
     // 胜率列
     columnHelper.accessor('winRate', {
-      header: '胜率',
+      header: 'Win Rate',
       size: 100,
       cell: ({ getValue }) => {
         const rate = getValue();
@@ -191,7 +191,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
 
     // 对战数列
     columnHelper.accessor('battles', {
-      header: '对战数',
+      header: 'Battles',
       size: 80,
       cell: ({ getValue }) => (
         <div className="text-center">{getValue()}</div>
@@ -200,7 +200,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
 
     // 趋势列
     columnHelper.accessor('change', {
-      header: '趋势',
+      header: 'Trend',
       size: 80,
       cell: ({ getValue }) => {
         const change = getValue();
@@ -233,7 +233,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
             to={`/model/${row.original.model.id}`}
             className="px-3 py-1 text-sm bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
           >
-            查看
+            View
           </Link>
         </div>
       ),
@@ -268,16 +268,16 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
   return (
     <div className="w-full space-y-4">
       {/* 工具栏 */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 bg-neutral-50 dark:bg-[#161B22] rounded-lg border border-gray-200 dark:border-[#30363D]">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 ios-glass liquid-glass-container rounded-lg border border-gray-200 dark:border-[#30363D]">
         {/* 搜索框 */}
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-gray-400" />
           <input
             type="text"
-            placeholder="搜索模型..."
+            placeholder="Search models..."
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            className="px-3 py-2 bg-gray-50 dark:bg-[#0D1117] border border-gray-200 dark:border-[#30363D] rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
+            className="px-3 py-2 ios-glass backdrop-blur-sm border border-gray-200 dark:border-[#30363D] rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
           />
         </div>
 
@@ -290,7 +290,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
               className="flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 rounded-lg"
             >
               <span className="text-sm text-blue-600 dark:text-blue-400">
-                已选择 {selectedRows.length} 项
+                {selectedRows.length} items selected
               </span>
               <button
                 onClick={() => {
@@ -300,7 +300,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
                 }}
                 className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
               >
-                对比
+                Compare
               </button>
             </motion.div>
           )}
@@ -309,20 +309,20 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
           <div className="relative group">
             <button className="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-[#21262D] rounded-lg hover:bg-gray-200 dark:hover:bg-[#30363D] transition-colors">
               <Download className="w-4 h-4" />
-              <span className="text-sm">导出</span>
+              <span className="text-sm">Export</span>
             </button>
-            <div className="absolute right-0 mt-2 w-32 bg-neutral-50 dark:bg-[#1C2128] border border-gray-200 dark:border-[#30363D] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+            <div className="absolute right-0 mt-2 w-32 ios-glass backdrop-blur-md border border-gray-200 dark:border-[#30363D] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
               <button
                 onClick={() => exportData(data, 'csv')}
-                className="w-full px-3 py-2 text-sm text-left hover:bg-gray-50 dark:hover:bg-[#262C36] transition-colors"
+                className="w-full px-3 py-2 text-sm text-left hover:bg-gray-100/30 dark:hover:bg-[#262C36] transition-colors"
               >
-                导出 CSV
+                Export as CSV
               </button>
               <button
                 onClick={() => exportData(data, 'json')}
-                className="w-full px-3 py-2 text-sm text-left hover:bg-gray-50 dark:hover:bg-[#262C36] transition-colors"
+                className="w-full px-3 py-2 text-sm text-left hover:bg-gray-100/30 dark:hover:bg-[#262C36] transition-colors"
               >
-                导出 JSON
+                Export as JSON
               </button>
             </div>
           </div>
@@ -330,9 +330,9 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
       </div>
 
       {/* 表格 */}
-      <div className="overflow-x-auto bg-neutral-50 dark:bg-[#161B22] rounded-lg border border-gray-200 dark:border-[#30363D]">
+      <div className="overflow-x-auto ios-glass liquid-glass-container rounded-lg border border-gray-200 dark:border-[#30363D]">
         <table className="w-full">
-          <thead className="bg-gray-50 dark:bg-[#0D1117] border-b border-gray-200 dark:border-[#30363D]">
+          <thead className="ios-glass backdrop-blur-sm border-b border-gray-200 dark:border-[#30363D]">
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
@@ -371,21 +371,21 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
                 <td colSpan={columns.length} className="text-center py-8">
                   <div className="inline-flex items-center gap-2 text-gray-500">
                     <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
-                    加载中...
+                    Loading...
                   </div>
                 </td>
               </tr>
             ) : table.getRowModel().rows.length === 0 ? (
               <tr>
                 <td colSpan={columns.length} className="text-center py-8 text-gray-500">
-                  暂无数据
+                  No data
                 </td>
               </tr>
             ) : (
               table.getRowModel().rows.map(row => (
                 <tr 
                   key={row.id}
-                  className="hover:bg-gray-50 dark:hover:bg-[#1C2128] transition-colors cursor-pointer"
+                  className="hover:bg-gray-100/20 dark:hover:bg-[#1C2128] transition-colors cursor-pointer"
                   onClick={() => onRowClick?.(row.original)}
                 >
                   {row.getVisibleCells().map(cell => (
@@ -406,7 +406,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
       {/* 分页控制 */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 px-4">
         <div className="text-sm text-gray-600 dark:text-gray-400">
-          显示 {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} - {Math.min((table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize, data.length)} / 共 {data.length} 条
+          Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} - {Math.min((table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize, data.length)} of {data.length}
         </div>
         
         <div className="flex items-center gap-2">
@@ -426,7 +426,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
           </button>
           
           <span className="px-3 text-sm">
-            第 {table.getState().pagination.pageIndex + 1} / {table.getPageCount()} 页
+            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
           </span>
           
           <button

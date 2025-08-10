@@ -150,3 +150,64 @@ async def delete_artwork(
     await db.commit()
     
     return {"message": "Artwork deleted successfully"}
+
+
+@router.post("/{artwork_id}/like")
+async def like_artwork(artwork_id: str, db: AsyncSession = Depends(get_db)):
+    """Like an artwork (increment likes count)"""
+    # Find artwork by ID
+    query = select(Artwork).where(Artwork.id == artwork_id)
+    result = await db.execute(query)
+    artwork = result.scalar_one_or_none()
+    
+    if not artwork:
+        raise HTTPException(status_code=404, detail="Artwork not found")
+    
+    # Increment likes
+    artwork.likes += 1
+    await db.commit()
+    
+    return {
+        "message": "Artwork liked successfully",
+        "artwork_id": artwork_id,
+        "new_likes": artwork.likes
+    }
+
+
+@router.post("/{artwork_id}/view")
+async def view_artwork(artwork_id: str, db: AsyncSession = Depends(get_db)):
+    """Record a view for an artwork (increment views count)"""
+    query = select(Artwork).where(Artwork.id == artwork_id)
+    result = await db.execute(query)
+    artwork = result.scalar_one_or_none()
+    
+    if not artwork:
+        raise HTTPException(status_code=404, detail="Artwork not found")
+    
+    # Increment views
+    artwork.views += 1
+    await db.commit()
+    
+    return {
+        "message": "View recorded successfully",
+        "artwork_id": artwork_id,
+        "new_views": artwork.views
+    }
+
+
+@router.post("/{artwork_id}/share")
+async def share_artwork(artwork_id: str, db: AsyncSession = Depends(get_db)):
+    """Share an artwork (for future analytics)"""
+    query = select(Artwork).where(Artwork.id == artwork_id)
+    result = await db.execute(query)
+    artwork = result.scalar_one_or_none()
+    
+    if not artwork:
+        raise HTTPException(status_code=404, detail="Artwork not found")
+    
+    # For now, just return success. Could add share tracking in future
+    return {
+        "message": "Artwork shared successfully",
+        "artwork_id": artwork_id,
+        "title": artwork.title
+    }

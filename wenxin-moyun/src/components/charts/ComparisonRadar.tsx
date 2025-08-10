@@ -7,8 +7,15 @@ interface ComparisonRadarProps {
   title?: string;
 }
 
-// 使用设计系统的颜色
-const COLORS = ['#0052CC', '#FF8B00', '#36B37E', '#FFAB00']; // primary, accent, success, warning
+// 新中式色彩系统 - 基于参考案例的现代化传统色彩
+const COLORS = [
+  '#1E40AF', // 青金石蓝 - 深邃主色
+  '#DC2626', // 朱砂红 - 重点标注
+  '#059669', // 翡翠绿 - 成功状态
+  '#C9A14A', // 缕金色 - 装饰强调
+  '#7C3AED', // 紫罗兰 - 特殊标识
+  '#0891B2'  // 青瓷色 - 信息提示
+];
 
 export default function ComparisonRadar({ models, title = "模型能力对比" }: ComparisonRadarProps) {
   // 准备雷达图数据
@@ -51,12 +58,12 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-      className="card-hover"
+      initial={{ opacity: 0, scale: 0.95, rotateX: -10 }}
+      animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="card-chinese-data"
     >
-      <h3 className="text-h3 text-neutral-900 mb-4">
+      <h3 className="text-h3 font-lantinghei text-chinese-stone-800 dark:text-chinese-paper-100 mb-6">
         {title}
       </h3>
 
@@ -65,19 +72,28 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
           <PolarGrid 
             gridType="polygon"
             radialLines={true}
-            stroke="#DFE1E6"
-            strokeWidth={1}
+            stroke="rgba(201,161,74,0.3)"
+            strokeWidth={1.5}
+            className="animate-gentle-float"
           />
           <PolarAngleAxis 
             dataKey="dimension"
-            tick={{ fill: '#6B778C', fontSize: 12 }}
+            tick={{ 
+              fill: '#1E40AF', 
+              fontSize: 13,
+              fontFamily: 'Lantinghei SC, PingFang SC, Microsoft YaHei, sans-serif'
+            }}
             className="font-medium"
           />
           <PolarRadiusAxis
             angle={90}
             domain={[0, 100]}
-            tickCount={5}
-            tick={{ fill: '#A5ADBA', fontSize: 10 }}
+            tickCount={6}
+            tick={{ 
+              fill: 'rgba(201,161,74,0.7)', 
+              fontSize: 11,
+              fontFamily: 'Inter, sans-serif'
+            }}
           />
           
           {models.map((model, index) => (
@@ -87,17 +103,25 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
               dataKey={`model${index}`}
               stroke={COLORS[index]}
               fill={COLORS[index]}
-              fillOpacity={0.2}
-              strokeWidth={2}
+              fillOpacity={0.15} // 更透明，参考案例3的留白美学
+              strokeWidth={3} // 更粗的描边，传统毛笔质感
+              dot={{ 
+                r: 5, 
+                fill: COLORS[index], 
+                strokeWidth: 2, 
+                stroke: '#FFFFFF'
+              }}
             />
           ))}
           
           <Legend
             wrapperStyle={{
-              paddingTop: '20px',
-              fontSize: '14px'
+              paddingTop: '24px',
+              fontSize: '14px',
+              fontFamily: 'Lantinghei SC, PingFang SC, Microsoft YaHei, sans-serif',
+              fontWeight: '500'
             }}
-            iconType="line"
+            iconType="circle"
           />
         </RadarChart>
       </ResponsiveContainer>

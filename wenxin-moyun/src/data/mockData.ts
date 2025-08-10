@@ -7,7 +7,7 @@ export const mockModels: Model[] = [
     organization: 'Alibaba',
     version: '2.0',
     releaseDate: '2024-06',
-    description: '通义千问第二代大模型，在中文文学创作领域表现卓越',
+    description: 'Qwen second-generation large model, excelling in Chinese literary creation',
     category: 'text',
     overallScore: 92.5,
     metrics: {
@@ -22,18 +22,18 @@ export const mockModels: Model[] = [
       {
         id: 'w1',
         type: 'poem',
-        title: '春江花月夜',
-        content: `春江潮水连海平，海上明月共潮生。
-滟滟随波千万里，何处春江无月明。
-江流宛转绕芳甸，月照花林皆似霰。
-空里流霜不觉飞，汀上白沙看不见。`,
+        title: 'Spring River Night',
+        content: `Under the spring moon, the river flows with tides,
+Shimmering waves carry moonbeams far and wide.
+Through flowering meadows the water gently bends,
+Where frost-like petals dance as daylight ends.`,
         score: 95,
         createdAt: '2024-01-15',
-        prompt: '创作一首描写春江月夜的古诗'
+        prompt: 'Create a poem about spring river moonlight'
       }
     ],
     avatar: 'https://picsum.photos/seed/qwen/200/200',
-    tags: ['中文优秀', '文学创作', '诗词专精']
+    tags: ['Chinese Excellence', 'Literary Creation', 'Poetry Specialist']
   },
   {
     id: 'claude-3-opus',
@@ -41,7 +41,7 @@ export const mockModels: Model[] = [
     organization: 'Anthropic',
     version: '3.0',
     releaseDate: '2024-03',
-    description: '在创意写作和艺术理解方面展现出卓越能力',
+    description: 'Demonstrates exceptional ability in creative writing and artistic understanding',
     category: 'multimodal',
     overallScore: 90.8,
     metrics: {
@@ -56,15 +56,15 @@ export const mockModels: Model[] = [
       {
         id: 'w2',
         type: 'story',
-        title: '时光书店',
-        content: '在城市的角落，有一家神秘的书店。每当午夜钟声响起，书架上的书籍会自己翻动，诉说着被遗忘的故事...',
+        title: 'The Time Bookstore',
+        content: 'In a quiet corner of the city stands a mysterious bookstore. When midnight chimes, the books on the shelves turn their own pages, whispering forgotten tales...',
         score: 93,
         createdAt: '2024-01-20',
-        prompt: '写一个关于神秘书店的短篇故事开头'
+        prompt: 'Write the opening of a short story about a mysterious bookstore'
       }
     ],
     avatar: 'https://picsum.photos/seed/claude/200/200',
-    tags: ['创意写作', '多模态', '叙事大师']
+    tags: ['Creative Writing', 'Multimodal', 'Narrative Master']
   },
   {
     id: 'gpt4-vision',
@@ -72,7 +72,7 @@ export const mockModels: Model[] = [
     organization: 'OpenAI',
     version: '4.0',
     releaseDate: '2023-11',
-    description: '多模态理解与生成能力的标杆模型',
+    description: 'Benchmark model for multimodal understanding and generation capabilities',
     category: 'multimodal',
     overallScore: 89.2,
     metrics: {
@@ -85,7 +85,7 @@ export const mockModels: Model[] = [
     },
     works: [],
     avatar: 'https://picsum.photos/seed/gpt4/200/200',
-    tags: ['多模态', '视觉理解', '创意生成']
+    tags: ['Multimodal', 'Visual Understanding', 'Creative Generation']
   },
   {
     id: 'ernie-4',
@@ -93,7 +93,7 @@ export const mockModels: Model[] = [
     organization: 'Baidu',
     version: '4.0',
     releaseDate: '2024-01',
-    description: '文心一言第四代，深度融合中华文化精髓',
+    description: 'ERNIE 4th generation, deeply integrating Chinese cultural essence',
     category: 'text',
     overallScore: 88.5,
     metrics: {
@@ -106,7 +106,7 @@ export const mockModels: Model[] = [
     },
     works: [],
     avatar: 'https://picsum.photos/seed/ernie/200/200',
-    tags: ['中文强化', '文化理解', '诗词创作']
+    tags: ['Chinese Enhanced', 'Cultural Understanding', 'Poetry Creation']
   },
   {
     id: 'gemini-pro',
@@ -114,7 +114,7 @@ export const mockModels: Model[] = [
     organization: 'Google',
     version: '1.0',
     releaseDate: '2023-12',
-    description: 'Google最新多模态模型，平衡各项能力',
+    description: 'Google\'s latest multimodal model with balanced capabilities',
     category: 'multimodal',
     overallScore: 87.3,
     metrics: {
@@ -127,7 +127,7 @@ export const mockModels: Model[] = [
     },
     works: [],
     avatar: 'https://picsum.photos/seed/gemini/200/200',
-    tags: ['多模态', '平衡发展', '谷歌出品']
+    tags: ['Multimodal', 'Balanced Development', 'Google Made']
   },
   {
     id: 'yi-34b',
@@ -135,7 +135,7 @@ export const mockModels: Model[] = [
     organization: '01.AI',
     version: '1.0',
     releaseDate: '2024-01',
-    description: '零一万物推出的大规模语言模型',
+    description: 'Large-scale language model released by 01.AI',
     category: 'text',
     overallScore: 85.7,
     metrics: {
@@ -148,7 +148,7 @@ export const mockModels: Model[] = [
     },
     works: [],
     avatar: 'https://picsum.photos/seed/yi/200/200',
-    tags: ['中文优化', '开源模型', '高效推理']
+    tags: ['Chinese Optimized', 'Open Source', 'Efficient Inference']
   },
   {
     id: 'chatglm3-6b',
@@ -156,7 +156,7 @@ export const mockModels: Model[] = [
     organization: 'Zhipu AI',
     version: '3.0',
     releaseDate: '2023-10',
-    description: '智谱AI的轻量级对话模型，适合本地部署',
+    description: 'Zhipu AI\'s lightweight conversational model, suitable for local deployment',
     category: 'text',
     overallScore: 82.4,
     metrics: {
@@ -169,7 +169,7 @@ export const mockModels: Model[] = [
     },
     works: [],
     avatar: 'https://picsum.photos/seed/chatglm/200/200',
-    tags: ['轻量级', '本地部署', '中文对话']
+    tags: ['Lightweight', 'Local Deployment', 'Chinese Dialogue']
   },
   {
     id: 'llama3-70b',
@@ -177,7 +177,7 @@ export const mockModels: Model[] = [
     organization: 'Meta',
     version: '3.0',
     releaseDate: '2024-04',
-    description: 'Meta最新开源大模型，性能强劲',
+    description: 'Meta\'s latest open-source large model with strong performance',
     category: 'text',
     overallScore: 86.9,
     metrics: {
@@ -190,7 +190,7 @@ export const mockModels: Model[] = [
     },
     works: [],
     avatar: 'https://picsum.photos/seed/llama/200/200',
-    tags: ['开源先锋', '多语言', '社区活跃']
+    tags: ['Open Source Pioneer', 'Multilingual', 'Active Community']
   }
 ];
 
@@ -213,8 +213,8 @@ export const mockBattles: Battle[] = [
     task: {
       id: 'task1',
       type: 'poem',
-      prompt: '以"秋月"为题，创作一首七言律诗',
-      category: '古典诗词',
+      prompt: 'Create a seven-character regulated verse poem on the theme of "Autumn Moon"',
+      category: 'Classical Poetry',
       difficulty: 'medium'
     },
     votesA: 156,
@@ -229,8 +229,8 @@ export const mockBattles: Battle[] = [
     task: {
       id: 'task2',
       type: 'painting',
-      prompt: '创作一幅融合中国山水画风格与赛博朋克元素的作品',
-      category: '视觉艺术',
+      prompt: 'Create a work that combines Chinese landscape painting style with cyberpunk elements',
+      category: 'Visual Arts',
       difficulty: 'hard'
     },
     votesA: 89,
@@ -241,10 +241,10 @@ export const mockBattles: Battle[] = [
 ];
 
 export const categories = [
-  { id: 'overall', name: '综合排名', icon: '🏆' },
-  { id: 'poetry', name: '诗词创作', icon: '📜' },
-  { id: 'painting', name: '绘画艺术', icon: '🎨' },
-  { id: 'narrative', name: '叙事文学', icon: '📚' },
-  { id: 'music', name: '音乐创作', icon: '🎵' },
-  { id: 'multimodal', name: '跨模态', icon: '🔄' }
+  { id: 'overall', name: 'Overall Rankings', icon: '🏆' },
+  { id: 'poetry', name: 'Poetry Creation', icon: '📜' },
+  { id: 'painting', name: 'Visual Arts', icon: '🎨' },
+  { id: 'narrative', name: 'Narrative Literature', icon: '📚' },
+  { id: 'music', name: 'Music Creation', icon: '🎵' },
+  { id: 'multimodal', name: 'Multimodal', icon: '🔄' }
 ];

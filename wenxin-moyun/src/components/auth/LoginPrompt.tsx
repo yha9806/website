@@ -28,37 +28,37 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
       case 'limit_reached':
         return {
           icon: Clock,
-          title: '今日体验次数已用完',
-          subtitle: `您今日已使用了3次免费评测服务`,
-          description: '注册登录后可享受无限制使用，还能保存您的评测历史记录。',
-          buttonText: '立即注册',
+          title: 'Daily Trial Limit Reached',
+          subtitle: `You've used all 3 free evaluations today`,
+          description: 'Register to enjoy unlimited use and save your evaluation history.',
+          buttonText: 'Sign Up Now',
           urgency: 'high' as const
         };
       case 'save_progress':
         return {
           icon: Shield,
-          title: '保存您的评测进度',
-          subtitle: '避免数据丢失，建立专属评测档案',
-          description: '登录后可以保存所有评测记录，随时查看历史数据和趋势分析。',
-          buttonText: '保存进度',
+          title: 'Save Your Evaluation Progress',
+          subtitle: 'Prevent data loss and build your evaluation portfolio',
+          description: 'Sign in to save all evaluation records and view historical data and trend analysis.',
+          buttonText: 'Save Progress',
           urgency: 'medium' as const
         };
       case 'share_result':
         return {
           icon: TrendingUp,
-          title: '分享您的精彩作品',
-          subtitle: '让更多人看到您的创作成果',
-          description: '登录后可以分享评测结果，参与社区讨论，发现更多优秀作品。',
-          buttonText: '开始分享',
+          title: 'Share Your Amazing Work',
+          subtitle: 'Let others see your creative achievements',
+          description: 'Sign in to share evaluation results, join community discussions, and discover more excellent works.',
+          buttonText: 'Start Sharing',
           urgency: 'low' as const
         };
       case 'advanced_features':
         return {
           icon: User,
-          title: '解锁更多高级功能',
-          subtitle: '专业评测工具等您探索',
-          description: '登录用户可使用批量评测、详细报告、自定义模板等高级功能。',
-          buttonText: '解锁功能',
+          title: 'Unlock Advanced Features',
+          subtitle: 'Professional evaluation tools await',
+          description: 'Logged-in users can access batch evaluation, detailed reports, custom templates and more.',
+          buttonText: 'Unlock Now',
           urgency: 'medium' as const
         };
     }
@@ -154,15 +154,15 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-green-500 rounded-full" />
-                    <span className="text-sm text-gray-700">无限制评测次数</span>
+                    <span className="text-sm text-gray-700">Unlimited evaluations</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-green-500 rounded-full" />
-                    <span className="text-sm text-gray-700">保存评测历史记录</span>
+                    <span className="text-sm text-gray-700">Save evaluation history</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-green-500 rounded-full" />
-                    <span className="text-sm text-gray-700">高级数据分析功能</span>
+                    <span className="text-sm text-gray-700">Advanced analytics features</span>
                   </div>
                 </div>
 
@@ -178,7 +178,7 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
                     onClick={onClose}
                     className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
                   >
-                    稍后再说
+                    Later
                   </button>
                 </div>
 
@@ -189,7 +189,7 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
                       onClick={onClose}
                       className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
                     >
-                      继续以游客身份使用
+                      Continue as Guest
                     </button>
                   </div>
                 )}

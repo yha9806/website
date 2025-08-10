@@ -11,27 +11,27 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // 默认使用深色主题
+  // Default to dark theme
   const [theme, setThemeState] = useState<ThemeMode>(() => {
-    // 从 localStorage 读取用户偏好
+    // Read user preference from localStorage
     const savedTheme = localStorage.getItem('theme') as ThemeMode;
-    // 如果没有保存的主题，检查系统偏好
+    // If no saved theme, check system preference
     if (!savedTheme) {
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
     return savedTheme;
   });
 
-  // 应用主题
+  // Apply theme
   useEffect(() => {
     const root = document.documentElement;
     
-    // 移除旧的主题类
+    // Remove old theme class
     root.classList.remove('light', 'dark');
-    // 添加新的主题类
+    // Add new theme class
     root.classList.add(theme);
     
-    // 生成并应用 CSS 变量
+    // Generate and apply CSS variables
     const cssVariables = generateCSSVariables(themes[theme]);
     const styleElement = document.getElementById('theme-variables') || document.createElement('style');
     styleElement.id = 'theme-variables';
@@ -41,21 +41,21 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       document.head.appendChild(styleElement);
     }
     
-    // 保存到 localStorage
+    // Save to localStorage
     localStorage.setItem('theme', theme);
     
-    // 更新 meta theme-color
+    // Update meta theme-color
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
       metaThemeColor.setAttribute('content', themes[theme].bg.base);
     }
   }, [theme]);
 
-  // 监听系统主题变化
+  // Listen for system theme changes
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {
-      // 只有在用户没有手动设置主题时才跟随系统
+      // Only follow system when user hasn't manually set theme
       if (!localStorage.getItem('theme')) {
         setThemeState(e.matches ? 'dark' : 'light');
       }
@@ -66,7 +66,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   const toggleTheme = () => {
+    // Add transition animation class
+    document.documentElement.classList.add('theme-transition');
+    
+    // Toggle theme
     setThemeState(prev => prev === 'light' ? 'dark' : 'light');
+    
+    // Remove transition class after animation to avoid affecting other animations
+    setTimeout(() => {
+      document.documentElement.classList.remove('theme-transition');
+    }, 300);
   };
 
   const setTheme = (newTheme: ThemeMode) => {
@@ -88,26 +97,26 @@ export const useTheme = () => {
   return context;
 };
 
-// 导出主题相关的 Tailwind 类名助手
+// Export theme-related Tailwind class helpers
 export const tw = {
-  // 背景
+  // Background
   bgBase: 'bg-neutral-50 dark:bg-[#0D1117]',
   bgSurface: 'bg-gray-50 dark:bg-[#161B22]',
   bgElevated: 'bg-neutral-50 dark:bg-[#1C2128]',
   bgOverlay: 'bg-neutral-50 dark:bg-[#262C36]',
   
-  // 文字
+  // Text
   textPrimary: 'text-gray-900 dark:text-[#F0F6FC]',
   textSecondary: 'text-gray-600 dark:text-[#8B949E]',
   textTertiary: 'text-gray-500 dark:text-[#6E7681]',
   textMuted: 'text-gray-400 dark:text-[#484F58]',
   
-  // 边框
+  // Border
   borderDefault: 'border-gray-200 dark:border-[#30363D]',
   borderMuted: 'border-gray-100 dark:border-[#21262D]',
   borderStrong: 'border-gray-300 dark:border-[#48545F]',
   
-  // 常用组合
+  // Common combinations
   card: 'bg-neutral-50 dark:bg-[#161B22] border border-gray-200 dark:border-[#30363D]',
   cardHover: 'hover:bg-gray-50 dark:hover:bg-[#1C2128]',
   button: 'bg-[#0969DA] dark:bg-[#58A6FF] text-white hover:opacity-90',

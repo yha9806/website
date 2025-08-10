@@ -284,7 +284,7 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
                 animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
-                <div className="w-1 h-5 bg-white rounded-full shadow-lg" />
+                <div className="w-1 h-5 ios-glass liquid-glass-container rounded-full shadow-lg" />
               </motion.div>
             )}
           </div>
@@ -311,7 +311,7 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
                 ) : index === currentPhaseIndex ? (
                   <Loader2 className="w-4 h-4 text-white animate-spin" />
                 ) : (
-                  <div className="w-2 h-2 bg-white rounded-full" />
+                  <div className="w-2 h-2 ios-glass liquid-glass-container rounded-full" />
                 )}
               </motion.div>
               <span className={`text-xs mt-1 ${

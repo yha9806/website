@@ -5,7 +5,7 @@ from .battles import router as battles_router
 from .artworks import router as artworks_router
 from .evaluations import router as evaluations_router
 from .scoring_advice import router as scoring_advice_router
-from .websocket import router as websocket_router
+from .websocket_simple import router as websocket_router
 
 api_router = APIRouter()
 
