@@ -7,9 +7,10 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: [
-    ['html', { outputFolder: 'playwright-report' }],
+    ['html', { outputFolder: 'playwright-report', open: 'never' }],
     ['list'],
-    ['json', { outputFile: 'test-results.json' }]
+    ['json', { outputFile: 'test-results.json' }],
+    ['junit', { outputFile: 'test-results.xml' }]
   ],
   use: {
     baseURL: 'http://localhost:5173',
@@ -36,10 +37,24 @@ export default defineConfig({
       },
     },
     {
-      name: 'mobile',
+      name: 'webkit',
+      use: { 
+        ...devices['Desktop Safari'],
+        viewport: { width: 1920, height: 1080 }
+      },
+    },
+    {
+      name: 'mobile-chrome',
+      use: { 
+        ...devices['Pixel 5'],
+        viewport: { width: 393, height: 851 }
+      },
+    },
+    {
+      name: 'mobile-safari',
       use: { 
         ...devices['iPhone 12'],
-        viewport: { width: 375, height: 667 }
+        viewport: { width: 390, height: 844 }
       },
     },
   ],

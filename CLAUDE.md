@@ -4,25 +4,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-WenXin MoYun - Full-stack AI art evaluation platform with **intelligent content generation and evaluation system**. Features React 19 frontend with iOS-style interface, FastAPI backend with dual authentication (JWT + guest mode), AI-powered evaluation engine, and automatic artwork creation from evaluations.
+WenXin MoYun - Full-stack AI art evaluation platform supporting **42 AI models** from **15 organizations**. Features complete iOS design system migration (2025-08-11), real benchmark testing with **Unified Model Interface**, and comprehensive E2E testing infrastructure.
 
-### System Architecture Status (2025-08-11)
-
-- ✅ **Intelligent Scoring**: GPT-4 powered multi-dimensional content evaluation
-- ✅ **Real Content Generation**: Replaced mock data with AI-generated content 
-- ✅ **Advanced Caching System**: Multi-layer caching with TTL, LRU eviction, background refresh
-- ✅ **iOS Component System**: Complete IOSButton, IOSCard, IOSToggle, IOSSlider, IOSAlert library
-- ✅ **Error Handling**: React Error Boundaries with graceful fallbacks
-- ✅ **Offline Mode**: Smart offline detection with cached data display
-- ✅ **Async Evaluation Engine**: Background task processing with real-time progress
-- ✅ **Automatic Artwork Creation**: Evaluation tasks generate gallery artworks
-- ✅ **Media Storage System**: Local image storage for AI-generated images
+**Architecture**:
+- **Frontend**: React 19 + TypeScript 5.8 + Vite 7.1 with pure iOS design system
+- **Backend**: FastAPI + SQLAlchemy with async evaluation engine and intelligent scoring
+- **Database**: SQLite with proper foreign key constraints and NULL score handling for image models
+- **Real-time**: WebSocket for live battle updates and progress tracking
+- **AI Integration**: Unified Model Interface with provider adapters ensuring correct model routing
+- **Testing**: Playwright E2E framework with 64 test cases across multiple browsers
 
 ## Essential Commands
 
 ### Quick Start
 ```bash
-# Windows one-click startup
+# Windows one-click startup (initializes DB, starts backend on :8001, frontend on :5173)
 start.bat
 
 # Manual startup (separate terminals):
@@ -38,18 +34,14 @@ npm run dev                   # Start dev server (port 5173+)
 npm run build                 # TypeScript check + production build
 npm run lint                  # ESLint validation
 npm run preview               # Preview production build
-npx vite build                # Build without TypeScript check if needed
 
-# E2E Testing (Playwright)
-npm run test:e2e              # Run tests headless
-npm run test:e2e:ui           # Interactive UI mode
-npm run test:e2e:debug        # Step-by-step debugging
-npm run test:e2e:headed       # Run in visible browser
-npm run test:e2e:report       # Show test report
-
-# Development Helpers
-# Ctrl+Shift+C in browser      # Toggle cache statistics panel (dev mode)
-# Performance indicator shown in bottom-left (dev mode)
+# E2E Testing (Playwright - 64 test cases)
+npm run test:e2e              # Run tests headless across all browsers
+npm run test:e2e:ui           # Interactive UI mode for debugging
+npm run test:e2e:debug        # Step-by-step debugging mode
+npm run test:e2e:headed       # Run tests in visible browser
+npm run test:e2e:report       # Show HTML test report
+npm run test:e2e -- --grep="specific test"  # Run specific test pattern
 ```
 
 ### Backend Development (wenxin-backend)
@@ -63,257 +55,142 @@ pytest                        # Run all tests
 pytest tests/test_auth.py -v  # Run specific test verbose
 pytest -k "test_login" -v     # Run tests matching pattern
 pytest --cov=app tests/       # Test coverage
+
+# Benchmark Testing
+curl -X POST "http://localhost:8001/api/v1/benchmarks/run" \
+  -H "Content-Type: application/json" \
+  -d '{"suite_id": "SUITE_ID", "model_id": "MODEL_ID"}'
+
+# Test Unified Model Interface
+python test_unified_interface.py  # Verify models use correct APIs
 ```
 
 ### Database Operations
 ```bash
 cd wenxin-backend
-rm wenxin.db                  # Delete existing database
+rm wenxin.db                  # Delete existing database (Windows: del wenxin.db)
 python init_db.py             # Recreate with schema + sample data
 
-# Alembic migrations (production)
-alembic revision --autogenerate -m "Description"
-alembic upgrade head
-alembic downgrade -1
+# Check model rankings
+python -c "import sqlite3; conn = sqlite3.connect('wenxin.db'); cursor = conn.cursor(); cursor.execute('SELECT name, model_type, overall_score FROM ai_models ORDER BY overall_score DESC NULLS LAST'); print([f'{row[0]}: {row[2] if row[2] is not None else \"N/A\"}' for row in cursor.fetchall()[:10]]); conn.close()"
 ```
 
-### Windows Process Management
-```bash
-netstat -ano | findstr :8001  # Check backend port
-netstat -ano | findstr :517   # Check frontend ports 5173-5179
-taskkill /F /PID <PID>        # Kill specific process
+## Architecture Overview
+
+### Core System Flow
+```
+Frontend (React 19)          Backend (FastAPI)         Services Layer           Database (SQLite)
+    ↓                           ↓                         ↓                        ↓
+iOS Components              API v1 Routers         Unified Model Interface    Core Tables
+    ↓                           ↓                         ↓                    - users
+Custom Hooks               Async Handlers         Model Registry             - ai_models (42 models)
+    ↓                           ↓                         ↓                    - battles  
+Axios Client ──────→      Service Layer ───→    Provider Adapters          - evaluation_tasks
+                                                         ↓                    - artworks
+                                                   BenchmarkRunner           
+                                                         ↓                 Benchmark Tables
+                                                 Intelligent Scoring        - benchmark_suites
+                                                                           - benchmark_runs
 ```
 
-## High-Level Architecture
+### Data Pipeline: Evaluation to Gallery
+1. User creates evaluation task (Frontend) → Backend saves with parameters
+2. Background processing via `evaluation_engine.py` → AI provider generates content
+3. Intelligent scoring calculates metrics → Artwork automatically created
+4. Gallery displays generated artworks with proper NULL score handling
 
-### Three-Layer Architecture
-```
-Frontend (React 19)          Backend (FastAPI)         Database (SQLite)
-    ↓                           ↓                         ↓
-iOS Components              API v1 Routers              Tables
-    ↓                           ↓                         ↓
-Custom Hooks               Service Layer               - users
-    ↓                           ↓                    - ai_models
-Axios Client ──────→      Async Handlers              - battles
-                                                      - evaluations
-                                                      - artworks
-```
+## Critical System Components
 
-### Frontend Architecture (wenxin-moyun)
+### Unified Model Interface (Fixed Model Routing Bug)
+- **app/services/models/unified_client.py** - Central interface for all AI models
+- **app/services/models/model_registry.py** - Registry managing 42 AI models from 15 organizations  
+- **app/services/models/adapters/** - Provider-specific adapters (OpenAI, Anthropic, Google, etc.)
+- **Fixed Issue**: Previous system hardcoded gpt-4o-mini for all models; now correctly routes to designated APIs
 
-**Tech Stack:**
-- React 19.1 + TypeScript 5.8 + Vite 7.1
-- Tailwind CSS 4.1 (iOS design tokens)
-- Framer Motion 12.23 (iOS spring animations)
-- Zustand 4.4 (state management)
-- Recharts 3.1 + D3.js (data visualization)
-- TanStack Table 8.21 (data grids)
-- Playwright (E2E testing)
+### Frontend Architecture (React 19 + iOS Design)
+- **src/components/ios/** - Complete iOS design system (IOSButton, IOSCard, IOSToggle, etc.)
+- **src/hooks/useLeaderboard.ts** - Handles NULL score sorting and display
+- **src/services/api.ts** - Axios client with guest sessions and caching
+- **src/pages/** - Route-level pages with iOS styling
 
-**Component Hierarchy:**
-```
-src/
-├── App.tsx                  # Main router and layout
-├── pages/                   # Route-level components
-├── components/
-│   ├── ios/                # iOS 26 component system
-│   │   ├── core/           # Base components (Button, Card, Toggle, etc.)
-│   │   ├── utils/          # Theme, animations, emoji mapping
-│   │   └── index.ts        # Public exports
-│   ├── common/             # Shared components (Header, Footer, Layout)
-│   ├── evaluation/         # Evaluation feature components
-│   ├── leaderboard/        # Ranking system components
-│   └── charts/             # Data visualization
-├── hooks/                  # Custom React hooks
-├── services/               # API client layer
-├── types/                  # TypeScript definitions
-└── data/                   # Mock data for development
-```
+### Backend Services
+- **app/services/evaluation_engine.py** - Async evaluation pipeline orchestration
+- **app/services/benchmark/benchmark_runner.py** - Real AI model benchmark execution
+- **app/services/intelligent_scoring/ai_scorer.py** - GPT-4o-mini based scoring with fallbacks
+- **app/api/v1/battles.py** - Battle system with WebSocket real-time updates
 
-### Backend Architecture (wenxin-backend)
+### Database Models & NULL Handling
+- **app/models/ai_model.py** - Enhanced model with `model_type` separation and nullable scores
+- **Critical Pattern**: Image models have NULL `overall_score` - this is intentional
+- **Frontend Pattern**: Always check `{score != null ? score.toFixed(1) : 'N/A'}`
 
-**Tech Stack:**
-- FastAPI 0.109 + Python 3.9+
-- SQLAlchemy 2.0 (async ORM)
-- Pydantic 2.5.3 (validation)
-- JWT authentication + Guest sessions
-- OpenAI GPT-4 + DALL-E 3 integration
-- Background task processing with realistic progress simulation
+## API Architecture
 
-**API Structure:**
-```
-app/
-├── api/v1/                 # Versioned API routes
-│   ├── auth.py            # JWT authentication
-│   ├── models.py          # AI model CRUD
-│   ├── artworks.py        # Gallery management with like/view endpoints
-│   ├── evaluations.py     # Task creation & background execution
-│   └── websocket_simple.py # Real-time updates
-├── models/                # Database models (artworks, evaluation_tasks)
-├── schemas/               # Pydantic validation schemas
-├── services/              # Business logic layer
-│   ├── evaluation_engine.py    # Core async evaluation processing
-│   ├── intelligent_scoring/    # AI-powered content analysis
-│   │   ├── ai_scorer.py        # GPT-4 evaluation engine
-│   │   ├── content_analyzer.py # Multi-dimensional content analysis
-│   │   └── quality_metrics.py  # Scoring algorithms
-│   ├── ai_providers/           # Provider abstraction layer
-│   │   ├── openai_provider.py  # OpenAI API integration
-│   │   ├── mock_provider.py    # Development fallback
-│   │   └── provider_manager.py # Multi-provider routing
-│   └── media_storage/          # Local image storage system
-└── static/generated_images/    # AI-generated image assets
-```
+### Core Endpoints
+- `GET /api/v1/models/` - AI model metadata with NULL-safe score handling
+- `POST /api/v1/evaluations/` - Create evaluation task with language parameter
+- `GET /api/v1/battles/random` - Get random active battle for voting
+- `POST /api/v1/benchmarks/run` - Execute real AI model benchmarks
 
-## iOS 26 Liquid Glass System
-
-### Core CSS Classes
-```css
-.ios-glass {
-  backdrop-filter: blur(20px) saturate(180%);
-  background: rgba(255, 255, 255, 0.7);
-  border: 0.5px solid rgba(255, 255, 255, 0.3);
-}
-
-.liquid-glass-container {
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(255, 255, 255, 0.4) 100%);
-  backdrop-filter: blur(40px) saturate(200%);
-}
-
-/* Dark mode adjustments */
-.dark .ios-glass {
-  background: rgba(30, 30, 30, 0.7);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-```
-
-### Component Usage Examples
-
-**IOSButton**
-```typescript
-<IOSButton 
-  variant="primary"    // primary | secondary | destructive | glass | text
-  size="md"           // sm | md | lg
-  glassMorphism={true}
-/>
-```
-
-**IOSToggle**
-```typescript
-<IOSToggle
-  checked={value}
-  onChange={setValue}
-  color="green"       // primary | green | orange | red
-  leftIcon={<Icon />}
-  rightIcon={<Icon />}
-/>
-```
-
-**IOSFilterPanel**
-```typescript
-<IOSFilterPanel
-  config={filterConfig}
-  values={filterValues}
-  onChange={setFilterValues}
-  showAdvanced={true}
-  showWeights={true}
-/>
-```
-
-## Critical Implementation Details
-
-### Advanced Caching System
-- **Multi-layer Architecture**: API Cache (5min TTL), Static Cache (30min TTL), Realtime Cache (30s TTL)
-- **Intelligent Features**: Background refresh, stale-while-revalidate, LRU eviction
-- **Cache Warming**: Automatic preloading of essential data on app startup
-- **Development Tools**: Cache statistics panel accessible via Ctrl+Shift+C
-
-### Error Handling & Resilience
-- **React Error Boundaries**: App-level and page-level error catching with fallback UIs
-- **Offline Mode**: Smart network detection with cached data display during outages
-- **Graceful Degradation**: API failures fall back to cached or static data
-
-### Performance Optimization
-- **Device Detection**: Automatic performance tier detection (high/medium/low)
-- **Dynamic Configuration**: Emoji sizing, animation complexity, blur effects adjust per device
-- **GPU Acceleration**: Uses `translateZ(0)` and `will-change` for smooth animations
-
-### React 19 Specifics
-- Use `crypto.randomUUID()` instead of uuid package
-- Use `import type` for TypeScript type imports
-- Compatible with strict TypeScript 5.8 configuration
-
-### Tailwind CSS v4
-```typescript
-// vite.config.ts
-import tailwindcss from '@tailwindcss/vite'
-plugins: [react(), tailwindcss()]
-
-// index.css
-@import 'tailwindcss';  // v4 syntax, NOT @tailwind directives
-```
-
-### API Endpoints
-Core endpoints and their purposes:
-- `/api/v1/models/` - AI model management and metadata
-- `/api/v1/evaluations/` - Create tasks, get progress, background execution
-- `/api/v1/artworks/` - Gallery data with like/view/share interactions
-- `/api/v1/auth/login/` - JWT authentication + guest sessions
-- `/api/v1/battles/` - Model comparison and voting system
-
-**Evaluation Flow:**
-1. `POST /api/v1/evaluations/` - Creates task, triggers background processing
-2. `GET /api/v1/evaluations/{id}/progress` - Real-time progress monitoring  
-3. Task completion automatically creates artwork via `_create_artwork_from_evaluation()`
-4. `GET /api/v1/artworks/` - Displays generated content in Gallery
-
-API Documentation:
-- Swagger UI: http://localhost:8001/docs
-- ReDoc: http://localhost:8001/redoc
-
-### Guest Session Management
-```typescript
-// Frontend
-const guestSession = {
-  id: crypto.randomUUID(),
-  dailyUsage: 0,
-  lastReset: new Date().toDateString()
-};
-
-// Backend
-async def get_current_user_or_guest():
-    return validate_jwt() if auth_header else GuestSession(guest_id)
-```
+### Real-time Features
+- **WebSocket**: `/api/v1/ws/battle` - Live battle vote updates
+- **Battle System**: Real-time voting with foreign key validation
+- **Guest Sessions**: UUID-based tracking with daily limits
 
 ## Development Patterns
 
-### Adding New Features
-1. **Backend**: Model → Schema → Router → Service → Register in main.py
-2. **Frontend**: Types → Service → Hook → Component → Route in App.tsx
+### Model Type Separation (Critical)
+```python
+# Language Models - can be evaluated with text benchmarks
+model_type = "llm"  # Has overall_score
 
-### Component Migration Pattern
-```typescript
-// Legacy (still supported via adapter)
-import { ChineseButton } from '../components/common/ChineseButton';
+# Image Models - cannot generate text, show N/A
+model_type = "image"  # overall_score = NULL
 
-// Current
-import { IOSButton } from '../components/ios';
+# Multimodal - can handle both
+model_type = "multimodal"  # Has overall_score
 ```
 
-### File Naming Conventions
-- Components: PascalCase (`HomePage.tsx`)
-- Utilities: camelCase (`performanceOptimizer.tsx`)
-- Types: PascalCase interfaces (`interface Model`)
+### NULL Score Handling
+```typescript
+// Frontend - Always check for null
+{score != null ? score.toFixed(1) : 'N/A'}
 
-### State Management
-- **Zustand**: Global UI state, filters, preferences
-- **Advanced Caching**: Intelligent API response caching with background refresh
-- **React hooks**: Business logic abstraction (useEvaluation, useGallery)
-- **Component state**: Local form state and UI interactions
-- **Real-time updates**: Background task progress via polling/WebSocket
-- **Offline Support**: Cached data persistence for offline viewing
+// Sorting with NULL handling
+.sort((a, b) => {
+  if (a.overall_score == null && b.overall_score == null) return 0;
+  if (a.overall_score == null) return 1;  // NULL scores go to end
+  if (b.overall_score == null) return -1;
+  return b.overall_score - a.overall_score;
+})
+```
+
+### Using Unified Model Interface
+```python
+from app.services.models import UnifiedModelClient
+
+client = UnifiedModelClient()
+response = await client.generate(
+    model_id="gpt-5",  # Correctly routes to GPT-5 API
+    prompt="Write a poem about Spring",
+    max_tokens=500
+)
+```
+
+### iOS Design System Usage
+```typescript
+// iOS Components
+<IOSCard variant="elevated" interactive animate>
+  <IOSCardHeader title="Leading Models" />
+  <IOSCardContent>Content here</IOSCardContent>
+  <IOSCardFooter>
+    <IOSButton variant="primary">Action</IOSButton>
+  </IOSCardFooter>
+</IOSCard>
+
+// Typography
+<h1 className="text-large-title">WenXin MoYun</h1>
+```
 
 ## Environment Configuration
 
@@ -330,95 +207,89 @@ DATABASE_URL=sqlite+aiosqlite:///./wenxin.db
 SECRET_KEY=your-secret-key-here
 ACCESS_TOKEN_EXPIRE_MINUTES=10080  # 7 days
 
-# AI Provider Keys
+# AI Provider Keys (8 configured providers)
 OPENAI_API_KEY=your-openai-key-here
+DEEPSEEK_API_KEY=your-deepseek-key-here  
+QWEN_API_KEY=your-qwen-key-here
+XAI_API_KEY=your-xai-key-here
+OPENROUTER_API_KEY=your-openrouter-key-here
 GEMINI_API_KEY=your-gemini-key-here
-HUGGINGFACE_API_KEY=your-hf-key-here
-
-# Cost Control
-ENABLE_COST_CONTROL=true
-DAILY_COST_LIMIT=10.0
+HUGGINGFACE_API_KEY=your-huggingface-key-here
+ANTHROPIC_API_KEY=your-anthropic-key-here
 ```
+
+## Testing & Quality Assurance
+
+### E2E Testing (Playwright)
+- **Configuration**: `wenxin-moyun/tests/e2e/playwright.config.ts` - Multi-browser setup
+- **Browsers**: Chromium, Firefox, WebKit, Mobile Chrome/Safari (5 projects total)
+- **Test Organization**: 64 tests in 9 spec files with page objects pattern
+- **Key Test Suites**:
+  - `homepage.spec.ts` - Homepage functionality and navigation
+  - `ai-models.spec.ts` - Leaderboard, NULL score handling, filtering
+  - `ios-components.spec.ts` - iOS design system components
+  - `auth.spec.ts`, `battle.spec.ts`, `evaluation.spec.ts` - Core features
+  - `performance.spec.ts`, `visual.spec.ts` - Performance and visual regression
+- **Test Data**: Local fixtures in `tests/e2e/fixtures/local-test-data.ts`
+- **Git Protection**: All test results excluded from repository via `.gitignore`
+
+### Known Issues & Solutions
+
+**Port Conflicts**: Frontend auto-increments from 5173. Update Playwright config baseURL to match actual port.
+
+**Foreign Key Constraints**: Battle system validates model relationships to prevent NULL reference errors.
+
+**SVG Chart Rendering**: Fixed NaN coordinates by filtering NULL values before scale calculations.
+
+**Model API Requirements**: 
+- GPT-5 series require `max_completion_tokens` instead of `max_tokens` and reject temperature parameter
+- o1 series need large token budgets and don't support temperature
+
+**Windows Compatibility**: Use `del` instead of `rm`, `start.bat` for easy startup, check Windows Defender for port blocking.
+
+**Playwright Testing**: 
+- Test files must avoid reserved names like 'eval' in strict mode
+- WebServer automatically starts dev server for tests
+- VS Code integration available via `.vscode/settings.json`
+
+## Production Deployment
+
+### Database Integrity
+- Foreign key constraints properly configured
+- NULL score handling for image models
+- 42 AI models properly configured with provider routing
+
+### Performance Optimizations  
+- Multi-layer caching (API 5min, Static 30min, Realtime 30s)
+- iOS design system reduces bundle size vs decorative elements
+- WebSocket connection management with heartbeat
+
+### API Documentation
+- Swagger UI: http://localhost:8001/docs
+- ReDoc: http://localhost:8001/redoc
+
+### iOS Design System (Frontend)
+
+Complete iOS design system with 60+ Fluent Emoji integration. Key components available:
+
+```typescript
+// Core iOS Components
+<IOSButton variant="primary" size="md" glassMorphism>Action</IOSButton>
+<IOSCard variant="elevated" interactive animate>
+  <IOSCardHeader title="Title" emoji={<RankEmoji rank={1} />} />
+  <IOSCardContent>Content</IOSCardContent>
+</IOSCard>
+<IOSToggle checked={value} onChange={setValue} color="green" />
+<IOSSlider value={50} min={0} max={100} formatValue={(v) => `${v}%`} />
+<IOSAlert visible={show} type="info" title="Alert" actions={[...]} />
+
+// Typography and Theme
+<h1 className="text-large-title">iOS Typography</h1>
+// Uses San Francisco font stack and iOS color palette (#007AFF, #34C759, etc.)
+```
+
+Detailed component documentation in `wenxin-moyun/CLAUDE.md`.
 
 ## Test Accounts
-- Demo: username=`demo`, password=`demo123`
+- Demo: username=`demo`, password=`demo123`  
 - Admin: username=`admin`, password=`admin123`
-
-## Known Issues & Solutions
-
-### Port Conflicts
-Frontend auto-increments from 5173 if occupied. Check console for actual port.
-
-### CORS Issues
-Update `cors_origins` in `wenxin-backend/app/main.py` when frontend port changes.
-
-### Performance Issues
-Check performance indicator (bottom-left in dev mode). System auto-adjusts based on device tier.
-
-### Build Errors
-- TypeScript errors: Use `npx vite build` to bypass
-- React 19 conflicts: Use `npm install --legacy-peer-deps`
-
-### Module Import Errors
-1. Clear Vite cache: `rm -rf node_modules/.vite`
-2. Use `import type` for TypeScript types
-3. Restart dev server
-4. Check React 19 compatibility for dependencies
-
-### Cache-Related Issues
-- **Stale Data**: Use Ctrl+Shift+C to check cache status and clear if needed
-- **Memory Issues**: Cache auto-evicts old entries using LRU algorithm
-- **Network Failures**: Cache provides fallback data automatically
-
-### Database Lock Errors
-Delete `wenxin.db` and run `python init_db.py` to reset.
-
-## Critical Architecture Components
-
-### Core Services
-- **Evaluation Engine**: `app/services/evaluation_engine.py` - Async task processing with realistic progress stages
-- **Intelligent Scoring**: `app/services/intelligent_scoring/ai_scorer.py` - GPT-4 powered content evaluation
-- **Provider Management**: `app/services/ai_providers/provider_manager.py` - Multi-provider AI routing system
-- **Media Storage**: `app/services/media_storage/image_storage.py` - Local image storage for generated content
-
-### Frontend Core Systems
-- **Cache Management**: `src/utils/cache.ts` - Advanced multi-layer caching with TTL and LRU
-- **Error Boundaries**: `src/components/common/ErrorBoundary.tsx` - App-level error handling
-- **Offline Detection**: `src/services/api.ts` - Network error detection and fallback logic
-- **Performance Optimizer**: `src/utils/performanceOptimizer.tsx` - Device-specific performance tuning
-
-### Data Flow Architecture
-```
-Frontend Gallery Page → API Client → Artworks API → Database
-     ↑                                                    ↑
-Evaluation UI → Evaluation API → Background Tasks → Auto Artwork Creation
-     ↓                              ↓
-Progress Updates ← Task Progress ← Intelligent Scoring ← AI Providers
-```
-
-### Key Files
-- **Backend Entry**: `app/main.py` - FastAPI app with CORS and static file serving
-- **Frontend Entry**: `src/App.tsx` - React Router with iOS component system and Error Boundary
-- **API Client**: `src/services/api.ts` - Axios client with caching, guest sessions, offline detection
-- **Gallery Integration**: `src/pages/GalleryPage.tsx` - Real API data with caching, loading states, offline support
-- **Cache System**: `src/utils/cache.ts` - Advanced caching with background refresh and LRU eviction
-- **Database Init**: `init_db.py` - Sample data creation and schema setup
-
-## Development Tools & Debugging
-
-### Cache Statistics (Development Mode)
-- **Keyboard Shortcut**: `Ctrl+Shift+C` to toggle cache stats panel
-- **Live Metrics**: Hit rates, fresh/stale data counts, memory usage
-- **Cache Controls**: Warm up and clear cache buttons
-- **Performance Monitor**: Device performance level indicator (bottom-left)
-
-### Error Handling Development
-- **Error Boundaries**: Detailed error info in development, user-friendly in production
-- **Console Logging**: Network errors, cache operations, performance metrics
-- **Offline Simulation**: Test offline behavior by disabling network
-
-### Testing & Quality Assurance
-- **Playwright E2E**: Comprehensive browser automation tests
-- **Cache Testing**: Verify cache behavior with network simulation
-- **Error Testing**: Test error boundary behavior with intentional errors
-- **Performance Testing**: Device performance tier simulation

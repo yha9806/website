@@ -1,15 +1,16 @@
 from typing import Any, List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+from sqlalchemy import select, func, text
 from uuid import UUID
+import json
 
 from app.core.database import get_db
 from app.api.deps import get_current_user, get_current_active_superuser
 from app.models.ai_model import AIModel
 from app.models.user import User
 from app.schemas.ai_model import (
-    AIModel as AIModelSchema,
+    AIModelResponse as AIModelSchema,
     AIModelCreate,
     AIModelUpdate,
     AIModelWithStats
@@ -32,7 +33,7 @@ async def get_models(
     if category:
         query = query.where(AIModel.category == category)
     if is_active is not None:
-        query = query.where(AIModel.is_active == is_active)
+        query = query.where(AIModel.is_active.is_(is_active))
     
     query = query.order_by(AIModel.overall_score.desc())
     query = query.offset(skip).limit(limit)
@@ -40,36 +41,95 @@ async def get_models(
     result = await db.execute(query)
     models = result.scalars().all()
     
-    return models
+    # Convert database models to response format, handling NULL values
+    result_models = []
+    for model in models:
+        model_dict = {
+            "id": str(model.id),
+            "name": model.name,
+            "organization": model.organization,
+            "version": model.version,
+            "category": model.category,
+            "description": model.description,
+            "release_date": model.release_date,
+            "tags": model.tags if model.tags else [],
+            "avatar_url": model.avatar_url,
+            "overall_score": model.overall_score,
+            "metrics": model.metrics if model.metrics else None,
+            "is_active": model.is_active,
+            "is_verified": model.is_verified,
+            "created_at": model.created_at,
+            "updated_at": model.updated_at
+        }
+        result_models.append(AIModelSchema.model_validate(model_dict))
+    
+    return result_models
 
 
-@router.get("/{model_id}", response_model=AIModelWithStats)
+@router.get("/{model_id}")
 async def get_model(
     model_id: str,  # 改为str以支持SQLite
     db: AsyncSession = Depends(get_db)
 ) -> Any:
-    """Get AI model by ID with statistics"""
-    result = await db.execute(
-        select(AIModel).where(AIModel.id == model_id)
-    )
-    model = result.scalar_one_or_none()
+    """Get AI model by ID with statistics and benchmark results"""
+    # Use raw SQL to get all columns including benchmark_results
+    query = text("""
+        SELECT id, name, organization, version, category, description, 
+               api_endpoint, api_key_encrypted, overall_score, metrics,
+               is_active, is_verified, release_date, created_at, updated_at,
+               tags, avatar_url, data_source, verification_count,
+               benchmark_score, benchmark_metadata, confidence_level,
+               last_benchmark_at, rhythm_score, composition_score,
+               narrative_score, emotion_score, creativity_score,
+               cultural_score, benchmark_results
+        FROM ai_models
+        WHERE id = :model_id
+    """)
     
-    if not model:
+    result = await db.execute(query, {"model_id": model_id})
+    row = result.fetchone()
+    
+    if not row:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Model not found"
         )
     
-    # Get statistics (simplified for now)
-    model_dict = {
-        **model.__dict__,
+    # Convert row to dict
+    model_data = dict(row._mapping)
+    
+    # Build metrics dict from individual scores
+    metrics = {
+        "rhythm": model_data.get('rhythm_score', 0) or 0,
+        "composition": model_data.get('composition_score', 0) or 0,
+        "narrative": model_data.get('narrative_score', 0) or 0,
+        "emotion": model_data.get('emotion_score', 0) or 0,
+        "creativity": model_data.get('creativity_score', 0) or 0,
+        "cultural": model_data.get('cultural_score', 0) or 0
+    }
+    
+    # Parse JSON fields
+    if model_data.get('tags'):
+        try:
+            model_data['tags'] = json.loads(model_data['tags']) if isinstance(model_data['tags'], str) else model_data['tags']
+        except:
+            model_data['tags'] = []
+    
+    if model_data.get('benchmark_metadata'):
+        try:
+            model_data['benchmark_metadata'] = json.loads(model_data['benchmark_metadata']) if isinstance(model_data['benchmark_metadata'], str) else model_data['benchmark_metadata']
+        except:
+            model_data['benchmark_metadata'] = {}
+    
+    # Return complete model data
+    return {
+        **model_data,
+        "metrics": metrics,
         "total_evaluations": 0,
         "total_battles": 0,
         "win_rate": 0.0,
         "recent_works": []
     }
-    
-    return model_dict
 
 
 @router.post("/", response_model=AIModelSchema)

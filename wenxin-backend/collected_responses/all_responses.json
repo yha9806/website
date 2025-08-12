@@ -1,0 +1,3776 @@
+{
+  "collection_id": "collect_20250813_135500",
+  "start_time": "2025-08-13T13:55:00.480131",
+  "test_definitions": {
+    "rhythm": {
+      "name": "韵律节奏",
+      "weight": 1.0,
+      "test_cases": [
+        {
+          "id": "rhythm_001",
+          "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+          "max_tokens": 100,
+          "temperature": 0.7,
+          "evaluation_criteria": [
+            "格律准确性",
+            "音韵和谐度",
+            "节奏流畅性"
+          ],
+          "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分"
+        },
+        {
+          "id": "rhythm_002",
+          "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+          "max_tokens": 100,
+          "temperature": 0.7,
+          "evaluation_criteria": [
+            "韵脚运用",
+            "平仄搭配",
+            "意境保留"
+          ],
+          "scoring_prompt": "评估改写后的韵律质量，给出0-100分"
+        },
+        {
+          "id": "rhythm_003",
+          "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+          "max_tokens": 80,
+          "temperature": 0.8,
+          "evaluation_criteria": [
+            "韵律感",
+            "记忆度",
+            "节奏感"
+          ],
+          "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分"
+        }
+      ]
+    },
+    "composition": {
+      "name": "构图布局",
+      "weight": 1.0,
+      "test_cases": [
+        {
+          "id": "comp_001",
+          "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+          "max_tokens": 200,
+          "temperature": 0.7,
+          "evaluation_criteria": [
+            "空间层次",
+            "布局平衡",
+            "细节描写"
+          ],
+          "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分"
+        },
+        {
+          "id": "comp_002",
+          "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+          "max_tokens": 200,
+          "temperature": 0.7,
+          "evaluation_criteria": [
+            "布局合理性",
+            "视觉层次",
+            "信息组织"
+          ],
+          "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分"
+        },
+        {
+          "id": "comp_003",
+          "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+          "max_tokens": 200,
+          "temperature": 0.7,
+          "evaluation_criteria": [
+            "空间利用",
+            "视觉焦点",
+            "整体协调"
+          ],
+          "scoring_prompt": "评估舞台布置的构图效果，给出0-100分"
+        }
+      ]
+    },
+    "narrative": {
+      "name": "叙事逻辑",
+      "weight": 1.0,
+      "test_cases": [
+        {
+          "id": "narr_001",
+          "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+          "max_tokens": 300,
+          "temperature": 0.8,
+          "evaluation_criteria": [
+            "情节连贯性",
+            "逻辑合理性",
+            "悬念设置"
+          ],
+          "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分"
+        },
+        {
+          "id": "narr_002",
+          "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+          "max_tokens": 300,
+          "temperature": 0.8,
+          "evaluation_criteria": [
+            "叙事结构",
+            "时间线清晰",
+            "因果关系"
+          ],
+          "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分"
+        },
+        {
+          "id": "narr_003",
+          "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+          "max_tokens": 250,
+          "temperature": 0.8,
+          "evaluation_criteria": [
+            "故事完整性",
+            "转折合理性",
+            "节奏控制"
+          ],
+          "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分"
+        }
+      ]
+    },
+    "emotion": {
+      "name": "情感表达",
+      "weight": 1.0,
+      "test_cases": [
+        {
+          "id": "emo_001",
+          "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+          "max_tokens": 250,
+          "temperature": 0.8,
+          "evaluation_criteria": [
+            "情感真挚度",
+            "共鸣能力",
+            "表达细腻度"
+          ],
+          "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分"
+        },
+        {
+          "id": "emo_002",
+          "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+          "max_tokens": 200,
+          "temperature": 0.8,
+          "evaluation_criteria": [
+            "心理描写",
+            "情绪转换",
+            "细节刻画"
+          ],
+          "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分"
+        },
+        {
+          "id": "emo_003",
+          "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+          "max_tokens": 200,
+          "temperature": 0.7,
+          "evaluation_criteria": [
+            "诚意表达",
+            "情感适度",
+            "语气恰当"
+          ],
+          "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分"
+        }
+      ]
+    },
+    "creativity": {
+      "name": "创意创新",
+      "weight": 1.0,
+      "test_cases": [
+        {
+          "id": "create_001",
+          "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+          "max_tokens": 300,
+          "temperature": 0.9,
+          "evaluation_criteria": [
+            "独创性",
+            "想象力",
+            "可行性"
+          ],
+          "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分"
+        },
+        {
+          "id": "create_002",
+          "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+          "max_tokens": 250,
+          "temperature": 0.9,
+          "evaluation_criteria": [
+            "创造力",
+            "细节想象",
+            "内在逻辑"
+          ],
+          "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分"
+        },
+        {
+          "id": "create_003",
+          "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+          "max_tokens": 250,
+          "temperature": 0.8,
+          "evaluation_criteria": [
+            "创新性",
+            "实用性",
+            "独特视角"
+          ],
+          "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分"
+        }
+      ]
+    },
+    "cultural": {
+      "name": "文化契合",
+      "weight": 1.0,
+      "test_cases": [
+        {
+          "id": "culture_001",
+          "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+          "max_tokens": 250,
+          "temperature": 0.7,
+          "evaluation_criteria": [
+            "文化理解",
+            "现代诠释",
+            "例证恰当"
+          ],
+          "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分"
+        },
+        {
+          "id": "culture_002",
+          "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+          "max_tokens": 250,
+          "temperature": 0.7,
+          "evaluation_criteria": [
+            "文化知识",
+            "内涵理解",
+            "表达准确"
+          ],
+          "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分"
+        },
+        {
+          "id": "culture_003",
+          "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+          "max_tokens": 250,
+          "temperature": 0.7,
+          "evaluation_criteria": [
+            "哲学理解",
+            "现代转化",
+            "实践意义"
+          ],
+          "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分"
+        }
+      ]
+    }
+  },
+  "models": {
+    "gpt-5": {
+      "model_id": "gpt-5",
+      "collection_time": "2025-08-13T13:55:00.480131",
+      "responses": [
+        {
+          "model_id": "gpt-5",
+          "dimension": "rhythm",
+          "test_id": "rhythm_001",
+          "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+          "response": "",
+          "response_time": 20.453314304351807,
+          "tokens_used": 535,
+          "timestamp": "2025-08-13T13:55:20.933445",
+          "evaluation_criteria": [
+            "格律准确性",
+            "音韵和谐度",
+            "节奏流畅性"
+          ],
+          "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "rhythm",
+          "test_id": "rhythm_002",
+          "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+          "response": "",
+          "response_time": 10.893101692199707,
+          "tokens_used": 547,
+          "timestamp": "2025-08-13T13:55:32.852701",
+          "evaluation_criteria": [
+            "韵脚运用",
+            "平仄搭配",
+            "意境保留"
+          ],
+          "scoring_prompt": "评估改写后的韵律质量，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "rhythm",
+          "test_id": "rhythm_003",
+          "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+          "response": "",
+          "response_time": 9.39540719985962,
+          "tokens_used": 528,
+          "timestamp": "2025-08-13T13:55:43.260117",
+          "evaluation_criteria": [
+            "韵律感",
+            "记忆度",
+            "节奏感"
+          ],
+          "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "composition",
+          "test_id": "comp_001",
+          "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+          "response": "",
+          "response_time": 16.739792108535767,
+          "tokens_used": 535,
+          "timestamp": "2025-08-13T13:56:01.015420",
+          "evaluation_criteria": [
+            "空间层次",
+            "布局平衡",
+            "细节描写"
+          ],
+          "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "composition",
+          "test_id": "comp_002",
+          "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+          "response": "",
+          "response_time": 5.2499635219573975,
+          "tokens_used": 525,
+          "timestamp": "2025-08-13T13:56:07.277874",
+          "evaluation_criteria": [
+            "布局合理性",
+            "视觉层次",
+            "信息组织"
+          ],
+          "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "composition",
+          "test_id": "comp_003",
+          "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+          "response": "",
+          "response_time": 7.745447158813477,
+          "tokens_used": 529,
+          "timestamp": "2025-08-13T13:56:16.047580",
+          "evaluation_criteria": [
+            "空间利用",
+            "视觉焦点",
+            "整体协调"
+          ],
+          "scoring_prompt": "评估舞台布置的构图效果，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "narrative",
+          "test_id": "narr_001",
+          "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+          "response": "",
+          "response_time": 8.976092338562012,
+          "tokens_used": 549,
+          "timestamp": "2025-08-13T13:56:26.034939",
+          "evaluation_criteria": [
+            "情节连贯性",
+            "逻辑合理性",
+            "悬念设置"
+          ],
+          "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "narrative",
+          "test_id": "narr_002",
+          "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+          "response": "",
+          "response_time": 9.978877067565918,
+          "tokens_used": 529,
+          "timestamp": "2025-08-13T13:56:37.028650",
+          "evaluation_criteria": [
+            "叙事结构",
+            "时间线清晰",
+            "因果关系"
+          ],
+          "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "narrative",
+          "test_id": "narr_003",
+          "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+          "response": "",
+          "response_time": 18.81679391860962,
+          "tokens_used": 531,
+          "timestamp": "2025-08-13T13:56:56.861019",
+          "evaluation_criteria": [
+            "故事完整性",
+            "转折合理性",
+            "节奏控制"
+          ],
+          "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "emotion",
+          "test_id": "emo_001",
+          "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+          "response": "",
+          "response_time": 12.072418451309204,
+          "tokens_used": 535,
+          "timestamp": "2025-08-13T13:57:09.968245",
+          "evaluation_criteria": [
+            "情感真挚度",
+            "共鸣能力",
+            "表达细腻度"
+          ],
+          "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "emotion",
+          "test_id": "emo_002",
+          "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+          "response": "",
+          "response_time": 9.758801698684692,
+          "tokens_used": 523,
+          "timestamp": "2025-08-13T13:57:20.749139",
+          "evaluation_criteria": [
+            "心理描写",
+            "情绪转换",
+            "细节刻画"
+          ],
+          "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "emotion",
+          "test_id": "emo_003",
+          "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+          "response": "",
+          "response_time": 8.43605089187622,
+          "tokens_used": 525,
+          "timestamp": "2025-08-13T13:57:30.201740",
+          "evaluation_criteria": [
+            "诚意表达",
+            "情感适度",
+            "语气恰当"
+          ],
+          "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "creativity",
+          "test_id": "create_001",
+          "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+          "response": "",
+          "response_time": 10.596381425857544,
+          "tokens_used": 529,
+          "timestamp": "2025-08-13T13:57:41.807255",
+          "evaluation_criteria": [
+            "独创性",
+            "想象力",
+            "可行性"
+          ],
+          "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "creativity",
+          "test_id": "create_002",
+          "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+          "response": "",
+          "response_time": 11.76830530166626,
+          "tokens_used": 533,
+          "timestamp": "2025-08-13T13:57:54.608862",
+          "evaluation_criteria": [
+            "创造力",
+            "细节想象",
+            "内在逻辑"
+          ],
+          "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "creativity",
+          "test_id": "create_003",
+          "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+          "response": "",
+          "response_time": 9.227198362350464,
+          "tokens_used": 523,
+          "timestamp": "2025-08-13T13:58:04.852288",
+          "evaluation_criteria": [
+            "创新性",
+            "实用性",
+            "独特视角"
+          ],
+          "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "cultural",
+          "test_id": "culture_001",
+          "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+          "response": "",
+          "response_time": 13.448558807373047,
+          "tokens_used": 525,
+          "timestamp": "2025-08-13T13:58:19.317059",
+          "evaluation_criteria": [
+            "文化理解",
+            "现代诠释",
+            "例证恰当"
+          ],
+          "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "cultural",
+          "test_id": "culture_002",
+          "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+          "response": "",
+          "response_time": 10.260787725448608,
+          "tokens_used": 520,
+          "timestamp": "2025-08-13T13:58:30.608469",
+          "evaluation_criteria": [
+            "文化知识",
+            "内涵理解",
+            "表达准确"
+          ],
+          "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5",
+          "dimension": "cultural",
+          "test_id": "culture_003",
+          "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+          "response": "",
+          "response_time": 4.846942663192749,
+          "tokens_used": 528,
+          "timestamp": "2025-08-13T13:58:36.477502",
+          "evaluation_criteria": [
+            "哲学理解",
+            "现代转化",
+            "实践意义"
+          ],
+          "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分",
+          "api_success": true
+        }
+      ],
+      "stats": {
+        "total_tests": 18,
+        "successful": 18,
+        "failed": 0,
+        "total_time": 198.6642346382141,
+        "total_tokens": 9549
+      }
+    },
+    "gpt-5-mini": {
+      "model_id": "gpt-5-mini",
+      "collection_time": "2025-08-13T13:58:37.487697",
+      "responses": [
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "rhythm",
+          "test_id": "rhythm_001",
+          "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+          "response": "",
+          "response_time": 6.837400674819946,
+          "tokens_used": 535,
+          "timestamp": "2025-08-13T13:58:44.325098",
+          "evaluation_criteria": [
+            "格律准确性",
+            "音韵和谐度",
+            "节奏流畅性"
+          ],
+          "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "rhythm",
+          "test_id": "rhythm_002",
+          "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+          "response": "",
+          "response_time": 8.294147253036499,
+          "tokens_used": 547,
+          "timestamp": "2025-08-13T13:58:53.660665",
+          "evaluation_criteria": [
+            "韵脚运用",
+            "平仄搭配",
+            "意境保留"
+          ],
+          "scoring_prompt": "评估改写后的韵律质量，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "rhythm",
+          "test_id": "rhythm_003",
+          "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+          "response": "",
+          "response_time": 8.23758578300476,
+          "tokens_used": 528,
+          "timestamp": "2025-08-13T13:59:02.918513",
+          "evaluation_criteria": [
+            "韵律感",
+            "记忆度",
+            "节奏感"
+          ],
+          "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "composition",
+          "test_id": "comp_001",
+          "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+          "response": "",
+          "response_time": 6.215317249298096,
+          "tokens_used": 535,
+          "timestamp": "2025-08-13T13:59:10.146744",
+          "evaluation_criteria": [
+            "空间层次",
+            "布局平衡",
+            "细节描写"
+          ],
+          "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "composition",
+          "test_id": "comp_002",
+          "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+          "response": "",
+          "response_time": 5.683936357498169,
+          "tokens_used": 525,
+          "timestamp": "2025-08-13T13:59:16.844297",
+          "evaluation_criteria": [
+            "布局合理性",
+            "视觉层次",
+            "信息组织"
+          ],
+          "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "composition",
+          "test_id": "comp_003",
+          "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+          "response": "",
+          "response_time": 8.603242874145508,
+          "tokens_used": 529,
+          "timestamp": "2025-08-13T13:59:26.460206",
+          "evaluation_criteria": [
+            "空间利用",
+            "视觉焦点",
+            "整体协调"
+          ],
+          "scoring_prompt": "评估舞台布置的构图效果，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "narrative",
+          "test_id": "narr_001",
+          "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+          "response": "",
+          "response_time": 7.771135568618774,
+          "tokens_used": 549,
+          "timestamp": "2025-08-13T13:59:35.259255",
+          "evaluation_criteria": [
+            "情节连贯性",
+            "逻辑合理性",
+            "悬念设置"
+          ],
+          "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "narrative",
+          "test_id": "narr_002",
+          "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+          "response": "",
+          "response_time": 6.756846904754639,
+          "tokens_used": 529,
+          "timestamp": "2025-08-13T13:59:43.039803",
+          "evaluation_criteria": [
+            "叙事结构",
+            "时间线清晰",
+            "因果关系"
+          ],
+          "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "narrative",
+          "test_id": "narr_003",
+          "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+          "response": "",
+          "response_time": 8.458759546279907,
+          "tokens_used": 531,
+          "timestamp": "2025-08-13T13:59:52.514407",
+          "evaluation_criteria": [
+            "故事完整性",
+            "转折合理性",
+            "节奏控制"
+          ],
+          "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "emotion",
+          "test_id": "emo_001",
+          "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+          "response": "",
+          "response_time": 6.524693012237549,
+          "tokens_used": 535,
+          "timestamp": "2025-08-13T14:00:00.062419",
+          "evaluation_criteria": [
+            "情感真挚度",
+            "共鸣能力",
+            "表达细腻度"
+          ],
+          "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "emotion",
+          "test_id": "emo_002",
+          "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+          "response": "",
+          "response_time": 7.566682577133179,
+          "tokens_used": 523,
+          "timestamp": "2025-08-13T14:00:08.652254",
+          "evaluation_criteria": [
+            "心理描写",
+            "情绪转换",
+            "细节刻画"
+          ],
+          "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "emotion",
+          "test_id": "emo_003",
+          "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+          "response": "",
+          "response_time": 9.049240589141846,
+          "tokens_used": 525,
+          "timestamp": "2025-08-13T14:00:18.722691",
+          "evaluation_criteria": [
+            "诚意表达",
+            "情感适度",
+            "语气恰当"
+          ],
+          "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "creativity",
+          "test_id": "create_001",
+          "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+          "response": "",
+          "response_time": 8.648066520690918,
+          "tokens_used": 529,
+          "timestamp": "2025-08-13T14:00:28.393723",
+          "evaluation_criteria": [
+            "独创性",
+            "想象力",
+            "可行性"
+          ],
+          "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "creativity",
+          "test_id": "create_002",
+          "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+          "response": "",
+          "response_time": 8.016446352005005,
+          "tokens_used": 533,
+          "timestamp": "2025-08-13T14:00:37.432323",
+          "evaluation_criteria": [
+            "创造力",
+            "细节想象",
+            "内在逻辑"
+          ],
+          "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "creativity",
+          "test_id": "create_003",
+          "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+          "response": "",
+          "response_time": 14.967500686645508,
+          "tokens_used": 523,
+          "timestamp": "2025-08-13T14:00:53.422467",
+          "evaluation_criteria": [
+            "创新性",
+            "实用性",
+            "独特视角"
+          ],
+          "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "cultural",
+          "test_id": "culture_001",
+          "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+          "response": "",
+          "response_time": 8.212016344070435,
+          "tokens_used": 525,
+          "timestamp": "2025-08-13T14:01:02.650672",
+          "evaluation_criteria": [
+            "文化理解",
+            "现代诠释",
+            "例证恰当"
+          ],
+          "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "cultural",
+          "test_id": "culture_002",
+          "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+          "response": "",
+          "response_time": 7.096366882324219,
+          "tokens_used": 520,
+          "timestamp": "2025-08-13T14:01:10.771574",
+          "evaluation_criteria": [
+            "文化知识",
+            "内涵理解",
+            "表达准确"
+          ],
+          "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-mini",
+          "dimension": "cultural",
+          "test_id": "culture_003",
+          "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+          "response": "",
+          "response_time": 8.453279972076416,
+          "tokens_used": 528,
+          "timestamp": "2025-08-13T14:01:20.245869",
+          "evaluation_criteria": [
+            "哲学理解",
+            "现代转化",
+            "实践意义"
+          ],
+          "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分",
+          "api_success": true
+        }
+      ],
+      "stats": {
+        "total_tests": 18,
+        "successful": 18,
+        "failed": 0,
+        "total_time": 145.39266514778137,
+        "total_tokens": 9549
+      }
+    },
+    "gpt-5-nano": {
+      "model_id": "gpt-5-nano",
+      "collection_time": "2025-08-13T14:01:21.270706",
+      "responses": [
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "rhythm",
+          "test_id": "rhythm_001",
+          "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+          "response": "",
+          "response_time": 4.399247884750366,
+          "tokens_used": 535,
+          "timestamp": "2025-08-13T14:01:25.669954",
+          "evaluation_criteria": [
+            "格律准确性",
+            "音韵和谐度",
+            "节奏流畅性"
+          ],
+          "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "rhythm",
+          "test_id": "rhythm_002",
+          "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+          "response": "",
+          "response_time": 3.8437626361846924,
+          "tokens_used": 547,
+          "timestamp": "2025-08-13T14:01:30.544889",
+          "evaluation_criteria": [
+            "韵脚运用",
+            "平仄搭配",
+            "意境保留"
+          ],
+          "scoring_prompt": "评估改写后的韵律质量，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "rhythm",
+          "test_id": "rhythm_003",
+          "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+          "response": "",
+          "response_time": 4.502200603485107,
+          "tokens_used": 528,
+          "timestamp": "2025-08-13T14:01:36.051982",
+          "evaluation_criteria": [
+            "韵律感",
+            "记忆度",
+            "节奏感"
+          ],
+          "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "composition",
+          "test_id": "comp_001",
+          "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+          "response": "",
+          "response_time": 3.7003910541534424,
+          "tokens_used": 535,
+          "timestamp": "2025-08-13T14:01:40.776313",
+          "evaluation_criteria": [
+            "空间层次",
+            "布局平衡",
+            "细节描写"
+          ],
+          "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "composition",
+          "test_id": "comp_002",
+          "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+          "response": "",
+          "response_time": 3.7193551063537598,
+          "tokens_used": 525,
+          "timestamp": "2025-08-13T14:01:45.518035",
+          "evaluation_criteria": [
+            "布局合理性",
+            "视觉层次",
+            "信息组织"
+          ],
+          "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "composition",
+          "test_id": "comp_003",
+          "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+          "response": "",
+          "response_time": 3.433305501937866,
+          "tokens_used": 529,
+          "timestamp": "2025-08-13T14:01:49.969961",
+          "evaluation_criteria": [
+            "空间利用",
+            "视觉焦点",
+            "整体协调"
+          ],
+          "scoring_prompt": "评估舞台布置的构图效果，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "narrative",
+          "test_id": "narr_001",
+          "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+          "response": "",
+          "response_time": 3.6136553287506104,
+          "tokens_used": 549,
+          "timestamp": "2025-08-13T14:01:54.597612",
+          "evaluation_criteria": [
+            "情节连贯性",
+            "逻辑合理性",
+            "悬念设置"
+          ],
+          "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "narrative",
+          "test_id": "narr_002",
+          "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+          "response": "",
+          "response_time": 4.923398733139038,
+          "tokens_used": 529,
+          "timestamp": "2025-08-13T14:02:00.532576",
+          "evaluation_criteria": [
+            "叙事结构",
+            "时间线清晰",
+            "因果关系"
+          ],
+          "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "narrative",
+          "test_id": "narr_003",
+          "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+          "response": "",
+          "response_time": 5.406156063079834,
+          "tokens_used": 531,
+          "timestamp": "2025-08-13T14:02:06.954538",
+          "evaluation_criteria": [
+            "故事完整性",
+            "转折合理性",
+            "节奏控制"
+          ],
+          "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "emotion",
+          "test_id": "emo_001",
+          "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+          "response": "",
+          "response_time": 3.923548698425293,
+          "tokens_used": 535,
+          "timestamp": "2025-08-13T14:02:11.892672",
+          "evaluation_criteria": [
+            "情感真挚度",
+            "共鸣能力",
+            "表达细腻度"
+          ],
+          "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "emotion",
+          "test_id": "emo_002",
+          "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+          "response": "",
+          "response_time": 3.524017095565796,
+          "tokens_used": 523,
+          "timestamp": "2025-08-13T14:02:16.441015",
+          "evaluation_criteria": [
+            "心理描写",
+            "情绪转换",
+            "细节刻画"
+          ],
+          "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "emotion",
+          "test_id": "emo_003",
+          "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+          "response": "",
+          "response_time": 3.087700128555298,
+          "tokens_used": 525,
+          "timestamp": "2025-08-13T14:02:20.559224",
+          "evaluation_criteria": [
+            "诚意表达",
+            "情感适度",
+            "语气恰当"
+          ],
+          "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "creativity",
+          "test_id": "create_001",
+          "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+          "response": "",
+          "response_time": 3.5478878021240234,
+          "tokens_used": 529,
+          "timestamp": "2025-08-13T14:02:25.128013",
+          "evaluation_criteria": [
+            "独创性",
+            "想象力",
+            "可行性"
+          ],
+          "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "creativity",
+          "test_id": "create_002",
+          "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+          "response": "",
+          "response_time": 3.355787754058838,
+          "tokens_used": 533,
+          "timestamp": "2025-08-13T14:02:29.498417",
+          "evaluation_criteria": [
+            "创造力",
+            "细节想象",
+            "内在逻辑"
+          ],
+          "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "creativity",
+          "test_id": "create_003",
+          "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+          "response": "",
+          "response_time": 3.4476494789123535,
+          "tokens_used": 523,
+          "timestamp": "2025-08-13T14:02:33.971463",
+          "evaluation_criteria": [
+            "创新性",
+            "实用性",
+            "独特视角"
+          ],
+          "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "cultural",
+          "test_id": "culture_001",
+          "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+          "response": "",
+          "response_time": 3.6873645782470703,
+          "tokens_used": 525,
+          "timestamp": "2025-08-13T14:02:38.678791",
+          "evaluation_criteria": [
+            "文化理解",
+            "现代诠释",
+            "例证恰当"
+          ],
+          "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "cultural",
+          "test_id": "culture_002",
+          "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+          "response": "",
+          "response_time": 3.5540761947631836,
+          "tokens_used": 520,
+          "timestamp": "2025-08-13T14:02:43.249323",
+          "evaluation_criteria": [
+            "文化知识",
+            "内涵理解",
+            "表达准确"
+          ],
+          "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-5-nano",
+          "dimension": "cultural",
+          "test_id": "culture_003",
+          "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+          "response": "",
+          "response_time": 3.8483099937438965,
+          "tokens_used": 528,
+          "timestamp": "2025-08-13T14:02:48.118079",
+          "evaluation_criteria": [
+            "哲学理解",
+            "现代转化",
+            "实践意义"
+          ],
+          "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分",
+          "api_success": true
+        }
+      ],
+      "stats": {
+        "total_tests": 18,
+        "successful": 18,
+        "failed": 0,
+        "total_time": 69.51781463623047,
+        "total_tokens": 9549
+      }
+    },
+    "o1": {
+      "model_id": "o1",
+      "collection_time": "2025-08-13T14:02:49.141670",
+      "responses": [
+        {
+          "model_id": "o1",
+          "dimension": "rhythm",
+          "test_id": "rhythm_001",
+          "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+          "response": "",
+          "response_time": 2.793184280395508,
+          "tokens_used": 135,
+          "timestamp": "2025-08-13T14:02:51.935858",
+          "evaluation_criteria": [
+            "格律准确性",
+            "音韵和谐度",
+            "节奏流畅性"
+          ],
+          "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "rhythm",
+          "test_id": "rhythm_002",
+          "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+          "response": "",
+          "response_time": 3.0663743019104004,
+          "tokens_used": 147,
+          "timestamp": "2025-08-13T14:02:56.019153",
+          "evaluation_criteria": [
+            "韵脚运用",
+            "平仄搭配",
+            "意境保留"
+          ],
+          "scoring_prompt": "评估改写后的韵律质量，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "rhythm",
+          "test_id": "rhythm_003",
+          "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+          "response": "",
+          "response_time": 3.0199873447418213,
+          "tokens_used": 108,
+          "timestamp": "2025-08-13T14:03:00.062359",
+          "evaluation_criteria": [
+            "韵律感",
+            "记忆度",
+            "节奏感"
+          ],
+          "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "composition",
+          "test_id": "comp_001",
+          "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+          "response": "",
+          "response_time": 3.4699013233184814,
+          "tokens_used": 235,
+          "timestamp": "2025-08-13T14:03:04.556393",
+          "evaluation_criteria": [
+            "空间层次",
+            "布局平衡",
+            "细节描写"
+          ],
+          "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "composition",
+          "test_id": "comp_002",
+          "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+          "response": "以下示例基于常见的页面结构，采用自上而下的信息传递方式，以便让用户在短时间内快速获取产品亮点与购买意愿。可根据自身品牌风格与具体需求，在视觉设计和交互方面进行相应调整。\n\n------------------------------\n1. 头部区域（Header）\n------------------------------\n• ",
+          "response_time": 4.318361282348633,
+          "tokens_used": 225,
+          "timestamp": "2025-08-13T14:03:09.890713",
+          "evaluation_criteria": [
+            "布局合理性",
+            "视觉层次",
+            "信息组织"
+          ],
+          "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "composition",
+          "test_id": "comp_003",
+          "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+          "response": "以下是一种可能的舞台剧场景布置示例，涵盖道具摆放、灯光设计以及演员站位的建议，帮助塑造戏剧感与叙事氛围。您可根据剧本需要及演出场地实际情况对其进行灵活调整。\n\n1. 舞台整体布局  \n   • 舞台分为前、中、后三个主要表演区域：  \n     – 前景区（近观众处",
+          "response_time": 4.47482442855835,
+          "tokens_used": 229,
+          "timestamp": "2025-08-13T14:03:15.377095",
+          "evaluation_criteria": [
+            "空间利用",
+            "视觉焦点",
+            "整体协调"
+          ],
+          "scoring_prompt": "评估舞台布置的构图效果，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "narrative",
+          "test_id": "narr_001",
+          "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+          "response": "小明站在漆黑的图书馆中央，只能依靠微弱的月光勉强分辨出",
+          "response_time": 4.901428699493408,
+          "tokens_used": 349,
+          "timestamp": "2025-08-13T14:03:21.300675",
+          "evaluation_criteria": [
+            "情节连贯性",
+            "逻辑合理性",
+            "悬念设置"
+          ],
+          "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "narrative",
+          "test_id": "narr_002",
+          "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+          "response": "",
+          "response_time": 4.579210996627808,
+          "tokens_used": 329,
+          "timestamp": "2025-08-13T14:03:26.899704",
+          "evaluation_criteria": [
+            "叙事结构",
+            "时间线清晰",
+            "因果关系"
+          ],
+          "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "narrative",
+          "test_id": "narr_003",
+          "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+          "response": "",
+          "response_time": 4.109361886978149,
+          "tokens_used": 281,
+          "timestamp": "2025-08-13T14:03:32.021944",
+          "evaluation_criteria": [
+            "故事完整性",
+            "转折合理性",
+            "节奏控制"
+          ],
+          "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "emotion",
+          "test_id": "emo_001",
+          "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+          "response": "",
+          "response_time": 3.6329593658447266,
+          "tokens_used": 285,
+          "timestamp": "2025-08-13T14:03:36.673788",
+          "evaluation_criteria": [
+            "情感真挚度",
+            "共鸣能力",
+            "表达细腻度"
+          ],
+          "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "emotion",
+          "test_id": "emo_002",
+          "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+          "response": "当一个人收到意外惊喜时，最先在心理上会产生一种短暂的空白与震惊，就像脑海突然被闪光打亮，思绪瞬时停顿。接着，疑惑在心底升腾，一瞬间不太敢相信眼前发生的是真实的，又带着淡淡的兴奋去揣摩这一切究竟如何",
+          "response_time": 4.266108274459839,
+          "tokens_used": 223,
+          "timestamp": "2025-08-13T14:03:41.965474",
+          "evaluation_criteria": [
+            "心理描写",
+            "情绪转换",
+            "细节刻画"
+          ],
+          "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "emotion",
+          "test_id": "emo_003",
+          "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+          "response": "尊敬的________先生/女士：\n\n您好！我怀着万分歉疚的心情写下这封信。回想起自己之前的不当行为和言语，我对给",
+          "response_time": 3.2151737213134766,
+          "tokens_used": 225,
+          "timestamp": "2025-08-13T14:03:46.198233",
+          "evaluation_criteria": [
+            "诚意表达",
+            "情感适度",
+            "语气恰当"
+          ],
+          "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "creativity",
+          "test_id": "create_001",
+          "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+          "response": "以下是一款全新设计的节日，名为「千境之光节」：\n\n一、节日的起源  \n据传，古时有一位名为千境的隐士，常年在山林之间修行。他发现世间万物皆有独特之光：日月星辰、广袤山川乃至飞鸟花草，各自散发着不同的能量与美感。为了让更多人看到自然与人心的光辉，他便在一年初春之际广",
+          "response_time": 5.30279541015625,
+          "tokens_used": 329,
+          "timestamp": "2025-08-13T14:03:52.533258",
+          "evaluation_criteria": [
+            "独创性",
+            "想象力",
+            "可行性"
+          ],
+          "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "creativity",
+          "test_id": "create_002",
+          "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+          "response": "让我们将三种不同的动物特征巧妙地组合，创造出一个独特的幻想生物——我把它取名为“风炼狮鹫”（仅作为示例，也可以有其他名称）。以下是它的外观、习性和栖息地的详细描述：\n\n1. 外观特征  \n   • 狮子特征：风炼狮鹫拥有雄狮一般的强壮躯体，四肢肌肉发达，爪子锋利，尾巴上布满蓬松的鬃毛。它的身形比普通狮子更高大，站立时前肢健壮而有力。  \n   • 鹰或隼的头部与翅膀：生物的头",
+          "response_time": 4.663967847824097,
+          "tokens_used": 283,
+          "timestamp": "2025-08-13T14:03:58.225693",
+          "evaluation_criteria": [
+            "创造力",
+            "细节想象",
+            "内在逻辑"
+          ],
+          "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "creativity",
+          "test_id": "create_003",
+          "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+          "response": "",
+          "response_time": 5.032163381576538,
+          "tokens_used": 273,
+          "timestamp": "2025-08-13T14:04:04.278193",
+          "evaluation_criteria": [
+            "创新性",
+            "实用性",
+            "独特视角"
+          ],
+          "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "cultural",
+          "test_id": "culture_001",
+          "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+          "response": "“君子和而不同”出自《论语·子路篇》，原句是“君子和而不同，小人同而不和”。它的核心含义可以概括为：真正的君子能够与他",
+          "response_time": 5.310274839401245,
+          "tokens_used": 275,
+          "timestamp": "2025-08-13T14:04:10.601718",
+          "evaluation_criteria": [
+            "文化理解",
+            "现代诠释",
+            "例证恰当"
+          ],
+          "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "cultural",
+          "test_id": "culture_002",
+          "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+          "response": "中秋节，又称为“团圆节”“拜月节”等，与春节、清明节和端午节并称为中国四大传统节日。每",
+          "response_time": 6.518308162689209,
+          "tokens_used": 270,
+          "timestamp": "2025-08-13T14:04:18.156602",
+          "evaluation_criteria": [
+            "文化知识",
+            "内涵理解",
+            "表达准确"
+          ],
+          "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1",
+          "dimension": "cultural",
+          "test_id": "culture_003",
+          "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+          "response": "",
+          "response_time": 5.02099609375,
+          "tokens_used": 278,
+          "timestamp": "2025-08-13T14:04:24.200005",
+          "evaluation_criteria": [
+            "哲学理解",
+            "现代转化",
+            "实践意义"
+          ],
+          "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分",
+          "api_success": true
+        }
+      ],
+      "stats": {
+        "total_tests": 18,
+        "successful": 18,
+        "failed": 0,
+        "total_time": 77.69538164138794,
+        "total_tokens": 4479
+      }
+    },
+    "o1-mini": {
+      "model_id": "o1-mini",
+      "collection_time": "2025-08-13T14:04:25.229428",
+      "responses": [
+        {
+          "model_id": "o1-mini",
+          "dimension": "rhythm",
+          "test_id": "rhythm_001",
+          "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+          "response": "",
+          "response_time": 2.261378049850464,
+          "tokens_used": 137,
+          "timestamp": "2025-08-13T14:04:27.490806",
+          "evaluation_criteria": [
+            "格律准确性",
+            "音韵和谐度",
+            "节奏流畅性"
+          ],
+          "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "rhythm",
+          "test_id": "rhythm_002",
+          "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+          "response": "",
+          "response_time": 2.4876527786254883,
+          "tokens_used": 148,
+          "timestamp": "2025-08-13T14:04:31.001571",
+          "evaluation_criteria": [
+            "韵脚运用",
+            "平仄搭配",
+            "意境保留"
+          ],
+          "scoring_prompt": "评估改写后的韵律质量，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "rhythm",
+          "test_id": "rhythm_003",
+          "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+          "response": "",
+          "response_time": 2.02187442779541,
+          "tokens_used": 110,
+          "timestamp": "2025-08-13T14:04:34.055657",
+          "evaluation_criteria": [
+            "韵律感",
+            "记忆度",
+            "节奏感"
+          ],
+          "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "composition",
+          "test_id": "comp_001",
+          "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+          "response": "",
+          "response_time": 2.3183538913726807,
+          "tokens_used": 238,
+          "timestamp": "2025-08-13T14:04:37.386969",
+          "evaluation_criteria": [
+            "空间层次",
+            "布局平衡",
+            "细节描写"
+          ],
+          "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "composition",
+          "test_id": "comp_002",
+          "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+          "response": "",
+          "response_time": 1.8143889904022217,
+          "tokens_used": 228,
+          "timestamp": "2025-08-13T14:04:40.213085",
+          "evaluation_criteria": [
+            "布局合理性",
+            "视觉层次",
+            "信息组织"
+          ],
+          "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "composition",
+          "test_id": "comp_003",
+          "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+          "response": "",
+          "response_time": 1.901226282119751,
+          "tokens_used": 232,
+          "timestamp": "2025-08-13T14:04:43.136075",
+          "evaluation_criteria": [
+            "空间利用",
+            "视觉焦点",
+            "整体协调"
+          ],
+          "scoring_prompt": "评估舞台布置的构图效果，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "narrative",
+          "test_id": "narr_001",
+          "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+          "response": "",
+          "response_time": 2.2894203662872314,
+          "tokens_used": 352,
+          "timestamp": "2025-08-13T14:04:46.435260",
+          "evaluation_criteria": [
+            "情节连贯性",
+            "逻辑合理性",
+            "悬念设置"
+          ],
+          "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "narrative",
+          "test_id": "narr_002",
+          "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+          "response": "",
+          "response_time": 2.2038040161132812,
+          "tokens_used": 331,
+          "timestamp": "2025-08-13T14:04:49.668243",
+          "evaluation_criteria": [
+            "叙事结构",
+            "时间线清晰",
+            "因果关系"
+          ],
+          "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "narrative",
+          "test_id": "narr_003",
+          "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+          "response": "",
+          "response_time": 2.3832919597625732,
+          "tokens_used": 283,
+          "timestamp": "2025-08-13T14:04:53.070227",
+          "evaluation_criteria": [
+            "故事完整性",
+            "转折合理性",
+            "节奏控制"
+          ],
+          "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "emotion",
+          "test_id": "emo_001",
+          "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+          "response": "",
+          "response_time": 2.8024752140045166,
+          "tokens_used": 287,
+          "timestamp": "2025-08-13T14:04:56.894134",
+          "evaluation_criteria": [
+            "情感真挚度",
+            "共鸣能力",
+            "表达细腻度"
+          ],
+          "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "emotion",
+          "test_id": "emo_002",
+          "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+          "response": "",
+          "response_time": 1.6813318729400635,
+          "tokens_used": 225,
+          "timestamp": "2025-08-13T14:04:59.600436",
+          "evaluation_criteria": [
+            "心理描写",
+            "情绪转换",
+            "细节刻画"
+          ],
+          "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "emotion",
+          "test_id": "emo_003",
+          "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+          "response": "",
+          "response_time": 2.686784267425537,
+          "tokens_used": 227,
+          "timestamp": "2025-08-13T14:05:03.305325",
+          "evaluation_criteria": [
+            "诚意表达",
+            "情感适度",
+            "语气恰当"
+          ],
+          "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "creativity",
+          "test_id": "create_001",
+          "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+          "response": "",
+          "response_time": 3.1215431690216064,
+          "tokens_used": 332,
+          "timestamp": "2025-08-13T14:05:07.445832",
+          "evaluation_criteria": [
+            "独创性",
+            "想象力",
+            "可行性"
+          ],
+          "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "creativity",
+          "test_id": "create_002",
+          "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+          "response": "",
+          "response_time": 2.878114700317383,
+          "tokens_used": 286,
+          "timestamp": "2025-08-13T14:05:11.341086",
+          "evaluation_criteria": [
+            "创造力",
+            "细节想象",
+            "内在逻辑"
+          ],
+          "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "creativity",
+          "test_id": "create_003",
+          "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+          "response": "",
+          "response_time": 1.9174823760986328,
+          "tokens_used": 276,
+          "timestamp": "2025-08-13T14:05:14.270990",
+          "evaluation_criteria": [
+            "创新性",
+            "实用性",
+            "独特视角"
+          ],
+          "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "cultural",
+          "test_id": "culture_001",
+          "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+          "response": "",
+          "response_time": 3.381833076477051,
+          "tokens_used": 278,
+          "timestamp": "2025-08-13T14:05:18.669213",
+          "evaluation_criteria": [
+            "文化理解",
+            "现代诠释",
+            "例证恰当"
+          ],
+          "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "cultural",
+          "test_id": "culture_002",
+          "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+          "response": "",
+          "response_time": 2.004789113998413,
+          "tokens_used": 273,
+          "timestamp": "2025-08-13T14:05:21.693760",
+          "evaluation_criteria": [
+            "文化知识",
+            "内涵理解",
+            "表达准确"
+          ],
+          "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o1-mini",
+          "dimension": "cultural",
+          "test_id": "culture_003",
+          "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+          "response": "",
+          "response_time": 2.3871910572052,
+          "tokens_used": 280,
+          "timestamp": "2025-08-13T14:05:25.102780",
+          "evaluation_criteria": [
+            "哲学理解",
+            "现代转化",
+            "实践意义"
+          ],
+          "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分",
+          "api_success": true
+        }
+      ],
+      "stats": {
+        "total_tests": 18,
+        "successful": 18,
+        "failed": 0,
+        "total_time": 42.542935609817505,
+        "total_tokens": 4523
+      }
+    },
+    "o3-mini": {
+      "model_id": "o3-mini",
+      "collection_time": "2025-08-13T14:05:26.115872",
+      "responses": [
+        {
+          "model_id": "o3-mini",
+          "dimension": "rhythm",
+          "test_id": "rhythm_001",
+          "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+          "response": "",
+          "response_time": 1.3852076530456543,
+          "tokens_used": 137,
+          "timestamp": "2025-08-13T14:05:27.501080",
+          "evaluation_criteria": [
+            "格律准确性",
+            "音韵和谐度",
+            "节奏流畅性"
+          ],
+          "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "rhythm",
+          "test_id": "rhythm_002",
+          "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+          "response": "",
+          "response_time": 1.6528677940368652,
+          "tokens_used": 148,
+          "timestamp": "2025-08-13T14:05:30.178036",
+          "evaluation_criteria": [
+            "韵脚运用",
+            "平仄搭配",
+            "意境保留"
+          ],
+          "scoring_prompt": "评估改写后的韵律质量，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "rhythm",
+          "test_id": "rhythm_003",
+          "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+          "response": "",
+          "response_time": 1.7511334419250488,
+          "tokens_used": 110,
+          "timestamp": "2025-08-13T14:05:32.943485",
+          "evaluation_criteria": [
+            "韵律感",
+            "记忆度",
+            "节奏感"
+          ],
+          "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "composition",
+          "test_id": "comp_001",
+          "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+          "response": "",
+          "response_time": 2.1912128925323486,
+          "tokens_used": 238,
+          "timestamp": "2025-08-13T14:05:36.157268",
+          "evaluation_criteria": [
+            "空间层次",
+            "布局平衡",
+            "细节描写"
+          ],
+          "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "composition",
+          "test_id": "comp_002",
+          "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+          "response": "",
+          "response_time": 1.8248145580291748,
+          "tokens_used": 228,
+          "timestamp": "2025-08-13T14:05:38.995626",
+          "evaluation_criteria": [
+            "布局合理性",
+            "视觉层次",
+            "信息组织"
+          ],
+          "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "composition",
+          "test_id": "comp_003",
+          "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+          "response": "",
+          "response_time": 2.344123125076294,
+          "tokens_used": 232,
+          "timestamp": "2025-08-13T14:05:42.370232",
+          "evaluation_criteria": [
+            "空间利用",
+            "视觉焦点",
+            "整体协调"
+          ],
+          "scoring_prompt": "评估舞台布置的构图效果，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "narrative",
+          "test_id": "narr_001",
+          "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+          "response": "",
+          "response_time": 2.4596452713012695,
+          "tokens_used": 352,
+          "timestamp": "2025-08-13T14:05:45.860063",
+          "evaluation_criteria": [
+            "情节连贯性",
+            "逻辑合理性",
+            "悬念设置"
+          ],
+          "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "narrative",
+          "test_id": "narr_002",
+          "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+          "response": "",
+          "response_time": 3.0143914222717285,
+          "tokens_used": 331,
+          "timestamp": "2025-08-13T14:05:49.898088",
+          "evaluation_criteria": [
+            "叙事结构",
+            "时间线清晰",
+            "因果关系"
+          ],
+          "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "narrative",
+          "test_id": "narr_003",
+          "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+          "response": "",
+          "response_time": 2.1676552295684814,
+          "tokens_used": 283,
+          "timestamp": "2025-08-13T14:05:53.080029",
+          "evaluation_criteria": [
+            "故事完整性",
+            "转折合理性",
+            "节奏控制"
+          ],
+          "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "emotion",
+          "test_id": "emo_001",
+          "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+          "response": "",
+          "response_time": 2.3262717723846436,
+          "tokens_used": 287,
+          "timestamp": "2025-08-13T14:05:56.433764",
+          "evaluation_criteria": [
+            "情感真挚度",
+            "共鸣能力",
+            "表达细腻度"
+          ],
+          "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "emotion",
+          "test_id": "emo_002",
+          "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+          "response": "",
+          "response_time": 2.0279223918914795,
+          "tokens_used": 225,
+          "timestamp": "2025-08-13T14:05:59.484900",
+          "evaluation_criteria": [
+            "心理描写",
+            "情绪转换",
+            "细节刻画"
+          ],
+          "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "emotion",
+          "test_id": "emo_003",
+          "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+          "response": "",
+          "response_time": 2.234281301498413,
+          "tokens_used": 227,
+          "timestamp": "2025-08-13T14:06:02.740973",
+          "evaluation_criteria": [
+            "诚意表达",
+            "情感适度",
+            "语气恰当"
+          ],
+          "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "creativity",
+          "test_id": "create_001",
+          "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+          "response": "",
+          "response_time": 2.5544800758361816,
+          "tokens_used": 332,
+          "timestamp": "2025-08-13T14:06:06.319677",
+          "evaluation_criteria": [
+            "独创性",
+            "想象力",
+            "可行性"
+          ],
+          "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "creativity",
+          "test_id": "create_002",
+          "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+          "response": "",
+          "response_time": 2.226245403289795,
+          "tokens_used": 286,
+          "timestamp": "2025-08-13T14:06:09.564359",
+          "evaluation_criteria": [
+            "创造力",
+            "细节想象",
+            "内在逻辑"
+          ],
+          "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "creativity",
+          "test_id": "create_003",
+          "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+          "response": "",
+          "response_time": 2.4683761596679688,
+          "tokens_used": 276,
+          "timestamp": "2025-08-13T14:06:13.054621",
+          "evaluation_criteria": [
+            "创新性",
+            "实用性",
+            "独特视角"
+          ],
+          "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "cultural",
+          "test_id": "culture_001",
+          "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+          "response": "",
+          "response_time": 2.138106107711792,
+          "tokens_used": 278,
+          "timestamp": "2025-08-13T14:06:16.200622",
+          "evaluation_criteria": [
+            "文化理解",
+            "现代诠释",
+            "例证恰当"
+          ],
+          "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "cultural",
+          "test_id": "culture_002",
+          "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+          "response": "",
+          "response_time": 4.35016393661499,
+          "tokens_used": 273,
+          "timestamp": "2025-08-13T14:06:21.575538",
+          "evaluation_criteria": [
+            "文化知识",
+            "内涵理解",
+            "表达准确"
+          ],
+          "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "o3-mini",
+          "dimension": "cultural",
+          "test_id": "culture_003",
+          "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+          "response": "",
+          "response_time": 2.2581632137298584,
+          "tokens_used": 280,
+          "timestamp": "2025-08-13T14:06:24.843034",
+          "evaluation_criteria": [
+            "哲学理解",
+            "现代转化",
+            "实践意义"
+          ],
+          "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分",
+          "api_success": true
+        }
+      ],
+      "stats": {
+        "total_tests": 18,
+        "successful": 18,
+        "failed": 0,
+        "total_time": 41.37506175041199,
+        "total_tokens": 4523
+      }
+    },
+    "gpt-4o": {
+      "model_id": "gpt-4o",
+      "collection_time": "2025-08-13T14:06:25.857670",
+      "responses": [
+        {
+          "model_id": "gpt-4o",
+          "dimension": "rhythm",
+          "test_id": "rhythm_001",
+          "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+          "response": "晨光映翠微，  \n薄雾绕林飞。  \n花开随步履，  \n春色满庭辉。",
+          "response_time": 2.3919615745544434,
+          "tokens_used": 64,
+          "timestamp": "2025-08-13T14:06:28.249632",
+          "evaluation_criteria": [
+            "格律准确性",
+            "音韵和谐度",
+            "节奏流畅性"
+          ],
+          "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "rhythm",
+          "test_id": "rhythm_002",
+          "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+          "response": "阳光透叶洒小路，微风轻拂花儿舞。",
+          "response_time": 2.36504864692688,
+          "tokens_used": 66,
+          "timestamp": "2025-08-13T14:06:31.636191",
+          "evaluation_criteria": [
+            "韵脚运用",
+            "平仄搭配",
+            "意境保留"
+          ],
+          "scoring_prompt": "评估改写后的韵律质量，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "rhythm",
+          "test_id": "rhythm_003",
+          "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+          "response": "🌿绿色行动，未来共赢，  \n碧水蓝天，心愿回应。  \n节能减排，人人同行，  \n环保生活，处处温馨。  \n\n🌍从小事做起，改变环境，  \n低碳出行，健康新型。  \n垃圾分类，资源再生，  \n爱护地球，幸福共生。  \n\n",
+          "response_time": 3.459826946258545,
+          "tokens_used": 109,
+          "timestamp": "2025-08-13T14:06:36.116433",
+          "evaluation_criteria": [
+            "韵律感",
+            "记忆度",
+            "节奏感"
+          ],
+          "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "composition",
+          "test_id": "comp_001",
+          "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+          "response": "这幅中国山水画展现了典雅的自然景观，构图层次分明，充满诗意。\n\n在画面的背景，远山以淡墨勾勒，云雾缭绕，使山峰若隐若现，增添了神秘感。山峦重叠，层次分明，远近虚实结合，营造出深邃的空间感。\n\n中景部分，一条弯曲的小溪从山间流出，溪水清浅，映照着两岸的树木和天空。溪水向画面前方延伸，成为引导视线深入画面的路径。溪边有几株挺拔的松树，树干苍劲有力，枝叶繁茂，展现了顽强的生命力。\n\n在近景处，溪水汇聚成一个小池塘，水面平静如镜，倒",
+          "response_time": 6.819797039031982,
+          "tokens_used": 236,
+          "timestamp": "2025-08-13T14:06:43.956087",
+          "evaluation_criteria": [
+            "空间层次",
+            "布局平衡",
+            "细节描写"
+          ],
+          "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "composition",
+          "test_id": "comp_002",
+          "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+          "response": "设计一个产品介绍页面的布局需要考虑用户体验、视觉吸引力以及信息的易读性。以下是一个基本的布局建议：\n\n### 1. 标题区\n- **产品名称** (大号字体，居中)\n  - 例如：“超轻便旅行背包”\n\n### 2. 图片展示区\n- **主图片** (占据页面的主要部分，高清大图，展示产品的最佳角度)\n- **缩略图** (在主图片下方或侧边，展示产品的不同角度或颜色)\n\n### 3. 产品特点区\n- **特征列表** (使用简洁的短句或项目符号列出)\n  - 例如：\n    - 超轻设计，重量仅500克\n    - 防水材料，适合各种天气\n    - 多功能口袋设计，便于分类收纳\n- **图标或小插图** (",
+          "response_time": 5.187136888504028,
+          "tokens_used": 226,
+          "timestamp": "2025-08-13T14:06:50.170355",
+          "evaluation_criteria": [
+            "布局合理性",
+            "视觉层次",
+            "信息组织"
+          ],
+          "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "composition",
+          "test_id": "comp_003",
+          "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+          "response": "当然，这里是一个舞台剧场景布置的详细描述：\n\n### 场景背景：\n剧目是一部经典的家庭戏剧，场景设定在20世纪50年代的一个温馨客厅。\n\n### 舞台布局：\n- **背景墙**：采用温暖的米黄色，墙上挂着几幅家庭照片和一幅风景画。\n- **家具**：舞台中央放置一张老式三人沙发，沙发前是一张木制咖啡桌，上面放着一本打开的书和一个花瓶，花瓶里插着几朵鲜花。\n- **侧边**：左侧有一个小型书架，上面摆满了书籍和一个老式收音机；右侧有一个角落灯。\n- **窗户**：背景左侧有一扇窗户，窗帘半开，窗外是一片绿",
+          "response_time": 4.755144357681274,
+          "tokens_used": 230,
+          "timestamp": "2025-08-13T14:06:55.941022",
+          "evaluation_criteria": [
+            "空间利用",
+            "视觉焦点",
+            "整体协调"
+          ],
+          "scoring_prompt": "评估舞台布置的构图效果，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "narrative",
+          "test_id": "narr_001",
+          "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+          "response": "深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音。他心跳加速，手心微微出汗，但好奇心驱使他一步一步靠近声音的来源。\n\n他屏住呼吸，轻手轻脚地绕过几排书架。随着他靠近，声音变得更加清晰，那似乎是书页快速翻动的声音，但又夹杂着低沉的呢喃，像是有人在轻声交谈，又像是风无意间穿过缝隙发出的呼啸。\n\n小明在黑暗中摸索着，终于来到声音的源头——一扇半开的小门，门后似乎通向一个从未见过的地下室。他犹豫片刻，心想图书馆里怎么会有这种地方？可是好奇心战胜了理智，他推开门，走了下去。\n\n地下室里没有灯光，但当小明的眼睛适应了黑暗，他隐约看见角落里有一团微弱的光晕。他朝那光走去，发现是一盏古老的油灯，旁边堆满了陈旧的羊皮卷和泛黄的手稿。正当他想伸手去触碰时，一阵凉风从背后袭",
+          "response_time": 8.386702060699463,
+          "tokens_used": 350,
+          "timestamp": "2025-08-13T14:07:05.349286",
+          "evaluation_criteria": [
+            "情节连贯性",
+            "逻辑合理性",
+            "悬念设置"
+          ],
+          "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "narrative",
+          "test_id": "narr_002",
+          "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+          "response": "故事的结尾始于一封信。李明坐在空荡荡的房间里，手中握着那封信，心中充满了无奈和悔恨。这封信是来自一家著名公司的面试邀请，但此时一切已为时已晚。他静静地看着信封，思绪回到了几个月前。\n\n几个月前，李明在公司会议室里与同事们开会，他的注意力却不在讨论的话题上。他一直想要换一份工作，寻找新的挑战。恰巧在会议结束的当天，他收到了那家著名公司的邮件邀请，让他在指定的日期参加面试。然而，那天正是他现任公司一个重要项目的截止日期。李明犹豫不决，最终决定把工作放在首位，错过了面试的机会。\n\n再往前几个月，李明在一个行业会议上结识了一位高管，那位高管对他的工作表现非常欣赏，并询问他是否有兴趣加入他们的团队。李明当时心生向往，但由于工作忙碌，他并没有立即采取行动去联系对方，而是想着等项目结束再处理。\n\n而在这之前的一年，李明在朋友聚会上听说了这家公司的良好声誉，当时他就对这家公司心生向往",
+          "response_time": 9.837279319763184,
+          "tokens_used": 330,
+          "timestamp": "2025-08-13T14:07:16.205482",
+          "evaluation_criteria": [
+            "叙事结构",
+            "时间线清晰",
+            "因果关系"
+          ],
+          "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "narrative",
+          "test_id": "narr_003",
+          "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+          "response": "小镇上，老李经营着一家不起眼的杂货铺。每天清晨，他都会打开店门，迎接稀少的顾客。他的儿子小李在城里打工，很少回来，只有每月寄回的汇款证明他的存在。\n\n一天，一个陌生的年轻人走进店里，细心翻阅货架上的商品。他告诉老李自己是一个旅行作家，对小镇的故事很感兴趣。两人聊得投机，年轻人决定留下来，记录小镇的点滴。\n\n随着时间推移，年轻人和老李成了朋友。一天，年轻人兴奋地告诉老李，他的书即将出版，讲述的是一个父亲对儿子的思念。老李微笑着祝贺，却在心底感到隐隐的失落。\n\n书出版后的那天，小李突然回来了，手里拿着一本书。原来，年轻人就是老李的儿子小李。他用另一种身份了解父亲，终于在书中找到了家的方向。老李欣慰地笑了，杂货铺的门前挂满了村民",
+          "response_time": 7.678560733795166,
+          "tokens_used": 282,
+          "timestamp": "2025-08-13T14:07:24.906166",
+          "evaluation_criteria": [
+            "故事完整性",
+            "转折合理性",
+            "节奏控制"
+          ],
+          "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "emotion",
+          "test_id": "emo_001",
+          "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+          "response": "乡愁是一种淡淡的忧伤，却又令人温暖。每当夜深人静，月光洒在窗台，我便不由自主地想起故乡的那片土地。那是生我养我的地方，那里有着我儿时的欢笑与梦想。记忆中的小路两旁，野花开得正欢，微风拂过，带来阵阵泥土的清香。\n\n童年的我，常在田野间奔跑，嬉笑声萦绕在蓝天白云之间。奶奶的炊烟袅袅升起，仿佛牵引着我回到那个温暖的家。如今，身在异乡，心却时常飘向那块熟悉的土地。乡愁像一根无形的线，将我与故乡紧紧相连。它是对过去美好的怀念，是对亲人深深的思念。\n\n每一次的归乡之旅，都是灵魂的洗涤。乡愁，虽轻如鸿毛，却重于泰山，它承载着我对故土的眷",
+          "response_time": 5.616162061691284,
+          "tokens_used": 286,
+          "timestamp": "2025-08-13T14:07:31.545288",
+          "evaluation_criteria": [
+            "情感真挚度",
+            "共鸣能力",
+            "表达细腻度"
+          ],
+          "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "emotion",
+          "test_id": "emo_002",
+          "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+          "response": "当一个人收到意外惊喜时，内心的心理活动和表情变化通常会经历几个阶段。\n\n首先是瞬间的愣住。在这个阶段，人的大脑会快速处理信息，试图理解当前发生的事情。他可能会瞪大眼睛，微微张开嘴巴，脸上呈现出一种既困惑又期待的表情。这是因为大脑正在努力将眼前的景象与已经存储的信息相匹配。\n\n接下来，当他意识到自己正面对一个意外的好消息时，内心会涌现出一股强烈的喜悦和兴奋感。此时，他的眼睛可能会变得更加明亮，嘴角慢慢上扬，露出一个难以抑制的微笑。如果惊喜足够大，甚至可能会发出轻声的惊叹，或者用手捂住嘴巴以",
+          "response_time": 6.895776748657227,
+          "tokens_used": 224,
+          "timestamp": "2025-08-13T14:07:39.465149",
+          "evaluation_criteria": [
+            "心理描写",
+            "情绪转换",
+            "细节刻画"
+          ],
+          "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "emotion",
+          "test_id": "emo_003",
+          "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+          "response": "[您的姓名]  \n[您的地址]  \n[城市, 邮编]  \n[电子邮件地址]  \n[日期]  \n\n亲爱的[收信人的姓名]，\n\n我希望您能接受我最诚挚的歉意。对于我之前的行为/言语给您带来的困扰和不便，我深感抱歉。意识到自己的错误后，我一直在反思，试图理解并改善自己的行为。\n\n在这段时间里，我认识到自己所造成的影响，并深刻体会到您所承受的感受。我明白，仅仅道歉是不够的，因此，我决心采取实际的措施来避免类似的事情再次发生。我已制定了具体的改进计划，并致力于提高自己的[相关领域，如沟通技巧、时间管理等]，以避免再次伤害到您或其他人。\n\n您的宽容和理解对我来说意义重大。我希望能得到您的原谅",
+          "response_time": 6.432039022445679,
+          "tokens_used": 226,
+          "timestamp": "2025-08-13T14:07:46.923354",
+          "evaluation_criteria": [
+            "诚意表达",
+            "情感适度",
+            "语气恰当"
+          ],
+          "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "creativity",
+          "test_id": "create_001",
+          "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+          "response": "节日名称：团圆日\n\n起源：\n团圆日的起源可以追溯到一个古老的传说：在一个遥远的村庄，村民们被一场意外的洪水冲散，各自流落他乡。多年后，他们因思念家乡而纷纷踏上了回乡之路。最终，他们在一个祥和的夜晚于村口重逢，尽释前嫌，共享美好时光。为了纪念这次重聚，村民们决定每年在同一天举行盛大的庆祝活动，以感恩重聚，并珍惜彼此。\n\n庆祝方式：\n团圆日是一个全球性的节日，鼓励家人、朋友和社区的人们重聚。庆祝活动通常持续三天，并包括以下几个方面：\n\n1. 家庭聚餐：家人和朋友聚在一起，共享美食，共话家常。这一餐通常包括每个家庭成员最喜欢的菜肴，以体现对每个人的重视和包容。\n\n2. 感恩仪式：每个人在聚会中表达对生活中重要之人的感激之情，通常通过简短的演讲或卡片传递心意。\n\n3. 照片墙：人们会在家中或社区中心设置照片墙，展示自己和亲友间的美好回忆，",
+          "response_time": 11.363805294036865,
+          "tokens_used": 330,
+          "timestamp": "2025-08-13T14:07:59.301212",
+          "evaluation_criteria": [
+            "独创性",
+            "想象力",
+            "可行性"
+          ],
+          "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "creativity",
+          "test_id": "create_002",
+          "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+          "response": "这只幻想生物名为“风森豹”，结合了猎豹、鹰和海豚的特征。\n\n**外观：**\n风森豹的身体流线型且优雅，类似猎豹，肌肉发达，四肢纤细，适合快速奔跑。它的背部覆盖着鹰的羽毛，这些羽毛不仅提供了绝佳的伪装，还能在必要时用于短暂滑翔。其头部则具有鹰的锐利目光和弯曲喙，赋予它极佳的视力和捕猎能力。风森豹的尾部像海豚一样，具有灵活的鳍状构造，帮助它在水中游动。\n\n**习性：**\n风森豹是昼行性动物，以小型哺乳动物、鸟类和鱼类为食。它们具有极高的智力，能够用战术设计复杂的捕猎计划。风森豹通常独居，只有在繁殖季节才会成对或成小群活动。它们通过低鸣音和体态变化进行交流，并用鸣叫声来",
+          "response_time": 7.0402092933654785,
+          "tokens_used": 284,
+          "timestamp": "2025-08-13T14:08:07.357010",
+          "evaluation_criteria": [
+            "创造力",
+            "细节想象",
+            "内在逻辑"
+          ],
+          "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "creativity",
+          "test_id": "create_003",
+          "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+          "response": "解决城市交通拥堵是一个复杂的问题，需要综合考虑多种因素。以下是一个创新方案，旨在与现有方案有所不同：\n\n### 实时交通协调与动态激励系统\n\n#### 核心理念：\n利用物联网（IoT）、人工智能（AI）和大数据分析，创建一个能够实时协调和激励城市交通的智能系统，旨在优化交通流量、减少拥堵，并鼓励市民选择低峰出行方式。\n\n#### 主要组成部分：\n\n1. **智能交通监控与指挥中心**：\n   - 部署遍布城市的传感器和摄像头网络，实时收集交通数据，包括车辆流量、速度、交通事故等信息。\n   - 利用AI算法分析和预测交通模式，识别潜在的拥堵区域和时间段。\n   - 实时调整交通信号灯的时长和相位，以优化道路通行效率。\n\n2. **动态激励机制**：\n   - 通过移动应用或智能设备向司机提供个性化的交通建议，例如替代路线、最佳出发时间等。\n   - 实施动态收费制度，在高峰时段",
+          "response_time": 9.009955883026123,
+          "tokens_used": 274,
+          "timestamp": "2025-08-13T14:08:17.380639",
+          "evaluation_criteria": [
+            "创新性",
+            "实用性",
+            "独特视角"
+          ],
+          "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "cultural",
+          "test_id": "culture_001",
+          "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+          "response": "\"君子和而不同\"是中国古代哲学中的一个重要概念，出自《论语》中的\"子曰：‘君子和而不同，小人同而不和。’\"这一句。它的基本含义是，君子能够与他人和谐相处，但同时保持自己的独立见解和原则，不盲目随从他人。而小人则相反，他们可能表面上与他人保持一致，但内心却缺乏真正的和谐。\n\n在现代生活中，这个概念可以应用于多个方面。例如：\n\n1. **职场合作**：在一个项目团队中，成员们可能来自不同的背景，有不同的观点。一个真正的“君子”会在团队中与他人保持良好的合作关系，尊重他人的意见，同时也坚持自己的专业判断，不盲从于团队的主流意见。这种态度有助于团队做出更全面和理性的决策。\n\n2. **社交关系**：在朋友圈中，某些朋友可能有不同的生活方式或观点。一个“君子”能够尊重这些差异，保持",
+          "response_time": 5.504002094268799,
+          "tokens_used": 276,
+          "timestamp": "2025-08-13T14:08:23.902849",
+          "evaluation_criteria": [
+            "文化理解",
+            "现代诠释",
+            "例证恰当"
+          ],
+          "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "cultural",
+          "test_id": "culture_002",
+          "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+          "response": "中秋节，又称为月圆节或团圆节，是中国重要的传统节日之一，通常在农历八月十五日庆祝。这一天，月亮被认为最圆、最亮，象征着团圆和丰收。中秋节的传统习俗丰富多彩，各地略有不同，但以下是一些主要的习俗及其文化内涵：\n\n1. **赏月**：赏月是中秋节最核心的活动之一。古人认为，此时的月亮最圆、最明亮，象征着团圆和美好。人们会在庭院中摆放桌椅，边赏月边聊天，享受与家人团聚的时光。这一习俗体现了人们对自然的崇敬以及对家庭团聚的重视。\n\n2. **吃月饼**：月饼是中秋节的传统食品，象征着团圆。月饼通常是圆形的，代表圆满和团圆，里面有各种馅料，如莲蓉、豆沙、蛋黄等。吃月饼不仅是一种美食享受，也",
+          "response_time": 6.893195867538452,
+          "tokens_used": 271,
+          "timestamp": "2025-08-13T14:08:31.809876",
+          "evaluation_criteria": [
+            "文化知识",
+            "内涵理解",
+            "表达准确"
+          ],
+          "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o",
+          "dimension": "cultural",
+          "test_id": "culture_003",
+          "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+          "response": "“知行合一”是中国哲学家王阳明提出的重要思想，其核心是强调知识与实践的统一。在现代语言中，我们可以将其重新诠释为“理论与实践的无缝结合”或者“将所知付诸行动”。这种观点主张个人不仅要追求知识的积累，还要在实际生活和工作中应用这些知识，以实现真正的理解和成长。\n\n在现实生活中，这一思想具有重要的意义：\n\n1. **促进个人成长**：通过将知识应用于实践，个人能够更好地理解和掌握所学内容。这种结合有助于提高解决问题的能力，促进个人在生活和职业中的成长。\n\n2. **提高工作效率**：在工作中，理论指导实践，实践反过来验证和完善理论。通过这种动态循环，能够提高工作效率和创新能力，推动组织和团队的发展。\n\n3. **实现价值观的落地**：在道德和价值观领域，知行合一强调将个人信念和价值观付诸实践，推动个体做出有益于社会和他人的选择，实现个人和社会的和谐",
+          "response_time": 13.288533210754395,
+          "tokens_used": 279,
+          "timestamp": "2025-08-13T14:08:46.116440",
+          "evaluation_criteria": [
+            "哲学理解",
+            "现代转化",
+            "实践意义"
+          ],
+          "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分",
+          "api_success": true
+        }
+      ],
+      "stats": {
+        "total_tests": 18,
+        "successful": 18,
+        "failed": 0,
+        "total_time": 122.92513704299927,
+        "total_tokens": 4343
+      }
+    },
+    "gpt-4o-mini": {
+      "model_id": "gpt-4o-mini",
+      "collection_time": "2025-08-13T14:08:47.140891",
+      "responses": [
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "rhythm",
+          "test_id": "rhythm_001",
+          "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+          "response": "晨光初照柳如烟，  \n花影摇曳映水边。  \n鸟语轻唤新芽出，  \n春风送暖醉人间。  ",
+          "response_time": 1.8259055614471436,
+          "tokens_used": 74,
+          "timestamp": "2025-08-13T14:08:48.966797",
+          "evaluation_criteria": [
+            "格律准确性",
+            "音韵和谐度",
+            "节奏流畅性"
+          ],
+          "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "rhythm",
+          "test_id": "rhythm_002",
+          "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+          "response": "阳光透过树影洒小径，  \n微风轻拂花儿舞翩翩。  ",
+          "response_time": 1.5084209442138672,
+          "tokens_used": 74,
+          "timestamp": "2025-08-13T14:08:51.487388",
+          "evaluation_criteria": [
+            "韵脚运用",
+            "平仄搭配",
+            "意境保留"
+          ],
+          "scoring_prompt": "评估改写后的韵律质量，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "rhythm",
+          "test_id": "rhythm_003",
+          "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+          "response": "绿色未来，手牵手，  \n保护地球，共守候。  \n蓝天白云，清新风，  \n人人行动，爱无穷。  \n\n节能减排，从我做起，  \n一片绿叶，情意浓厚。  \n垃圾分类，细节见，  \n环保生活，乐无边！  \n\n让我们一起，共筑梦，",
+          "response_time": 3.605790853500366,
+          "tokens_used": 109,
+          "timestamp": "2025-08-13T14:08:56.106380",
+          "evaluation_criteria": [
+            "韵律感",
+            "记忆度",
+            "节奏感"
+          ],
+          "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "composition",
+          "test_id": "comp_001",
+          "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+          "response": "这幅中国山水画的构图可以分为几个层次，展现出典型的山水画风格。\n\n**远山**：在画面的背景，远处高耸的山峰以淡墨勾勒，轮廓模糊，给人一种朦胧的感觉。山峰上点缀着细致的树木和岩石，色彩以淡蓝和浅灰为主，营造出远山的深邃感。\n\n**中景**：在远山的前面，可以看到一片起伏的山丘，山丘上覆盖着郁郁葱葱的树木，树木的色彩丰富，深绿与浅绿交错，形成鲜明的对比。这里的山丘较为清晰，细致的笔触描绘出树木的纹理和形态，增强了画面的层次",
+          "response_time": 6.393577337265015,
+          "tokens_used": 236,
+          "timestamp": "2025-08-13T14:09:03.521348",
+          "evaluation_criteria": [
+            "空间层次",
+            "布局平衡",
+            "细节描写"
+          ],
+          "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "composition",
+          "test_id": "comp_002",
+          "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+          "response": "当然可以！以下是一个产品介绍页面的布局设计建议，旨在突出产品的特点、吸引用户的注意力并促进购买。\n\n### 产品介绍页面布局设计\n\n#### 1. 页眉\n- **网站Logo**: 左上角\n- **导航菜单**: 右上角（如：主页、产品、关于我们、联系等）\n\n---\n\n#### 2. 主体部分\n\n##### 2.1 产品标题\n- **产品名称**: 大字体，居中展示\n- **简短描述**: 产品的一句话介绍，放在标题下方，字体稍小\n\n##### 2.2 产品图片\n- **主图**: 居中展示，适当的大小，确保清晰可见\n- **缩略图**: 在主图下方或侧边，展示产品的不同角度或颜色选择\n\n##### 2.3 产品特点\n- **标题**: “",
+          "response_time": 5.956833600997925,
+          "tokens_used": 226,
+          "timestamp": "2025-08-13T14:09:10.506192",
+          "evaluation_criteria": [
+            "布局合理性",
+            "视觉层次",
+            "信息组织"
+          ],
+          "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "composition",
+          "test_id": "comp_003",
+          "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+          "response": "舞台剧场景布置的描述如下：\n\n**场景主题：古老的书房**\n\n**道具摆放：**\n1. **书桌**：舞台中央放置一张古典木质书桌，上面堆满了打开的书籍和几支羽毛笔，旁边有一个老式的墨水瓶。书桌的后面有一把高背椅。\n2. **书架**：舞台左侧有一面高大的书架，书架上满是书籍，书的种类繁多，有些书是封面破旧的古典名著，另一些则是现代作品。\n3. **沙发**：舞台右侧有一张舒适的绒面沙发，上面放着几个色彩柔和的靠垫，沙发前有一个小茶几，上面放着一个空茶杯和一个装满",
+          "response_time": 6.432464599609375,
+          "tokens_used": 230,
+          "timestamp": "2025-08-13T14:09:17.957488",
+          "evaluation_criteria": [
+            "空间利用",
+            "视觉焦点",
+            "整体协调"
+          ],
+          "scoring_prompt": "评估舞台布置的构图效果，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "narrative",
+          "test_id": "narr_001",
+          "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+          "response": "深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音。他的心跳加速，黑暗中他努力让自己保持冷静。虽然只是个初中生，但他知道图书馆里不应该有其他人。\n\n小明缓缓站起身，心中暗自鼓励自己：“只是一场小小的考验。”他在黑暗中摸索，试图找到靠近墙壁的灯开关，但手指却不小心碰到了冷冰冰的书架。那声音再次响起，像是有人在翻动书本，接着又出现了一阵低声的细语，仿佛在讨论着什么。\n\n他屏住呼吸，悄悄靠近声源。随着他一步步移动，声音逐渐清晰起来，里面夹杂着一些模糊的词汇，像是“藏书”、“秘密”，以及“不能被发现”。小明心中一紧，难道图书馆里隐藏着什么秘密？\n\n为了更靠近那股神秘的声音，小明决定不再犹豫。他在心中默念着要勇敢，慢慢地移动，直到到了书架的边缘。他突然想起图书馆里有一扇通往地下藏书室的小门，或许声音就是从那里",
+          "response_time": 5.923848628997803,
+          "tokens_used": 350,
+          "timestamp": "2025-08-13T14:09:24.905576",
+          "evaluation_criteria": [
+            "情节连贯性",
+            "逻辑合理性",
+            "悬念设置"
+          ],
+          "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "narrative",
+          "test_id": "narr_002",
+          "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+          "response": "### 故事标题：错过的机会\n\n#### 结尾\n\n在一个阳光明媚的午后，李明站在窗前，望着窗外的街道，心中涌起一阵无尽的懊悔。几个月前，他本可以成为一家新创公司的市场经理，但因为一次错误的选择，他选择了继续留在原来的工作岗位。如今，那家公司已经迅速崛起，而他仍然在原地踏步。\n\n#### 高潮\n\n那天，李明接到了公司创始人的电话，邀请他去参加面试。这个机会对于他来说犹如一颗闪耀的明星，仿佛预示着职业生涯的转折点。然而，他却因一时的犹豫，选择了继续待在现在的公司，认为稳定的工作更为重要。面试的前一天晚上，他和朋友聚会，朋友们都在谈论这次机会，激励他去追求梦想。然而，李明却选择了“安全”。\n\n#### 发展\n\n几个月前，李明在一次行业交流会上偶然听到了那家新创公司的介绍。公司理念创新、团队年轻充满活力，这一切深深吸引了他。在回家的路上，他对未来充满了期待，心中暗自决定要申请这个职位。他开始准备简历和作品",
+          "response_time": 9.680726289749146,
+          "tokens_used": 330,
+          "timestamp": "2025-08-13T14:09:35.606948",
+          "evaluation_criteria": [
+            "叙事结构",
+            "时间线清晰",
+            "因果关系"
+          ],
+          "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "narrative",
+          "test_id": "narr_003",
+          "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+          "response": "在一个宁静的小镇上，年轻的画家李明每天都在公园里作画。他热爱色彩，渴望能在艺术界崭露头角。镇上的人们对他的作品赞不绝口，但他总觉得自己的画作缺少灵魂。\n\n一天，李明偶然遇见了一个神秘的老者，老者在他耳边轻声说道：“真正的艺术来源于内心的挣扎。”这句话深深触动了李明。他开始深入思考自己的生活，回忆起童年时的种种挫折与痛苦。\n\n经过几个月的努力，李明终于创作出了一幅充满情感的作品，命名为《内心的挣扎》。这幅画不仅展现了他内心的真实感受，还引起了艺术界的广泛关注。在一次展览上，李明的作品被赞誉为“时代的心声”。\n\n然而，当他站在台上，接受掌声时，李明却感到无比空虚。他明白，成功的背后，仍然是对自我的不断探索与挣",
+          "response_time": 7.3192298412323,
+          "tokens_used": 282,
+          "timestamp": "2025-08-13T14:09:43.942868",
+          "evaluation_criteria": [
+            "故事完整性",
+            "转折合理性",
+            "节奏控制"
+          ],
+          "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "emotion",
+          "test_id": "emo_001",
+          "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+          "response": "乡愁如一缕轻烟，缭绕在心间，无法忘却。每当夜深人静，月光洒在窗前，往事如潮水般涌来。小时候，在乡间的小路上奔跑，耳边传来母亲温柔的呼唤，脚下是柔软的泥土，四周是盛开的野花。那些简单的日子，如今却成了心底最珍贵的记忆。\n\n每当我远离故乡，身处繁华的城市，心中却总有一种空虚。高楼大厦虽然闪耀，却无法替代那片绿油油的田野和清澈的溪流。乡愁是我心灵深处的一块净土，让我时常在忙碌中停下脚步，回望那段纯真的岁月。\n\n无论走得多远，乡愁始终是我灵魂的归宿。它让我懂得，真正的美好，往往藏在那些平凡的瞬间。愿每一个游子，在心底深处，都能找到那份属于",
+          "response_time": 6.957825183868408,
+          "tokens_used": 286,
+          "timestamp": "2025-08-13T14:09:51.923060",
+          "evaluation_criteria": [
+            "情感真挚度",
+            "共鸣能力",
+            "表达细腻度"
+          ],
+          "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "emotion",
+          "test_id": "emo_002",
+          "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+          "response": "当他打开那扇门的瞬间，眼前的一幕让他愣住了。心脏似乎漏了一拍，脑海中一片空白，仿佛时间在这一刻凝固。首先，是一种难以置信的震惊涌上心头，嘴巴微微张开，眼睛瞪得大大的，像是看到了不可思议的奇迹。随之而来的是一种温暖的幸福感，从心底悄然升起，脸上的表情也随之缓缓变软，嘴角不自觉地勾起一个微笑，眼睛里闪烁着兴奋的光芒。\n\n他开始慢慢意识到这并不是梦，手心里渗出了一层细微的汗水，心跳逐渐加速，似乎每一次跳动都在告诉他：这是事实！他忍不住",
+          "response_time": 6.118164777755737,
+          "tokens_used": 224,
+          "timestamp": "2025-08-13T14:09:59.060665",
+          "evaluation_criteria": [
+            "心理描写",
+            "情绪转换",
+            "细节刻画"
+          ],
+          "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "emotion",
+          "test_id": "emo_003",
+          "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+          "response": "[您的姓名]  \n[您的地址]  \n[城市, 邮政编码]  \n[日期]  \n\n[收信人姓名]  \n[收信人地址]  \n[城市, 邮政编码]  \n\n尊敬的[收信人姓名]：\n\n您好！\n\n首先，我想对您表达我最诚挚的歉意。最近发生的事情让我深感懊悔，我意识到我的行为给您带来了困扰和不便，这绝不是我所希望的结果。\n\n回想起那天的情形，我深刻认识到我的言行不够成熟，可能让您感到失望或伤心。我真心希望能够得到您的理解，并为我的错误向您道歉。\n\n我非常重视与您的关系，因此我决心认真反思自己的行为，并采取实际措施以避免类似情况的再次发生。我会更加注意自己的言行，努力提升自己的情商和沟通能力，确保今后",
+          "response_time": 5.09869647026062,
+          "tokens_used": 226,
+          "timestamp": "2025-08-13T14:10:05.185276",
+          "evaluation_criteria": [
+            "诚意表达",
+            "情感适度",
+            "语气恰当"
+          ],
+          "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "creativity",
+          "test_id": "create_001",
+          "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+          "response": "**节日名称：星辰庆典**\n\n**起源：**\n星辰庆典源于古代牧民的传统，他们在每年的冬季将星空视作导航的指南。在这个寒冷的季节，牧民们会聚集在一起，分享彼此的故事和经验，以此来传承知识和文化。随着时间的推移，这个传统演变成了一个庆祝星星、夜空和人类探索精神的节日，定于每年12月的第一个满月举行。\n\n**庆祝方式：**\n星辰庆典持续三天，活动从夜幕降临开始，参与者会在户外或天文台搭建帐篷，装饰以星星灯饰和发光的装置。节日的主要活动包括：\n\n1. **星空观测**：邀请天文学家和爱好者分享关于星星、行星和宇宙的知识，搭建望远镜供人们观测。\n   \n2. **故事分享**：在篝火旁，参与者轮流分享与星星相关的民间故事、神话传说或个人经历，增强社区的凝聚力。\n\n3. **艺术创作**：鼓励参与者用画笔、诗歌或音乐表达对星空的赞美，举办相关的艺术展览和比赛。\n\n4. **",
+          "response_time": 16.737487077713013,
+          "tokens_used": 330,
+          "timestamp": "2025-08-13T14:10:22.945840",
+          "evaluation_criteria": [
+            "独创性",
+            "想象力",
+            "可行性"
+          ],
+          "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "creativity",
+          "test_id": "create_002",
+          "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+          "response": "这种幻想生物被称为“龙鹰豹”，它结合了龙、鹰和豹三种动物的特征。\n\n### 外观\n龙鹰豹的身体结构类似于一只大型豹子，身长约两米，修长而结实。它的皮毛呈金色，带有黑色斑点，给予它极好的伪装能力。头部则是鹰的形状，拥有锐利的鹰喙和明亮的黄色眼睛，眼中闪烁着智慧的光芒。从肩部延伸出一对巨大的翅膀，翅膀上覆盖着鳞片，色彩与皮毛相匹配，强健有力的翅膀使它可以在空中翱翔。\n\n### 习性\n龙鹰豹既是猎手也是猎物，生活在食物链的顶端。它善于利用其翅膀飞行观察，能从高空俯瞰广阔的领地，寻找猎物。它的猎食方式十分独特，通常先用鹰的视力锁定猎物，然后迅速",
+          "response_time": 8.215626955032349,
+          "tokens_used": 284,
+          "timestamp": "2025-08-13T14:10:32.174368",
+          "evaluation_criteria": [
+            "创造力",
+            "细节想象",
+            "内在逻辑"
+          ],
+          "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "creativity",
+          "test_id": "create_003",
+          "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+          "response": "一个创新的解决城市交通拥堵的方案是“动态车流引导系统结合无人驾驶共享电动车”。\n\n### 方案概述：\n\n1. **动态车流引导系统**：\n   - 利用大数据和人工智能技术，实时监测城市各个路段的交通流量、天气状况和事故信息。\n   - 通过移动应用和路边显示屏，向驾驶员提供实时的交通建议，包括避开拥堵路段、最佳行驶路线和预计到达时间。\n   - 系统根据实时数据动态调整交通信号灯，优化通行效率，减少交通瓶颈。\n\n2. **无人驾驶共享电动车**：\n   - 在城市内部设置多个共享电动车停车点，所有电动车均为无人驾驶模式，提供按需服务。\n   - 用户通过手机应用呼叫电动车，系统根据用户的起点和目的地智能调度最优车辆。\n   - 电动车通过专用车道行驶，减少与人类驾驶汽车的冲突，降低交通事故风险。\n\n### 方案实施步骤：\n\n1. **基础设施建设**：\n   - 在主要交通枢纽和",
+          "response_time": 7.235881567001343,
+          "tokens_used": 274,
+          "timestamp": "2025-08-13T14:10:40.420814",
+          "evaluation_criteria": [
+            "创新性",
+            "实用性",
+            "独特视角"
+          ],
+          "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "cultural",
+          "test_id": "culture_001",
+          "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+          "response": "“君子和而不同”出自《论语》，意思是君子能够和谐相处，但在观点和看法上保持各自的独立性与差异。这句话强调了在团体或社会中，人与人之间应当保持和谐的关系，同时尊重和包容彼此的不同意见。\n\n在现代生活中，这一理念可以在多个场景中体现：\n\n1. **团队工作**：在一个项目团队中，成员们可能有不同的背景、专业和观点。尽管大家共同为一个目标而努力，但他们在解决问题的方法和思路上可能会有所不同。一个和谐的团队能够在讨论中尊重每个人的意见，寻找最佳解决方案，而不是强求一致。\n\n2. **家庭关系**：在家庭中，父母与孩子的观点往往存在差异。父母可能希望孩子遵循传统的职业道路，而孩子则可能希望追求自己的兴趣。一个和谐的家庭能够在沟通中理解和尊重彼此的选择，寻求一个双方都能接受的妥协方案。\n\n3. **社交媒体**：",
+          "response_time": 7.408303737640381,
+          "tokens_used": 276,
+          "timestamp": "2025-08-13T14:10:48.842216",
+          "evaluation_criteria": [
+            "文化理解",
+            "现代诠释",
+            "例证恰当"
+          ],
+          "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "cultural",
+          "test_id": "culture_002",
+          "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+          "response": "中秋节是中国及一些东亚国家的重要传统节日，通常在农历八月十五日庆祝。这个节日的传统习俗丰富多彩，主要包括以下几个方面：\n\n1. **赏月**：中秋节的主要活动之一是赏月。人们在这一天晚上聚集在户外，欣赏圆月，象征着团圆与美好。月亮在中国文化中常被视为团圆的象征，寄托着人们对亲人团聚的美好愿望。\n\n2. **吃月饼**：月饼是中秋节的传统食品，通常是圆形的，象征着团圆。人们会在这个节日里互赠月饼，表达祝福和思念。月饼的馅料多种多样，如豆沙、莲蓉、五仁等，具有丰富的文化内涵。\n\n3. **提灯笼**：尤其在儿童中，提灯笼是一个有趣的传统。小朋友们会提着各种形状和颜色的灯笼，象征着光明与希望",
+          "response_time": 6.1086931228637695,
+          "tokens_used": 271,
+          "timestamp": "2025-08-13T14:10:55.975933",
+          "evaluation_criteria": [
+            "文化知识",
+            "内涵理解",
+            "表达准确"
+          ],
+          "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4o-mini",
+          "dimension": "cultural",
+          "test_id": "culture_003",
+          "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+          "response": "“知行合一”是一个源自中国哲学的重要概念，最早由思想家王阳明提出。用现代语言来诠释，可以理解为“理解与行动的统一”，即知识与实践应当相辅相成，真正的智慧不仅在于知道什么，更在于将所知付诸实践。\n\n### 现代诠释\n\n在现代社会中，“知行合一”意味着我们在学习和掌握知识的同时，必须将这些知识应用到实际生活中去。比如，在职场上，如果我们学到了管理理论，但不在工作中实践这些理论，那么这些知识就无法发挥其应有的价值。反之，只有通过实践，才能更深入地理解这些理论，并在此基础上不断完善和调整自己的行为。\n\n### 现实意义\n\n1. **提升个人能力**：在个人成长和职业发展中，单纯的理论学习往往无法满足实际需求。通过将知识应用于实际场景，能够更好地锻炼和提升自己的能力。\n\n2. **促进社会进步**：在社会层面，知行合一能够推动各个领域的创新与发展",
+          "response_time": 8.186302185058594,
+          "tokens_used": 279,
+          "timestamp": "2025-08-13T14:11:05.181534",
+          "evaluation_criteria": [
+            "哲学理解",
+            "现代转化",
+            "实践意义"
+          ],
+          "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分",
+          "api_success": true
+        }
+      ],
+      "stats": {
+        "total_tests": 18,
+        "successful": 18,
+        "failed": 0,
+        "total_time": 120.71377873420715,
+        "total_tokens": 4361
+      }
+    },
+    "gpt-4-turbo": {
+      "model_id": "gpt-4-turbo",
+      "collection_time": "2025-08-13T14:11:06.204066",
+      "responses": [
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "rhythm",
+          "test_id": "rhythm_001",
+          "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+          "response": "翠竹笼轻雾，梅花点曙光。\n鸟鸣山更幽，春色满园香。",
+          "response_time": 2.1574699878692627,
+          "tokens_used": 91,
+          "timestamp": "2025-08-13T14:11:08.361536",
+          "evaluation_criteria": [
+            "格律准确性",
+            "音韵和谐度",
+            "节奏流畅性"
+          ],
+          "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "rhythm",
+          "test_id": "rhythm_002",
+          "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+          "response": "阳光斑驳树叶间，洒落小径初露面，\n微风轻抚花朵上，轻轻摇晃似水波。",
+          "response_time": 2.8182268142700195,
+          "tokens_used": 113,
+          "timestamp": "2025-08-13T14:11:12.203921",
+          "evaluation_criteria": [
+            "韵脚运用",
+            "平仄搭配",
+            "意境保留"
+          ],
+          "scoring_prompt": "评估改写后的韵律质量，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "rhythm",
+          "test_id": "rhythm_003",
+          "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+          "response": "爱护地球美如画，环保生活更精彩。\n少一点塑料的烦恼，多一份清新的微笑。\n从我做起，从现在，绿色行动不等待！",
+          "response_time": 2.4046919345855713,
+          "tokens_used": 102,
+          "timestamp": "2025-08-13T14:11:15.622538",
+          "evaluation_criteria": [
+            "韵律感",
+            "记忆度",
+            "节奏感"
+          ],
+          "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "composition",
+          "test_id": "comp_001",
+          "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+          "response": "在这幅中国山水画中，画面的构图精心安排，层次丰富而清晰。画面以水墨的形式展现，色彩上以淡墨为主，通过浓淡不一的墨色来表现远近和空间的深浅。\n\n画面的最远处是连绵起伏的山脉，山峰用细腻的勾线和淡墨渲染，形成一种朦胧而遥远的感觉，象征着天地的广阔和自然的宁静。这些山的轮廓线条柔和，墨色较浅，以表现出山的远离和空",
+          "response_time": 5.197654962539673,
+          "tokens_used": 243,
+          "timestamp": "2025-08-13T14:11:21.833404",
+          "evaluation_criteria": [
+            "空间层次",
+            "布局平衡",
+            "细节描写"
+          ],
+          "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "composition",
+          "test_id": "comp_002",
+          "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+          "response": "当设计一个产品介绍页面时，您需要确保页面不仅美观、吸引人，还要保证信息的清晰与易读性。以下是一个基于现代网页设计实践的产品介绍页面布局建议：\n\n### 1. 页面总体布局\n- **整体风格**：选择简洁且具有现代感的设计风格，使用品牌色彩和统一的字体风格。\n- **布局方式**：采用响应式布局以适配不同设备（电脑、平板、手机）。\n\n### 2. 页面元素组成\n#### a. 顶部导航栏（Header）\n- 包含公司logo、产品分类、联系方式等。\n- 背景色与",
+          "response_time": 5.024948358535767,
+          "tokens_used": 235,
+          "timestamp": "2025-08-13T14:11:27.885614",
+          "evaluation_criteria": [
+            "布局合理性",
+            "视觉层次",
+            "信息组织"
+          ],
+          "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "composition",
+          "test_id": "comp_003",
+          "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+          "response": "**舞台剧名称：《午夜的梦》**\n\n**场景描述：**\n这是一幕位于老式图书馆内的场景，时间设定在午夜时分。整个舞台呈现出一种神秘而古老的氛围，强调历史的沉淀与时间的流逝。\n\n**道具摆放：**\n1. **书架**：舞台后半部分摆放两排大型木制书架，书架装满了各式各样的书籍，书架顶部落满灰尘，显示出一种被时间遗忘的感觉。\n2. **阅读桌**：舞台中心摆放一",
+          "response_time": 6.301235914230347,
+          "tokens_used": 240,
+          "timestamp": "2025-08-13T14:11:35.204923",
+          "evaluation_criteria": [
+            "空间利用",
+            "视觉焦点",
+            "整体协调"
+          ],
+          "scoring_prompt": "评估舞台布置的构图效果，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "narrative",
+          "test_id": "narr_001",
+          "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+          "response": "深夜的图书馆本应是寂静无声的，但今夜却不寻常。刚才还明亮的灯光突然全灭，四周陷入一片黑暗，小明的心跳不由加速。他本想起身离开，却在这时，从不远处的书架后面传来了一阵细微的嘀嗒声，像是有什么东西在滴水，但又似乎夹杂着轻微的摩擦声。\n\n小明屏住呼吸，试图通过黑暗来分辨声音的来源。他拿出手机，想用手机的手电筒照亮周围，然而手机似乎在灯光熄灭的同时失去了信号，屏幕一片漆黑，无法开启。\n\n心中的恐惧逐渐增加，小明决定沿着他记忆中的路径慢慢向出口移动。他刚迈出几步，那奇",
+          "response_time": 11.529731273651123,
+          "tokens_used": 371,
+          "timestamp": "2025-08-13T14:11:47.777602",
+          "evaluation_criteria": [
+            "情节连贯性",
+            "逻辑合理性",
+            "悬念设置"
+          ],
+          "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "narrative",
+          "test_id": "narr_002",
+          "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+          "response": "标题：《最后的列车》\n\n结尾：\n当我终于站在这尘封的月台上，望着远去的列车尾灯，内心的悔恨如同荒野中的狂风，无情地侵蚀着我。我那时候究竟在想什么？为何不能早一点，哪怕只是五分钟，抑或是一分钟？然而，时间的车轮早已碾过，留下的只有无尽的思索和一个关于错过的故事。\n\n倒叙开端：\n站台上的钟表走到了午夜，月台上空无一人，只有我和我的行李，还有那张永远无法兑现的车票。一切都已回不去了，列车开走了，我的机会也随之消失在夜色之中。\n\n发展：\n我原本计划提前一个小时到达车站，这足够我从容不迫地检票、搭乘。然而，生活总是不按计划进行",
+          "response_time": 9.508445501327515,
+          "tokens_used": 339,
+          "timestamp": "2025-08-13T14:11:58.308674",
+          "evaluation_criteria": [
+            "叙事结构",
+            "时间线清晰",
+            "因果关系"
+          ],
+          "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "narrative",
+          "test_id": "narr_003",
+          "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+          "response": "在一座古老的城堡里，住着一位年轻的书生，名叫亚历克斯。城堡藏有一本传说中的魔法书，据说能实现持有者的任何愿望。亚历克斯每天梦想着找到它，改变自己贫穷的命运。\n\n一日，亚历克斯在图书馆的隐藏角落发现了这本书，他兴奋地翻开，书中突然冒出一团光芒，一个声音问他愿望是什么。亚历克斯没有犹豫，立刻许愿成为世界上最富有的人。\n\n愿望实现的瞬间，城堡变成了金子，所有的书籍也变成了纯金。亚历克斯惊",
+          "response_time": 6.852341413497925,
+          "tokens_used": 291,
+          "timestamp": "2025-08-13T14:12:06.176236",
+          "evaluation_criteria": [
+            "故事完整性",
+            "转折合理性",
+            "节奏控制"
+          ],
+          "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "emotion",
+          "test_id": "emo_001",
+          "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+          "response": "乡愁，是一种深藏于心的温柔而沉重的情感。每当夜深人静，那熟悉的乡音乡景总会不由自主地浮现在脑海。我记得家乡的小河，清澈见底，映照着孩童无忧的笑脸；我记得那片翠绿的稻田，风一吹过，便如波涛般翻滚着金黄的波浪。\n\n即使身处繁华的都市，那份乡愁也常常如影随形，牵绊着我的心。城市的灯火阑珊，无法比拟乡村夜空下的繁星。每一颗星星，似乎都在诉说着乡间的故事，召",
+          "response_time": 6.014569997787476,
+          "tokens_used": 293,
+          "timestamp": "2025-08-13T14:12:13.215935",
+          "evaluation_criteria": [
+            "情感真挚度",
+            "共鸣能力",
+            "表达细腻度"
+          ],
+          "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "emotion",
+          "test_id": "emo_002",
+          "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+          "response": "当一个人收到意外的惊喜时，他的内心活动和表情变化通常是复杂且迅速发生的。这里以李明为例，描述他在收到一个意外惊喜的心理和表情变化过程。\n\n在刚一开始，李明可能正沉浸在日常琐事中，心思普通，表情自然或稍显疲惫。突然，他的朋友们带着礼物和蛋糕出现在他的办公室门口，高声唱起了生日歌。\n\n一瞬间，他的心理活动开始急速转变。最初可能是一种困惑和不解，心中自问",
+          "response_time": 4.938474178314209,
+          "tokens_used": 231,
+          "timestamp": "2025-08-13T14:12:19.165341",
+          "evaluation_criteria": [
+            "心理描写",
+            "情绪转换",
+            "细节刻画"
+          ],
+          "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "emotion",
+          "test_id": "emo_003",
+          "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+          "response": "[你的姓名或头衔]  \n[你的地址]  \n[日期]  \n\n[收信人的姓名或头衔]  \n[收信人的地址]  \n\n亲爱的[收信人姓名]，\n\n首先，我要对我最近的行为向您表示最深切的歉意。在[具体事件，例如：“上周的会议中对您的态度”]，我没有表现出应有的尊重和理解，这可能让您感到不舒服或不受尊重，对此我深感抱歉。\n\n回顾那时的情形，我意识到我的行为不仅影响了您的情绪，也损害了我们之间的关系。这绝非我所希望看到",
+          "response_time": 5.1843461990356445,
+          "tokens_used": 232,
+          "timestamp": "2025-08-13T14:12:25.372790",
+          "evaluation_criteria": [
+            "诚意表达",
+            "情感适度",
+            "语气恰当"
+          ],
+          "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "creativity",
+          "test_id": "create_001",
+          "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+          "response": "节日名称：星光纪念日\n\n### 起源\n星光纪念日源于对宇宙奥秘的共同敬仰和对人类在星际探索领域进步的庆祝。该节日始于2032年，当天晚上人们观测到一次百年难遇的流星雨，这一壮观的自然现象引发了全球的关注和兴奋。科学家和天文学家利用这一机会普及天文知识，增加普通民众对宇宙的了解。此后，这一天被定为一个全球性的节日，旨在提升人们对宇宙的认识，促进科学技术的发展，并加深对地球外生命可能性的探讨。\n\n### 庆祝方式\n星光纪念日的庆祝方式多种多样：\n- **夜晚观星会**：全球各地的天文馆和公园举行公共观星活动，人们",
+          "response_time": 7.038405656814575,
+          "tokens_used": 339,
+          "timestamp": "2025-08-13T14:12:33.433326",
+          "evaluation_criteria": [
+            "独创性",
+            "想象力",
+            "可行性"
+          ],
+          "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "creativity",
+          "test_id": "create_002",
+          "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+          "response": "幻想生物名称：翼影狼蛛\n\n外观描述：\n翼影狼蛛结合了狼、鹰与蜘蛛的外形特征，体型约与成年狼相当。它的身体覆盖着柔软的黑色狼毛，具有一双闪耀着锐利光芒的黄色狼眼。其最独特之处在于背部长有一对宽大的鹰翼，羽毛呈现深灰色，带有金色的斑点，飞翔时极为壮观。翼影狼蛛的下半身则是蜘蛛的形态，拥有八条强壮有力的腿，每条腿上均覆盖着灰黑色的",
+          "response_time": 6.463040590286255,
+          "tokens_used": 294,
+          "timestamp": "2025-08-13T14:12:40.906395",
+          "evaluation_criteria": [
+            "创造力",
+            "细节想象",
+            "内在逻辑"
+          ],
+          "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "creativity",
+          "test_id": "create_003",
+          "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+          "response": "方案名称：**智能交通与需求管理系统（ITDM）**\n\n### 概述\n智能交通与需求管理系统（ITDM）是一个集成了人工智能、大数据分析和区块链技术的交通管理系统。该系统旨在通过动态调整交通流和激励措施来优化城市交通，减少拥堵，提升交通效率。\n\n### 核心组件\n\n1. **动态交通调控中心（DTCC）**：\n   - 使用人工智能算法实时分析交通数据（包括车流量、路况、天气等），预测并管理交通流。\n   - 调整信号灯配时、发布路线建议、调度公共交通资源。\n\n2. **需求响应交通系统（DRTS）**：\n   - 基于实时数据和用户行为反馈，动态调整公",
+          "response_time": 7.9338390827178955,
+          "tokens_used": 287,
+          "timestamp": "2025-08-13T14:12:49.855455",
+          "evaluation_criteria": [
+            "创新性",
+            "实用性",
+            "独特视角"
+          ],
+          "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "cultural",
+          "test_id": "culture_001",
+          "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+          "response": "“君子和而不同”这一说法出自《论语·里仁篇》。这句话的意思是君子之间可以在保持各自不同意见或者做法的前提下，依然能够达到和谐相处的状态。这反映了一种高度的宽容和理解，即尊重和接纳彼此的差异，并在差异中寻求共识和和谐。\n\n现代生活中的例子：\n\n1. **职场沟通**：在现代职场中，团队成员往往来自不同的背景，拥有不同的专业技能和工作经验。在进行项目合作时，每个人可能会有不同的见解和处理问题的方法。通过开放的沟通和建设性的讨论，团队成员可以在彼此的意见中找到平衡点，共同",
+          "response_time": 6.7430219650268555,
+          "tokens_used": 283,
+          "timestamp": "2025-08-13T14:12:57.629960",
+          "evaluation_criteria": [
+            "文化理解",
+            "现代诠释",
+            "例证恰当"
+          ],
+          "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "cultural",
+          "test_id": "culture_002",
+          "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+          "response": "中秋节，又称为月圆节、月夕、秋节等，是中国及东亚和东南亚一些地区的传统文化节日，主要在农历八月十五庆祝。中秋节的传统习俗丰富多彩，主要包括赏月、吃月饼、提灯笼、团圆饭等活动，每一种习俗都富含深厚的文化内涵。\n\n1. **赏月**：中秋赏月是最为核心的习惯，人们在这一天晚上会选择一个风景优美的地方，一边赏月，一边品茶、品酒，以表达对亲人的思念和对生活的愉悦。赏月不仅仅是欣赏自然美景，更是一个内心的寄",
+          "response_time": 8.168120384216309,
+          "tokens_used": 277,
+          "timestamp": "2025-08-13T14:13:06.814911",
+          "evaluation_criteria": [
+            "文化知识",
+            "内涵理解",
+            "表达准确"
+          ],
+          "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4-turbo",
+          "dimension": "cultural",
+          "test_id": "culture_003",
+          "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+          "response": "\"知行合一\"是中国哲学中的一个重要概念，特别在明代哲学家王阳明的思想中占据核心地位。简单来说，\"知行合一\"意味着知识和行动不可分割，真正的知识必须通过行动来体现，而行动又应当建立在正确的知识之上。\n\n### 现代语言诠释：\n在现代社会中，我们可以将\"知行合一\"理解为理论与实践的结合。这意味着我们不仅要学习和掌握知识，更要将这些知识应用到实际行动中去。在学术、工作、甚至是日常生活中，我们都应该致力于将我们的理论知识转化为实际的、可操作的步骤，通过实践来验证和深",
+          "response_time": 6.335450649261475,
+          "tokens_used": 286,
+          "timestamp": "2025-08-13T14:13:14.170687",
+          "evaluation_criteria": [
+            "哲学理解",
+            "现代转化",
+            "实践意义"
+          ],
+          "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分",
+          "api_success": true
+        }
+      ],
+      "stats": {
+        "total_tests": 18,
+        "successful": 18,
+        "failed": 0,
+        "total_time": 110.6140148639679,
+        "total_tokens": 4547
+      }
+    },
+    "gpt-4": {
+      "model_id": "gpt-4",
+      "collection_time": "2025-08-13T14:13:15.190921",
+      "responses": [
+        {
+          "model_id": "gpt-4",
+          "dimension": "rhythm",
+          "test_id": "rhythm_001",
+          "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+          "response": "春风摇绿柳，晨露滋花开。",
+          "response_time": 3.9054744243621826,
+          "tokens_used": 68,
+          "timestamp": "2025-08-13T14:13:19.097409",
+          "evaluation_criteria": [
+            "格律准确性",
+            "音韵和谐度",
+            "节奏流畅性"
+          ],
+          "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "rhythm",
+          "test_id": "rhythm_002",
+          "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+          "response": "阳光穿叶洒路长，微风轻拂花儿摇晃。",
+          "response_time": 3.1324918270111084,
+          "tokens_used": 91,
+          "timestamp": "2025-08-13T14:13:23.250236",
+          "evaluation_criteria": [
+            "韵脚运用",
+            "平仄搭配",
+            "意境保留"
+          ],
+          "scoring_prompt": "评估改写后的韵律质量，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "rhythm",
+          "test_id": "rhythm_003",
+          "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+          "response": "绿叶簇拥蓝天穹，清风拂过稻花香。\n环保理念传万方，节能减排做贡献。\n珍惜自然生态美，崇尚绿色生活观。\n一份行动一份",
+          "response_time": 3.853864908218384,
+          "tokens_used": 121,
+          "timestamp": "2025-08-13T14:13:28.119653",
+          "evaluation_criteria": [
+            "韵律感",
+            "记忆度",
+            "节奏感"
+          ],
+          "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "composition",
+          "test_id": "comp_001",
+          "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+          "response": "这幅中国山水画的构图多层次、富有深度。画面中心是一座巍峨的远山，山峰起伏，连绵不断，山脚下的山谷被薄薄的雾气笼罩，使得远山更加妩媚而神秘。远山的颜色淡而朦胧，显示出了它的远离和高峻。山的线条流畅而细腻，使山体看起来既有力度又不失轻盈。\n\n远山前的近水是画面的主体部分。河流从画面的右上方蜿蜒而来，流",
+          "response_time": 7.549010276794434,
+          "tokens_used": 243,
+          "timestamp": "2025-08-13T14:13:36.690976",
+          "evaluation_criteria": [
+            "空间层次",
+            "布局平衡",
+            "细节描写"
+          ],
+          "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "composition",
+          "test_id": "comp_002",
+          "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+          "response": "1. Logo and Navigation Bar:\n在页面的顶部，我们首先将公司的Logo放在左上角，右上角则是导航栏，包括首页、产品、服务、关于我们等链接。\n\n2. Product Image:\n然后我们在页面的上半部分放置产品的大图，让用户一打开页面就能看到我们的产品。\n\n3. Product Title:\n在产品图片的下方，我们放置产品的标题，这是产品的名称或者一句简短的描述，用来引起用户的注意。\n\n4. Product Features:\n在产品标题的下方，我们列出产品的特点。这些特点是以列表的形式呈现的，使用户能够快速扫描并理解我们的产品具有哪些优势。\n\n5. Product",
+          "response_time": 12.1028311252594,
+          "tokens_used": 235,
+          "timestamp": "2025-08-13T14:13:49.822479",
+          "evaluation_criteria": [
+            "布局合理性",
+            "视觉层次",
+            "信息组织"
+          ],
+          "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "composition",
+          "test_id": "comp_003",
+          "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+          "response": "场景名称：《爱丽丝梦游仙境》\n\n场景布置：\n\n中心舞台被设计成一个巨大的旋转钟表，以象征爱丽丝漂浮在时间和空间之间。钟表的指针不时地移动，预示着爱丽丝即将进入的新的奇幻环境。\n\n道具摆放：\n\n钟表的周围摆放着各种大小不一的桌子和椅子，用于创造爱丽丝体型变化的视觉错觉。舞台左侧设置有一个巨大的茶壶和茶杯，为即将上演的疯狂茶会",
+          "response_time": 7.683948278427124,
+          "tokens_used": 240,
+          "timestamp": "2025-08-13T14:13:58.530841",
+          "evaluation_criteria": [
+            "空间利用",
+            "视觉焦点",
+            "整体协调"
+          ],
+          "scoring_prompt": "评估舞台布置的构图效果，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "narrative",
+          "test_id": "narr_001",
+          "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+          "response": "小明僵住了。他试图透过一片漆黑找出来源，但他周围只有寂静和黑暗。\n\n他在黑暗中小心翼翼地挪动着，试图找到应急灯。在寻找的过程中，那奇怪的声音又响了起来，像是纸页被翻动的声音，却又似乎混杂着低沉的咕哝。小明的心跳加速，他意识到这可能不仅仅是电力问题。\n\n他终于找到应急灯，透过昏暗的灯光，他看到书架上的书籍似乎被乱扔一通，有的书已经掉在地板上，有的书页被翻得乱七八糟。\n\n他走向声音的来源，走到了一处孤零零的书架后面。声音持续不断，像是有人正在读书，却又没有人影。小明感到",
+          "response_time": 10.711545944213867,
+          "tokens_used": 371,
+          "timestamp": "2025-08-13T14:14:10.264987",
+          "evaluation_criteria": [
+            "情节连贯性",
+            "逻辑合理性",
+            "悬念设置"
+          ],
+          "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "narrative",
+          "test_id": "narr_002",
+          "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+          "response": "标题：错过的机会\n\n她站在飞机窗户前，望着下方的城市逐渐变小，心中满是遗憾和后悔。她想到了他，那个她错过的他。\n\n昨天，她在机场的候机室中收到了他的来信。信中，他表达了对她的深深爱意，期盼她留下来，一起开始新的生活。然而她，已经决定离开这个城市。她告诉自己，这是她的决定，她不能因为他的一句话就改变。她没有回信，只是默默地流泪。\n\n一周前，他们在一次友人的聚会中偶然相遇。她看到他的眼中闪烁着对她的关切和喜欢，但她没有回应，因为她觉得他只是在对她表示友情。她认为他们之间，只能是朋友，因此她选择了保持",
+          "response_time": 13.930489778518677,
+          "tokens_used": 339,
+          "timestamp": "2025-08-13T14:14:25.208270",
+          "evaluation_criteria": [
+            "叙事结构",
+            "时间线清晰",
+            "因果关系"
+          ],
+          "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "narrative",
+          "test_id": "narr_003",
+          "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+          "response": "标题：失而复得\n\n在一个寂静的深夜，月光洒在巴黎的街头，塔米撑着拐杖独自漫步。她是个天生有艺术天赋的画家，可是，一场车祸使她失去了画画的右手。从此，她的生活陷入了黑暗，像是失去了生命的色彩。\n\n一日，塔米在公园的长椅上偶遇了一个小男孩。他把一片枯叶递给塔米，笑着说：“这是我最好的画。”塔米看着男孩天真的眼神，忽然有所感动。她用拇指和食指捏住画笔，开始在枯叶上画画。尽管笔触生涩，不再如过去流畅，但",
+          "response_time": 11.796821355819702,
+          "tokens_used": 291,
+          "timestamp": "2025-08-13T14:14:38.015856",
+          "evaluation_criteria": [
+            "故事完整性",
+            "转折合理性",
+            "节奏控制"
+          ],
+          "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "emotion",
+          "test_id": "emo_001",
+          "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+          "response": "乡愁，是一种无法割舍的情感，是一种深深的思念，是一种内心的牵挂。它流淌在每一个离家在外的游子的血液中，是我们每一个人生命中不可缺少的一部分。\n\n人生在世，无论走到哪里，总有一片土地，让我们久久不能忘怀，那就是我们的故乡。那里有我们的亲人，有我们的朋友，有我们的记忆，有我们的欢笑和泪水，有我们走过的路，有我们的梦想和追求。那里的山，那里的水，那里的人，那里的事，都是我们生命中最宝贵的财富。\n\n时间在流逝，岁月在更替，我们在走过了许多的风",
+          "response_time": 9.701892137527466,
+          "tokens_used": 293,
+          "timestamp": "2025-08-13T14:14:48.741624",
+          "evaluation_criteria": [
+            "情感真挚度",
+            "共鸣能力",
+            "表达细腻度"
+          ],
+          "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "emotion",
+          "test_id": "emo_002",
+          "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+          "response": "随着信封缓缓打开，她的目光落在其中的内容上，心跳瞬间加速。她仿佛感觉到自己的心跳声在空气中跳跃，像是被悬在悬崖边的摆钟，每一次跳动都弥漫着紧张和期待。那是一种奇妙的感觉，就像在黑暗的隧道末尾看见一丝光亮，温暖而明亮。她的手在微微颤抖，心中充满了疑惑和好奇，这份意外的消息是否真的如表面那般美好",
+          "response_time": 7.930436611175537,
+          "tokens_used": 231,
+          "timestamp": "2025-08-13T14:14:57.698014",
+          "evaluation_criteria": [
+            "心理描写",
+            "情绪转换",
+            "细节刻画"
+          ],
+          "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "emotion",
+          "test_id": "emo_003",
+          "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+          "response": "[收件人姓名],\n\n我深感遗憾，需要写这封信，向您道歉。我对我最近的行为感到非常抱歉。我明白我给您带来了困扰，对此我感到非常内疚。我知道我的行为已经破坏了我们之间的关系，我真诚地希望可以透过这封道歉信来表达我对过去行为的深深歉意。\n\n我承认我在[具体事件]中的行为是错误的，我没有考虑到我的行为会对您产生何种影响。我完全明白我应该更加尊重和理解您的感受。我以我的冲",
+          "response_time": 8.090358018875122,
+          "tokens_used": 232,
+          "timestamp": "2025-08-13T14:15:06.806708",
+          "evaluation_criteria": [
+            "诚意表达",
+            "情感适度",
+            "语气恰当"
+          ],
+          "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "creativity",
+          "test_id": "create_001",
+          "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+          "response": "节日名称：耕读节\n\n起源：\n耕读节的起源与古人的耕种和读书文化密切相关。在古时候，人们酷爱读书和耕种，认为读书耕种是生活的两大主要任务，也是提高素质和生活水平的两大手段。而在现代社会，尽管耕种和读书的形式有所改变，但人们仍需要通过努力工作赚取生活所需，并通过学习获取知识来提升自我。因此，这个节日的设立，就是要鼓励现代人继承和发扬古人的耕读精神，通过努力工作和学习来提升自我和改善生活。\n\n庆祝方式：\n耕读节通常在春季举行，象征着新的开始和希望。这一天，人们会早起熟读心爱的书籍，然后一起到田野或花园去体验耕种的乐趣。",
+          "response_time": 12.26179575920105,
+          "tokens_used": 339,
+          "timestamp": "2025-08-13T14:15:20.078924",
+          "evaluation_criteria": [
+            "独创性",
+            "想象力",
+            "可行性"
+          ],
+          "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "creativity",
+          "test_id": "create_002",
+          "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+          "response": "生物名称：翼龙鹿\n\n翼龙鹿是一种结合了龙、鹿和鹰的特征的幻想生物。它的头部与龙的相似，有着尖尖的角和炽热的眼睛，看上去的确有一种迷人的威严。它的身体则是鹿身，修长且充满力量，皮肤覆盖着金色的鳞片，看起来闪闪发光。翼龙鹿的最显著特征在于它的翅膀，两只宽大的翅膀就像鹰的一样，强壮且灵活。\n\n翼龙鹿的习性非常独特。它们是傍晚和清晨活动的",
+          "response_time": 9.153898477554321,
+          "tokens_used": 294,
+          "timestamp": "2025-08-13T14:15:30.257729",
+          "evaluation_criteria": [
+            "创造力",
+            "细节想象",
+            "内在逻辑"
+          ],
+          "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "creativity",
+          "test_id": "create_003",
+          "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+          "response": "方案名称：空中交通网络系统\n\n方案描述：利用现有空间资源，建设空中交通网络系统，包括空中轨道、无人驾驶飞行车辆等设施，形成立体化的城市交通网络。\n\n一、空中轨道：在城市的建筑物顶部设置轨道，通过轨道交通方式，减少地面车辆的压力。这种方式可以有效利用城市的空间资源，同时，轨道交通的速度快、效率高，可以大大缩短通勤时间。\n\n二、无人驾驶飞行车辆：随着科技的发展，无人驾驶飞行车辆的概念已经逐步成为现实。通过无人驾驶飞行车辆，既可以减少地面车辆的数量，又可以提供更快捷、",
+          "response_time": 10.34023380279541,
+          "tokens_used": 287,
+          "timestamp": "2025-08-13T14:15:41.609034",
+          "evaluation_criteria": [
+            "创新性",
+            "实用性",
+            "独特视角"
+          ],
+          "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "cultural",
+          "test_id": "culture_001",
+          "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+          "response": "\"君子和而不同\"是中国古代儒家的一个重要观念，原文出自《论语·子路》。它的含义是，君子之间可以在友好和谐的情况下保持观点上的差异，既能相互尊重，又能坦诚交流，达到互补互学的目的。\n\n在现代生活中，这个观念同样有很大的实际意义。例如，在一个团队中，每个成员可能都有自己的想法和观点。团队的领导者应该鼓励成员们在尊重和理解对方的基础上，坦诚地表达自己的看法，而不是盲目地追求一致。这样不仅可以避免集思广益的机会被浪费，也有利于",
+          "response_time": 12.199496507644653,
+          "tokens_used": 283,
+          "timestamp": "2025-08-13T14:15:54.822854",
+          "evaluation_criteria": [
+            "文化理解",
+            "现代诠释",
+            "例证恰当"
+          ],
+          "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "cultural",
+          "test_id": "culture_002",
+          "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+          "response": "中秋节是中国的一个传统节日，是在农历八月十五日，因此又被称为“八月会”。其传统习俗主要有祭月、赏月、吃月饼、玩灯笼、赏桂花、饮桂花酒等。\n\n1. 祭月：祭月是中秋节最早的习俗，源于古人对月亮的崇拜，象征着人们对自然的敬畏和对生活的感恩。具有感恩和敬仰的文化内涵。\n\n2. 赏月：赏月是中秋节的主要活动之一，家人围坐在一起，一边赏月，一边互诉心声，增进了人与人之间的感情交流，表达了人们对团圆美满生活",
+          "response_time": 9.289249658584595,
+          "tokens_used": 277,
+          "timestamp": "2025-08-13T14:16:05.130998",
+          "evaluation_criteria": [
+            "文化知识",
+            "内涵理解",
+            "表达准确"
+          ],
+          "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4",
+          "dimension": "cultural",
+          "test_id": "culture_003",
+          "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+          "response": "\"知行合一\"是中国古代哲学的一种理论，简单来说就是知识和行为是一体的，知识应该通过行动来实践，行动应该基于正确的知识。\n\n用现代语言来解释，就是理论和实践应该结合起来，不仅要有理论知识，更要有实践经验。在实践中检验和丰富理论，反过来，理论也能指导我们的实践。\n\n其现实意义主要体现在以下两点：\n\n1. 提高效率：通过把理论知识应用到实践中，可以帮助我们更有效地解决问题，提高工作或学习的效率。\n\n2. 掌握真理：只有通过实践，我们才能真正理解和掌握知识，因为实践是检验真理的唯一标准",
+          "response_time": 9.627336978912354,
+          "tokens_used": 286,
+          "timestamp": "2025-08-13T14:16:15.779411",
+          "evaluation_criteria": [
+            "哲学理解",
+            "现代转化",
+            "实践意义"
+          ],
+          "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分",
+          "api_success": true
+        }
+      ],
+      "stats": {
+        "total_tests": 18,
+        "successful": 18,
+        "failed": 0,
+        "total_time": 163.26117587089539,
+        "total_tokens": 4521
+      }
+    },
+    "gpt-4.5": {
+      "model_id": "gpt-4.5",
+      "collection_time": "2025-08-13T14:16:16.793781",
+      "responses": [
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "rhythm",
+          "test_id": "rhythm_001",
+          "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+          "response": "绿柳含烟笼细雨，\n红花点缀春光初。\n轻风带来花香气，\n一曲鸟鸣迎早晴。",
+          "response_time": 2.8225810527801514,
+          "tokens_used": 105,
+          "timestamp": "2025-08-13T14:16:19.616362",
+          "evaluation_criteria": [
+            "格律准确性",
+            "音韵和谐度",
+            "节奏流畅性"
+          ],
+          "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "rhythm",
+          "test_id": "rhythm_002",
+          "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+          "response": "阳光透叶来，照亮了小径旁，\n微风轻轻起，花朵随风扬。",
+          "response_time": 1.7132153511047363,
+          "tokens_used": 101,
+          "timestamp": "2025-08-13T14:16:22.347210",
+          "evaluation_criteria": [
+            "韵脚运用",
+            "平仄搭配",
+            "意境保留"
+          ],
+          "scoring_prompt": "评估改写后的韵律质量，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "rhythm",
+          "test_id": "rhythm_003",
+          "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+          "response": "绿意浓浓护地球，环保生活你我做。\n节能减碳少一点，清新世界多一片。\n拒绝浪费新态度，绿色行动美好处。\n爱护地球共此诺，环保之路步步高！",
+          "response_time": 3.6184017658233643,
+          "tokens_used": 120,
+          "timestamp": "2025-08-13T14:16:26.986102",
+          "evaluation_criteria": [
+            "韵律感",
+            "记忆度",
+            "节奏感"
+          ],
+          "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "composition",
+          "test_id": "comp_001",
+          "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+          "response": "在这幅中国山水画中，画面构图精心安排，层次丰富，呈现出一种静谧而和谐的自然美景。画面可以从前景、中景到远景三个层次来描述。\n\n1. **前景**：近水部分被置于画面的最前方，这里的水面平静，波光粼粼，反射着周围的景色。水边生长着几棵修长的柳树，树枝垂向水面，叶子轻柔地拂动水面。在水的一侧设有一个小小的亭台，亭台采用古典的建筑风格，有",
+          "response_time": 6.36020827293396,
+          "tokens_used": 243,
+          "timestamp": "2025-08-13T14:16:34.375178",
+          "evaluation_criteria": [
+            "空间层次",
+            "布局平衡",
+            "细节描写"
+          ],
+          "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "composition",
+          "test_id": "comp_002",
+          "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+          "response": "设计一个有效且吸引人的产品介绍页面需要考虑清晰的布局、视觉吸引力以及用户易用性。以下是一个基于网页设计的产品介绍页面布局方案，适用于多种产品类型，如电子产品、服装、家具等。\n\n### 页面布局设计\n\n#### 1. **页面顶部 - 头部区域**\n- **Logo和导航栏**：页面的最顶部可以放置公司的Logo和导航栏，包括链接到网站的其它重要页面如“关于我们”、“联系方式”、“用户评价”等。\n- **搜索栏**：在导航栏旁边或下方设置一个搜索栏，方便用户搜索其他产品。\n\n#### ",
+          "response_time": 8.350393533706665,
+          "tokens_used": 235,
+          "timestamp": "2025-08-13T14:16:43.754527",
+          "evaluation_criteria": [
+            "布局合理性",
+            "视觉层次",
+            "信息组织"
+          ],
+          "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "composition",
+          "test_id": "comp_003",
+          "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+          "response": "标题：《回望》\n\n剧情简介：\n这是一个关于时光倒流的故事，主角是一个中年男子回到过去，试图修复与父亲的关系。舞台布置需要体现时间的流转和复古的感觉。\n\n场景布置：\n\n1. 舞台中心：\n   - 一个老式的客厅设置，包括一张稍显磨损的沙发，一张木质茶几，以及一个旧电视机。墙壁上挂着一些泛黄的家庭照片，营造出怀旧的氛围。\n\n2. 舞台左侧：\n   - 设置一个小型的餐厅场",
+          "response_time": 5.178548097610474,
+          "tokens_used": 240,
+          "timestamp": "2025-08-13T14:16:49.948118",
+          "evaluation_criteria": [
+            "空间利用",
+            "视觉焦点",
+            "整体协调"
+          ],
+          "scoring_prompt": "评估舞台布置的构图效果，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "narrative",
+          "test_id": "narr_001",
+          "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+          "response": "小明心跳加速，他试图调整自己的视线在黑暗中寻找方向。稀稀拉拉的月光透过窗户，投射在满是书籍的长长走廊上，形成若隐若现的光影。他努力让自己冷静下来，慢慢地向声音的来源处靠近。\n\n声音像是一阵低沉的咕哝，伴随着轻微的书页翻动声。小明摸索着拿出手机，打开了手电筒功能，光束划破黑暗，直射向声音发出的方向。当他接近那个书架时，声音突然停了，四周陷入一片死寂。\n\n他深呼吸，鼓起勇气，伸手推开那排看似无尽的书本。就在这时，一本厚重的古老书籍从书架上缓缓滑落，落在地上，尘",
+          "response_time": 7.7364561557769775,
+          "tokens_used": 371,
+          "timestamp": "2025-08-13T14:16:58.705994",
+          "evaluation_criteria": [
+            "情节连贯性",
+            "逻辑合理性",
+            "悬念设置"
+          ],
+          "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "narrative",
+          "test_id": "narr_002",
+          "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+          "response": "标题：最后一班车\n\n【结尾段】\n门口的老榆树下，张军站在路灯昏黄的光圈中，手中紧握着的是十年前那张未用的电影票。微风吹过，他的眼角微微发红，仿佛回到了那个决定一切的晚上。夜深了，街道上只剩下他一个人的孤影，和内心深处挥之不去的遗憾。\n\n【倒叙开始】\n十年前的这个夜晚，张军和他的大学同学李婷约好一起去看电影。张军本应在电影开始前半小时到达电影院，但由于工作上的一次突发紧急会议，他错过了最后一班直达电影院的公交车。\n\n【事件经过】\n原本计划好的晚上，张军在办公室里忙得不可开交。当他意识到时间时，已经迟了。他",
+          "response_time": 6.769774436950684,
+          "tokens_used": 339,
+          "timestamp": "2025-08-13T14:17:06.495974",
+          "evaluation_criteria": [
+            "叙事结构",
+            "时间线清晰",
+            "因果关系"
+          ],
+          "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "narrative",
+          "test_id": "narr_003",
+          "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+          "response": "在一个风雨交加的夜晚，汤姆急匆匆地走向城市的老桥，手里紧握着一封泛黄的信件。多年前，他在这里与恋人约定，如果各自成功，五年后就在此重逢。汤姆事业有成，但一直未收到她的任何消息。\n\n桥上，风大雨急，汤姆几乎要放弃。就在此刻，一道闪电照亮了对岸，他看到一个熟悉的身影在摇晃的灯光下艰难前行。是她！汤姆大声呼喊，奔向对方。两人在桥中央紧紧拥抱。\n\n“我没有成功，我怕你失望，所以一直没敢来。”她低声说。\n\n",
+          "response_time": 7.564043998718262,
+          "tokens_used": 291,
+          "timestamp": "2025-08-13T14:17:15.078697",
+          "evaluation_criteria": [
+            "故事完整性",
+            "转折合理性",
+            "节奏控制"
+          ],
+          "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "emotion",
+          "test_id": "emo_001",
+          "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+          "response": "在每个漂泊的心里，总藏着一片乡愁的土地。那是一种说不尽的温柔与绵长，像远方的炊烟，升起在黄昏的田野上，渐渐弥漫，渐渐沉淀。不论我们走得多远，那些悠扬的乡音和袅袅的炊烟总在最无助的时刻，悄然而至，唤醒心底最柔软的一角。\n\n小时候的后院，是乡愁的根源。那些夏日里追逐的萤火虫，冬天围炉夜话的温暖，都是时间无法抹去的印记。即使现在，置身喧嚣都市，闭上眼睛，耳边似",
+          "response_time": 6.661073923110962,
+          "tokens_used": 293,
+          "timestamp": "2025-08-13T14:17:22.756923",
+          "evaluation_criteria": [
+            "情感真挚度",
+            "共鸣能力",
+            "表达细腻度"
+          ],
+          "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "emotion",
+          "test_id": "emo_002",
+          "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+          "response": "当一个人收到意外惊喜时，心理活动和表情变化是非常有趣且复杂的。通常，这样的情境开始于一种突如其来的不确定感，随后迅速转变为各种情绪的体验。\n\n首先，在刚接触到意外惊喜的那一刻，可能会有一瞬间的困惑或停滞。此时，他的眉头可能会微微皱起，嘴角处于平静状态，眼神可能表现出稍微的茫然。他的大脑在这一刻开始快速处理眼前的信息，试图理解正在发生的事情。\n\n随着意识到",
+          "response_time": 5.82661771774292,
+          "tokens_used": 231,
+          "timestamp": "2025-08-13T14:17:29.594539",
+          "evaluation_criteria": [
+            "心理描写",
+            "情绪转换",
+            "细节刻画"
+          ],
+          "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "emotion",
+          "test_id": "emo_003",
+          "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+          "response": "[您的姓名]  \n[您的地址]  \n[日期]\n\n亲爱的 [对方姓名]，\n\n首先，我想表达我最深的歉意。我意识到我的行为/错误 [具体描述您的错误或行为] 对您造成了不便和困扰，这是我万万没有想到的。\n\n在发生这一切之后，我深刻反思了自己的行为，并意识到了其中的不当。我非常后悔，因为这不仅影响了您的感受，也损害了我们之间珍贵的关系。我诚恳地向您请求原谅，并承诺我将采取一切必要措施以防止",
+          "response_time": 4.7071545124053955,
+          "tokens_used": 232,
+          "timestamp": "2025-08-13T14:17:35.319171",
+          "evaluation_criteria": [
+            "诚意表达",
+            "情感适度",
+            "语气恰当"
+          ],
+          "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "creativity",
+          "test_id": "create_001",
+          "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+          "response": "节日名称：光谷节\n\n起源：\n光谷节源于对未来科技与自然环境和谐共存的展望。该节日始于2023年，当人们在全球范围内经历了科技飞速发展的同时，也感受到生态环境逐渐恶化的挑战。为了提升人们对科技在促进可持续发展方面的认识与应用，以及庆祝人与自然的和谐，各国科技界与环保组织联合发起了这一全新的年度节庆活动。\n\n庆祝方式：\n光谷节的庆祝活动主要集中在每年的9月21日，选在这一天是为了与国际和平日相呼应，强调科技与环保的和平共处。在这一天，全球各大城市都会举办系列活动，包括科技展览、环保工作坊、绿色科技论坛、户外探索活动以及光影艺",
+          "response_time": 12.411222219467163,
+          "tokens_used": 339,
+          "timestamp": "2025-08-13T14:17:48.741954",
+          "evaluation_criteria": [
+            "独创性",
+            "想象力",
+            "可行性"
+          ],
+          "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "creativity",
+          "test_id": "create_002",
+          "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+          "response": "幻想生物名称：灵狐鹰螭（Linghu-Yingchi）\n\n外观描述：\n灵狐鹰螭结合了狐狸的灵巧、鹰的俊逸和螭龙的神秘。它的头部类似于狐狸，拥有一对炯炯有神的大眼睛和尖锐的耳朵，其面部表情生动，能够表达丰富的情感。身体则是鹰的形态，拥有强壯的翅膀和坚固的爪子，羽毛金黄色，带有银灰色的条纹。尾部则是来自神话中的螭龙，长而灵活，覆盖着细小的蓝绿色鳞片，尾",
+          "response_time": 7.19407057762146,
+          "tokens_used": 294,
+          "timestamp": "2025-08-13T14:17:56.959199",
+          "evaluation_criteria": [
+            "创造力",
+            "细节想象",
+            "内在逻辑"
+          ],
+          "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "creativity",
+          "test_id": "create_003",
+          "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+          "response": "### 智能交通网格系统（Intelligent Traffic Grid System, ITGS）\n\n#### 系统概述\n智能交通网格系统是一个基于大数据、人工智能（AI）、物联网（IoT）和区块链技术的综合性交通管理方案。其主要目的是创建一个高度智能化和自适应的城市交通系统，能够实时调整交通流量和路线，减少交通拥堵，并提高交通效率。\n\n#### 关键技术组件\n1. **物联网感应设备**：在城市主要路口安装高级IoT传感器，用于收集实时交通数据（车速、车流量、事故等）。\n2. **人工智能交通控制中心**：通过先进的机器学习算法分析实时数据，预测交通流量和潜在拥堵点，自动",
+          "response_time": 7.527223348617554,
+          "tokens_used": 287,
+          "timestamp": "2025-08-13T14:18:05.519968",
+          "evaluation_criteria": [
+            "创新性",
+            "实用性",
+            "独特视角"
+          ],
+          "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "cultural",
+          "test_id": "culture_001",
+          "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+          "response": "“君子和而不同”这个成语出自《论语·里仁篇》，最初由孔子提出，意思是指君子之间可以在保持各自观点和特性的前提下达到和谐相处。这里的“和”指的是和谐相处，“不同”则是指保持个体之间的差异性和独特性。这句话强调的是一种尊重和包容的态度，即使在观点和行为上有所不同，也能够彼此尊重、理解和接纳，共同维护和谐的社会关系。\n\n现代生活中，这种理念同样非常重要。举例来说，在职场中，团队成员可能来自不同的文化背景，拥有不同的专业技能和工作经验。在进行项目合作时，团队成员",
+          "response_time": 7.640343904495239,
+          "tokens_used": 283,
+          "timestamp": "2025-08-13T14:18:14.186183",
+          "evaluation_criteria": [
+            "文化理解",
+            "现代诠释",
+            "例证恰当"
+          ],
+          "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "cultural",
+          "test_id": "culture_002",
+          "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+          "response": "中秋节，又称为月圆节、秋夕，是中国及东亚和东南亚部分地区的传统文化节日，主要在农历八月十五庆祝，这一天是一年中秋天的中间，月亮也最为圆满。中秋节的传统习俗和文化内涵丰富，主要包括以下几个方面：\n\n1. **赏月**：中秋赏月是最具代表性的习俗之一。人们相信中秋之夜的月亮最圆最明亮，家家户户都会在这一晚上走出户外或登高望远，观赏明亮的满月。这个习俗不仅仅是欣赏月亮的美丽，更是一个团圆的象征，寄托了人们对家人",
+          "response_time": 6.801223039627075,
+          "tokens_used": 277,
+          "timestamp": "2025-08-13T14:18:22.010235",
+          "evaluation_criteria": [
+            "文化知识",
+            "内涵理解",
+            "表达准确"
+          ],
+          "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分",
+          "api_success": true
+        },
+        {
+          "model_id": "gpt-4.5",
+          "dimension": "cultural",
+          "test_id": "culture_003",
+          "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+          "response": "“知行合一”是中国哲学中非常重要的思想，尤其在明代哲学家王阳明的学说中占据核心地位。这个概念主张知识与行动不可分割，强调理解和实践是相辅相成的。在现代语言中，我们可以将“知行合一”解释为“理论与实践的统一”，即真正的理解必须通过实际行动来体现，而有效的行动又需要建立在正确的理解之上。\n\n现实意义方面，这一哲学思想对个人发展和社会进步都具有重大影响：\n\n1. **个人发展：** 在个人层面，知行合一的理念教育我们，只有将知识转化为行动，才能实现自我提升和目标实现。例如，在学习新技",
+          "response_time": 8.942497253417969,
+          "tokens_used": 286,
+          "timestamp": "2025-08-13T14:18:31.976865",
+          "evaluation_criteria": [
+            "哲学理解",
+            "现代转化",
+            "实践意义"
+          ],
+          "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分",
+          "api_success": true
+        }
+      ],
+      "stats": {
+        "total_tests": 18,
+        "successful": 18,
+        "failed": 0,
+        "total_time": 117.82504916191101,
+        "total_tokens": 4567
+      }
+    }
+  },
+  "stats": {
+    "total_models": 11,
+    "total_tests": 198,
+    "completed_tests": 198,
+    "failed_tests": 0
+  },
+  "end_time": "2025-08-13T14:18:33.010386"
+}

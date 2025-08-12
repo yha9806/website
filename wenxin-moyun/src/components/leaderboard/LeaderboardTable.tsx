@@ -137,11 +137,14 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
     columnHelper.accessor('score', {
       header: 'Overall Score',
       size: 100,
-      cell: ({ getValue }) => (
-        <div className="text-center font-semibold text-lg">
-          {getValue().toFixed(1)}
-        </div>
-      ),
+      cell: ({ getValue }) => {
+        const value = getValue();
+        return (
+          <div className="text-center font-semibold text-lg">
+            {value != null ? value.toFixed(3) : 'N/A'}
+          </div>
+        );
+      },
     }),
 
     // 各项指标列
@@ -183,7 +186,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
         
         return (
           <div className={`text-center font-medium ${getColor()}`}>
-            {rate.toFixed(1)}%
+            {rate != null ? `${rate.toFixed(1)}%` : 'N/A'}
           </div>
         );
       },

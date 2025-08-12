@@ -58,6 +58,10 @@ async def get_battles(
     # Manually build response to avoid async context issues
     battle_responses = []
     for battle in battles:
+        # Validate that both models exist before creating response
+        if not battle.model_a or not battle.model_b:
+            continue  # Skip battles with missing model references
+            
         battle_responses.append(BattleResponse(
             id=str(battle.id),
             model_a=AIModelResponse.model_validate(battle.model_a),
@@ -91,10 +95,13 @@ async def get_random_battle(db: AsyncSession = Depends(get_db)):
     result = await db.execute(query)
     active_battles = result.scalars().all()
     
-    if not active_battles:
+    # Filter battles with valid model references
+    valid_battles = [b for b in active_battles if b.model_a and b.model_b]
+    
+    if not valid_battles:
         raise HTTPException(status_code=404, detail="No active battles found")
     
-    battle = random.choice(active_battles)
+    battle = random.choice(valid_battles)
     return BattleResponse(
         id=str(battle.id),
         model_a=AIModelResponse.model_validate(battle.model_a),
@@ -123,6 +130,13 @@ async def get_battle(battle_id: str, db: AsyncSession = Depends(get_db)):
     
     if not battle:
         raise HTTPException(status_code=404, detail="Battle not found")
+    
+    # Validate model references
+    if not battle.model_a or not battle.model_b:
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Battle {battle.id} has invalid model references"
+        )
     
     return BattleResponse(
         id=str(battle.id),

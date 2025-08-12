@@ -18,10 +18,17 @@ class TaskType(str, Enum):
     MUSIC = "music"
 
 
+class Language(str, Enum):
+    CHINESE = "zh"
+    ENGLISH = "en"
+    BOTH = "both"
+
+
 class EvaluationTaskBase(BaseModel):
     model_id: str
     task_type: TaskType
     prompt: str
+    language: Optional[Language] = Language.CHINESE
     parameters: Optional[Dict[str, Any]] = {}
 
 

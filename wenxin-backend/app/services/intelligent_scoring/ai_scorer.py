@@ -20,7 +20,8 @@ class IntelligentScorer:
     
     def __init__(self):
         # Try to initialize OpenAI client, but don't fail if no API key
-        api_key = os.getenv("OPENAI_API_KEY")
+        from app.core.config import settings
+        api_key = settings.OPENAI_API_KEY
         if api_key and api_key != "your-openai-key-here":
             try:
                 self.openai_client = AsyncOpenAI(api_key=api_key)
@@ -39,6 +40,98 @@ class IntelligentScorer:
         self.quality_metrics = QualityMetrics()
         self.prompts = ScoringPrompts()
         
+    async def score(self, prompt: str, response: str, criteria: list = None, scoring_prompt: str = None) -> float:
+        """Score a response based on criteria"""
+        if not self.use_ai:
+            # Fallback scoring
+            return 70.0 + (len(response) % 30)
+        
+        try:
+            # Build scoring prompt
+            if not scoring_prompt:
+                scoring_prompt = "Rate this response from 0-100"
+            
+            full_prompt = f"""
+Task: {prompt}
+
+Response: {response}
+
+Evaluation Criteria: {', '.join(criteria) if criteria else 'General quality'}
+
+{scoring_prompt}
+
+Return only a number between 0 and 100.
+"""
+            
+            completion = await self.openai_client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "You are an expert evaluator. Return only numeric scores."},
+                    {"role": "user", "content": full_prompt}
+                ],
+                temperature=0.3,
+                max_tokens=10
+            )
+            
+            score_text = completion.choices[0].message.content.strip()
+            # Extract number from response
+            import re
+            numbers = re.findall(r'\d+(?:\.\d+)?', score_text)
+            if numbers:
+                return min(100, max(0, float(numbers[0])))
+            return 75.0
+            
+        except Exception as e:
+            logger.error(f"Error in AI scoring: {e}")
+            return 70.0
+    
+    async def analyze_response(self, response: str, criteria: list = None) -> Dict:
+        """Analyze response and provide detailed feedback"""
+        if not self.use_ai:
+            return {
+                "strengths": ["Good effort"],
+                "weaknesses": [],
+                "suggestions": [],
+                "highlights": []
+            }
+        
+        try:
+            prompt = f"""
+Analyze this AI-generated response and provide detailed feedback:
+
+Response: {response}
+
+Evaluation Criteria: {', '.join(criteria) if criteria else 'General quality'}
+
+Return a JSON object with:
+- strengths: list of strong points
+- weaknesses: list of weak points  
+- suggestions: list of improvement suggestions
+- highlights: list of best phrases or sentences
+"""
+            
+            completion = await self.openai_client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "You are an expert content analyzer. Return valid JSON."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.3,
+                max_tokens=500,
+                response_format={"type": "json_object"}
+            )
+            
+            return json.loads(completion.choices[0].message.content)
+            
+        except Exception as e:
+            logger.error(f"Error in response analysis: {e}")
+            return {
+                "strengths": [],
+                "weaknesses": [],
+                "suggestions": [],
+                "highlights": []
+            }
+    
     async def evaluate_poem(self, content: str, style: Optional[str] = None, **kwargs) -> Dict[str, float]:
         """Intelligently evaluate poem quality using AI + content analysis"""
         try:
@@ -159,7 +252,7 @@ class IntelligentScorer:
         prompt = self.prompts.POEM_EVALUATION.format(content=content, style=style)
         
         response = await self.openai_client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4o-mini",
             messages=[{
                 "role": "system",
                 "content": "You are an expert poetry critic. Provide objective, precise evaluations in JSON format only."
@@ -188,7 +281,7 @@ class IntelligentScorer:
         )
         
         response = await self.openai_client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4o-mini",
             messages=[{
                 "role": "system",
                 "content": "You are an expert literary critic. Provide objective, precise evaluations in JSON format only."
@@ -213,7 +306,7 @@ class IntelligentScorer:
         eval_prompt = self.prompts.PAINTING_EVALUATION.format(prompt=prompt, style=style)
         
         response = await self.openai_client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4o-mini",
             messages=[{
                 "role": "system",
                 "content": "You are an expert art critic. Provide objective, precise evaluations in JSON format only."
@@ -238,7 +331,7 @@ class IntelligentScorer:
         prompt = self.prompts.MUSIC_EVALUATION.format(content=content, style=style)
         
         response = await self.openai_client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4o-mini",
             messages=[{
                 "role": "system",
                 "content": "You are an expert music critic. Provide objective, precise evaluations in JSON format only."

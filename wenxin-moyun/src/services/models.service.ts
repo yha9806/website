@@ -17,7 +17,7 @@ export interface AIModelResponse {
   version: string;
   category: string;
   description: string;
-  overall_score: number;
+  overall_score: number | null;
   metrics: ModelMetrics;
   is_active: boolean;
   is_verified: boolean;
@@ -78,11 +78,18 @@ class ModelsService {
       name: apiModel.name,
       organization: apiModel.organization || '',
       version: apiModel.version || '',
-      releaseDate: apiModel.created_at.substring(0, 10),
+      releaseDate: apiModel.created_at ? apiModel.created_at.substring(0, 10) : '',
       description: apiModel.description || '',
       category: apiModel.category as 'text' | 'multimodal',
-      overallScore: apiModel.overall_score,
-      metrics: apiModel.metrics,
+      overallScore: apiModel.overall_score, // Keep as is, frontend handles null
+      metrics: apiModel.metrics || {
+        rhythm: 0,
+        composition: 0,
+        narrative: 0,
+        emotion: 0,
+        creativity: 0,
+        cultural: 0
+      },
       works: [],
       avatar: apiModel.avatar_url || `https://picsum.photos/seed/${apiModel.id}/200/200`,
       tags: apiModel.tags || []

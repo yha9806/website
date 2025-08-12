@@ -26,8 +26,10 @@ export default function DashboardPage() {
     if (!entries.length) return null;
     
     const totalModels = entries.length;
-    const avgScore = entries.reduce((acc, e) => acc + e.score, 0) / totalModels;
-    const topScore = Math.max(...entries.map(e => e.score));
+    // Filter out NULL scores for calculations
+    const validScores = entries.filter(e => e.score != null).map(e => e.score);
+    const avgScore = validScores.length > 0 ? validScores.reduce((acc, s) => acc + s, 0) / validScores.length : 0;
+    const topScore = validScores.length > 0 ? Math.max(...validScores) : 0;
     const totalBattles = entries.reduce((acc, e) => acc + e.battles, 0);
     
     // Statistics by organization
@@ -147,14 +149,14 @@ export default function DashboardPage() {
         <MetricCard
           icon={Award}
           label="Highest Score"
-          value={stats.topScore.toFixed(1)}
+          value={stats.topScore > 0 ? stats.topScore.toFixed(1) : 'N/A'}
           change={2.5}
           color="bg-green-500"
         />
         <MetricCard
           icon={Activity}
           label="Average Score"
-          value={stats.avgScore.toFixed(1)}
+          value={stats.avgScore > 0 ? stats.avgScore.toFixed(1) : 'N/A'}
           change={-1.2}
           color="bg-purple-500"
         />
@@ -343,10 +345,10 @@ export default function DashboardPage() {
                   </p>
                   <div className="flex items-center gap-4 mt-1">
                     <span className="text-sm font-medium text-primary-600">
-                      Score: {entry.score.toFixed(1)}
+                      Score: {entry.score != null ? entry.score.toFixed(1) : 'N/A'}
                     </span>
                     <span className="text-sm text-gray-500">
-                      Win Rate: {entry.winRate.toFixed(1)}%
+                      Win Rate: {entry.winRate != null ? entry.winRate.toFixed(1) : 'N/A'}%
                     </span>
                   </div>
                 </div>

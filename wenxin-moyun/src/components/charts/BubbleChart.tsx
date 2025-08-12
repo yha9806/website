@@ -30,31 +30,46 @@ export default function BubbleChart({
   };
   
   const chartData = useMemo(() => {
+    // Filter out NULL values for calculations
+    const validCreativity = data.map(d => d.model.metrics.creativity).filter(v => v != null);
+    const validCultural = data.map(d => d.model.metrics.cultural).filter(v => v != null);
+    const validScores = data.map(d => d.score).filter(v => v != null);
+    
     // X轴: 创意得分, Y轴: 文化契合度, 气泡大小: 综合评分
-    const xExtent = [
-      Math.min(...data.map(d => d.model.metrics.creativity)) * 0.9,
-      Math.max(...data.map(d => d.model.metrics.creativity)) * 1.1
-    ];
-    const yExtent = [
-      Math.min(...data.map(d => d.model.metrics.cultural)) * 0.9,
-      Math.max(...data.map(d => d.model.metrics.cultural)) * 1.1
-    ];
-    const sizeExtent = [
-      Math.min(...data.map(d => d.score)),
-      Math.max(...data.map(d => d.score))
-    ];
+    const xExtent = validCreativity.length > 0 ? [
+      Math.min(...validCreativity) * 0.9,
+      Math.max(...validCreativity) * 1.1
+    ] : [0, 100];
+    const yExtent = validCultural.length > 0 ? [
+      Math.min(...validCultural) * 0.9,
+      Math.max(...validCultural) * 1.1
+    ] : [0, 100];
+    const sizeExtent = validScores.length > 0 ? [
+      Math.min(...validScores),
+      Math.max(...validScores)
+    ] : [0, 100];
 
     const xScale = scaleLinear().domain(xExtent).range([80, 520]);
     const yScale = scaleLinear().domain(yExtent).range([320, 80]);
     const sizeScale = scaleSqrt().domain(sizeExtent).range([5, 30]);
 
-    return data.map(entry => ({
-      entry,
-      x: xScale(entry.model.metrics.creativity),
-      y: yScale(entry.model.metrics.cultural),
-      r: sizeScale(entry.score),
-      color: getColorByOrg(entry.model.organization)
-    }));
+    return data.map(entry => {
+      // Handle NULL values by using fallback positions
+      const creativity = entry.model.metrics.creativity ?? 50;
+      const cultural = entry.model.metrics.cultural ?? 50;
+      const score = entry.score ?? 50;
+      
+      // Ensure radius is never negative
+      const radius = Math.max(sizeScale(score), 3); // Minimum radius of 3
+      
+      return {
+        entry,
+        x: xScale(creativity),
+        y: yScale(cultural),
+        r: radius,
+        color: getColorByOrg(entry.model.organization)
+      };
+    });
   }, [data]);
 
   // 获取唯一的组织列表用于图例
@@ -213,7 +228,7 @@ export default function BubbleChart({
                   textAnchor="middle"
                   className="fill-gray-300 text-xs"
                 >
-                  Score: {item.entry.score.toFixed(1)}
+                  Score: {item.entry.score != null ? item.entry.score.toFixed(1) : 'N/A'}
                 </text>
               </g>
             </motion.g>

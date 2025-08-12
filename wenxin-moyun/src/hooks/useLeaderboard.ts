@@ -23,7 +23,13 @@ export const useLeaderboard = (category?: string) => {
           if (apiModels.length > 0) {
             // Convert to leaderboard entries
             const leaderboardData = apiModels
-              .sort((a, b) => b.overall_score - a.overall_score)
+              .sort((a, b) => {
+                // Handle NULL scores - put them at the end
+                if (a.overall_score == null && b.overall_score == null) return 0;
+                if (a.overall_score == null) return 1;
+                if (b.overall_score == null) return -1;
+                return b.overall_score - a.overall_score;
+              })
               .map((model, index) => ({
                 rank: index + 1,
                 model: modelsService.convertToFrontendModel(model),

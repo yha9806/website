@@ -6,7 +6,7 @@ export interface Model {
   releaseDate: string;
   description: string;
   category: 'text' | 'visual' | 'multimodal';
-  overallScore: number;
+  overallScore: number | null;
   metrics: ModelMetrics;
   works: Artwork[];
   avatar?: string;

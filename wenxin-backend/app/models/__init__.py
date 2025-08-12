@@ -5,6 +5,7 @@ from .evaluation_task import EvaluationTask
 from .work import Work
 from .battle import Battle, BattleVote
 from .artwork import Artwork
+from .benchmark_suite import BenchmarkSuite, BenchmarkRun, BenchmarkStatus
 
 __all__ = [
     "User",
@@ -15,5 +16,8 @@ __all__ = [
     "Work",
     "Battle",
     "BattleVote",
-    "Artwork"
+    "Artwork",
+    "BenchmarkSuite",
+    "BenchmarkRun",
+    "BenchmarkStatus"
 ]

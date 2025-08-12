@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Boolean, DateTime, Text, Float, JSON
+from sqlalchemy import Column, String, Boolean, DateTime, Text, Float, JSON, Integer
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 import uuid
@@ -38,6 +38,14 @@ class AIModel(Base):
     # Additional metadata
     tags = Column(JSON, default=[])
     avatar_url = Column(String(500))
+    
+    # Data source tracking (new fields for benchmark system)
+    data_source = Column(String(20), default="mock")  # mock, real, benchmark
+    verification_count = Column(Integer, default=0)  # Number of times verified
+    benchmark_score = Column(Float, nullable=True)  # Score from benchmark tests
+    benchmark_metadata = Column(JSON, default={})  # Detailed benchmark results
+    confidence_level = Column(Float, default=0.0)  # 0-1 confidence in score accuracy
+    last_benchmark_at = Column(DateTime(timezone=True), nullable=True)
     
     # Relationships
     from sqlalchemy.orm import relationship

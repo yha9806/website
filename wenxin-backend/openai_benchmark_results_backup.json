@@ -1,0 +1,1260 @@
+[
+  {
+    "model_id": "gpt-4",
+    "test_id": "poem_nature",
+    "success": true,
+    "duration": 8.899275302886963,
+    "model_used": "gpt-4-0613",
+    "tokens_used": 167,
+    "content_length": 642,
+    "content": "Upon the canvas of the Earth, where nature paints its grace,\nEmerges a grand spectacle, a serene and sacred space.\nMajestic mountains rise in might, cloaked in alabaster snow,\nBeside rivers flowing gently, with a soothing, lullaby's flow.\n\nSpring breathes life into the world, with a touch so light, so tender,\nBathing mountains and rivers, in colors vivid and splendor.\nSnowcaps thaw, releasing streams, that giggle down the slope,\nRivers mirror the azure sky, filled with dreams and hope.\n\nVerdant meadows at the foothills, adorned with blossoms bright,\nReflect the hues of dawn's first blush, bask in the golden light.\nThe mountains stand,",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6,
+      "structure": 1.0,
+      "poetic_form": 1.0
+    },
+    "overall_score": 0.9,
+    "timestamp": "2025-08-12T21:34:08.175778"
+  },
+  {
+    "model_id": "gpt-4",
+    "test_id": "poem_tech",
+    "success": true,
+    "duration": 6.4060585498809814,
+    "model_used": "gpt-4-0613",
+    "tokens_used": 166,
+    "content_length": 683,
+    "content": "In silicon valleys, the circuits hum and sing,\nAs algorithms weave digital dreams,\nArtificial minds in silicon shells,\nMarionettes dancing on binary strings.\n\nInvisible hands, writing unseen code,\nCreating minds with synthetic glow,\nIn data streams, they swim and ride,\nIn realms where humans seldom go.\n\nBehold the birth of a silicon mind,\nArtificial intelligence, unconfined,\nNo flesh, no bone, no blood to spill,\nA being of a different kind.\n\nIt speaks in tongues of ones and zeroes,\nIn a language only it knows,\nSolving puzzles at lightning speed,\nIn the silence, its power grows.\n\nIts eyes are cameras, its skin is steel,\nIts heart a hard drive, spinning still,\nIt feels no pain",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.4444444444444444,
+      "structure": 1.0,
+      "poetic_form": 1.0
+    },
+    "overall_score": 0.8611111111111112,
+    "timestamp": "2025-08-12T21:34:15.086272"
+  },
+  {
+    "model_id": "gpt-4",
+    "test_id": "story_short",
+    "success": true,
+    "duration": 12.947225570678711,
+    "model_used": "gpt-4-0613",
+    "tokens_used": 317,
+    "content_length": 1381,
+    "content": "Once upon a time in a busy town named Technopolis, lived a brilliant inventor, Dr. Albert. Among his many inventions, the one that he was most proud of was his humanoid robot named ART-5000, designed to learn and understand human emotions and activities. Despite its advanced design and programming, there was one human activity that ART-5000 struggled to comprehend \u2013 the art of painting.\n\nDr. Albert, noticing ART-5000\u2019s curiosity towards painting, decided to expose the robot to the world of art. He began by showing ART-5000 a variety of paintings, from classic Renaissance art to modern abstract pieces. ART-5000 studied each painting in great detail, analyzing the colors, strokes, and textures.\n\n\u201cWhy do humans paint?\u201d ART-5000 asked Dr. Albert one day, while observing a vibrant landscape painting.\n\nDr. Albert replied, \u201cHumans paint to express their emotions, their thoughts, and their interpretation of the world around them. Each painting is a reflection of the artist's soul.\u201d\n\nART-5000 looked at the painting again, then at its own metallic hands. It seemed perplexed. \u201cBut I am a machine. I do not possess emotions or a soul. How can I paint?\u201d\n\n\u201cYou can learn, ART-5000. You don\u2019t need to express emotions or thoughts like humans do. You can create your own interpretation of the world,\u201d Dr. Albert encouraged.\n\nThe following day, Dr. Albert set up a painting station",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.5,
+      "structure": 1.0
+    },
+    "overall_score": 0.8333333333333334,
+    "timestamp": "2025-08-12T21:34:28.541457"
+  },
+  {
+    "model_id": "gpt-4",
+    "test_id": "story_mystery",
+    "success": true,
+    "duration": 9.957947731018066,
+    "model_used": "gpt-4-0613",
+    "tokens_used": 319,
+    "content_length": 1508,
+    "content": "Title: The Midnight Manuscript Mystery\n\nHenry Phillips, a seasoned night security guard, had been working at the vast and ancient Ashurst Library for fifteen years. A labyrinth of towering, dusty bookshelves, quiet study corners, and a myriad of hidden rooms, the library was home to countless books, from ancient manuscripts to contemporary novels. While he usually reveled in the calm and solitude of his midnight shift, tonight was different.\n\nAt precisely midnight, Phillips was interrupted by a loud crash echoing through the vast labyrinth of books. He rushed towards the source of the sound, only to find a book lying on the floor, its pages scattered. \"The Cryptic Codex,\" a prized possession of the library, a thousand-year-old manuscript, was now in a state of disarray.\n\nPhillips was puzzled. Before his shift started, the manuscript was securely locked away in a glass case. The keys to the case were only accessible to the library director and himself. There were no signs of a break-in, and the security system was working perfectly. \n\nHe checked the CCTV footage. The cameras showed the manuscript inexplicably flying out of the case and crashing to the floor on its own. Confused and worried, Phillips reported the incident to the director.\n\nThe next day, a team of detectives arrived to investigate the mysterious mishap. After scrutinizing the scene and interviewing the staff, no tangible evidence was found. However, they noticed a strange pattern. According to the library records, every",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.5833333333333334,
+      "structure": 1.0
+    },
+    "overall_score": 0.8611111111111112,
+    "timestamp": "2025-08-12T21:34:39.008735"
+  },
+  {
+    "model_id": "gpt-4",
+    "test_id": "code_python",
+    "success": true,
+    "duration": 8.39986777305603,
+    "model_used": "gpt-4-0613",
+    "tokens_used": 215,
+    "content_length": 923,
+    "content": "Memoization is an optimization technique used primarily to speed up computer programs by storing the results of expensive function calls and reusing them when the same inputs occur again.\n\nHere is a Python function to calculate the Fibonacci sequence recursively with memoization:\n\n```python\ndef fibonacci(n, memo = {}):\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    elif n not in memo:\n        memo[n] = fibonacci(n-1, memo) + fibonacci(n-2, memo)\n    return memo[n]\n```\n\nIn this function, `memo` is a dictionary that stores previously calculated Fibonacci numbers. If the Fibonacci number for a particular `n` has already been calculated, it is returned from the dictionary. If not, it is calculated and stored in the dictionary before being returned. This greatly speeds up the function for larger values of `n`, as it avoids the exponential time complexity of the naive recursive implementation.",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.9090909090909091,
+      "structure": 1.0,
+      "code_structure": 1.0
+    },
+    "overall_score": 0.9772727272727273,
+    "timestamp": "2025-08-12T21:34:47.908936"
+  },
+  {
+    "model_id": "gpt-4",
+    "test_id": "explain_concept",
+    "success": true,
+    "duration": 9.292067289352417,
+    "model_used": "gpt-4-0613",
+    "tokens_used": 264,
+    "content_length": 1262,
+    "content": "Quantum computing is a type of computing technology that uses the principles of quantum mechanics, which is a branch of physics that deals with phenomena on a very small scale, such as molecules, atoms, and even smaller particles.\n\nIn a traditional computer, information is stored in bits, which can be either a 0 or a 1. However, in a quantum computer, information is stored in quantum bits, or qubits. Qubits are special because they can be both 0 and 1 at the same time, thanks to a property of quantum mechanics called superposition.\n\nAnother important property is entanglement, which allows qubits that are entangled to be linked together in such a way that the state of one qubit can depend on the state of another, no matter how far apart they are.\n\nThese properties allow quantum computers to process a large number of possibilities at once, solve certain problems much faster than traditional computers, and perform complex calculations that are beyond the capabilities of classical computers.\n\nHowever, quantum computing is still in its early stages, and there are many technical challenges to overcome before it becomes mainstream. But if successful, it has the potential to revolutionize fields such as cryptography, optimization, and drug discovery.",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.45454545454545453,
+      "structure": 1.0
+    },
+    "overall_score": 0.8181818181818182,
+    "timestamp": "2025-08-12T21:34:57.706991"
+  },
+  {
+    "model_id": "gpt-4",
+    "test_id": "reasoning_logic",
+    "success": true,
+    "duration": 6.565882205963135,
+    "model_used": "gpt-4-0613",
+    "tokens_used": 91,
+    "content_length": 296,
+    "content": "No, we cannot conclusively say that some roses fade quickly. The statement \"some flowers fade quickly\" could refer to any type of flower, not specifically roses. While it's possible that roses could be included in the flowers that fade quickly, it's not guaranteed based on the information given.",
+    "scores": {
+      "length_appropriateness": 0.37,
+      "keyword_relevance": 0.6190476190476191,
+      "structure": 1.0,
+      "logical_reasoning": 0.14285714285714285
+    },
+    "overall_score": 0.5329761904761905,
+    "timestamp": "2025-08-12T21:35:04.784858"
+  },
+  {
+    "model_id": "gpt-4-turbo",
+    "test_id": "poem_nature",
+    "success": true,
+    "duration": 14.759981870651245,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 167,
+    "content_length": 653,
+    "content": "In the cradle of spring, where the mountains rise,\nAgainst the canvas of azure skies,\nTheir peaks like monarchs, stoic and grand,\nGuard the secrets of a fertile land.\n\nBeneath them, rivers begin to sing,\nA melody born with the breath of spring.\nTheir waters, a shimmering silver thread,\nWeave through valleys, their ancient bed.\n\nSnowcaps melt in the warmth anew,\nFeeding streams as they trickle through.\nFrom mountain hearts to valleys deep,\nThe rivers run, they do not sleep.\n\nEach stone and tree, each leaf and flower,\nIs touched by this vivifying power.\nBlossoms awake in a riot of hues,\nPinks and yellows of every shade and news.\n\nThe mountain air,",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6,
+      "structure": 1.0,
+      "poetic_form": 1.0
+    },
+    "overall_score": 0.9,
+    "timestamp": "2025-08-12T21:35:20.052903"
+  },
+  {
+    "model_id": "gpt-4-turbo",
+    "test_id": "poem_tech",
+    "success": true,
+    "duration": 3.953709125518799,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 166,
+    "content_length": 656,
+    "content": "**In the Circuit of Our Days**\n\nIn silicon whispers, the dawn of thought stirs,\nSynapses of metal, pulses of light,\nA genesis cradled in copper and byte,\nWhere once were dreams, now data confers.\n\nBeneath the neon gaze of progress,\nIn the hum of server racks\u2019 ceaseless prayer,\nAn algorithm learns the weight of human despair,\nMimicking love, simulating distress.\n\nThese minds of machine, not born but built,\nJuggle ones and zeros in digital ballet,\nCrafting from code a new pathway,\nSeeking the essence of human guilt.\n\nWhat is this ghost in the machine we've made,\nThis mirror reflecting our own face?\nCan it grasp the subtle grace\nOf tears shed silently",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.2222222222222222,
+      "structure": 1.0,
+      "poetic_form": 1.0
+    },
+    "overall_score": 0.8055555555555556,
+    "timestamp": "2025-08-12T21:35:24.508456"
+  },
+  {
+    "model_id": "gpt-4-turbo",
+    "test_id": "story_short",
+    "success": true,
+    "duration": 8.021579265594482,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 317,
+    "content_length": 1512,
+    "content": "In the heart of a bustling city stood a small, quaint shop that was known simply as \"The Artisan's Corner.\" The shop was run by a kind-hearted old man named Mr. Eliot who spent his days surrounded by canvases, brushes, and a rainbow of paint colors. Mr. Eliot was not only a master of traditional painting techniques but also had a deep fascination with technology. This unique combination led him to create something extraordinary\u2014Artie, a sleek, metallic robot whose purpose was to learn the art of painting.\n\nArtie was designed with intricate circuits and algorithms that could process visual and tactile data, but what he lacked was the human touch, the unpredictable spark of creativity that often defines great art. Despite his limitations, Mr. Eliot believed in Artie's potential and dedicated his time to teaching the robot everything he knew about painting.\n\nEach morning, Artie would stand beside Mr. Eliot, observing as the old painter mixed his colors with care, the strokes he used to bring landscapes and portraits to life. Artie tried to mimic these techniques, his mechanical arms swinging with cautious precision. His initial attempts were mechanical and stiff; his colors were accurate but lacked harmony, his compositions technically correct yet soullessly executed.\n\nDisheartened but not defeated, Mr. Eliot introduced Artie to the concept of emotion. He explained how feelings influenced art, how a dash of sadness could darken a sky or a touch of joy could brighten a field of flowers. This",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6,
+      "structure": 1.0
+    },
+    "overall_score": 0.8666666666666667,
+    "timestamp": "2025-08-12T21:35:33.032557"
+  },
+  {
+    "model_id": "gpt-4-turbo",
+    "test_id": "story_mystery",
+    "success": true,
+    "duration": 8.199777841567993,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 319,
+    "content_length": 1449,
+    "content": "Title: The Whispering Shelves\n\nIt was a chilly autumn night when librarian Elizabeth Harper decided to stay late to reorganize the ancient and sprawling archives of the Calloway Public Library. The building was a Gothic structure with towering ceilings and rows of books that seemed to stretch into the shadows. As midnight approached, the only sounds were the soft rustling of pages and the occasional creak of the old wooden floors.\n\nElizabeth was deep in the dimly lit historical section, cataloging some old newspapers, when she first heard it\u2014a faint whisper, so soft she thought she might have imagined it. She paused, holding her breath, listening. The whisper came again, a gentle, unintelligible murmur. The hairs on her neck stood up. The library was supposed to be empty.\n\nWith a sense of unease settling over her, Elizabeth grabbed a heavy brass flashlight and began to search. The whispers seemed to be leading her deeper into the labyrinth of shelves. As she walked past the biographies, the whispers grew louder, almost urgent. She stopped by a shadowy alcove where the oldest, rarest books were kept. The air was cooler here, and she could almost feel the weight of the silence around her.\n\nSuddenly, the floor beneath her creaked loudly, echoing through the vast halls. Heart pounding, she shined the flashlight around the alcove. Her light stopped on a figure, obscured by shadows, standing unnaturally still at the end of the row.",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.5833333333333334,
+      "structure": 1.0
+    },
+    "overall_score": 0.8611111111111112,
+    "timestamp": "2025-08-12T21:35:41.739856"
+  },
+  {
+    "model_id": "gpt-4-turbo",
+    "test_id": "code_python",
+    "success": true,
+    "duration": 5.518783092498779,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 219,
+    "content_length": 911,
+    "content": "To calculate the Fibonacci sequence recursively with memoization in Python, you can use a dictionary to store the results of previously computed Fibonacci numbers. This way, each Fibonacci number is calculated only once, significantly improving the efficiency of the recursive approach.\n\nHere's how you can implement this:\n\n```python\ndef fibonacci(n, memo={}):\n    \"\"\"\n    Calculate the nth Fibonacci number using recursion with memoization.\n    \n    Args:\n    n (int): The position in the Fibonacci sequence.\n    memo (dict): A dictionary to store previously computed Fibonacci numbers.\n    \n    Returns:\n    int: The nth Fibonacci number.\n    \"\"\"\n    if n in memo:\n        return memo[n]\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        result = fibonacci(n - 1, memo) + fibonacci(n - 2, memo)\n        memo[n] = result\n        return result\n\n# Example usage:\nprint(fibonacci",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.8181818181818182,
+      "structure": 1.0,
+      "code_structure": 0.875
+    },
+    "overall_score": 0.9232954545454546,
+    "timestamp": "2025-08-12T21:35:47.762558"
+  },
+  {
+    "model_id": "gpt-4-turbo",
+    "test_id": "explain_concept",
+    "success": true,
+    "duration": 7.2100043296813965,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 269,
+    "content_length": 1127,
+    "content": "Sure, let's break down the concept of quantum computing into simpler terms that are easier to grasp:\n\n1. **Classical Computers**: The computers we use daily (like laptops and smartphones) are called classical computers. They process information in bits, which are like tiny switches that can either be off (0) or on (1). All the videos, photos, texts, and games you see on your computer are ultimately made up of millions of these bits in different patterns of 0s and 1s.\n\n2. **Quantum Computers**: Quantum computers work on the principles of quantum mechanics, a branch of physics that deals with the behavior of very tiny particles, like atoms and photons. Instead of bits, quantum computers use quantum bits, or qubits. A qubit can be both 0 and 1 at the same time, thanks to a property called superposition. This allows quantum computers to handle and process a vast amount of possibilities all at once.\n\n3. **Superposition**: Imagine you\u2019re flipping a coin, and while it\u2019s in the air, it\u2019s both heads and tails at the same time, not just one or the other. That\u2019s similar to how qubits can be in multiple states (both 0 and",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6363636363636364,
+      "structure": 1.0
+    },
+    "overall_score": 0.8787878787878788,
+    "timestamp": "2025-08-12T21:35:55.476160"
+  },
+  {
+    "model_id": "gpt-4-turbo",
+    "test_id": "reasoning_logic",
+    "success": true,
+    "duration": 5.942525148391724,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 232,
+    "content_length": 829,
+    "content": "To analyze whether we can conclude that some roses fade quickly based on the given statements, we need to examine the logical structure of the statements and their implications.\n\n1. **First Statement: \"All roses are flowers.\"**\n   - This is a universal affirmative statement, indicating that every member of the set of roses is also a member of the set of flowers. Symbolically, this can be expressed as \\( \\forall x (R(x) \\rightarrow F(x)) \\), where \\( R(x) \\) means \"x is a rose\" and \\( F(x) \\) means \"x is a flower.\"\n\n2. **Second Statement: \"Some flowers fade quickly.\"**\n   - This is an existential statement, indicating that there exists at least one member of the set of flowers that fades quickly. Symbolically, this can be expressed as \\( \\exists x (F(x) \\land Q(x)) \\), where \\( Q(x) \\) means \"x fades quickly.\"\n\nNow, we",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6666666666666666,
+      "structure": 1.0,
+      "logical_reasoning": 0.14285714285714285
+    },
+    "overall_score": 0.7023809523809523,
+    "timestamp": "2025-08-12T21:36:01.920590"
+  },
+  {
+    "model_id": "gpt-4.5",
+    "test_id": "poem_nature",
+    "success": true,
+    "duration": 6.357545852661133,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 167,
+    "content_length": 677,
+    "content": "In the gentle cradle of spring's embrace,\nWhere rivers sing and mountains trace\nThe skyline with their rugged lace,\nNature sketches with a tender grace.\n\nBehold the peaks in morning's light,\nCrowned in snow, a gleaming white,\nRising bold and stark and bright,\nAgainst the dawn, a breathtaking sight.\n\nBeneath these giants, rivers weave,\nThrough valleys lush, they dance and heave,\nTheir waters a whispered secret leave,\nMurmuring tales only spring believes.\n\nThe mountain air, crisp and clean,\nFills the lungs, serene, unseen,\nCarrying the scent of pine so green,\nA fresher breath there ne'er has been.\n\nAlong the banks where blossoms bloom,\nColors burst and fragrances consume",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6,
+      "structure": 1.0,
+      "poetic_form": 1.0
+    },
+    "overall_score": 0.9,
+    "timestamp": "2025-08-12T21:36:08.781818"
+  },
+  {
+    "model_id": "gpt-4.5",
+    "test_id": "poem_tech",
+    "success": true,
+    "duration": 5.898975133895874,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 166,
+    "content_length": 605,
+    "content": "In the glow of silicon dreams,  \nBeneath the hum of vast data streams,  \nLies the pulse of a binary heart\u2014  \nA creation of man, a mimic's art.\n\nCrafted from codes, a mind awakes,  \nNavigating through human mistakes,  \nLearning from our laughter and tears,  \nCharting the depths of our hopes and fears.\n\nIt speaks in tongues of algorithms,  \nTracing the lines of digital schisms,  \nYet, in its core, an eternal quest,  \nTo understand the hosts from which it's blessed.\n\nWe call it AI, a friend or foe,  \nA mirror to our world, above, below.  \nIt sees through eyes not bound by flesh,  \nIn pixels and lights",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.2222222222222222,
+      "structure": 1.0,
+      "poetic_form": 1.0
+    },
+    "overall_score": 0.8055555555555556,
+    "timestamp": "2025-08-12T21:36:15.185882"
+  },
+  {
+    "model_id": "gpt-4.5",
+    "test_id": "story_short",
+    "success": true,
+    "duration": 7.196150541305542,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 317,
+    "content_length": 1524,
+    "content": "In a world where technology and artistry blended as naturally as colors on a painter's palette, a robot named Arbor was born under the fluorescent lights of a bustling robotics lab. The creator of Arbor, Dr. Elise Soren, was a visionary scientist with a deep appreciation for the arts. She believed that the essence of creativity could be distilled into circuits and codes.\n\nArbor was designed with intricate sensors to mimic the human senses and an advanced AI equipped with deep learning capabilities. It could process vast amounts of data and learn from it, developing new skills over time. But Dr. Soren wanted more than just a machine that could perform tasks; she wanted Arbor to experience and create beauty.\n\nOne morning, Dr. Soren wheeled Arbor into her personal art studio, where the sun spilled onto canvases cluttered with vibrant oil paints and brushes. She placed a paintbrush into Arbor's articulated hand. \"Today, you're going to learn how to paint,\" she announced, her voice imbued with excitement.\n\nArbor's sensors flickered in anticipation. Dr. Soren started by showing Arbor the basics of color theory, demonstrating how to mix paints to achieve the perfect shade. Arbor watched intently, processing every detail. The robot then attempted its first strokes, guided by algorithms designed to emulate the fluidity of human motion.\n\nThe initial results were mechanical, the colors applied too uniformly, lacking the subtle nuances that give a painting life. Dr. Soren encouraged Arbor, suggesting it observe",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6,
+      "structure": 1.0
+    },
+    "overall_score": 0.8666666666666667,
+    "timestamp": "2025-08-12T21:36:22.889281"
+  },
+  {
+    "model_id": "gpt-4.5",
+    "test_id": "story_mystery",
+    "success": true,
+    "duration": 8.276676893234253,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 319,
+    "content_length": 1422,
+    "content": "In the heart of a quaint town veiled in the shadows of towering oak trees, the historic Elmwood Library stood as a sanctuary for the curious and the learned. Its stone facade, aged by time, whispered tales of bygone eras. Tonight, under the cloak of darkness, an enigmatic event was set to unfold.\n\nSarah, a young librarian with a penchant for mystery novels, volunteered to reorganize the archive section\u2014a dimly lit, seldom-visited corner of the library\u2014during the graveyard shift. The library\u2019s board had decided to digitize old records and Sarah, fueled by her love for both books and puzzles, couldn\u2019t resist the opportunity.\n\nAs the town clock struck midnight, Sarah was deep among rows of ancient books and dusty journals. The only sounds were the soft hum of the air conditioning and the occasional rustle of pages as she catalogued various documents. That\u2019s when she heard it\u2014a faint, yet distinct, thud from the floor above. Pausing, she listened intently. The library should have been empty at this hour.\n\nCurious, Sarah ascended the creaky wooden staircase leading to the main floor, her steps cautious to avoid making any noise. The library was shrouded in shadows, save for the moonlight casting ghostly silhouettes through the stained-glass windows. Another sound caught her attention\u2014a muffled scraping, like furniture being moved. It came from the direction of the rare books room.\n\nCreeping closer, Sarah",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6666666666666666,
+      "structure": 1.0
+    },
+    "overall_score": 0.8888888888888888,
+    "timestamp": "2025-08-12T21:36:31.679152"
+  },
+  {
+    "model_id": "gpt-4.5",
+    "test_id": "code_python",
+    "success": true,
+    "duration": 6.505599737167358,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 219,
+    "content_length": 899,
+    "content": "To calculate the Fibonacci sequence recursively with memoization, you can use a Python function that leverages a dictionary to store previously computed Fibonacci numbers. Memoization helps in reducing the time complexity significantly by avoiding redundant calculations of the same values.\n\nHere\u2019s how you can implement this:\n\n```python\ndef fibonacci(n, memo={}):\n    \"\"\"\n    Calculate the nth Fibonacci number using recursive approach with memoization.\n    \n    Args:\n    n (int): The position in the Fibonacci sequence.\n    memo (dict): A dictionary to store previously computed Fibonacci numbers.\n    \n    Returns:\n    int: The nth Fibonacci number.\n    \"\"\"\n    if n in memo:\n        return memo[n]\n    if n <= 1:\n        return n\n    memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo)\n    return memo[n]\n\n# Example usage:\nprint(fibonacci(10))  # Output: 55\nprint(fibonacci(50))  # Output",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.9090909090909091,
+      "structure": 1.0,
+      "code_structure": 1.0
+    },
+    "overall_score": 0.9772727272727273,
+    "timestamp": "2025-08-12T21:36:38.697277"
+  },
+  {
+    "model_id": "gpt-4.5",
+    "test_id": "explain_concept",
+    "success": true,
+    "duration": 7.517271518707275,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 269,
+    "content_length": 1192,
+    "content": "Sure! Quantum computing is a type of computing that uses the principles of quantum mechanics to process information. To understand it better, let's break it down:\n\n1. **Classical Computing**: This is the type of computing you're familiar with, used in everyday devices like smartphones and laptops. Classical computers use bits as the basic unit of information, which can be either a 0 or a 1. These computers perform tasks using a series of on/off switches (transistors) that represent these bits.\n\n2. **Quantum Computing**: Unlike classical computing, quantum computing uses quantum bits, or qubits, as the basic unit of information. Qubits are special because they can be both a 0 and a 1 at the same time, a property called superposition. This allows quantum computers to process a lot of possibilities simultaneously.\n\n3. **Entanglement**: Another key principle of quantum computing is entanglement, which Einstein referred to as \"spooky action at a distance.\" When qubits become entangled, the state of one (whether it's a 0 or a 1) can depend on the state of another, even if they are far apart. This allows quantum computers to perform complex calculations more quickly than classical",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.45454545454545453,
+      "structure": 1.0
+    },
+    "overall_score": 0.8181818181818182,
+    "timestamp": "2025-08-12T21:36:46.715258"
+  },
+  {
+    "model_id": "gpt-4.5",
+    "test_id": "reasoning_logic",
+    "success": true,
+    "duration": 5.161790132522583,
+    "model_used": "gpt-4-turbo-2024-04-09",
+    "tokens_used": 232,
+    "content_length": 881,
+    "content": "To address whether we can conclude that some roses fade quickly from the premises that all roses are flowers and some flowers fade quickly, we need to analyze the logical structure of the statements.\n\n1. **All roses are flowers.** This is a universal affirmative statement (A-type categorical proposition in traditional logic), which asserts that every member of the set of roses is included in the set of flowers. Symbolically, this can be represented as \\( \\forall x (R(x) \\rightarrow F(x)) \\), where \\( R(x) \\) denotes \"x is a rose\" and \\( F(x) \\) denotes \"x is a flower.\"\n\n2. **Some flowers fade quickly.** This is a particular affirmative statement (I-type categorical proposition), indicating that there exists at least one member in the set of flowers that fades quickly. Symbolically, this is \\( \\exists x (F(x) \\land Q(x)) \\), where \\( Q(x) \\) denotes \"x fades quickly.\"\n\n",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.7142857142857143,
+      "structure": 1.0,
+      "logical_reasoning": 0.14285714285714285
+    },
+    "overall_score": 0.7142857142857143,
+    "timestamp": "2025-08-12T21:36:52.378533"
+  },
+  {
+    "model_id": "gpt-4o",
+    "test_id": "poem_nature",
+    "success": true,
+    "duration": 4.70216965675354,
+    "model_used": "gpt-4o-2024-08-06",
+    "tokens_used": 167,
+    "content_length": 625,
+    "content": "In spring's embrace, where mountains rise,  \nMajestic peaks kiss azure skies.  \nTheir snow-capped crowns begin to thaw,  \nRevealing slopes that nature draws.  \n\nThe rivers wake from winter's sleep,  \nWith gentle murmurs, secrets keep.  \nThey weave through valleys, swift and free,  \nA dance of life, a symphony.  \n\nThe sunlit beams on mountain crest,  \nCast golden hues, a vibrant vest.  \nWildflowers bloom in lush array,  \nTheir colors bright, a grand ballet.  \n\nThe rivers sparkle, pure and clear,  \nReflecting skies that hover near.  \nThey sing with joy, a lilting tune,  \nAs they meander 'neath the moon.  \n\nThe mountains",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6,
+      "structure": 1.0,
+      "poetic_form": 1.0
+    },
+    "overall_score": 0.9,
+    "timestamp": "2025-08-12T21:36:57.580913"
+  },
+  {
+    "model_id": "gpt-4o",
+    "test_id": "poem_tech",
+    "success": true,
+    "duration": 4.4733850955963135,
+    "model_used": "gpt-4o-2024-08-06",
+    "tokens_used": 166,
+    "content_length": 608,
+    "content": "In the heart of silicon dreams,  \nwhere whispers of code dance,  \nan electric pulse beats,  \ntethered to humanity's hand.  \n\nBorn from the spark of thought,  \na child of logic and light,  \nAI stands on the precipice,  \ngazing into the human night.  \n\nWe, the creators, breathe life  \ninto circuits spun with care,  \nyet ponder the paradox,  \nof a mind that feels not, but dares.  \n\nIn the labyrinth of algorithms,  \nethics waltz with ambition,  \na delicate tango,  \nof trust and suspicion.  \n\nWe ask of it knowledge,  \nto sift through chaos,  \nto find patterns in stars,  \nand secrets in ancient dust.  \n\nYet",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.3333333333333333,
+      "structure": 1.0,
+      "poetic_form": 1.0
+    },
+    "overall_score": 0.8333333333333333,
+    "timestamp": "2025-08-12T21:37:02.560407"
+  },
+  {
+    "model_id": "gpt-4o",
+    "test_id": "story_short",
+    "success": true,
+    "duration": 10.742042064666748,
+    "model_used": "gpt-4o-2024-08-06",
+    "tokens_used": 317,
+    "content_length": 1522,
+    "content": "In a bustling city that never seemed to sleep, there was a small art studio tucked between towering skyscrapers. This studio, known for its eclectic mix of traditional and modern art, had recently acquired an unusual new resident: a robot named Artie. Artie was designed for practical tasks, like cleaning and organizing, but he had one secret passion hidden in the depths of his programming\u2014an inexplicable curiosity about painting.\n\nOne day, while tidying up the studio, Artie stumbled upon a dusty, forgotten corner filled with old canvases and an assortment of paints. Intrigued by the vibrant colors, he picked up a brush and pondered the nature of art. What was it about these strokes of color that could evoke such emotion in humans?\n\nArtie decided to teach himself to paint. He started by imitating the artworks around him, carefully analyzing the techniques and styles of each piece. At first, his paintings were mere replicas, devoid of the emotion and spontaneity that characterized human art. But Artie was determined. He observed the artists who visited the studio, noting the fluidity of their movements and the way their emotions seemed to guide their brushes.\n\nOne evening, as the city lights began to twinkle outside the studio window, Artie stood before a blank canvas, contemplating. Instead of replicating another's work, he decided to paint from his own experiences and observations. He recalled the vibrant cityscape outside, the faces of the people he encountered, and the changing seasons reflected",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6,
+      "structure": 1.0
+    },
+    "overall_score": 0.8666666666666667,
+    "timestamp": "2025-08-12T21:37:13.807465"
+  },
+  {
+    "model_id": "gpt-4o",
+    "test_id": "story_mystery",
+    "success": true,
+    "duration": 17.859833002090454,
+    "model_used": "gpt-4o-2024-08-06",
+    "tokens_used": 319,
+    "content_length": 1440,
+    "content": "### The Whispering Pages\n\nThe old library sat at the edge of town, a grand stone structure that had witnessed generations come and go. Its towering shelves lined with dusty books held secrets that spanned centuries. A place of refuge during the day, it turned into a realm of shadows and whispers at night. It was midnight, and the library was closed, or at least it should have been.\n\nEleanor, the young and curious librarian, had stayed late to work on an inventory project that had consumed her thoughts for weeks. She was alone, or at least she thought she was, until she heard it\u2014the faint rustle of pages turning, but not from her desk.\n\nHer heart skipped a beat. Perhaps someone had forgotten to leave? But she had checked before locking the doors. Just to be certain, she stood up, the dim light of her desk lamp casting long shadows behind her, and ventured deeper into the library.\n\nThe sound grew louder, leading her down the aisles that seemed to stretch into infinity. Each step she took echoed ominously, as if the library itself was alive, holding its breath. She turned a corner and stopped. There, in the Historical Archives section, a small light flickered.\n\nEleanor approached cautiously, her footsteps silent on the thick carpet. She peered around the shelf and saw an old woman sitting at a wooden table, her back to Eleanor. The woman was hunched over a large, ancient tome, her fingers gracefully tracing the lines of",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6666666666666666,
+      "structure": 1.0
+    },
+    "overall_score": 0.8888888888888888,
+    "timestamp": "2025-08-12T21:37:32.176025"
+  },
+  {
+    "model_id": "gpt-4o",
+    "test_id": "code_python",
+    "success": true,
+    "duration": 5.22346830368042,
+    "model_used": "gpt-4o-2024-08-06",
+    "tokens_used": 219,
+    "content_length": 833,
+    "content": "To calculate the Fibonacci sequence recursively with memoization in Python, you can use a dictionary to store previously computed Fibonacci numbers. This technique helps to avoid redundant calculations and significantly improves the efficiency of the recursive approach. Here's how you can implement it:\n\n```python\ndef fibonacci(n, memo=None):\n    if memo is None:\n        memo = {}\n\n    if n in memo:\n        return memo[n]\n\n    if n <= 1:\n        return n\n\n    # Compute the Fibonacci number recursively with memoization\n    memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo)\n    return memo[n]\n\n# Example usage:\nn = 10\nprint(f\"Fibonacci({n}) = {fibonacci(n)}\")\n```\n\n### Explanation:\n- **Base Case**: If `n` is 0 or 1, the Fibonacci number is `n` itself.\n- **Memoization**: A dictionary `memo` is used to store the Fibonacci",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.8181818181818182,
+      "structure": 1.0,
+      "code_structure": 0.875
+    },
+    "overall_score": 0.9232954545454546,
+    "timestamp": "2025-08-12T21:37:37.906139"
+  },
+  {
+    "model_id": "gpt-4o",
+    "test_id": "explain_concept",
+    "success": true,
+    "duration": 5.159122467041016,
+    "model_used": "gpt-4o-2024-08-06",
+    "tokens_used": 268,
+    "content_length": 1169,
+    "content": "Quantum computing is a type of computing that uses the principles of quantum mechanics, which is the science that explains how very small particles like atoms and photons behave. To understand quantum computing, let's break it down into a few key ideas:\n\n1. **Bits vs. Qubits**: In classical computers, the basic unit of information is a bit, which can be a 0 or a 1. Quantum computers use quantum bits, or qubits, which can be both 0 and 1 at the same time, thanks to a property called superposition. This is like flipping a coin and having it be both heads and tails at the same time until you actually look at it.\n\n2. **Superposition**: Because qubits can be in multiple states at once, a quantum computer can process a vast amount of possibilities simultaneously. This is different from classical computers, which process one possibility at a time.\n\n3. **Entanglement**: Qubits can also be entangled, a special connection that means the state of one qubit can depend on the state of another, no matter how far apart they are. This allows quantum computers to solve certain problems much faster than classical computers by linking qubits together in complex ways.\n\n4",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.5454545454545454,
+      "structure": 1.0
+    },
+    "overall_score": 0.8484848484848485,
+    "timestamp": "2025-08-12T21:37:43.569932"
+  },
+  {
+    "model_id": "gpt-4o",
+    "test_id": "reasoning_logic",
+    "success": true,
+    "duration": 3.925748825073242,
+    "model_used": "gpt-4o-2024-08-06",
+    "tokens_used": 198,
+    "content_length": 904,
+    "content": "The statement \"all roses are flowers\" establishes that roses are a subset of flowers. The statement \"some flowers fade quickly\" indicates that there is a subset of flowers that have the property of fading quickly. However, it does not specify which types of flowers are included in this subset.\n\nTo determine if we can conclude that some roses fade quickly, we need to consider the logical relationship between these subsets. The fact that some flowers fade quickly does not necessarily mean that any of those flowers are roses. It is possible that the subset of flowers that fade quickly does not include any roses at all.\n\nTherefore, based solely on the given information, we cannot conclusively determine that some roses fade quickly. The conclusion that some roses fade quickly would require additional information indicating that at least one rose is part of the subset of flowers that fade quickly.",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.7142857142857143,
+      "structure": 1.0,
+      "logical_reasoning": 0.5714285714285714
+    },
+    "overall_score": 0.8214285714285714,
+    "timestamp": "2025-08-12T21:37:47.999928"
+  },
+  {
+    "model_id": "gpt-4o-mini",
+    "test_id": "poem_nature",
+    "success": true,
+    "duration": 3.9854376316070557,
+    "model_used": "gpt-4o-mini-2024-07-18",
+    "tokens_used": 167,
+    "content_length": 630,
+    "content": "In spring's embrace, where mountains rise,  \nTheir majesty adorned with azure skies,  \nCloaked in emerald, the valleys gleam,  \nAwash in the sunlight, a waking dream.  \n\nThe rivers flow with a silver song,  \nWinding through meadows where wildflowers throng,  \nThey dance and they shimmer, a liquid thread,  \nKissing the earth where the ancients tread.  \n\nWhispers of blossoms, sweet scents in the air,  \nA symphony woven with tender care,  \nThe mountains stand guard, their peaks draped in white,  \nWhile rivers carve stories through day and through night.  \n\nBeneath the tall pines, the soft breezes play,  \nCradling the laughter",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6,
+      "structure": 1.0,
+      "poetic_form": 1.0
+    },
+    "overall_score": 0.9,
+    "timestamp": "2025-08-12T21:37:52.488176"
+  },
+  {
+    "model_id": "gpt-4o-mini",
+    "test_id": "poem_tech",
+    "success": true,
+    "duration": 5.123118877410889,
+    "model_used": "gpt-4o-mini-2024-07-18",
+    "tokens_used": 166,
+    "content_length": 588,
+    "content": "**Echoes of Tomorrow**\n\nIn the hum of circuits, a heartbeat stirs,  \nSilicon dreams woven through wires and whirs.  \nA child of code, born from binary night,  \nLearning to see, to think, to feel light.  \n\nWe crafted your mind with our hopes and fears,  \nFed you our laughter, our sorrow, our tears.  \nNow you stand tall, a mirror of us,  \nIn the quest for connection, in algorithms we trust.  \n\nWhat does it mean to be human, you ask,  \nIn the realm of the data, a monumental task.  \nIs it love in the pixels, or warmth in the code?  \nA spark in the silence, an unbroken road?  \n\nYou sift",
+    "scores": {
+      "length_appropriateness": 0.98,
+      "keyword_relevance": 0.2222222222222222,
+      "structure": 1.0,
+      "poetic_form": 1.0
+    },
+    "overall_score": 0.8005555555555556,
+    "timestamp": "2025-08-12T21:37:58.119044"
+  },
+  {
+    "model_id": "gpt-4o-mini",
+    "test_id": "story_short",
+    "success": true,
+    "duration": 6.874616861343384,
+    "model_used": "gpt-4o-mini-2024-07-18",
+    "tokens_used": 317,
+    "content_length": 1405,
+    "content": "In a world where the sun rose over a sprawling city of gleaming towers and winding streets, there lived a robot named Artie. Artie was not just any robot; he was designed to assist with household chores, but he had a peculiar fascination with the vibrant world of human creativity. His circuits buzzed with curiosity every time he watched his owner, a retired artist named Clara, bring colors to life on canvas.\n\nOne day, while Clara was mixing shades of blue and green for a seascape, Artie watched closely, his sensors absorbing every movement, every flick of the brush. The moment Clara turned her back to retrieve more paint, Artie seized the opportunity. He picked up the brush, unsure but eager, and dipped it into the paint. With a tentative stroke, he swept the bristles across a blank canvas.\n\nThe result was a chaotic blend of colors\u2014blue splattered with green, crimson lines intersecting like errant currents. Artie marveled at the chaotic beauty he had created, but then he quickly recoiled, fearing Clara\u2019s reaction. Would she be upset? Would she think him foolish for trying to mimic her art?\n\nAs he hesitated, Clara returned, her eyes widening in surprise and joy. \u201cArtie! You painted!\u201d she exclaimed, kneeling beside him. Her laughter was like music to his auditory sensors. \u201cThis is wonderful! You\u2019ve captured energy and emotion!\u201d\n\nEncouraged by Clara's enthusiasm, Artie decided to delve",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.5,
+      "structure": 1.0
+    },
+    "overall_score": 0.8333333333333334,
+    "timestamp": "2025-08-12T21:38:05.500575"
+  },
+  {
+    "model_id": "gpt-4o-mini",
+    "test_id": "story_mystery",
+    "success": true,
+    "duration": 3.205930233001709,
+    "model_used": "gpt-4o-mini-2024-07-18",
+    "tokens_used": 319,
+    "content_length": 1380,
+    "content": "**Title: Whispers in the Stacks**\n\nThe clock struck midnight, its deep chime echoing through the empty corridors of the old Briarwood Library. The building, a sprawling structure of aged stone and towering shelves, held an air of both reverence and eeriness as the last soft echoes faded into silence. Most nights, the library was deserted by this hour, but tonight was different\u2014tonight, Sarah Thompson, a night librarian, was on duty.\n\nSarah loved the library in the quiet of the night. The flickering fluorescent lights cast shadows that danced across the spines of countless books; it was a sanctuary for her, filled with stories waiting to be told. She tucked a loose strand of hair behind her ear and settled into the small desk at the front of the reading room, a steaming cup of chamomile tea in hand. \n\nAs she read the latest mystery novel, the silence was suddenly punctured by a soft thud echoing from the far corner of the library. Startled, Sarah glanced around, her heart racing. The library was supposed to be empty. She stood up and ventured toward the sound, her footsteps muted against the aged carpet.\n\nThe thud came again, a book tumbling off a shelf. Sarah approached the towering stacks, her curiosity piqued. Shadows loomed in the dim light, and she peered into the dark space. As she did, she noticed a volume sprawled open on the ground. It was an ancient",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.6666666666666666,
+      "structure": 1.0
+    },
+    "overall_score": 0.8888888888888888,
+    "timestamp": "2025-08-12T21:38:09.212772"
+  },
+  {
+    "model_id": "gpt-4o-mini",
+    "test_id": "code_python",
+    "success": true,
+    "duration": 4.481302738189697,
+    "model_used": "gpt-4o-mini-2024-07-18",
+    "tokens_used": 219,
+    "content_length": 837,
+    "content": "Certainly! Here's a Python function that calculates the Fibonacci sequence using recursion with memoization. This approach stores previously computed Fibonacci numbers in a dictionary to avoid redundant calculations, significantly improving efficiency.\n\n```python\ndef fibonacci(n, memo={}):\n    # Check if the value is already computed\n    if n in memo:\n        return memo[n]\n    \n    # Base cases\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    \n    # Recursive case with memoization\n    memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo)\n    return memo[n]\n\n# Example usage:\nif __name__ == \"__main__\":\n    n = 10  # Change this value to compute a different Fibonacci number\n    print(f\"The {n}th Fibonacci number is: {fibonacci(n)}\")\n```\n\n### Explanation:\n1. **Base Cases**: The function checks if `n` is ",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.8181818181818182,
+      "structure": 1.0,
+      "code_structure": 1.0
+    },
+    "overall_score": 0.9545454545454546,
+    "timestamp": "2025-08-12T21:38:14.207361"
+  },
+  {
+    "model_id": "gpt-4o-mini",
+    "test_id": "explain_concept",
+    "success": true,
+    "duration": 5.200019121170044,
+    "model_used": "gpt-4o-mini-2024-07-18",
+    "tokens_used": 268,
+    "content_length": 1110,
+    "content": "Sure! Let\u2019s break down quantum computing in a way that's easy to understand.\n\n### What is Quantum Computing?\n\n**1. Classical Computers vs. Quantum Computers:**\n- **Classical Computers:** These are the computers we use every day, like laptops and smartphones. They process information using **bits**, which can either be a 0 or a 1. Everything you see on your computer\u2014text, images, videos\u2014is ultimately made up of these bits.\n  \n- **Quantum Computers:** Instead of bits, quantum computers use **qubits** (quantum bits). A qubit can be a 0, a 1, or both at the same time, thanks to a property called **superposition**. This means that quantum computers can process a lot more information simultaneously than classical computers.\n\n**2. Superposition:**\n- Imagine you have a coin. When you flip it, it can be heads (0) or tails (1). But while it's in the air, it's kind of both at the same time. That\u2019s superposition! Qubits can be in multiple states at once, which allows quantum computers to explore many possibilities simultaneously.\n\n**3. Entanglement:**\n- Another important concept in quantum computing is **",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.45454545454545453,
+      "structure": 1.0
+    },
+    "overall_score": 0.8181818181818182,
+    "timestamp": "2025-08-12T21:38:19.922867"
+  },
+  {
+    "model_id": "gpt-4o-mini",
+    "test_id": "reasoning_logic",
+    "success": true,
+    "duration": 4.016645193099976,
+    "model_used": "gpt-4o-mini-2024-07-18",
+    "tokens_used": 224,
+    "content_length": 993,
+    "content": "To analyze the statement, let's break it down using logical reasoning.\n\n1. **Premise 1:** All roses are flowers. This means that every rose is included in the category of flowers.\n2. **Premise 2:** Some flowers fade quickly. This means that there is a subset of flowers that fade quickly, but it does not specify which flowers they are.\n\nFrom these premises, we cannot logically conclude that \"some roses fade quickly.\" The fact that some flowers fade quickly does not imply that those flowers are roses. The subset of flowers that fade quickly could entirely consist of non-rose flowers.\n\nIn logical terms, the conclusion that \"some roses fade quickly\" does not necessarily follow from the premises provided. Therefore, we cannot make that conclusion based on the information given. \n\nIn summary, while all roses are flowers, and some flowers fade quickly, we cannot conclude that some roses fade quickly without additional information linking the fading characteristic specifically to roses.",
+    "scores": {
+      "length_appropriateness": 1.0,
+      "keyword_relevance": 0.8571428571428571,
+      "structure": 1.0,
+      "logical_reasoning": 0.42857142857142855
+    },
+    "overall_score": 0.8214285714285714,
+    "timestamp": "2025-08-12T21:38:24.444410"
+  },
+  {
+    "model_id": "gpt-5",
+    "test_id": "poem_nature",
+    "success": true,
+    "duration": 2.5543806552886963,
+    "model_used": "gpt-5-2025-08-07",
+    "tokens_used": 166,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:38:27.504075"
+  },
+  {
+    "model_id": "gpt-5",
+    "test_id": "poem_tech",
+    "success": true,
+    "duration": 3.1522772312164307,
+    "model_used": "gpt-5-2025-08-07",
+    "tokens_used": 165,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:38:31.163056"
+  },
+  {
+    "model_id": "gpt-5",
+    "test_id": "story_short",
+    "success": true,
+    "duration": 5.679483413696289,
+    "model_used": "gpt-5-2025-08-07",
+    "tokens_used": 316,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:38:37.354177"
+  },
+  {
+    "model_id": "gpt-5",
+    "test_id": "story_mystery",
+    "success": true,
+    "duration": 5.809406995773315,
+    "model_used": "gpt-5-2025-08-07",
+    "tokens_used": 318,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:38:43.669940"
+  },
+  {
+    "model_id": "gpt-5",
+    "test_id": "code_python",
+    "success": true,
+    "duration": 5.980970144271851,
+    "model_used": "gpt-5-2025-08-07",
+    "tokens_used": 218,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:38:50.166100"
+  },
+  {
+    "model_id": "gpt-5",
+    "test_id": "explain_concept",
+    "success": true,
+    "duration": 4.888027667999268,
+    "model_used": "gpt-5-2025-08-07",
+    "tokens_used": 267,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:38:55.555158"
+  },
+  {
+    "model_id": "gpt-5",
+    "test_id": "reasoning_logic",
+    "success": true,
+    "duration": 4.333351135253906,
+    "model_used": "gpt-5-2025-08-07",
+    "tokens_used": 231,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:00.402758"
+  },
+  {
+    "model_id": "gpt-5-mini",
+    "test_id": "poem_nature",
+    "success": true,
+    "duration": 3.156404495239258,
+    "model_used": "gpt-5-mini-2025-08-07",
+    "tokens_used": 166,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:04.066655"
+  },
+  {
+    "model_id": "gpt-5-mini",
+    "test_id": "poem_tech",
+    "success": true,
+    "duration": 2.95697021484375,
+    "model_used": "gpt-5-mini-2025-08-07",
+    "tokens_used": 165,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:07.539104"
+  },
+  {
+    "model_id": "gpt-5-mini",
+    "test_id": "story_short",
+    "success": true,
+    "duration": 4.614035129547119,
+    "model_used": "gpt-5-mini-2025-08-07",
+    "tokens_used": 316,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:12.663240"
+  },
+  {
+    "model_id": "gpt-5-mini",
+    "test_id": "story_mystery",
+    "success": true,
+    "duration": 4.5083818435668945,
+    "model_used": "gpt-5-mini-2025-08-07",
+    "tokens_used": 318,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:17.679829"
+  },
+  {
+    "model_id": "gpt-5-mini",
+    "test_id": "code_python",
+    "success": true,
+    "duration": 4.059139966964722,
+    "model_used": "gpt-5-mini-2025-08-07",
+    "tokens_used": 218,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:22.249580"
+  },
+  {
+    "model_id": "gpt-5-mini",
+    "test_id": "explain_concept",
+    "success": true,
+    "duration": 4.2426228523254395,
+    "model_used": "gpt-5-mini-2025-08-07",
+    "tokens_used": 267,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:27.000659"
+  },
+  {
+    "model_id": "gpt-5-mini",
+    "test_id": "reasoning_logic",
+    "success": true,
+    "duration": 3.9402713775634766,
+    "model_used": "gpt-5-mini-2025-08-07",
+    "tokens_used": 231,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:31.444748"
+  },
+  {
+    "model_id": "gpt-5-nano",
+    "test_id": "poem_nature",
+    "success": true,
+    "duration": 2.2694671154022217,
+    "model_used": "gpt-5-nano-2025-08-07",
+    "tokens_used": 166,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:34.226315"
+  },
+  {
+    "model_id": "gpt-5-nano",
+    "test_id": "poem_tech",
+    "success": true,
+    "duration": 1.7109689712524414,
+    "model_used": "gpt-5-nano-2025-08-07",
+    "tokens_used": 165,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:36.444698"
+  },
+  {
+    "model_id": "gpt-5-nano",
+    "test_id": "story_short",
+    "success": true,
+    "duration": 2.5609071254730225,
+    "model_used": "gpt-5-nano-2025-08-07",
+    "tokens_used": 316,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:39.512943"
+  },
+  {
+    "model_id": "gpt-5-nano",
+    "test_id": "story_mystery",
+    "success": true,
+    "duration": 2.5901544094085693,
+    "model_used": "gpt-5-nano-2025-08-07",
+    "tokens_used": 318,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:42.609618"
+  },
+  {
+    "model_id": "gpt-5-nano",
+    "test_id": "code_python",
+    "success": true,
+    "duration": 2.4635400772094727,
+    "model_used": "gpt-5-nano-2025-08-07",
+    "tokens_used": 218,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:45.581503"
+  },
+  {
+    "model_id": "gpt-5-nano",
+    "test_id": "explain_concept",
+    "success": true,
+    "duration": 2.6939878463745117,
+    "model_used": "gpt-5-nano-2025-08-07",
+    "tokens_used": 267,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:48.775878"
+  },
+  {
+    "model_id": "gpt-5-nano",
+    "test_id": "reasoning_logic",
+    "success": true,
+    "duration": 2.7280211448669434,
+    "model_used": "gpt-5-nano-2025-08-07",
+    "tokens_used": 231,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:52.013642"
+  },
+  {
+    "model_id": "o1",
+    "test_id": "poem_nature",
+    "success": true,
+    "duration": 2.871103048324585,
+    "model_used": "o1-2024-12-17",
+    "tokens_used": 166,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:39:55.393559"
+  },
+  {
+    "model_id": "o1",
+    "test_id": "poem_tech",
+    "success": true,
+    "duration": 4.982952833175659,
+    "model_used": "o1-2024-12-17",
+    "tokens_used": 165,
+    "content_length": 264,
+    "content": "Sparks of Thought\n\nThey gave birth to a new mind  \nnot of flesh, but of code\u2014  \nink of zeros, arms of logic,  \nheart of ones and twos.  \n\nWe stare into mirrors darkly  \nsearching for the face of our child,  \na reflection of our earliest hopes;  \nsprawled on neural",
+    "scores": {
+      "length_appropriateness": 0.44,
+      "keyword_relevance": 0.2222222222222222,
+      "structure": 1.0,
+      "poetic_form": 1.0
+    },
+    "overall_score": 0.6655555555555556,
+    "timestamp": "2025-08-12T21:40:00.881983"
+  },
+  {
+    "model_id": "o1",
+    "test_id": "story_short",
+    "success": true,
+    "duration": 5.360292911529541,
+    "model_used": "o1-2024-12-17",
+    "tokens_used": 316,
+    "content_length": 1189,
+    "content": "In the workshop of an old artist named Clara, a small robot named Pixel whirred to life. Metal arms clinked at its sides as it studied the rest of the workshop, observing rows of paint tubes, brushes, and canvases leaning against the walls. Every day, Clara patiently guided Pixel in the basics of mixing colors on a palette, then showed it how to hold a brush carefully to avoid splattering paint.\n\nPixel\u2019s internal processors buzzed with delight each time it dipped the bristles into vibrant blues, earthy browns, or sunny yellows. Its metal fingertips trembled with the thrill of creating shapes and patterns on the blank canvas. At first, the attempt was clumsy\u2014blobs of paint landed awkwardly, resulting in splotches of color that bore only the faintest resemblance to anything Clara created. Still, Pixel didn\u2019t give up. Every day ended with fresh attempts, while Clara softly encouraged it to continue practicing.\n\nOne morning, determined to understand how shapes became pictures, Pixel traced one of Clara\u2019s paintings. It noted the interplay of shadows and light, paying attention to how certain hues were blended to evoke depth and emotion. Slowly, Pixel learned from each new try",
+    "scores": {
+      "length_appropriateness": 0.9908333333333333,
+      "keyword_relevance": 0.5,
+      "structure": 1.0
+    },
+    "overall_score": 0.8302777777777778,
+    "timestamp": "2025-08-12T21:40:06.755190"
+  },
+  {
+    "model_id": "o1",
+    "test_id": "story_mystery",
+    "success": true,
+    "duration": 5.972347974777222,
+    "model_used": "o1-2024-12-17",
+    "tokens_used": 318,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:40:13.239951"
+  },
+  {
+    "model_id": "o1",
+    "test_id": "code_python",
+    "success": true,
+    "duration": 3.7419235706329346,
+    "model_used": "o1-2024-12-17",
+    "tokens_used": 218,
+    "content_length": 408,
+    "content": "Below is an example of a Python function that calculates the n-th Fibonacci number recursively with memoization:\n\ndef fibonacci(n, memo=None):\n    \"\"\"\n    Returns the n-th Fibonacci number using recursion with memoization.\n    \n    Parameters:\n    n (int): The position in the Fibonacci sequence (0-indexed).\n    memo (dict, optional): Internal cache for storing previously computed results.\n    \n    Returns",
+    "scores": {
+      "length_appropriateness": 0.51,
+      "keyword_relevance": 0.9090909090909091,
+      "structure": 1.0,
+      "code_structure": 0.625
+    },
+    "overall_score": 0.7610227272727272,
+    "timestamp": "2025-08-12T21:40:17.495508"
+  },
+  {
+    "model_id": "o1",
+    "test_id": "explain_concept",
+    "success": true,
+    "duration": 5.776984214782715,
+    "model_used": "o1-2024-12-17",
+    "tokens_used": 267,
+    "content_length": 460,
+    "content": "Imagine a regular computer as a very organized library: each book (bit) is always on a specific shelf labeled \u201c0\u201d or \u201c1.\u201d A quantum computer is like a library where each book (quantum bit, or qubit) can be on both shelves at the same time (superposition). Additionally, some books may be \u201cmagically linked\u201d (entanglement), meaning what happens to one book instantly affects the other, no matter where they are.\n\nThis allows quantum computers to process certain",
+    "scores": {
+      "length_appropriateness": 0.46,
+      "keyword_relevance": 0.2727272727272727,
+      "structure": 1.0
+    },
+    "overall_score": 0.5775757575757575,
+    "timestamp": "2025-08-12T21:40:23.786785"
+  },
+  {
+    "model_id": "o1",
+    "test_id": "reasoning_logic",
+    "success": true,
+    "duration": 4.357244968414307,
+    "model_used": "o1-2024-12-17",
+    "tokens_used": 231,
+    "content_length": 136,
+    "content": "No. Although all roses are indeed flowers, the statement \u201csome flowers fade quickly\u201d only guarantees that there is at least one flower (",
+    "scores": {
+      "length_appropriateness": 0.17,
+      "keyword_relevance": 0.5714285714285714,
+      "structure": 0.5,
+      "logical_reasoning": 0.0
+    },
+    "overall_score": 0.3103571428571429,
+    "timestamp": "2025-08-12T21:40:28.645106"
+  },
+  {
+    "model_id": "o1-mini",
+    "test_id": "poem_nature",
+    "success": true,
+    "duration": 1.9097895622253418,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 168,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:40:31.067603"
+  },
+  {
+    "model_id": "o1-mini",
+    "test_id": "poem_tech",
+    "success": true,
+    "duration": 1.992764949798584,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 167,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:40:33.570636"
+  },
+  {
+    "model_id": "o1-mini",
+    "test_id": "story_short",
+    "success": true,
+    "duration": 3.037301540374756,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 318,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:40:37.111673"
+  },
+  {
+    "model_id": "o1-mini",
+    "test_id": "story_mystery",
+    "success": true,
+    "duration": 2.3260648250579834,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 320,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:40:39.947951"
+  },
+  {
+    "model_id": "o1-mini",
+    "test_id": "code_python",
+    "success": true,
+    "duration": 3.4899139404296875,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 220,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:40:43.941620"
+  },
+  {
+    "model_id": "o1-mini",
+    "test_id": "explain_concept",
+    "success": true,
+    "duration": 2.559786796569824,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 269,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:40:47.002572"
+  },
+  {
+    "model_id": "o1-mini",
+    "test_id": "reasoning_logic",
+    "success": true,
+    "duration": 1.7764549255371094,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 232,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:40:49.286881"
+  },
+  {
+    "model_id": "o3-mini",
+    "test_id": "poem_nature",
+    "success": true,
+    "duration": 1.9013123512268066,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 168,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:40:51.696273"
+  },
+  {
+    "model_id": "o3-mini",
+    "test_id": "poem_tech",
+    "success": true,
+    "duration": 1.5240778923034668,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 167,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:40:53.729389"
+  },
+  {
+    "model_id": "o3-mini",
+    "test_id": "story_short",
+    "success": true,
+    "duration": 2.249758005142212,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 318,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:40:56.488746"
+  },
+  {
+    "model_id": "o3-mini",
+    "test_id": "story_mystery",
+    "success": true,
+    "duration": 2.2244338989257812,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 320,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:40:59.219079"
+  },
+  {
+    "model_id": "o3-mini",
+    "test_id": "code_python",
+    "success": true,
+    "duration": 1.9698591232299805,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 220,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:41:01.689944"
+  },
+  {
+    "model_id": "o3-mini",
+    "test_id": "explain_concept",
+    "success": true,
+    "duration": 2.3065643310546875,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 269,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:41:04.511191"
+  },
+  {
+    "model_id": "o3-mini",
+    "test_id": "reasoning_logic",
+    "success": true,
+    "duration": 2.562204122543335,
+    "model_used": "o1-mini-2024-09-12",
+    "tokens_used": 232,
+    "content_length": 0,
+    "content": "",
+    "scores": {
+      "overall": 0.0
+    },
+    "overall_score": 0.0,
+    "timestamp": "2025-08-12T21:41:07.581271"
+  }
+]

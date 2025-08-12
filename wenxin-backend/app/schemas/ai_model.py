@@ -20,7 +20,7 @@ class AIModelBase(BaseModel):
     category: str = Field(..., description="Model category: text, multimodal, etc.")
     description: Optional[str] = None
     release_date: Optional[str] = None
-    tags: List[str] = []
+    tags: Optional[List[str]] = []
     avatar_url: Optional[str] = None
 
 
@@ -43,8 +43,8 @@ class AIModelUpdate(BaseModel):
 
 class AIModel(AIModelBase):
     id: UUID
-    overall_score: float
-    metrics: ModelMetrics
+    overall_score: Optional[float] = None  # Allow NULL for image models
+    metrics: Optional[ModelMetrics] = None
     is_active: bool
     is_verified: bool
     created_at: datetime
@@ -56,12 +56,26 @@ class AIModel(AIModelBase):
 
 class AIModelResponse(AIModelBase):
     id: str
-    overall_score: float
-    metrics: ModelMetrics
+    overall_score: Optional[float] = None  # Allow NULL for image models
+    metrics: Optional[ModelMetrics] = None
     is_active: bool
     is_verified: bool
     created_at: datetime
     updated_at: Optional[datetime]
+    
+    # New benchmark system fields
+    data_source: str = "mock"  # mock, real, benchmark, not_applicable
+    verification_count: int = 0
+    benchmark_score: Optional[float] = None
+    benchmark_metadata: Optional[Dict] = None  # Allow NULL for models without benchmark data
+    confidence_level: float = 0.0
+    last_benchmark_at: Optional[datetime] = None
+    
+    # New fields for model type separation
+    model_type: Optional[str] = None  # llm, image, multimodal
+    model_tier: Optional[str] = None  # flagship, professional, efficient, lightweight
+    llm_rank: Optional[int] = None
+    image_rank: Optional[int] = None
     
     class Config:
         from_attributes = True
@@ -72,3 +86,14 @@ class AIModelWithStats(AIModel):
     total_battles: int = 0
     win_rate: float = 0.0
     recent_works: List[Dict] = []
+    
+    # Individual metric scores for radar chart
+    rhythm_score: Optional[float] = None
+    composition_score: Optional[float] = None
+    narrative_score: Optional[float] = None
+    emotion_score: Optional[float] = None
+    creativity_score: Optional[float] = None
+    cultural_score: Optional[float] = None
+    
+    # Full benchmark results with response texts
+    benchmark_results: Optional[str] = None  # JSON string of detailed test results

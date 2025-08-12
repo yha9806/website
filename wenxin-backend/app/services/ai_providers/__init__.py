@@ -11,10 +11,26 @@ class TaskType(str, Enum):
     MUSIC = "music"
 
 
+class Language(str, Enum):
+    CHINESE = "zh"
+    ENGLISH = "en"
+    BOTH = "both"
+
+
+class BilingualContent(BaseModel):
+    """Container for bilingual content"""
+    zh: Optional[str] = None
+    en: Optional[str] = None
+    primary_language: Language = Language.CHINESE
+
+
 class PoemResponse(BaseModel):
     title: str
     content: str
     style: Optional[str] = None
+    language: Language = Language.CHINESE
+    bilingual_title: Optional[BilingualContent] = None
+    bilingual_content: Optional[BilingualContent] = None
     metadata: Optional[Dict[str, Any]] = None
 
 
@@ -23,6 +39,9 @@ class StoryResponse(BaseModel):
     content: str
     genre: Optional[str] = None
     word_count: int
+    language: Language = Language.CHINESE
+    bilingual_title: Optional[BilingualContent] = None
+    bilingual_content: Optional[BilingualContent] = None
     metadata: Optional[Dict[str, Any]] = None
 
 
@@ -52,6 +71,7 @@ class AIProvider(ABC):
         self, 
         prompt: str,
         style: Optional[str] = None,
+        language: Language = Language.CHINESE,
         **kwargs
     ) -> PoemResponse:
         """Generate a poem based on prompt"""
@@ -62,6 +82,7 @@ class AIProvider(ABC):
         self,
         prompt: str,
         max_length: int = 500,
+        language: Language = Language.CHINESE,
         **kwargs
     ) -> StoryResponse:
         """Generate a story based on prompt"""

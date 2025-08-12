@@ -34,6 +34,7 @@ class EvaluationTask(Base):
     # Task details
     task_type = Column(String, nullable=False)  # poem, story, painting, music
     prompt = Column(Text, nullable=False)
+    language = Column(String, default="zh")  # zh, en, both
     parameters = Column(JSON, default={})  # Additional parameters for generation
     
     # Status and timing

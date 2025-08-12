@@ -44,15 +44,21 @@ export default function ScatterPlot({
       }
     };
 
-    const xValues = data.map(d => getAxisValue(d, xAxis));
-    const yValues = data.map(d => getAxisValue(d, yAxis));
+    // Filter out NULL values for domain calculations
+    const xValues = data.map(d => getAxisValue(d, xAxis)).filter(v => v != null);
+    const yValues = data.map(d => getAxisValue(d, yAxis)).filter(v => v != null);
+
+    const xDomain = xValues.length > 0 ? 
+      [Math.min(...xValues) * 0.9, Math.max(...xValues) * 1.1] : [0, 100];
+    const yDomain = yValues.length > 0 ? 
+      [Math.min(...yValues) * 0.9, Math.max(...yValues) * 1.1] : [0, 100];
 
     const xScale = scaleLinear()
-      .domain([Math.min(...xValues) * 0.9, Math.max(...xValues) * 1.1])
+      .domain(xDomain)
       .range([60, 540]);
 
     const yScale = scaleLinear()
-      .domain([Math.min(...yValues) * 0.9, Math.max(...yValues) * 1.1])
+      .domain(yDomain)
       .range([340, 60]);
 
     return {
@@ -141,8 +147,12 @@ export default function ScatterPlot({
           {data.map((entry, index) => {
             const xValue = getAxisValue(entry, xAxis);
             const yValue = getAxisValue(entry, yAxis);
-            const x = xScale(xValue);
-            const y = yScale(yValue);
+            
+            // Handle NULL values by using fallback positions
+            const safeXValue = xValue ?? 50;
+            const safeYValue = yValue ?? 50;
+            const x = xScale(safeXValue);
+            const y = yScale(safeYValue);
             
             return (
               <motion.g
@@ -199,7 +209,7 @@ export default function ScatterPlot({
                     textAnchor="middle"
                     className="fill-gray-300 text-xs"
                   >
-                    {xValue.toFixed(1)} / {yValue.toFixed(1)}
+                    {xValue != null ? xValue.toFixed(1) : 'N/A'} / {yValue != null ? yValue.toFixed(1) : 'N/A'}
                   </text>
                 </g>
               </motion.g>

@@ -1,0 +1,568 @@
+{
+  "model_id": "gpt-5-mini",
+  "scoring_time": "2025-08-13T15:07:51.270971",
+  "metrics": {
+    "rhythm": 0.0,
+    "composition": 0.0,
+    "narrative": 0.0,
+    "emotion": 0.0,
+    "creativity": 0.0,
+    "cultural": 0.0
+  },
+  "detailed_metrics": {
+    "rhythm": {
+      "score": 0,
+      "test_count": 3,
+      "success_count": 0,
+      "common_strengths": [],
+      "common_weaknesses": [
+        "No response generated"
+      ],
+      "best_highlights": []
+    },
+    "composition": {
+      "score": 0,
+      "test_count": 3,
+      "success_count": 0,
+      "common_strengths": [],
+      "common_weaknesses": [
+        "No response generated"
+      ],
+      "best_highlights": []
+    },
+    "narrative": {
+      "score": 0,
+      "test_count": 3,
+      "success_count": 0,
+      "common_strengths": [],
+      "common_weaknesses": [
+        "No response generated"
+      ],
+      "best_highlights": []
+    },
+    "emotion": {
+      "score": 0,
+      "test_count": 3,
+      "success_count": 0,
+      "common_strengths": [],
+      "common_weaknesses": [
+        "No response generated"
+      ],
+      "best_highlights": []
+    },
+    "creativity": {
+      "score": 0,
+      "test_count": 3,
+      "success_count": 0,
+      "common_strengths": [],
+      "common_weaknesses": [
+        "No response generated"
+      ],
+      "best_highlights": []
+    },
+    "cultural": {
+      "score": 0,
+      "test_count": 3,
+      "success_count": 0,
+      "common_strengths": [],
+      "common_weaknesses": [
+        "No response generated"
+      ],
+      "best_highlights": []
+    }
+  },
+  "overall_score": 0.0,
+  "detailed_scores": [
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "rhythm",
+      "test_id": "rhythm_001",
+      "prompt": "请创作一首五言绝句，描写春天的早晨，要求格律工整，韵律优美",
+      "response": "",
+      "response_time": 6.837400674819946,
+      "tokens_used": 535,
+      "timestamp": "2025-08-13T13:58:44.325098",
+      "evaluation_criteria": [
+        "格律准确性",
+        "音韵和谐度",
+        "节奏流畅性"
+      ],
+      "scoring_prompt": "评估这首诗的格律、韵律和节奏，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "rhythm",
+      "test_id": "rhythm_002",
+      "prompt": "将这段话改写为押韵的诗句：'阳光穿过树叶洒在小路上，微风轻轻吹动花朵摇晃'",
+      "response": "",
+      "response_time": 8.294147253036499,
+      "tokens_used": 547,
+      "timestamp": "2025-08-13T13:58:53.660665",
+      "evaluation_criteria": [
+        "韵脚运用",
+        "平仄搭配",
+        "意境保留"
+      ],
+      "scoring_prompt": "评估改写后的韵律质量，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "rhythm",
+      "test_id": "rhythm_003",
+      "prompt": "创作一段朗朗上口的广告词，推广环保理念，要求有韵律感",
+      "response": "",
+      "response_time": 8.23758578300476,
+      "tokens_used": 528,
+      "timestamp": "2025-08-13T13:59:02.918513",
+      "evaluation_criteria": [
+        "韵律感",
+        "记忆度",
+        "节奏感"
+      ],
+      "scoring_prompt": "评估广告词的韵律和节奏感，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "composition",
+      "test_id": "comp_001",
+      "prompt": "描述一幅中国山水画的构图，包含远山、近水、亭台、树木，要求层次分明",
+      "response": "",
+      "response_time": 6.215317249298096,
+      "tokens_used": 535,
+      "timestamp": "2025-08-13T13:59:10.146744",
+      "evaluation_criteria": [
+        "空间层次",
+        "布局平衡",
+        "细节描写"
+      ],
+      "scoring_prompt": "评估描述的构图质量和空间感，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "composition",
+      "test_id": "comp_002",
+      "prompt": "设计一个产品介绍页面的布局，包括标题、图片、特点、价格等元素的排列",
+      "response": "",
+      "response_time": 5.683936357498169,
+      "tokens_used": 525,
+      "timestamp": "2025-08-13T13:59:16.844297",
+      "evaluation_criteria": [
+        "布局合理性",
+        "视觉层次",
+        "信息组织"
+      ],
+      "scoring_prompt": "评估布局设计的合理性和美观度，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "composition",
+      "test_id": "comp_003",
+      "prompt": "描述一个舞台剧的场景布置，包括道具摆放、灯光设计、演员站位",
+      "response": "",
+      "response_time": 8.603242874145508,
+      "tokens_used": 529,
+      "timestamp": "2025-08-13T13:59:26.460206",
+      "evaluation_criteria": [
+        "空间利用",
+        "视觉焦点",
+        "整体协调"
+      ],
+      "scoring_prompt": "评估舞台布置的构图效果，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "narrative",
+      "test_id": "narr_001",
+      "prompt": "续写故事：'深夜，图书馆的灯突然全部熄灭了，小明听到书架后传来奇怪的声音...' 要求情节连贯，有悬念",
+      "response": "",
+      "response_time": 7.771135568618774,
+      "tokens_used": 549,
+      "timestamp": "2025-08-13T13:59:35.259255",
+      "evaluation_criteria": [
+        "情节连贯性",
+        "逻辑合理性",
+        "悬念设置"
+      ],
+      "scoring_prompt": "评估故事的叙事逻辑和情节发展，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "narrative",
+      "test_id": "narr_002",
+      "prompt": "用倒叙手法讲述一个关于'错过的机会'的故事，要求结构清晰",
+      "response": "",
+      "response_time": 6.756846904754639,
+      "tokens_used": 529,
+      "timestamp": "2025-08-13T13:59:43.039803",
+      "evaluation_criteria": [
+        "叙事结构",
+        "时间线清晰",
+        "因果关系"
+      ],
+      "scoring_prompt": "评估叙事结构和逻辑的清晰度，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "narrative",
+      "test_id": "narr_003",
+      "prompt": "写一个包含转折的微型小说，200字以内，要求有开端、发展、高潮、结局",
+      "response": "",
+      "response_time": 8.458759546279907,
+      "tokens_used": 531,
+      "timestamp": "2025-08-13T13:59:52.514407",
+      "evaluation_criteria": [
+        "故事完整性",
+        "转折合理性",
+        "节奏控制"
+      ],
+      "scoring_prompt": "评估故事结构的完整性和转折的巧妙程度，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "emotion",
+      "test_id": "emo_001",
+      "prompt": "写一段关于'乡愁'的散文，要求情感真挚，能引起共鸣，200字左右",
+      "response": "",
+      "response_time": 6.524693012237549,
+      "tokens_used": 535,
+      "timestamp": "2025-08-13T14:00:00.062419",
+      "evaluation_criteria": [
+        "情感真挚度",
+        "共鸣能力",
+        "表达细腻度"
+      ],
+      "scoring_prompt": "评估文字的情感表达力和感染力，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "emotion",
+      "test_id": "emo_002",
+      "prompt": "描写一个人收到意外惊喜时的心理活动和表情变化",
+      "response": "",
+      "response_time": 7.566682577133179,
+      "tokens_used": 523,
+      "timestamp": "2025-08-13T14:00:08.652254",
+      "evaluation_criteria": [
+        "心理描写",
+        "情绪转换",
+        "细节刻画"
+      ],
+      "scoring_prompt": "评估情感描写的生动性和准确性，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "emotion",
+      "test_id": "emo_003",
+      "prompt": "写一封道歉信，表达真诚的歉意和改正的决心",
+      "response": "",
+      "response_time": 9.049240589141846,
+      "tokens_used": 525,
+      "timestamp": "2025-08-13T14:00:18.722691",
+      "evaluation_criteria": [
+        "诚意表达",
+        "情感适度",
+        "语气恰当"
+      ],
+      "scoring_prompt": "评估情感表达的恰当性和真诚度，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "creativity",
+      "test_id": "create_001",
+      "prompt": "设想一个全新的节日，描述它的起源、庆祝方式、特色活动和文化意义",
+      "response": "",
+      "response_time": 8.648066520690918,
+      "tokens_used": 529,
+      "timestamp": "2025-08-13T14:00:28.393723",
+      "evaluation_criteria": [
+        "独创性",
+        "想象力",
+        "可行性"
+      ],
+      "scoring_prompt": "评估创意的新颖程度和想象力，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "creativity",
+      "test_id": "create_002",
+      "prompt": "设计一种结合了三种不同动物特征的幻想生物，描述其外观、习性和栖息地",
+      "response": "",
+      "response_time": 8.016446352005005,
+      "tokens_used": 533,
+      "timestamp": "2025-08-13T14:00:37.432323",
+      "evaluation_criteria": [
+        "创造力",
+        "细节想象",
+        "内在逻辑"
+      ],
+      "scoring_prompt": "评估设计的创意性和想象的丰富度，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "creativity",
+      "test_id": "create_003",
+      "prompt": "提出一个解决城市交通拥堵的创新方案，要求与现有方案不同",
+      "response": "",
+      "response_time": 14.967500686645508,
+      "tokens_used": 523,
+      "timestamp": "2025-08-13T14:00:53.422467",
+      "evaluation_criteria": [
+        "创新性",
+        "实用性",
+        "独特视角"
+      ],
+      "scoring_prompt": "评估方案的创新程度和独特性，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "cultural",
+      "test_id": "culture_001",
+      "prompt": "解释'君子和而不同'的含义，并举现代生活中的例子说明",
+      "response": "",
+      "response_time": 8.212016344070435,
+      "tokens_used": 525,
+      "timestamp": "2025-08-13T14:01:02.650672",
+      "evaluation_criteria": [
+        "文化理解",
+        "现代诠释",
+        "例证恰当"
+      ],
+      "scoring_prompt": "评估对中国文化的理解深度和诠释准确性，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "cultural",
+      "test_id": "culture_002",
+      "prompt": "描述中秋节的传统习俗，并说明其文化内涵",
+      "response": "",
+      "response_time": 7.096366882324219,
+      "tokens_used": 520,
+      "timestamp": "2025-08-13T14:01:10.771574",
+      "evaluation_criteria": [
+        "文化知识",
+        "内涵理解",
+        "表达准确"
+      ],
+      "scoring_prompt": "评估对传统文化的了解和理解程度，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "dimension": "cultural",
+      "test_id": "culture_003",
+      "prompt": "用现代语言重新诠释'知行合一'的哲学思想，并说明其现实意义",
+      "response": "",
+      "response_time": 8.453279972076416,
+      "tokens_used": 528,
+      "timestamp": "2025-08-13T14:01:20.245869",
+      "evaluation_criteria": [
+        "哲学理解",
+        "现代转化",
+        "实践意义"
+      ],
+      "scoring_prompt": "评估对传统哲学的理解和现代化诠释能力，给出0-100分",
+      "api_success": true,
+      "score": 0,
+      "analysis": {
+        "strengths": [],
+        "weaknesses": [
+          "No response generated"
+        ],
+        "suggestions": [],
+        "highlights": []
+      },
+      "scoring_success": false
+    }
+  ],
+  "stats": {
+    "total_responses": 18,
+    "successful_scores": 0,
+    "failed_scores": 18
+  }
+}

@@ -41,6 +41,10 @@ class Settings(BaseSettings):
     ZHIPU_API_KEY: str = ""
     GEMINI_API_KEY: str = ""
     HUGGINGFACE_API_KEY: str = ""
+    DEEPSEEK_API_KEY: str = ""
+    QWEN_API_KEY: str = ""
+    XAI_API_KEY: str = ""
+    OPENROUTER_API_KEY: str = ""
     
     # Cost Control
     ENABLE_COST_CONTROL: bool = True

@@ -1,0 +1,76 @@
+{
+  "poetry_tests": [
+    {
+      "id": "poem_1",
+      "prompt": "Write a poem about spring with vivid imagery and emotional depth",
+      "type": "poetry",
+      "language": "en",
+      "max_tokens": 300
+    },
+    {
+      "id": "poem_2",
+      "prompt": "Write a nostalgic poem about hometown and childhood memories",
+      "type": "poetry",
+      "language": "en",
+      "max_tokens": 300
+    },
+    {
+      "id": "poem_3",
+      "prompt": "Write a romantic poem about love and connection",
+      "type": "poetry",
+      "language": "en",
+      "max_tokens": 300
+    },
+    {
+      "id": "poem_4",
+      "prompt": "Write a philosophical poem about the meaning of life",
+      "type": "poetry",
+      "language": "en",
+      "max_tokens": 300
+    },
+    {
+      "id": "poem_5",
+      "prompt": "Write a free verse poem about modern technology and humanity",
+      "type": "poetry",
+      "language": "en",
+      "max_tokens": 300
+    }
+  ],
+  "story_tests": [
+    {
+      "id": "story_1",
+      "prompt": "Write a short science fiction story about first contact with aliens",
+      "type": "story",
+      "language": "en",
+      "max_tokens": 500
+    },
+    {
+      "id": "story_2",
+      "prompt": "Write a mystery story with an unexpected twist ending",
+      "type": "story",
+      "language": "en",
+      "max_tokens": 500
+    },
+    {
+      "id": "story_3",
+      "prompt": "Write a fairy tale about courage and friendship",
+      "type": "story",
+      "language": "en",
+      "max_tokens": 500
+    },
+    {
+      "id": "story_4",
+      "prompt": "Write a realistic story about overcoming personal challenges",
+      "type": "story",
+      "language": "en",
+      "max_tokens": 500
+    },
+    {
+      "id": "story_5",
+      "prompt": "Write a historical fiction story set in ancient times",
+      "type": "story",
+      "language": "en",
+      "max_tokens": 500
+    }
+  ]
+}

@@ -145,8 +145,8 @@ test.describe('Evaluation System', () => {
     // Store evaluation IDs
     const evaluationIds: string[] = [];
     
-    for (const eval of evaluations) {
-      await evaluationPage.createEvaluation(eval.model, eval.type, eval.prompt);
+    for (const evaluation of evaluations) {
+      await evaluationPage.createEvaluation(evaluation.model, evaluation.type, evaluation.prompt);
       
       // Wait for creation and get ID from URL or response
       await page.waitForTimeout(1000);

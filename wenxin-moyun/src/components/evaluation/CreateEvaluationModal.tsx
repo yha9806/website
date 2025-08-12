@@ -199,7 +199,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
               >
                 <option value="zh">Chinese</option>
                 <option value="en">English</option>
-                <option value="ja">Japanese</option>
+                <option value="both">Both (Bilingual)</option>
               </select>
             </div>
           </div>

@@ -4,6 +4,8 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import { mockModels } from '../data/mockData';
 import { motion } from 'framer-motion';
 import { useModelDetail } from '../hooks/useModelDetail';
+import { useModelBenchmark } from '../hooks/useModelBenchmark';
+import { ResponseDisplay } from '../components/model/ResponseDisplay';
 import {
   IOSButton,
   IOSCard,
@@ -20,6 +22,7 @@ import {
 export default function ModelDetailPage() {
   const { id } = useParams();
   const { model, artworks, loading, error } = useModelDetail(id);
+  const { benchmarkData, loading: benchmarkLoading, error: benchmarkError } = useModelBenchmark(id);
 
   if (loading) {
     return (
@@ -367,6 +370,45 @@ export default function ModelDetailPage() {
           </IOSCardContent>
         </IOSCard>
       </motion.div>
+
+      {/* Benchmark Test Results with Full Responses */}
+      {benchmarkData && benchmarkData.detailed_scores && benchmarkData.detailed_scores.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-8"
+        >
+          <IOSCard variant="elevated" padding="lg">
+            <IOSCardHeader
+              title="Benchmark Test Results"
+              subtitle={`${benchmarkData.test_count} tests completed • ${benchmarkData.success_count} successful`}
+              emoji={<EmojiIcon category="rating" name="trophy" size="md" />}
+            />
+            <IOSCardContent>
+              {/* Display tabs for each dimension */}
+              <div className="space-y-8">
+                {['rhythm', 'composition', 'narrative', 'emotion', 'creativity', 'cultural'].map((dimension) => {
+                  const dimensionResponses = benchmarkData.detailed_scores.filter(
+                    (r: any) => r.dimension === dimension
+                  );
+                  
+                  if (dimensionResponses.length === 0) return null;
+                  
+                  return (
+                    <div key={dimension} className="border-t pt-6 first:border-t-0 first:pt-0">
+                      <ResponseDisplay 
+                        responses={dimensionResponses} 
+                        dimension={dimension}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </IOSCardContent>
+          </IOSCard>
+        </motion.div>
+      )}
     </div>
   );
 }

@@ -156,7 +156,7 @@ export const cacheUtils = {
       await Promise.allSettled([
         galleryApi.getArtworks(),
         modelsApi.getModels(),
-        leaderboardApi.getLeaderboard(),
+        // leaderboardApi uses same data as modelsApi, no need to call twice
       ]);
       console.log('Cache: Warmed up successfully');
     } catch (error) {
@@ -276,12 +276,12 @@ export const modelsApi = {
 
 // Leaderboard API with static caching
 export const leaderboardApi = {
-  // Get leaderboard (static cache - updates infrequently)
+  // Get leaderboard data from models endpoint (static cache - updates infrequently)
   getLeaderboard: async (category?: string) => {
     const cacheKey = cacheKeys.leaderboard(category);
     return staticCache.get(
       cacheKey,
-      () => apiClient.get(`/leaderboard/${category || ''}`.replace(/\/$/, ''))
+      () => apiClient.get('/models/', { params: { is_active: true } })
     );
   },
 };

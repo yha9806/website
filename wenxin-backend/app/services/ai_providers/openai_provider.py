@@ -37,7 +37,7 @@ class OpenAIProvider(AIProvider):
             user_prompt = f"Write a poem about: {prompt}"
             
             response = await self.client.chat.completions.create(
-                model="gpt-4-turbo-preview",
+                model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
@@ -65,7 +65,7 @@ class OpenAIProvider(AIProvider):
                 style=style,
                 metadata={
                     "provider": "openai",
-                    "model": "gpt-4-turbo-preview",
+                    "model": "gpt-4o-mini",
                     "prompt": prompt,
                     "tokens_used": response.usage.total_tokens if response.usage else 0
                 }
@@ -90,7 +90,7 @@ class OpenAIProvider(AIProvider):
             system_prompt = f"You are a creative storyteller. Write engaging stories with a maximum of {max_length} words."
             
             response = await self.client.chat.completions.create(
-                model="gpt-4-turbo-preview",
+                model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": f"Write a story about: {prompt}"}
@@ -118,7 +118,7 @@ class OpenAIProvider(AIProvider):
                 word_count=word_count,
                 metadata={
                     "provider": "openai",
-                    "model": "gpt-4-turbo-preview",
+                    "model": "gpt-4o-mini",
                     "prompt": prompt,
                     "tokens_used": response.usage.total_tokens if response.usage else 0
                 }
@@ -200,7 +200,7 @@ class OpenAIProvider(AIProvider):
             system_prompt = "You are a music composer. Create song lyrics and describe the musical composition."
             
             response = await self.client.chat.completions.create(
-                model="gpt-4-turbo-preview",
+                model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": f"Create a song about: {prompt}. Include lyrics and describe the melody."}
@@ -224,7 +224,7 @@ K:C
                 lyrics=content,
                 metadata={
                     "provider": "openai",
-                    "model": "gpt-4-turbo-preview",
+                    "model": "gpt-4o-mini",
                     "prompt": prompt,
                     "duration": duration or 30,
                     "note": "Music generation not available, lyrics and description provided"

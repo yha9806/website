@@ -227,13 +227,15 @@ export default function LeaderboardPage() {
         </div>
         <div className="ios-glass liquid-glass-container rounded-lg p-6 text-center">
           <div className="text-3xl font-bold text-secondary-600 dark:text-secondary-400">
-            {filteredData[0]?.score.toFixed(1) || 0}
+            {filteredData[0]?.score != null ? filteredData[0].score.toFixed(3) : 0}
           </div>
           <p className="text-gray-600 dark:text-gray-400 mt-2">Highest Score</p>
         </div>
         <div className="ios-glass liquid-glass-container rounded-lg p-6 text-center">
           <div className="text-3xl font-bold text-green-600 dark:text-green-400">
-            {(filteredData.reduce((acc, e) => acc + e.score, 0) / filteredData.length).toFixed(1)}
+            {filteredData.length > 0 && filteredData.some(e => e.score != null) 
+              ? (filteredData.filter(e => e.score != null).reduce((acc, e) => acc + (e.score || 0), 0) / filteredData.filter(e => e.score != null).length).toFixed(3)
+              : 'N/A'}
           </div>
           <p className="text-gray-600 dark:text-gray-400 mt-2">Average Score</p>
         </div>

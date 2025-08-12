@@ -102,3 +102,17 @@ lpt[1-9]
 **/con
 **/prn
 **/aux
+
+# Playwright E2E Testing
+playwright-report/
+test-results/
+test-results.json
+*.trace.zip
+videos/
+screenshots/
+wenxin-moyun/playwright-report/
+wenxin-moyun/test-results/
+wenxin-moyun/test-results.json
+wenxin-moyun/tests/e2e/playwright-report/
+wenxin-moyun/tests/e2e/test-results/
+wenxin-moyun/tests/e2e/test-results.json

@@ -58,7 +58,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-lg font-bold text-primary-600">{entry.score.toFixed(1)}</span>
+          <span className="text-lg font-bold text-primary-600">{entry.score != null ? entry.score.toFixed(3) : 'N/A'}</span>
           {getTrendIcon(entry.change)}
         </div>
       </motion.div>
@@ -130,7 +130,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="text-center p-3 ios-glass rounded-lg">
             <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-              {entry.score.toFixed(1)}
+              {entry.score != null ? entry.score.toFixed(3) : 'N/A'}
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1">
               <Star className="w-3 h-3" />
@@ -140,7 +140,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
           
           <div className="text-center p-3 ios-glass rounded-lg">
             <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-              {entry.winRate.toFixed(0)}%
+              {entry.winRate != null ? `${entry.winRate.toFixed(0)}%` : 'N/A'}
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1">
               <Zap className="w-3 h-3" />
@@ -163,7 +163,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
         <div className="mb-4">
           <div className="flex justify-between text-xs text-gray-500 mb-1">
             <span>Win Rate Distribution</span>
-            <span>{entry.winRate.toFixed(1)}%</span>
+            <span>{entry.winRate != null ? `${entry.winRate.toFixed(1)}%` : 'N/A'}</span>
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
             <animated.div
