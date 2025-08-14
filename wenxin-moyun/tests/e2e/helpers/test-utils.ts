@@ -14,17 +14,16 @@ export async function simulateSlowNetwork(page: Page) {
 }
 
 export async function clearLocalStorage(page: Page) {
-  // Skip localStorage operations in CI environment completely
-  if (process.env.CI) {
-    console.log('CI environment detected: skipping localStorage operations');
-    return;
-  }
-  
   try {
     await page.evaluate(() => {
       if (typeof localStorage !== 'undefined') {
         localStorage.clear();
       }
+      
+      // Also clear test-specific window properties
+      (window as any).__TEST_AUTH_TOKEN__ = null;
+      (window as any).__TEST_GUEST_SESSION__ = null;
+      (window as any).__TEST_STORAGE__ = {};
     });
   } catch (error) {
     // Ignore localStorage access errors in test environment
@@ -33,59 +32,43 @@ export async function clearLocalStorage(page: Page) {
 }
 
 export async function setAuthToken(page: Page, token: string) {
-  // In CI environment, mock the authentication state instead
-  if (process.env.CI) {
-    console.log('CI environment detected: mocking auth token state');
-    
-    // Mock the auth API responses
-    await page.route('**/api/v1/auth/me', route => {
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          id: 'test-user-id',
-          username: 'test-user',
-          email: 'test@example.com',
-          role: 'user'
-        })
-      });
-    });
-    
-    // Add auth token to window object for client-side use
-    await page.evaluate((token) => {
-      (window as any).__TEST_AUTH_TOKEN__ = token;
-    }, token);
-    
-    return;
-  }
-  
   try {
     await page.evaluate((token) => {
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem('auth_token', token);
       }
+      // Also set as test property for compatibility
+      (window as any).__TEST_AUTH_TOKEN__ = token;
     }, token);
+    
+    // Mock the auth API responses in CI environment
+    if (process.env.CI) {
+      await page.route('**/api/v1/auth/me', route => {
+        route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            id: 'test-user-id',
+            username: 'test-user',
+            email: 'test@example.com',
+            role: 'user'
+          })
+        });
+      });
+    }
   } catch (error) {
     console.warn('Cannot access localStorage in test environment:', error);
   }
 }
 
 export async function getAuthToken(page: Page): Promise<string | null> {
-  // In CI environment, return mock token if set
-  if (process.env.CI) {
-    console.log('CI environment detected: returning mock auth token');
-    const mockToken = await page.evaluate(() => {
-      return (window as any).__TEST_AUTH_TOKEN__ || null;
-    });
-    return mockToken;
-  }
-  
   try {
     return await page.evaluate(() => {
       if (typeof localStorage !== 'undefined') {
         return localStorage.getItem('auth_token');
       }
-      return null;
+      // Fallback to window property
+      return (window as any).__TEST_AUTH_TOKEN__ || null;
     });
   } catch (error) {
     console.warn('Cannot access localStorage in test environment:', error);
@@ -94,28 +77,21 @@ export async function getAuthToken(page: Page): Promise<string | null> {
 }
 
 export async function setGuestSession(page: Page, guestId: string) {
-  // Skip localStorage operations in CI environment completely
-  if (process.env.CI) {
-    console.log('CI environment detected: skipping guest session localStorage operation');
-    return;
-  }
-  
   try {
     await page.evaluate((id) => {
-      try {
-        if (typeof localStorage !== 'undefined' && localStorage) {
-          const session = {
-            id: id,
-            dailyUsage: 0,
-            lastReset: new Date().toDateString(),
-            evaluations: []
-          };
-          localStorage.setItem('guest_session', JSON.stringify(session));
-        }
-      } catch (localStorageError) {
-        console.warn('localStorage access blocked in CI environment:', localStorageError.message);
-        // Skip localStorage operations in CI environments with security restrictions
+      const session = {
+        id: id,
+        dailyUsage: 0,
+        lastReset: new Date().toDateString(),
+        evaluations: []
+      };
+      
+      if (typeof localStorage !== 'undefined' && localStorage) {
+        localStorage.setItem('guest_session', JSON.stringify(session));
       }
+      
+      // Also set as test property for compatibility
+      (window as any).__TEST_GUEST_SESSION__ = session;
     }, guestId);
   } catch (error) {
     console.warn('Cannot access localStorage in test environment:', error);
@@ -194,25 +170,34 @@ export async function cleanupTestData(page: Page) {
   // Clear cookies
   await page.context().clearCookies();
   
-  // Reset any test flags (skip sessionStorage in CI)
-  if (!process.env.CI) {
-    try {
-      await page.evaluate(() => {
+  // Reset any test flags (with CI support)
+  const isCI = process.env.CI;
+  try {
+    await page.evaluate((isCI) => {
+      if (isCI) {
+        // In CI environment, clear mock session storage
+        (window as any).__TEST_SESSION_STORAGE__ = {};
+      } else {
         // Remove any test-related items from sessionStorage
-        const keysToRemove = [];
-        for (let i = 0; i < sessionStorage.length; i++) {
-          const key = sessionStorage.key(i);
-          if (key && key.startsWith('test_')) {
-            keysToRemove.push(key);
+        if (typeof sessionStorage !== 'undefined') {
+          const keysToRemove = [];
+          for (let i = 0; i < sessionStorage.length; i++) {
+            const key = sessionStorage.key(i);
+            if (key && key.startsWith('test_')) {
+              keysToRemove.push(key);
+            }
           }
+          keysToRemove.forEach(key => sessionStorage.removeItem(key));
         }
-        keysToRemove.forEach(key => sessionStorage.removeItem(key));
-      });
-    } catch (error) {
-      console.warn('Cannot access sessionStorage in test environment:', error);
-    }
-  } else {
-    console.log('CI environment detected: skipping sessionStorage cleanup');
+      }
+      
+      // Also clear any test window properties
+      (window as any).__TEST_AUTH_TOKEN__ = null;
+      (window as any).__TEST_GUEST_SESSION__ = null;
+      (window as any).__TEST_STORAGE__ = {};
+    }, isCI);
+  } catch (error) {
+    console.warn('Cannot access sessionStorage in test environment:', error);
   }
 }
 
