@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, AlertCircle, Gift, Save, Clock, Star } from 'lucide-react';
 import authService from '../../services/auth.service';
 import { retryPendingRequests } from '../../services/api';
+import { getItem } from '../../utils/storageUtils';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -147,7 +148,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
               <button
                 onClick={onClose}
                 className="absolute top-4 right-4 p-1 rounded-lg hover:bg-neutral-50/20 transition-colors"
-                disabled={config.urgency === 'high' && !localStorage.getItem('access_token')}
+                disabled={config.urgency === 'high' && !getItem('access_token')}
               >
                 <X className="w-5 h-5" />
               </button>

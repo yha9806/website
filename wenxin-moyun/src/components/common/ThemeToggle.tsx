@@ -3,6 +3,7 @@ import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { motion } from 'framer-motion';
 import { IOSToggle, EmojiIcon } from '../ios';
+import { getItem, setItem } from '../../utils/storageUtils';
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
@@ -64,13 +65,13 @@ export function ThemeSwitch() {
 // 语言切换组件
 function LanguageToggle() {
   const [language, setLanguage] = useState<'zh' | 'en'>(() => {
-    return (localStorage.getItem('language') as 'zh' | 'en') || 'en';
+    return (getItem('language') as 'zh' | 'en') || 'en';
   });
 
   const toggleLanguage = () => {
     const newLang = language === 'zh' ? 'en' : 'zh';
     setLanguage(newLang);
-    localStorage.setItem('language', newLang);
+    setItem('language', newLang);
   };
 
   return (
