@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { themes, generateCSSVariables } from '../config/theme';
 import type { ThemeMode } from '../config/theme';
+import { getItem, setItem } from '../utils/storageUtils';
 
 interface ThemeContextType {
   theme: ThemeMode;
@@ -14,7 +15,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Default to dark theme
   const [theme, setThemeState] = useState<ThemeMode>(() => {
     // Read user preference from localStorage
-    const savedTheme = localStorage.getItem('theme') as ThemeMode;
+    const savedTheme = getItem('theme') as ThemeMode;
     // If no saved theme, check system preference
     if (!savedTheme) {
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -42,7 +43,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
     
     // Save to localStorage
-    localStorage.setItem('theme', theme);
+    setItem('theme', theme);
     
     // Update meta theme-color
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
@@ -56,7 +57,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {
       // Only follow system when user hasn't manually set theme
-      if (!localStorage.getItem('theme')) {
+      if (!getItem('theme')) {
         setThemeState(e.matches ? 'dark' : 'light');
       }
     };

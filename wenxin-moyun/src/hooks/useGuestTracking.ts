@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { getGuestSession } from '../utils/guestSession';
+import { getItem, setItem } from '../utils/storageUtils';
 
 interface GuestTrackingOptions {
   onTrigger: (trigger: string) => void;
@@ -13,7 +14,7 @@ export const useGuestTracking = ({ onTrigger }: GuestTrackingOptions) => {
 
   useEffect(() => {
     // Check if user is authenticated
-    if (localStorage.getItem('access_token')) {
+    if (getItem('access_token')) {
       return;
     }
 
@@ -32,7 +33,7 @@ export const useGuestTracking = ({ onTrigger }: GuestTrackingOptions) => {
   }, [onTrigger]);
 
   const trackEvaluation = () => {
-    if (localStorage.getItem('access_token')) {
+    if (getItem('access_token')) {
       return;
     }
 
@@ -42,7 +43,7 @@ export const useGuestTracking = ({ onTrigger }: GuestTrackingOptions) => {
     // Update session evaluation count
     if (session.evaluations) {
       session.evaluations.push(crypto.randomUUID());
-      localStorage.setItem('guestSession', JSON.stringify(session));
+      setItem('guestSession', JSON.stringify(session));
     }
 
     // Check if daily limit reached
@@ -61,7 +62,7 @@ export const useGuestTracking = ({ onTrigger }: GuestTrackingOptions) => {
   };
 
   const trackQualityInteraction = () => {
-    if (localStorage.getItem('access_token')) {
+    if (getItem('access_token')) {
       return;
     }
 

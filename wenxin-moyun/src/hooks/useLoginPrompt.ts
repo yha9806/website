@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { hasReachedDailyLimit, getRemainingUsage, isGuestMode } from '../utils/guestSession';
+import { getItem, setItem } from '../utils/storageUtils';
 
 export type LoginPromptTrigger = 'limit_reached' | 'save_progress' | 'share_result' | 'advanced_features';
 
@@ -20,7 +21,7 @@ const STORAGE_KEY = 'wenxin_login_prompt_state';
 
 export function useLoginPrompt() {
   const [state, setState] = useState<LoginPromptState>(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = getItem(STORAGE_KEY);
     if (stored) {
       try {
         return JSON.parse(stored);
@@ -43,7 +44,7 @@ export function useLoginPrompt() {
 
   // Save state to localStorage
   const saveState = useCallback((newState: LoginPromptState) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
+    setItem(STORAGE_KEY, JSON.stringify(newState));
     setState(newState);
   }, []);
 

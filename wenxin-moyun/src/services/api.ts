@@ -2,6 +2,7 @@ import axios from 'axios';
 import type { AxiosInstance, AxiosError } from 'axios';
 import { getGuestHeaders } from '../utils/guestSession';
 import { apiCache, staticCache, cacheKeys } from '../utils/cache';
+import { getItem, removeItem } from '../utils/storageUtils';
 
 // API base configuration
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
@@ -21,7 +22,7 @@ const apiClient: AxiosInstance = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     // Add auth token if exists
-    const token = localStorage.getItem('access_token');
+    const token = getItem('access_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     } else {
@@ -107,14 +108,14 @@ apiClient.interceptors.response.use(
     
     // Handle authentication errors (401 Unauthorized)
     if (error.response?.status === 401) {
-      if (!localStorage.getItem('access_token')) {
+      if (!getItem('access_token')) {
         // Guest user hit protected endpoint
         if (loginModalCallback) {
           loginModalCallback('auth_required');
         }
       } else {
         // Token expired or invalid
-        localStorage.removeItem('access_token');
+        removeItem('access_token');
         if (window.location.pathname !== '/login') {
           window.location.href = `/login?from=${encodeURIComponent(window.location.pathname)}`;
         }

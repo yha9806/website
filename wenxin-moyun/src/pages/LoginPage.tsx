@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LogIn, User, Lock, ArrowLeft } from 'lucide-react';
 import apiClient from '../services/api';
+import { setItem } from '../utils/storageUtils';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -31,8 +32,8 @@ const LoginPage: React.FC = () => {
       });
 
       if (response.data.access_token) {
-        localStorage.setItem('access_token', response.data.access_token);
-        localStorage.setItem('username', formData.username);
+        setItem('access_token', response.data.access_token);
+        setItem('username', formData.username);
         
         // Redirect to the page they came from or home
         const from = new URLSearchParams(window.location.search).get('from') || '/';
