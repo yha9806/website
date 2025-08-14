@@ -40,7 +40,7 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: wenxin-moyun
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Install backend dependencies
         working-directory: wenxin-backend
@@ -194,7 +194,7 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: wenxin-moyun
-        run: npm ci --production=false
+        run: npm ci --legacy-peer-deps --production=false
 
       - name: Build frontend
         working-directory: wenxin-moyun
