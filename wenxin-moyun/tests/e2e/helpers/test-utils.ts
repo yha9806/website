@@ -55,14 +55,19 @@ export async function getAuthToken(page: Page): Promise<string | null> {
 export async function setGuestSession(page: Page, guestId: string) {
   try {
     await page.evaluate((id) => {
-      if (typeof localStorage !== 'undefined') {
-        const session = {
-          id: id,
-          dailyUsage: 0,
-          lastReset: new Date().toDateString(),
-          evaluations: []
-        };
-        localStorage.setItem('guest_session', JSON.stringify(session));
+      try {
+        if (typeof localStorage !== 'undefined' && localStorage) {
+          const session = {
+            id: id,
+            dailyUsage: 0,
+            lastReset: new Date().toDateString(),
+            evaluations: []
+          };
+          localStorage.setItem('guest_session', JSON.stringify(session));
+        }
+      } catch (localStorageError) {
+        console.warn('localStorage access blocked in CI environment:', localStorageError.message);
+        // Skip localStorage operations in CI environments with security restrictions
       }
     }, guestId);
   } catch (error) {
