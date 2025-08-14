@@ -46,7 +46,7 @@ export class HomePage extends BasePage {
     this.navMenu = page.locator('nav');
     this.homeLink = page.locator('[data-testid="nav-home"], a[href="/"], nav a:has-text("首页")');
     this.loginButton = page.locator('button:has-text("Login"), button:has-text("登录"), a[href*="login"]');
-    this.logoutButton = page.locator('button:has-text("Logout"), button:has-text("退出登录")');
+    this.logoutButton = page.locator('button:has-text("Logout"), button:has-text("退出登录"), [data-testid="logout-btn"], .logout-button, nav button:has-text("Logout")');
     this.startExperienceButton = page.locator('button:has-text("Start Experience"), button:has-text("开始体验"), button:has-text("Guest Mode")');
   }
 
@@ -115,7 +115,7 @@ export class LoginPage extends BasePage {
     this.guestModeButton = page.locator('button:has-text("Guest"), button:has-text("Continue as Guest"), button:has-text("Use admin account")');
     this.loginForm = page.locator('form, .glass-effect form');
     this.successMessage = page.locator('.success-message, text=/successfully/i, text=/signed in/i');
-    this.welcomeMessage = page.locator('h2:has-text("Welcome Back"), text=Welcome Back, .gradient-text, text=Profile, text=Dashboard');
+    this.welcomeMessage = page.locator('text=Profile, text=Dashboard, [data-testid="user-menu"], .user-menu, button:has-text("Logout"), button:has-text("退出登录"), text=/logged in/i, text=/welcome/i').first();
   }
 
   async login(username: string, password: string) {
