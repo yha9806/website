@@ -7,6 +7,7 @@ export interface IOSButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEle
   size?: 'sm' | 'md' | 'lg';
   glassMorphism?: boolean;
   children: React.ReactNode;
+  'data-testid'?: string;
 }
 
 export const IOSButton = React.forwardRef<HTMLButtonElement, IOSButtonProps>(

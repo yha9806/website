@@ -8,7 +8,10 @@ export class BasePage {
   }
 
   async navigate(path: string) {
-    await this.page.goto(path);
+    // Support dynamic port detection for MCP integration
+    const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:5173';
+    const fullURL = path.startsWith('http') ? path : `${baseURL}${path}`;
+    await this.page.goto(fullURL);
   }
 
   async waitForLoadComplete() {
@@ -22,35 +25,31 @@ export class BasePage {
 
 export class HomePage extends BasePage {
   readonly heroTitle: Locator;
-  readonly startButton: Locator;
-  readonly loginButton: Locator;
+  readonly exploreRankingsButton: Locator;
+  readonly modelBattleButton: Locator;
   readonly leaderboardLink: Locator;
   readonly battleLink: Locator;
   readonly navMenu: Locator;
   readonly homeLink: Locator;
-  readonly userMenu: Locator;
-  readonly logoutButton: Locator;
 
   constructor(page: Page) {
     super(page);
-    // Comprehensive English iOS interface support
-    this.heroTitle = page.locator('h1:has-text("WenXin MoYun"), h1:has-text("AI Art Evaluation"), h1:has-text("文心墨韵"), h1:has-text("AI"), h1.text-large-title');
-    this.startButton = page.locator('button:has-text("Explore Rankings"), button:has-text("Get Started"), button:has-text("开始体验"), button:has-text("Start"), .ios-button:has-text("Explore"), .ios-button:has-text("Rankings")');
-    this.loginButton = page.locator('button:has-text("Login"), button:has-text("Sign In"), button:has-text("登录"), .ios-button:has-text("Login"), .ios-button:has-text("Sign")');
-    this.leaderboardLink = page.locator('a[href="/leaderboard"], a:has-text("Leaderboard"), a:has-text("Rankings"), a:has-text("排行榜")');
-    this.battleLink = page.locator('a[href="/battle"], a:has-text("Battle"), a:has-text("对战")');
-    this.navMenu = page.locator('nav, .nav, .navigation, header nav');
-    this.homeLink = page.locator('a:has-text("首页"), a:has-text("Home"), a[href="/"]');
-    this.userMenu = page.locator('.user-menu, .profile-menu, [data-testid="user-menu"]');
-    this.logoutButton = page.locator('button:has-text("退出"), button:has-text("登出"), button:has-text("Logout"), button:has-text("Sign Out")');
+    // Updated selectors for iOS design system
+    this.heroTitle = page.locator('main h1.text-large-title');
+    this.exploreRankingsButton = page.locator('[data-testid="explore-rankings-button"]');
+    this.modelBattleButton = page.locator('[data-testid="model-battle-button"]');
+    this.leaderboardLink = page.locator('[data-testid="nav-rankings"]');
+    this.battleLink = page.locator('[data-testid="nav-battles"]');
+    this.navMenu = page.locator('nav');
+    this.homeLink = page.locator('[data-testid="nav-home"]');
   }
 
-  async clickStartExperience() {
-    await this.startButton.click();
+  async clickExploreRankings() {
+    await this.exploreRankingsButton.click();
   }
 
-  async navigateToLogin() {
-    await this.loginButton.click();
+  async clickModelBattle() {
+    await this.modelBattleButton.click();
   }
 }
 

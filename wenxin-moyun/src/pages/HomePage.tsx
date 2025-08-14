@@ -76,6 +76,7 @@ export default function HomePage() {
                   size="lg" 
                   emoji="favorite"
                   glassMorphism={true}
+                  data-testid="explore-rankings-button"
                 >
                   <EmojiIcon category="rating" name="star" size="sm" />
                   Explore Rankings
@@ -95,6 +96,7 @@ export default function HomePage() {
                   variant="secondary" 
                   size="lg" 
                   glassMorphism={true}
+                  data-testid="model-battle-button"
                 >
                   <EmojiIcon category="actions" name="battle" size="sm" />
                   Model Battle

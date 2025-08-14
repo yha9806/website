@@ -50,6 +50,7 @@ export default function Header() {
                   variant={isActive(item.href) ? "primary" : "text"}
                   size="sm"
                   className="flex items-center space-x-2"
+                  data-testid={`nav-${item.name.toLowerCase()}`}
                 >
                   <EmojiIcon category="navigation" name={item.emoji as any} size="xs" />
                   <span>{item.name}</span>

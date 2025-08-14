@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('iOS Components', () => {
   test.beforeEach(async ({ page }) => {
     // Visit test page (if available) or home page to test iOS components
-    await page.goto('/');
+    await page.goto('http://localhost:5173/');
   });
 
   test('iOS button components should render and interact correctly', async ({ page }) => {
