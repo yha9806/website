@@ -80,49 +80,15 @@ jobs:
         run: |
           npx playwright install --with-deps
 
-      - name: Start frontend server for E2E tests
+      - name: Run E2E tests (if not PR) - Use CI config
         if: github.event_name != 'pull_request'
         working-directory: wenxin-moyun
         run: |
-          # Start dev server in background
-          npm run dev &
-          DEV_PID=$!
-          echo "DEV_PID=$DEV_PID" >> $GITHUB_ENV
-          
-          # Wait for server to be ready
-          echo "Waiting for frontend server to start..."
-          for i in {1..30}; do
-            if curl -s http://localhost:5173 > /dev/null; then
-              echo "Frontend server is ready!"
-              break
-            fi
-            echo "Attempt $i: Server not ready, waiting 2 seconds..."
-            sleep 2
-          done
-          
-          # Final check
-          if ! curl -s http://localhost:5173 > /dev/null; then
-            echo "Frontend server failed to start"
-            exit 1
-          fi
-
-      - name: Run E2E tests (if not PR)
-        if: github.event_name != 'pull_request'
-        working-directory: wenxin-moyun
-        run: |
-          # Run only chromium tests in CI for faster execution
-          npx playwright test --project=chromium --config=tests/e2e/playwright.config.ts
+          # Use CI-specific config that handles server management properly
+          npx playwright test --config=tests/e2e/playwright.ci.config.ts
         env:
           CI: true
         timeout-minutes: 15
-
-      - name: Stop frontend server
-        if: github.event_name != 'pull_request' && always()
-        run: |
-          if [ -n "$DEV_PID" ]; then
-            echo "Stopping frontend server (PID: $DEV_PID)"
-            kill $DEV_PID || true
-          fi
 
   # Job 2: Deploy to staging (for PRs) or production (for main)
   deploy:
