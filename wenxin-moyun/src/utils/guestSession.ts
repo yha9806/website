@@ -1,4 +1,5 @@
 // Use crypto.randomUUID() instead of uuid package for React 19 compatibility
+import { getItem, setItem, removeItem } from './storageUtils';
 
 export interface GuestSession {
   id: string;
@@ -15,7 +16,7 @@ const DAILY_LIMIT = 3;
  * Get or create guest session
  */
 export function getGuestSession(): GuestSession {
-  const stored = localStorage.getItem(GUEST_SESSION_KEY);
+  const stored = getItem(GUEST_SESSION_KEY);
   
   if (stored) {
     try {
@@ -26,7 +27,7 @@ export function getGuestSession(): GuestSession {
       if (session.lastReset !== today) {
         session.dailyUsage = 0;
         session.lastReset = today;
-        localStorage.setItem(GUEST_SESSION_KEY, JSON.stringify(session));
+        setItem(GUEST_SESSION_KEY, JSON.stringify(session));
       }
       
       return session;
@@ -44,7 +45,7 @@ export function getGuestSession(): GuestSession {
     createdAt: new Date().toISOString()
   };
   
-  localStorage.setItem(GUEST_SESSION_KEY, JSON.stringify(newSession));
+  setItem(GUEST_SESSION_KEY, JSON.stringify(newSession));
   return newSession;
 }
 
@@ -54,7 +55,7 @@ export function getGuestSession(): GuestSession {
 export function updateGuestSession(updates: Partial<GuestSession>): GuestSession {
   const session = getGuestSession();
   const updated = { ...session, ...updates };
-  localStorage.setItem(GUEST_SESSION_KEY, JSON.stringify(updated));
+  setItem(GUEST_SESSION_KEY, JSON.stringify(updated));
   return updated;
 }
 
@@ -101,14 +102,14 @@ export function addEvaluationToGuest(evaluationId: string): GuestSession {
  * Clear guest session (for testing or logout)
  */
 export function clearGuestSession(): void {
-  localStorage.removeItem(GUEST_SESSION_KEY);
+  removeItem(GUEST_SESSION_KEY);
 }
 
 /**
  * Check if user is in guest mode
  */
 export function isGuestMode(): boolean {
-  const token = localStorage.getItem('access_token');
+  const token = getItem('access_token');
   return !token;
 }
 

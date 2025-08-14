@@ -122,9 +122,36 @@ test.describe('Evaluation System', () => {
   test('Guest evaluation daily limit enforcement', async ({ page }) => {
     // Set guest session at limit
     await page.evaluate(() => {
-      const session = JSON.parse(localStorage.getItem('guest_session')!);
-      session.dailyUsage = 3; // At the limit
-      localStorage.setItem('guest_session', JSON.stringify(session));
+      // Get session safely
+      let session;
+      try {
+        const stored = localStorage?.getItem('guest_session');
+        if (stored) {
+          session = JSON.parse(stored);
+        }
+      } catch (error) {
+        console.log('localStorage blocked, using window properties');
+      }
+      
+      if (!session) {
+        session = (window as any).__TEST_GUEST_SESSION__;
+      }
+      
+      if (session) {
+        session.dailyUsage = 3; // At the limit
+        
+        // Try to save back
+        try {
+          if (localStorage) {
+            localStorage.setItem('guest_session', JSON.stringify(session));
+          }
+        } catch (error) {
+          console.log('Cannot save to localStorage, using window property');
+        }
+        
+        // Always update window property
+        (window as any).__TEST_GUEST_SESSION__ = session;
+      }
     });
     
     // Reload page to apply new session

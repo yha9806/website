@@ -403,6 +403,187 @@ ENVIRONMENT=production
 - `anthropic-api-key`: Anthropic API key  
 - `gemini-api-key`: Google Gemini API key
 
+## GitHub Actions CI/CD Debugging Process
+
+### Complete Debugging Workflow (2025-08-14)
+
+Based on recent CI failures and successful resolution, here's the comprehensive debugging process for GitHub Actions failures:
+
+#### 1. Initial Analysis Phase
+```bash
+# Access GitHub Actions logs via browser automation
+# Use Playwright MCP to navigate to: https://github.com/[repo]/actions/runs/[run_id]/job/[job_id]
+
+# Key locations to check:
+- Job summary page for overall status
+- Individual step logs (expand collapsed steps)  
+- Annotations section for specific error messages
+- Test artifacts (screenshots, videos, traces)
+```
+
+#### 2. Common Failure Patterns & Solutions
+
+**A. Playwright Locator Syntax Errors**
+```javascript
+// ❌ WRONG: Mixing regex flags with CSS selectors
+page.locator('text=/404|error/i, h1:has-text("404"), .error-page')
+
+// ✅ CORRECT: Use .or() method to combine locators
+page.locator('text=/404|error/i')
+  .or(page.locator('h1:has-text("404")'))
+  .or(page.locator('.error-page'))
+
+// ❌ WRONG: Comma-separated selectors in single locator
+page.locator('.btn-primary, .btn-secondary, button')
+
+// ✅ CORRECT: Chain multiple locators with .or()
+page.locator('.btn-primary')
+  .or(page.locator('.btn-secondary'))
+  .or(page.locator('button'))
+```
+
+**B. Node.js Version Mismatches**
+```yaml
+# ✅ CORRECT: Consistent Node.js version across all steps
+- name: Setup Node.js
+  uses: actions/setup-node@v4
+  with:
+    node-version: '22'  # Must match local development environment
+```
+
+**C. localStorage/sessionStorage CI Errors**
+```typescript
+// ✅ CORRECT: CI-safe storage access with error handling
+if (process.env.CI) {
+  // Skip localStorage operations in CI or use mocks
+  return;
+}
+
+// Or use global setup to mock storage APIs
+export class MockStorage implements Storage {
+  private data: { [key: string]: string } = {};
+  // Implement full Storage interface
+}
+```
+
+**D. Pydantic v2 Migration Issues**
+```python
+# ❌ WRONG: Old Pydantic v1 syntax
+class Config:
+    from_attributes = True
+
+# ✅ CORRECT: Pydantic v2 syntax
+model_config = ConfigDict(from_attributes=True, protected_namespaces=())
+
+# ❌ WRONG: Deprecated field parameters
+regex="pattern", min_items=1
+
+# ✅ CORRECT: Updated field parameters  
+pattern="pattern", min_length=1
+```
+
+#### 3. Debugging Methodology
+
+**Step 1: Log Analysis**
+- Always start with job annotations (1 error indicator)
+- Look for the FIRST error occurrence, not subsequent failures
+- Check for syntax errors vs runtime errors vs timeout errors
+
+**Step 2: Pattern Recognition**
+```bash
+# Search for common error patterns:
+"SyntaxError: Invalid flags supplied to RegExp constructor"  → Playwright locator issue
+"Process completed with exit code 1"                         → General failure, check specific step
+"SecurityError: Failed to read the 'localStorage'"          → Storage access issue
+"ConnectionError"                                            → Network/timeout issue
+```
+
+**Step 3: Systematic Verification**
+```bash
+# Check file-by-file for syntax issues:
+npx tsc --noEmit tests/e2e/specs/*.ts  # TypeScript syntax check
+npm run lint                           # ESLint validation
+npm run test:e2e -- --dry-run          # Playwright syntax validation
+```
+
+#### 4. CI-Specific Configuration
+
+**Playwright CI Configuration (`playwright.ci.config.ts`)**
+```typescript
+export default defineConfig({
+  globalSetup: './global-setup.ts',    // CI environment setup
+  fullyParallel: false,                // Stability over speed in CI
+  retries: 2,                          // More retries for CI flakiness
+  timeout: 45000,                      // Extended timeouts for CI environment
+  workers: 1,                          // Single worker for stability
+  webServer: {
+    timeout: 180 * 1000,               // 3 minutes for server startup
+    reuseExistingServer: false,        // Always fresh start in CI
+  },
+})
+```
+
+#### 5. Key Files for CI Debugging
+
+**Critical Configuration Files:**
+- `.github/workflows/deploy-gcp.yml` - Main workflow configuration
+- `wenxin-moyun/tests/e2e/playwright.ci.config.ts` - CI-specific Playwright config
+- `wenxin-moyun/tests/e2e/global-setup.ts` - CI environment initialization
+- `wenxin-moyun/tests/e2e/utils/localStorage-mock.ts` - Storage API mocks
+
+**Test Files Requiring Special Attention:**
+- All E2E specs using `page.locator()` with multiple selectors
+- Any tests accessing localStorage/sessionStorage
+- Tests with complex async operations or timeouts
+
+#### 6. Monitoring & Verification
+
+**GitHub Actions Monitoring:**
+```bash
+# Monitor new runs after fixes
+gh run list --limit 5
+gh run watch [RUN_ID]
+
+# Check specific job logs
+gh run view [RUN_ID] --job [JOB_ID] --log
+```
+
+**Success Indicators:**
+- ✅ All steps complete without red X marks
+- ✅ E2E tests show "X passed" vs "X failed"  
+- ✅ No annotation errors in job summary
+- ✅ Deployment steps proceed (not skipped)
+
+#### 7. Emergency Rollback Strategy
+
+If CI remains broken after multiple attempts:
+```bash
+# Identify last working commit
+git log --oneline -10
+
+# Create rollback branch
+git checkout -b rollback-ci-fix
+git revert [COMMIT_HASH]
+git push origin rollback-ci-fix
+
+# Create emergency PR to restore stability
+```
+
+#### 8. Prevention Checklist
+
+**Before Pushing E2E Test Changes:**
+- [ ] Run `npm run test:e2e` locally (at least subset)
+- [ ] Verify no comma-separated locator patterns
+- [ ] Check Node.js version consistency
+- [ ] Test storage access in CI-like environment
+- [ ] Validate all regex patterns in locators
+
+**Before Major Dependency Updates:**
+- [ ] Check breaking changes in release notes
+- [ ] Update configuration files accordingly
+- [ ] Test in isolated environment first
+- [ ] Prepare rollback strategy
+
 ## Testing & Quality Assurance
 
 ### E2E Testing (Playwright)

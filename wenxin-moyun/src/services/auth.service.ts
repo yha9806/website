@@ -1,4 +1,5 @@
 import apiClient from './api';
+import { getItem, setItem, removeItem } from '../utils/storageUtils';
 
 export interface LoginRequest {
   username: string;
@@ -40,7 +41,7 @@ class AuthService {
     });
     
     if (response.data.access_token) {
-      localStorage.setItem('access_token', response.data.access_token);
+      setItem('access_token', response.data.access_token);
     }
     
     return response.data;
@@ -57,11 +58,11 @@ class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('access_token');
+    removeItem('access_token');
   }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('access_token');
+    return !!getItem('access_token');
   }
 }
 

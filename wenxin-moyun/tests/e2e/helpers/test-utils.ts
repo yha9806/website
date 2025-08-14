@@ -16,28 +16,41 @@ export async function simulateSlowNetwork(page: Page) {
 export async function clearLocalStorage(page: Page) {
   try {
     await page.evaluate(() => {
-      if (typeof localStorage !== 'undefined') {
-        localStorage.clear();
+      // Try to access localStorage safely
+      try {
+        if (typeof localStorage !== 'undefined' && localStorage) {
+          localStorage.clear();
+        }
+      } catch (storageError) {
+        // localStorage blocked by security policy, use window properties instead
+        console.log('localStorage blocked, using fallback storage clearing');
       }
       
-      // Also clear test-specific window properties
+      // Always clear test-specific window properties (this always works)
       (window as any).__TEST_AUTH_TOKEN__ = null;
       (window as any).__TEST_GUEST_SESSION__ = null;
       (window as any).__TEST_STORAGE__ = {};
+      (window as any).__TEST_SESSION_STORAGE__ = {};
     });
   } catch (error) {
-    // Ignore localStorage access errors in test environment
-    console.warn('Cannot access localStorage in test environment:', error);
+    // If even page.evaluate fails, just log the warning
+    console.warn('Cannot access page evaluation in test environment:', error);
   }
 }
 
 export async function setAuthToken(page: Page, token: string) {
   try {
     await page.evaluate((token) => {
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('auth_token', token);
+      // Try localStorage first, fallback to window property
+      try {
+        if (typeof localStorage !== 'undefined' && localStorage) {
+          localStorage.setItem('auth_token', token);
+        }
+      } catch (storageError) {
+        console.log('localStorage blocked, using window property for auth token');
       }
-      // Also set as test property for compatibility
+      
+      // Always set as test property for compatibility
       (window as any).__TEST_AUTH_TOKEN__ = token;
     }, token);
     
@@ -57,21 +70,28 @@ export async function setAuthToken(page: Page, token: string) {
       });
     }
   } catch (error) {
-    console.warn('Cannot access localStorage in test environment:', error);
+    console.warn('Cannot set auth token in test environment:', error);
   }
 }
 
 export async function getAuthToken(page: Page): Promise<string | null> {
   try {
     return await page.evaluate(() => {
-      if (typeof localStorage !== 'undefined') {
-        return localStorage.getItem('auth_token');
+      // Try localStorage first, fallback to window property
+      try {
+        if (typeof localStorage !== 'undefined' && localStorage) {
+          const token = localStorage.getItem('auth_token');
+          if (token) return token;
+        }
+      } catch (storageError) {
+        console.log('localStorage blocked, using window property for auth token retrieval');
       }
-      // Fallback to window property
+      
+      // Fallback to window property (always available)
       return (window as any).__TEST_AUTH_TOKEN__ || null;
     });
   } catch (error) {
-    console.warn('Cannot access localStorage in test environment:', error);
+    console.warn('Cannot get auth token in test environment:', error);
     return null;
   }
 }
@@ -86,15 +106,20 @@ export async function setGuestSession(page: Page, guestId: string) {
         evaluations: []
       };
       
-      if (typeof localStorage !== 'undefined' && localStorage) {
-        localStorage.setItem('guest_session', JSON.stringify(session));
+      // Try localStorage first, fallback to window property
+      try {
+        if (typeof localStorage !== 'undefined' && localStorage) {
+          localStorage.setItem('guest_session', JSON.stringify(session));
+        }
+      } catch (storageError) {
+        console.log('localStorage blocked, using window property for guest session');
       }
       
-      // Also set as test property for compatibility
+      // Always set as test property for compatibility
       (window as any).__TEST_GUEST_SESSION__ = session;
     }, guestId);
   } catch (error) {
-    console.warn('Cannot access localStorage in test environment:', error);
+    console.warn('Cannot set guest session in test environment:', error);
   }
 }
 
