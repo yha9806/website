@@ -150,8 +150,8 @@ export class EvaluationPage extends BasePage {
     super(page);
     // Enhanced English interface support for evaluation system
     this.newEvaluationButton = page.locator('button:has-text("新建评测"), button:has-text("开始评测"), button:has-text("New Evaluation"), button:has-text("Start Evaluation"), button:has-text("Create"), .ios-button:has-text("New"), .ios-button:has-text("Start")');
-    this.modelSelect = page.locator('select[name="model"], #model-select, select:has-option, .model-selector, .ios-select');
-    this.taskTypeSelect = page.locator('select[name="taskType"], #task-type-select, select:has(option[value*="type"]), .task-type-selector');
+    this.modelSelect = page.locator('select[name="model"], #model-select, select, .model-selector, .ios-select');
+    this.taskTypeSelect = page.locator('select[name="taskType"], #task-type-select, select, .task-type-selector');
     this.promptTextarea = page.locator('textarea[name="prompt"], textarea[placeholder*="输入"], textarea[placeholder*="Enter"], textarea[placeholder*="Type"], .prompt-input');
     this.submitButton = page.locator('button:has-text("提交"), button:has-text("开始"), button:has-text("Submit"), button:has-text("Start"), button[type="submit"], .ios-button[type="submit"]');
     this.progressBar = page.locator('.progress-bar, [role="progressbar"], .progress, .ios-progress, .evaluation-progress');
