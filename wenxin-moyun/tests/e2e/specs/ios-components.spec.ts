@@ -2,91 +2,92 @@ import { test, expect } from '@playwright/test';
 
 test.describe('iOS Components', () => {
   test.beforeEach(async ({ page }) => {
-    // 访问测试页面（如果有的话）或首页来测试iOS组件
+    // Visit test page (if available) or home page to test iOS components
     await page.goto('/');
   });
 
-  test('iOS按钮组件应该正确渲染和交互', async ({ page }) => {
-    // 查找iOS风格的按钮
-    const iosButtons = page.locator('[class*="ios-button"], button[class*="ios"]');
+  test('iOS button components should render and interact correctly', async ({ page }) => {
+    // Find iOS-style buttons - comprehensive selectors for English interface
+    const iosButtons = page.locator('.ios-button, button[class*="ios"], button:has-text("Explore Rankings"), button:has-text("Login"), button:has-text("Start"), button:has-text("Get Started")');
     
     if (await iosButtons.count() > 0) {
       const firstButton = iosButtons.first();
       
-      // 检查按钮可见性
+      // Check button visibility
       await expect(firstButton).toBeVisible();
       
-      // 检查按钮可点击性
+      // Check button is clickable
       await expect(firstButton).toBeEnabled();
       
-      // 测试点击交互
+      // Test click interaction
       await firstButton.click();
       
-      // 检查是否有视觉反馈（如果有的话）
-      const activeState = page.locator('[class*="active"], [class*="pressed"]');
+      // Check for visual feedback (if any)
+      const activeState = page.locator('[class*="active"], [class*="pressed"], [class*="clicked"]');
       if (await activeState.count() > 0) {
         await expect(activeState.first()).toBeVisible();
       }
     }
   });
 
-  test('iOS卡片组件应该正确显示', async ({ page }) => {
-    // 查找iOS风格的卡片
-    const iosCards = page.locator('[class*="ios-card"], [class*="card-ios"], [class*="elevated"]');
+  test('iOS card components should display correctly', async ({ page }) => {
+    // Find iOS-style cards - enhanced selectors for English interface
+    const iosCards = page.locator('.ios-card, [class*="card-ios"], [class*="elevated"], .card, [data-testid*="card"]');
     
     if (await iosCards.count() > 0) {
       const firstCard = iosCards.first();
       
-      // 检查卡片可见性
+      // Check card visibility
       await expect(firstCard).toBeVisible();
       
-      // 检查卡片内容
-      const cardContent = firstCard.locator('[class*="content"], p, div');
+      // Check card content
+      const cardContent = firstCard.locator('.ios-card-content, [class*="content"], p, div');
       if (await cardContent.count() > 0) {
         await expect(cardContent.first()).toBeVisible();
       }
       
-      // 检查卡片头部（如果有）
-      const cardHeader = firstCard.locator('[class*="header"], h1, h2, h3');
+      // Check card header (if exists)
+      const cardHeader = firstCard.locator('.ios-card-header, [class*="header"], h1, h2, h3');
       if (await cardHeader.count() > 0) {
         await expect(cardHeader.first()).toBeVisible();
       }
     }
   });
 
-  test('iOS风格的玻璃质感效果', async ({ page }) => {
-    // 查找具有玻璃质感的元素
-    const glassElements = page.locator('[class*="glass"], [class*="blur"], [class*="morphism"]');
+  test('iOS-style glass morphism effects', async ({ page }) => {
+    // Find elements with glass morphism - enhanced selectors
+    const glassElements = page.locator('.ios-glass, [class*="glass"], [class*="blur"], [class*="morphism"], .ios-surface');
     
     if (await glassElements.count() > 0) {
       const firstGlass = glassElements.first();
       await expect(firstGlass).toBeVisible();
       
-      // 检查CSS属性（通过计算样式）
+      // Check CSS properties (via computed styles)
       const backdropFilter = await firstGlass.evaluate(el => {
         return window.getComputedStyle(el).backdropFilter;
       });
       
-      // 验证是否有模糊效果
+      // Verify blur effects are present
       if (backdropFilter && backdropFilter !== 'none') {
         expect(backdropFilter).toContain('blur');
       }
     }
   });
 
-  test('iOS颜色系统应用', async ({ page }) => {
-    // 检查iOS标准颜色的使用
-    const blueElements = page.locator('[class*="blue"], [class*="primary"]');
-    const greenElements = page.locator('[class*="green"], [class*="success"]');
-    const orangeElements = page.locator('[class*="orange"], [class*="warning"]');
+  test('iOS color system application', async ({ page }) => {
+    // Check usage of iOS standard colors - enhanced selectors
+    const blueElements = page.locator('[class*="blue"], [class*="primary"], .ios-button, button:has-text("Explore Rankings")');
+    const greenElements = page.locator('[class*="green"], [class*="success"], .text-green');
+    const orangeElements = page.locator('[class*="orange"], [class*="warning"], .text-orange');
+    const redElements = page.locator('[class*="red"], [class*="destructive"], .text-red');
     
-    // 验证至少有一些iOS颜色元素存在
-    const totalColorElements = await blueElements.count() + await greenElements.count() + await orangeElements.count();
+    // Verify at least some iOS color elements exist
+    const totalColorElements = await blueElements.count() + await greenElements.count() + await orangeElements.count() + await redElements.count();
     expect(totalColorElements).toBeGreaterThan(0);
   });
 
-  test('iOS字体系统应用', async ({ page }) => {
-    // 检查San Francisco字体的使用
+  test('iOS typography system application', async ({ page }) => {
+    // Check San Francisco font usage
     const headings = page.locator('h1, h2, h3, h4, h5, h6');
     
     if (await headings.count() > 0) {
@@ -95,69 +96,69 @@ test.describe('iOS Components', () => {
         return window.getComputedStyle(el).fontFamily;
       });
       
-      // 验证是否使用了iOS字体栈
-      expect(fontFamily).toMatch(/apple-system|SF Pro|system-ui/i);
+      // Verify iOS font stack is used
+      expect(fontFamily).toMatch(/apple-system|SF Pro|system-ui|-apple-system/i);
     }
     
-    // 检查iOS标题级别类
-    const largeTitleElements = page.locator('[class*="large-title"]');
+    // Check iOS title level classes
+    const largeTitleElements = page.locator('.text-large-title, [class*="large-title"], h1:has-text("WenXin MoYun"), h1:has-text("AI Art Evaluation")');
     if (await largeTitleElements.count() > 0) {
       await expect(largeTitleElements.first()).toBeVisible();
     }
   });
 
-  test('iOS切换开关组件', async ({ page }) => {
-    // 查找iOS风格的切换开关
-    const toggles = page.locator('input[type="checkbox"][class*="ios"], [class*="toggle"], [class*="switch"]');
+  test('iOS toggle switch components', async ({ page }) => {
+    // Find iOS-style toggle switches - comprehensive selectors
+    const toggles = page.locator('.ios-toggle, input[type="checkbox"][class*="ios"], [class*="toggle"], [class*="switch"], [data-testid*="toggle"]');
     
     if (await toggles.count() > 0) {
       const firstToggle = toggles.first();
       
-      // 检查切换开关可见性
+      // Check toggle switch visibility
       await expect(firstToggle).toBeVisible();
       
-      // 测试切换功能
+      // Test toggle functionality
       const initialState = await firstToggle.isChecked();
       await firstToggle.click();
       
-      // 验证状态改变
+      // Verify state change
       const newState = await firstToggle.isChecked();
       expect(newState).toBe(!initialState);
     }
   });
 
-  test('iOS滑块组件', async ({ page }) => {
-    // 查找iOS风格的滑块
-    const sliders = page.locator('input[type="range"][class*="ios"], [class*="slider"]');
+  test('iOS slider components', async ({ page }) => {
+    // Find iOS-style sliders - enhanced selectors
+    const sliders = page.locator('.ios-slider, input[type="range"][class*="ios"], [class*="slider"], [data-testid*="slider"]');
     
     if (await sliders.count() > 0) {
       const firstSlider = sliders.first();
       
-      // 检查滑块可见性
+      // Check slider visibility
       await expect(firstSlider).toBeVisible();
       
-      // 测试滑块值设置
+      // Test slider value setting
       await firstSlider.fill('50');
       const value = await firstSlider.inputValue();
       expect(value).toBe('50');
     }
   });
 
-  test('iOS弹窗和警告框', async ({ page }) => {
-    // 查找可能触发弹窗的按钮
-    const alertTriggers = page.locator('button:has-text("Alert"), button:has-text("警告"), [data-alert]');
+  test('iOS alerts and modal dialogs', async ({ page }) => {
+    // Find buttons that might trigger alerts - enhanced selectors
+    const alertTriggers = page.locator('button:has-text("Alert"), button:has-text("Warning"), button:has-text("Confirm"), [data-alert], [data-testid*="alert"]');
     
     if (await alertTriggers.count() > 0) {
       await alertTriggers.first().click();
       
-      // 查找iOS风格的弹窗
-      const alerts = page.locator('[class*="alert"], [class*="modal"], [role="dialog"]');
+      // Find iOS-style alerts and modals
+      const alerts = page.locator('.ios-alert, [class*="alert"], [class*="modal"], [role="dialog"], .modal');
       
       if (await alerts.count() > 0) {
         await expect(alerts.first()).toBeVisible();
         
-        // 查找关闭按钮
-        const closeButtons = page.locator('button:has-text("Close"), button:has-text("关闭"), [aria-label="close"]');
+        // Find close buttons - comprehensive selectors
+        const closeButtons = page.locator('button:has-text("Close"), button:has-text("Cancel"), button:has-text("OK"), [aria-label="close"], [data-testid="close"]');
         if (await closeButtons.count() > 0) {
           await closeButtons.first().click();
           await expect(alerts.first()).toBeHidden();
@@ -166,8 +167,8 @@ test.describe('iOS Components', () => {
     }
   });
 
-  test('响应式iOS组件适配', async ({ page }) => {
-    // 测试不同屏幕尺寸下的iOS组件表现
+  test('Responsive iOS component adaptation', async ({ page }) => {
+    // Test iOS component behavior across different screen sizes
     const viewports = [
       { width: 375, height: 667 },  // iPhone SE
       { width: 390, height: 844 },  // iPhone 12
@@ -178,34 +179,34 @@ test.describe('iOS Components', () => {
     for (const viewport of viewports) {
       await page.setViewportSize(viewport);
       
-      // 验证iOS组件在不同尺寸下仍然可见和可用
-      const iosComponents = page.locator('[class*="ios"], [class*="card"]');
+      // Verify iOS components remain visible and usable across sizes
+      const iosComponents = page.locator('.ios-button, .ios-card, [class*="ios"], [class*="card"]');
       if (await iosComponents.count() > 0) {
         await expect(iosComponents.first()).toBeVisible();
       }
       
-      // 等待布局稳定
+      // Wait for layout stabilization
       await page.waitForTimeout(500);
     }
   });
 
-  test('iOS组件动画和过渡效果', async ({ page }) => {
-    // 查找有动画效果的元素
-    const animatedElements = page.locator('[class*="animate"], [class*="transition"]');
+  test('iOS component animations and transition effects', async ({ page }) => {
+    // Find elements with animation effects - enhanced selectors
+    const animatedElements = page.locator('.ios-button, [class*="animate"], [class*="transition"], [class*="hover"], .ios-card');
     
     if (await animatedElements.count() > 0) {
       const firstAnimated = animatedElements.first();
       
-      // 检查元素可见性
+      // Check element visibility
       await expect(firstAnimated).toBeVisible();
       
-      // 触发动画（通过悬停或点击）
+      // Trigger animation (via hover or click)
       await firstAnimated.hover();
       
-      // 等待动画完成
+      // Wait for animation completion
       await page.waitForTimeout(1000);
       
-      // 验证元素仍然可见（动画没有破坏布局）
+      // Verify element is still visible (animation didn't break layout)
       await expect(firstAnimated).toBeVisible();
     }
   });

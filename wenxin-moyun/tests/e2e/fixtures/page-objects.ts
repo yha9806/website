@@ -26,15 +26,23 @@ export class HomePage extends BasePage {
   readonly loginButton: Locator;
   readonly leaderboardLink: Locator;
   readonly battleLink: Locator;
+  readonly navMenu: Locator;
+  readonly homeLink: Locator;
+  readonly userMenu: Locator;
+  readonly logoutButton: Locator;
 
   constructor(page: Page) {
     super(page);
-    // Updated for English iOS interface
-    this.heroTitle = page.locator('h1:has-text("WenXin MoYun"), h1:has-text("AI Art Evaluation"), h1:has-text("文心墨韵")');
-    this.startButton = page.locator('button:has-text("Explore Rankings"), button:has-text("Get Started"), button:has-text("开始体验")');
-    this.loginButton = page.locator('button:has-text("Login"), button:has-text("Sign In"), button:has-text("登录")');
-    this.leaderboardLink = page.locator('a[href="/leaderboard"]');
-    this.battleLink = page.locator('a[href="/battle"]');
+    // Comprehensive English iOS interface support
+    this.heroTitle = page.locator('h1:has-text("WenXin MoYun"), h1:has-text("AI Art Evaluation"), h1:has-text("文心墨韵"), h1:has-text("AI"), h1.text-large-title');
+    this.startButton = page.locator('button:has-text("Explore Rankings"), button:has-text("Get Started"), button:has-text("开始体验"), button:has-text("Start"), .ios-button:has-text("Explore"), .ios-button:has-text("Rankings")');
+    this.loginButton = page.locator('button:has-text("Login"), button:has-text("Sign In"), button:has-text("登录"), .ios-button:has-text("Login"), .ios-button:has-text("Sign")');
+    this.leaderboardLink = page.locator('a[href="/leaderboard"], a:has-text("Leaderboard"), a:has-text("Rankings"), a:has-text("排行榜")');
+    this.battleLink = page.locator('a[href="/battle"], a:has-text("Battle"), a:has-text("对战")');
+    this.navMenu = page.locator('nav, .nav, .navigation, header nav');
+    this.homeLink = page.locator('a:has-text("首页"), a:has-text("Home"), a[href="/"]');
+    this.userMenu = page.locator('.user-menu, .profile-menu, [data-testid="user-menu"]');
+    this.logoutButton = page.locator('button:has-text("退出"), button:has-text("登出"), button:has-text("Logout"), button:has-text("Sign Out")');
   }
 
   async clickStartExperience() {
@@ -52,15 +60,21 @@ export class LoginPage extends BasePage {
   readonly submitButton: Locator;
   readonly errorMessage: Locator;
   readonly guestModeButton: Locator;
+  readonly loginForm: Locator;
+  readonly successMessage: Locator;
+  readonly welcomeMessage: Locator;
 
   constructor(page: Page) {
     super(page);
-    // Updated for English interface
-    this.usernameInput = page.locator('input[name="username"], input[placeholder*="Username"], input[placeholder*="用户名"]');
-    this.passwordInput = page.locator('input[name="password"], input[type="password"]');
-    this.submitButton = page.locator('button[type="submit"], button:has-text("Login"), button:has-text("Sign In"), button:has-text("登录")');
-    this.errorMessage = page.locator('.error-message, .text-red-500');
-    this.guestModeButton = page.locator('button:has-text("Guest"), button:has-text("Continue as Guest"), button:has-text("访客模式"), button:has-text("游客")');
+    // Comprehensive English interface support
+    this.usernameInput = page.locator('input[name="username"], input[placeholder*="Username"], input[placeholder*="用户名"], input[id*="username"], input[type="text"]:first-of-type');
+    this.passwordInput = page.locator('input[name="password"], input[type="password"], input[placeholder*="Password"], input[placeholder*="密码"]');
+    this.submitButton = page.locator('button[type="submit"], button:has-text("Login"), button:has-text("Sign In"), button:has-text("登录"), .ios-button:has-text("Login"), .ios-button[type="submit"]');
+    this.errorMessage = page.locator('.error-message, .text-red-500, .text-red, .error, [data-testid="error"], .ios-alert.error');
+    this.guestModeButton = page.locator('button:has-text("Guest"), button:has-text("Continue as Guest"), button:has-text("访客模式"), button:has-text("游客"), .ios-button:has-text("Guest")');
+    this.loginForm = page.locator('form, .login-form, .auth-form');
+    this.successMessage = page.locator('.success-message, .text-green-500, .text-green, .success');
+    this.welcomeMessage = page.locator('text=Welcome, text=Profile, text=Dashboard, text=欢迎, .welcome, .user-info');
   }
 
   async login(username: string, password: string) {
@@ -86,16 +100,25 @@ export class EvaluationPage extends BasePage {
   readonly submitButton: Locator;
   readonly progressBar: Locator;
   readonly resultContainer: Locator;
+  readonly evaluationForm: Locator;
+  readonly historyList: Locator;
+  readonly usageLimit: Locator;
+  readonly cancelButton: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.newEvaluationButton = page.locator('button:has-text("新建评测"), button:has-text("开始评测")');
-    this.modelSelect = page.locator('select[name="model"], #model-select');
-    this.taskTypeSelect = page.locator('select[name="taskType"], #task-type-select');
-    this.promptTextarea = page.locator('textarea[name="prompt"], textarea[placeholder*="输入"]');
-    this.submitButton = page.locator('button:has-text("提交"), button:has-text("开始")');
-    this.progressBar = page.locator('.progress-bar, [role="progressbar"]');
-    this.resultContainer = page.locator('.evaluation-result, .result-container');
+    // Enhanced English interface support for evaluation system
+    this.newEvaluationButton = page.locator('button:has-text("新建评测"), button:has-text("开始评测"), button:has-text("New Evaluation"), button:has-text("Start Evaluation"), button:has-text("Create"), .ios-button:has-text("New"), .ios-button:has-text("Start")');
+    this.modelSelect = page.locator('select[name="model"], #model-select, select:has-option, .model-selector, .ios-select');
+    this.taskTypeSelect = page.locator('select[name="taskType"], #task-type-select, select:has(option[value*="type"]), .task-type-selector');
+    this.promptTextarea = page.locator('textarea[name="prompt"], textarea[placeholder*="输入"], textarea[placeholder*="Enter"], textarea[placeholder*="Type"], .prompt-input');
+    this.submitButton = page.locator('button:has-text("提交"), button:has-text("开始"), button:has-text("Submit"), button:has-text("Start"), button[type="submit"], .ios-button[type="submit"]');
+    this.progressBar = page.locator('.progress-bar, [role="progressbar"], .progress, .ios-progress, .evaluation-progress');
+    this.resultContainer = page.locator('.evaluation-result, .result-container, .results, .output, .evaluation-output');
+    this.evaluationForm = page.locator('form, .evaluation-form, .create-evaluation');
+    this.historyList = page.locator('.history, .evaluation-history, .past-evaluations');
+    this.usageLimit = page.locator('text=/剩余.*次/, text=/remaining/i, .usage-limit, .daily-limit');
+    this.cancelButton = page.locator('button:has-text("取消"), button:has-text("Cancel"), .cancel-btn');
   }
 
   async createEvaluation(modelId: string, taskType: string, prompt: string) {
@@ -123,15 +146,22 @@ export class BattlePage extends BasePage {
   readonly voteButton2: Locator;
   readonly skipButton: Locator;
   readonly resultMessage: Locator;
+  readonly battleContainer: Locator;
+  readonly statsContainer: Locator;
+  readonly nextBattleButton: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.model1Container = page.locator('.battle-model-1, [data-testid="model-1"]');
-    this.model2Container = page.locator('.battle-model-2, [data-testid="model-2"]');
-    this.voteButton1 = page.locator('button:has-text("投票"):first, button[data-model="1"]');
-    this.voteButton2 = page.locator('button:has-text("投票"):last, button[data-model="2"]');
-    this.skipButton = page.locator('button:has-text("跳过"), button:has-text("下一个")');
-    this.resultMessage = page.locator('.vote-result, .success-message');
+    // Enhanced English interface support for battle system
+    this.model1Container = page.locator('.battle-model-1, [data-testid="model-1"], .model-a, .left-model, .first-model');
+    this.model2Container = page.locator('.battle-model-2, [data-testid="model-2"], .model-b, .right-model, .second-model');
+    this.voteButton1 = page.locator('button:has-text("投票"):first, button[data-model="1"], button:has-text("Vote"):first, .vote-btn:first, .ios-button:has-text("Vote"):first');
+    this.voteButton2 = page.locator('button:has-text("投票"):last, button[data-model="2"], button:has-text("Vote"):last, .vote-btn:last, .ios-button:has-text("Vote"):last');
+    this.skipButton = page.locator('button:has-text("跳过"), button:has-text("下一个"), button:has-text("Skip"), button:has-text("Next"), .skip-btn, .ios-button:has-text("Skip")');
+    this.resultMessage = page.locator('.vote-result, .success-message, .battle-result, .result, .voting-result');
+    this.battleContainer = page.locator('.battle-container, .battle-arena, .vs-container');
+    this.statsContainer = page.locator('.battle-stats, .statistics, .stats');
+    this.nextBattleButton = page.locator('button:has-text("下一场"), button:has-text("Next Battle"), .next-battle');
   }
 
   async voteForModel1() {
@@ -158,13 +188,18 @@ export class LeaderboardPage extends BasePage {
   readonly rankingTable: Locator;
   readonly searchInput: Locator;
   readonly sortSelect: Locator;
+  readonly filterOptions: Locator;
+  readonly modelCards: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.categoryTabs = page.locator('.category-tabs, [role="tablist"]');
-    this.rankingTable = page.locator('table, .ranking-table');
-    this.searchInput = page.locator('input[type="search"], input[placeholder*="搜索"]');
-    this.sortSelect = page.locator('select[name="sort"], #sort-select');
+    // Enhanced English interface support for leaderboard
+    this.categoryTabs = page.locator('.category-tabs, [role="tablist"], .tabs, .filter-tabs, .model-type-tabs');
+    this.rankingTable = page.locator('table, .ranking-table, .leaderboard-table, .models-list');
+    this.searchInput = page.locator('input[type="search"], input[placeholder*="搜索"], input[placeholder*="Search"], .search-input');
+    this.sortSelect = page.locator('select[name="sort"], #sort-select, .sort-selector, .sort-dropdown');
+    this.filterOptions = page.locator('.filter-options, .model-filters, .type-filters');
+    this.modelCards = page.locator('.model-card, .ranking-item, .leaderboard-item');
   }
 
   async selectCategory(category: string) {

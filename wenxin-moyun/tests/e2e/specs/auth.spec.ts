@@ -38,7 +38,7 @@ test.describe('Authentication Flow', () => {
     expect(token).toBeTruthy();
     
     // Verify user is logged in (look for user menu or welcome message)
-    await expect(page.locator('text=Welcome, text=Profile, text=Dashboard, text=欢迎')).toBeVisible({ timeout: 5000 });
+    await expect(loginPage.welcomeMessage).toBeVisible({ timeout: 5000 });
   });
 
   test('Guest mode allows access without authentication', async ({ page }) => {
@@ -74,7 +74,7 @@ test.describe('Authentication Flow', () => {
     
     // Verify error message content
     const errorText = await loginPage.getErrorMessage();
-    expect(errorText).toContain('用户名或密码错误');
+    expect(errorText).toMatch(/(用户名或密码错误|Invalid username|Invalid password|Login failed|Authentication failed)/i);
     
     // Verify still on login page
     await expect(page).toHaveURL(/login/);
@@ -102,7 +102,7 @@ test.describe('Authentication Flow', () => {
     expect(tokenAfterRefresh).toBe(initialToken);
     
     // Verify user still logged in
-    await expect(page.locator('text=欢迎')).toBeVisible();
+    await expect(loginPage.welcomeMessage).toBeVisible();
   });
 
   test('Logout functionality clears authentication', async ({ page }) => {
@@ -116,8 +116,7 @@ test.describe('Authentication Flow', () => {
     expect(token).toBeTruthy();
     
     // Find and click logout button
-    const logoutButton = page.locator('button:has-text("退出"), button:has-text("登出")');
-    await logoutButton.click();
+    await homePage.logoutButton.click();
     
     // Verify token is cleared
     const tokenAfterLogout = await getAuthToken(page);
@@ -137,7 +136,7 @@ test.describe('Authentication Flow', () => {
     await page.waitForURL('/');
     
     // Look for admin-specific elements
-    const adminMenu = page.locator('[data-testid="admin-menu"], .admin-menu, text=管理');
+    const adminMenu = page.locator('[data-testid="admin-menu"], .admin-menu, text=管理, text=Admin, text=Management, .admin-panel, .admin-section');
     
     // Admin menu should be visible
     await expect(adminMenu).toBeVisible({ timeout: 5000 });

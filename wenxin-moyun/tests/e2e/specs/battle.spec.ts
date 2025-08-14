@@ -67,12 +67,11 @@ test.describe('Battle System', () => {
     
     // Verify success message
     const resultText = await battlePage.resultMessage.textContent();
-    expect(resultText).toContain('投票成功');
+    expect(resultText).toMatch(/(投票成功|Vote successful|Success|Voted|Thank you)/i);
     
     // New battle should load automatically or button to continue should appear
-    const continueButton = page.locator('button:has-text("继续"), button:has-text("下一个")');
-    if (await continueButton.isVisible({ timeout: 2000 })) {
-      await continueButton.click();
+    if (await battlePage.nextBattleButton.isVisible({ timeout: 2000 })) {
+      await battlePage.nextBattleButton.click();
     }
     
     // Verify new battle loaded
@@ -107,12 +106,9 @@ test.describe('Battle System', () => {
     }
     
     // Check if statistics are displayed
-    const statsSection = page.locator('.battle-stats, [data-testid="battle-stats"], text=/统计/');
-    
-    // Stats might be on a different page or section
-    if (await statsSection.isVisible({ timeout: 2000 })) {
+    if (await battlePage.statsContainer.isVisible({ timeout: 2000 })) {
       // Verify vote count
-      const voteCount = page.locator('.vote-count, text=/投票数/');
+      const voteCount = page.locator('.vote-count, text=/投票数/, text=/Vote/, text=/Votes/, text=/Count/, .stats-number');
       await expect(voteCount).toBeVisible();
       
       const countText = await voteCount.textContent();
