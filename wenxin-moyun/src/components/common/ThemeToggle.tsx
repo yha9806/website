@@ -55,7 +55,6 @@ export function ThemeSwitch() {
       onChange={() => toggleTheme()}
       color="primary"
       size="sm"
-      showLabel={false}
       leftIcon={<Sun className="w-3 h-3 text-amber-500" />}
       rightIcon={<Moon className="w-3 h-3 text-blue-400" />}
     />

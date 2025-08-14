@@ -22,7 +22,7 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h3 className="text-h3 mb-4 flex items-center gap-2">
-              <EmojiIcon category="navigation" name="forward" size="sm" />
+              <EmojiIcon category="navigation" name="info" size="sm" />
               Quick Links
             </h3>
             <div className="space-y-2">
