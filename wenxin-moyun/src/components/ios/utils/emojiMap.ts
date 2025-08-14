@@ -206,13 +206,8 @@ export async function loadEmojiSvg(emoji: string): Promise<string> {
     return emojiSvgPaths[emoji];
   }
   
-  // This will be implemented to fetch from lazy-loaded chunks
-  try {
-    const module = await import(`../../../assets/emojis/lazy/${emoji}.svg`);
-    emojiSvgPaths[emoji] = module.default;
-    return module.default;
-  } catch (error) {
-    console.warn(`Failed to load emoji SVG for ${emoji}`, error);
-    return emoji; // Fallback to Unicode emoji
-  }
+  // TODO: Implement SVG loading when emoji assets are available
+  // For now, return Unicode emoji directly to avoid build errors
+  console.debug(`Using Unicode fallback for emoji: ${emoji}`);
+  return emoji; // Fallback to Unicode emoji
 }
