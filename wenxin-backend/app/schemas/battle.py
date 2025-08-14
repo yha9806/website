@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 from datetime import datetime
 from enum import Enum
@@ -28,6 +28,8 @@ class VoteChoice(str, Enum):
 
 
 class BattleCreate(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+    
     model_a_id: str
     model_b_id: str
     task_type: TaskType
@@ -48,6 +50,8 @@ class BattleVoteResponse(BaseModel):
 
 
 class BattleResponse(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+    
     id: str
     model_a: AIModelResponse
     model_b: AIModelResponse
@@ -61,8 +65,7 @@ class BattleResponse(BaseModel):
     created_at: datetime
     completed_at: Optional[datetime] = None
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True, protected_namespaces=())
 
 
 class BattleListResponse(BaseModel):

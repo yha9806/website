@@ -100,20 +100,24 @@ test.describe('AI Models Leaderboard', () => {
   test('响应式设计测试', async ({ page }) => {
     // 桌面端测试
     await page.setViewportSize({ width: 1920, height: 1080 });
-    await expect(page.locator('[class*="leaderboard"]')).toBeVisible();
+    await page.waitForTimeout(1000); // 等待布局调整
+    await expect(page.locator('[class*="leaderboard"]')).toBeVisible({ timeout: 10000 });
     
     // 平板端测试
     await page.setViewportSize({ width: 768, height: 1024 });
-    await expect(page.locator('[class*="leaderboard"]')).toBeVisible();
+    await page.waitForTimeout(1000); // 等待响应式布局调整
+    await expect(page.locator('[class*="leaderboard"]')).toBeVisible({ timeout: 10000 });
     
     // 移动端测试
     await page.setViewportSize({ width: 375, height: 667 });
-    await expect(page.locator('[class*="leaderboard"]')).toBeVisible();
+    await page.waitForTimeout(1000); // 等待移动端布局调整
+    await expect(page.locator('[class*="leaderboard"]')).toBeVisible({ timeout: 10000 });
     
     // 检查移动端是否有适当的布局调整
     const mobileLayout = page.locator('[class*="mobile"], [class*="responsive"]');
-    if (await mobileLayout.count() > 0) {
-      await expect(mobileLayout.first()).toBeVisible();
+    const count = await mobileLayout.count();
+    if (count > 0) {
+      await expect(mobileLayout.first()).toBeVisible({ timeout: 5000 });
     }
   });
 

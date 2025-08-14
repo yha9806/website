@@ -3,7 +3,7 @@ Benchmark system Pydantic schemas
 """
 from typing import List, Dict, Any, Optional
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 from app.models.benchmark_suite import BenchmarkStatus
 
@@ -14,7 +14,7 @@ class BenchmarkSuiteBase(BaseModel):
     description: Optional[str] = None
     version: str = Field(default="1.0", max_length=20)
     task_type: str = Field(..., max_length=50)
-    test_cases: List[Dict[str, Any]] = Field(..., min_items=1)
+    test_cases: List[Dict[str, Any]] = Field(..., min_length=1)
     evaluation_criteria: Dict[str, Any]
     difficulty_level: str = Field(default="medium", max_length=20)
     auto_run: bool = Field(default=False)
@@ -47,8 +47,7 @@ class BenchmarkSuiteResponse(BenchmarkSuiteBase):
     created_at: datetime
     updated_at: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class BenchmarkRunBase(BaseModel):
@@ -83,8 +82,7 @@ class BenchmarkRunResponse(BenchmarkRunBase):
     percentile: Optional[float] = None
     environment_info: Dict[str, Any] = {}
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class RealTimeRankingResponse(BaseModel):

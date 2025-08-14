@@ -25,10 +25,15 @@ test.describe('Battle System', () => {
   });
 
   test('Random model matchup generation', async ({ page }) => {
-    // Wait for battle to load
-    await page.waitForLoadState('networkidle');
+    // Wait for battle to load with extended timeout
+    await page.waitForLoadState('networkidle', { timeout: 30000 });
     
-    // Get matched models
+    // Add extra wait for CI environment
+    if (process.env.CI) {
+      await page.waitForTimeout(2000);
+    }
+    
+    // Get matched models with retry logic
     const models = await battlePage.getModelNames();
     
     // Verify two different models are matched

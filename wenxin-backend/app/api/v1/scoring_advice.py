@@ -105,7 +105,7 @@ async def get_user_scoring_pattern(
 @router.get("/quick-tips/{task_type}")
 async def get_quick_tips(
     task_type: str,
-    user_level: str = Query('beginner', regex='^(beginner|intermediate|advanced)$'),
+    user_level: str = Query('beginner', pattern='^(beginner|intermediate|advanced)$'),
     db: AsyncSession = Depends(get_db)
 ) -> Any:
     """Get quick scoring tips based on task type and user level"""

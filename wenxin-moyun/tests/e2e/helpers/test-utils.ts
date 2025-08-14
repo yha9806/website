@@ -33,9 +33,29 @@ export async function clearLocalStorage(page: Page) {
 }
 
 export async function setAuthToken(page: Page, token: string) {
-  // Skip localStorage operations in CI environment completely
+  // In CI environment, mock the authentication state instead
   if (process.env.CI) {
-    console.log('CI environment detected: skipping auth token localStorage operation');
+    console.log('CI environment detected: mocking auth token state');
+    
+    // Mock the auth API responses
+    await page.route('**/api/v1/auth/me', route => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          id: 'test-user-id',
+          username: 'test-user',
+          email: 'test@example.com',
+          role: 'user'
+        })
+      });
+    });
+    
+    // Add auth token to window object for client-side use
+    await page.evaluate((token) => {
+      (window as any).__TEST_AUTH_TOKEN__ = token;
+    }, token);
+    
     return;
   }
   
@@ -51,10 +71,13 @@ export async function setAuthToken(page: Page, token: string) {
 }
 
 export async function getAuthToken(page: Page): Promise<string | null> {
-  // Skip localStorage operations in CI environment completely
+  // In CI environment, return mock token if set
   if (process.env.CI) {
-    console.log('CI environment detected: returning null for auth token');
-    return null;
+    console.log('CI environment detected: returning mock auth token');
+    const mockToken = await page.evaluate(() => {
+      return (window as any).__TEST_AUTH_TOKEN__ || null;
+    });
+    return mockToken;
   }
   
   try {

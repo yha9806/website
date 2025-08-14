@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List, Dict
 from uuid import UUID
 from datetime import datetime
@@ -42,6 +42,8 @@ class AIModelUpdate(BaseModel):
 
 
 class AIModel(AIModelBase):
+    model_config = ConfigDict(from_attributes=True, protected_namespaces=())
+    
     id: UUID
     overall_score: Optional[float] = None  # Allow NULL for image models
     metrics: Optional[ModelMetrics] = None
@@ -49,12 +51,11 @@ class AIModel(AIModelBase):
     is_verified: bool
     created_at: datetime
     updated_at: Optional[datetime]
-    
-    class Config:
-        from_attributes = True
 
 
 class AIModelResponse(AIModelBase):
+    model_config = ConfigDict(from_attributes=True, protected_namespaces=())
+    
     id: str
     overall_score: Optional[float] = None  # Allow NULL for image models
     metrics: Optional[ModelMetrics] = None
@@ -76,9 +77,6 @@ class AIModelResponse(AIModelBase):
     model_tier: Optional[str] = None  # flagship, professional, efficient, lightweight
     llm_rank: Optional[int] = None
     image_rank: Optional[int] = None
-    
-    class Config:
-        from_attributes = True
 
 
 class AIModelWithStats(AIModel):
