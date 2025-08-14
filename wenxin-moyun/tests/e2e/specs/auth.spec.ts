@@ -15,6 +15,64 @@ test.describe('Authentication Flow', () => {
   test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
     loginPage = new LoginPage(page);
+    
+    // Mock authentication API endpoints
+    await page.route('**/api/v1/auth/login', route => {
+      const postData = route.request().postData();
+      const params = new URLSearchParams(postData || '');
+      const username = params.get('username');
+      const password = params.get('password');
+      
+      // Check credentials
+      if ((username === 'demo' && password === 'demo123') || 
+          (username === 'admin' && password === 'admin123')) {
+        route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            access_token: `mock-jwt-token-${Date.now()}`,
+            token_type: 'bearer'
+          })
+        });
+      } else {
+        route.fulfill({
+          status: 401,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            detail: 'Invalid username or password'
+          })
+        });
+      }
+    });
+    
+    // Mock user profile endpoint
+    await page.route('**/api/v1/auth/me', route => {
+      const authHeader = route.request().headers()['authorization'];
+      if (authHeader && authHeader.startsWith('Bearer mock-jwt-token')) {
+        route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            id: 'test-user-id',
+            username: 'demo',
+            email: 'demo@example.com',
+            full_name: 'Demo User',
+            is_active: true,
+            is_superuser: false,
+            created_at: new Date().toISOString()
+          })
+        });
+      } else {
+        route.fulfill({
+          status: 401,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            detail: 'Could not validate credentials'
+          })
+        });
+      }
+    });
+    
     await clearLocalStorage(page);
     await page.goto('/');
   });

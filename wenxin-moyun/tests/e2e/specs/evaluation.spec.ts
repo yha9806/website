@@ -16,6 +16,66 @@ test.describe('Evaluation System', () => {
     evaluationPage = new EvaluationPage(page);
     homePage = new HomePage(page);
     
+    // Mock evaluation API endpoints
+    await page.route('**/api/v1/evaluations', route => {
+      if (route.request().method() === 'POST') {
+        route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            id: `eval-${Date.now()}`,
+            status: 'processing',
+            progress: 0,
+            task_type: 'poetry',
+            model_id: 'test-model',
+            prompt: 'Test prompt',
+            created_at: new Date().toISOString()
+          })
+        });
+      } else {
+        route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify([])
+        });
+      }
+    });
+    
+    // Mock evaluation progress endpoint
+    await page.route('**/api/v1/evaluations/*/progress', route => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          progress: 100,
+          status: 'completed',
+          result: {
+            overall_score: 85.5,
+            dimensions: {
+              rhythm: 88,
+              composition: 82,
+              narrative: 87,
+              emotion: 84,
+              creativity: 89,
+              cultural: 83
+            }
+          }
+        })
+      });
+    });
+    
+    // Mock models endpoint
+    await page.route('**/api/v1/models', route => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify([
+          { id: 'test-model-1', name: 'Test Model 1', provider: 'Test Provider' },
+          { id: 'test-model-2', name: 'Test Model 2', provider: 'Test Provider' }
+        ])
+      });
+    });
+    
     // Setup guest session for testing
     await setGuestSession(page, 'test-guest-eval');
     await page.goto('/evaluations');

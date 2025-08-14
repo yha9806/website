@@ -15,6 +15,66 @@ test.describe('Battle System', () => {
     battlePage = new BattlePage(page);
     homePage = new HomePage(page);
     
+    // Mock battle API endpoints
+    await page.route('**/api/v1/battles/random', route => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          id: `battle-${Date.now()}`,
+          model1: {
+            id: 'test-gpt-4',
+            name: 'GPT-4',
+            provider: 'OpenAI'
+          },
+          model2: {
+            id: 'test-claude-3',
+            name: 'Claude-3',
+            provider: 'Anthropic'
+          },
+          status: 'active',
+          votes: { model1: 0, model2: 0 }
+        })
+      });
+    });
+    
+    // Mock vote endpoint
+    await page.route('**/api/v1/battles/*/vote', route => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: true,
+          message: 'Vote recorded successfully',
+          newBattle: {
+            id: `battle-${Date.now()}`,
+            model1: {
+              id: 'test-model-a',
+              name: 'Model A',
+              provider: 'Provider A'
+            },
+            model2: {
+              id: 'test-model-b', 
+              name: 'Model B',
+              provider: 'Provider B'
+            }
+          }
+        })
+      });
+    });
+    
+    // Mock models endpoint
+    await page.route('**/api/v1/models/**', route => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify([
+          { id: 'test-gpt-4', name: 'GPT-4', provider: 'OpenAI' },
+          { id: 'test-claude-3', name: 'Claude-3', provider: 'Anthropic' }
+        ])
+      });
+    });
+    
     // Setup guest session
     await setGuestSession(page, 'test-guest-battle');
     await page.goto('/battle');
