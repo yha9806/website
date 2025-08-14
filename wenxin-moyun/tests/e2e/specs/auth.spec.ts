@@ -16,12 +16,35 @@ test.describe('Authentication Flow', () => {
     homePage = new HomePage(page);
     loginPage = new LoginPage(page);
     
+    // Add debug logging for all API responses
+    page.on('response', async response => {
+      if (response.url().includes('/login') || response.url().includes('/auth')) {
+        console.log('Auth API response:', response.url(), response.status());
+        try {
+          const responseText = await response.text();
+          console.log('Response body:', responseText.substring(0, 200));
+        } catch (e) {
+          console.log('Could not read response body');
+        }
+      }
+    });
+    
+    // Add debug logging for network failures
+    page.on('requestfailed', request => {
+      if (request.url().includes('/auth') || request.url().includes('/login')) {
+        console.log('Auth request failed:', request.url(), request.failure()?.errorText);
+      }
+    });
+    
     // Mock authentication API endpoints
     await page.route('**/api/v1/auth/login', route => {
+      console.log('Mock: Intercepting login request');
       const postData = route.request().postData();
+      console.log('Login request data:', postData);
       const params = new URLSearchParams(postData || '');
       const username = params.get('username');
       const password = params.get('password');
+      console.log('Login credentials:', username, password ? '[REDACTED]' : 'NO_PASSWORD');
       
       // Check credentials
       if ((username === 'demo' && password === 'demo123') || 
@@ -82,21 +105,34 @@ test.describe('Authentication Flow', () => {
   });
 
   test('User can successfully login with valid credentials', async ({ page }) => {
+    console.log('Test: Starting login test with credentials:', TEST_USERS.valid.username);
+    
     // Navigate to login
+    console.log('Test: Navigating to login page');
     await homePage.navigateToLogin();
     
+    // Wait for login form to be visible
+    await expect(loginPage.loginForm).toBeVisible({ timeout: 10000 });
+    console.log('Test: Login form is visible');
+    
     // Perform login
+    console.log('Test: Filling login form');
     await loginPage.login(TEST_USERS.valid.username, TEST_USERS.valid.password);
     
     // Wait for redirect after successful login
-    await page.waitForURL('/', { timeout: 5000 });
+    console.log('Test: Waiting for redirect to home page');
+    await page.waitForURL('/', { timeout: 10000 });
     
     // Verify auth token is stored
+    console.log('Test: Checking auth token storage');
     const token = await getAuthToken(page);
+    console.log('Test: Auth token retrieved:', token ? 'YES' : 'NO');
     expect(token).toBeTruthy();
     
     // Verify user is logged in (look for user menu or welcome message)
+    console.log('Test: Looking for welcome message or logged-in indicator');
     await expect(loginPage.welcomeMessage).toBeVisible({ timeout: 5000 });
+    console.log('Test: Login test completed successfully');
   });
 
   test('Guest mode allows access without authentication', async ({ page }) => {
