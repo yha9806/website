@@ -17,18 +17,61 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     
-    # Database - Using SQLite for simplified deployment
+    # Database Configuration
+    # Support both SQLite (development) and PostgreSQL (production)
     DATABASE_URL: str = "sqlite+aiosqlite:///./wenxin.db"
-    # Keep PostgreSQL settings for future use, but commented
-    # POSTGRES_USER: str = "postgres"
-    # POSTGRES_PASSWORD: str = "password"
-    # POSTGRES_DB: str = "wenxin_db"
-    # POSTGRES_HOST: str = "localhost"
-    # POSTGRES_PORT: int = 5432
     
-    # Redis - Disabled, using in-memory cache instead
-    # REDIS_URL: str = "redis://localhost:6379/0"
+    # PostgreSQL settings for production (Cloud SQL)
+    POSTGRES_USER: str = "wenxin"
+    POSTGRES_PASSWORD: str = ""  # Will be loaded from Secret Manager
+    POSTGRES_DB: str = "wenxin_db"
+    POSTGRES_HOST: str = "localhost"
+    POSTGRES_PORT: int = 5432
+    
+    # Cloud SQL specific settings
+    CLOUD_SQL_INSTANCE: str = ""  # Format: project:region:instance
+    USE_CLOUD_SQL: bool = False
+    
+    # Redis - Optional for production caching
+    REDIS_URL: str = "redis://localhost:6379/0"
     USE_REDIS: bool = False
+    
+    # Google Cloud Configuration
+    GOOGLE_CLOUD_PROJECT: str = ""
+    GOOGLE_APPLICATION_CREDENTIALS: str = ""
+    
+    # Production Environment Settings
+    ENVIRONMENT: str = "development"  # development, staging, production
+    
+    # CORS Configuration for production
+    CORS_ORIGINS: List[str] = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://storage.googleapis.com"
+    ]
+    
+    # Rate Limiting
+    GUEST_DAILY_LIMIT: int = 5
+    AUTHENTICATED_DAILY_LIMIT: int = 50
+    RATE_LIMIT_PER_MINUTE: int = 60
+    
+    # File Upload Settings
+    MAX_FILE_SIZE: int = 10 * 1024 * 1024  # 10MB
+    UPLOAD_BUCKET: str = ""
+    ALLOWED_FILE_TYPES: List[str] = [
+        "image/jpeg", "image/png", "image/webp", "text/plain"
+    ]
+    
+    # Monitoring and Logging
+    LOG_LEVEL: str = "INFO"
+    ENABLE_METRICS: bool = False
+    SENTRY_DSN: str = ""
+    
+    # Feature Flags
+    ENABLE_REAL_AI_EVALUATION: bool = True
+    ENABLE_BATTLE_MODE: bool = True
+    ENABLE_GUEST_MODE: bool = True
+    ENABLE_BENCHMARKS: bool = True
     
     # Vector Database - Disabled for now
     # QDRANT_HOST: str = "localhost"

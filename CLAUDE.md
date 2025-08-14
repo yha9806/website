@@ -4,19 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-WenXin MoYun - Full-stack AI art evaluation platform supporting **42 AI models** from **15 organizations**. Features complete iOS design system migration (2025-08-11), real benchmark testing with **Unified Model Interface**, and comprehensive E2E testing infrastructure.
+WenXin MoYun - Enterprise-grade AI art evaluation platform supporting **42 AI models** from **15 organizations**. Features complete iOS design system migration (2025-08-11), real benchmark testing with **Unified Model Interface**, comprehensive E2E testing infrastructure, and **production Google Cloud Platform deployment**.
 
 **Architecture**:
 - **Frontend**: React 19 + TypeScript 5.8 + Vite 7.1 with pure iOS design system
 - **Backend**: FastAPI + SQLAlchemy with async evaluation engine and intelligent scoring
-- **Database**: SQLite with proper foreign key constraints and NULL score handling for image models
-- **Real-time**: WebSocket for live battle updates and progress tracking
+- **Database**: SQLite (dev) / PostgreSQL (production) with proper foreign key constraints and NULL score handling
+- **Real-time**: WebSocket for live battle updates and progress tracking  
 - **AI Integration**: Unified Model Interface with provider adapters ensuring correct model routing
 - **Testing**: Playwright E2E framework with 64 test cases across multiple browsers
+- **Deployment**: Complete Google Cloud Platform infrastructure with automated CI/CD pipeline
 
 ## Essential Commands
 
-### Quick Start
+### Quick Start (Development)
 ```bash
 # Windows one-click startup (initializes DB, starts backend on :8001, frontend on :5173)
 start.bat
@@ -25,6 +26,94 @@ start.bat
 cd wenxin-backend && python init_db.py                # Initialize database (first time only)
 cd wenxin-backend && python -m uvicorn app.main:app --reload --port 8001
 cd wenxin-moyun && npm run dev                        # Frontend (auto-increments from port 5173)
+```
+
+### Production Deployment (Google Cloud Platform)
+
+#### Complete GCP Setup
+```bash
+# Automated setup (recommended)
+chmod +x scripts/setup-gcp.sh
+./scripts/setup-gcp.sh
+
+# Manual GCP project setup
+export PROJECT_ID="wenxin-moyun-prod"
+export REGION="asia-east1"
+gcloud projects create $PROJECT_ID
+gcloud config set project $PROJECT_ID
+
+# Enable required APIs
+gcloud services enable run.googleapis.com \
+  sql-component.googleapis.com \
+  sqladmin.googleapis.com \
+  storage.googleapis.com \
+  secretmanager.googleapis.com \
+  artifactregistry.googleapis.com \
+  cloudbuild.googleapis.com \
+  monitoring.googleapis.com \
+  logging.googleapis.com
+```
+
+#### Infrastructure Creation
+```bash
+# Create Artifact Registry
+gcloud artifacts repositories create wenxin-images \
+  --repository-format=docker \
+  --location=$REGION
+
+# Create Cloud SQL PostgreSQL instance
+gcloud sql instances create wenxin-postgres \
+  --database-version=POSTGRES_15 \
+  --tier=db-f1-micro \
+  --region=$REGION \
+  --storage-type=SSD \
+  --storage-size=20GB \
+  --backup-start-time=02:00
+
+# Create database and user
+gcloud sql databases create wenxin_db --instance=wenxin-postgres
+gcloud sql users create wenxin --instance=wenxin-postgres --password=SECURE_PASSWORD
+
+# Create Cloud Storage buckets
+gsutil mb -l $REGION gs://$PROJECT_ID-static
+gsutil mb -l $REGION gs://$PROJECT_ID-backups
+```
+
+#### Secrets Management
+```bash
+# Store API keys and secrets in Secret Manager
+gcloud secrets create db-password --data-file=<(echo "your-secure-db-password")
+gcloud secrets create secret-key --data-file=<(echo "your-secret-key-here")
+gcloud secrets create openai-api-key --data-file=<(echo "your-openai-api-key")
+gcloud secrets create anthropic-api-key --data-file=<(echo "your-anthropic-api-key")
+gcloud secrets create gemini-api-key --data-file=<(echo "your-gemini-api-key")
+```
+
+#### Manual Deployment
+```bash
+# Backend deployment
+docker build -f wenxin-backend/Dockerfile.cloud \
+  -t asia-east1-docker.pkg.dev/$PROJECT_ID/wenxin-images/wenxin-backend:latest \
+  wenxin-backend/
+docker push asia-east1-docker.pkg.dev/$PROJECT_ID/wenxin-images/wenxin-backend:latest
+
+gcloud run deploy wenxin-moyun-api \
+  --image=asia-east1-docker.pkg.dev/$PROJECT_ID/wenxin-images/wenxin-backend:latest \
+  --region=$REGION \
+  --allow-unauthenticated \
+  --memory=2Gi \
+  --cpu=1 \
+  --min-instances=0 \
+  --max-instances=10 \
+  --set-cloudsql-instances=$PROJECT_ID:$REGION:wenxin-postgres \
+  --update-secrets="OPENAI_API_KEY=openai-api-key:latest"
+
+# Frontend deployment
+cd wenxin-moyun
+export VITE_API_BASE_URL=$(gcloud run services describe wenxin-moyun-api --region=$REGION --format="value(status.url)")
+npm run build
+gsutil -m rsync -r -d dist/ gs://$PROJECT_ID-static/
+gsutil iam ch allUsers:objectViewer gs://$PROJECT_ID-static
 ```
 
 ### Frontend Development (wenxin-moyun)
@@ -67,9 +156,14 @@ python test_unified_interface.py  # Verify models use correct APIs
 
 ### Database Operations
 ```bash
+# Development (SQLite)
 cd wenxin-backend
 rm wenxin.db                  # Delete existing database (Windows: del wenxin.db)
 python init_db.py             # Recreate with schema + sample data
+
+# Production (PostgreSQL via Cloud SQL)
+gcloud sql connect wenxin-postgres --user=wenxin
+python scripts/migrate-to-cloud-sql.py  # Migration script
 
 # Check model rankings
 python -c "import sqlite3; conn = sqlite3.connect('wenxin.db'); cursor = conn.cursor(); cursor.execute('SELECT name, model_type, overall_score FROM ai_models ORDER BY overall_score DESC NULLS LAST'); print([f'{row[0]}: {row[2] if row[2] is not None else \"N/A\"}' for row in cursor.fetchall()[:10]]); conn.close()"
@@ -79,7 +173,7 @@ python -c "import sqlite3; conn = sqlite3.connect('wenxin.db'); cursor = conn.cu
 
 ### Core System Flow
 ```
-Frontend (React 19)          Backend (FastAPI)         Services Layer           Database (SQLite)
+Frontend (React 19)          Backend (FastAPI)         Services Layer           Database (SQLite/PostgreSQL)
     ↓                           ↓                         ↓                        ↓
 iOS Components              API v1 Routers         Unified Model Interface    Core Tables
     ↓                           ↓                         ↓                    - users
@@ -93,6 +187,19 @@ Axios Client ──────→      Service Layer ───→    Provider A
                                                                            - benchmark_runs
 ```
 
+### Production Cloud Architecture
+```
+Internet → Cloud CDN → Cloud Storage (Frontend)
+                    ↘
+                     Cloud Run (Backend API) ← Artifact Registry
+                             ↓
+                     Cloud SQL (PostgreSQL)
+                             ↓
+                     Secret Manager (API Keys)
+                             ↓
+                     Cloud Monitoring & Logging
+```
+
 ### Data Pipeline: Evaluation to Gallery
 1. User creates evaluation task (Frontend) → Backend saves with parameters
 2. Background processing via `evaluation_engine.py` → AI provider generates content
@@ -102,10 +209,11 @@ Axios Client ──────→      Service Layer ───→    Provider A
 ## Critical System Components
 
 ### Unified Model Interface (Fixed Model Routing Bug)
-- **app/services/models/unified_client.py** - Central interface for all AI models
+- **app/services/models/unified_client.py** - Central interface for all AI models with special parameter handling
 - **app/services/models/model_registry.py** - Registry managing 42 AI models from 15 organizations  
 - **app/services/models/adapters/** - Provider-specific adapters (OpenAI, Anthropic, Google, etc.)
 - **Fixed Issue**: Previous system hardcoded gpt-4o-mini for all models; now correctly routes to designated APIs
+- **Special Handling**: GPT-5 series require `max_completion_tokens`, o1 series don't support temperature
 
 ### Frontend Architecture (React 19 + iOS Design)
 - **src/components/ios/** - Complete iOS design system (IOSButton, IOSCard, IOSToggle, etc.)
@@ -124,6 +232,14 @@ Axios Client ──────→      Service Layer ───→    Provider A
 - **Critical Pattern**: Image models have NULL `overall_score` - this is intentional
 - **Frontend Pattern**: Always check `{score != null ? score.toFixed(1) : 'N/A'}`
 
+### Google Cloud Infrastructure
+- **Cloud Run**: Auto-scaling backend API (0-10 instances, 2GB memory, 1 vCPU)
+- **Cloud SQL**: PostgreSQL 15 with automated backups and point-in-time recovery
+- **Cloud Storage**: Static frontend hosting with CDN and backup storage
+- **Secret Manager**: Secure API key storage for 8 AI providers
+- **Artifact Registry**: Docker image storage for containerized deployments
+- **Cloud Monitoring**: Full observability with alerts and dashboards
+
 ## API Architecture
 
 ### Core Endpoints
@@ -131,6 +247,7 @@ Axios Client ──────→      Service Layer ───→    Provider A
 - `POST /api/v1/evaluations/` - Create evaluation task with language parameter
 - `GET /api/v1/battles/random` - Get random active battle for voting
 - `POST /api/v1/benchmarks/run` - Execute real AI model benchmarks
+- `GET /health` - Health check endpoint for production monitoring
 
 ### Real-time Features
 - **WebSocket**: `/api/v1/ws/battle` - Live battle vote updates
@@ -173,7 +290,14 @@ client = UnifiedModelClient()
 response = await client.generate(
     model_id="gpt-5",  # Correctly routes to GPT-5 API
     prompt="Write a poem about Spring",
-    max_tokens=500
+    max_completion_tokens=500  # GPT-5 requires max_completion_tokens, not max_tokens
+)
+
+# o1 series example (no temperature support)
+response = await client.generate(
+    model_id="o1-mini",
+    prompt="Solve this problem step by step",
+    # temperature parameter automatically removed for o1 models
 )
 ```
 
@@ -192,16 +316,51 @@ response = await client.generate(
 <h1 className="text-large-title">WenXin MoYun</h1>
 ```
 
+## CI/CD Automation (GitHub Actions)
+
+### Complete Deployment Pipeline
+
+The project includes automated deployment via GitHub Actions (`.github/workflows/deploy-gcp.yml`) that:
+
+**On every push to main:**
+1. **Test Phase**: Runs linting, building, backend tests, and E2E tests  
+2. **Deploy Phase**: 
+   - Builds and pushes Docker images to Artifact Registry
+   - Runs database migrations via temporary Cloud Run job
+   - Deploys backend to Cloud Run with auto-scaling configuration
+   - Deploys frontend to Cloud Storage with public access
+   - Runs health checks on both services
+3. **Release Phase**: Generates deployment notes with commit history
+
+**Key Features:**
+- **Multi-environment**: Supports staging (PRs) and production (main branch)
+- **Security**: Uses Workload Identity Federation for secure GCP authentication  
+- **Error Handling**: Automatic rollback on health check failures
+- **Monitoring**: Comprehensive logging and status reporting
+
+### Required GitHub Secrets
+
+Configure in GitHub repository → Settings → Secrets and Variables → Actions:
+
+| Secret Name | Description | How to Get |
+|------------|-------------|------------|
+| `GCP_SA_KEY` | Service account JSON key | `gcloud iam service-accounts keys create key.json --iam-account=github-actions@PROJECT_ID.iam.gserviceaccount.com` |
+| `OPENAI_API_KEY` | OpenAI API key | https://platform.openai.com/api-keys |
+| `ANTHROPIC_API_KEY` | Anthropic API key (optional) | https://console.anthropic.com/ |
+| `GEMINI_API_KEY` | Google Gemini API key (optional) | https://ai.google.dev/ |
+
 ## Environment Configuration
 
-### Frontend (.env)
+### Development Environment
+
+**Frontend (.env)**
 ```bash
 VITE_API_BASE_URL=http://localhost:8001
 VITE_API_VERSION=v1
 VITE_API_TIMEOUT=30000
 ```
 
-### Backend (.env)
+**Backend (.env)**
 ```bash
 DATABASE_URL=sqlite+aiosqlite:///./wenxin.db
 SECRET_KEY=your-secret-key-here
@@ -217,6 +376,32 @@ GEMINI_API_KEY=your-gemini-key-here
 HUGGINGFACE_API_KEY=your-huggingface-key-here
 ANTHROPIC_API_KEY=your-anthropic-key-here
 ```
+
+### Production Environment (Google Cloud)
+
+**Frontend Build Variables**
+```bash
+VITE_API_BASE_URL=https://wenxin-moyun-api-asia-east1.run.app
+VITE_API_VERSION=v1
+VITE_API_TIMEOUT=30000
+VITE_ENVIRONMENT=production
+VITE_DEBUG=false
+```
+
+**Backend Cloud Run Environment**
+```bash
+DATABASE_URL=postgresql+asyncpg://wenxin:PASSWORD@/wenxin_db?host=/cloudsql/PROJECT:REGION:wenxin-postgres
+SECRET_KEY=your-secret-key
+DEBUG=false
+ENVIRONMENT=production
+```
+
+**Secrets (stored in Secret Manager)**
+- `db-password`: PostgreSQL database password
+- `secret-key`: JWT signing key
+- `openai-api-key`: OpenAI API key
+- `anthropic-api-key`: Anthropic API key  
+- `gemini-api-key`: Google Gemini API key
 
 ## Testing & Quality Assurance
 
@@ -252,21 +437,98 @@ ANTHROPIC_API_KEY=your-anthropic-key-here
 - WebServer automatically starts dev server for tests
 - VS Code integration available via `.vscode/settings.json`
 
-## Production Deployment
+## Production Deployment & Monitoring
+
+### Cloud Infrastructure Health Checks
+
+**Backend Health Check**
+```bash
+curl https://wenxin-moyun-api-asia-east1.run.app/health
+# Expected: {"status": "healthy", "version": "1.0.0"}
+```
+
+**Frontend Health Check**  
+```bash
+curl https://storage.googleapis.com/wenxin-moyun-prod-static/index.html
+# Expected: HTML content of React app
+```
+
+### Performance & Scaling
+
+**Auto-scaling Configuration:**
+- **Cloud Run**: 0-10 instances, 2GB memory, 1 vCPU, 100 concurrent requests
+- **Cloud SQL**: db-f1-micro (upgradeable), 20GB SSD storage, auto-expanding
+- **Cold Start**: ~2 seconds for backend, instant for frontend (CDN cached)
+
+**Optimizations:**
+- Multi-layer caching (API 5min, Static 30min, Realtime 30s)
+- iOS design system reduces bundle size vs decorative elements
+- WebSocket connection management with heartbeat
+- Connection pooling with SQLAlchemy for database efficiency
+- Gzip compression and asset caching on Cloud Storage
+
+### Monitoring & Observability
+
+**Available Dashboards:**
+- **Cloud Monitoring**: https://console.cloud.google.com/monitoring/dashboards
+- **Application Logs**: https://console.cloud.google.com/logs
+- **Error Reporting**: https://console.cloud.google.com/errors  
+- **Performance Traces**: https://console.cloud.google.com/traces
+
+**Key Metrics Tracked:**
+1. **API Health**: Response time, error rate, availability
+2. **Resource Usage**: CPU, memory, database connections  
+3. **Business Metrics**: Evaluations processed, user activity
+4. **Security**: Authentication failures, suspicious activity
+
+**Automated Alerts:**
+- API downtime (>5 minutes)
+- High error rate (>5%)
+- High response time (>2 seconds)
+- Resource exhaustion (CPU >80%, Memory >85%)
+- Database connection issues
+
+### Cost Optimization
+
+**Estimated Monthly Costs:**
+- Small-Medium Load (<10k requests/day): ~$30-70/month
+- High Load (>100k requests/day): ~$155-520/month
+
+**Cost-saving Features:**
+- Cloud Run scale-to-zero during low traffic
+- Committed use discounts for predictable workloads
+- Storage lifecycle policies for old data archival
+- Billing alerts to prevent unexpected charges
 
 ### Database Integrity
 - Foreign key constraints properly configured
 - NULL score handling for image models
 - 42 AI models properly configured with provider routing
+- Automated backups with 7-day retention
+- Point-in-time recovery available
 
-### Performance Optimizations  
-- Multi-layer caching (API 5min, Static 30min, Realtime 30s)
-- iOS design system reduces bundle size vs decorative elements
-- WebSocket connection management with heartbeat
+### Security & Compliance
+
+**Security Headers Configured:**
+```
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Security-Policy: default-src 'self'; ...
+```
+
+**Data Protection:**
+- HTTPS-only (TLS 1.2+)
+- Secrets stored in Secret Manager (not environment variables)
+- Database encryption at rest and in transit
+- Cloud IAM for access control
+- Regular credential rotation via Secret Manager
 
 ### API Documentation
-- Swagger UI: http://localhost:8001/docs
-- ReDoc: http://localhost:8001/redoc
+- **Development**: http://localhost:8001/docs (Swagger UI)
+- **Development**: http://localhost:8001/redoc (ReDoc)
+- **Production**: Available at Cloud Run service URL + `/docs` or `/redoc`
 
 ### iOS Design System (Frontend)
 

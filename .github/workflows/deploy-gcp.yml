@@ -1,0 +1,276 @@
+# WenXin MoYun - GitHub Actions CI/CD Pipeline for Google Cloud Platform
+# This workflow automatically deploys the application to GCP on push to main branch
+
+name: Deploy to Google Cloud Platform
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+    types: [ opened, synchronize, reopened ]
+
+env:
+  PROJECT_ID: wenxin-moyun-prod
+  REGION: asia-east1
+  SERVICE_NAME: wenxin-moyun
+  REPO_NAME: wenxin-images
+
+jobs:
+  # Job 1: Test and validate code
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: wenxin-moyun/package-lock.json
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install frontend dependencies
+        working-directory: wenxin-moyun
+        run: npm ci
+
+      - name: Install backend dependencies
+        working-directory: wenxin-backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run frontend linting
+        working-directory: wenxin-moyun
+        run: npm run lint
+
+      - name: Build frontend
+        working-directory: wenxin-moyun
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: https://test-api.example.com
+
+      - name: Run backend tests
+        working-directory: wenxin-backend
+        run: |
+          python -m pytest tests/ -v --tb=short
+        env:
+          DATABASE_URL: sqlite+aiosqlite:///./test.db
+          SECRET_KEY: test-secret-key
+          DEBUG: true
+
+      - name: Run E2E tests (if not PR)
+        if: github.event_name != 'pull_request'
+        working-directory: wenxin-moyun
+        run: |
+          npm run test:e2e
+        env:
+          CI: true
+
+  # Job 2: Deploy to staging (for PRs) or production (for main)
+  deploy:
+    name: Deploy to GCP
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: Get commit SHA
+        id: vars
+        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      # Backend deployment
+      - name: Build backend image
+        run: |
+          docker build -f wenxin-backend/Dockerfile.cloud \
+            -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:${{ steps.vars.outputs.SHORT_SHA }} \
+            -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:latest \
+            wenxin-backend/
+
+      - name: Push backend image
+        run: |
+          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:${{ steps.vars.outputs.SHORT_SHA }}
+          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:latest
+
+      - name: Get database password from Secret Manager
+        id: db-password
+        run: |
+          DB_PASSWORD=$(gcloud secrets versions access latest --secret="db-password")
+          echo "::add-mask::$DB_PASSWORD"
+          echo "password=$DB_PASSWORD" >> $GITHUB_OUTPUT
+
+      - name: Get secret key from Secret Manager
+        id: secret-key
+        run: |
+          SECRET_KEY=$(gcloud secrets versions access latest --secret="secret-key")
+          echo "::add-mask::$SECRET_KEY"
+          echo "key=$SECRET_KEY" >> $GITHUB_OUTPUT
+
+      - name: Run database migration
+        run: |
+          # Create temporary Cloud Run job for migration
+          gcloud run jobs create wenxin-migrate-${{ steps.vars.outputs.SHORT_SHA }} \
+            --image=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:${{ steps.vars.outputs.SHORT_SHA }} \
+            --region=${{ env.REGION }} \
+            --task-timeout=600 \
+            --memory=1Gi \
+            --cpu=1 \
+            --parallelism=1 \
+            --task-count=1 \
+            --set-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres \
+            --set-env-vars="DATABASE_URL=postgresql+asyncpg://wenxin:${{ steps.db-password.outputs.password }}@/wenxin_db?host=/cloudsql/${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres" \
+            --command="python" \
+            --args="init_db.py" || true
+
+          # Execute migration
+          gcloud run jobs execute wenxin-migrate-${{ steps.vars.outputs.SHORT_SHA }} \
+            --region=${{ env.REGION }} \
+            --wait || true
+
+          # Clean up migration job
+          gcloud run jobs delete wenxin-migrate-${{ steps.vars.outputs.SHORT_SHA }} \
+            --region=${{ env.REGION }} \
+            --quiet || true
+
+      - name: Deploy backend to Cloud Run
+        run: |
+          gcloud run deploy ${{ env.SERVICE_NAME }}-api \
+            --image=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:${{ steps.vars.outputs.SHORT_SHA }} \
+            --region=${{ env.REGION }} \
+            --platform=managed \
+            --allow-unauthenticated \
+            --memory=2Gi \
+            --cpu=1 \
+            --min-instances=0 \
+            --max-instances=10 \
+            --concurrency=100 \
+            --timeout=300 \
+            --port=8001 \
+            --set-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres \
+            --update-env-vars="DATABASE_URL=postgresql+asyncpg://wenxin:${{ steps.db-password.outputs.password }}@/wenxin_db?host=/cloudsql/${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres,SECRET_KEY=${{ steps.secret-key.outputs.key }},DEBUG=false,ENVIRONMENT=production" \
+            --update-secrets="OPENAI_API_KEY=openai-api-key:latest,ANTHROPIC_API_KEY=anthropic-api-key:latest,GEMINI_API_KEY=gemini-api-key:latest"
+
+      - name: Get backend URL
+        id: backend-url
+        run: |
+          BACKEND_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }}-api --region=${{ env.REGION }} --format="value(status.url)")
+          echo "url=$BACKEND_URL" >> $GITHUB_OUTPUT
+
+      # Frontend deployment
+      - name: Setup Node.js for frontend build
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: wenxin-moyun/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: wenxin-moyun
+        run: npm ci --production=false
+
+      - name: Build frontend
+        working-directory: wenxin-moyun
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: ${{ steps.backend-url.outputs.url }}
+          VITE_API_VERSION: v1
+          VITE_API_TIMEOUT: 30000
+          VITE_ENVIRONMENT: production
+
+      - name: Deploy frontend to Cloud Storage
+        working-directory: wenxin-moyun
+        run: |
+          gsutil -m rsync -r -d dist/ gs://${{ env.PROJECT_ID }}-static/
+
+      - name: Set proper permissions on Cloud Storage
+        run: |
+          gsutil iam ch allUsers:objectViewer gs://${{ env.PROJECT_ID }}-static
+
+      # Health checks
+      - name: Wait for services to be ready
+        run: sleep 30
+
+      - name: Health check backend
+        run: |
+          curl -f "${{ steps.backend-url.outputs.url }}/health" || exit 1
+
+      - name: Health check frontend
+        run: |
+          curl -f "https://storage.googleapis.com/${{ env.PROJECT_ID }}-static/index.html" || exit 1
+
+      # Notifications
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "✅ Deployment successful!"
+          echo "Frontend: https://storage.googleapis.com/${{ env.PROJECT_ID }}-static/"
+          echo "Backend: ${{ steps.backend-url.outputs.url }}"
+          echo "API Docs: ${{ steps.backend-url.outputs.url }}/docs"
+
+      - name: Notify deployment failure
+        if: failure()
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Please check the logs and try again."
+
+  # Job 3: Create release notes (optional)
+  release:
+    name: Create Release Notes
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate release notes
+        run: |
+          echo "# WenXin MoYun Deployment - $(date)" > RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+          echo "## 🚀 Deployed Services" >> RELEASE_NOTES.md
+          echo "- **Frontend**: https://storage.googleapis.com/${{ env.PROJECT_ID }}-static/" >> RELEASE_NOTES.md
+          echo "- **Backend API**: Deployed to Cloud Run" >> RELEASE_NOTES.md
+          echo "- **Database**: Cloud SQL PostgreSQL" >> RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+          echo "## 📝 Recent Commits" >> RELEASE_NOTES.md
+          git log --oneline -10 >> RELEASE_NOTES.md
+          
+          cat RELEASE_NOTES.md
+
+      - name: Upload release notes
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-notes
+          path: RELEASE_NOTES.md
+          retention-days: 30
