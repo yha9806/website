@@ -36,9 +36,9 @@ test.describe('Authentication Flow', () => {
       }
     });
     
-    // Mock authentication API endpoints
+    // Mock authentication API endpoints - intercept both http and https, any port
     await page.route('**/api/v1/auth/login', route => {
-      console.log('Mock: Intercepting login request');
+      console.log('Mock: Intercepting login request to:', route.request().url());
       const postData = route.request().postData();
       console.log('Login request data:', postData);
       const params = new URLSearchParams(postData || '');
@@ -49,6 +49,7 @@ test.describe('Authentication Flow', () => {
       // Check credentials
       if ((username === 'demo' && password === 'demo123') || 
           (username === 'admin' && password === 'admin123')) {
+        console.log('Mock: Sending successful login response');
         route.fulfill({
           status: 200,
           contentType: 'application/json',
@@ -58,6 +59,7 @@ test.describe('Authentication Flow', () => {
           })
         });
       } else {
+        console.log('Mock: Sending failed login response');
         route.fulfill({
           status: 401,
           contentType: 'application/json',

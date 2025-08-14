@@ -44,7 +44,7 @@ export async function setAuthToken(page: Page, token: string) {
       // Try localStorage first, fallback to window property
       try {
         if (typeof localStorage !== 'undefined' && localStorage) {
-          localStorage.setItem('auth_token', token);
+          localStorage.setItem('access_token', token); // Fixed: use 'access_token' not 'auth_token'
         }
       } catch (storageError) {
         console.log('localStorage blocked, using window property for auth token');
@@ -80,7 +80,7 @@ export async function getAuthToken(page: Page): Promise<string | null> {
       // Try localStorage first, fallback to window property
       try {
         if (typeof localStorage !== 'undefined' && localStorage) {
-          const token = localStorage.getItem('auth_token');
+          const token = localStorage.getItem('access_token'); // Fixed: use 'access_token' not 'auth_token'
           if (token) return token;
         }
       } catch (storageError) {
