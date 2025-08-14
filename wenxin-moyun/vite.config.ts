@@ -34,13 +34,7 @@ export default defineConfig({
     cssCodeSplit: true,
     assetsInlineLimit: 4096, // Inline assets smaller than 4kb
     
-    // Terser options for production
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    }
+    // Already set minify: 'esbuild' above
   },
   
   // Development server configuration
@@ -60,7 +54,7 @@ export default defineConfig({
   
   // Define environment variables
   define: {
-    __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.0'),
+    __APP_VERSION__: JSON.stringify('1.0.0'),
     __BUILD_TIME__: JSON.stringify(new Date().toISOString())
   },
   

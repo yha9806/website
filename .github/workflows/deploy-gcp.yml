@@ -55,7 +55,7 @@ jobs:
 
       - name: Build frontend (skip TypeScript checks)
         working-directory: wenxin-moyun
-        run: vite build
+        run: npm run build:prod
         env:
           VITE_API_BASE_URL: https://test-api.example.com
 
@@ -199,7 +199,7 @@ jobs:
 
       - name: Build frontend (skip TypeScript checks)
         working-directory: wenxin-moyun
-        run: vite build
+        run: npm run build:prod
         env:
           VITE_API_BASE_URL: ${{ steps.backend-url.outputs.url }}
           VITE_API_VERSION: v1
