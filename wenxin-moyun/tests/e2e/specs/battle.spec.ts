@@ -113,7 +113,12 @@ test.describe('Battle System', () => {
     // Check if statistics are displayed
     if (await battlePage.statsContainer.isVisible({ timeout: 2000 })) {
       // Verify vote count
-      const voteCount = page.locator('.vote-count, text=/投票数/, text=/Vote/, text=/Votes/, text=/Count/, .stats-number');
+      const voteCount = page.locator('.vote-count')
+        .or(page.locator('text=/投票数/'))
+        .or(page.locator('text=/Vote/'))
+        .or(page.locator('text=/Votes/'))
+        .or(page.locator('text=/Count/'))
+        .or(page.locator('.stats-number'));
       await expect(voteCount).toBeVisible();
       
       const countText = await voteCount.textContent();

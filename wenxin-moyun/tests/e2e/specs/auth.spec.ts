@@ -136,7 +136,13 @@ test.describe('Authentication Flow', () => {
     await page.waitForURL('/');
     
     // Look for admin-specific elements
-    const adminMenu = page.locator('[data-testid="admin-menu"], .admin-menu, text=管理, text=Admin, text=Management, .admin-panel, .admin-section');
+    const adminMenu = page.locator('[data-testid="admin-menu"]')
+      .or(page.locator('.admin-menu'))
+      .or(page.locator('text=管理'))
+      .or(page.locator('text=Admin'))
+      .or(page.locator('text=Management'))
+      .or(page.locator('.admin-panel'))
+      .or(page.locator('.admin-section'));
     
     // Admin menu should be visible
     await expect(adminMenu).toBeVisible({ timeout: 5000 });
@@ -155,7 +161,8 @@ test.describe('Authentication Flow', () => {
     await page.goto('/evaluations');
     
     // Should show remaining usage
-    const usageIndicator = page.locator('text=/剩余.*次/, text=/remaining/i');
+    const usageIndicator = page.locator('text=/剩余.*次/')
+      .or(page.locator('text=/remaining/i'));
     await expect(usageIndicator).toBeVisible();
     
     // Verify shows correct remaining count

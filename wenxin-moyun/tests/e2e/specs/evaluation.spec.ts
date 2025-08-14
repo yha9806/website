@@ -95,12 +95,19 @@ test.describe('Evaluation System', () => {
     // Check for expected dimension scores
     const dimensions = TEST_EVALUATION_TASKS.painting.expectedDimensions;
     for (const dimension of dimensions) {
-      const scoreElement = page.locator(`[data-dimension="${dimension}"], text=/${dimension}/i`);
+      const scoreElement = page.locator(`[data-dimension="${dimension}"]`)
+        .or(page.locator(`text=/${dimension}/i`));
       await expect(scoreElement).toBeVisible();
     }
     
     // Verify overall score is displayed
-    const overallScore = page.locator('.overall-score, [data-testid="overall-score"], text=/总分/, text=/Overall/, text=/Total/, text=/Score/, .score-total');
+    const overallScore = page.locator('.overall-score')
+      .or(page.locator('[data-testid="overall-score"]'))
+      .or(page.locator('text=/总分/'))
+      .or(page.locator('text=/Overall/'))
+      .or(page.locator('text=/Total/'))
+      .or(page.locator('text=/Score/'))
+      .or(page.locator('.score-total'));
     await expect(overallScore).toBeVisible();
     
     // Verify score is a number between 0 and 100
@@ -127,7 +134,11 @@ test.describe('Evaluation System', () => {
     await evaluationPage.newEvaluationButton.click();
     
     // Should show limit reached message
-    const limitMessage = page.locator('text=/已达到每日限制/, text=/daily limit reached/i, text=/limit exceeded/i, text=/maximum daily/i, .limit-message');
+    const limitMessage = page.locator('text=/已达到每日限制/')
+      .or(page.locator('text=/daily limit reached/i'))
+      .or(page.locator('text=/limit exceeded/i'))
+      .or(page.locator('text=/maximum daily/i'))
+      .or(page.locator('.limit-message'));
     await expect(limitMessage).toBeVisible({ timeout: TEST_TIMEOUTS.short });
     
     // Submit button should be disabled
@@ -166,7 +177,9 @@ test.describe('Evaluation System', () => {
     }
     
     // Verify at least some evaluations are shown
-    const historyItems = page.locator('.history-item, .evaluation-item, [data-testid^="evaluation-"]');
+    const historyItems = page.locator('.history-item')
+      .or(page.locator('.evaluation-item'))
+      .or(page.locator('[data-testid^="evaluation-"]'));
     const count = await historyItems.count();
     expect(count).toBeGreaterThanOrEqual(evaluations.length);
   });
@@ -179,7 +192,13 @@ test.describe('Evaluation System', () => {
     await evaluationPage.submitButton.click();
     
     // Should show validation error
-    const validationError = page.locator('.validation-error, .error-message, text=/请选择/, text=/required/i, text=/Please select/i, text=/Field is required/i, .form-error');
+    const validationError = page.locator('.validation-error')
+      .or(page.locator('.error-message'))
+      .or(page.locator('text=/请选择/'))
+      .or(page.locator('text=/required/i'))
+      .or(page.locator('text=/Please select/i'))
+      .or(page.locator('text=/Field is required/i'))
+      .or(page.locator('.form-error'));
     await expect(validationError).toBeVisible({ timeout: TEST_TIMEOUTS.short });
     
     // Fill model but not task type
@@ -216,13 +235,21 @@ test.describe('Evaluation System', () => {
       await evaluationPage.cancelButton.click();
       
       // Confirm cancellation if dialog appears
-      const confirmButton = page.locator('button:has-text("确认"), button:has-text("是"), button:has-text("Yes"), button:has-text("Confirm"), .ios-button:has-text("Confirm")');
+      const confirmButton = page.locator('button:has-text("确认")')
+        .or(page.locator('button:has-text("是")'))
+        .or(page.locator('button:has-text("Yes")'))
+        .or(page.locator('button:has-text("Confirm")'))
+        .or(page.locator('.ios-button:has-text("Confirm")'));
       if (await confirmButton.isVisible({ timeout: 1000 })) {
         await confirmButton.click();
       }
       
       // Verify evaluation is cancelled
-      const cancelledMessage = page.locator('text=/已取消/, text=/cancelled/i, text=/canceled/i, text=/stopped/i, .cancel-message');
+      const cancelledMessage = page.locator('text=/已取消/')
+        .or(page.locator('text=/cancelled/i'))
+        .or(page.locator('text=/canceled/i'))
+        .or(page.locator('text=/stopped/i'))
+        .or(page.locator('.cancel-message'));
       await expect(cancelledMessage).toBeVisible({ timeout: TEST_TIMEOUTS.short });
     }
   });

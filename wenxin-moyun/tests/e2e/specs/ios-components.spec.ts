@@ -8,7 +8,12 @@ test.describe('iOS Components', () => {
 
   test('iOS button components should render and interact correctly', async ({ page }) => {
     // Find iOS-style buttons - comprehensive selectors for English interface
-    const iosButtons = page.locator('.ios-button, button[class*="ios"], button:has-text("Explore Rankings"), button:has-text("Login"), button:has-text("Start"), button:has-text("Get Started")');
+    const iosButtons = page.locator('.ios-button')
+      .or(page.locator('button[class*="ios"]'))
+      .or(page.locator('button:has-text("Explore Rankings")'))
+      .or(page.locator('button:has-text("Login")'))
+      .or(page.locator('button:has-text("Start")'))
+      .or(page.locator('button:has-text("Get Started")'));
     
     if (await iosButtons.count() > 0) {
       const firstButton = iosButtons.first();
@@ -23,7 +28,9 @@ test.describe('iOS Components', () => {
       await firstButton.click();
       
       // Check for visual feedback (if any)
-      const activeState = page.locator('[class*="active"], [class*="pressed"], [class*="clicked"]');
+      const activeState = page.locator('[class*="active"]')
+        .or(page.locator('[class*="pressed"]'))
+        .or(page.locator('[class*="clicked"]'));
       if (await activeState.count() > 0) {
         await expect(activeState.first()).toBeVisible();
       }
@@ -32,7 +39,11 @@ test.describe('iOS Components', () => {
 
   test('iOS card components should display correctly', async ({ page }) => {
     // Find iOS-style cards - enhanced selectors for English interface
-    const iosCards = page.locator('.ios-card, [class*="card-ios"], [class*="elevated"], .card, [data-testid*="card"]');
+    const iosCards = page.locator('.ios-card')
+      .or(page.locator('[class*="card-ios"]'))
+      .or(page.locator('[class*="elevated"]'))
+      .or(page.locator('.card'))
+      .or(page.locator('[data-testid*="card"]'));
     
     if (await iosCards.count() > 0) {
       const firstCard = iosCards.first();
@@ -41,13 +52,20 @@ test.describe('iOS Components', () => {
       await expect(firstCard).toBeVisible();
       
       // Check card content
-      const cardContent = firstCard.locator('.ios-card-content, [class*="content"], p, div');
+      const cardContent = firstCard.locator('.ios-card-content')
+        .or(firstCard.locator('[class*="content"]'))
+        .or(firstCard.locator('p'))
+        .or(firstCard.locator('div'));
       if (await cardContent.count() > 0) {
         await expect(cardContent.first()).toBeVisible();
       }
       
       // Check card header (if exists)
-      const cardHeader = firstCard.locator('.ios-card-header, [class*="header"], h1, h2, h3');
+      const cardHeader = firstCard.locator('.ios-card-header')
+        .or(firstCard.locator('[class*="header"]'))
+        .or(firstCard.locator('h1'))
+        .or(firstCard.locator('h2'))
+        .or(firstCard.locator('h3'));
       if (await cardHeader.count() > 0) {
         await expect(cardHeader.first()).toBeVisible();
       }
@@ -56,7 +74,11 @@ test.describe('iOS Components', () => {
 
   test('iOS-style glass morphism effects', async ({ page }) => {
     // Find elements with glass morphism - enhanced selectors
-    const glassElements = page.locator('.ios-glass, [class*="glass"], [class*="blur"], [class*="morphism"], .ios-surface');
+    const glassElements = page.locator('.ios-glass')
+      .or(page.locator('[class*="glass"]'))
+      .or(page.locator('[class*="blur"]'))
+      .or(page.locator('[class*="morphism"]'))
+      .or(page.locator('.ios-surface'));
     
     if (await glassElements.count() > 0) {
       const firstGlass = glassElements.first();
@@ -76,10 +98,19 @@ test.describe('iOS Components', () => {
 
   test('iOS color system application', async ({ page }) => {
     // Check usage of iOS standard colors - enhanced selectors
-    const blueElements = page.locator('[class*="blue"], [class*="primary"], .ios-button, button:has-text("Explore Rankings")');
-    const greenElements = page.locator('[class*="green"], [class*="success"], .text-green');
-    const orangeElements = page.locator('[class*="orange"], [class*="warning"], .text-orange');
-    const redElements = page.locator('[class*="red"], [class*="destructive"], .text-red');
+    const blueElements = page.locator('[class*="blue"]')
+      .or(page.locator('[class*="primary"]'))
+      .or(page.locator('.ios-button'))
+      .or(page.locator('button:has-text("Explore Rankings")'));
+    const greenElements = page.locator('[class*="green"]')
+      .or(page.locator('[class*="success"]'))
+      .or(page.locator('.text-green'));
+    const orangeElements = page.locator('[class*="orange"]')
+      .or(page.locator('[class*="warning"]'))
+      .or(page.locator('.text-orange'));
+    const redElements = page.locator('[class*="red"]')
+      .or(page.locator('[class*="destructive"]'))
+      .or(page.locator('.text-red'));
     
     // Verify at least some iOS color elements exist
     const totalColorElements = await blueElements.count() + await greenElements.count() + await orangeElements.count() + await redElements.count();
@@ -88,7 +119,12 @@ test.describe('iOS Components', () => {
 
   test('iOS typography system application', async ({ page }) => {
     // Check San Francisco font usage
-    const headings = page.locator('h1, h2, h3, h4, h5, h6');
+    const headings = page.locator('h1')
+      .or(page.locator('h2'))
+      .or(page.locator('h3'))
+      .or(page.locator('h4'))
+      .or(page.locator('h5'))
+      .or(page.locator('h6'));
     
     if (await headings.count() > 0) {
       const firstHeading = headings.first();
@@ -101,7 +137,10 @@ test.describe('iOS Components', () => {
     }
     
     // Check iOS title level classes
-    const largeTitleElements = page.locator('.text-large-title, [class*="large-title"], h1:has-text("WenXin MoYun"), h1:has-text("AI Art Evaluation")');
+    const largeTitleElements = page.locator('.text-large-title')
+      .or(page.locator('[class*="large-title"]'))
+      .or(page.locator('h1:has-text("WenXin MoYun")'))
+      .or(page.locator('h1:has-text("AI Art Evaluation")'));
     if (await largeTitleElements.count() > 0) {
       await expect(largeTitleElements.first()).toBeVisible();
     }
@@ -109,7 +148,11 @@ test.describe('iOS Components', () => {
 
   test('iOS toggle switch components', async ({ page }) => {
     // Find iOS-style toggle switches - comprehensive selectors
-    const toggles = page.locator('.ios-toggle, input[type="checkbox"][class*="ios"], [class*="toggle"], [class*="switch"], [data-testid*="toggle"]');
+    const toggles = page.locator('.ios-toggle')
+      .or(page.locator('input[type="checkbox"][class*="ios"]'))
+      .or(page.locator('[class*="toggle"]'))
+      .or(page.locator('[class*="switch"]'))
+      .or(page.locator('[data-testid*="toggle"]'));
     
     if (await toggles.count() > 0) {
       const firstToggle = toggles.first();
@@ -129,7 +172,10 @@ test.describe('iOS Components', () => {
 
   test('iOS slider components', async ({ page }) => {
     // Find iOS-style sliders - enhanced selectors
-    const sliders = page.locator('.ios-slider, input[type="range"][class*="ios"], [class*="slider"], [data-testid*="slider"]');
+    const sliders = page.locator('.ios-slider')
+      .or(page.locator('input[type="range"][class*="ios"]'))
+      .or(page.locator('[class*="slider"]'))
+      .or(page.locator('[data-testid*="slider"]'));
     
     if (await sliders.count() > 0) {
       const firstSlider = sliders.first();
@@ -152,7 +198,11 @@ test.describe('iOS Components', () => {
       await alertTriggers.first().click();
       
       // Find iOS-style alerts and modals
-      const alerts = page.locator('.ios-alert, [class*="alert"], [class*="modal"], [role="dialog"], .modal');
+      const alerts = page.locator('.ios-alert')
+        .or(page.locator('[class*="alert"]'))
+        .or(page.locator('[class*="modal"]'))
+        .or(page.locator('[role="dialog"]'))
+        .or(page.locator('.modal'));
       
       if (await alerts.count() > 0) {
         await expect(alerts.first()).toBeVisible();
@@ -180,7 +230,10 @@ test.describe('iOS Components', () => {
       await page.setViewportSize(viewport);
       
       // Verify iOS components remain visible and usable across sizes
-      const iosComponents = page.locator('.ios-button, .ios-card, [class*="ios"], [class*="card"]');
+      const iosComponents = page.locator('.ios-button')
+        .or(page.locator('.ios-card'))
+        .or(page.locator('[class*="ios"]'))
+        .or(page.locator('[class*="card"]'));
       if (await iosComponents.count() > 0) {
         await expect(iosComponents.first()).toBeVisible();
       }
@@ -192,7 +245,11 @@ test.describe('iOS Components', () => {
 
   test('iOS component animations and transition effects', async ({ page }) => {
     // Find elements with animation effects - enhanced selectors
-    const animatedElements = page.locator('.ios-button, [class*="animate"], [class*="transition"], [class*="hover"], .ios-card');
+    const animatedElements = page.locator('.ios-button')
+      .or(page.locator('[class*="animate"]'))
+      .or(page.locator('[class*="transition"]'))
+      .or(page.locator('[class*="hover"]'))
+      .or(page.locator('.ios-card'));
     
     if (await animatedElements.count() > 0) {
       const firstAnimated = animatedElements.first();

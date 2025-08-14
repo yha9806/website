@@ -10,11 +10,15 @@ test.describe('AI Models Leaderboard', () => {
     await expect(page).toHaveTitle(/WenXin MoYun/);
     
     // 检查排行榜表格或卡片
-    const leaderboard = page.locator('[class*="leaderboard"], table, [class*="model-list"]');
+    const leaderboard = page.locator('[class*="leaderboard"]')
+      .or(page.locator('table'))
+      .or(page.locator('[class*="model-list"]'));
     await expect(leaderboard).toBeVisible();
     
     // 检查是否显示模型名称
-    const modelNames = page.locator('[class*="model-name"], td, [class*="card-title"]');
+    const modelNames = page.locator('[class*="model-name"]')
+      .or(page.locator('td'))
+      .or(page.locator('[class*="card-title"]'));
     await expect(modelNames.first()).toBeVisible();
   });
 
@@ -39,11 +43,15 @@ test.describe('AI Models Leaderboard', () => {
 
   test('应该支持模型类型筛选', async ({ page }) => {
     // 查找筛选器
-    const filters = page.locator('[class*="filter"], select, [role="tab"]');
+    const filters = page.locator('[class*="filter"]')
+      .or(page.locator('select'))
+      .or(page.locator('[role="tab"]'));
     
     if (await filters.count() > 0) {
       // 测试不同的模型类型筛选
-      const typeFilters = page.locator('[value="llm"], [value="image"], [value="multimodal"]');
+      const typeFilters = page.locator('[value="llm"]')
+        .or(page.locator('[value="image"]'))
+        .or(page.locator('[value="multimodal"]'));
       
       if (await typeFilters.count() > 0) {
         await typeFilters.first().click();
@@ -52,7 +60,8 @@ test.describe('AI Models Leaderboard', () => {
         await page.waitForTimeout(1000);
         
         // 验证筛选是否工作
-        const results = page.locator('[class*="model-card"], tr');
+        const results = page.locator('[class*="model-card"]')
+          .or(page.locator('tr'));
         await expect(results.first()).toBeVisible();
       }
     }
@@ -63,7 +72,9 @@ test.describe('AI Models Leaderboard', () => {
     await page.waitForLoadState('networkidle');
     
     // 查找排序按钮或表头
-    const sortButtons = page.locator('[class*="sort"], th[role="button"], [data-sort]');
+    const sortButtons = page.locator('[class*="sort"]')
+      .or(page.locator('th[role="button"]'))
+      .or(page.locator('[data-sort]'));
     
     if (await sortButtons.count() > 0) {
       const firstSort = sortButtons.first();
@@ -73,7 +84,8 @@ test.describe('AI Models Leaderboard', () => {
       await page.waitForTimeout(1000);
       
       // 验证排序是否生效（检查内容是否发生变化）
-      const modelList = page.locator('[class*="model-list"], tbody');
+      const modelList = page.locator('[class*="model-list"]')
+        .or(page.locator('tbody'));
       await expect(modelList).toBeVisible();
     }
   });
@@ -83,7 +95,8 @@ test.describe('AI Models Leaderboard', () => {
     await page.waitForLoadState('networkidle');
     
     // 查找可点击的模型链接
-    const modelLinks = page.locator('a[href*="/model/"], [class*="model-card"][role="button"]');
+    const modelLinks = page.locator('a[href*="/model/"]')
+      .or(page.locator('[class*="model-card"][role="button"]'));
     
     if (await modelLinks.count() > 0) {
       await modelLinks.first().click();
@@ -92,7 +105,8 @@ test.describe('AI Models Leaderboard', () => {
       await expect(page).toHaveURL(/\/model\//);
       
       // 验证模型详情页面元素
-      const modelDetail = page.locator('[class*="model-detail"], main');
+      const modelDetail = page.locator('[class*="model-detail"]')
+        .or(page.locator('main'));
       await expect(modelDetail).toBeVisible();
     }
   });
@@ -114,7 +128,8 @@ test.describe('AI Models Leaderboard', () => {
     await expect(page.locator('[class*="leaderboard"]')).toBeVisible({ timeout: 10000 });
     
     // 检查移动端是否有适当的布局调整
-    const mobileLayout = page.locator('[class*="mobile"], [class*="responsive"]');
+    const mobileLayout = page.locator('[class*="mobile"]')
+      .or(page.locator('[class*="responsive"]'));
     const count = await mobileLayout.count();
     if (count > 0) {
       await expect(mobileLayout.first()).toBeVisible({ timeout: 5000 });
@@ -123,7 +138,9 @@ test.describe('AI Models Leaderboard', () => {
 
   test('搜索功能测试', async ({ page }) => {
     // 查找搜索框
-    const searchBox = page.locator('input[type="search"], input[placeholder*="search"], input[placeholder*="搜索"]');
+    const searchBox = page.locator('input[type="search"]')
+      .or(page.locator('input[placeholder*="search"]'))
+      .or(page.locator('input[placeholder*="搜索"]'));
     
     if (await searchBox.count() > 0) {
       await searchBox.fill('GPT');
@@ -133,7 +150,8 @@ test.describe('AI Models Leaderboard', () => {
       await page.waitForTimeout(1000);
       
       // 验证搜索结果
-      const results = page.locator('[class*="model-card"], tr');
+      const results = page.locator('[class*="model-card"]')
+        .or(page.locator('tr'));
       await expect(results.first()).toBeVisible();
       
       // 验证搜索结果包含搜索关键词
@@ -144,7 +162,8 @@ test.describe('AI Models Leaderboard', () => {
 
   test('数据加载状态测试', async ({ page }) => {
     // 检查加载状态
-    const loadingIndicator = page.locator('[class*="loading"], [class*="spinner"]');
+    const loadingIndicator = page.locator('[class*="loading"]')
+      .or(page.locator('[class*="spinner"]'));
     
     if (await loadingIndicator.count() > 0) {
       // 如果有加载指示器，验证它最终会消失
@@ -152,7 +171,9 @@ test.describe('AI Models Leaderboard', () => {
     }
     
     // 验证数据最终加载完成
-    const content = page.locator('[class*="model-list"], table, [class*="leaderboard"]');
+    const content = page.locator('[class*="model-list"]')
+      .or(page.locator('table'))
+      .or(page.locator('[class*="leaderboard"]'));
     await expect(content).toBeVisible();
   });
 });

@@ -28,7 +28,9 @@ test.describe('Navigation System', () => {
       // Find navigation link using multiple text patterns
       let navLink = null;
       for (const pattern of link.patterns) {
-        navLink = page.locator(`nav a:has-text("${pattern}"), header a:has-text("${pattern}"), a[href="${link.url}"]`);
+        navLink = page.locator(`nav a:has-text("${pattern}")`)
+          .or(page.locator(`header a:has-text("${pattern}")`)
+          .or(page.locator(`a[href="${link.url}"]`)));
         if (await navLink.isVisible({ timeout: 1000 }).catch(() => false)) {
           break;
         }
@@ -67,13 +69,25 @@ test.describe('Navigation System', () => {
       
       // Check for page-specific content to ensure proper loading
       if (route === '/leaderboard') {
-        await expect(page.locator('text=/排行榜|Leaderboard|Rankings|Models/i, h1, h2, .page-title')).toBeVisible();
+        await expect(page.locator('text=/排行榜|Leaderboard|Rankings|Models/i')
+          .or(page.locator('h1'))
+          .or(page.locator('h2'))
+          .or(page.locator('.page-title'))).toBeVisible();
       } else if (route === '/battle') {
-        await expect(page.locator('text=/对战|Battle|VS|Vote|Compare/i, h1, h2, .page-title')).toBeVisible();
+        await expect(page.locator('text=/对战|Battle|VS|Vote|Compare/i')
+          .or(page.locator('h1'))
+          .or(page.locator('h2'))
+          .or(page.locator('.page-title'))).toBeVisible();
       } else if (route === '/evaluations') {
-        await expect(page.locator('text=/评测|Evaluation|Test|Assessment/i, h1, h2, .page-title')).toBeVisible();
+        await expect(page.locator('text=/评测|Evaluation|Test|Assessment/i')
+          .or(page.locator('h1'))
+          .or(page.locator('h2'))
+          .or(page.locator('.page-title'))).toBeVisible();
       } else if (route === '/about') {
-        await expect(page.locator('text=/关于|About|Information|Platform/i, h1, h2, .page-title')).toBeVisible();
+        await expect(page.locator('text=/关于|About|Information|Platform/i')
+          .or(page.locator('h1'))
+          .or(page.locator('h2'))
+          .or(page.locator('.page-title'))).toBeVisible();
       } else if (route === '/') {
         await expect(homePage.heroTitle).toBeVisible();
       }
@@ -85,11 +99,17 @@ test.describe('Navigation System', () => {
     await page.goto('/non-existent-route-12345');
     
     // Should show 404 page - expanded patterns for English interface
-    const notFoundMessage = page.locator('text=/404|页面不存在|Page not found|Not found|Error|Cannot find/i, h1:has-text("404"), .error-page');
+    const notFoundMessage = page.locator('text=/404|页面不存在|Page not found|Not found|Error|Cannot find/i')
+      .or(page.locator('h1:has-text("404")'))
+      .or(page.locator('.error-page'));
     await expect(notFoundMessage).toBeVisible({ timeout: 5000 });
     
     // Should have link back to home
-    const homeLink = page.locator('a:has-text("首页"), a:has-text("Home"), a[href="/"], button:has-text("Home"), .home-link');
+    const homeLink = page.locator('a:has-text("首页")')
+      .or(page.locator('a:has-text("Home")'))
+      .or(page.locator('a[href="/"]'))
+      .or(page.locator('button:has-text("Home")'))
+      .or(page.locator('.home-link'));
     await expect(homeLink).toBeVisible();
     
     // Click home link should navigate back
@@ -109,12 +129,18 @@ test.describe('Navigation System', () => {
       await modelLink.click();
       
       // Check for breadcrumbs
-      const breadcrumbs = page.locator('nav[aria-label="breadcrumb"], .breadcrumbs, .breadcrumb');
+      const breadcrumbs = page.locator('nav[aria-label="breadcrumb"]')
+        .or(page.locator('.breadcrumbs'))
+        .or(page.locator('.breadcrumb'));
       
       if (await breadcrumbs.isVisible()) {
         // Verify breadcrumb structure - support English interface
-        const homecrumb = breadcrumbs.locator('a:has-text("首页"), a:has-text("Home"), a[href="/"]');
-        const leaderboardCrumb = breadcrumbs.locator('text=/排行榜|Leaderboard|Rankings/i, a:has-text("Leaderboard"), a[href="/leaderboard"]');
+        const homecrumb = breadcrumbs.locator('a:has-text("首页")')
+          .or(breadcrumbs.locator('a:has-text("Home")'))
+          .or(breadcrumbs.locator('a[href="/"]'));
+        const leaderboardCrumb = breadcrumbs.locator('text=/排行榜|Leaderboard|Rankings/i')
+          .or(breadcrumbs.locator('a:has-text("Leaderboard")'))
+          .or(breadcrumbs.locator('a[href="/leaderboard"]'));
         
         // Click breadcrumb to navigate back
         if (await leaderboardCrumb.isVisible()) {
@@ -130,18 +156,29 @@ test.describe('Navigation System', () => {
     await page.setViewportSize({ width: 375, height: 667 });
     
     // Check for mobile menu button - enhanced selector for English interface
-    const mobileMenuButton = page.locator('button[aria-label*="menu"], button[aria-label*="Menu"], .mobile-menu-button, .hamburger, button:has-text("☰"), [data-testid="mobile-menu-button"]');
+    const mobileMenuButton = page.locator('button[aria-label*="menu"]')
+      .or(page.locator('button[aria-label*="Menu"]'))
+      .or(page.locator('.mobile-menu-button'))
+      .or(page.locator('.hamburger'))
+      .or(page.locator('button:has-text("☰")'))
+      .or(page.locator('[data-testid="mobile-menu-button"]'));
     
     if (await mobileMenuButton.isVisible({ timeout: 2000 }).catch(() => false)) {
       // Open mobile menu
       await mobileMenuButton.click();
       
       // Mobile menu should be visible
-      const mobileMenu = page.locator('.mobile-menu, nav[aria-label="mobile"], [data-testid="mobile-nav"], .nav-mobile');
+      const mobileMenu = page.locator('.mobile-menu')
+        .or(page.locator('nav[aria-label="mobile"]'))
+        .or(page.locator('[data-testid="mobile-nav"]'))
+        .or(page.locator('.nav-mobile'));
       await expect(mobileMenu).toBeVisible();
       
       // Click a link in mobile menu - support English interface
-      const mobileLink = mobileMenu.locator('a:has-text("排行榜"), a:has-text("Leaderboard"), a:has-text("Rankings"), a[href="/leaderboard"]');
+      const mobileLink = mobileMenu.locator('a:has-text("排行榜")')
+        .or(mobileMenu.locator('a:has-text("Leaderboard")'))
+        .or(mobileMenu.locator('a:has-text("Rankings")'))
+        .or(mobileMenu.locator('a[href="/leaderboard"]'));
       if (await mobileLink.isVisible({ timeout: 2000 }).catch(() => false)) {
         await mobileLink.click();
         await expect(page).toHaveURL('/leaderboard');

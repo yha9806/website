@@ -42,7 +42,8 @@ test.describe('Homepage', () => {
     await expect(page.locator('main').getByRole('heading', { level: 1 })).toBeVisible();
     
     // 检查移动端导航是否正确显示
-    const mobileNav = page.locator('[class*="mobile"], [class*="hamburger"]');
+    const mobileNav = page.locator('[class*="mobile"]')
+      .or(page.locator('[class*="hamburger"]'));
     if (await mobileNav.count() > 0) {
       await expect(mobileNav.first()).toBeVisible();
     }
