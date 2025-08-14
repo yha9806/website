@@ -66,15 +66,15 @@ export class LoginPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    // Comprehensive English interface support
-    this.usernameInput = page.locator('input[name="username"], input[placeholder*="Username"], input[placeholder*="用户名"], input[id*="username"], input[type="text"]:first-of-type');
-    this.passwordInput = page.locator('input[name="password"], input[type="password"], input[placeholder*="Password"], input[placeholder*="密码"]');
-    this.submitButton = page.locator('button[type="submit"], button:has-text("Login"), button:has-text("Sign In"), button:has-text("登录"), .ios-button:has-text("Login"), .ios-button[type="submit"]');
-    this.errorMessage = page.locator('.error-message, .text-red-500, .text-red, .error, [data-testid="error"], .ios-alert.error');
-    this.guestModeButton = page.locator('button:has-text("Guest"), button:has-text("Continue as Guest"), button:has-text("访客模式"), button:has-text("游客"), .ios-button:has-text("Guest")');
-    this.loginForm = page.locator('form, .login-form, .auth-form');
-    this.successMessage = page.locator('.success-message, .text-green-500, .text-green, .success');
-    this.welcomeMessage = page.locator('text=Welcome, text=Profile, text=Dashboard, text=欢迎, .welcome, .user-info');
+    // Updated to match actual LoginPage.tsx implementation
+    this.usernameInput = page.locator('input[name="username"], input[id="username"], input[placeholder*="username"], input[placeholder*="Username"]');
+    this.passwordInput = page.locator('input[name="password"], input[id="password"], input[type="password"], input[placeholder*="password"], input[placeholder*="Password"]');
+    this.submitButton = page.locator('button[type="submit"], button:has-text("Sign In"), button:has-text("Signing in"), button:has-text("Login")');
+    this.errorMessage = page.locator('.bg-red-50.border.border-red-200, .text-red-700, .error-message, div:has-text("failed")');
+    this.guestModeButton = page.locator('button:has-text("Guest"), button:has-text("Continue as Guest"), button:has-text("Use admin account")');
+    this.loginForm = page.locator('form, .glass-effect form');
+    this.successMessage = page.locator('.success-message, text=/successfully/i, text=/signed in/i');
+    this.welcomeMessage = page.locator('h2:has-text("Welcome Back"), text=Welcome Back, .gradient-text, text=Profile, text=Dashboard');
   }
 
   async login(username: string, password: string) {
@@ -152,16 +152,16 @@ export class BattlePage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    // Enhanced English interface support for battle system
-    this.model1Container = page.locator('.battle-model-1, [data-testid="model-1"], .model-a, .left-model, .first-model');
-    this.model2Container = page.locator('.battle-model-2, [data-testid="model-2"], .model-b, .right-model, .second-model');
-    this.voteButton1 = page.locator('button:has-text("投票"):first, button[data-model="1"], button:has-text("Vote"):first, .vote-btn:first, .ios-button:has-text("Vote"):first');
-    this.voteButton2 = page.locator('button:has-text("投票"):last, button[data-model="2"], button:has-text("Vote"):last, .vote-btn:last, .ios-button:has-text("Vote"):last');
-    this.skipButton = page.locator('button:has-text("跳过"), button:has-text("下一个"), button:has-text("Skip"), button:has-text("Next"), .skip-btn, .ios-button:has-text("Skip")');
-    this.resultMessage = page.locator('.vote-result, .success-message, .battle-result, .result, .voting-result');
-    this.battleContainer = page.locator('.battle-container, .battle-arena, .vs-container');
-    this.statsContainer = page.locator('.battle-stats, .statistics, .stats');
-    this.nextBattleButton = page.locator('button:has-text("下一场"), button:has-text("Next Battle"), .next-battle');
+    // Updated to match actual BattlePage.tsx implementation
+    this.model1Container = page.locator('.grid.grid-cols-1.gap-6.lg\\:grid-cols-2 > :first-child, [class*="border-2 rounded-xl p-6"]:first-of-type');
+    this.model2Container = page.locator('.grid.grid-cols-1.gap-6.lg\\:grid-cols-2 > :last-child, [class*="border-2 rounded-xl p-6"]:last-of-type');
+    this.voteButton1 = page.locator('button:has-text("Vote for Model A"), .ios-button:has-text("Vote for Model A")');
+    this.voteButton2 = page.locator('button:has-text("Vote for Model B"), .ios-button:has-text("Vote for Model B")');
+    this.skipButton = page.locator('button:has-text("Skip"), button:has-text("Next"), .ios-button:has-text("Refresh Battle")');
+    this.resultMessage = page.locator('text=/Vote Rate/, text=/votes/, .text-center:has-text("votes")');
+    this.battleContainer = page.locator('.ios-glass.liquid-glass-container.rounded-xl.shadow-xl.p-8');
+    this.statsContainer = page.locator('.mt-8.flex.justify-center.space-x-8');
+    this.nextBattleButton = page.locator('button:has-text("Next Battle"), .ios-button svg.w-5.h-5');
   }
 
   async voteForModel1() {
@@ -177,8 +177,8 @@ export class BattlePage extends BasePage {
   }
 
   async getModelNames() {
-    const model1Name = await this.model1Container.locator('h3, .model-name').textContent();
-    const model2Name = await this.model2Container.locator('h3, .model-name').textContent();
+    const model1Name = await this.model1Container.locator('h3:has-text("Model A"), h3:has-text("Model")')?.textContent() || 'Model A';
+    const model2Name = await this.model2Container.locator('h3:has-text("Model B"), h3:has-text("Model")')?.textContent() || 'Model B';
     return { model1: model1Name, model2: model2Name };
   }
 }
