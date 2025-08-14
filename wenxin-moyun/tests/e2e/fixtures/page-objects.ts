@@ -29,9 +29,10 @@ export class HomePage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.heroTitle = page.locator('h1:has-text("文心墨韵")');
-    this.startButton = page.locator('button:has-text("开始体验")');
-    this.loginButton = page.locator('button:has-text("登录")');
+    // Updated for English iOS interface
+    this.heroTitle = page.locator('h1:has-text("WenXin MoYun"), h1:has-text("AI Art Evaluation"), h1:has-text("文心墨韵")');
+    this.startButton = page.locator('button:has-text("Explore Rankings"), button:has-text("Get Started"), button:has-text("开始体验")');
+    this.loginButton = page.locator('button:has-text("Login"), button:has-text("Sign In"), button:has-text("登录")');
     this.leaderboardLink = page.locator('a[href="/leaderboard"]');
     this.battleLink = page.locator('a[href="/battle"]');
   }
@@ -54,11 +55,12 @@ export class LoginPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.usernameInput = page.locator('input[name="username"], input[placeholder*="用户名"]');
+    // Updated for English interface
+    this.usernameInput = page.locator('input[name="username"], input[placeholder*="Username"], input[placeholder*="用户名"]');
     this.passwordInput = page.locator('input[name="password"], input[type="password"]');
-    this.submitButton = page.locator('button[type="submit"], button:has-text("登录")');
+    this.submitButton = page.locator('button[type="submit"], button:has-text("Login"), button:has-text("Sign In"), button:has-text("登录")');
     this.errorMessage = page.locator('.error-message, .text-red-500');
-    this.guestModeButton = page.locator('button:has-text("访客模式"), button:has-text("游客")');
+    this.guestModeButton = page.locator('button:has-text("Guest"), button:has-text("Continue as Guest"), button:has-text("访客模式"), button:has-text("游客")');
   }
 
   async login(username: string, password: string) {

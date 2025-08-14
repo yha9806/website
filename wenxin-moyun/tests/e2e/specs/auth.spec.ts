@@ -38,7 +38,7 @@ test.describe('Authentication Flow', () => {
     expect(token).toBeTruthy();
     
     // Verify user is logged in (look for user menu or welcome message)
-    await expect(page.locator('text=欢迎')).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('text=Welcome, text=Profile, text=Dashboard, text=欢迎')).toBeVisible({ timeout: 5000 });
   });
 
   test('Guest mode allows access without authentication', async ({ page }) => {

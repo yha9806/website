@@ -110,10 +110,11 @@ jobs:
         if: github.event_name != 'pull_request'
         working-directory: wenxin-moyun
         run: |
-          # Run E2E tests with server already running
-          npx playwright test --config=tests/e2e/playwright.config.ts
+          # Run only chromium tests in CI for faster execution
+          npx playwright test --project=chromium --config=tests/e2e/playwright.config.ts
         env:
           CI: true
+        timeout-minutes: 15
 
       - name: Stop frontend server
         if: github.event_name != 'pull_request' && always()

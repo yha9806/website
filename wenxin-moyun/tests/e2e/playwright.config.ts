@@ -2,10 +2,11 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './specs',
-  fullyParallel: true,
+  fullyParallel: process.env.CI ? false : true,  // Disable parallel in CI to reduce resource usage
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,  // Reduce retries in CI
   workers: process.env.CI ? 1 : undefined,
+  timeout: 30000,  // Global test timeout
   reporter: [
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
     ['list'],
@@ -21,7 +22,17 @@ export default defineConfig({
     navigationTimeout: 30000,
   },
 
-  projects: [
+  projects: process.env.CI ? [
+    // Only chromium in CI for faster execution
+    {
+      name: 'chromium',
+      use: { 
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1920, height: 1080 }
+      },
+    }
+  ] : [
+    // All browsers in local development
     {
       name: 'chromium',
       use: { 
