@@ -74,6 +74,12 @@ jobs:
           SECRET_KEY: test-secret-key
           DEBUG: true
 
+      - name: Install Playwright browsers
+        if: github.event_name != 'pull_request'
+        working-directory: wenxin-moyun
+        run: |
+          npx playwright install --with-deps
+
       - name: Run E2E tests (if not PR)
         if: github.event_name != 'pull_request'
         working-directory: wenxin-moyun
