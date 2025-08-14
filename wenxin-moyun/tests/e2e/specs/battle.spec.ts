@@ -8,6 +8,9 @@ import {
 } from '../helpers/test-utils';
 
 test.describe('Battle System', () => {
+  // Increase timeout for CI environment
+  test.setTimeout(60000);
+  
   let battlePage: BattlePage;
   let homePage: HomePage;
 

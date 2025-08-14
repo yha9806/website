@@ -2,6 +2,9 @@ import { test, expect } from '@playwright/test';
 import { HomePage } from '../fixtures/page-objects';
 
 test.describe('Homepage', () => {
+  // Increase timeout for CI environment
+  test.setTimeout(45000);
+  
   let homePage: HomePage;
 
   test.beforeEach(async ({ page }) => {

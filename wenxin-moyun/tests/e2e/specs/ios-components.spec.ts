@@ -244,6 +244,9 @@ test.describe('iOS Components', () => {
   });
 
   test('iOS component animations and transition effects', async ({ page }) => {
+    // Simplified animation test to avoid CI timeouts
+    test.setTimeout(30000); // Shorter timeout for this specific test
+    
     // Find elements with animation effects - enhanced selectors
     const animatedElements = page.locator('.ios-button')
       .or(page.locator('[class*="animate"]'))

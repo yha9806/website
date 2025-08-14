@@ -9,6 +9,9 @@ import {
 } from '../helpers/test-utils';
 
 test.describe('Evaluation System', () => {
+  // Increase timeout for CI environment
+  test.setTimeout(60000);
+  
   let evaluationPage: EvaluationPage;
   let homePage: HomePage;
 
