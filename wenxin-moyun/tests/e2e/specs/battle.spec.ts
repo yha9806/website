@@ -18,50 +18,88 @@ test.describe('Battle System', () => {
     battlePage = new BattlePage(page);
     homePage = new HomePage(page);
     
-    // Mock battle API endpoints
+    // Mock battle API endpoints - corrected to match BattleResponse interface
     await page.route('**/api/v1/battles/random', route => {
+      console.log('Mock: Intercepting battle random request');
       route.fulfill({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({
           id: `battle-${Date.now()}`,
-          model1: {
+          model_a: {
             id: 'test-gpt-4',
             name: 'GPT-4',
-            provider: 'OpenAI'
+            organization: 'OpenAI',
+            avatar: '/avatars/openai.png'
           },
-          model2: {
+          model_b: {
             id: 'test-claude-3',
             name: 'Claude-3',
-            provider: 'Anthropic'
+            organization: 'Anthropic',
+            avatar: '/avatars/anthropic.png'
           },
+          task_type: 'poem',
+          task_prompt: 'Write a beautiful poem about autumn',
+          task_category: 'Poetry',
+          difficulty: 'medium',
+          votes_a: 12,
+          votes_b: 8,
           status: 'active',
-          votes: { model1: 0, model2: 0 }
+          created_at: new Date().toISOString()
         })
       });
     });
     
-    // Mock vote endpoint
+    // Mock vote endpoint - corrected to match VoteResponse interface
     await page.route('**/api/v1/battles/*/vote', route => {
+      console.log('Mock: Intercepting battle vote request');
       route.fulfill({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({
           success: true,
           message: 'Vote recorded successfully',
-          newBattle: {
-            id: `battle-${Date.now()}`,
-            model1: {
-              id: 'test-model-a',
-              name: 'Model A',
-              provider: 'Provider A'
-            },
-            model2: {
-              id: 'test-model-b', 
-              name: 'Model B',
-              provider: 'Provider B'
+          votes_a: 13,
+          votes_b: 8
+        })
+      });
+    });
+    
+    // Mock battles list endpoint
+    await page.route('**/api/v1/battles/', route => {
+      console.log('Mock: Intercepting battles list request');
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          battles: [
+            {
+              id: `battle-1`,
+              model_a: {
+                id: 'test-gpt-4',
+                name: 'GPT-4',
+                organization: 'OpenAI',
+                avatar: '/avatars/openai.png'
+              },
+              model_b: {
+                id: 'test-claude-3',
+                name: 'Claude-3',
+                organization: 'Anthropic',
+                avatar: '/avatars/anthropic.png'
+              },
+              task_type: 'poem',
+              task_prompt: 'Write a beautiful poem about autumn',
+              task_category: 'Poetry',
+              difficulty: 'medium',
+              votes_a: 12,
+              votes_b: 8,
+              status: 'active',
+              created_at: new Date().toISOString()
             }
-          }
+          ],
+          total: 1,
+          page: 1,
+          page_size: 20
         })
       });
     });
@@ -121,34 +159,74 @@ test.describe('Battle System', () => {
   });
 
   test('Vote submission and result update', async ({ page }) => {
-    // Wait for battle to load
-    await page.waitForLoadState('networkidle');
+    console.log('Starting vote submission test...');
     
-    // Get initial models (should be "Model A"/"Model B" before voting)
-    const models = await battlePage.getModelNames();
-    console.log(`Initial models: ${models.model1} vs ${models.model2}`);
+    // Increase test timeout for debugging
+    test.setTimeout(60000);
     
-    // Vote for first model
-    const voteResponse = waitForAPIResponse(page, '/api/v1/battles');
-    await battlePage.voteForModel1();
-    await voteResponse;
+    // Wait for battle to load with extended timeout
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForTimeout(3000); // Allow time for API calls and React rendering
     
-    // Verify vote was recorded
-    await expect(battlePage.resultMessage).toBeVisible({ timeout: TEST_TIMEOUTS.short });
+    // Debug: Check if battle container is visible (use more specific selector)
+    const battleContainer = await page.locator('.ios-glass.liquid-glass-container.rounded-xl.shadow-xl.p-8').isVisible({ timeout: 5000 });
+    console.log('Battle container visible:', battleContainer);
     
-    // Verify success message
-    const resultText = await battlePage.resultMessage.textContent();
-    expect(resultText).toMatch(/(投票成功|Vote successful|Success|Voted|Thank you)/i);
+    // Debug: Check if model containers are visible
+    const model1Visible = await page.locator('.grid.grid-cols-1.gap-6.lg\\:grid-cols-2 > :first-child').isVisible({ timeout: 5000 });
+    const model2Visible = await page.locator('.grid.grid-cols-1.gap-6.lg\\:grid-cols-2 > :last-child').isVisible({ timeout: 5000 });
+    console.log('Model containers visible:', model1Visible, model2Visible);
     
-    // New battle should load automatically or button to continue should appear
-    if (await battlePage.nextBattleButton.isVisible({ timeout: 2000 })) {
-      await battlePage.nextBattleButton.click();
+    if (!model1Visible || !model2Visible) {
+      // Try alternate selectors
+      const altModels = await page.locator('[class*="border-2 rounded-xl p-6"]').count();
+      console.log('Alt model containers found:', altModels);
+      
+      if (altModels === 0) {
+        console.log('No battle models found, checking for loading or error states...');
+        const loadingState = await page.locator('text=/Loading/', 'text=/Getting random battle/').isVisible({ timeout: 2000 });
+        const errorState = await page.locator('text=/failed/, text=/error/i').isVisible({ timeout: 2000 });
+        console.log('Loading state:', loadingState, 'Error state:', errorState);
+        
+        // Let's see what's actually on the page
+        const pageContent = await page.textContent('body');
+        console.log('Page content preview:', pageContent?.substring(0, 500));
+        
+        throw new Error('Battle models not found on page');
+      }
     }
     
-    // Verify new battle loaded
-    await page.waitForTimeout(1000);
-    const newModels = await battlePage.getModelNames();
-    expect(newModels.model1).toBeTruthy();
+    // Verify initial state shows anonymous model names
+    const initialModels = await battlePage.getModelNames();
+    console.log(`Initial models: ${initialModels.model1} vs ${initialModels.model2}`);
+    expect(initialModels.model1).toBe('Model A');
+    expect(initialModels.model2).toBe('Model B');
+    
+    // Verify not voted yet
+    const hasVotedBefore = await battlePage.hasVoted();
+    expect(hasVotedBefore).toBe(false);
+    
+    // Vote for first model
+    console.log('Voting for Model A...');
+    await battlePage.voteForModel1();
+    
+    // Wait for vote to complete and UI to update
+    await page.waitForTimeout(3000);
+    
+    // Verify vote was recorded by checking if vote results are now visible
+    const hasVotedAfter = await battlePage.hasVoted();
+    console.log('Has voted after vote:', hasVotedAfter);
+    expect(hasVotedAfter).toBe(true);
+    
+    // After voting, real model names should be revealed
+    const postVoteModels = await battlePage.getModelNamesAfterVote();
+    console.log(`Post-vote models: ${postVoteModels.model1} vs ${postVoteModels.model2}`);
+    
+    // The models should now show real names (from our mock data)
+    expect(postVoteModels.model1).toBe('GPT-4');
+    expect(postVoteModels.model2).toBe('Claude-3');
+    
+    console.log('✅ Vote submission test completed successfully');
   });
 
   test('Battle statistics tracking', async ({ page }) => {

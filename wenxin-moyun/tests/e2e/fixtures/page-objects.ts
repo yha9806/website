@@ -193,11 +193,12 @@ export class BattlePage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    // Updated to match actual BattlePage.tsx implementation
-    this.model1Container = page.locator('.grid.grid-cols-1.gap-6.lg\\:grid-cols-2 > :first-child, [class*="border-2 rounded-xl p-6"]:first-of-type');
-    this.model2Container = page.locator('.grid.grid-cols-1.gap-6.lg\\:grid-cols-2 > :last-child, [class*="border-2 rounded-xl p-6"]:last-of-type');
-    this.voteButton1 = page.locator('button:has-text("Vote for Model A"), .ios-button:has-text("Vote for Model A")');
-    this.voteButton2 = page.locator('button:has-text("Vote for Model B"), .ios-button:has-text("Vote for Model B")');
+    // Updated to match actual BattlePage.tsx implementation - voting happens through model container clicks
+    this.model1Container = page.locator('.grid.grid-cols-1.gap-6.lg\\:grid-cols-2 > :first-child');
+    this.model2Container = page.locator('.grid.grid-cols-1.gap-6.lg\\:grid-cols-2 > :last-child');
+    // Vote "buttons" are actually the entire model containers (they have onClick handlers)
+    this.voteButton1 = this.model1Container;
+    this.voteButton2 = this.model2Container;
     this.skipButton = page.locator('button:has-text("Skip"), button:has-text("Next"), .ios-button:has-text("Refresh Battle")');
     this.resultMessage = page.locator('text=/Vote Rate/, text=/votes/, .text-center:has-text("votes")');
     this.battleContainer = page.locator('.ios-glass.liquid-glass-container.rounded-xl.shadow-xl.p-8');
@@ -219,13 +220,41 @@ export class BattlePage extends BasePage {
 
   async getModelNames() {
     try {
-      // 在未投票状态下，页面显示"Model A"/"Model B"，这是正常的
+      // 在未投票状态下，页面显示"Model A"/"Model B"，这是正常的设计
+      // 投票后才显示真实模型名称，这确保了公平的匿名投票
       const model1Name = await this.model1Container.locator('h3').first().textContent() || 'Model A';
       const model2Name = await this.model2Container.locator('h3').first().textContent() || 'Model B';
+      
+      console.log(`Model names retrieved: "${model1Name.trim()}" vs "${model2Name.trim()}"`);
       return { model1: model1Name.trim(), model2: model2Name.trim() };
     } catch (error) {
       console.log('Could not get model names, using defaults');
       return { model1: 'Model A', model2: 'Model B' };
+    }
+  }
+
+  async hasVoted() {
+    try {
+      // 检查是否有投票结果显示（百分比条形图）
+      const voteBar = this.page.locator('.bg-primary-500, .bg-secondary-500').first();
+      return await voteBar.isVisible({ timeout: 1000 });
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async getModelNamesAfterVote() {
+    try {
+      // 投票后应该显示真实的模型名称
+      await this.page.waitForTimeout(1000); // 等待DOM更新
+      const model1Name = await this.model1Container.locator('h3').first().textContent() || 'Unknown Model A';
+      const model2Name = await this.model2Container.locator('h3').first().textContent() || 'Unknown Model B';
+      
+      console.log(`Post-vote model names: "${model1Name.trim()}" vs "${model2Name.trim()}"`);
+      return { model1: model1Name.trim(), model2: model2Name.trim() };
+    } catch (error) {
+      console.log('Could not get post-vote model names');
+      return { model1: 'Unknown Model A', model2: 'Unknown Model B' };
     }
   }
 }
