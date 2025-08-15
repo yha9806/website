@@ -63,7 +63,7 @@ async function globalSetup(config: FullConfig) {
       if (!window.performance) {
         (window as any).performance = {};
       }
-      let start = Date.now();
+      const start = Date.now();
       window.performance.now = () => Date.now() - start;
     }
     
