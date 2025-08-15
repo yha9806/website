@@ -1,100 +1,9 @@
-<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="66.784958">
-<testsuite name="evaluation.spec.ts" timestamp="2025-08-15T14:33:07.034Z" hostname="chromium" tests="1" failures="1" skipped="0" time="38.636" errors="0">
-<testcase name="Evaluation System › Create new evaluation task successfully" classname="evaluation.spec.ts" time="38.636">
-<failure message="evaluation.spec.ts:120:3 Create new evaluation task successfully" type="FAILURE">
-<![CDATA[  [chromium] › evaluation.spec.ts:120:3 › Evaluation System › Create new evaluation task successfully 
-
-    TimeoutError: page.waitForResponse: Timeout 10000ms exceeded while waiting for event "response"
-
-       at ..\helpers\test-utils.ts:4
-
-      2 |
-      3 | export async function waitForAPIResponse(page: Page, endpoint: string, timeout = 10000) {
-    > 4 |   return await page.waitForResponse(
-        |                     ^
-      5 |     response => response.url().includes(endpoint) && response.status() === 200,
-      6 |     { timeout }
-      7 |   );
-        at waitForAPIResponse (I:\website\wenxin-moyun\tests\e2e\helpers\test-utils.ts:4:21)
-        at I:\website\wenxin-moyun\tests\e2e\specs\evaluation.spec.ts:135:29
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium\error-context.md
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    ..\..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium\trace.zip
-    Usage:
-
-        npx playwright show-trace ..\..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium\trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    TimeoutError: page.waitForResponse: Timeout 10000ms exceeded while waiting for event "response"
-
-       at ..\helpers\test-utils.ts:4
-
-      2 |
-      3 | export async function waitForAPIResponse(page: Page, endpoint: string, timeout = 10000) {
-    > 4 |   return await page.waitForResponse(
-        |                     ^
-      5 |     response => response.url().includes(endpoint) && response.status() === 200,
-      6 |     { timeout }
-      7 |   );
-        at waitForAPIResponse (I:\website\wenxin-moyun\tests\e2e\helpers\test-utils.ts:4:21)
-        at I:\website\wenxin-moyun\tests\e2e\specs\evaluation.spec.ts:135:29
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium-retry1\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium-retry1\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium-retry1\error-context.md
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    ..\..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium-retry1\trace.zip
-    Usage:
-
-        npx playwright show-trace ..\..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium-retry1\trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="12.259871">
+<testsuite name="evaluation.spec.ts" timestamp="2025-08-15T14:45:47.378Z" hostname="chromium" tests="1" failures="0" skipped="0" time="7.591" errors="0">
+<testcase name="Evaluation System › Create new evaluation task successfully" classname="evaluation.spec.ts" time="7.591">
 <system-out>
 <![CDATA[API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
 API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/artworks/
-API Request: GET http://localhost:8001/api/v1/models/
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/
-API Response: [33m200[39m http://localhost:8001/api/v1/models/
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Request: POST http://localhost:8001/api/v1/evaluations/
-
-[[ATTACHMENT|..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium\test-failed-1.png]]
-
-[[ATTACHMENT|..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium\video.webm]]
-
-[[ATTACHMENT|..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium\error-context.md]]
-
-[[ATTACHMENT|..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium\trace.zip]]
-API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
 API Request: GET http://localhost:8001/api/v1/models/?is_active=true
 Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
 API Request: GET http://localhost:8001/api/v1/models/?is_active=true
@@ -105,15 +14,8 @@ API Request: GET http://localhost:8001/api/v1/artworks/
 API Request: GET http://localhost:8001/api/v1/models/
 Mock: Intercepting models request: http://localhost:8001/api/v1/models/
 API Response: [33m200[39m http://localhost:8001/api/v1/models/
+Found 3 model options
 API Request: POST http://localhost:8001/api/v1/evaluations/
-
-[[ATTACHMENT|..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium-retry1\test-failed-1.png]]
-
-[[ATTACHMENT|..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium-retry1\video.webm]]
-
-[[ATTACHMENT|..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium-retry1\error-context.md]]
-
-[[ATTACHMENT|..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium-retry1\trace.zip]]
 ]]>
 </system-out>
 </testcase>
