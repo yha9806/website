@@ -49,22 +49,32 @@ export async function clearLocalStorage(page: Page) {
 export async function setAuthToken(page: Page, token: string) {
   try {
     await page.evaluate((token) => {
-      // 使用增强的安全存储系统
+      // 优先使用localStorage（应用实际使用的存储）
+      try {
+        if (typeof localStorage !== 'undefined' && localStorage) {
+          localStorage.setItem('access_token', token);
+          console.log('Token set in localStorage');
+        }
+      } catch (storageError) {
+        console.log('localStorage blocked, using fallback storage');
+      }
+      
+      // 设置到SafeStorage系统作为backup
       if ((window as any).__SAFE_STORAGE__) {
         (window as any).__SAFE_STORAGE__.setLocalItem('access_token', token);
-      } else {
-        // 回退到传统方式
-        try {
-          if (typeof localStorage !== 'undefined' && localStorage) {
-            localStorage.setItem('access_token', token);
-          }
-        } catch (storageError) {
-          console.log('localStorage blocked, using window property for auth token');
-        }
+        console.log('Token set in SafeStorage');
       }
+      
+      // 设置到storageUtils fallback
+      if (!(window as any).__TEST_STORAGE__) {
+        (window as any).__TEST_STORAGE__ = {};
+      }
+      (window as any).__TEST_STORAGE__['access_token'] = token;
+      console.log('Token set in TEST_STORAGE');
       
       // 总是设置测试属性用于兼容性
       (window as any).__TEST_AUTH_TOKEN__ = token;
+      console.log('Token set in TEST_AUTH_TOKEN');
     }, token);
     
     // Mock the auth API responses in CI environment
@@ -93,6 +103,7 @@ export async function getAuthToken(page: Page): Promise<string | null> {
       const sources = {
         safeStorage: null as string | null,
         localStorage: null as string | null,
+        storageUtils: null as string | null,
         windowProp: null as string | null
       };
       
@@ -101,27 +112,33 @@ export async function getAuthToken(page: Page): Promise<string | null> {
         sources.safeStorage = (window as any).__SAFE_STORAGE__.getLocalItem('access_token');
       }
       
-      // 2. 检查原生localStorage
+      // 2. 检查应用的storageUtils系统（这是应用实际使用的）
       try {
+        // 模拟storageUtils的getItem逻辑
         if (typeof localStorage !== 'undefined' && localStorage) {
           sources.localStorage = localStorage.getItem('access_token');
+        }
+        // 检查应用的fallback存储
+        if ((window as any).__TEST_STORAGE__) {
+          sources.storageUtils = (window as any).__TEST_STORAGE__['access_token'] || null;
         }
       } catch (e) {
         // localStorage blocked in CI
       }
       
-      // 3. 检查window属性
+      // 3. 检查window属性作为最后的fallback
       sources.windowProp = (window as any).__TEST_AUTH_TOKEN__ || null;
       
       // 调试信息（仅在测试环境输出）
       console.log('Token sources:', {
         safeStorage: sources.safeStorage ? 'EXISTS' : 'NULL',
-        localStorage: sources.localStorage ? 'EXISTS' : 'NULL', 
+        localStorage: sources.localStorage ? 'EXISTS' : 'NULL',
+        storageUtils: sources.storageUtils ? 'EXISTS' : 'NULL',
         windowProp: sources.windowProp ? 'EXISTS' : 'NULL'
       });
       
-      // 返回第一个非空值
-      return sources.safeStorage || sources.localStorage || sources.windowProp;
+      // 优先返回localStorage（应用实际使用的），然后是其他fallback
+      return sources.localStorage || sources.safeStorage || sources.storageUtils || sources.windowProp;
     });
     
     return result;
