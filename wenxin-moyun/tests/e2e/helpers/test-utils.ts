@@ -195,16 +195,18 @@ export async function cleanupTestData(page: Page) {
   // Clear cookies
   await page.context().clearCookies();
   
-  // Reset any test flags (with CI support)
-  const isCI = process.env.CI;
+  // Reset any test flags (unified CI-safe approach)
   try {
-    await page.evaluate((isCI) => {
-      if (isCI) {
-        // In CI environment, clear mock session storage
-        (window as any).__TEST_SESSION_STORAGE__ = {};
-      } else {
-        // Remove any test-related items from sessionStorage
-        if (typeof sessionStorage !== 'undefined') {
+    await page.evaluate(() => {
+      // Always use CI-safe approach - only clear window properties
+      (window as any).__TEST_SESSION_STORAGE__ = {};
+      (window as any).__TEST_AUTH_TOKEN__ = null;
+      (window as any).__TEST_GUEST_SESSION__ = null;
+      (window as any).__TEST_STORAGE__ = {};
+      
+      // Only attempt sessionStorage access if it's safe and accessible
+      try {
+        if (typeof sessionStorage !== 'undefined' && sessionStorage.length >= 0) {
           const keysToRemove = [];
           for (let i = 0; i < sessionStorage.length; i++) {
             const key = sessionStorage.key(i);
@@ -214,15 +216,13 @@ export async function cleanupTestData(page: Page) {
           }
           keysToRemove.forEach(key => sessionStorage.removeItem(key));
         }
+      } catch (storageError) {
+        // Silently ignore sessionStorage access errors in CI or restricted environments
+        console.log('sessionStorage not accessible, using window properties only');
       }
-      
-      // Also clear any test window properties
-      (window as any).__TEST_AUTH_TOKEN__ = null;
-      (window as any).__TEST_GUEST_SESSION__ = null;
-      (window as any).__TEST_STORAGE__ = {};
-    }, isCI);
+    });
   } catch (error) {
-    console.warn('Cannot access sessionStorage in test environment:', error);
+    console.warn('Cannot access storage during cleanup, continuing with window-only cleanup:', error);
   }
 }
 

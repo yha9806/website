@@ -8,7 +8,7 @@ test.describe('Navigation System', () => {
 
   test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
-    await page.goto('/');
+    await homePage.navigate('/');
   });
 
   test.afterEach(async ({ page }) => {
@@ -86,18 +86,12 @@ test.describe('Navigation System', () => {
     // Navigate to non-existent route
     await page.goto('/non-existent-route-12345');
     
-    // Should show 404 page - expanded patterns for English interface
-    const notFoundMessage = page.locator('text=/404|页面不存在|Page not found|Not found|Error|Cannot find/i')
-      .or(page.locator('h1:has-text("404")'))
-      .or(page.locator('.error-page'));
-    await expect(notFoundMessage).toBeVisible({ timeout: 5000 });
+    // Should show 404 page - use specific element
+    const notFoundTitle = page.getByRole('heading', { name: '404' });
+    await expect(notFoundTitle).toBeVisible({ timeout: 5000 });
     
     // Should have link back to home
-    const homeLink = page.locator('a:has-text("首页")')
-      .or(page.locator('a:has-text("Home")'))
-      .or(page.locator('a[href="/"]'))
-      .or(page.locator('button:has-text("Home")'))
-      .or(page.locator('.home-link'));
+    const homeLink = page.getByRole('link', { name: /home|go home/i }).first();
     await expect(homeLink).toBeVisible();
     
     // Click home link should navigate back
