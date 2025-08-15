@@ -224,8 +224,8 @@ export class BattlePage extends BasePage {
     // Vote "buttons" are actually the entire model containers (they have onClick handlers)
     this.voteButton1 = this.model1Container;
     this.voteButton2 = this.model2Container;
-    this.skipButton = page.locator('button:has-text("Refresh Battle"), .ios-button:has-text("Refresh"), button:has([class*="refresh"]), button svg.w-5.h-5');
-    this.resultMessage = page.locator('text=/Vote Rate/, text=/votes/, .text-center:has-text("votes")');
+    this.skipButton = page.locator('button:has-text("Refresh Battle"), .ios-button:has-text("Refresh"), button:has-text("Skip"), button:has-text("Next")');
+    this.resultMessage = page.locator('text=/Vote Rate/').or(page.locator('text=/votes/')).or(page.locator('.text-center:has-text("votes")'));
     this.battleContainer = page.locator('.ios-glass.liquid-glass-container.rounded-xl.shadow-xl.p-8');
     this.statsContainer = page.locator('.mt-8.flex.justify-center.space-x-8');
     this.nextBattleButton = page.locator('button:has-text("Next Battle"), .ios-button svg.w-5.h-5');

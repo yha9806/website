@@ -48,7 +48,7 @@ export const TEST_EVALUATION_TASKS = {
     prompt: '山水画创作',
     expectedDimensions: ['composition', 'creativity', 'cultural', 'narrative']
   },
-  narrative: {
+  story: {
     type: 'story',
     prompt: '编写一个关于AI的故事',
     expectedDimensions: ['narrative', 'emotion', 'creativity']

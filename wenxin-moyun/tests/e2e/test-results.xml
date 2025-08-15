@@ -1,36 +1,22 @@
-<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="56.382805999999995">
-<testsuite name="evaluation.spec.ts" timestamp="2025-08-15T14:04:51.429Z" hostname="chromium" tests="1" failures="1" skipped="0" time="37.717" errors="0">
-<testcase name="Evaluation System › Create new evaluation task successfully" classname="evaluation.spec.ts" time="37.717">
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="66.784958">
+<testsuite name="evaluation.spec.ts" timestamp="2025-08-15T14:33:07.034Z" hostname="chromium" tests="1" failures="1" skipped="0" time="38.636" errors="0">
+<testcase name="Evaluation System › Create new evaluation task successfully" classname="evaluation.spec.ts" time="38.636">
 <failure message="evaluation.spec.ts:120:3 Create new evaluation task successfully" type="FAILURE">
 <![CDATA[  [chromium] › evaluation.spec.ts:120:3 › Evaluation System › Create new evaluation task successfully 
 
-    TimeoutError: locator.selectOption: Timeout 15000ms exceeded.
-    Call log:
-      - waiting for locator('.fixed.inset-0 form select, .modal form select, [role="dialog"] form select').first()
-        - locator resolved to <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">…</select>
-      - attempting select option action
-        2 × waiting for element to be visible and enabled
-          - did not find some options
-        - retrying select option action
-        - waiting 20ms
-        2 × waiting for element to be visible and enabled
-          - did not find some options
-        - retrying select option action
-          - waiting 100ms
-        29 × waiting for element to be visible and enabled
-           - did not find some options
-         - retrying select option action
-           - waiting 500ms
+    TimeoutError: page.waitForResponse: Timeout 10000ms exceeded while waiting for event "response"
 
+       at ..\helpers\test-utils.ts:4
 
-      124 |     // Fill in evaluation form
-      125 |     const task = TEST_EVALUATION_TASKS.poetry;
-    > 126 |     await evaluationPage.modelSelect.selectOption(TEST_MODELS.model1.id);
-          |                                      ^
-      127 |     await evaluationPage.taskTypeSelect.selectOption(task.type);
-      128 |     await evaluationPage.promptTextarea.fill(task.prompt);
-      129 |     
-        at I:\website\wenxin-moyun\tests\e2e\specs\evaluation.spec.ts:126:38
+      2 |
+      3 | export async function waitForAPIResponse(page: Page, endpoint: string, timeout = 10000) {
+    > 4 |   return await page.waitForResponse(
+        |                     ^
+      5 |     response => response.url().includes(endpoint) && response.status() === 200,
+      6 |     { timeout }
+      7 |   );
+        at waitForAPIResponse (I:\website\wenxin-moyun\tests\e2e\helpers\test-utils.ts:4:21)
+        at I:\website\wenxin-moyun\tests\e2e\specs\evaluation.spec.ts:135:29
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
     ..\..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium\test-failed-1.png
@@ -52,33 +38,19 @@
 
     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
 
-    TimeoutError: locator.selectOption: Timeout 15000ms exceeded.
-    Call log:
-      - waiting for locator('.fixed.inset-0 form select, .modal form select, [role="dialog"] form select').first()
-        - locator resolved to <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">…</select>
-      - attempting select option action
-        2 × waiting for element to be visible and enabled
-          - did not find some options
-        - retrying select option action
-        - waiting 20ms
-        2 × waiting for element to be visible and enabled
-          - did not find some options
-        - retrying select option action
-          - waiting 100ms
-        29 × waiting for element to be visible and enabled
-           - did not find some options
-         - retrying select option action
-           - waiting 500ms
+    TimeoutError: page.waitForResponse: Timeout 10000ms exceeded while waiting for event "response"
 
+       at ..\helpers\test-utils.ts:4
 
-      124 |     // Fill in evaluation form
-      125 |     const task = TEST_EVALUATION_TASKS.poetry;
-    > 126 |     await evaluationPage.modelSelect.selectOption(TEST_MODELS.model1.id);
-          |                                      ^
-      127 |     await evaluationPage.taskTypeSelect.selectOption(task.type);
-      128 |     await evaluationPage.promptTextarea.fill(task.prompt);
-      129 |     
-        at I:\website\wenxin-moyun\tests\e2e\specs\evaluation.spec.ts:126:38
+      2 |
+      3 | export async function waitForAPIResponse(page: Page, endpoint: string, timeout = 10000) {
+    > 4 |   return await page.waitForResponse(
+        |                     ^
+      5 |     response => response.url().includes(endpoint) && response.status() === 200,
+      6 |     { timeout }
+      7 |   );
+        at waitForAPIResponse (I:\website\wenxin-moyun\tests\e2e\helpers\test-utils.ts:4:21)
+        at I:\website\wenxin-moyun\tests\e2e\specs\evaluation.spec.ts:135:29
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
     ..\..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium-retry1\test-failed-1.png
@@ -102,16 +74,17 @@
 <system-out>
 <![CDATA[API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
 API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
 API Request: GET http://localhost:8001/api/v1/artworks/
 API Request: GET http://localhost:8001/api/v1/models/
 Mock: Intercepting models request: http://localhost:8001/api/v1/models/
 API Response: [33m200[39m http://localhost:8001/api/v1/models/
+API Request: GET http://localhost:8001/api/v1/models/?is_active=true
+Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
+API Request: GET http://localhost:8001/api/v1/models/?is_active=true
+Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
+API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
+API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
+API Request: POST http://localhost:8001/api/v1/evaluations/
 
 [[ATTACHMENT|..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium\test-failed-1.png]]
 
@@ -132,6 +105,7 @@ API Request: GET http://localhost:8001/api/v1/artworks/
 API Request: GET http://localhost:8001/api/v1/models/
 Mock: Intercepting models request: http://localhost:8001/api/v1/models/
 API Response: [33m200[39m http://localhost:8001/api/v1/models/
+API Request: POST http://localhost:8001/api/v1/evaluations/
 
 [[ATTACHMENT|..\..\test-results\evaluation-Evaluation-Syst-449a7-valuation-task-successfully-chromium-retry1\test-failed-1.png]]
 
