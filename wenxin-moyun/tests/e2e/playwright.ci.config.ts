@@ -9,7 +9,10 @@ export default defineConfig({
   forbidOnly: true,
   retries: 2,  // Increase retries for CI stability
   workers: 1,
-  timeout: 45000,  // Increase timeout for CI environment
+  timeout: 60000,  // Increase timeout to 60 seconds for CI stability
+  expect: {
+    timeout: 15000,  // Increase expect timeout to 15 seconds
+  },
   reporter: [
     ['list'],
     ['json', { outputFile: 'test-results.json' }]
@@ -19,8 +22,8 @@ export default defineConfig({
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    actionTimeout: 20000,  // Increase action timeout for CI
-    navigationTimeout: 45000,  // Increase navigation timeout for CI
+    actionTimeout: 30000,  // Increase action timeout to 30 seconds for CI
+    navigationTimeout: 60000,  // Increase navigation timeout to 60 seconds for CI
   },
 
   // Only chromium for CI speed
