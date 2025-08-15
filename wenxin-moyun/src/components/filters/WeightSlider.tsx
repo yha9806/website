@@ -170,7 +170,7 @@ export default function WeightSlider({
         {/* Weight Distribution Chart */}
         <div className="mt-4 p-4 ios-glass rounded-lg">
           <div className="text-center mb-3">
-            <EmojiIcon category="trend" name="chart" size="md" />
+            <EmojiIcon category="rating" name="chart" size="md" />
             <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mt-1">
               Weight Distribution
             </h4>
@@ -208,7 +208,7 @@ export default function WeightSlider({
                   
                   acc.angle = endAngle;
                   return acc;
-                }, { angle: 0, elements: [] as JSX.Element[] }).elements}
+                }, { angle: 0, elements: [] as React.JSX.Element[] }).elements}
                 
                 {/* Center circle */}
                 <circle 

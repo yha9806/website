@@ -78,7 +78,13 @@ function convertToEvaluationTask(response: EvaluationTaskResponse): EvaluationTa
       imageUrl: response.result.image_url,
       audioUrl: response.result.audio_url,
       score: response.result.score || response.auto_score || 0, // Use auto_score as fallback
-      metrics: response.result.metrics || response.evaluation_metrics || {},
+      metrics: {
+        creativity: (response.result.metrics?.creativity || response.evaluation_metrics?.creativity || 0),
+        quality: (response.result.metrics?.quality || response.evaluation_metrics?.quality || 0),
+        relevance: (response.result.metrics?.relevance || response.evaluation_metrics?.relevance || 0),
+        cultural: (response.result.metrics?.cultural || response.evaluation_metrics?.cultural || 0),
+        technical: (response.result.metrics?.technical || response.evaluation_metrics?.technical),
+      },
       analysis: response.result.analysis || response.evaluation_notes,
       processingTime: response.result.processing_time
     } : undefined,

@@ -67,8 +67,9 @@ apiClient.interceptors.response.use(
           const primaryScenario = guestSession.suggestions.primary_scenario;
           if (primaryScenario) {
             // Delay slightly to not interrupt user flow
+            const callback = loginModalCallback; // Capture reference
             setTimeout(() => {
-              loginModalCallback(primaryScenario.type);
+              callback(primaryScenario.type);
             }, 500);
           }
         }

@@ -218,9 +218,15 @@ export class BattlePage extends BasePage {
   }
 
   async getModelNames() {
-    const model1Name = await this.model1Container.locator('h3:has-text("Model A"), h3:has-text("Model")')?.textContent() || 'Model A';
-    const model2Name = await this.model2Container.locator('h3:has-text("Model B"), h3:has-text("Model")')?.textContent() || 'Model B';
-    return { model1: model1Name, model2: model2Name };
+    try {
+      // 在未投票状态下，页面显示"Model A"/"Model B"，这是正常的
+      const model1Name = await this.model1Container.locator('h3').first().textContent() || 'Model A';
+      const model2Name = await this.model2Container.locator('h3').first().textContent() || 'Model B';
+      return { model1: model1Name.trim(), model2: model2Name.trim() };
+    } catch (error) {
+      console.log('Could not get model names, using defaults');
+      return { model1: 'Model A', model2: 'Model B' };
+    }
   }
 }
 

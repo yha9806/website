@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../../contexts/ThemeContext';
 
-interface LiquidGlassBackgroundProps {
+export interface LiquidGlassBackgroundProps {
   children?: React.ReactNode;
   intensity?: 'light' | 'medium' | 'heavy' | 'ultra';
   animated?: boolean;

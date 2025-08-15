@@ -206,14 +206,14 @@ export default function ModelDetailPage() {
             <IOSCardContent>
               <div className="space-y-6">
                 {radarData.map((item, index) => {
-                  const getScoreColor = (score) => {
+                  const getScoreColor = (score: number) => {
                     if (score >= 90) return 'from-green-500 to-green-600';
                     if (score >= 80) return 'from-blue-500 to-blue-600';
                     if (score >= 70) return 'from-orange-500 to-orange-600';
                     return 'from-red-500 to-red-600';
                   };
                   
-                  const getScoreEmoji = (score) => {
+                  const getScoreEmoji = (score: number) => {
                     if (score >= 90) return <RankEmoji rank={1} size="sm" />;
                     if (score >= 80) return <RankEmoji rank={2} size="sm" />;
                     if (score >= 70) return <RankEmoji rank={3} size="sm" />;
@@ -353,11 +353,11 @@ export default function ModelDetailPage() {
                             </h4>
                             <div className="flex items-center gap-1 mt-1">
                               <RankEmoji 
-                                rank={similarModel.overallScore >= 90 ? 1 : similarModel.overallScore >= 80 ? 2 : 3} 
+                                rank={similarModel.overallScore != null && similarModel.overallScore >= 90 ? 1 : similarModel.overallScore != null && similarModel.overallScore >= 80 ? 2 : 3} 
                                 size="xs" 
                               />
                               <p className="text-sm text-gray-500 dark:text-gray-400">
-                                {similarModel.overallScore}
+                                {similarModel.overallScore != null ? similarModel.overallScore : 'N/A'}
                               </p>
                             </div>
                           </div>

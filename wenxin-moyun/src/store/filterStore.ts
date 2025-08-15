@@ -120,8 +120,8 @@ export const useFilterStore = create<FilterStore>()(
             }
           }
           
-          // Score range filter
-          if (entry.score < state.scoreRange[0] || entry.score > state.scoreRange[1]) {
+          // Score range filter (skip null scores)
+          if (entry.score != null && (entry.score < state.scoreRange[0] || entry.score > state.scoreRange[1])) {
             return false;
           }
           

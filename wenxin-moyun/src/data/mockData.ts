@@ -195,7 +195,13 @@ Where frost-like petals dance as daylight ends.`,
 ];
 
 export const mockLeaderboard: LeaderboardEntry[] = mockModels
-  .sort((a, b) => b.overallScore - a.overallScore)
+  .sort((a, b) => {
+    // Handle null scores - null values go to end
+    if (a.overallScore == null && b.overallScore == null) return 0;
+    if (a.overallScore == null) return 1;
+    if (b.overallScore == null) return -1;
+    return b.overallScore - a.overallScore;
+  })
   .map((model, index) => ({
     rank: index + 1,
     model,

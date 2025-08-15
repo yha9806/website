@@ -130,7 +130,7 @@ export default function HomePage() {
                 // 确保数据格式匹配
                 change: Math.floor(Math.random() * 5) - 2, // 模拟趋势变化
                 battles: Math.floor(Math.random() * 100) + 20,
-                winRate: entry.score * 0.8 + Math.random() * 10
+                winRate: (entry.score || 0) * 0.8 + Math.random() * 10
               }))}
               loading={false}
               onRowClick={(entry) => window.location.href = `/model/${entry.model.id}`}
@@ -175,7 +175,7 @@ export default function HomePage() {
                 action={
                   <div className="text-right">
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      {entry.score.toFixed(1)}
+                      {entry.score != null ? entry.score.toFixed(1) : 'N/A'}
                     </div>
                     <div className="text-footnote text-gray-500">Score</div>
                   </div>
@@ -308,11 +308,10 @@ export default function HomePage() {
 
       {/* Platform Stats */}
       <section>
-        <IOSCard variant="glass" padding="xl" className="text-center liquid-glass-container">
+        <IOSCard variant="glass" padding="lg" className="text-center liquid-glass-container">
           <IOSCardHeader
             title="Platform Statistics"
             emoji={<TrendingUp className="w-8 h-8 text-green-600" />}
-            centered
           />
           
           <IOSCardContent>

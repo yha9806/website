@@ -189,7 +189,7 @@ export const IOSNotificationList: React.FC<IOSNotificationListProps> = ({
               />
             ) : notification.emoji ? (
               <EmojiIcon 
-                category="notifications" 
+                category="content" 
                 name={notification.emoji as any} 
                 size="md" 
               />

@@ -12,6 +12,7 @@ export const coreEmojis = {
     completed: '✅',
     failed: '❌',
     warning: '⚠️',
+    error: '❌',
   },
   
   // Evaluation Types
@@ -49,6 +50,7 @@ export const coreEmojis = {
     info: 'ℹ️',
     question: '❓',
     celebration: '🎉',
+    love: '❤️',
   },
   
   // Navigation
@@ -65,6 +67,7 @@ export const coreEmojis = {
     search: '🔍',
     add: '➕',
     close: '❌',
+    menu: '☰',
   },
   
   // Actions
@@ -88,6 +91,11 @@ export const coreEmojis = {
     balance: '⚖️',
     back: '◀️',
     expand: '🔍',
+    layers: '📄',
+    maximize: '🔲',
+    list: '📋',
+    warning: '⚠️',
+    battle: '⚔️',
   },
   
   // Ratings
@@ -98,6 +106,7 @@ export const coreEmojis = {
     fire: '🔥',
     gem: '💎',
     chart: '📊',
+    trophy: '🏆',
   },
   
   // AI Model
@@ -119,6 +128,8 @@ export const coreEmojis = {
     multimodal: '🔀',
     portfolio: '📂',
     compare: '🔄',
+    ranking: '📊',
+    notifications: '🔔',
   },
 };
 

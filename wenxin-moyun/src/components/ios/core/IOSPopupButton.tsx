@@ -64,7 +64,7 @@ export const IOSPopupButton: React.FC<IOSPopupButtonProps> = ({
     const buttonRect = buttonRef.current.getBoundingClientRect();
     const padding = 8;
     
-    let width = menuWidth === 'match' ? buttonRect.width : 
+    const width = menuWidth === 'match' ? buttonRect.width : 
                 menuWidth === 'auto' ? 'auto' : 
                 typeof menuWidth === 'number' ? menuWidth : buttonRect.width;
     

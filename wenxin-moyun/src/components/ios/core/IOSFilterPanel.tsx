@@ -237,7 +237,7 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
                         }
                       `}
                     >
-                      <EmojiIcon category="actions" name={tab.emoji} size="sm" />
+                      <EmojiIcon category="actions" name={tab.emoji as any} size="sm" />
                       {tab.label}
                     </button>
                   ))}
@@ -490,7 +490,7 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
                       onClick={() => setIsOpen(false)}
                       variant="primary"
                     >
-                      <EmojiIcon category="status" name="check" size="sm" />
+                      <EmojiIcon category="actions" name="check" size="sm" />
                       Apply
                     </IOSButton>
                   </div>

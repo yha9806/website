@@ -8,7 +8,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 1,  // CI标准：增加重试次数
   workers: 1,  // CI标准：单worker确保稳定性
-  timeout: 60000,  // 增加到60秒以适应CI环境
+  timeout: 45000,  // 匹配CI配置的45秒超时
   expect: {
     timeout: 10000,  // 增加断言超时时间
   },

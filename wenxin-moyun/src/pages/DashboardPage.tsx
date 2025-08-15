@@ -27,7 +27,7 @@ export default function DashboardPage() {
     
     const totalModels = entries.length;
     // Filter out NULL scores for calculations
-    const validScores = entries.filter(e => e.score != null).map(e => e.score);
+    const validScores = entries.filter(e => e.score != null).map(e => e.score!);
     const avgScore = validScores.length > 0 ? validScores.reduce((acc, s) => acc + s, 0) / validScores.length : 0;
     const topScore = validScores.length > 0 ? Math.max(...validScores) : 0;
     const totalBattles = entries.reduce((acc, e) => acc + e.battles, 0);

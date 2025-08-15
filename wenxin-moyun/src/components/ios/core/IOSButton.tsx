@@ -6,6 +6,7 @@ export interface IOSButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEle
   variant?: 'primary' | 'secondary' | 'destructive' | 'glass' | 'text';
   size?: 'sm' | 'md' | 'lg';
   glassMorphism?: boolean;
+  emoji?: string;
   children: React.ReactNode;
   'data-testid'?: string;
 }
@@ -16,9 +17,16 @@ export const IOSButton = React.forwardRef<HTMLButtonElement, IOSButtonProps>(
     variant = 'primary', 
     size = 'md',
     glassMorphism = false,
+    emoji,
     disabled = false,
     children, 
     onClick,
+    onDrag,
+    onDragStart,
+    onDragEnd,
+    onAnimationStart,
+    onAnimationEnd,
+    onAnimationIteration,
     ...props 
   }, ref) => {
     
@@ -152,6 +160,7 @@ export const IOSButton = React.forwardRef<HTMLButtonElement, IOSButtonProps>(
         
         {/* Button content */}
         <span className="relative z-10 flex items-center gap-2">
+          {emoji && <span className="text-lg">{emoji}</span>}
           {children}
         </span>
         

@@ -1,9 +1,18 @@
 /**
- * Performance Optimization Toolkit
+ * Performance Optimization Toolkit  
  * Provides code splitting, lazy loading, caching and other optimization features
  */
 
+/* eslint-disable react-refresh/only-export-components */
+
 import { lazy, Suspense, type ComponentType, useEffect, useRef } from 'react';
+
+// Global type extensions
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
 
 // Performance level types
 export type PerformanceLevel = 'high' | 'medium' | 'low';
@@ -25,7 +34,7 @@ export function detectDevicePerformance(): PerformanceLevel {
   const cores = navigator.hardwareConcurrency || 2;
   
   // Check device memory if available (Chrome only)
-  // @ts-ignore - navigator.deviceMemory is not in TypeScript types yet
+  // @ts-expect-error - navigator.deviceMemory is not in TypeScript types yet
   const memory = navigator.deviceMemory || 4;
   
   // Check pixel ratio (high DPI screens need more resources)
@@ -235,13 +244,11 @@ export function lazyLoadComponent<T extends ComponentType<any>>(
 /**
  * Default loading component
  */
-function LoadingSpinner() {
-  return (
-    <div className="flex items-center justify-center min-h-[200px]">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-    </div>
-  );
-}
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-[200px]">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+  </div>
+);
 
 /**
  * Image lazy loading
@@ -294,7 +301,7 @@ export function throttle<T extends (...args: any[]) => any>(
   
   return function executedFunction(...args: Parameters<T>) {
     if (!inThrottle) {
-      func.apply(null, args);
+      func(...args);
       inThrottle = true;
       setTimeout(() => inThrottle = false, limit);
     }
@@ -429,7 +436,9 @@ export class MemoryCache<T> {
     // If cache is full, delete the oldest item
     if (this.cache.size >= this.maxSize) {
       const firstKey = this.cache.keys().next().value;
-      this.cache.delete(firstKey);
+      if (firstKey !== undefined) {
+        this.cache.delete(firstKey);
+      }
     }
     
     this.cache.set(key, {

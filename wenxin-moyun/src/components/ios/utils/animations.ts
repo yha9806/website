@@ -22,19 +22,19 @@ export const iosAnimations = {
   
   // Spring animations
   spring: {
-    type: 'spring',
+    type: 'spring' as const,
     stiffness: 400,
     damping: 30,
   },
   
   springBounce: {
-    type: 'spring',
+    type: 'spring' as const,
     stiffness: 300,
     damping: 20,
   },
   
   springSmooth: {
-    type: 'spring',
+    type: 'spring' as const,
     stiffness: 500,
     damping: 40,
   },
@@ -66,14 +66,14 @@ export const iosAnimations = {
     initial: { x: '100%', opacity: 0 },
     animate: { x: 0, opacity: 1 },
     exit: { x: '100%', opacity: 0 },
-    transition: { type: 'spring', stiffness: 300, damping: 30 },
+    transition: { type: 'spring' as const, stiffness: 300, damping: 30 },
   },
   
   slideInFromBottom: {
     initial: { y: '100%', opacity: 0 },
     animate: { y: 0, opacity: 1 },
     exit: { y: '100%', opacity: 0 },
-    transition: { type: 'spring', stiffness: 300, damping: 30 },
+    transition: { type: 'spring' as const, stiffness: 300, damping: 30 },
   },
   
   // iOS-specific animations
@@ -83,7 +83,7 @@ export const iosAnimations = {
       y: 0, 
       opacity: 1,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         damping: 25,
         stiffness: 300,
       }
@@ -93,7 +93,7 @@ export const iosAnimations = {
       opacity: 0,
       transition: {
         duration: 0.3,
-        ease: 'easeIn',
+        ease: 'easeIn' as const,
       }
     },
   },
@@ -103,7 +103,7 @@ export const iosAnimations = {
     animate: { 
       y: 0,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         damping: 30,
         stiffness: 400,
       }
@@ -112,7 +112,7 @@ export const iosAnimations = {
       y: '100%',
       transition: {
         duration: 0.25,
-        ease: [0.4, 0, 1, 1],
+        ease: [0.4, 0, 1, 1] as const,
       }
     },
   },
@@ -133,7 +133,7 @@ export const iosAnimations = {
     transition: {
       repeat: Infinity,
       duration: 1.5,
-      ease: 'linear',
+      ease: 'linear' as const,
     },
   },
 };

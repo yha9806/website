@@ -129,7 +129,8 @@ class MCPReporter implements Reporter {
     };
 
     // Write MCP-compatible output
-    require('fs').writeFileSync(
+    const fs = await import('fs');
+    fs.writeFileSync(
       './test-results/mcp-report.json',
       JSON.stringify(mcpData, null, 2)
     );

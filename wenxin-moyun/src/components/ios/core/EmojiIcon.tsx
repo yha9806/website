@@ -14,7 +14,7 @@ import { iosAnimations, hapticFeedback } from '../utils/animations';
 interface EmojiIconProps<T extends CoreEmojiCategory | LazyEmojiCategory> {
   category: T;
   name: EmojiKey<T>;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   animated?: boolean;
   animationType?: 'pulse' | 'bounce' | 'rotate' | 'shake' | 'none';
   interactive?: boolean;
@@ -29,6 +29,7 @@ const sizeMap = {
   md: 'w-6 h-6',
   lg: 'w-8 h-8',
   xl: 'w-10 h-10',
+  '2xl': 'w-12 h-12',
 };
 
 const animationMap = {
@@ -37,7 +38,7 @@ const animationMap = {
     transition: {
       duration: 1.5,
       repeat: Infinity,
-      ease: 'easeInOut',
+      ease: 'easeInOut' as const,
     },
   },
   bounce: {
@@ -45,7 +46,7 @@ const animationMap = {
     transition: {
       duration: 0.8,
       repeat: Infinity,
-      ease: 'easeInOut',
+      ease: 'easeInOut' as const,
     },
   },
   rotate: {
@@ -53,7 +54,7 @@ const animationMap = {
     transition: {
       duration: 2,
       repeat: Infinity,
-      ease: 'linear',
+      ease: 'linear' as const,
     },
   },
   shake: {
@@ -120,7 +121,7 @@ export function EmojiIcon<T extends CoreEmojiCategory | LazyEmojiCategory>({
   ) : (
     <span 
       className={`${sizeMap[size]} ${className} flex items-center justify-center`}
-      style={{ fontSize: size === 'xs' ? '14px' : size === 'sm' ? '16px' : size === 'md' ? '20px' : size === 'lg' ? '28px' : '36px' }}
+      style={{ fontSize: size === 'xs' ? '14px' : size === 'sm' ? '16px' : size === 'md' ? '20px' : size === 'lg' ? '28px' : size === 'xl' ? '36px' : '48px' }}
     >
       {emojiChar}
     </span>

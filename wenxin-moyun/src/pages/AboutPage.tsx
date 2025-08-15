@@ -71,7 +71,7 @@ export default function AboutPage() {
         transition={{ delay: 0.1 }}
         className="mb-12"
       >
-        <IOSCard variant="glass" padding="xl" animate className="liquid-glass-container">
+        <IOSCard variant="glass" padding="lg" animate className="liquid-glass-container">
           <IOSCardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
@@ -148,7 +148,7 @@ export default function AboutPage() {
         transition={{ delay: 0.4 }}
         className="mb-12"
       >
-        <IOSCard variant="glass" padding="xl" className="bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-800 dark:to-gray-900">
+        <IOSCard variant="glass" padding="lg" className="bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-800 dark:to-gray-900">
           <IOSCardHeader
             title="Evaluation Methodology"
             emoji={<EmojiIcon category="feedback" name="info" size="lg" />}

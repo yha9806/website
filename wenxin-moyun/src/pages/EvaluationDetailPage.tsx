@@ -15,7 +15,6 @@ import {
   Clock,
   CheckCircle
 } from 'lucide-react';
-import Layout from '../components/common/Layout';
 import RealTimeProgressTracker from '../components/evaluation/RealTimeProgressTracker';
 import ComparisonRadar from '../components/charts/ComparisonRadar';
 import ScoreDistribution from '../components/charts/ScoreDistribution';
@@ -135,38 +134,33 @@ const EvaluationDetailPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Layout>
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center">
-            <RefreshCw className="w-8 h-8 text-primary-500 animate-spin mx-auto mb-4" />
-            <p className="text-gray-600">加载评测详情...</p>
-          </div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <RefreshCw className="w-8 h-8 text-primary-500 animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">加载评测详情...</p>
         </div>
-      </Layout>
+      </div>
     );
   }
 
   if (!evaluation) {
     return (
-      <Layout>
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <p className="text-gray-600">评测任务不存在</p>
-            <button
-              onClick={() => navigate('/evaluations')}
-              className="btn-primary mt-4"
-            >
-              返回评测列表
-            </button>
-          </div>
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <p className="text-gray-600">评测任务不存在</p>
+          <button
+            onClick={() => navigate('/evaluations')}
+            className="btn-primary mt-4"
+          >
+            返回评测列表
+          </button>
         </div>
-      </Layout>
+      </div>
     );
   }
 
   return (
-    <Layout>
-      <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
@@ -272,7 +266,7 @@ const EvaluationDetailPage: React.FC = () => {
                       <Star
                         key={i}
                         className={`w-5 h-5 ${
-                          i < Math.floor(evaluation.result.overallScore / 20)
+                          i < Math.floor((evaluation.result?.overallScore || 0) / 20)
                             ? 'text-yellow-400 fill-current'
                             : 'text-gray-300'
                         }`}
@@ -365,19 +359,41 @@ const EvaluationDetailPage: React.FC = () => {
                   <ComparisonRadar
                     models={[
                       {
+                        id: '1',
                         name: evaluation.modelName,
-                        metrics: evaluation.result.dimensions
+                        organization: 'AI Provider',
+                        version: '1.0',
+                        releaseDate: '2024-01-01',
+                        description: 'AI Model',
+                        category: 'text' as const,
+                        overallScore: evaluation.result?.overallScore || 0,
+                        avatar: '/api/placeholder/100/100',
+                        tags: [],
+                        metrics: {
+                          rhythm: evaluation.result?.dimensions?.creativity || 0,
+                          composition: evaluation.result?.dimensions?.quality || 0,
+                          narrative: evaluation.result?.dimensions?.relevance || 0,
+                          emotion: evaluation.result?.dimensions?.fluency || 0,
+                          creativity: evaluation.result?.dimensions?.coherence || 0,
+                          cultural: evaluation.result?.dimensions?.style || 0
+                        },
+                        works: []
                       }
                     ]}
-                    dimensions={Object.keys(evaluation.result.dimensions)}
                   />
                 </div>
 
                 <div className="card">
                   <h3 className="text-lg font-semibold mb-4">评分分布</h3>
                   <ScoreDistribution
-                    scores={Object.values(evaluation.result.dimensions)}
-                    labels={Object.keys(evaluation.result.dimensions)}
+                    data={[
+                      { dimension: 'Creativity', score: evaluation.result?.dimensions?.creativity || 0 },
+                      { dimension: 'Quality', score: evaluation.result?.dimensions?.quality || 0 },
+                      { dimension: 'Relevance', score: evaluation.result?.dimensions?.relevance || 0 },
+                      { dimension: 'Fluency', score: evaluation.result?.dimensions?.fluency || 0 },
+                      { dimension: 'Coherence', score: evaluation.result?.dimensions?.coherence || 0 },
+                      { dimension: 'Style', score: evaluation.result?.dimensions?.style || 0 }
+                    ]}
                   />
                 </div>
               </div>
@@ -409,8 +425,7 @@ const EvaluationDetailPage: React.FC = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-    </Layout>
+    </div>
   );
 };
 

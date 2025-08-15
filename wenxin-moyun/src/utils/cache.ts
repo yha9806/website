@@ -129,7 +129,7 @@ export class APICache {
     const now = Date.now();
     let fresh = 0;
     let stale = 0;
-    let total = this.cache.size;
+    const total = this.cache.size;
 
     for (const entry of this.cache.values()) {
       if (now < entry.expiry) {

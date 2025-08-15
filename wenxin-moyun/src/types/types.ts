@@ -58,7 +58,7 @@ export type VoteChoice = 'model_a' | 'model_b';
 export interface LeaderboardEntry {
   rank: number;
   model: Model;
-  score: number;
+  score: number | null; // Allow null for image models
   change: number; // Position change from last week
   battles: number;
   winRate: number;

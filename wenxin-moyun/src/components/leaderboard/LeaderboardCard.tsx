@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown, Minus, Trophy, Zap, Users, ChevronRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { animated, useSpring } from 'react-spring';
 import type { LeaderboardEntry } from '../../types/types';
 
 interface LeaderboardCardProps {
@@ -25,17 +24,6 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
     return <Minus className="w-4 h-4 text-gray-400" />;
   };
 
-  const animatedProps = useSpring({
-    from: { opacity: 0, transform: 'translateY(20px)' },
-    to: { opacity: 1, transform: 'translateY(0px)' },
-    delay: index * 50,
-  });
-
-  const progressAnimation = useSpring({
-    from: { width: '0%' },
-    to: { width: `${entry.winRate}%` },
-    delay: index * 50 + 200,
-  });
 
   if (viewMode === 'compact') {
     return (
@@ -66,18 +54,20 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
   }
 
   return (
-    <animated.div style={animatedProps}>
-      <motion.div
-        whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-        className={`
-          ios-glass liquid-glass-container rounded-xl shadow-lg overflow-hidden
-          hover:shadow-2xl transition-all duration-300 cursor-pointer
-          ${viewMode === 'detailed' ? 'p-6' : 'p-4'}
-        `}
-        onMouseEnter={() => onHover?.(entry)}
-        onMouseLeave={() => onHover?.(null)}
-      >
-        {/* Card Header */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05 }}
+      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+      className={`
+        ios-glass liquid-glass-container rounded-xl shadow-lg overflow-hidden
+        hover:shadow-2xl transition-all duration-300 cursor-pointer
+        ${viewMode === 'detailed' ? 'p-6' : 'p-4'}
+      `}
+      onMouseEnter={() => onHover?.(entry)}
+      onMouseLeave={() => onHover?.(null)}
+    >
+      {/* Card Header */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
             {/* Rank Badge */}
@@ -166,9 +156,11 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
             <span>{entry.winRate != null ? `${entry.winRate.toFixed(1)}%` : 'N/A'}</span>
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-            <animated.div
+            <motion.div
+              initial={{ width: '0%' }}
+              animate={{ width: `${entry.winRate}%` }}
+              transition={{ delay: index * 0.05 + 0.2, duration: 0.8 }}
               className="h-full bg-green-500 rounded-full"
-              style={progressAnimation}
             />
           </div>
         </div>
@@ -213,7 +205,6 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
           <span className="text-sm font-medium">View Details</span>
           <ChevronRight className="w-4 h-4" />
         </Link>
-      </motion.div>
-    </animated.div>
+    </motion.div>
   );
 }

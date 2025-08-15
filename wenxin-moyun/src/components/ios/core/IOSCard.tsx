@@ -98,7 +98,7 @@ export const IOSCard: React.FC<IOSCardProps> = ({
       transition: {
         delay: delay * 0.1,
         duration: 0.4,
-        ease: 'easeOut',
+        ease: 'easeOut' as const,
       }
     },
     whileHover: interactive ? {
