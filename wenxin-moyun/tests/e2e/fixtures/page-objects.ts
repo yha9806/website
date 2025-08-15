@@ -42,7 +42,7 @@ export class HomePage extends BasePage {
     this.exploreRankingsButton = page.locator('[data-testid="explore-rankings-button"], button:has-text("Explore Rankings"), button:has-text("排行榜")');
     this.modelBattleButton = page.locator('[data-testid="model-battle-button"], button:has-text("Model Battle"), button:has-text("模型对战")');
     this.leaderboardLink = page.locator('[data-testid="nav-rankings"]').first();
-    this.battleLink = page.locator('[data-testid="nav-battles"], a[href*="battle"], nav a:has-text("对战")');
+    this.battleLink = page.locator('[data-testid="nav-battles"]').first();
     this.navMenu = page.locator('nav');
     this.homeLink = page.locator('[data-testid="nav-home"], a[href="/"], nav a:has-text("首页")');
     this.loginButton = page.locator('button:has-text("Login"), button:has-text("登录"), a[href*="login"]');
