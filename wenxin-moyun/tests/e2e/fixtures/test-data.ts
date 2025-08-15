@@ -39,7 +39,7 @@ export const TEST_MODELS = {
 
 export const TEST_EVALUATION_TASKS = {
   poetry: {
-    type: 'poetry',
+    type: 'poem',
     prompt: '春江花月夜',
     expectedDimensions: ['rhythm', 'composition', 'emotion', 'creativity', 'cultural']
   },
@@ -49,7 +49,7 @@ export const TEST_EVALUATION_TASKS = {
     expectedDimensions: ['composition', 'creativity', 'cultural', 'narrative']
   },
   narrative: {
-    type: 'narrative',
+    type: 'story',
     prompt: '编写一个关于AI的故事',
     expectedDimensions: ['narrative', 'emotion', 'creativity']
   }

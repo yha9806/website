@@ -19,6 +19,19 @@ test.describe('Evaluation System', () => {
     evaluationPage = new EvaluationPage(page);
     homePage = new HomePage(page);
     
+    // Add debug logging for all API requests
+    page.on('request', request => {
+      if (request.url().includes('/api/')) {
+        console.log('API Request:', request.method(), request.url());
+      }
+    });
+    
+    page.on('response', response => {
+      if (response.url().includes('/api/')) {
+        console.log('API Response:', response.status(), response.url());
+      }
+    });
+    
     // Mock evaluation API endpoints
     await page.route('**/api/v1/evaluations', route => {
       if (route.request().method() === 'POST') {
@@ -68,13 +81,29 @@ test.describe('Evaluation System', () => {
     });
     
     // Mock models endpoint
-    await page.route('**/api/v1/models', route => {
+    await page.route('**/api/v1/models/**', route => {
+      console.log('Mock: Intercepting models request:', route.request().url());
       route.fulfill({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify([
-          { id: 'test-model-1', name: 'Test Model 1', provider: 'Test Provider' },
-          { id: 'test-model-2', name: 'Test Model 2', provider: 'Test Provider' }
+          { id: 'gpt-4', name: 'GPT-4', provider: 'OpenAI' },
+          { id: 'claude-3', name: 'Claude 3', provider: 'Anthropic' },
+          { id: 'wenxin-4', name: '文心一言 4.0', provider: 'Baidu' }
+        ])
+      });
+    });
+    
+    // Also mock models endpoint without trailing slash
+    await page.route('**/api/v1/models?*', route => {
+      console.log('Mock: Intercepting models query request:', route.request().url());
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify([
+          { id: 'gpt-4', name: 'GPT-4', provider: 'OpenAI' },
+          { id: 'claude-3', name: 'Claude 3', provider: 'Anthropic' },
+          { id: 'wenxin-4', name: '文心一言 4.0', provider: 'Baidu' }
         ])
       });
     });

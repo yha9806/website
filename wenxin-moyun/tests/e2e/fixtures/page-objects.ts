@@ -149,23 +149,48 @@ export class EvaluationPage extends BasePage {
   constructor(page: Page) {
     super(page);
     // Enhanced English interface support for evaluation system
-    this.newEvaluationButton = page.locator('button:has-text("新建评测"), button:has-text("开始评测"), button:has-text("New Evaluation"), button:has-text("Start Evaluation"), button:has-text("Create"), .ios-button:has-text("New"), .ios-button:has-text("Start")');
-    this.modelSelect = page.locator('form').getByRole('combobox').first();
-    this.taskTypeSelect = page.locator('select[name="taskType"], #task-type-select, select, .task-type-selector');
-    this.promptTextarea = page.locator('textarea[name="prompt"], textarea[placeholder*="输入"], textarea[placeholder*="Enter"], textarea[placeholder*="Type"], .prompt-input');
-    this.submitButton = page.locator('button[type="submit"]').first();
+    this.newEvaluationButton = page.locator('button:has-text("Create Task"), button:has-text("新建评测"), button:has-text("开始评测"), button:has-text("New Evaluation"), button:has-text("Start Evaluation"), button:has-text("Create"), .ios-button:has-text("New"), .ios-button:has-text("Start")');
+    // Form elements are in modal - need to wait for modal to open first
+    this.modelSelect = page.locator('.fixed.inset-0 form select, .modal form select, [role="dialog"] form select').first();
+    this.taskTypeSelect = page.locator('.fixed.inset-0 .grid button, .modal .grid button, [role="dialog"] .grid button');
+    this.promptTextarea = page.locator('.fixed.inset-0 textarea, .modal textarea, [role="dialog"] textarea');
+    this.submitButton = page.locator('.fixed.inset-0 button[type="submit"], .modal button[type="submit"], [role="dialog"] button[type="submit"]');
     this.progressBar = page.locator('.progress-bar, [role="progressbar"], .progress, .ios-progress, .evaluation-progress');
     this.resultContainer = page.locator('.evaluation-result, .result-container, .results, .output, .evaluation-output');
-    this.evaluationForm = page.locator('form, .evaluation-form, .create-evaluation');
+    this.evaluationForm = page.locator('.fixed.inset-0 form, .modal form, [role="dialog"] form');
     this.historyList = page.locator('.history, .evaluation-history, .past-evaluations');
     this.usageLimit = page.locator('text=/剩余.*次/, text=/remaining/i, .usage-limit, .daily-limit');
-    this.cancelButton = page.locator('button:has-text("取消"), button:has-text("Cancel"), .cancel-btn');
+    this.cancelButton = page.locator('.fixed.inset-0 button:has-text("取消"), .fixed.inset-0 button:has-text("Cancel"), .modal .cancel-btn');
   }
 
   async createEvaluation(modelId: string, taskType: string, prompt: string) {
+    // Click the button to open modal
     await this.newEvaluationButton.click();
+    
+    // Wait for modal to open and form to be visible
+    await this.page.waitForSelector('.fixed.inset-0 form, .modal form, [role="dialog"] form', { timeout: 10000 });
+    
+    // Wait for loading state to disappear (models to load)
+    await this.page.waitForSelector('.animate-pulse', { state: 'detached', timeout: 10000 }).catch(() => {
+      console.log('No loading state found or it did not disappear');
+    });
+    
+    // Wait a bit more for modal animation and data loading to complete  
+    await this.page.waitForTimeout(1000);
+    
+    // Verify form elements are available
+    console.log('Checking form elements availability...');
+    const modelOptions = await this.modelSelect.locator('option').count();
+    const taskButtons = await this.taskTypeSelect.count();
+    console.log(`Model options: ${modelOptions}, Task buttons: ${taskButtons}`);
+    
+    // Fill form fields
     await this.modelSelect.selectOption(modelId);
-    await this.taskTypeSelect.selectOption(taskType);
+    
+    // Task type is button-based, not select-based - find and click the right button
+    const taskTypeButton = this.taskTypeSelect.filter({ hasText: new RegExp(taskType === 'poem' ? 'Poetry Creation' : taskType === 'story' ? 'Story Creation' : taskType === 'painting' ? 'Painting Creation' : 'Music Creation', 'i') });
+    await taskTypeButton.click();
+    
     await this.promptTextarea.fill(prompt);
     await this.submitButton.click();
   }
