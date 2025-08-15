@@ -177,6 +177,27 @@ export class SafeStorageAccessor {
       console.warn('Failed to clear sessionStorage:', error);
     }
   }
+
+  /**
+   * 清空所有存储并重置测试状态
+   * 用于测试环境的完全清理
+   */
+  clearAll(): void {
+    // 清理存储
+    this.clearLocal();
+    this.clearSession();
+    
+    // 清理window测试属性
+    if (typeof window !== 'undefined') {
+      delete (window as any).__TEST_AUTH_TOKEN__;
+      delete (window as any).__TEST_GUEST_SESSION__;
+      delete (window as any).__TEST_USER_DATA__;
+      
+      // 重置为null确保测试检查正确
+      (window as any).__TEST_AUTH_TOKEN__ = null;
+      (window as any).__TEST_GUEST_SESSION__ = null;
+    }
+  }
 }
 
 /**
@@ -289,6 +310,21 @@ export function initSafeStorageInPage() {
         } catch (e) {
           this.sessionStorage = {};
         }
+      },
+      
+      clearAll: function() {
+        // 清理所有存储
+        this.clearLocal();
+        this.clearSession();
+        
+        // 清理window测试属性
+        delete window.__TEST_AUTH_TOKEN__;
+        delete window.__TEST_GUEST_SESSION__;
+        delete window.__TEST_USER_DATA__;
+        
+        // 重置为null确保测试检查正确
+        window.__TEST_AUTH_TOKEN__ = null;
+        window.__TEST_GUEST_SESSION__ = null;
       }
     };
     

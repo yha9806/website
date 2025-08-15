@@ -8,7 +8,10 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 1,  // CI标准：增加重试次数
   workers: 1,  // CI标准：单worker确保稳定性
-  timeout: 45000,  // CI标准：延长超时时间
+  timeout: 60000,  // 增加到60秒以适应CI环境
+  expect: {
+    timeout: 10000,  // 增加断言超时时间
+  },
   reporter: [
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
     ['list'],
@@ -20,8 +23,8 @@ export default defineConfig({
     trace: 'retain-on-failure',  // CI标准：失败时保留追踪
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    actionTimeout: 20000,  // CI标准：增加操作超时
-    navigationTimeout: 45000,  // CI标准：增加导航超时
+    actionTimeout: 15000,  // 适度增加操作超时
+    navigationTimeout: 30000,  // 适度增加导航超时
   },
 
   // 本地开发也使用CI标准配置（仅chromium）

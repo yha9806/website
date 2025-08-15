@@ -89,26 +89,42 @@ export async function setAuthToken(page: Page, token: string) {
 
 export async function getAuthToken(page: Page): Promise<string | null> {
   try {
-    return await page.evaluate(() => {
-      // 使用增强的安全存储系统
+    const result = await page.evaluate(() => {
+      const sources = {
+        safeStorage: null as string | null,
+        localStorage: null as string | null,
+        windowProp: null as string | null
+      };
+      
+      // 1. 检查SafeStorage系统
       if ((window as any).__SAFE_STORAGE__) {
-        const token = (window as any).__SAFE_STORAGE__.getLocalItem('access_token');
-        if (token) return token;
-      } else {
-        // 回退到传统方式
-        try {
-          if (typeof localStorage !== 'undefined' && localStorage) {
-            const token = localStorage.getItem('access_token');
-            if (token) return token;
-          }
-        } catch (storageError) {
-          console.log('localStorage blocked, using window property for auth token retrieval');
-        }
+        sources.safeStorage = (window as any).__SAFE_STORAGE__.getLocalItem('access_token');
       }
       
-      // 回退到window属性（总是可用）
-      return (window as any).__TEST_AUTH_TOKEN__ || null;
+      // 2. 检查原生localStorage
+      try {
+        if (typeof localStorage !== 'undefined' && localStorage) {
+          sources.localStorage = localStorage.getItem('access_token');
+        }
+      } catch (e) {
+        // localStorage blocked in CI
+      }
+      
+      // 3. 检查window属性
+      sources.windowProp = (window as any).__TEST_AUTH_TOKEN__ || null;
+      
+      // 调试信息（仅在测试环境输出）
+      console.log('Token sources:', {
+        safeStorage: sources.safeStorage ? 'EXISTS' : 'NULL',
+        localStorage: sources.localStorage ? 'EXISTS' : 'NULL', 
+        windowProp: sources.windowProp ? 'EXISTS' : 'NULL'
+      });
+      
+      // 返回第一个非空值
+      return sources.safeStorage || sources.localStorage || sources.windowProp;
     });
+    
+    return result;
   } catch (error) {
     console.warn('Cannot get auth token in test environment:', error);
     return null;
