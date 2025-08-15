@@ -1,49 +1,56 @@
-<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="20.966463">
-<testsuite name="ai-models.spec.ts" timestamp="2025-08-15T10:14:57.691Z" hostname="chromium" tests="1" failures="0" skipped="0" time="6.217" errors="0">
-<testcase name="AI Models Leaderboard › 应该显示AI模型排行榜" classname="ai-models.spec.ts" time="6.217">
-</testcase>
-</testsuite>
-<testsuite name="auth.spec.ts" timestamp="2025-08-15T10:14:57.691Z" hostname="chromium" tests="2" failures="0" skipped="0" time="9.668" errors="0">
-<testcase name="Authentication Flow › Logout functionality clears authentication" classname="auth.spec.ts" time="5.298">
+<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="0" time="55.0298">
+<testsuite name="battle.spec.ts" timestamp="2025-08-15T13:49:17.495Z" hostname="chromium" tests="2" failures="0" skipped="0" time="37.277" errors="0">
+<testcase name="Battle System › Random model matchup generation" classname="battle.spec.ts" time="14.765">
 <system-out>
-<![CDATA[Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
-Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
-Auth API response: http://localhost:5173/login [33m200[39m
-Response body: <!doctype html>
-<html lang="en">
-  <head>
-    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
-injectIntoGlobalHook(window);
-window.$RefreshReg$ = () => {};
-window.$Refr
-Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
-Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
-Mock: Intercepting login request to: http://localhost:8001/api/v1/auth/login
-Login request data: username=demo&password=demo123
-Login credentials: demo [REDACTED]
-Mock: Sending successful login response
-Auth API response: http://localhost:8001/api/v1/auth/login [33m200[39m
-Response body: {"access_token":"mock-jwt-token-1755252909503","token_type":"bearer"}
-Token after logout: CLEARED
-Auth API response: http://localhost:5173/login [33m200[39m
-Response body: <!doctype html>
-<html lang="en">
-  <head>
-    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
-injectIntoGlobalHook(window);
-window.$RefreshReg$ = () => {};
-window.$Refr
-Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
-Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
-✅ Logout functionality verified: token cleared and can access login page
+<![CDATA[API Request: GET http://localhost:8001/api/v1/battles/?page=1&page_size=20
+Mock: Intercepting battles list request: http://localhost:8001/api/v1/battles/?page=1&page_size=20
+API Request: GET http://localhost:8001/api/v1/battles/?page=1&page_size=20
+Mock: Intercepting battles list request: http://localhost:8001/api/v1/battles/?page=1&page_size=20
+API Response: [33m200[39m http://localhost:8001/api/v1/battles/?page=1&page_size=20
+API Response: [33m200[39m http://localhost:8001/api/v1/battles/?page=1&page_size=20
+API Request: GET http://localhost:8001/api/v1/battles/random
+Mock: Intercepting battle random request
+API Response: [33m200[39m http://localhost:8001/api/v1/battles/random
+Starting battle matchup test...
+API Request: GET http://localhost:8001/api/v1/artworks/
+API Request: GET http://localhost:8001/api/v1/models/
+API Response: [33m200[39m http://localhost:8001/api/v1/models/
+✅ Battle page navigation and basic content verified
+Vote buttons present: true
+✅ Battle interface elements loaded correctly
+✅ Battle test completed successfully
 ]]>
 </system-out>
 </testcase>
-<testcase name="Authentication Flow › Guest session respects daily usage limits" classname="auth.spec.ts" time="4.37">
+<testcase name="Battle System › Vote submission and result update" classname="battle.spec.ts" time="22.512">
 <system-out>
-<![CDATA[Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
-Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
-✅ Guest session functionality verified: data storage works correctly
+<![CDATA[API Request: GET http://localhost:8001/api/v1/battles/?page=1&page_size=20
+Mock: Intercepting battles list request: http://localhost:8001/api/v1/battles/?page=1&page_size=20
+API Request: GET http://localhost:8001/api/v1/battles/?page=1&page_size=20
+Mock: Intercepting battles list request: http://localhost:8001/api/v1/battles/?page=1&page_size=20
+API Response: [33m200[39m http://localhost:8001/api/v1/battles/?page=1&page_size=20
+API Response: [33m200[39m http://localhost:8001/api/v1/battles/?page=1&page_size=20
+API Request: GET http://localhost:8001/api/v1/battles/random
+Mock: Intercepting battle random request
+API Response: [33m200[39m http://localhost:8001/api/v1/battles/random
+Starting vote submission test...
+Waiting for battle page content to load...
+✅ Battle content loaded successfully
+Battle container visible: [33mtrue[39m
+Model containers visible: [33mtrue[39m [33mtrue[39m
+Model names retrieved: "Model A" vs "Model B"
+Initial models: Model A vs Model B
+API Request: GET http://localhost:8001/api/v1/artworks/
+API Request: GET http://localhost:8001/api/v1/models/
+Voting for Model A...
+API Response: [33m200[39m http://localhost:8001/api/v1/models/
+API Request: POST http://localhost:8001/api/v1/battles/battle-1755265784237/vote
+Mock: Intercepting battle vote request
+API Response: [33m200[39m http://localhost:8001/api/v1/battles/battle-1755265784237/vote
+Has voted after vote: [33mtrue[39m
+Post-vote model names: "GPT-4" vs "Claude-3"
+Post-vote models: GPT-4 vs Claude-3
+✅ Vote submission test completed successfully
 ]]>
 </system-out>
 </testcase>

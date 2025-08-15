@@ -18,6 +18,19 @@ test.describe('Battle System', () => {
     battlePage = new BattlePage(page);
     homePage = new HomePage(page);
     
+    // Add debug logging for all API requests
+    page.on('request', request => {
+      if (request.url().includes('/api/')) {
+        console.log('API Request:', request.method(), request.url());
+      }
+    });
+    
+    page.on('response', response => {
+      if (response.url().includes('/api/')) {
+        console.log('API Response:', response.status(), response.url());
+      }
+    });
+    
     // Mock battle API endpoints - corrected to match BattleResponse interface
     await page.route('**/api/v1/battles/random', route => {
       console.log('Mock: Intercepting battle random request');
@@ -65,9 +78,9 @@ test.describe('Battle System', () => {
       });
     });
     
-    // Mock battles list endpoint
-    await page.route('**/api/v1/battles/', route => {
-      console.log('Mock: Intercepting battles list request');
+    // Mock battles list endpoint (specific to list requests with query parameters)
+    await page.route('**/api/v1/battles/?**', route => {
+      console.log('Mock: Intercepting battles list request:', route.request().url());
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -166,7 +179,34 @@ test.describe('Battle System', () => {
     
     // Wait for battle to load with extended timeout
     await page.waitForLoadState('domcontentloaded');
-    await page.waitForTimeout(3000); // Allow time for API calls and React rendering
+    
+    // Wait for battles to load - check for specific battle content or "No battles available"
+    console.log('Waiting for battle page content to load...');
+    
+    // Wait for either battle content to appear OR no battles message
+    await Promise.race([
+      page.waitForSelector('.ios-glass.liquid-glass-container.rounded-xl.shadow-xl.p-8', { timeout: 10000 }),
+      page.waitForSelector('text=No battles available', { timeout: 10000 })
+    ]);
+    
+    // Check if we got the "No battles available" message
+    const noBattlesMessage = await page.locator('text=No battles available').isVisible({ timeout: 1000 });
+    if (noBattlesMessage) {
+      console.log('❌ Page shows "No battles available" - API mocks may not be working correctly');
+      
+      // Debug: Let's see what's actually on the page
+      const pageContent = await page.textContent('body');
+      console.log('Page content preview:', pageContent?.substring(0, 800));
+      
+      // Check loading state
+      const loadingState = await page.locator('text=/Loading/', 'text=/Getting random battle/').isVisible({ timeout: 1000 });
+      console.log('Loading state visible:', loadingState);
+      
+      throw new Error('Battle page shows "No battles available" despite API mocks');
+    }
+    
+    // If we reach here, battle content should be visible
+    console.log('✅ Battle content loaded successfully');
     
     // Debug: Check if battle container is visible (use more specific selector)
     const battleContainer = await page.locator('.ios-glass.liquid-glass-container.rounded-xl.shadow-xl.p-8').isVisible({ timeout: 5000 });
@@ -187,10 +227,6 @@ test.describe('Battle System', () => {
         const loadingState = await page.locator('text=/Loading/', 'text=/Getting random battle/').isVisible({ timeout: 2000 });
         const errorState = await page.locator('text=/failed/, text=/error/i').isVisible({ timeout: 2000 });
         console.log('Loading state:', loadingState, 'Error state:', errorState);
-        
-        // Let's see what's actually on the page
-        const pageContent = await page.textContent('body');
-        console.log('Page content preview:', pageContent?.substring(0, 500));
         
         throw new Error('Battle models not found on page');
       }
