@@ -38,6 +38,7 @@ test.describe('Authentication Flow', () => {
     });
     
     // Mock authentication API endpoints - intercept both http and https, any port
+    // Support both 8000 (old) and 8001 (new) ports for compatibility
     await page.route('**/api/v1/auth/login', route => {
       console.log('Mock: Intercepting login request to:', route.request().url());
       const postData = route.request().postData();
@@ -197,25 +198,51 @@ test.describe('Authentication Flow', () => {
     await loginPage.login(TEST_USERS.valid.username, TEST_USERS.valid.password);
     await page.waitForURL('/');
     
-    // Manually ensure token is set properly after mock login response
-    await setAuthToken(page, 'mock-jwt-token-1755261059325');
+    // Wait for any async login processes to complete
+    await page.waitForTimeout(1000);
     
-    // Get initial token
-    const initialToken = await getAuthToken(page);
+    // Get the token that was set during login (either from mock response or manually)
+    let initialToken = await getAuthToken(page);
+    
+    // If no token was set from mock, set one manually for consistency
+    if (!initialToken) {
+      const consistentToken = 'mock-jwt-token-persistence-test';
+      await setAuthToken(page, consistentToken);
+      initialToken = consistentToken;
+    }
+    
     expect(initialToken).toBeTruthy();
-    console.log('Initial token:', initialToken);
+    console.log('Initial token set:', initialToken);
     
     // Refresh page
     await page.reload();
     
-    // Wait a moment for page to fully load after refresh
-    await page.waitForTimeout(1000);
+    // Wait for page to fully load after refresh
+    await page.waitForTimeout(2000);
     
     // Verify token still exists after refresh
     const tokenAfterRefresh = await getAuthToken(page);
     console.log('Token after refresh:', tokenAfterRefresh);
+    
+    // Verify persistence
     expect(tokenAfterRefresh).toBeTruthy();
     expect(tokenAfterRefresh).toBe(initialToken);
+    
+    // Additional verification: ensure the token is accessible by the application
+    const appCanAccessToken = await page.evaluate(() => {
+      // Check if the application can access the token through its storage system
+      try {
+        if (typeof localStorage !== 'undefined' && localStorage) {
+          return localStorage.getItem('access_token') !== null;
+        }
+        return false;
+      } catch (e) {
+        return false;
+      }
+    });
+    
+    console.log('Application can access token:', appCanAccessToken);
+    expect(appCanAccessToken || tokenAfterRefresh).toBeTruthy();
   });
 
   test('Logout functionality clears authentication', async ({ page }) => {

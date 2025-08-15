@@ -12,6 +12,44 @@ async function globalSetup(config: FullConfig) {
   // 注入增强的存储兼容性脚本
   await page.addInitScript(initSafeStorageInPage);
   
+  // CI环境特殊处理：确保存储系统完全初始化
+  await page.addInitScript(() => {
+    // CI环境标记
+    if (typeof process !== 'undefined' && process.env?.CI) {
+      console.log('🔧 Initializing CI-specific storage enhancements...');
+      
+      // 增强的存储检查和初始化
+      const initStorageForCI = () => {
+        // 确保localStorage mock始终可用
+        if (!window.localStorage || typeof window.localStorage.getItem !== 'function') {
+          console.log('📦 Setting up localStorage mock for CI...');
+          const mockStorage = {
+            data: {},
+            getItem(key) { return this.data[key] || null; },
+            setItem(key, value) { this.data[key] = String(value); console.log(`CI localStorage.setItem: ${key} = ${value}`); },
+            removeItem(key) { delete this.data[key]; console.log(`CI localStorage.removeItem: ${key}`); },
+            clear() { this.data = {}; console.log('CI localStorage cleared'); },
+            get length() { return Object.keys(this.data).length; },
+            key(index) { const keys = Object.keys(this.data); return keys[index] || null; }
+          };
+          Object.defineProperty(window, 'localStorage', { value: mockStorage, writable: false });
+        }
+        
+        // 增强测试存储
+        window.__TEST_STORAGE__ = window.__TEST_STORAGE__ || {};
+        window.__CI_ENVIRONMENT__ = true;
+        
+        console.log('✅ CI storage initialization complete');
+      };
+      
+      // 立即初始化
+      initStorageForCI();
+      
+      // 监听页面重新加载，重新初始化
+      document.addEventListener('DOMContentLoaded', initStorageForCI);
+    }
+  });
+  
   // 添加完整的存储API polyfill
   await page.addInitScript(() => {
     // 增强localStorage mock

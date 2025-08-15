@@ -5,7 +5,7 @@ import { apiCache, staticCache, cacheKeys } from '../utils/cache';
 import { getItem, removeItem } from '../utils/storageUtils';
 
 // API base configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
 const API_VERSION = import.meta.env.VITE_API_VERSION || 'v1';
 const API_TIMEOUT = import.meta.env.VITE_API_TIMEOUT || 30000;
 
