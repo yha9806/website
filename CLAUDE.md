@@ -586,18 +586,125 @@ git push origin rollback-ci-fix
 
 ## Testing & Quality Assurance
 
-### E2E Testing (Playwright)
+### E2E Testing (Playwright) - 64 Test Cases Across 5 Browsers
+
+**Architecture:**
 - **Configuration**: `wenxin-moyun/tests/e2e/playwright.config.ts` - Multi-browser setup
-- **Browsers**: Chromium, Firefox, WebKit, Mobile Chrome/Safari (5 projects total)
+- **Browsers**: Chromium, Firefox, WebKit, Mobile Chrome/Safari (local) | Chromium only (CI)
+- **CI Optimization**: Reduced parallelism and retries for stability
 - **Test Organization**: 64 tests in 9 spec files with page objects pattern
-- **Key Test Suites**:
-  - `homepage.spec.ts` - Homepage functionality and navigation
-  - `ai-models.spec.ts` - Leaderboard, NULL score handling, filtering
-  - `ios-components.spec.ts` - iOS design system components
-  - `auth.spec.ts`, `battle.spec.ts`, `evaluation.spec.ts` - Core features
-  - `performance.spec.ts`, `visual.spec.ts` - Performance and visual regression
-- **Test Data**: Local fixtures in `tests/e2e/fixtures/local-test-data.ts`
-- **Git Protection**: All test results excluded from repository via `.gitignore`
+
+**Key Test Suites:**
+- `homepage.spec.ts` - Homepage functionality and navigation
+- `ai-models.spec.ts` - Leaderboard, NULL score handling, filtering
+- `ios-components.spec.ts` - iOS design system components
+- `auth.spec.ts`, `battle.spec.ts`, `evaluation.spec.ts` - Core features
+- `performance.spec.ts`, `visual.spec.ts` - Performance and visual regression
+
+**Essential Test Commands:**
+```bash
+# Development Testing
+npm run test:e2e              # All browsers, full test suite
+npm run test:e2e:ui           # Interactive UI mode for debugging
+npm run test:e2e:debug        # Step-by-step debugging mode
+npm run test:e2e:headed       # Run tests in visible browser
+
+# CI/CD Testing
+npm run test:e2e:ci           # CI configuration (Chromium only)
+npm run test:e2e:report       # Show HTML test report
+
+# Targeted Testing
+npm run test:e2e -- --grep="auth"         # Authentication tests only
+npm run test:e2e -- --grep="battle"       # Battle tests only
+npm run test:e2e -- --grep="evaluation"   # Evaluation tests only
+```
+
+**GitHub Actions Monitoring via VS Code:**
+1. Install "GitHub Actions" VS Code extension
+2. Monitor runs in real-time via extension sidebar
+3. Access detailed logs without leaving IDE
+4. Use commands: "View Run Logs", "Cancel Run", "Open Run in Browser"
+
+### Critical CI/CD Debugging Patterns (2025-08-14 Experience)
+
+**Common CI Failure Patterns & Solutions:**
+
+**1. localStorage/sessionStorage SecurityError in CI**
+```typescript
+// ❌ Problem: Direct storage access fails in headless CI
+localStorage.setItem('auth_token', token);
+
+// ✅ Solution: Safe storage wrapper with fallback
+try {
+  if (localStorage) {
+    localStorage.setItem('access_token', token);
+  }
+} catch (e) {
+  (window as any).__TEST_AUTH_TOKEN__ = token;
+}
+```
+
+**2. Authentication Token Key Inconsistency**
+```typescript
+// ❌ Critical Bug: Store/retrieve key mismatch
+localStorage.setItem('auth_token', token);      // Store as 'auth_token'
+const token = localStorage.getItem('access_token'); // Retrieve as 'access_token'
+
+// ✅ Solution: Use consistent key across all operations
+localStorage.setItem('access_token', token);
+const token = localStorage.getItem('access_token');
+```
+
+**3. Invalid Playwright Selector Syntax**
+```typescript
+// ❌ Invalid: Browser doesn't support pseudo-selectors
+page.locator('select:has-option')
+
+// ✅ Fixed: Simple selectors with fallbacks
+page.locator('select, #model-select, .model-selector')
+```
+
+**4. Test Timeout Issues in CI Environment**
+```typescript
+// ✅ Increase timeouts for CI stability
+test.describe('Battle System', () => {
+  test.setTimeout(60000); // 60s for CI vs 30s default
+});
+```
+
+**5. UI Element Dependencies**
+```typescript
+// ❌ Brittle: Depends on specific UI text that may change
+await expect(page.locator('text=Welcome!')).toBeVisible();
+
+// ✅ Robust: Check functional state instead
+await expect(page).toHaveURL('/');
+const token = await page.evaluate(() => localStorage.getItem('access_token'));
+expect(token).toBeTruthy();
+```
+
+**Test Stability Best Practices:**
+```typescript
+// ✅ Flexible locators with multiple options
+this.submitButton = page.locator([
+  'button[type="submit"]',
+  'button:has-text("Sign In")',
+  '.ios-button:has-text("Login")'
+].join(', '));
+
+// ✅ Safe storage access pattern in test helpers
+async setAuthToken(token: string) {
+  await this.page.evaluate((token) => {
+    try {
+      if (localStorage) {
+        localStorage.setItem('access_token', token);
+      }
+    } catch (e) {
+      (window as any).__TEST_AUTH_TOKEN__ = token;
+    }
+  }, token);
+}
+```
 
 ### Known Issues & Solutions
 
@@ -617,6 +724,7 @@ git push origin rollback-ci-fix
 - Test files must avoid reserved names like 'eval' in strict mode
 - WebServer automatically starts dev server for tests
 - VS Code integration available via `.vscode/settings.json`
+- **CI Debugging**: Use VS Code GitHub Actions extension for real-time CI monitoring
 
 ## Production Deployment & Monitoring
 

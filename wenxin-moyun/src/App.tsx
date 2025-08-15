@@ -17,6 +17,7 @@ import GalleryPage from './pages/GalleryPage';
 import LoginPage from './pages/LoginPage';
 import TestIOSComponents from './pages/TestIOSComponents';
 import TestAdvancedIOSComponents from './pages/TestAdvancedIOSComponents';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   // Initialize cache warming on app start
@@ -68,6 +69,8 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/test-ios" element={<TestIOSComponents />} />
           <Route path="/test-ios-advanced" element={<TestAdvancedIOSComponents />} />
+          {/* 404 catch-all route */}
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
         </Routes>
       </Router>

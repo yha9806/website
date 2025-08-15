@@ -38,10 +38,10 @@ export class HomePage extends BasePage {
   constructor(page: Page) {
     super(page);
     // Updated selectors for iOS design system
-    this.heroTitle = page.locator('main h1.text-large-title, h1');
+    this.heroTitle = page.locator('main h1.text-large-title').first();
     this.exploreRankingsButton = page.locator('[data-testid="explore-rankings-button"], button:has-text("Explore Rankings"), button:has-text("排行榜")');
     this.modelBattleButton = page.locator('[data-testid="model-battle-button"], button:has-text("Model Battle"), button:has-text("模型对战")');
-    this.leaderboardLink = page.locator('[data-testid="nav-rankings"], a[href*="leaderboard"], nav a:has-text("排行榜")');
+    this.leaderboardLink = page.locator('[data-testid="nav-rankings"]').first();
     this.battleLink = page.locator('[data-testid="nav-battles"], a[href*="battle"], nav a:has-text("对战")');
     this.navMenu = page.locator('nav');
     this.homeLink = page.locator('[data-testid="nav-home"], a[href="/"], nav a:has-text("首页")');
@@ -150,10 +150,10 @@ export class EvaluationPage extends BasePage {
     super(page);
     // Enhanced English interface support for evaluation system
     this.newEvaluationButton = page.locator('button:has-text("新建评测"), button:has-text("开始评测"), button:has-text("New Evaluation"), button:has-text("Start Evaluation"), button:has-text("Create"), .ios-button:has-text("New"), .ios-button:has-text("Start")');
-    this.modelSelect = page.locator('select[name="model"], #model-select, select, .model-selector, .ios-select');
+    this.modelSelect = page.locator('form').getByRole('combobox').first();
     this.taskTypeSelect = page.locator('select[name="taskType"], #task-type-select, select, .task-type-selector');
     this.promptTextarea = page.locator('textarea[name="prompt"], textarea[placeholder*="输入"], textarea[placeholder*="Enter"], textarea[placeholder*="Type"], .prompt-input');
-    this.submitButton = page.locator('button:has-text("提交"), button:has-text("开始"), button:has-text("Submit"), button:has-text("Start"), button[type="submit"], .ios-button[type="submit"]');
+    this.submitButton = page.locator('button[type="submit"]').first();
     this.progressBar = page.locator('.progress-bar, [role="progressbar"], .progress, .ios-progress, .evaluation-progress');
     this.resultContainer = page.locator('.evaluation-result, .result-container, .results, .output, .evaluation-output');
     this.evaluationForm = page.locator('form, .evaluation-form, .create-evaluation');

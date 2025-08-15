@@ -69,25 +69,13 @@ test.describe('Navigation System', () => {
       
       // Check for page-specific content to ensure proper loading
       if (route === '/leaderboard') {
-        await expect(page.locator('text=/排行榜|Leaderboard|Rankings|Models/i')
-          .or(page.locator('h1'))
-          .or(page.locator('h2'))
-          .or(page.locator('.page-title'))).toBeVisible();
+        await expect(page.getByRole('heading', { name: /leaderboard|rankings/i }).first()).toBeVisible();
       } else if (route === '/battle') {
-        await expect(page.locator('text=/对战|Battle|VS|Vote|Compare/i')
-          .or(page.locator('h1'))
-          .or(page.locator('h2'))
-          .or(page.locator('.page-title'))).toBeVisible();
+        await expect(page.getByRole('heading', { name: /battle|vs|vote/i }).first()).toBeVisible();
       } else if (route === '/evaluations') {
-        await expect(page.locator('text=/评测|Evaluation|Test|Assessment/i')
-          .or(page.locator('h1'))
-          .or(page.locator('h2'))
-          .or(page.locator('.page-title'))).toBeVisible();
+        await expect(page.getByRole('heading', { name: /evaluation|test|assessment/i }).first()).toBeVisible();
       } else if (route === '/about') {
-        await expect(page.locator('text=/关于|About|Information|Platform/i')
-          .or(page.locator('h1'))
-          .or(page.locator('h2'))
-          .or(page.locator('.page-title'))).toBeVisible();
+        await expect(page.getByRole('heading', { name: /about|information|platform/i }).first()).toBeVisible();
       } else if (route === '/') {
         await expect(homePage.heroTitle).toBeVisible();
       }
