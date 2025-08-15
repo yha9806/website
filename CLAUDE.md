@@ -15,6 +15,36 @@ WenXin MoYun - Enterprise-grade AI art evaluation platform supporting **42 AI mo
 - **Testing**: Playwright E2E framework with 64 test cases across multiple browsers
 - **Deployment**: Complete Google Cloud Platform infrastructure with automated CI/CD pipeline
 
+## Environment Requirements ⚙️
+
+### Required Versions (GitHub Actions Standard)
+- **Node.js**: 20.19.4 (use `nvm install 20.19.4 && nvm use 20.19.4`)
+- **npm**: ≥10.0.0 (use `npm install -g npm@latest`)
+- **Python**: 3.10+ (check with `python --version`)
+
+### Environment Setup Verification
+```bash
+# 1. Install correct Node.js version
+nvm install 20.19.4
+nvm use 20.19.4
+
+# 2. Verify environment consistency with CI
+cd wenxin-moyun && npm run validate-env
+
+# 3. Install dependencies with correct npm configuration
+npm install  # Uses .npmrc settings (legacy-peer-deps=true)
+
+# 4. Install Playwright browsers
+npx playwright install
+```
+
+### Version Lock Files
+The project includes version lock files to ensure consistency:
+- `.nvmrc` - Node.js version (20.19.4)
+- `.python-version` - Python version (3.10)
+- `.npmrc` - npm configuration (legacy-peer-deps=true)
+- `package.json` engines field - Node.js/npm requirements
+
 ## Essential Commands
 
 ### Quick Start (Development)
@@ -586,13 +616,20 @@ git push origin rollback-ci-fix
 
 ## Testing & Quality Assurance
 
-### E2E Testing (Playwright) - 64 Test Cases Across 5 Browsers
+### E2E Testing (Playwright) - 64 Test Cases with Enhanced CI Compatibility
 
 **Architecture:**
-- **Configuration**: `wenxin-moyun/tests/e2e/playwright.config.ts` - Multi-browser setup
-- **Browsers**: Chromium, Firefox, WebKit, Mobile Chrome/Safari (local) | Chromium only (CI)
-- **CI Optimization**: Reduced parallelism and retries for stability
+- **Configuration**: Unified `playwright.config.ts` based on CI environment standards
+- **Browsers**: Chromium only (CI standard applied to local development)  
+- **Storage Compatibility**: Enhanced storage mock system for CI/local consistency
+- **Environment Parity**: Local environment matches GitHub Actions configuration exactly
 - **Test Organization**: 64 tests in 9 spec files with page objects pattern
+
+**Enhanced Storage System:**
+- **Global Setup**: `global-setup.ts` with comprehensive storage API polyfills
+- **Storage Mock**: `utils/storage-mock.ts` - SafeStorageAccessor for CI compatibility
+- **Test Utils**: Enhanced `test-utils.ts` with unified storage access patterns
+- **CI Safety**: Automatic fallback to window properties when storage APIs blocked
 
 **Key Test Suites:**
 - `homepage.spec.ts` - Homepage functionality and navigation
@@ -603,14 +640,17 @@ git push origin rollback-ci-fix
 
 **Essential Test Commands:**
 ```bash
-# Development Testing
-npm run test:e2e              # All browsers, full test suite
+# Environment Verification (run before testing)
+npm run validate-env          # Verify Node.js/Python versions match CI
+
+# Development Testing (now uses CI-standard configuration)
+npm run test:e2e              # Chromium only, CI timeouts, enhanced storage
 npm run test:e2e:ui           # Interactive UI mode for debugging
 npm run test:e2e:debug        # Step-by-step debugging mode
 npm run test:e2e:headed       # Run tests in visible browser
 
-# CI/CD Testing
-npm run test:e2e:ci           # CI configuration (Chromium only)
+# CI/CD Testing (identical to local config)
+npm run test:e2e:ci           # Legacy CI config (same as npm run test:e2e)
 npm run test:e2e:report       # Show HTML test report
 
 # Targeted Testing
@@ -629,19 +669,19 @@ npm run test:e2e -- --grep="evaluation"   # Evaluation tests only
 
 **Common CI Failure Patterns & Solutions:**
 
-**1. localStorage/sessionStorage SecurityError in CI**
+**1. localStorage/sessionStorage SecurityError in CI (SOLVED)**
 ```typescript
 // ❌ Problem: Direct storage access fails in headless CI
 localStorage.setItem('auth_token', token);
 
-// ✅ Solution: Safe storage wrapper with fallback
-try {
-  if (localStorage) {
-    localStorage.setItem('access_token', token);
-  }
-} catch (e) {
-  (window as any).__TEST_AUTH_TOKEN__ = token;
-}
+// ✅ Solution: Enhanced SafeStorageAccessor system
+import { safeStorage } from './utils/storage-mock';
+// Automatically handles CI restrictions with memory fallback
+safeStorage.setLocalItem('access_token', token);
+
+// ✅ Alternative: Use enhanced test utilities
+import { setAuthToken } from './helpers/test-utils';
+await setAuthToken(page, token); // CI-safe with automatic storage detection
 ```
 
 **2. Authentication Token Key Inconsistency**

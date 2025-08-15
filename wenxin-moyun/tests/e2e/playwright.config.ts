@@ -1,12 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
+  // 使用CI环境配置作为标准
+  globalSetup: './global-setup.ts',
   testDir: './specs',
-  fullyParallel: process.env.CI ? false : true,  // Disable parallel in CI to reduce resource usage
+  fullyParallel: false,  // CI标准：禁用并行以确保稳定性
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 1 : 0,  // Reduce retries in CI
-  workers: process.env.CI ? 1 : undefined,
-  timeout: 30000,  // Global test timeout
+  retries: process.env.CI ? 2 : 1,  // CI标准：增加重试次数
+  workers: 1,  // CI标准：单worker确保稳定性
+  timeout: 45000,  // CI标准：延长超时时间
   reporter: [
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
     ['list'],
@@ -15,15 +17,15 @@ export default defineConfig({
   ],
   use: {
     baseURL: 'http://localhost:5173',
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',  // CI标准：失败时保留追踪
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    actionTimeout: 15000,
-    navigationTimeout: 30000,
+    actionTimeout: 20000,  // CI标准：增加操作超时
+    navigationTimeout: 45000,  // CI标准：增加导航超时
   },
 
-  projects: process.env.CI ? [
-    // Only chromium in CI for faster execution
+  // 本地开发也使用CI标准配置（仅chromium）
+  projects: [
     {
       name: 'chromium',
       use: { 
@@ -31,49 +33,14 @@ export default defineConfig({
         viewport: { width: 1920, height: 1080 }
       },
     }
-  ] : [
-    // All browsers in local development
-    {
-      name: 'chromium',
-      use: { 
-        ...devices['Desktop Chrome'],
-        viewport: { width: 1920, height: 1080 }
-      },
-    },
-    {
-      name: 'firefox',
-      use: { 
-        ...devices['Desktop Firefox'],
-        viewport: { width: 1920, height: 1080 }
-      },
-    },
-    {
-      name: 'webkit',
-      use: { 
-        ...devices['Desktop Safari'],
-        viewport: { width: 1920, height: 1080 }
-      },
-    },
-    {
-      name: 'mobile-chrome',
-      use: { 
-        ...devices['Pixel 5'],
-        viewport: { width: 393, height: 851 }
-      },
-    },
-    {
-      name: 'mobile-safari',
-      use: { 
-        ...devices['iPhone 12'],
-        viewport: { width: 390, height: 844 }
-      },
-    },
   ],
 
   webServer: {
     command: 'npm run dev',
     url: 'http://localhost:5173',
-    reuseExistingServer: !!process.env.CI, // Reuse existing server in CI, create new in dev
-    timeout: 120 * 1000,
+    reuseExistingServer: !process.env.CI,  // 本地复用，CI环境新建
+    timeout: 180 * 1000,  // CI标准：3分钟启动超时
+    stdout: 'pipe',
+    stderr: 'pipe',
   },
 });

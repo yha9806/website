@@ -16,24 +16,32 @@ export async function simulateSlowNetwork(page: Page) {
 export async function clearLocalStorage(page: Page) {
   try {
     await page.evaluate(() => {
-      // Try to access localStorage safely
-      try {
-        if (typeof localStorage !== 'undefined' && localStorage) {
-          localStorage.clear();
+      // 使用增强的安全存储系统
+      if ((window as any).__SAFE_STORAGE__) {
+        (window as any).__SAFE_STORAGE__.clearLocal();
+        (window as any).__SAFE_STORAGE__.clearSession();
+      } else {
+        // 回退到传统清理方式
+        try {
+          if (typeof localStorage !== 'undefined' && localStorage) {
+            localStorage.clear();
+          }
+        } catch (storageError) {
+          console.log('localStorage blocked, using fallback storage clearing');
         }
-      } catch (storageError) {
-        // localStorage blocked by security policy, use window properties instead
-        console.log('localStorage blocked, using fallback storage clearing');
       }
       
-      // Always clear test-specific window properties (this always works)
-      (window as any).__TEST_AUTH_TOKEN__ = null;
-      (window as any).__TEST_GUEST_SESSION__ = null;
-      (window as any).__TEST_STORAGE__ = {};
-      (window as any).__TEST_SESSION_STORAGE__ = {};
+      // 清理所有测试相关的window属性
+      const testKeys = Object.keys(window).filter(key => key.startsWith('__TEST_'));
+      testKeys.forEach(key => {
+        try {
+          delete (window as any)[key];
+        } catch (e) {
+          (window as any)[key] = null;
+        }
+      });
     });
   } catch (error) {
-    // If even page.evaluate fails, just log the warning
     console.warn('Cannot access page evaluation in test environment:', error);
   }
 }
@@ -41,16 +49,21 @@ export async function clearLocalStorage(page: Page) {
 export async function setAuthToken(page: Page, token: string) {
   try {
     await page.evaluate((token) => {
-      // Try localStorage first, fallback to window property
-      try {
-        if (typeof localStorage !== 'undefined' && localStorage) {
-          localStorage.setItem('access_token', token); // Fixed: use 'access_token' not 'auth_token'
+      // 使用增强的安全存储系统
+      if ((window as any).__SAFE_STORAGE__) {
+        (window as any).__SAFE_STORAGE__.setLocalItem('access_token', token);
+      } else {
+        // 回退到传统方式
+        try {
+          if (typeof localStorage !== 'undefined' && localStorage) {
+            localStorage.setItem('access_token', token);
+          }
+        } catch (storageError) {
+          console.log('localStorage blocked, using window property for auth token');
         }
-      } catch (storageError) {
-        console.log('localStorage blocked, using window property for auth token');
       }
       
-      // Always set as test property for compatibility
+      // 总是设置测试属性用于兼容性
       (window as any).__TEST_AUTH_TOKEN__ = token;
     }, token);
     
@@ -77,17 +90,23 @@ export async function setAuthToken(page: Page, token: string) {
 export async function getAuthToken(page: Page): Promise<string | null> {
   try {
     return await page.evaluate(() => {
-      // Try localStorage first, fallback to window property
-      try {
-        if (typeof localStorage !== 'undefined' && localStorage) {
-          const token = localStorage.getItem('access_token'); // Fixed: use 'access_token' not 'auth_token'
-          if (token) return token;
+      // 使用增强的安全存储系统
+      if ((window as any).__SAFE_STORAGE__) {
+        const token = (window as any).__SAFE_STORAGE__.getLocalItem('access_token');
+        if (token) return token;
+      } else {
+        // 回退到传统方式
+        try {
+          if (typeof localStorage !== 'undefined' && localStorage) {
+            const token = localStorage.getItem('access_token');
+            if (token) return token;
+          }
+        } catch (storageError) {
+          console.log('localStorage blocked, using window property for auth token retrieval');
         }
-      } catch (storageError) {
-        console.log('localStorage blocked, using window property for auth token retrieval');
       }
       
-      // Fallback to window property (always available)
+      // 回退到window属性（总是可用）
       return (window as any).__TEST_AUTH_TOKEN__ || null;
     });
   } catch (error) {
@@ -106,16 +125,21 @@ export async function setGuestSession(page: Page, guestId: string) {
         evaluations: []
       };
       
-      // Try localStorage first, fallback to window property
-      try {
-        if (typeof localStorage !== 'undefined' && localStorage) {
-          localStorage.setItem('guest_session', JSON.stringify(session));
+      // 使用增强的安全存储系统
+      if ((window as any).__SAFE_STORAGE__) {
+        (window as any).__SAFE_STORAGE__.setLocalItem('guest_session', JSON.stringify(session));
+      } else {
+        // 回退到传统方式
+        try {
+          if (typeof localStorage !== 'undefined' && localStorage) {
+            localStorage.setItem('guest_session', JSON.stringify(session));
+          }
+        } catch (storageError) {
+          console.log('localStorage blocked, using window property for guest session');
         }
-      } catch (storageError) {
-        console.log('localStorage blocked, using window property for guest session');
       }
       
-      // Always set as test property for compatibility
+      // 总是设置测试属性用于兼容性
       (window as any).__TEST_GUEST_SESSION__ = session;
     }, guestId);
   } catch (error) {

@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.19.4",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -17,7 +21,8 @@
     "test:e2e:report": "playwright show-report tests/e2e/playwright-report",
     "test:mcp": "tsx tests/e2e/mcp/run-tests.ts",
     "test:mcp:homepage": "tsx tests/e2e/mcp/run-tests.ts tests/e2e/specs/homepage.spec.ts",
-    "test:mcp:ios": "tsx tests/e2e/mcp/run-tests.ts tests/e2e/specs/ios-components.spec.ts"
+    "test:mcp:ios": "tsx tests/e2e/mcp/run-tests.ts tests/e2e/specs/ios-components.spec.ts",
+    "validate-env": "node ../scripts/validate-env.js"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.0",
