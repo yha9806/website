@@ -118,6 +118,18 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+          cleanup_credentials: false
+        timeout-minutes: 5
+
+      - name: Verify authentication and network
+        run: |
+          echo "🔍 Verifying authentication..."
+          gcloud auth list --filter=status:ACTIVE --format="table(account)"
+          gcloud config get-value project
+          echo "🌐 Testing network connectivity..."
+          curl -s -I https://oauth2.googleapis.com/token | head -1 || echo "❌ OAuth endpoint unreachable"
+          curl -s -I https://asia-east1-docker.pkg.dev | head -1 || echo "❌ Artifact Registry unreachable"
 
       - name: Verify service account permissions
         run: |
@@ -140,7 +152,18 @@ jobs:
           fi
 
       - name: Configure Docker for Artifact Registry
-        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+        run: |
+          echo "🐳 Configuring Docker authentication..."
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+          
+          # 验证Docker配置
+          cat ~/.docker/config.json | grep -A 5 "${{ env.REGION }}-docker.pkg.dev" || echo "Docker config not found"
+          
+          # 使用access token进行额外认证
+          ACCESS_TOKEN=$(gcloud auth print-access-token)
+          echo $ACCESS_TOKEN | docker login -u oauth2accesstoken --password-stdin https://${{ env.REGION }}-docker.pkg.dev
+          
+          echo "✅ Docker authentication configured"
 
       - name: Create Artifact Registry repository if not exists
         run: |
@@ -192,10 +215,41 @@ jobs:
             -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:latest \
             wenxin-backend/
 
-      - name: Push backend image
+      - name: Push backend image with retry
         run: |
-          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:${{ steps.vars.outputs.SHORT_SHA }}
-          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:latest
+          echo "🚀 Pushing Docker images..."
+          
+          # 推送SHA标签，带重试机制
+          for attempt in 1 2 3; do
+            echo "Attempt $attempt: Pushing SHA tag..."
+            if docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:${{ steps.vars.outputs.SHORT_SHA }}; then
+              echo "✅ SHA tag pushed successfully"
+              break
+            else
+              echo "❌ SHA tag push failed, attempt $attempt"
+              if [ $attempt -eq 3 ]; then
+                echo "💥 All retry attempts failed for SHA tag"
+                exit 1
+              fi
+              sleep 10
+            fi
+          done
+          
+          # 推送latest标签，带重试机制
+          for attempt in 1 2 3; do
+            echo "Attempt $attempt: Pushing latest tag..."
+            if docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:latest; then
+              echo "✅ Latest tag pushed successfully"
+              break
+            else
+              echo "❌ Latest tag push failed, attempt $attempt"
+              if [ $attempt -eq 3 ]; then
+                echo "💥 All retry attempts failed for latest tag"
+                exit 1
+              fi
+              sleep 10
+            fi
+          done
 
       - name: Get database password from Secret Manager
         id: db-password
