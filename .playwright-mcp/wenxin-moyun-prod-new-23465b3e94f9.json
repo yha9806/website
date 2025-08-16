@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "wenxin-moyun-prod-new",
+  "private_key_id": "23465b3e94f9edc23e2c7a77eaa922ee40495a37",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDTIwvrxH2qmnz5\nmmHaabOJ5/VzAc3+5Gp438DDdWdsuuSeV1jjvwOYH/jUfnsAEFJ9La2Kd1rUIONX\nL8reVsZIvsV6oYyrGv9n9wsXK+niD/fVBVxSl+T1HnN60wcURdzcHuEZawFXw0CJ\nvFQhLyBZNN564Tw3573jH+QTf/svOwcyr23AhSIpmWZWd0b3de8vUq1AH5d5ShSI\nyP2xcNpHoEKlYx7mKf0yRS3RDYHKGdUzWgatWNnK5BIuU8RrTOaLXMQyYhZCUbvq\n2CXMMonq/3Z+RMNDJelg+xhfvve+APYRQfeIgNfATRR+Ftz+VoUuDE+orVniOTyU\nKxoBvHbXAgMBAAECggEAN5vabu1gn8dytRb5QNpoJCFI31KRW9nzRQTBs3k/lT6g\nKigdTFap7q41DlqFsN2brEaUl4yaCpbi6bq3ttmp/czpHERiVUqWDF7ft+mj/xtv\njdaMm2BQOFMd3TKpgaho5Dzp0pUBVIkjfWNx0Q+leHlZQ4oBH0RVGfXzT0N899Ic\nmIlDXP2OTnqShrdKcn/67pRVzjKc8XrA5qhhJ6bjG0QbNhTJ3zqBFZmKYhRwi24x\nO0dYSJN4QavL/VcpN9P4s1X9Sv5Otf2gGO0pIKObEQ0OrniscIIBRgDdFyalbFUn\nTFDx7CEptNtSqXPeMj+oM4n5I5ejq2alYX6AubugAQKBgQDzmutEn7fdu0KtUUHM\nXixPfaqmrJlD85WtY0JKAhELKwVhkz3G5wi3YfoMk9J3HHnz7K+vJtBMpgwCVnNe\n2IOuakoQVtgoQq0i8+9D/HwSSeVozTA7yVm3sFP6t3iRLJsJUaLfFeI18naArjSf\nXeGSafHZBGwPr74jkVP18DSwAQKBgQDd4TZJolpWJ1gOtdXgBGB1E2tNJlEjx48z\naNcp2+WLesO/Jjoq1eigxXjp7LrcpPPFEzj25uUVz4UOoAUzB3He9b25yk+ab4Yi\nEe2cxoV8Bj+JI10RzY6l767bNrPBwAD5jj678eYqPDnOA0A7EvhYambzywbhiIqK\nRjhL21ym1wKBgB2cMQiwWUsMXfhvLg5HTB+FaN7FkAOgcgsXS5FvWt7+pbLMkO/C\nWV7g++HXffeYcIJjvJ8PmrYWYNNP6soWizsCFGqUA8YxBJaBDA45fGNEtCve9QPv\nX4ZiWnLZJkCPKXEiiSeQo2RnSlwt0Jumb6q6UflM/k2R0QzFt2zne6ABAoGACTZN\ni7ca6xLNHCc+jwN/gbzhqp1ZpxOlBWxn6ov/ts/NCsWqipbBBtPMFmJGy9xpZphK\nuC2T+1jXXGkWbizz9F7dlrYooe/ZcNavt9+iMSkNQENgnNmc/5S4/M8DnZq8L6BR\nSHpdpQlFGSGXbBx4hSs9xQd77Kc/oUgTFEsySJcCgYEAoFqvAHeitc8bzWH24061\n0uB7mW33FBO8HPNW0zLXj22+Qo5odJlHQ5/F9OGY7XtOQwyln0GYgQ8X/0bta6mX\nmBkaibhL6SoU2+QEc0KDMpgyRskQZOfQnIWTQdf6WSX8lxMOTWxNKvEBodLeAVir\nCrFReIdl1vFtvKPNN2LJhBE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com",
+  "client_id": "112811496272741437053",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/github-actions%40wenxin-moyun-prod-new.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

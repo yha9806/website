@@ -11,7 +11,7 @@ on:
     types: [ opened, synchronize, reopened ]
 
 env:
-  PROJECT_ID: wenxin-moyun-prod
+  PROJECT_ID: wenxin-moyun-prod-new
   REGION: asia-east1
   SERVICE_NAME: wenxin-moyun
   REPO_NAME: wenxin-images
@@ -109,11 +109,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Google Cloud CLI
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ env.PROJECT_ID }}
-
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -122,48 +117,134 @@ jobs:
           cleanup_credentials: false
         timeout-minutes: 5
 
-      - name: Verify authentication and network
-        run: |
-          echo "🔍 Verifying authentication..."
-          gcloud auth list --filter=status:ACTIVE --format="table(account)"
-          gcloud config get-value project
-          echo "🌐 Testing network connectivity..."
-          curl -s -I https://oauth2.googleapis.com/token | head -1 || echo "❌ OAuth endpoint unreachable"
-          curl -s -I https://asia-east1-docker.pkg.dev | head -1 || echo "❌ Artifact Registry unreachable"
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
 
-      - name: Verify service account permissions
+      - name: Comprehensive Authentication Diagnostics
         run: |
-          echo "🔍 Verifying service account permissions..."
-          echo "Service Account: $(gcloud config get-value account)"
-          echo "Project: $(gcloud config get-value project)"
+          echo "🔍 === AUTHENTICATION DIAGNOSTICS ==="
           
-          # Test basic project access
+          # 1. 环境变量检查
+          echo "📝 Environment Variables:"
+          echo "GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS:-UNSET}"
+          echo "GOOGLE_GHA_CREDS_PATH: ${GOOGLE_GHA_CREDS_PATH:-UNSET}"
+          echo "PROJECT_ID: ${PROJECT_ID:-UNSET}"
+          
+          # 2. 认证文件检查
+          echo "📄 Credential File Analysis:"
+          if [ -f "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+            echo "✅ Credential file exists"
+            echo "📊 File size: $(stat -c%s $GOOGLE_APPLICATION_CREDENTIALS) bytes"
+            echo "🔑 JSON structure check:"
+            jq 'keys' "$GOOGLE_APPLICATION_CREDENTIALS" 2>/dev/null || echo "❌ Invalid JSON format"
+            echo "📧 Service account email:"
+            jq -r '.client_email' "$GOOGLE_APPLICATION_CREDENTIALS" 2>/dev/null || echo "❌ No client_email field"
+            echo "🆔 Project ID from key:"
+            jq -r '.project_id' "$GOOGLE_APPLICATION_CREDENTIALS" 2>/dev/null || echo "❌ No project_id field"
+          else
+            echo "❌ Credential file not found"
+          fi
+          
+          # 3. gcloud认证状态
+          echo "🔐 gcloud Authentication Status:"
+          gcloud auth list --format="table(account,status)" || echo "❌ gcloud auth list failed"
+          gcloud config list --format="table(section,property,value)" || echo "❌ gcloud config failed"
+          
+          # 4. 网络连接测试
+          echo "🌐 Network Connectivity:"
+          curl -s -o /dev/null -w "OAuth API: %{http_code}\n" https://oauth2.googleapis.com/token
+          curl -s -o /dev/null -w "Artifact Registry: %{http_code}\n" https://asia-east1-docker.pkg.dev
+          
+          echo "🔍 === DIAGNOSTICS COMPLETE ==="
+
+      - name: Verify Service Account Permissions
+        run: |
+          echo "🔐 Testing service account permissions..."
+          
+          # 检查认证状态
+          ACCOUNT=$(gcloud config get-value account)
+          PROJECT=$(gcloud config get-value project)
+          
+          echo "📧 Service Account: ${ACCOUNT:-UNSET}"
+          echo "🏗️ Project: ${PROJECT:-UNSET}"
+          
+          if [ -z "$ACCOUNT" ]; then
+            echo "❌ CRITICAL: No authenticated account found"
+            echo "🔧 This indicates GitHub Secrets GCP_SA_KEY is invalid or malformed"
+            exit 1
+          fi
+          
+          # 测试项目访问
+          echo "🔍 Testing project access..."
           if gcloud projects describe ${{ env.PROJECT_ID }} --quiet >/dev/null 2>&1; then
             echo "✅ Project access verified"
           else
-            echo "❌ No project access - check service account key"
+            echo "❌ No project access - check service account key and permissions"
+            exit 1
           fi
           
-          # Test Artifact Registry access
+          # 测试Artifact Registry访问
+          echo "🔍 Testing Artifact Registry access..."
           if gcloud artifacts repositories list --location=${{ env.REGION }} --quiet >/dev/null 2>&1; then
             echo "✅ Artifact Registry access verified"
           else
             echo "❌ No Artifact Registry access - need Artifact Registry Admin role"
+            exit 1
           fi
+          
+          # 测试Secret Manager访问
+          echo "🔍 Testing Secret Manager access..."
+          if gcloud secrets list --limit=1 --quiet >/dev/null 2>&1; then
+            echo "✅ Secret Manager access verified"
+          else
+            echo "❌ No Secret Manager access - need Secret Manager Secret Accessor role"
+            exit 1
+          fi
+          
+          echo "🎉 All permission checks passed"
 
-      - name: Configure Docker for Artifact Registry
+      - name: Configure Docker Authentication
         run: |
-          echo "🐳 Configuring Docker authentication..."
+          echo "🐳 Setting up Docker authentication..."
+          
+          # 配置Docker认证
           gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
           
-          # 验证Docker配置
-          cat ~/.docker/config.json | grep -A 5 "${{ env.REGION }}-docker.pkg.dev" || echo "Docker config not found"
-          
-          # 使用access token进行额外认证
+          # 获取并验证access token
+          echo "🔑 Obtaining access token..."
           ACCESS_TOKEN=$(gcloud auth print-access-token)
+          if [ -z "$ACCESS_TOKEN" ]; then
+            echo "❌ Failed to obtain access token"
+            exit 1
+          fi
+          echo "✅ Access token obtained (length: ${#ACCESS_TOKEN})"
+          
+          # 使用access token进行Docker登录
+          echo "🔐 Logging into Docker registry..."
           echo $ACCESS_TOKEN | docker login -u oauth2accesstoken --password-stdin https://${{ env.REGION }}-docker.pkg.dev
           
-          echo "✅ Docker authentication configured"
+          # 验证Docker配置
+          echo "🔍 Verifying Docker configuration..."
+          if docker info | grep -q "Registry Config"; then
+            echo "✅ Docker registry config found"
+          else
+            echo "⚠️ Docker registry config not found in docker info"
+          fi
+          
+          # 验证Docker配置文件
+          if [ -f ~/.docker/config.json ]; then
+            if cat ~/.docker/config.json | grep -q "${{ env.REGION }}-docker.pkg.dev"; then
+              echo "✅ Docker config file contains registry configuration"
+            else
+              echo "⚠️ Registry configuration not found in ~/.docker/config.json"
+            fi
+          else
+            echo "⚠️ ~/.docker/config.json not found"
+          fi
+          
+          echo "🎉 Docker authentication setup complete"
 
       - name: Create Artifact Registry repository if not exists
         run: |
@@ -186,7 +267,7 @@ jobs:
               echo ""
               echo "🔧 REQUIRED MANUAL SETUP:"
               echo "1. Go to Google Cloud Console -> IAM & Admin -> IAM"
-              echo "2. Find service account: github-actions@wenxin-moyun-prod.iam.gserviceaccount.com"
+              echo "2. Find service account: github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com"
               echo "3. Add these roles:"
               echo "   - Artifact Registry Administrator"
               echo "   - Cloud Run Admin"

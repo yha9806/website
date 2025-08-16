@@ -338,14 +338,14 @@ Configuration uses `@tailwindcss/postcss` plugin. If CSS errors occur, verify `p
 ### Google Cloud Platform Setup
 
 **Project Information:**
-- **Project Name**: `wenxin-moyun-prod`
-- **Project ID**: `wenxin-moyun-prod` (numeric ID: 8164039155)
+- **Project Name**: `WenXin MoYun`
+- **Project ID**: `wenxin-moyun-prod-new`
 - **Region**: `asia-east1`
 - **Service Name**: `wenxin-moyun`
 - **Artifact Registry Repository**: `wenxin-images`
 
 **GitHub Actions Service Account:**
-- **Email**: `github-actions@wenxin-moyun-prod.iam.gserviceaccount.com`
+- **Email**: `github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com`
 - **Purpose**: Automated CI/CD deployment to Google Cloud Platform
 
 **Required GCP IAM Roles:**
@@ -387,7 +387,7 @@ DATABASE_URL=sqlite+aiosqlite:///./wenxin.db
 
 **Production (PostgreSQL on Cloud SQL):**
 ```
-DATABASE_URL=postgresql+asyncpg://wenxin:[PASSWORD]@/wenxin_db?host=/cloudsql/wenxin-moyun-prod:asia-east1:wenxin-postgres
+DATABASE_URL=postgresql+asyncpg://wenxin:[PASSWORD]@/wenxin_db?host=/cloudsql/wenxin-moyun-prod-new:asia-east1:wenxin-postgres
 ```
 
 **Database Instance:**
@@ -422,29 +422,29 @@ gcloud iam service-accounts create github-actions \
     --display-name="GitHub Actions"
 
 # 3. Grant roles
-gcloud projects add-iam-policy-binding wenxin-moyun-prod \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
+    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
     --role="roles/artifactregistry.admin"
 
-gcloud projects add-iam-policy-binding wenxin-moyun-prod \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
+    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
     --role="roles/run.admin"
 
-gcloud projects add-iam-policy-binding wenxin-moyun-prod \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
+    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
     --role="roles/cloudsql.admin"
 
-gcloud projects add-iam-policy-binding wenxin-moyun-prod \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
+    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
     --role="roles/secretmanager.secretAccessor"
 
-gcloud projects add-iam-policy-binding wenxin-moyun-prod \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
+    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
     --role="roles/storage.admin"
 
 # 4. Create key for GitHub Secrets
 gcloud iam service-accounts keys create github-actions-key.json \
-    --iam-account=github-actions@wenxin-moyun-prod.iam.gserviceaccount.com
+    --iam-account=github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com
 ```
 
 **Secret Creation:**
