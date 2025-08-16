@@ -356,7 +356,7 @@ jobs:
             --memory=1Gi \
             --cpu=1 \
             --parallelism=1 \
-            --task-count=1 \
+            --max-retries=0 \
             --set-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres \
             --set-env-vars="DATABASE_URL=postgresql+asyncpg://wenxin:${{ steps.db-password.outputs.password }}@/wenxin_db?host=/cloudsql/${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres" \
             --command="python" \

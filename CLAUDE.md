@@ -159,6 +159,107 @@ response = await client.generate(
 
 ## Google Cloud Platform Configuration
 
+### Google Cloud CLI Setup (Essential for Development)
+**Installation Status**: Google Cloud SDK must be installed locally for deployment operations.
+
+**Windows Installation Path**: `C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud`
+
+### GitHub CLI Setup (Essential for PR and Release Management)
+**Installation Status**: GitHub CLI v2.63.2 installed for repository operations.
+
+**Installation Details**:
+- **Version**: 2.63.2 (2024-12-05)
+- **Windows Installation Path**: `~/tools/github-cli/bin/gh.exe`
+- **Added to PATH**: `export PATH="$PATH:$HOME/tools/github-cli/bin"`
+- **Configuration Directory**: `~/.config/gh/`
+
+**Initial Setup and Authentication**:
+```bash
+# Authenticate with GitHub (interactive device flow)
+gh auth login
+# This will provide a one-time code (e.g., XXXX-XXXX)
+# Visit: https://github.com/login/device
+# Enter the code and authorize "GitHub CLI" application
+
+# Verify authentication
+gh auth status
+
+# Check current repository
+gh repo view
+
+# Set default repository (if needed)
+gh repo set-default owner/repo
+```
+
+**Authentication Permissions Granted**:
+- Create gists
+- Read org and team membership, read org projects
+- Full control of private repositories
+
+**Configuration Commands**:
+```bash
+# Initial setup and authentication
+gcloud auth login                                    # Login with yuhaorui48@gmail.com
+gcloud config set project wenxin-moyun-prod-new     # Set default project
+gcloud config set compute/region asia-east1         # Set default region
+
+# Verify configuration
+gcloud config list                                  # Check current configuration
+gcloud projects describe wenxin-moyun-prod-new      # Verify project access
+```
+
+**Essential gcloud Commands for Development**:
+```bash
+# Service Management
+gcloud services list --enabled                      # List enabled APIs
+gcloud run services list --region=asia-east1        # List Cloud Run services
+gcloud artifacts repositories list --location=asia-east1  # List Docker repositories
+
+# Secret Manager
+gcloud secrets list                                 # List all secrets
+gcloud secrets versions access latest --secret="secret-name"  # Access secret value
+
+# Deployment Operations
+gcloud run deploy wenxin-moyun-api --image=[IMAGE_URL] --region=asia-east1
+gcloud builds submit --tag=[IMAGE_URL]              # Build and push Docker image
+
+# IAM and Permissions
+gcloud projects get-iam-policy wenxin-moyun-prod-new
+gcloud iam service-accounts list
+```
+
+**Essential GitHub CLI Commands for Development**:
+```bash
+# Pull Request Management
+gh pr create --title "Title" --body "Description"   # Create PR
+gh pr list                                          # List open PRs
+gh pr view                                          # View current PR
+gh pr merge --squash                               # Merge PR with squash
+gh pr close                                         # Close PR
+
+# Issue Management
+gh issue create --title "Bug report"               # Create issue
+gh issue list --label "bug"                        # List issues by label
+gh issue close 123                                 # Close issue #123
+
+# GitHub Actions
+gh workflow list                                   # List workflows
+gh run list --workflow=deploy-gcp.yml             # Check deployment runs
+gh run watch                                      # Watch current run
+gh run view --log                                 # View run logs
+
+# Release Management
+gh release create v1.0.0 --notes "Release notes"  # Create release
+gh release list                                   # List releases
+gh release view v1.0.0                           # View specific release
+
+# Repository-Specific Commands for WenXin MoYun
+gh pr create --base main --head feature-branch    # Create PR to main
+gh workflow run deploy-gcp.yml                    # Manually trigger deployment
+gh api repos/yha9806/website/actions/runs        # Check all workflow runs
+gh repo clone yha9806/website                    # Clone this repository
+```
+
 ### Current Project Setup (After Migration)
 **Project Information:**
 - **Project Name**: `WenXin MoYun`
@@ -241,15 +342,24 @@ if (process.env.CI) {
 - **API Docs**: `[BACKEND_URL]/docs`
 
 ### Manual Deployment
+
+**Prerequisites**:
+- Google Cloud CLI installed and configured (see Google Cloud CLI Setup section)
+- Docker installed for backend deployment
+- Authenticated with `gcloud auth login` using yuhaorui48@gmail.com
+
 ```bash
-# Backend
+# Backend Deployment
 docker build -f wenxin-backend/Dockerfile.cloud -t asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest wenxin-backend/
 docker push asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest
 gcloud run deploy wenxin-moyun-api --image=asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest --region=asia-east1
 
-# Frontend
+# Frontend Deployment  
 cd wenxin-moyun && npm run build
 gsutil -m rsync -r -d dist/ gs://wenxin-moyun-prod-new-static/
+
+# Alternative: Using gcloud directly for frontend
+gcloud storage cp -r dist/* gs://wenxin-moyun-prod-new-static/
 ```
 
 ## Development Patterns
@@ -282,6 +392,30 @@ Layout (wraps all pages)
 - **Glass morphism**: Uses backdrop-blur and opacity layering
 
 ## Common Issues & Solutions
+
+### Google Cloud CLI Issues
+- **Issue**: `gcloud: command not found`
+- **Solution**: Add gcloud to PATH or use full path: `"C:/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin/gcloud"`
+- **Alternative**: Add to .bashrc: `export PATH="$PATH:/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin"`
+
+- **Issue**: Permission denied when installing gcloud components
+- **Solution**: Run as Administrator or use Google Cloud SDK Shell
+
+- **Issue**: Authentication expired
+- **Solution**: Run `gcloud auth login` again with yuhaorui48@gmail.com account
+
+### GitHub CLI Issues
+- **Issue**: `gh: command not found`
+- **Solution**: Add to PATH: `export PATH="$PATH:$HOME/tools/github-cli/bin"`
+- **Alternative**: Use full path: `~/tools/github-cli/bin/gh.exe`
+
+- **Issue**: Authentication failed or "You are not logged into any GitHub hosts"
+- **Solution**: Run `gh auth login` and complete device flow authentication
+- **Note**: Use the 8-character code format (XXXX-XXXX) at https://github.com/login/device
+
+- **Issue**: "To get started with GitHub CLI, please run: gh auth login"
+- **Solution**: Complete authentication or set GH_TOKEN environment variable
+- **Alternative**: `export GH_TOKEN="your-personal-access-token"`
 
 ### TypeScript Compilation
 - **Issue**: react-spring type conflicts with Framer Motion
