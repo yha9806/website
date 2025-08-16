@@ -1,18 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Activity, 
   Brain, 
-  Cpu, 
   Sparkles, 
-  TrendingUp,
-  BarChart3,
-  Zap,
   CheckCircle2,
-  AlertCircle,
-  Loader2,
-  Timer,
-  Gauge
+  Loader2
 } from 'lucide-react';
 
 interface MetricData {
@@ -31,12 +24,17 @@ interface ProcessingMetrics {
   quality: number; // 0-100
 }
 
+interface EvaluationResult {
+  score: number;
+  details: ProcessingMetrics;
+}
+
 interface RealTimeProgressTrackerProps {
   evaluationId: string;
   taskType: string;
   modelName: string;
-  onComplete?: (result: any) => void;
-  onError?: (error: any) => void;
+  onComplete?: (result: EvaluationResult) => void;
+  onError?: (error: Error) => void;
 }
 
 const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
@@ -76,12 +74,8 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
 
   // Simulate real-time progress updates
   useEffect(() => {
-    let progressInterval: NodeJS.Timeout;
-    let metricsInterval: NodeJS.Timeout;
-    let textStreamInterval: NodeJS.Timeout;
-
     // Progress update simulation
-    progressInterval = setInterval(() => {
+    const progressInterval = setInterval(() => {
       setProgress(prev => {
         const newProgress = Math.min(prev + Math.random() * 3, 100);
         
@@ -112,7 +106,7 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
     }, 500);
 
     // Metrics update simulation
-    metricsInterval = setInterval(() => {
+    const metricsInterval = setInterval(() => {
       setMetrics({
         tokenSpeed: 50 + Math.random() * 150,
         memoryUsage: 30 + Math.random() * 40,
@@ -133,7 +127,7 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
     const texts = sampleTexts[taskType as keyof typeof sampleTexts] || sampleTexts.poetry;
     let textIndex = 0;
 
-    textStreamInterval = setInterval(() => {
+    const textStreamInterval = setInterval(() => {
       if (progress > 30 && progress < 80) {
         setIsStreaming(true);
         setStreamingText(prev => {

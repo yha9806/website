@@ -37,7 +37,7 @@ const DonutProgress: React.FC<DonutProgressProps> = ({
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
     cx, cy
-  }: any) => {
+  }: { cx: number; cy: number }) => {
     return (
       <text 
         x={cx} 
@@ -98,7 +98,7 @@ const DonutProgress: React.FC<DonutProgressProps> = ({
           </Pie>
           
           <Tooltip 
-            formatter={(value: any) => `${value}%`}
+            formatter={(value: number) => `${value}%`}
             contentStyle={{
               backgroundColor: chartColors.background.card,
               border: `1px solid ${chartColors.grid.line}`,

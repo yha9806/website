@@ -102,7 +102,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
       onClose();
       // Refresh current page to update UI
       window.location.reload();
-    } catch (err) {
+    } catch {
       setError('Login failed, please check username and password');
     } finally {
       setIsLoading(false);
@@ -118,7 +118,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
       retryPendingRequests();
       onClose();
       window.location.reload();
-    } catch (err) {
+    } catch {
       setError('Demo account login failed');
     } finally {
       setIsLoading(false);

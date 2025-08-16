@@ -29,7 +29,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
     if (models.length > 0 && !formData.modelId) {
       setFormData(prev => ({ ...prev, modelId: models[0].id }));
     }
-  }, [models]);
+  }, [models, formData.modelId]);
 
   const taskTypes = [
     { value: 'poem', label: 'Poetry Creation', icon: BookOpen, 

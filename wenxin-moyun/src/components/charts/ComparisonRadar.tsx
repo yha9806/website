@@ -30,7 +30,7 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
 
   // 为每个模型添加数据
   const data = radarData.map(item => {
-    const point: any = { dimension: item.dimension };
+    const point: Record<string, any> = { dimension: item.dimension };
     models.forEach((model, index) => {
       switch (item.dimension) {
         case '格律韵律':
