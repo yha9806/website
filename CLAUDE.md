@@ -289,15 +289,18 @@ Internet → Cloud CDN → Cloud Storage (Frontend)
 
 ### Deployment Commands
 ```bash
-# Automated setup (recommended)
-chmod +x scripts/setup-gcp.sh && ./scripts/setup-gcp.sh
+# First-time setup: Configure GCP permissions (REQUIRED)
+chmod +x scripts/setup-gcp-permissions.sh && ./scripts/setup-gcp-permissions.sh
 
-# Manual backend deployment
+# Automated deployment (via GitHub Actions)
+git push origin master  # Triggers automatic deployment
+
+# Manual backend deployment (if needed)
 docker build -f wenxin-backend/Dockerfile.cloud -t asia-east1-docker.pkg.dev/PROJECT/wenxin-images/wenxin-backend:latest wenxin-backend/
 docker push asia-east1-docker.pkg.dev/PROJECT/wenxin-images/wenxin-backend:latest
 gcloud run deploy wenxin-moyun-api --image=asia-east1-docker.pkg.dev/PROJECT/wenxin-images/wenxin-backend:latest --region=asia-east1
 
-# Frontend deployment
+# Manual frontend deployment (if needed)
 cd wenxin-moyun && npm run build
 gsutil -m rsync -r -d dist/ gs://PROJECT-static/
 ```
