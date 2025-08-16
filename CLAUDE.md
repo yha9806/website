@@ -6,17 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 WenXin MoYun - Enterprise-grade AI art evaluation platform supporting **42 AI models** from **15 organizations**. Full-stack application featuring complete iOS design system migration, real AI model benchmarking with **Unified Model Interface**, comprehensive E2E testing infrastructure, and **production Google Cloud Platform deployment**.
 
-**Key Features:**
-- Real-time AI model evaluation and ranking system
-- Multi-provider AI integration (OpenAI, Anthropic, Google, etc.)
-- iOS-style design system with glass morphism effects
-- Live battle voting system with WebSocket real-time updates
-- Comprehensive benchmark testing with intelligent scoring
-- Production-ready cloud deployment on Google Cloud Platform
+## 🚨 Critical: Google Cloud Account Migration (2025-08-16)
+
+**IMPORTANT**: The project has been migrated from the wrong Google Cloud account to the correct paid account:
+- **OLD**: `wenxin-moyun-prod` (yuhaorui88@gmail.com - wrong account)
+- **NEW**: `wenxin-moyun-prod-new` (yuhaorui48@gmail.com - correct account with £946 credits)
+
+All configurations have been updated to use the new project ID and service account.
 
 ## Architecture Overview
 
-### System Architecture
 ```
 Frontend (React 19 + iOS Design)  ←→  Backend (FastAPI + SQLAlchemy)  ←→  AI Providers (8 providers)
         ↓                                       ↓                              ↓
@@ -29,46 +28,36 @@ Frontend (React 19 + iOS Design)  ←→  Backend (FastAPI + SQLAlchemy)  ←→
                               Cloud SQL (PostgreSQL)
 ```
 
-### Tech Stack
-**Frontend (wenxin-moyun/)**
-- **Framework**: React 19 + TypeScript 5.8 + Vite 7.1
-- **Styling**: Tailwind CSS 4.1 with pure iOS design tokens
-- **State**: Zustand 4.4 + custom hooks
-- **Animation**: Framer Motion 12.23 (iOS spring physics)
-- **Charts**: Recharts 3.1 with D3 integration
-- **Testing**: Playwright E2E (64 test cases across 9 spec files)
-
-**Backend (wenxin-backend/)**
-- **Framework**: FastAPI + SQLAlchemy (async)
-- **Database**: SQLite (dev) / PostgreSQL (production)
-- **AI Integration**: Unified Model Interface with 8 provider adapters
-- **Real-time**: WebSocket for battle updates
-- **Deployment**: Docker + Google Cloud Run
-
 ## Essential Commands
+
+### Quick Start (One-click Setup)
+```bash
+# Windows
+start.bat              # Initializes DB, starts backend (:8001) + frontend (:5173)
+
+# Linux/macOS
+./start.sh             # Same as above for Unix systems
+```
 
 ### Frontend Development (wenxin-moyun/)
 ```bash
-npm run dev                   # Start dev server (port 5173+)
-npm run build                 # TypeScript check + production build
-npm run lint                  # ESLint validation
-npm run preview               # Preview production build
+npm run dev            # Start dev server (port 5173+)
+npm run build          # TypeScript check + production build
+npm run lint           # ESLint validation
+npm run preview        # Preview production build
 
 # E2E Testing (Playwright - 64 test cases)
-npm run test:e2e              # Run tests headless across all browsers
-npm run test:e2e:ui           # Interactive UI mode for debugging
-npm run test:e2e:debug        # Step-by-step debugging mode
-npm run test:e2e:headed       # Run tests in visible browser
-npm run test:e2e:report       # Show HTML test report
-npm run test:e2e -- --grep="auth"  # Run specific test pattern
+npm run test:e2e       # Run tests headless across all browsers
+npm run test:e2e:ui    # Interactive UI mode for debugging
+npm run test:e2e:debug # Step-by-step debugging mode
+npm run test:e2e:headed # Run tests in visible browser
+npm run test:e2e:report # Show HTML test report
+npm run test:e2e -- --grep="auth" # Run specific test pattern
 
 # MCP Testing (Model Context Protocol)
-npm run test:mcp              # Run all MCP tests
-npm run test:mcp:homepage     # Test homepage via MCP
-npm run test:mcp:ios          # Test iOS components via MCP
-
-# Environment validation
-npm run validate-env          # Verify Node.js/Python versions match CI
+npm run test:mcp       # Run all MCP tests
+npm run test:mcp:homepage # Test homepage via MCP
+npm run test:mcp:ios   # Test iOS components via MCP
 ```
 
 ### Backend Development (wenxin-backend/)
@@ -78,7 +67,7 @@ python -m uvicorn app.main:app --reload --port 8001   # Start API server
 python init_db.py                                     # Reset database with sample data
 
 # Testing
-pytest                        # Run all tests
+pytest                 # Run all tests
 pytest tests/test_auth.py -v  # Run specific test verbose
 pytest -k "test_login" -v     # Run tests matching pattern
 pytest --cov=app tests/       # Test coverage
@@ -88,38 +77,38 @@ python test_unified_interface.py  # Verify models use correct APIs
 python openai_benchmark.py        # Run real AI benchmarks
 ```
 
-### Full Stack Development
-```bash
-# One-click startup (recommended)
-start.bat                     # Windows: Initializes DB, starts backend (:8001) + frontend (:5173)
-start.sh                      # Linux/macOS equivalent
-
-# Manual startup (separate terminals)
-cd wenxin-backend && python init_db.py && python -m uvicorn app.main:app --reload --port 8001
-cd wenxin-moyun && npm run dev
-```
-
-**One-click Startup Features**:
-- Automatically initializes SQLite database with sample data
-- Starts backend API server on port 8001 with auto-reload
-- Starts frontend dev server on port 5173 (or next available)
-- Provides default admin credentials (admin/admin123)
-- Opens separate terminal windows for each service
-
 ### Database Operations
 ```bash
 # Development (SQLite)
 cd wenxin-backend
-rm wenxin.db                  # Delete existing database (Windows: del wenxin.db)
-python init_db.py             # Recreate with schema + sample data
+rm wenxin.db           # Delete existing database (Windows: del wenxin.db)
+python init_db.py      # Recreate with schema + sample data
 
 # Check model rankings
 python -c "import sqlite3; conn = sqlite3.connect('wenxin.db'); cursor = conn.cursor(); cursor.execute('SELECT name, model_type, overall_score FROM ai_models ORDER BY overall_score DESC NULLS LAST'); print([f'{row[0]}: {row[2] if row[2] is not None else \"N/A\"}' for row in cursor.fetchall()[:10]]); conn.close()"
 ```
 
-## Critical System Components
+## High-Level Architecture
 
-### Unified Model Interface (Core AI Integration)
+### Tech Stack
+**Frontend (wenxin-moyun/)**
+- React 19 + TypeScript 5.8 + Vite 7.1
+- Tailwind CSS 4.1 with pure iOS design tokens
+- Zustand 4.4 state management
+- Framer Motion 12.23 (iOS spring physics)
+- Recharts 3.1 with D3 integration
+- Playwright E2E (64 test cases across 9 spec files)
+
+**Backend (wenxin-backend/)**
+- FastAPI + SQLAlchemy (async)
+- SQLite (dev) / PostgreSQL (production)
+- Unified Model Interface with 8 provider adapters
+- WebSocket for real-time battle updates
+- Docker + Google Cloud Run deployment
+
+### Critical System Components
+
+#### Unified Model Interface (Core AI Integration)
 **Location**: `wenxin-backend/app/services/models/`
 
 **Key Files:**
@@ -144,42 +133,16 @@ response = await client.generate(
 )
 ```
 
-### iOS Design System (Frontend)
+#### iOS Design System (Frontend)
 **Location**: `wenxin-moyun/src/components/ios/`
 
 **Core Components:**
-```typescript
-// Native iOS button with glass morphism
-<IOSButton variant="primary" size="lg" glassMorphism emoji="like">
-  Action
-</IOSButton>
+- `IOSButton`, `IOSCard`, `IOSToggle`, `IOSSlider`, `IOSAlert`
+- 60+ Fluent Emoji SVGs with semantic categorization
+- Theme system with iOS colors (#007AFF, #34C759, #FF9500, #FF3B30)
+- Glass morphism effects and San Francisco font stack
 
-// Container with structured content
-<IOSCard variant="elevated" interactive animate>
-  <IOSCardHeader title="Title" emoji={<RankEmoji rank={1} />} />
-  <IOSCardContent>Content</IOSCardContent>
-  <IOSCardFooter>
-    <IOSButton>Action</IOSButton>
-  </IOSCardFooter>
-</IOSCard>
-
-// iOS-style controls
-<IOSToggle checked={value} onChange={setValue} color="green" />
-<IOSSlider value={50} min={0} max={100} formatValue={(v) => `${v}%`} />
-```
-
-**Theme System**: `src/components/ios/utils/iosTheme.ts`
-- iOS system colors (#007AFF, #34C759, #FF9500, #FF3B30)
-- Native shadows and glass morphism effects
-- San Francisco font stack
-
-### Real-time Battle System
-**Backend**: `wenxin-backend/app/api/v1/battles.py` + WebSocket
-**Frontend**: `wenxin-moyun/src/hooks/useWebSocket.ts`
-
-**WebSocket endpoint**: `/api/v1/ws/battle` for live vote updates
-
-### Database Models & NULL Handling Pattern
+#### Database Models & NULL Handling Pattern
 **Critical Business Rule**: Image models have NULL `overall_score` (intentional)
 ```typescript
 // Frontend - Always check for null scores
@@ -194,10 +157,100 @@ response = await client.generate(
 })
 ```
 
-**Model Types:**
-- `llm` - Language models (has overall_score)
-- `image` - Image models (overall_score = NULL)  
-- `multimodal` - Can handle both (has overall_score)
+## Google Cloud Platform Configuration
+
+### Current Project Setup (After Migration)
+**Project Information:**
+- **Project Name**: `WenXin MoYun`
+- **Project ID**: `wenxin-moyun-prod-new`
+- **Region**: `asia-east1`
+- **Service Name**: `wenxin-moyun`
+- **Artifact Registry Repository**: `wenxin-images`
+
+**GitHub Actions Service Account:**
+- **Email**: `github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com`
+- **Purpose**: Automated CI/CD deployment to Google Cloud Platform
+
+### Required IAM Roles
+1. **Artifact Registry Administrator** - Create/manage Docker repositories
+2. **Cloud Run Admin** - Deploy services to Cloud Run
+3. **Cloud SQL Admin** - Manage database connections and migrations
+4. **Secret Manager Secret Accessor** - Access API keys and secrets
+5. **Storage Admin** - Deploy frontend to Cloud Storage
+
+### Secret Manager Configuration
+**Secrets stored in GCP Secret Manager:**
+- `db-password` - Database password for PostgreSQL
+- `secret-key` - Application secret key for JWT tokens
+- `openai-api-key` - OpenAI API key for AI model access
+- `anthropic-api-key` - Anthropic API key for Claude models
+- `gemini-api-key` - Google Gemini API key
+
+### GitHub Secrets
+**Required in GitHub Repository Settings:**
+- `GCP_SA_KEY` - Service account JSON (Updated 2025-08-16)
+- `OPENAI_API_KEY` - OpenAI API access
+- `ANTHROPIC_API_KEY` - Anthropic API access
+- `GEMINI_API_KEY` - Google Gemini API (optional)
+
+## Testing Architecture
+
+### E2E Testing (Playwright)
+**Configuration**: 
+- Local: `tests/e2e/playwright.config.ts`
+- CI: `tests/e2e/playwright.ci.config.ts` (optimized for CI stability)
+
+**Test Organization** (64 tests across 9 spec files):
+- `homepage.spec.ts` - Homepage functionality and navigation
+- `ai-models.spec.ts` - Leaderboard, NULL score handling, filtering
+- `ios-components.spec.ts` - iOS design system components
+- `auth.spec.ts`, `battle.spec.ts`, `evaluation.spec.ts` - Core features
+- `performance.spec.ts`, `visual.spec.ts` - Performance and visual regression
+
+**CI-Specific Optimizations**:
+- Increased timeouts: global (60s), action (30s), navigation (60s), expect (15s)
+- Single worker process, no parallelization for stability
+- Enhanced retry logic (2 retries in CI vs 1 locally)
+
+### Critical Testing Patterns
+```typescript
+// Strict mode compliance - avoid multiple element matches
+page.locator('.error-element').first()  // Use .first() for multi-element matches
+
+// Flexible locators with proper .or() syntax
+page.locator('text=/error/i').or(page.locator('.error-page'))  // NOT comma-separated
+
+// Safe storage access for CI compatibility
+if (process.env.CI) {
+  // Use mocks or skip localStorage operations
+  return;
+}
+```
+
+## Deployment
+
+### Automated Deployment (GitHub Actions)
+**Triggers**: Every push to main/master branch, PRs to main/master
+1. **Test Phase**: Frontend build, backend tests, E2E tests (CI-specific config)
+2. **Deploy Phase**: Docker build/push to Artifact Registry, database migrations, Cloud Run deployment
+3. **Release Phase**: Automated release notes with commit history and service URLs
+
+**Production URLs**:
+- **Frontend**: `https://storage.googleapis.com/wenxin-moyun-prod-new-static/`
+- **Backend API**: Deployed to Cloud Run (URL in deployment logs)
+- **API Docs**: `[BACKEND_URL]/docs`
+
+### Manual Deployment
+```bash
+# Backend
+docker build -f wenxin-backend/Dockerfile.cloud -t asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest wenxin-backend/
+docker push asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest
+gcloud run deploy wenxin-moyun-api --image=asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest --region=asia-east1
+
+# Frontend
+cd wenxin-moyun && npm run build
+gsutil -m rsync -r -d dist/ gs://wenxin-moyun-prod-new-static/
+```
 
 ## Development Patterns
 
@@ -228,174 +281,7 @@ Layout (wraps all pages)
 - **Breakpoints**: `md: 768px`, `lg: 1024px`, `xl: 1200px`
 - **Glass morphism**: Uses backdrop-blur and opacity layering
 
-## Testing Architecture
-
-### E2E Testing (Playwright)
-**Configuration**: 
-- Local: `tests/e2e/playwright.config.ts`
-- CI: `tests/e2e/playwright.ci.config.ts` (optimized for CI stability)
-
-**Test Organization** (64 tests across 9 spec files):
-- `homepage.spec.ts` - Homepage functionality and navigation
-- `ai-models.spec.ts` - Leaderboard, NULL score handling, filtering  
-- `ios-components.spec.ts` - iOS design system components
-- `auth.spec.ts`, `battle.spec.ts`, `evaluation.spec.ts` - Core features
-- `performance.spec.ts`, `visual.spec.ts` - Performance and visual regression
-
-**CI-Specific Optimizations**:
-- Increased timeouts: global (60s), action (30s), navigation (60s), expect (15s)
-- Single worker process, no parallelization for stability
-- Enhanced retry logic (2 retries in CI vs 1 locally)
-- Separate configuration prevents CI/local environment conflicts
-
-### Critical Testing Patterns
-```typescript
-// Strict mode compliance - avoid multiple element matches
-page.locator('.error-element').first()  // Use .first() for multi-element matches
-
-// Flexible locators with proper .or() syntax
-page.locator('text=/error/i').or(page.locator('.error-page'))  // NOT comma-separated
-
-// Safe storage access for CI compatibility
-if (process.env.CI) {
-  // Use mocks or skip localStorage operations
-  return;
-}
-
-// Error handling in selectors
-try {
-  await page.locator(selector).first().isVisible({ timeout: 2000 });
-} catch (error) {
-  // Continue to fallback selector
-}
-```
-
-## Production Deployment
-
-### Google Cloud Platform Infrastructure
-**Architecture**:
-```
-Internet → Cloud CDN → Cloud Storage (Frontend)
-                    ↘
-                     Cloud Run (Backend API) ← Artifact Registry
-                             ↓
-                     Cloud SQL (PostgreSQL)
-                             ↓
-                     Secret Manager (API Keys)
-```
-
-**Auto-scaling**: 0-10 instances, 2GB memory, 1 vCPU
-**Cold start**: ~2 seconds backend, instant frontend (CDN cached)
-
-### Deployment Commands
-```bash
-# First-time setup: Configure GCP permissions (REQUIRED)
-chmod +x scripts/setup-gcp-permissions.sh && ./scripts/setup-gcp-permissions.sh
-
-# Automated deployment (via GitHub Actions)
-git push origin master  # Triggers automatic deployment
-
-# Manual backend deployment (if needed)
-docker build -f wenxin-backend/Dockerfile.cloud -t asia-east1-docker.pkg.dev/PROJECT/wenxin-images/wenxin-backend:latest wenxin-backend/
-docker push asia-east1-docker.pkg.dev/PROJECT/wenxin-images/wenxin-backend:latest
-gcloud run deploy wenxin-moyun-api --image=asia-east1-docker.pkg.dev/PROJECT/wenxin-images/wenxin-backend:latest --region=asia-east1
-
-# Manual frontend deployment (if needed)
-cd wenxin-moyun && npm run build
-gsutil -m rsync -r -d dist/ gs://PROJECT-static/
-```
-
-### Environment Configuration
-**Required Environment Variables:**
-```bash
-# Frontend (.env)
-VITE_API_BASE_URL=http://localhost:8001  # Development
-VITE_API_VERSION=v1
-
-# Backend (.env)  
-DATABASE_URL=sqlite+aiosqlite:///./wenxin.db  # Development
-SECRET_KEY=your-secret-key-here
-OPENAI_API_KEY=your-openai-key  # + 7 other AI provider keys
-```
-
-**Version Lock Files** (for CI consistency):
-- `.nvmrc` - Node.js 20.19.4
-- `.python-version` - Python 3.10
-- `.npmrc` - npm configuration (legacy-peer-deps=true)
-
-## GitHub Actions CI/CD
-
-### Automated Pipeline
-**Triggers**: Every push to main/master branch, PRs to main/master
-1. **Test Phase**: Frontend build, backend tests, E2E tests (CI-specific config)
-2. **Deploy Phase**: Docker build/push to Artifact Registry, database migrations, Cloud Run deployment
-3. **Release Phase**: Automated release notes with commit history and service URLs
-
-**Key Features**:
-- Separate CI configuration for E2E tests (playwright.ci.config.ts)
-- Automatic database migrations via temporary Cloud Run jobs
-- Health checks for both frontend (Cloud Storage) and backend (Cloud Run)
-- Secret management via Google Cloud Secret Manager
-- Clean npm cache handling to prevent dependency conflicts
-
-### Required GitHub Secrets
-| Secret | Description | Source |
-|--------|-------------|---------|
-| `GCP_SA_KEY` | Service account JSON | Google Cloud Console |
-| `OPENAI_API_KEY` | OpenAI API access | https://platform.openai.com/api-keys |
-| `ANTHROPIC_API_KEY` | Anthropic API access | https://console.anthropic.com/ |
-
-### Required GCP Service Account Permissions
-The service account used in `GCP_SA_KEY` must have these roles:
-- **Artifact Registry Administrator** - Create/manage Docker repositories
-- **Cloud Run Admin** - Deploy services to Cloud Run
-- **Cloud SQL Admin** - Manage database connections and migrations
-- **Secret Manager Secret Accessor** - Access API keys and secrets
-- **Storage Admin** - Deploy frontend to Cloud Storage
-
-### Common CI Issues & Solutions
-**Artifact Registry Permission Denied**:
-```bash
-# Problem: "Permission denied" when pushing Docker images
-# Solution: Ensure service account has Artifact Registry Admin role
-# Automatic fix: Workflow now auto-creates repository if missing
-
-# Manual verification in Google Cloud Console:
-# 1. Check IAM roles for service account
-# 2. Verify Artifact Registry repository exists
-# 3. Test: gcloud artifacts repositories list --location=asia-east1
-```
-
-**localStorage/sessionStorage in CI**:
-```typescript
-// Problem: Direct storage access fails in headless CI
-// Solution: Use enhanced SafeStorageAccessor with memory fallback
-import { safeStorage } from './utils/storage-mock';
-safeStorage.setLocalItem('access_token', token);
-```
-
-**Playwright Locator Syntax & Strict Mode**:
-```typescript
-// ❌ WRONG: Mixing regex flags with CSS selectors
-page.locator('text=/error/i, .error-page')
-
-// ✅ CORRECT: Use .or() method
-page.locator('text=/error/i').or(page.locator('.error-page'))
-
-// ❌ WRONG: Strict mode violation (multiple matches)
-page.locator('[required]')  // Fails if multiple required elements exist
-
-// ✅ CORRECT: Use .first() to handle multiple matches
-page.locator('[required]').first()
-
-// ✅ CORRECT: Enhanced selector strategy for CI stability
-const battleElements = page.locator('.battle-container, .model-comparison')
-  .or(page.locator('button:has-text("Vote")'))
-  .or(page.locator('text=/Model A|Model B/'));
-await expect(battleElements.first()).toBeVisible({ timeout: 15000 });
-```
-
-## Known Issues & Solutions
+## Common Issues & Solutions
 
 ### TypeScript Compilation
 - **Issue**: react-spring type conflicts with Framer Motion
@@ -416,15 +302,6 @@ await expect(battleElements.first()).toBeVisible({ timeout: 15000 });
 - **Port Conflicts**: Frontend auto-increments from 5173
 - **Windows Compatibility**: Use `del` instead of `rm`, check Windows Defender
 - **Node.js Version**: Must use 20.19.4 for CI compatibility
-
-## API Documentation
-
-**Development**: http://localhost:8001/docs (Swagger UI)
-**Core Endpoints**:
-- `GET /api/v1/models/` - AI model metadata with NULL-safe scores
-- `POST /api/v1/evaluations/` - Create evaluation tasks
-- `GET /api/v1/battles/random` - Random battle for voting
-- `GET /health` - Health check for monitoring
 
 ## Test Accounts
 - Demo: `demo` / `demo123`
