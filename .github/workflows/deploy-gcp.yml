@@ -59,7 +59,11 @@ jobs:
       #   working-directory: wenxin-moyun
       #   run: npm run lint
 
-      - name: Build frontend (skip TypeScript checks)
+      - name: TypeScript type checking
+        working-directory: wenxin-moyun
+        run: npx tsc --noEmit
+
+      - name: Build frontend for production
         working-directory: wenxin-moyun
         run: npm run build:prod
         env:
@@ -275,7 +279,11 @@ jobs:
         working-directory: wenxin-moyun
         run: npm install --legacy-peer-deps
 
-      - name: Build frontend (skip TypeScript checks)
+      - name: TypeScript type checking (production)
+        working-directory: wenxin-moyun
+        run: npx tsc --noEmit
+
+      - name: Build frontend for production
         working-directory: wenxin-moyun
         run: npm run build:prod
         env:
