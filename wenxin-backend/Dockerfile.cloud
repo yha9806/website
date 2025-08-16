@@ -34,7 +34,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Add Cloud SQL Proxy connector for PostgreSQL
 RUN pip install --no-cache-dir \
-    google-cloud-sql[asyncpg] \
+    cloud-sql-python-connector[asyncpg] \
     google-cloud-secret-manager \
     google-cloud-logging \
     google-cloud-monitoring
