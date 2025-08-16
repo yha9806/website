@@ -72,14 +72,14 @@ Frontend (React 19 + iOS Design)  ←→  Backend (FastAPI + SQLAlchemy)  ←→
 ### Google Cloud Platform Setup
 
 **Project Information:**
-- **Project Name**: `wenxin-moyun-prod`
-- **Project ID**: `wenxin-moyun-prod` (numeric ID: 8164039155)
+- **Project Name**: `WenXin MoYun`
+- **Project ID**: `wenxin-moyun-prod-new`
 - **Region**: `asia-east1`
 - **Service Name**: `wenxin-moyun`
 - **Artifact Registry Repository**: `wenxin-images`
 
 **GitHub Actions Service Account:**
-- **Email**: `github-actions@wenxin-moyun-prod.iam.gserviceaccount.com`
+- **Email**: `github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com`
 - **Purpose**: Automated CI/CD deployment to Google Cloud Platform
 
 ### Required GCP IAM Roles
@@ -130,7 +130,7 @@ DATABASE_URL=sqlite+aiosqlite:///./wenxin.db
 
 **Production (PostgreSQL on Cloud SQL):**
 ```env
-DATABASE_URL=postgresql+asyncpg://wenxin:[PASSWORD]@/wenxin_db?host=/cloudsql/wenxin-moyun-prod:asia-east1:wenxin-postgres
+DATABASE_URL=postgresql+asyncpg://wenxin:[PASSWORD]@/wenxin_db?host=/cloudsql/wenxin-moyun-prod-new:asia-east1:wenxin-postgres
 ```
 
 **Database Instance Details:**
@@ -163,35 +163,35 @@ gcloud iam service-accounts create github-actions \
 **Grant Required Roles:**
 ```bash
 # Artifact Registry Administrator
-gcloud projects add-iam-policy-binding wenxin-moyun-prod \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
+    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
     --role="roles/artifactregistry.admin"
 
 # Cloud Run Admin
-gcloud projects add-iam-policy-binding wenxin-moyun-prod \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
+    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
     --role="roles/run.admin"
 
 # Cloud SQL Admin
-gcloud projects add-iam-policy-binding wenxin-moyun-prod \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
+    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
     --role="roles/cloudsql.admin"
 
 # Secret Manager Secret Accessor
-gcloud projects add-iam-policy-binding wenxin-moyun-prod \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
+    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
     --role="roles/secretmanager.secretAccessor"
 
 # Storage Admin
-gcloud projects add-iam-policy-binding wenxin-moyun-prod \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
+    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
     --role="roles/storage.admin"
 ```
 
 **Create Service Account Key:**
 ```bash
 gcloud iam service-accounts keys create github-actions-key.json \
-    --iam-account=github-actions@wenxin-moyun-prod.iam.gserviceaccount.com
+    --iam-account=github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com
 ```
 
 ### 2. Create Secrets in Secret Manager
@@ -276,7 +276,7 @@ pytest --cov=app tests/
 3. **Release Phase**: Automated release notes with service URLs
 
 **Production URLs:**
-- **Frontend**: https://storage.googleapis.com/wenxin-moyun-prod-static/
+- **Frontend**: https://storage.googleapis.com/wenxin-moyun-prod-new-static/
 - **Backend API**: Deployed to Cloud Run (URL in deployment logs)
 - **API Docs**: `[BACKEND_URL]/docs`
 
@@ -284,16 +284,16 @@ pytest --cov=app tests/
 
 **Backend:**
 ```bash
-docker build -f wenxin-backend/Dockerfile.cloud -t asia-east1-docker.pkg.dev/wenxin-moyun-prod/wenxin-images/wenxin-backend:latest wenxin-backend/
-docker push asia-east1-docker.pkg.dev/wenxin-moyun-prod/wenxin-images/wenxin-backend:latest
-gcloud run deploy wenxin-moyun-api --image=asia-east1-docker.pkg.dev/wenxin-moyun-prod/wenxin-images/wenxin-backend:latest --region=asia-east1
+docker build -f wenxin-backend/Dockerfile.cloud -t asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest wenxin-backend/
+docker push asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest
+gcloud run deploy wenxin-moyun-api --image=asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest --region=asia-east1
 ```
 
 **Frontend:**
 ```bash
 cd wenxin-moyun
 npm run build
-gsutil -m rsync -r -d dist/ gs://wenxin-moyun-prod-static/
+gsutil -m rsync -r -d dist/ gs://wenxin-moyun-prod-new-static/
 ```
 
 ## 🎨 iOS Design System
@@ -400,7 +400,7 @@ python openai_benchmark.py        # Run real AI benchmarks
 gcloud secrets versions access latest --secret="db-password"
 
 # ✅ Correct (specifies project ID)
-gcloud secrets versions access latest --secret="db-password" --project=wenxin-moyun-prod
+gcloud secrets versions access latest --secret="db-password" --project=wenxin-moyun-prod-new
 ```
 
 ### Artifact Registry Permission Denied
@@ -460,7 +460,7 @@ curl -f "[BACKEND_URL]/health"
 
 **Frontend Health Check:**
 ```bash
-curl -f "https://storage.googleapis.com/wenxin-moyun-prod-static/index.html"
+curl -f "https://storage.googleapis.com/wenxin-moyun-prod-new-static/index.html"
 ```
 
 ### Database Operations
