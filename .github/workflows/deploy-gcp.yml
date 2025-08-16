@@ -196,14 +196,14 @@ jobs:
       - name: Get database password from Secret Manager
         id: db-password
         run: |
-          DB_PASSWORD=$(gcloud secrets versions access latest --secret="db-password")
+          DB_PASSWORD=$(gcloud secrets versions access latest --secret="db-password" --project=${{ env.PROJECT_ID }})
           echo "::add-mask::$DB_PASSWORD"
           echo "password=$DB_PASSWORD" >> $GITHUB_OUTPUT
 
       - name: Get secret key from Secret Manager
         id: secret-key
         run: |
-          SECRET_KEY=$(gcloud secrets versions access latest --secret="secret-key")
+          SECRET_KEY=$(gcloud secrets versions access latest --secret="secret-key" --project=${{ env.PROJECT_ID }})
           echo "::add-mask::$SECRET_KEY"
           echo "key=$SECRET_KEY" >> $GITHUB_OUTPUT
 
