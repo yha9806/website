@@ -283,9 +283,15 @@ test.describe('Evaluation System', () => {
     
     let foundValidationElement = false;
     for (const selector of validationElements) {
-      if (await page.locator(selector).isVisible({ timeout: 2000 })) {
-        foundValidationElement = true;
-        break;
+      try {
+        // Use first() to avoid strict mode violations for selectors that might match multiple elements
+        if (await page.locator(selector).first().isVisible({ timeout: 2000 })) {
+          foundValidationElement = true;
+          break;
+        }
+      } catch (error) {
+        // If selector fails, continue to next selector
+        continue;
       }
     }
     

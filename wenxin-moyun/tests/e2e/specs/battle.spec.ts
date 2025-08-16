@@ -275,21 +275,13 @@ test.describe('Battle System', () => {
     // Wait for vote processing - CI environment needs more time
     await page.waitForTimeout(3000);
     
-    // Verify vote result display with reliable selectors
-    const voteResult = page.locator('.text-center:has-text("votes")')
-      .or(page.locator('text=/Vote Rate/'))
-      .or(page.locator('.bg-primary-500, .bg-secondary-500'))
-      .or(page.locator('text=/votes/'))
-      .or(page.locator('.mt-8.flex.justify-center.space-x-8'));
+    // Verify vote result display with precise selector to avoid strict mode violation
+    const voteResult = page.locator('.mt-8.flex.justify-center.space-x-8').first();
     
     await expect(voteResult).toBeVisible({ timeout: 10000 });
     
     // Verify that voting statistics are tracked (basic verification)
-    const hasStatistics = await page.locator('text=/Total Votes/').or(
-      page.locator('text=/votes/')
-    ).or(
-      page.locator('.bg-primary-500, .bg-secondary-500')
-    ).isVisible({ timeout: 5000 });
+    const hasStatistics = await page.locator('text=/Total Votes/').first().isVisible({ timeout: 5000 });
     
     expect(hasStatistics).toBeTruthy();
   });

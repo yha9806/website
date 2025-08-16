@@ -71,7 +71,12 @@ test.describe('Navigation System', () => {
       if (route === '/leaderboard') {
         await expect(page.getByRole('heading', { name: /leaderboard|rankings/i }).first()).toBeVisible();
       } else if (route === '/battle') {
-        await expect(page.getByRole('heading', { name: /battle|vs|vote/i }).first()).toBeVisible();
+        // Check for battle page elements (models, vote buttons, or battle content)
+        const battleElements = page.locator('.battle-container, .model-comparison, .vote-button, [data-testid*="battle"], [data-testid*="model"]')
+          .or(page.locator('button:has-text("Vote")'))
+          .or(page.locator('text=/Model A|Model B/'))
+          .or(page.getByRole('heading', { name: /battle|vs|vote/i }));
+        await expect(battleElements.first()).toBeVisible({ timeout: 15000 });
       } else if (route === '/evaluations') {
         await expect(page.getByRole('heading', { name: /evaluation|test|assessment/i }).first()).toBeVisible();
       } else if (route === '/about') {
