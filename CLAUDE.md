@@ -62,6 +62,11 @@ npm run test:e2e:headed       # Run tests in visible browser
 npm run test:e2e:report       # Show HTML test report
 npm run test:e2e -- --grep="auth"  # Run specific test pattern
 
+# MCP Testing (Model Context Protocol)
+npm run test:mcp              # Run all MCP tests
+npm run test:mcp:homepage     # Test homepage via MCP
+npm run test:mcp:ios          # Test iOS components via MCP
+
 # Environment validation
 npm run validate-env          # Verify Node.js/Python versions match CI
 ```
@@ -85,13 +90,21 @@ python openai_benchmark.py        # Run real AI benchmarks
 
 ### Full Stack Development
 ```bash
-# Windows one-click startup (recommended)
-start.bat                     # Initializes DB, starts backend (:8001) + frontend (:5173)
+# One-click startup (recommended)
+start.bat                     # Windows: Initializes DB, starts backend (:8001) + frontend (:5173)
+start.sh                      # Linux/macOS equivalent
 
 # Manual startup (separate terminals)
 cd wenxin-backend && python init_db.py && python -m uvicorn app.main:app --reload --port 8001
 cd wenxin-moyun && npm run dev
 ```
+
+**One-click Startup Features**:
+- Automatically initializes SQLite database with sample data
+- Starts backend API server on port 8001 with auto-reload
+- Starts frontend dev server on port 5173 (or next available)
+- Provides default admin credentials (admin/admin123)
+- Opens separate terminal windows for each service
 
 ### Database Operations
 ```bash
@@ -220,7 +233,7 @@ Layout (wraps all pages)
 ### E2E Testing (Playwright)
 **Configuration**: 
 - Local: `tests/e2e/playwright.config.ts`
-- CI: `tests/e2e/playwright.ci.config.ts`
+- CI: `tests/e2e/playwright.ci.config.ts` (optimized for CI stability)
 
 **Test Organization** (64 tests across 9 spec files):
 - `homepage.spec.ts` - Homepage functionality and navigation
@@ -229,20 +242,32 @@ Layout (wraps all pages)
 - `auth.spec.ts`, `battle.spec.ts`, `evaluation.spec.ts` - Core features
 - `performance.spec.ts`, `visual.spec.ts` - Performance and visual regression
 
-**CI/Local Parity**: Enhanced storage mock system ensures consistent behavior between local development and GitHub Actions CI.
+**CI-Specific Optimizations**:
+- Increased timeouts: global (60s), action (30s), navigation (60s), expect (15s)
+- Single worker process, no parallelization for stability
+- Enhanced retry logic (2 retries in CI vs 1 locally)
+- Separate configuration prevents CI/local environment conflicts
 
 ### Critical Testing Patterns
 ```typescript
+// Strict mode compliance - avoid multiple element matches
+page.locator('.error-element').first()  // Use .first() for multi-element matches
+
+// Flexible locators with proper .or() syntax
+page.locator('text=/error/i').or(page.locator('.error-page'))  // NOT comma-separated
+
 // Safe storage access for CI compatibility
 if (process.env.CI) {
   // Use mocks or skip localStorage operations
   return;
 }
 
-// Flexible locators for stability
-page.locator('.btn-primary')
-  .or(page.locator('button:has-text("Sign In")'))
-  .or(page.locator('.ios-button'))
+// Error handling in selectors
+try {
+  await page.locator(selector).first().isVisible({ timeout: 2000 });
+} catch (error) {
+  // Continue to fallback selector
+}
 ```
 
 ## Production Deployment
@@ -298,10 +323,17 @@ OPENAI_API_KEY=your-openai-key  # + 7 other AI provider keys
 ## GitHub Actions CI/CD
 
 ### Automated Pipeline
-**Triggers**: Every push to main branch
-1. **Test Phase**: Linting, building, backend tests, E2E tests
-2. **Deploy Phase**: Docker build/push, database migrations, health checks
-3. **Release Phase**: Deployment notes with commit history
+**Triggers**: Every push to main/master branch, PRs to main/master
+1. **Test Phase**: Frontend build, backend tests, E2E tests (CI-specific config)
+2. **Deploy Phase**: Docker build/push to Artifact Registry, database migrations, Cloud Run deployment
+3. **Release Phase**: Automated release notes with commit history and service URLs
+
+**Key Features**:
+- Separate CI configuration for E2E tests (playwright.ci.config.ts)
+- Automatic database migrations via temporary Cloud Run jobs
+- Health checks for both frontend (Cloud Storage) and backend (Cloud Run)
+- Secret management via Google Cloud Secret Manager
+- Clean npm cache handling to prevent dependency conflicts
 
 ### Required GitHub Secrets
 | Secret | Description | Source |
@@ -310,7 +342,27 @@ OPENAI_API_KEY=your-openai-key  # + 7 other AI provider keys
 | `OPENAI_API_KEY` | OpenAI API access | https://platform.openai.com/api-keys |
 | `ANTHROPIC_API_KEY` | Anthropic API access | https://console.anthropic.com/ |
 
+### Required GCP Service Account Permissions
+The service account used in `GCP_SA_KEY` must have these roles:
+- **Artifact Registry Administrator** - Create/manage Docker repositories
+- **Cloud Run Admin** - Deploy services to Cloud Run
+- **Cloud SQL Admin** - Manage database connections and migrations
+- **Secret Manager Secret Accessor** - Access API keys and secrets
+- **Storage Admin** - Deploy frontend to Cloud Storage
+
 ### Common CI Issues & Solutions
+**Artifact Registry Permission Denied**:
+```bash
+# Problem: "Permission denied" when pushing Docker images
+# Solution: Ensure service account has Artifact Registry Admin role
+# Automatic fix: Workflow now auto-creates repository if missing
+
+# Manual verification in Google Cloud Console:
+# 1. Check IAM roles for service account
+# 2. Verify Artifact Registry repository exists
+# 3. Test: gcloud artifacts repositories list --location=asia-east1
+```
+
 **localStorage/sessionStorage in CI**:
 ```typescript
 // Problem: Direct storage access fails in headless CI
@@ -319,13 +371,25 @@ import { safeStorage } from './utils/storage-mock';
 safeStorage.setLocalItem('access_token', token);
 ```
 
-**Playwright Locator Syntax**:
+**Playwright Locator Syntax & Strict Mode**:
 ```typescript
 // ❌ WRONG: Mixing regex flags with CSS selectors
 page.locator('text=/error/i, .error-page')
 
 // ✅ CORRECT: Use .or() method
 page.locator('text=/error/i').or(page.locator('.error-page'))
+
+// ❌ WRONG: Strict mode violation (multiple matches)
+page.locator('[required]')  // Fails if multiple required elements exist
+
+// ✅ CORRECT: Use .first() to handle multiple matches
+page.locator('[required]').first()
+
+// ✅ CORRECT: Enhanced selector strategy for CI stability
+const battleElements = page.locator('.battle-container, .model-comparison')
+  .or(page.locator('button:has-text("Vote")'))
+  .or(page.locator('text=/Model A|Model B/'));
+await expect(battleElements.first()).toBeVisible({ timeout: 15000 });
 ```
 
 ## Known Issues & Solutions
