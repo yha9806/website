@@ -17,7 +17,7 @@ WenXin MoYun - Modern AI art evaluation platform with **complete iOS design syst
 - ✅ **Homepage Redesign**: Modern English interface with iOS visual language
 - ✅ **Legacy Cleanup**: Removed Chinese fonts, traditional animations, decorative elements
 
-**Current Design Philosophy**:
+**Current Design Philosophy** (Updated 2025-08-16):
 - **Pure iOS Visual Language**: Authentic Apple design system implementation
 - **Modern International Interface**: English-first, globally accessible design
 - **Clean Minimalism**: Removed ornamental elements, focused on functionality
