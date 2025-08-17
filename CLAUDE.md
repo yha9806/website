@@ -14,6 +14,13 @@ WenXin MoYun - Enterprise-grade AI art evaluation platform supporting **42 AI mo
 
 All configurations have been updated to use the new project ID and service account.
 
+### Cloud SQL Database Configuration (2025-08-17)
+- **Instance**: `wenxin-postgres` (PostgreSQL 14)
+- **Database**: `wenxin_db`
+- **User**: `wenxin`
+- **Region**: `asia-east1`
+- **Connection**: Via Cloud SQL Proxy for secure access
+
 ## Architecture Overview
 
 ```
