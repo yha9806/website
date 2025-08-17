@@ -6,6 +6,11 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   
+  // Set base URL for production deployment to Cloud Storage
+  base: process.env.NODE_ENV === 'production' 
+    ? 'https://storage.googleapis.com/wenxin-moyun-prod-new-static/' 
+    : '/',
+  
   // Production optimizations
   build: {
     target: 'esnext',
