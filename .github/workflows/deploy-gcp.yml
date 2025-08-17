@@ -385,7 +385,7 @@ jobs:
             --max-instances=10 \
             --concurrency=100 \
             --timeout=300 \
-            --port=8001 \
+            --port=8080 \
             --set-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres \
             --update-env-vars="DATABASE_URL=postgresql+asyncpg://wenxin:${{ steps.db-password.outputs.password }}@/wenxin_db?host=/cloudsql/${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres,SECRET_KEY=${{ steps.secret-key.outputs.key }},DEBUG=false,ENVIRONMENT=production" \
             --update-secrets="OPENAI_API_KEY=openai-api-key:latest,ANTHROPIC_API_KEY=anthropic-api-key:latest,GEMINI_API_KEY=gemini-api-key:latest"

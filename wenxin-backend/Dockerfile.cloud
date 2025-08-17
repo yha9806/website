@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PORT=8001
+    PORT=8080
 
 # Set working directory
 WORKDIR /app
@@ -57,16 +57,13 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 EXPOSE ${PORT}
 
 # Production startup command with Gunicorn for better performance
-CMD ["gunicorn", "app.main:app", \
-     "--worker-class", "uvicorn.workers.UvicornWorker", \
-     "--workers", "2", \
-     "--worker-connections", "1000", \
-     "--max-requests", "1000", \
-     "--max-requests-jitter", "100", \
-     "--timeout", "300", \
-     "--keep-alive", "5", \
-     "--bind", "0.0.0.0:8001", \
-     "--access-logfile", "-", \
-     "--error-logfile", "-", \
-     "--log-level", "info", \
-     "--capture-output"]
+# Use sh -c to properly expand $PORT environment variable from Cloud Run
+CMD exec gunicorn app.main:app \
+     --worker-class uvicorn.workers.UvicornWorker \
+     --workers 1 \
+     --timeout 30 \
+     --keep-alive 5 \
+     --bind 0.0.0.0:$PORT \
+     --access-logfile - \
+     --error-logfile - \
+     --log-level info
