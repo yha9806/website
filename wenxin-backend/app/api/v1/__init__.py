@@ -7,6 +7,7 @@ from .evaluations import router as evaluations_router
 from .scoring_advice import router as scoring_advice_router
 from .websocket_simple import router as websocket_router
 from .benchmarks import router as benchmarks_router
+from .admin import router as admin_router
 
 api_router = APIRouter()
 
@@ -17,4 +18,5 @@ api_router.include_router(artworks_router, prefix="/artworks", tags=["Artworks"]
 api_router.include_router(evaluations_router, prefix="/evaluations", tags=["Evaluations"])
 api_router.include_router(scoring_advice_router, prefix="/scoring-advice", tags=["Scoring Advice"])
 api_router.include_router(benchmarks_router, prefix="/benchmarks", tags=["Benchmarks"])
+api_router.include_router(admin_router, prefix="/admin", tags=["Admin"])
 api_router.include_router(websocket_router, tags=["Real-time"])

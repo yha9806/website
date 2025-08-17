@@ -8,7 +8,7 @@ export default defineConfig({
   
   // Set base URL for production deployment to Cloud Storage
   base: process.env.NODE_ENV === 'production' 
-    ? 'https://storage.googleapis.com/wenxin-moyun-prod-new-static/' 
+    ? './' 
     : '/',
   
   // Production optimizations

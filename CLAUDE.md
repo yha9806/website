@@ -6,6 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 WenXin MoYun - Enterprise-grade AI art evaluation platform supporting **42 AI models** from **15 organizations**. Full-stack application featuring complete iOS design system migration, real AI model benchmarking with **Unified Model Interface**, comprehensive E2E testing infrastructure, and **production Google Cloud Platform deployment**.
 
+### Production Access
+- **Frontend**: https://storage.googleapis.com/wenxin-moyun-prod-new-static/index.html#/ (HashRouter, use # for routes)
+- **Backend API**: https://wenxin-moyun-api-229980166599.asia-east1.run.app
+- **API Docs**: https://wenxin-moyun-api-229980166599.asia-east1.run.app/docs
+
 ## 🚨 Critical: Google Cloud Account Migration (2025-08-16)
 
 **IMPORTANT**: The project has been migrated from the wrong Google Cloud account to the correct paid account:
@@ -48,10 +53,13 @@ start.bat              # Initializes DB, starts backend (:8001) + frontend (:517
 
 ### Frontend Development (wenxin-moyun/)
 ```bash
+npm install --legacy-peer-deps  # Initial setup (required for React 19)
 npm run dev            # Start dev server (port 5173+)
 npm run build          # TypeScript check + production build
+npm run build:prod     # Production build with env vars
 npm run lint           # ESLint validation
 npm run preview        # Preview production build
+npm run validate-env   # Verify Node.js/Python versions match CI
 
 # E2E Testing (Playwright - 64 test cases)
 npm run test:e2e       # Run tests headless across all browsers
@@ -60,6 +68,7 @@ npm run test:e2e:debug # Step-by-step debugging mode
 npm run test:e2e:headed # Run tests in visible browser
 npm run test:e2e:report # Show HTML test report
 npm run test:e2e -- --grep="auth" # Run specific test pattern
+npx playwright test --config=tests/e2e/playwright.ci.config.ts  # CI-specific config
 
 # MCP Testing (Model Context Protocol)
 npm run test:mcp       # Run all MCP tests
@@ -114,6 +123,15 @@ python -c "import sqlite3; conn = sqlite3.connect('wenxin.db'); cursor = conn.cu
 - Docker + Google Cloud Run deployment
 
 ### Critical System Components
+
+#### Routing Configuration (Important)
+**Frontend uses HashRouter**: Due to Cloud Storage static hosting limitations, all routes use hash-based navigation:
+- Homepage: `#/`
+- Leaderboard: `#/leaderboard`
+- Battle: `#/battle`
+- Model Detail: `#/model/:id`
+
+Configuration in `src/App.tsx` uses `HashRouter` instead of `BrowserRouter`.
 
 #### Unified Model Interface (Core AI Integration)
 **Location**: `wenxin-backend/app/services/models/`
@@ -338,15 +356,16 @@ if (process.env.CI) {
 ## Deployment
 
 ### Automated Deployment (GitHub Actions)
+**Workflow File**: `.github/workflows/deploy-gcp.yml`
 **Triggers**: Every push to main/master branch, PRs to main/master
 1. **Test Phase**: Frontend build, backend tests, E2E tests (CI-specific config)
 2. **Deploy Phase**: Docker build/push to Artifact Registry, database migrations, Cloud Run deployment
 3. **Release Phase**: Automated release notes with commit history and service URLs
 
 **Production URLs**:
-- **Frontend**: `https://storage.googleapis.com/wenxin-moyun-prod-new-static/`
-- **Backend API**: Deployed to Cloud Run (URL in deployment logs)
-- **API Docs**: `[BACKEND_URL]/docs`
+- **Frontend**: `https://storage.googleapis.com/wenxin-moyun-prod-new-static/index.html#/`
+- **Backend API**: `https://wenxin-moyun-api-229980166599.asia-east1.run.app`
+- **API Docs**: `https://wenxin-moyun-api-229980166599.asia-east1.run.app/docs`
 
 ### Manual Deployment
 
@@ -399,6 +418,21 @@ Layout (wraps all pages)
 - **Glass morphism**: Uses backdrop-blur and opacity layering
 
 ## Common Issues & Solutions
+
+### Frontend Routing Issues
+- **Issue**: Direct URL access shows 404 or XML listing
+- **Solution**: Use hash-based URLs (e.g., `#/leaderboard`) due to HashRouter configuration
+- **Root Cause**: Cloud Storage doesn't support SPA routing; HashRouter provides client-side routing
+
+### CORS and API Connection
+- **Issue**: API calls fail with CORS errors from Cloud Storage frontend
+- **Behavior**: App gracefully falls back to mock data when API is unavailable
+- **Solution**: This is expected browser security; production setup requires custom domain or CDN
+
+### WebSocket Connection
+- **Configuration**: WebSocket URLs use `VITE_API_BASE_URL` environment variable
+- **Fallback**: Automatically falls back to SSE (Server-Sent Events) after max retries
+- **Location**: `src/hooks/useWebSocket.ts` handles all real-time connections
 
 ### Google Cloud CLI Issues
 - **Issue**: `gcloud: command not found`

@@ -57,12 +57,17 @@ export function useWebSocket(options: UseWebSocketOptions) {
   const connectionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const connectionHealthRef = useRef<boolean>(false);
   
-  // WebSocket URL - 使用当前域名和端口
+  // WebSocket URL - 使用环境变量中的后端URL
   const getWebSocketUrl = useCallback(() => {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    // 假设后端WebSocket在同一主机的8001端口
-    const host = window.location.hostname;
-    return `${protocol}//${host}:8001/api/v1/ws/${room}`;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
+    const apiVersion = import.meta.env.VITE_API_VERSION || 'v1';
+    
+    // 将 http/https 转换为 ws/wss
+    const wsUrl = apiBaseUrl
+      .replace('https://', 'wss://')
+      .replace('http://', 'ws://');
+    
+    return `${wsUrl}/api/${apiVersion}/ws/${room}`;
   }, [room]);
 
   // 发送心跳
@@ -310,7 +315,9 @@ export function useServerSentEvents(options: {
 
   const connect = useCallback(() => {
     try {
-      const url = `http://${window.location.hostname}:8001/api/v1/sse/${room}`;
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
+      const apiVersion = import.meta.env.VITE_API_VERSION || 'v1';
+      const url = `${apiBaseUrl}/api/${apiVersion}/sse/${room}`;
       console.log(`Connecting to SSE: ${url}`);
       
       eventSourceRef.current = new EventSource(url);

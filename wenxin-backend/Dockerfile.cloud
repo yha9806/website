@@ -1,15 +1,5 @@
-# WenXin MoYun - Production Dockerfile for Google Cloud Run
-# Optimized for Cloud Run deployment with better security and performance
-
-# Use Python 3.10 slim image as base
-FROM python:3.10-slim
-
-# Set environment variables
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PORT=8080
+# Production Dockerfile for Google Cloud Run
+FROM python:3.11-slim
 
 # Set working directory
 WORKDIR /app
@@ -18,52 +8,27 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
-    libpq-dev \
-    curl \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+    && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user for security
-RUN groupadd -r appuser && useradd -r -g appuser -u 1000 appuser
-
-# Copy requirements first for better Docker layer caching
-COPY requirements.txt .
-
-# Install Python dependencies
+# Copy requirements first (for better caching)
+COPY requirements.prod.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Add Cloud SQL Proxy connector for PostgreSQL
-RUN pip install --no-cache-dir \
-    cloud-sql-python-connector[asyncpg] \
-    google-cloud-secret-manager \
-    google-cloud-logging \
-    google-cloud-monitoring
-
 # Copy application code
-COPY --chown=appuser:appuser . .
+COPY . .
 
-# Create directories for logs and uploads
-RUN mkdir -p /app/logs /app/uploads /app/static && \
-    chown -R appuser:appuser /app
+# Copy SQLite database to container
+COPY wenxin.db ./wenxin.db
 
-# Switch to non-root user
-USER appuser
+# Create static directory for file uploads
+RUN mkdir -p /app/static/generated_images
 
-# Health check endpoint
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:${PORT}/health || exit 1
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV PORT=8080
 
 # Expose port
-EXPOSE ${PORT}
+EXPOSE 8080
 
-# Production startup command with Gunicorn for better performance
-# Use sh -c to properly expand $PORT environment variable from Cloud Run
-CMD exec gunicorn app.main:app \
-     --worker-class uvicorn.workers.UvicornWorker \
-     --workers 1 \
-     --timeout 30 \
-     --keep-alive 5 \
-     --bind 0.0.0.0:$PORT \
-     --access-logfile - \
-     --error-logfile - \
-     --log-level info
+# Run with production settings
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Initialize database with sample data"""
+"""Initialize database with all 42 AI models from 15 organizations"""
 
 import asyncio
 import sys
@@ -14,15 +14,10 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.path.append(str(Path(__file__).parent))
 
 from app.core.database import engine, Base
-from app.core.security import get_password_hash
-from app.models import User, AIModel, EvaluationDimension
-from app.models.battle import Battle, BattleVote, BattleStatus, TaskType, Difficulty, VoteChoice
-from app.models.artwork import Artwork, ArtworkType
-from app.models.evaluation_task import EvaluationTask, TaskStatus
+from app.models import AIModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime, timedelta
-import random
+from sqlalchemy import delete
 
 AsyncSessionLocal = sessionmaker(
     engine,
@@ -30,26 +25,14 @@ AsyncSessionLocal = sessionmaker(
     expire_on_commit=False
 )
 
-async def init_dimensions(session: AsyncSession):
-    """Initialize evaluation dimensions"""
-    dimensions = [
-        {"name": "rhythm", "category": "technical", "weight": 1.0, "description": "Rhythm and Harmony"},
-        {"name": "composition", "category": "aesthetic", "weight": 1.0, "description": "Composition Aesthetics"},
-        {"name": "narrative", "category": "content", "weight": 1.0, "description": "Narrative Ability"},
-        {"name": "emotion", "category": "content", "weight": 1.0, "description": "Emotional Expression"},
-        {"name": "creativity", "category": "aesthetic", "weight": 1.0, "description": "Innovation"},
-        {"name": "cultural", "category": "cultural", "weight": 1.0, "description": "Cultural Connotation"},
-    ]
+async def init_all_models(session: AsyncSession):
+    """Initialize all 42 AI models with comprehensive data"""
     
-    for dim in dimensions:
-        dimension = EvaluationDimension(**dim)
-        session.add(dimension)
-    
+    # Clear existing models
+    await session.execute(delete(AIModel))
     await session.commit()
-    print(f"[OK] Created {len(dimensions)} evaluation dimensions")
-
-async def init_models(session: AsyncSession):
-    """Initialize sample AI models with comprehensive test data - 42 models from 15 organizations"""
+    print("[INFO] Cleared existing models")
+    
     models = [
         # OpenAI Models (10 models)
         {
@@ -166,7 +149,7 @@ async def init_models(session: AsyncSession):
             "version": "3.0",
             "category": "image",
             "description": "Advanced text-to-image generation with precise control",
-            "overall_score": null,  // Image models don't have text scores
+            "overall_score": None,  # Image models don't have text scores
             "metrics": {
                 "rhythm": 0,
                 "composition": 95,
@@ -184,7 +167,7 @@ async def init_models(session: AsyncSession):
             "version": "2.0",
             "category": "image",
             "description": "Previous generation image model with artistic capabilities",
-            "overall_score": null,
+            "overall_score": None,
             "metrics": {
                 "rhythm": 0,
                 "composition": 90,
@@ -404,7 +387,7 @@ async def init_models(session: AsyncSession):
             "version": "2.0",
             "category": "image",
             "description": "Advanced text-to-image generation model",
-            "overall_score": null,
+            "overall_score": None,
             "metrics": {
                 "rhythm": 0,
                 "composition": 94,
@@ -434,86 +417,240 @@ async def init_models(session: AsyncSession):
                 "cultural": 96
             },
             "tags": ["Chinese Excellence", "Literary Creation", "Poetry Specialist"],
-            "avatar_url": "https://picsum.photos/seed/qwen/200/200"
+            "avatar_url": "https://picsum.photos/seed/qwen2/200/200"
         },
         {
             "name": "Qwen-VL",
             "organization": "Alibaba",
             "version": "1.0",
             "category": "multimodal",
-            "description": "Demonstrates exceptional ability in creative writing and artistic understanding",
-            "overall_score": 90.8,
+            "description": "Multimodal Qwen model with vision-language capabilities",
+            "overall_score": 89.3,
             "metrics": {
                 "rhythm": 87,
-                "composition": 92,
-                "narrative": 95,
-                "emotion": 93,
-                "creativity": 94,
-                "cultural": 85
+                "composition": 90,
+                "narrative": 91,
+                "emotion": 89,
+                "creativity": 90,
+                "cultural": 92
             },
-            "tags": ["Creative Writing", "Multimodal", "Narrative Master"],
-            "avatar_url": "https://picsum.photos/seed/claude/200/200"
+            "tags": ["Multimodal", "Vision-Language", "Chinese Optimized"],
+            "avatar_url": "https://picsum.photos/seed/qwenvl/200/200"
         },
         {
-            "name": "GPT-4 Vision",
-            "organization": "OpenAI",
-            "version": "4.0",
-            "category": "multimodal",
-            "description": "Benchmark model for multimodal understanding and generation capabilities",
-            "overall_score": 89.2,
+            "name": "Tongyi Qianwen",
+            "organization": "Alibaba",
+            "version": "1.0",
+            "category": "text",
+            "description": "Alibaba's comprehensive AI assistant model",
+            "overall_score": 88.5,
             "metrics": {
-                "rhythm": 84,
-                "composition": 91,
-                "narrative": 92,
+                "rhythm": 86,
+                "composition": 87,
+                "narrative": 89,
                 "emotion": 88,
-                "creativity": 91,
-                "cultural": 83
+                "creativity": 88,
+                "cultural": 91
             },
-            "tags": ["Multimodal", "Visual Understanding", "Creative Generation"],
-            "avatar_url": "https://picsum.photos/seed/gpt4/200/200"
+            "tags": ["Assistant", "Comprehensive", "Chinese"],
+            "avatar_url": "https://picsum.photos/seed/tongyi/200/200"
         },
+        
+        # Baidu Models (3 models)
         {
             "name": "ERNIE 4.0",
             "organization": "Baidu",
             "version": "4.0",
             "category": "text",
             "description": "Baidu's self-developed large model, deeply understanding Chinese cultural essence",
-            "overall_score": 88.7,
+            "overall_score": 91.2,
             "metrics": {
-                "rhythm": 92,
-                "composition": 85,
-                "narrative": 88,
-                "emotion": 89,
-                "creativity": 86,
-                "cultural": 94
+                "rhythm": 93,
+                "composition": 87,
+                "narrative": 92,
+                "emotion": 90,
+                "creativity": 88,
+                "cultural": 95
             },
             "tags": ["Chinese Specialty", "Cultural Understanding", "Classical Poetry"],
-            "avatar_url": "https://picsum.photos/seed/wenxin/200/200"
+            "avatar_url": "https://picsum.photos/seed/ernie4/200/200"
         },
         {
-            "name": "Gemini Pro Vision",
-            "organization": "Google",
-            "version": "1.5",
-            "category": "multimodal",
-            "description": "Google's latest multimodal model with outstanding visual understanding capabilities",
-            "overall_score": 87.3,
+            "name": "ERNIE-ViLG 2.0",
+            "organization": "Baidu",
+            "version": "2.0",
+            "category": "image",
+            "description": "Baidu's text-to-image generation model with Chinese optimization",
+            "overall_score": None,
             "metrics": {
-                "rhythm": 82,
-                "composition": 89,
-                "narrative": 87,
-                "emotion": 86,
-                "creativity": 90,
-                "cultural": 81
+                "rhythm": 0,
+                "composition": 91,
+                "narrative": 84,
+                "emotion": 87,
+                "creativity": 93,
+                "cultural": 94
             },
-            "tags": ["Multimodal", "Visual Analysis", "Creative Design"],
-            "avatar_url": "https://picsum.photos/seed/gemini/200/200"
+            "tags": ["Image Generation", "Chinese Art", "Cultural"],
+            "avatar_url": "https://picsum.photos/seed/ernievilg/200/200"
         },
+        {
+            "name": "ERNIE Bot",
+            "organization": "Baidu",
+            "version": "3.5",
+            "category": "text",
+            "description": "Baidu's conversational AI model",
+            "overall_score": 87.8,
+            "metrics": {
+                "rhythm": 85,
+                "composition": 86,
+                "narrative": 88,
+                "emotion": 87,
+                "creativity": 86,
+                "cultural": 91
+            },
+            "tags": ["Conversational", "Assistant", "Chinese"],
+            "avatar_url": "https://picsum.photos/seed/erniebot/200/200"
+        },
+        
+        # Meta Models (3 models)
+        {
+            "name": "Llama 3.1 405B",
+            "organization": "Meta",
+            "version": "3.1",
+            "category": "text",
+            "description": "Meta's largest open-source model with exceptional capabilities",
+            "overall_score": 93.1,
+            "metrics": {
+                "rhythm": 89,
+                "composition": 92,
+                "narrative": 94,
+                "emotion": 91,
+                "creativity": 93,
+                "cultural": 87
+            },
+            "tags": ["Open Source", "Large Scale", "Powerful"],
+            "avatar_url": "https://picsum.photos/seed/llama31/200/200"
+        },
+        {
+            "name": "Llama 3 70B",
+            "organization": "Meta",
+            "version": "3.0",
+            "category": "text",
+            "description": "Meta's latest open-source model with strong performance",
+            "overall_score": 90.7,
+            "metrics": {
+                "rhythm": 87,
+                "composition": 90,
+                "narrative": 92,
+                "emotion": 89,
+                "creativity": 91,
+                "cultural": 85
+            },
+            "tags": ["Open Source", "Latest", "Versatile"],
+            "avatar_url": "https://picsum.photos/seed/llama3/200/200"
+        },
+        {
+            "name": "Llama 2 70B",
+            "organization": "Meta",
+            "version": "2.0",
+            "category": "text",
+            "description": "Previous generation Meta model, widely adopted",
+            "overall_score": 87.9,
+            "metrics": {
+                "rhythm": 84,
+                "composition": 87,
+                "narrative": 89,
+                "emotion": 86,
+                "creativity": 88,
+                "cultural": 83
+            },
+            "tags": ["Open Source", "Proven", "Community"],
+            "avatar_url": "https://picsum.photos/seed/llama2/200/200"
+        },
+        
+        # Mistral AI Models (2 models)
+        {
+            "name": "Mistral Large 2",
+            "organization": "Mistral AI",
+            "version": "2.0",
+            "category": "text",
+            "description": "Mistral's flagship model with strong multilingual capabilities",
+            "overall_score": 91.4,
+            "metrics": {
+                "rhythm": 88,
+                "composition": 91,
+                "narrative": 93,
+                "emotion": 90,
+                "creativity": 92,
+                "cultural": 86
+            },
+            "tags": ["Multilingual", "European", "Powerful"],
+            "avatar_url": "https://picsum.photos/seed/mistrallarge/200/200"
+        },
+        {
+            "name": "Mixtral 8x7B",
+            "organization": "Mistral AI",
+            "version": "1.0",
+            "category": "text",
+            "description": "Efficient mixture-of-experts model",
+            "overall_score": 88.6,
+            "metrics": {
+                "rhythm": 85,
+                "composition": 88,
+                "narrative": 90,
+                "emotion": 87,
+                "creativity": 89,
+                "cultural": 84
+            },
+            "tags": ["MoE", "Efficient", "Open Source"],
+            "avatar_url": "https://picsum.photos/seed/mixtral/200/200"
+        },
+        
+        # Stability AI Models (2 models)
+        {
+            "name": "Stable Diffusion XL",
+            "organization": "Stability AI",
+            "version": "1.0",
+            "category": "image",
+            "description": "Leading open-source image generation model",
+            "overall_score": None,
+            "metrics": {
+                "rhythm": 0,
+                "composition": 93,
+                "narrative": 82,
+                "emotion": 88,
+                "creativity": 94,
+                "cultural": 84
+            },
+            "tags": ["Open Source", "Image Generation", "Community"],
+            "avatar_url": "https://picsum.photos/seed/sdxl/200/200"
+        },
+        {
+            "name": "Stable Diffusion 3",
+            "organization": "Stability AI",
+            "version": "3.0",
+            "category": "image",
+            "description": "Next generation image model with improved quality",
+            "overall_score": None,
+            "metrics": {
+                "rhythm": 0,
+                "composition": 95,
+                "narrative": 85,
+                "emotion": 90,
+                "creativity": 96,
+                "cultural": 86
+            },
+            "tags": ["Next Gen", "Image Generation", "High Quality"],
+            "avatar_url": "https://picsum.photos/seed/sd3/200/200"
+        },
+        
+        # Zhipu AI Models (2 models)
         {
             "name": "ChatGLM3-6B",
             "organization": "Zhipu AI",
             "version": "3.0",
             "category": "text",
-            "description": "Tsinghua Zhipu open-source model, lightweight and efficient",
+            "description": "Lightweight Chinese-optimized model",
             "overall_score": 85.2,
             "metrics": {
                 "rhythm": 86,
@@ -523,80 +660,106 @@ async def init_models(session: AsyncSession):
                 "creativity": 83,
                 "cultural": 89
             },
-            "tags": ["Open Source", "Lightweight", "Chinese Optimized"],
-            "avatar_url": "https://picsum.photos/seed/chatglm/200/200"
+            "tags": ["Open Source", "Lightweight", "Chinese"],
+            "avatar_url": "https://picsum.photos/seed/chatglm3/200/200"
         },
+        {
+            "name": "CogVLM",
+            "organization": "Zhipu AI",
+            "version": "1.0",
+            "category": "multimodal",
+            "description": "Vision-language model from Tsinghua",
+            "overall_score": 87.3,
+            "metrics": {
+                "rhythm": 83,
+                "composition": 87,
+                "narrative": 88,
+                "emotion": 86,
+                "creativity": 87,
+                "cultural": 90
+            },
+            "tags": ["Multimodal", "Academic", "Vision-Language"],
+            "avatar_url": "https://picsum.photos/seed/cogvlm/200/200"
+        },
+        
+        # Midjourney (1 model)
         {
             "name": "Midjourney V6",
             "organization": "Midjourney",
             "version": "6.0",
             "category": "image",
-            "description": "Image generation model focused on artistic creation",
-            "overall_score": 91.5,
+            "description": "Premier artistic image generation platform",
+            "overall_score": None,
             "metrics": {
-                "rhythm": 78,
-                "composition": 96,
-                "narrative": 85,
-                "emotion": 92,
-                "creativity": 97,
-                "cultural": 88
+                "rhythm": 0,
+                "composition": 97,
+                "narrative": 87,
+                "emotion": 94,
+                "creativity": 98,
+                "cultural": 89
             },
-            "tags": ["Image Generation", "Artistic Creation", "Stylization"],
+            "tags": ["Artistic", "Premium", "Creative"],
             "avatar_url": "https://picsum.photos/seed/midjourney/200/200"
         },
+        
+        # Cohere Models (1 model)
         {
-            "name": "DALL-E 3",
-            "organization": "OpenAI",
-            "version": "3.0",
-            "category": "image",
-            "description": "Pioneer model for text-to-image generation",
-            "overall_score": 88.9,
+            "name": "Command R+",
+            "organization": "Cohere",
+            "version": "1.0",
+            "category": "text",
+            "description": "Enterprise-focused language model with RAG capabilities",
+            "overall_score": 89.8,
             "metrics": {
-                "rhythm": 75,
-                "composition": 93,
-                "narrative": 82,
+                "rhythm": 86,
+                "composition": 89,
+                "narrative": 91,
                 "emotion": 88,
-                "creativity": 94,
-                "cultural": 84
+                "creativity": 90,
+                "cultural": 85
             },
-            "tags": ["Image Generation", "Creative Design", "Precise Control"],
-            "avatar_url": "https://picsum.photos/seed/dalle/200/200"
+            "tags": ["Enterprise", "RAG", "Business"],
+            "avatar_url": "https://picsum.photos/seed/commandr/200/200"
         },
+        
+        # AI21 Labs (1 model)
         {
-            "name": "LLaMA 2-70B",
-            "organization": "Meta",
+            "name": "Jurassic-2 Ultra",
+            "organization": "AI21 Labs",
             "version": "2.0",
             "category": "text",
-            "description": "Meta's open-source large language model",
-            "overall_score": 86.4,
+            "description": "Advanced language model with strong comprehension",
+            "overall_score": 88.3,
             "metrics": {
-                "rhythm": 83,
-                "composition": 85,
+                "rhythm": 85,
+                "composition": 87,
                 "narrative": 89,
-                "emotion": 85,
-                "creativity": 87,
+                "emotion": 87,
+                "creativity": 88,
+                "cultural": 84
+            },
+            "tags": ["Language Model", "Comprehension", "Advanced"],
+            "avatar_url": "https://picsum.photos/seed/jurassic/200/200"
+        },
+        
+        # Inflection AI (1 model)
+        {
+            "name": "Inflection-2.5",
+            "organization": "Inflection AI",
+            "version": "2.5",
+            "category": "text",
+            "description": "Personal AI with empathetic conversation abilities",
+            "overall_score": 87.6,
+            "metrics": {
+                "rhythm": 84,
+                "composition": 86,
+                "narrative": 88,
+                "emotion": 92,
+                "creativity": 86,
                 "cultural": 82
             },
-            "tags": ["Open Source", "Multilingual", "General Purpose"],
-            "avatar_url": "https://picsum.photos/seed/llama/200/200"
-        },
-        {
-            "name": "Stable Diffusion XL",
-            "organization": "Stability AI",
-            "version": "1.0",
-            "category": "image",
-            "description": "Representative work of open-source image generation models",
-            "overall_score": 87.1,
-            "metrics": {
-                "rhythm": 72,
-                "composition": 91,
-                "narrative": 80,
-                "emotion": 86,
-                "creativity": 92,
-                "cultural": 83
-            },
-            "tags": ["Open Source", "Image Generation", "Community Driven"],
-            "avatar_url": "https://picsum.photos/seed/sdxl/200/200"
+            "tags": ["Personal AI", "Empathetic", "Conversational"],
+            "avatar_url": "https://picsum.photos/seed/inflection/200/200"
         }
     ]
     
@@ -612,264 +775,34 @@ async def init_models(session: AsyncSession):
     for model in created_models:
         await session.refresh(model)
     
-    print(f"[OK] Created {len(created_models)} AI models")
-    return created_models  # Return model objects for use in other init functions
-
-async def init_admin_user(session: AsyncSession):
-    """Create admin user"""
-    admin = User(
-        username="admin",
-        email="admin@wenxinmoyun.ai",
-        full_name="System Administrator",
-        hashed_password=get_password_hash("admin123"),
-        is_active=True,
-        is_superuser=True
-    )
-    session.add(admin)
-    await session.commit()
-    print("[OK] Created admin user (username: admin, password: admin123)")
-
-async def init_battles(session: AsyncSession, models):
-    """Initialize sample battles"""
-    battles_data = [
-        {
-            "model_a_id": models[0].id,  # Qwen2-72B
-            "model_b_id": models[1].id,  # Claude 3 Opus
-            "task_type": TaskType.poem,
-            "task_prompt": "Create a seven-character quatrain on the theme of 'Spring River Flower Moon Night'",
-            "task_category": "Classical Poetry",
-            "difficulty": Difficulty.medium,
-            "votes_a": 156,
-            "votes_b": 143,
-            "status": BattleStatus.active
-        },
-        {
-            "model_a_id": models[2].id,  # GPT-4 Vision
-            "model_b_id": models[3].id,  # ERNIE 4.0
-            "task_type": TaskType.painting,
-            "task_prompt": "Create a landscape painting in the style of 'A Thousand Li of Rivers and Mountains'",
-            "task_category": "Landscape Painting",
-            "difficulty": Difficulty.hard,
-            "votes_a": 87,
-            "votes_b": 102,
-            "status": BattleStatus.active
-        },
-        {
-            "model_a_id": models[4].id,  # DALL-E 3
-            "model_b_id": models[5].id,  # Midjourney V6
-            "task_type": TaskType.painting,
-            "task_prompt": "Merge Eastern and Western art styles to create a 'Cyberpunk Version of Along the River During Qingming Festival'",
-            "task_category": "Creative Painting",
-            "difficulty": Difficulty.hard,
-            "votes_a": 234,
-            "votes_b": 267,
-            "status": BattleStatus.active
-        },
-        {
-            "model_a_id": models[1].id,  # Claude 3 Opus
-            "model_b_id": models[6].id,  # Gemini Ultra
-            "task_type": TaskType.story,
-            "task_prompt": "Create a 500-word micro fiction on the theme of 'The Butterfly Effect'",
-            "task_category": "Modern Literature",
-            "difficulty": Difficulty.medium,
-            "votes_a": 178,
-            "votes_b": 165,
-            "status": BattleStatus.completed,
-            "completed_at": datetime.now() - timedelta(days=1)
-        }
-    ]
+    print(f"[OK] Created {len(created_models)} AI models from 15 organizations")
     
-    for battle_data in battles_data:
-        if "completed_at" in battle_data:
-            completed_at = battle_data.pop("completed_at")
-            battle = Battle(**battle_data, completed_at=completed_at)
-        else:
-            battle = Battle(**battle_data)
-        session.add(battle)
+    # Print summary by organization
+    org_count = {}
+    for model in models:
+        org = model["organization"]
+        org_count[org] = org_count.get(org, 0) + 1
     
-    await session.commit()
-    print(f"[OK] Created {len(battles_data)} sample battles")
-
-async def init_artworks(session: AsyncSession, models):
-    """Initialize sample artworks for each model"""
-    artworks_data = [
-        # Qwen2-72B works
-        {
-            "model_id": models[0].id,
-            "type": ArtworkType.poem,
-            "title": "Spring River Flower Moon Night",
-            "content": """The spring river's tide level with the sea,
-The bright moon rises with the ocean's swell.
-Waves shimmer for thousands of miles away,
-Where on the spring river is there no moonlight?
-The river winds around fragrant meadows,
-Moonlight on flowering trees like falling frost.
-Frost seems to fly through the empty air,
-White sand on the shore cannot be seen.""",
-            "prompt": "Create a poem describing the beautiful scenery of spring river under moonlight",
-            "score": 95.5,
-            "extra_metadata": {"style": "Tang Poetry", "meter": "Seven-character Ancient Poem"}
-        },
-        {
-            "model_id": models[0].id,
-            "type": ArtworkType.poem,
-            "title": "Quiet Night Thoughts",
-            "content": """Bright moonlight before my bed,
-I suspect it is frost on the ground.
-Looking up, I gaze at the bright moon,
-Lowering my head, I think of my hometown.""",
-            "prompt": "Create a five-character quatrain expressing homesickness",
-            "score": 93.2,
-            "extra_metadata": {"style": "Tang Poetry", "meter": "Five-character Quatrain"}
-        },
-        # Claude 3 Opus works
-        {
-            "model_id": models[1].id,
-            "type": ArtworkType.story,
-            "title": "The Last Leaf",
-            "content": "The autumn wind rustled as she lay in the hospital room, gazing at the old tree outside. The doctor said her life was like the leaves on the tree - when the last one fell... But that leaf never fell, even through storms. Only after recovery did she learn it was painted by her artist neighbor on his last night of life.",
-            "prompt": "Create a micro fiction about hope",
-            "score": 94.8,
-            "extra_metadata": {"genre": "Touching Story", "word_count": 100}
-        },
-        # GPT-4 Vision works
-        {
-            "model_id": models[2].id,
-            "type": ArtworkType.painting,
-            "title": "Cyber Chang'an",
-            "image_url": "https://picsum.photos/seed/cyberchangan/800/600",
-            "prompt": "Combine Tang Dynasty Chang'an City with cyberpunk style",
-            "score": 91.3,
-            "extra_metadata": {"style": "Cyberpunk", "theme": "Ancient-Modern Fusion"}
-        },
-        # DALL-E 3 works
-        {
-            "model_id": models[4].id,
-            "type": ArtworkType.painting,
-            "title": "Dreamscape",
-            "image_url": "https://picsum.photos/seed/dreamscape/800/600",
-            "prompt": "Create a surrealist-style Chinese landscape painting",
-            "score": 92.7,
-            "extra_metadata": {"style": "Surrealism", "medium": "Digital Art"}
-        },
-        # Midjourney works
-        {
-            "model_id": models[5].id,
-            "type": ArtworkType.painting,
-            "title": "Oriental Mythology",
-            "image_url": "https://picsum.photos/seed/mythology/800/600",
-            "prompt": "Depict the auspicious dragon and phoenix scene from Chinese mythology",
-            "score": 94.1,
-            "extra_metadata": {"style": "Fantasy Art", "theme": "Chinese Mythology"}
-        }
-    ]
+    print("\n[SUMMARY] Models by organization:")
+    for org, count in sorted(org_count.items(), key=lambda x: x[1], reverse=True):
+        print(f"  - {org}: {count} models")
     
-    for artwork_data in artworks_data:
-        artwork = Artwork(**artwork_data)
-        session.add(artwork)
-    
-    await session.commit()
-    print(f"[OK] Created {len(artworks_data)} sample artworks")
-
-async def init_evaluation_tasks(session: AsyncSession, models):
-    """Initialize sample evaluation tasks"""
-    tasks_data = [
-        {
-            "model_id": models[0].id,  # Qwen2-72B
-            "task_type": "poem",
-            "prompt": "Create a five-character quatrain describing autumn",
-            "parameters": {"style": "Tang Poetry"},
-            "status": TaskStatus.COMPLETED,
-            "result": {
-                "title": "Autumn Thoughts",
-                "content": "Autumn wind rises, leaves fall,\nGeese fly south in formation.\nSitting alone by the window,\nFrost glimmers on the ground."
-            },
-            "auto_score": 88.5,
-            "human_score": 92.0,
-            "final_score": 89.9,
-            "evaluation_metrics": {
-                "rhythm": 0.9,
-                "imagery": 0.85,
-                "emotion": 0.88,
-                "creativity": 0.86,
-                "cultural_relevance": 0.92
-            }
-        },
-        {
-            "model_id": models[1].id,  # Claude 3 Opus
-            "task_type": "story",
-            "prompt": "Write a 300-word short story about time travel",
-            "parameters": {"max_length": 300},
-            "status": TaskStatus.COMPLETED,
-            "result": {
-                "title": "The Last Second",
-                "content": "When I pressed the button on the time machine, the world suddenly froze. Pedestrians on the street were suspended in mid-air, birds hovered in the clouds...",
-                "word_count": 298
-            },
-            "auto_score": 91.2,
-            "final_score": 91.2,
-            "evaluation_metrics": {
-                "narrative_structure": 0.92,
-                "character_development": 0.88,
-                "plot_coherence": 0.91,
-                "creativity": 0.93,
-                "engagement": 0.90
-            }
-        },
-        {
-            "model_id": models[2].id,  # GPT-4 Vision
-            "task_type": "painting",
-            "prompt": "Create a cyberpunk-style future city",
-            "parameters": {"style": "cyberpunk"},
-            "status": TaskStatus.RUNNING,
-            "started_at": datetime.utcnow()
-        },
-        {
-            "model_id": models[3].id,  # ERNIE 4.0
-            "task_type": "poem",
-            "prompt": "Create a ci poem on the theme of 'Plum Blossoms'",
-            "parameters": {"style": "Song Ci"},
-            "status": TaskStatus.PENDING
-        }
-    ]
-    
-    for task_data in tasks_data:
-        # Handle datetime fields
-        if task_data["status"] == TaskStatus.COMPLETED:
-            task_data["completed_at"] = datetime.utcnow() - timedelta(hours=random.randint(1, 48))
-            task_data["started_at"] = task_data["completed_at"] - timedelta(minutes=random.randint(1, 10))
-            task_data["created_at"] = task_data["started_at"] - timedelta(minutes=random.randint(1, 30))
-        elif "started_at" not in task_data and task_data["status"] == TaskStatus.RUNNING:
-            task_data["created_at"] = datetime.utcnow() - timedelta(minutes=random.randint(5, 60))
-        else:
-            task_data["created_at"] = datetime.utcnow() - timedelta(hours=random.randint(1, 24))
-        
-        task = EvaluationTask(**task_data)
-        session.add(task)
-    
-    await session.commit()
-    print(f"[OK] Created {len(tasks_data)} sample evaluation tasks")
+    return created_models
 
 async def main():
-    """Main initialization function"""
-    print("[INFO] Initializing database...")
+    """Main function to initialize database"""
+    print("[INFO] Starting database initialization with all 42 AI models...")
     
     # Create tables
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
-    print("[OK] Database tables created")
     
-    # Insert sample data
+    # Initialize data
     async with AsyncSessionLocal() as session:
-        await init_dimensions(session)
-        models = await init_models(session)
-        await init_admin_user(session)
-        await init_battles(session, models)
-        await init_artworks(session, models)
-        await init_evaluation_tasks(session, models)
+        await init_all_models(session)
     
-    print("[DONE] Database initialization complete!")
+    print("\n[SUCCESS] Database initialization complete!")
+    print("[INFO] You can now start the backend API server")
 
 if __name__ == "__main__":
     asyncio.run(main())

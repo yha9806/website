@@ -1,25 +1,72 @@
+# WenXin MoYun - Production Dockerfile for Google Cloud Run
+# Optimized for Cloud Run deployment with better security and performance
+
+# Use Python 3.10 slim image as base
 FROM python:3.10-slim
 
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PORT=8080
+
+# Set working directory
 WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
-    && rm -rf /var/lib/apt/lists/*
+    g++ \
+    libpq-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
-# Copy requirements first for better caching
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Create non-root user for security
+RUN groupadd -r appuser && useradd -r -g appuser -u 1000 appuser
+
+# Copy requirements first for better Docker layer caching
+COPY requirements.prod.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.prod.txt
+
+# Add Cloud SQL Proxy connector for PostgreSQL
+RUN pip install --no-cache-dir \
+    cloud-sql-python-connector[asyncpg] \
+    google-cloud-secret-manager \
+    google-cloud-logging \
+    google-cloud-monitoring
 
 # Copy application code
-COPY . .
+COPY --chown=appuser:appuser . .
 
-# Create non-root user
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+# Copy production database with real OpenAI evaluation data
+COPY --chown=appuser:appuser wenxin_production.db ./wenxin.db
+
+# Create directories for logs and uploads
+RUN mkdir -p /app/logs /app/uploads /app/static && \
+    chown -R appuser:appuser /app
+
+# Switch to non-root user
 USER appuser
 
-# Expose port
-EXPOSE 8001
+# Health check endpoint
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:${PORT}/health || exit 1
 
-# Run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
+# Expose port
+EXPOSE ${PORT}
+
+# Production startup command with Gunicorn for better performance
+# Use sh -c to properly expand $PORT environment variable from Cloud Run
+CMD exec gunicorn app.main:app \
+     --worker-class uvicorn.workers.UvicornWorker \
+     --workers 1 \
+     --timeout 30 \
+     --keep-alive 5 \
+     --bind 0.0.0.0:$PORT \
+     --access-logfile - \
+     --error-logfile - \
+     --log-level info
