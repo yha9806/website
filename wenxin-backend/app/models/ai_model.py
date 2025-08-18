@@ -55,6 +55,12 @@ class AIModel(Base):
     confidence_level = Column(Float, default=0.0)  # 0-1 confidence in score accuracy
     last_benchmark_at = Column(DateTime(timezone=True), nullable=True)
     
+    # Model type and ranking fields
+    model_type = Column(String(20), nullable=True)  # llm, image, multimodal
+    model_tier = Column(String(20), nullable=True)  # flagship, professional, efficient, lightweight
+    llm_rank = Column(Integer, nullable=True)  # Rank in LLM category
+    image_rank = Column(Integer, nullable=True)  # Rank in image category
+    
     # Relationships
     from sqlalchemy.orm import relationship
     evaluation_tasks = relationship("EvaluationTask", back_populates="model")

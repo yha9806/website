@@ -146,12 +146,24 @@ python -c "import sqlite3; conn = sqlite3.connect('wenxin.db'); cursor = conn.cu
 gh run list --workflow=deploy-gcp.yml --limit=5
 gh run view <run_id> --log
 
+# View specific job logs for debugging
+gh run view <run_id> --log | grep -A 10 -B 10 "error"
+gh run view <run_id> --job <job_id> --log
+
+# Download artifacts from failed runs
+gh run download <run_id>
+
 # Create and manage PRs
 gh pr create --title "Title" --body "Description"
 gh pr merge --squash
 
 # Manual deployment trigger
 gh workflow run deploy-gcp.yml
+
+# Production debugging
+gcloud run services describe wenxin-moyun-api --region=asia-east1
+gcloud run services logs read wenxin-moyun-api --region=asia-east1 --limit=50
+gcloud logging read "resource.type=cloud_run_revision" --limit=20 --format=json
 ```
 
 ### Testing Production Compatibility Locally
@@ -306,6 +318,53 @@ cd wenxin-moyun && npm run build
 gsutil -m rsync -r -d dist/ gs://wenxin-moyun-prod-new-static/
 ```
 
+## Critical Production Lessons
+
+### Database Migration Strategy (CRITICAL)
+**Understanding `alembic stamp` vs `alembic upgrade`**:
+- `stamp`: Only updates version table, doesn't execute SQL (common mistake!)
+- `upgrade`: Actually runs migration SQL to modify schema
+
+**Production Migration with Cloud Run Jobs** (Best Practice 2024-2025):
+```yaml
+# Use Cloud Run Jobs for migrations, not inline with deployment
+gcloud run jobs create wenxin-migrate-$SHORT_SHA \
+  --image=$IMAGE \
+  --command="python" \
+  --args="migrate.py" \
+  --set-cloudsql-instances=$INSTANCE
+```
+
+**Migration Script Pattern** (`wenxin-backend/migrate.py`):
+```python
+def force_schema_sync():
+    # 1. Try Alembic migration first
+    if force_alembic_migration():
+        return True
+    
+    # 2. Fallback to direct column fix
+    if direct_column_fix():
+        subprocess.run(['alembic', 'stamp', 'head'])
+        return True
+    
+    # 3. Full reset as last resort
+    subprocess.run(['alembic', 'stamp', 'base'])
+    subprocess.run(['alembic', 'upgrade', 'head'])
+```
+
+**Repair Migration Pattern** (`alembic/versions/fix_missing_columns.py`):
+```python
+def upgrade():
+    # Check existing columns first
+    inspector = sa.inspect(bind)
+    existing_columns = [col['name'] for col in inspector.get_columns('ai_models')]
+    
+    # Add only missing columns
+    for col_name, col_type in required_columns:
+        if col_name not in existing_columns:
+            op.add_column('ai_models', sa.Column(col_name, col_type))
+```
+
 ## Common Issues & Solutions
 
 ### Version Mismatch Issues
@@ -335,12 +394,36 @@ gsutil -m rsync -r -d dist/ gs://wenxin-moyun-prod-new-static/
 - **Solution**: Ensure `libpq-dev` is installed in Dockerfile for psycopg2-binary
 - **Fix**: Already included in current Dockerfile.cloud
 
-### Cloud Run Container Startup Issues
-- **Issue**: Container failed to start and listen on PORT
-- **Solution**: 
-  1. Use `0.0.0.0` as host, not `localhost`
-  2. Use `${PORT:-8080}` environment variable, not hardcoded port
-  3. Add `PYTHONUNBUFFERED=1` for immediate log output
+### Cloud Run Container Startup Issues (CRITICAL)
+- **Issue**: "Container failed to start and listen on PORT=8080"
+- **Root Causes & Solutions**:
+  1. **PORT Hardcoding**: Must use `${PORT:-8080}` environment variable
+     ```dockerfile
+     # ✅ CORRECT
+     CMD ["sh", "-c", "python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}"]
+     
+     # ❌ WRONG - Will fail in Cloud Run
+     CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+     ```
+  2. **Host Binding**: Must use `0.0.0.0`, not `localhost` or `127.0.0.1`
+  3. **Logging**: Add `PYTHONUNBUFFERED=1` for immediate log output
+
+### PostgreSQL Column Missing Errors
+- **Issue**: "column ai_models.rhythm_score does not exist" despite "successful" migration
+- **Root Cause**: Used `alembic stamp` instead of `alembic upgrade`
+- **Solutions**:
+  1. **Repair Migration**: Create fix_missing_columns.py that checks existing columns
+  2. **Force Re-execution**: Downgrade then upgrade
+  3. **Direct Fix + Stamp**: Add columns directly then update Alembic version
+
+### Python 3.13 Compatibility Issues
+- **Issue**: psycopg2-binary compilation errors with `_PyInterpreterState_Get()`
+- **Solution**: Upgrade to psycopg2-binary==2.9.10 or later (2.9.9 incompatible)
+- **Dockerfile Requirements**:
+  ```dockerfile
+  FROM python:3.13-slim
+  RUN apt-get update && apt-get install -y gcc g++ libpq-dev
+  ```
 
 ### bcrypt Dependency Conflicts
 - **Issue**: `AttributeError: module 'bcrypt' has no attribute '__about__'`
@@ -384,3 +467,44 @@ command: process.platform === 'win32'
 - Demo: `demo` / `demo123`
 - Admin: `admin` / `admin123`
 - Test: `test` / `test123`
+
+## Production Deployment Troubleshooting Checklist
+
+### When Cloud Run Deployment Fails
+1. **Check container startup**:
+   - Verify PORT environment variable usage: `${PORT:-8080}`
+   - Confirm host binding: `0.0.0.0` not `localhost`
+   - Check Python version compatibility (3.13)
+
+2. **Verify package versions**:
+   ```bash
+   # Compare local vs production
+   pip freeze > local_versions.txt
+   diff requirements.prod.txt local_versions.txt
+   
+   # Test Docker build locally
+   docker build -f wenxin-backend/Dockerfile.cloud -t test .
+   docker run -e PORT=8080 -p 8080:8080 test
+   ```
+
+3. **Database migration issues**:
+   - Check if using `alembic upgrade` not `alembic stamp`
+   - Verify Cloud SQL connection string format
+   - Run migrations via Cloud Run Jobs, not inline
+
+4. **Check logs**:
+   ```bash
+   # GitHub Actions logs
+   gh run view <run_id> --log | grep -i error
+   
+   # Cloud Run logs
+   gcloud run services logs read wenxin-moyun-api --region=asia-east1 --limit=100
+   
+   # Cloud SQL logs
+   gcloud sql operations list --instance=wenxin-postgres
+   ```
+
+5. **Common fixes**:
+   - psycopg2-binary >= 2.9.10 for Python 3.13
+   - bcrypt == 4.3.0 in constraints.txt
+   - libpq-dev in Dockerfile for PostgreSQL support
