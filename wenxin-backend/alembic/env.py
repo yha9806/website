@@ -20,10 +20,19 @@ from app import models
 config = context.config
 
 # 设置数据库URL从应用配置中读取，转换异步URL为同步URL
-database_url = settings.DATABASE_URL
-if database_url.startswith("sqlite+aiosqlite://"):
+# Import the database module to get the configured URL
+from app.core.database import database_url as async_database_url
+
+# Convert async URL to sync URL for Alembic
+if async_database_url.startswith("sqlite+aiosqlite://"):
     # 将异步SQLite URL转换为同步URL用于Alembic
-    database_url = database_url.replace("sqlite+aiosqlite://", "sqlite://")
+    database_url = async_database_url.replace("sqlite+aiosqlite://", "sqlite://")
+elif async_database_url.startswith("postgresql+asyncpg://"):
+    # Convert async PostgreSQL URL to sync URL for Alembic
+    database_url = async_database_url.replace("postgresql+asyncpg://", "postgresql://")
+else:
+    database_url = async_database_url
+
 config.set_main_option('sqlalchemy.url', database_url)
 
 # Interpret the config file for Python logging.
