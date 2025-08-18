@@ -8,7 +8,8 @@ import asyncio
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.models import Base, User, AIModel
+from app.core.database import Base
+from app.models import User, AIModel
 from app.core.security import get_password_hash
 import json
 from datetime import datetime
