@@ -652,8 +652,15 @@ async def init_production_models_async():
             
             logger.info(f"  Found {battle_count} battles and {artwork_count} artworks to preserve")
             
-            # Step 2: Clear ai_models table
-            logger.info("Step 2: Clearing existing AI models...")
+            # Step 2: Handle related tables and clear ai_models
+            logger.info("Step 2: Handling related data and clearing existing AI models...")
+            
+            # First, delete related evaluation_tasks
+            logger.info("  Deleting related evaluation_tasks...")
+            await conn.execute(text("DELETE FROM evaluation_tasks"))
+            
+            # Then, delete AI models
+            logger.info("  Clearing existing AI models...")
             await conn.execute(text("DELETE FROM ai_models"))
             logger.info("  Existing models cleared")
             
