@@ -7,25 +7,25 @@ interface ComparisonRadarProps {
   title?: string;
 }
 
-// 新中式色彩系统 - 基于参考案例的现代化传统色彩
+// iOS Color System
 const COLORS = [
-  '#1E40AF', // 青金石蓝 - 深邃主色
-  '#DC2626', // 朱砂红 - 重点标注
-  '#059669', // 翡翠绿 - 成功状态
-  '#C9A14A', // 缕金色 - 装饰强调
-  '#7C3AED', // 紫罗兰 - 特殊标识
-  '#0891B2'  // 青瓷色 - 信息提示
+  '#007AFF', // iOS Blue
+  '#FF3B30', // iOS Red
+  '#34C759', // iOS Green
+  '#FF9500', // iOS Orange
+  '#AF52DE', // iOS Purple
+  '#5AC8FA'  // iOS Teal
 ];
 
-export default function ComparisonRadar({ models, title = "模型能力对比" }: ComparisonRadarProps) {
+export default function ComparisonRadar({ models, title = "Model Comparison" }: ComparisonRadarProps) {
   // 准备雷达图数据
   const radarData = [
-    { dimension: '格律韵律', fullMark: 100 },
-    { dimension: '构图色彩', fullMark: 100 },
-    { dimension: '叙事逻辑', fullMark: 100 },
-    { dimension: '情感表达', fullMark: 100 },
-    { dimension: '创意新颖', fullMark: 100 },
-    { dimension: '文化契合', fullMark: 100 },
+    { dimension: 'Rhythm', fullMark: 100 },
+    { dimension: 'Composition', fullMark: 100 },
+    { dimension: 'Narrative', fullMark: 100 },
+    { dimension: 'Emotion', fullMark: 100 },
+    { dimension: 'Creativity', fullMark: 100 },
+    { dimension: 'Cultural', fullMark: 100 },
   ];
 
   // 为每个模型添加数据
@@ -33,22 +33,22 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
     const point: Record<string, any> = { dimension: item.dimension };
     models.forEach((model, index) => {
       switch (item.dimension) {
-        case '格律韵律':
+        case 'Rhythm':
           point[`model${index}`] = model.metrics.rhythm;
           break;
-        case '构图色彩':
+        case 'Composition':
           point[`model${index}`] = model.metrics.composition;
           break;
-        case '叙事逻辑':
+        case 'Narrative':
           point[`model${index}`] = model.metrics.narrative;
           break;
-        case '情感表达':
+        case 'Emotion':
           point[`model${index}`] = model.metrics.emotion;
           break;
-        case '创意新颖':
+        case 'Creativity':
           point[`model${index}`] = model.metrics.creativity;
           break;
-        case '文化契合':
+        case 'Cultural':
           point[`model${index}`] = model.metrics.cultural;
           break;
       }
@@ -61,9 +61,9 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
       initial={{ opacity: 0, scale: 0.95, rotateX: -10 }}
       animate={{ opacity: 1, scale: 1, rotateX: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="card-chinese-data"
+      className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg"
     >
-      <h3 className="text-h3 font-lantinghei text-chinese-stone-800 dark:text-chinese-paper-100 mb-6">
+      <h3 className="text-h3 text-gray-900 dark:text-gray-100 mb-6">
         {title}
       </h3>
 
@@ -72,16 +72,16 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
           <PolarGrid 
             gridType="polygon"
             radialLines={true}
-            stroke="rgba(201,161,74,0.3)"
+            stroke="rgba(142,142,147,0.3)"
             strokeWidth={1.5}
             className="animate-gentle-float"
           />
           <PolarAngleAxis 
             dataKey="dimension"
             tick={{ 
-              fill: '#1E40AF', 
+              fill: '#007AFF', 
               fontSize: 13,
-              fontFamily: 'Lantinghei SC, PingFang SC, Microsoft YaHei, sans-serif'
+              fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
             }}
             className="font-medium"
           />
@@ -90,9 +90,9 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
             domain={[0, 100]}
             tickCount={6}
             tick={{ 
-              fill: 'rgba(201,161,74,0.7)', 
+              fill: 'rgba(142,142,147,0.7)', 
               fontSize: 11,
-              fontFamily: 'Inter, sans-serif'
+              fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
             }}
           />
           
@@ -103,8 +103,8 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
               dataKey={`model${index}`}
               stroke={COLORS[index]}
               fill={COLORS[index]}
-              fillOpacity={0.15} // 更透明，参考案例3的留白美学
-              strokeWidth={3} // 更粗的描边，传统毛笔质感
+              fillOpacity={0.15}
+              strokeWidth={2}
               dot={{ 
                 r: 5, 
                 fill: COLORS[index], 
@@ -118,7 +118,7 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
             wrapperStyle={{
               paddingTop: '24px',
               fontSize: '14px',
-              fontFamily: 'Lantinghei SC, PingFang SC, Microsoft YaHei, sans-serif',
+              fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
               fontWeight: '500'
             }}
             iconType="circle"
@@ -150,7 +150,7 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
                 {model.name}
               </h4>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                {model.organization} · 综合: {model.overallScore}
+                {model.organization} · Overall: {model.overallScore}
               </p>
             </div>
           </motion.div>
@@ -160,15 +160,15 @@ export default function ComparisonRadar({ models, title = "模型能力对比" }
       {/* 维度说明 */}
       <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
         <h4 className="text-sm font-medium text-blue-900 dark:text-blue-300 mb-2">
-          评测维度说明
+          Evaluation Dimensions
         </h4>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-blue-700 dark:text-blue-400">
-          <div>• 格律韵律: 诗词格律掌握</div>
-          <div>• 构图色彩: 视觉艺术能力</div>
-          <div>• 叙事逻辑: 故事构建能力</div>
-          <div>• 情感表达: 情感传达深度</div>
-          <div>• 创意新颖: 创新创意水平</div>
-          <div>• 文化契合: 文化理解程度</div>
+          <div>• Rhythm: Poetry & meter mastery</div>
+          <div>• Composition: Visual art ability</div>
+          <div>• Narrative: Story construction</div>
+          <div>• Emotion: Emotional expression</div>
+          <div>• Creativity: Innovation level</div>
+          <div>• Cultural: Cultural understanding</div>
         </div>
       </div>
     </motion.div>

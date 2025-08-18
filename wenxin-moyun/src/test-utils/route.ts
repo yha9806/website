@@ -4,11 +4,13 @@
  */
 
 // Handle both browser and Node.js environments
+declare const process: any;
+
 export const ROUTER_MODE = 
   typeof process !== 'undefined' && process.env?.VITE_ROUTER_MODE 
     ? process.env.VITE_ROUTER_MODE
-    : (typeof import !== 'undefined' && typeof import.meta !== 'undefined' && import.meta.env?.VITE_ROUTER_MODE) 
-      ? import.meta.env.VITE_ROUTER_MODE 
+    : (typeof window !== 'undefined' && (window as any).import?.meta?.env?.VITE_ROUTER_MODE) 
+      ? (window as any).import.meta.env.VITE_ROUTER_MODE 
       : 'hash'; // Default to hash router
 
 /**

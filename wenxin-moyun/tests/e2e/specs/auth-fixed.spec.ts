@@ -70,8 +70,8 @@ test.describe('Authentication Flow', () => {
   });
   
   test('Guest mode allows access without authentication', async ({ page }) => {
-    // Click start experience button (triggers guest mode)
-    await homePage.clickStartExperience();
+    // Set guest mode directly
+    await homePage.setGuestMode();
     
     // Wait a moment for guest session to be set
     await page.waitForTimeout(1000);
@@ -83,9 +83,8 @@ test.describe('Authentication Flow', () => {
     
     expect(guestSession).toBeTruthy();
     
-    // Verify can navigate to other pages
-    await homePage.navigateToLeaderboard();
-    await page.waitForTimeout(500);
+    // Verify can navigate to other pages using the Explore Rankings button
+    await homePage.clickExploreRankings();
     
     // Should be on leaderboard page
     const url = page.url();

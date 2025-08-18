@@ -100,6 +100,5 @@ export type {
  * These allow existing code to work with new iOS components
  */
 
-// Export iOS components with Chinese component names for backward compatibility
-export { IOSButton as ChineseButton } from './core/IOSButton';
+// Export iOS components with generic names for backward compatibility
 export { IOSCard as Card } from './core/IOSCard';

@@ -1,7 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
-/* iOS San Francisco inspired font stack */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&display=swap');
+/* iOS San Francisco font stack - no external fonts needed */
 @import './styles/browser-compat.css';
 
 @import 'tailwindcss';
@@ -32,56 +29,75 @@
   }
 }
 
-/* iOS Typography System - San Francisco inspired */
+/* iOS Typography System with CSS Variables */
+:root {
+  --ios-font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  --ios-font-text: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  --ios-color-primary: #1D1D1F;
+  --ios-color-secondary: #86868B;
+  --ios-color-primary-dark: #F5F5F7;
+  --ios-color-secondary-dark: #98989D;
+}
+
+/* Base iOS font class */
+.ios-font-display {
+  font-family: var(--ios-font-display);
+}
+
+.ios-font-text {
+  font-family: var(--ios-font-text);
+}
+
+/* Typography classes with simplified inheritance */
 .text-h1 {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Roboto', 'Inter', sans-serif;
+  font-family: var(--ios-font-display);
   font-size: 34px;
   line-height: 1.2;
   font-weight: 700;
   letter-spacing: -0.4px;
-  color: #1D1D1F;
+  color: var(--ios-color-primary);
 }
 
 .dark .text-h1 {
-  color: #F5F5F7;
+  color: var(--ios-color-primary-dark);
 }
 
 .text-h2 {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Roboto', 'Inter', sans-serif;
+  font-family: var(--ios-font-display);
   font-size: 28px;
   line-height: 1.25;
   font-weight: 600;
   letter-spacing: -0.3px;
-  color: #1D1D1F;
+  color: var(--ios-color-primary);
 }
 
 .dark .text-h2 {
-  color: #F5F5F7;
+  color: var(--ios-color-primary-dark);
 }
 
 .text-h3 {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Roboto', 'Inter', sans-serif;
+  font-family: var(--ios-font-display);
   font-size: 22px;
   line-height: 1.3;
   font-weight: 600;
   letter-spacing: -0.2px;
-  color: #1D1D1F;
+  color: var(--ios-color-primary);
 }
 
 .dark .text-h3 {
-  color: #F5F5F7;
+  color: var(--ios-color-primary-dark);
 }
 
 .text-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Roboto', 'Inter', sans-serif;
+  font-family: var(--ios-font-text);
   font-size: 17px;
   line-height: 1.47;
   font-weight: 400;
-  color: #86868B;
+  color: var(--ios-color-secondary);
 }
 
 .dark .text-body {
-  color: #98989D;
+  color: var(--ios-color-secondary-dark);
 }
 
 @media (max-width: 768px) {
@@ -91,34 +107,34 @@
 }
 
 .text-caption {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Roboto', 'Inter', sans-serif;
+  font-family: var(--ios-font-text);
   font-size: 13px;
   line-height: 1.38;
   font-weight: 400;
-  color: #86868B;
+  color: var(--ios-color-secondary);
 }
 
 .dark .text-caption {
-  color: #98989D;
+  color: var(--ios-color-secondary-dark);
 }
 
 /* iOS Large Title */
 .text-large-title {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Roboto', 'Inter', sans-serif;
+  font-family: var(--ios-font-display);
   font-size: 40px;
   line-height: 1.1;
   font-weight: 700;
   letter-spacing: -0.6px;
-  color: #1D1D1F;
+  color: var(--ios-color-primary);
 }
 
 .dark .text-large-title {
-  color: #F5F5F7;
+  color: var(--ios-color-primary-dark);
 }
 
 /* iOS Footnote */
 .text-footnote {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Roboto', 'Inter', sans-serif;
+  font-family: var(--ios-font-text);
   font-size: 13px;
   line-height: 1.38;
   font-weight: 400;

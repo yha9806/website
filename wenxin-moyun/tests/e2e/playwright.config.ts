@@ -51,7 +51,9 @@ export default defineConfig({
     },
     {
       // Backend server
-      command: 'cd ../../wenxin-backend && python -m uvicorn app.main:app --host 0.0.0.0 --port 8001',
+      command: process.platform === 'win32' 
+        ? 'cd ..\\wenxin-backend && python -m uvicorn app.main:app --host 0.0.0.0 --port 8001'
+        : 'cd ../wenxin-backend && python -m uvicorn app.main:app --host 0.0.0.0 --port 8001',
       url: 'http://localhost:8001/health',
       reuseExistingServer: true,  // Always reuse to avoid conflicts
       timeout: 120 * 1000,  // 2 minutes timeout

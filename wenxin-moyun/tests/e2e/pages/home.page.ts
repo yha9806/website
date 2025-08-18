@@ -7,16 +7,16 @@ export class HomePage extends BasePage {
   }
 
   // Locators
-  get startExperienceButton() {
-    return this.page.locator('button:has-text("Start Experience"), button:has-text("开始体验")').first();
+  get exploreRankingsButton() {
+    return this.page.locator('[data-testid="explore-rankings-button"]').first();
   }
 
-  get loginButton() {
-    return this.page.locator('button:has-text("Login"), button:has-text("登录"), a[href*="login"]').first();
+  get modelBattleButton() {
+    return this.page.locator('[data-testid="model-battle-button"]').first();
   }
 
   get leaderboardLink() {
-    return this.page.locator('a[href*="leaderboard"], button:has-text("Leaderboard")').first();
+    return this.page.locator('a[href*="leaderboard"], [data-testid="explore-rankings-button"]').first();
   }
 
   get userAvatar() {
@@ -29,8 +29,8 @@ export class HomePage extends BasePage {
   }
 
   async navigateToLogin() {
-    await this.loginButton.click();
-    await this.waitForNavigation('/login');
+    // Since there's no login button on homepage, navigate directly to login page
+    await this.navigateTo('/login');
   }
 
   async navigateToLeaderboard() {
@@ -38,20 +38,23 @@ export class HomePage extends BasePage {
     await this.waitForNavigation('/leaderboard');
   }
 
-  async clickStartExperience() {
-    const button = this.startExperienceButton;
-    const exists = await button.isVisible({ timeout: 5000 }).catch(() => false);
-    
-    if (exists) {
-      await button.click();
-    } else {
-      console.log('Start experience button not found, setting guest mode via JavaScript');
-      await this.page.evaluate(() => {
-        const guestId = `guest-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        localStorage.setItem('guest_session_id', guestId);
-        localStorage.setItem('is_guest', 'true');
-      });
-    }
+  async clickExploreRankings() {
+    await this.exploreRankingsButton.click();
+    await this.waitForNavigation('/leaderboard');
+  }
+
+  async clickModelBattle() {
+    await this.modelBattleButton.click();
+    await this.waitForNavigation('/battle');
+  }
+
+  async setGuestMode() {
+    // Set guest mode directly via JavaScript since there's no guest button
+    await this.page.evaluate(() => {
+      const guestId = `guest-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      localStorage.setItem('guest_session_id', guestId);
+      localStorage.setItem('is_guest', 'true');
+    });
   }
 
   // Assertions
