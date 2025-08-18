@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
+from datetime import datetime
 import os
 
 from app.core.config import settings
@@ -87,6 +88,16 @@ else:
 # Include API router
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for deployment readiness"""
+    return {
+        "status": "healthy",
+        "timestamp": datetime.utcnow().isoformat(),
+        "service": "wenxin-backend",
+        "version": settings.APP_VERSION
+    }
 
 @app.get("/")
 async def root():

@@ -38,12 +38,25 @@ export default defineConfig({
     }
   ],
 
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,  // 本地复用，CI环境新建
-    timeout: 180 * 1000,  // CI标准：3分钟启动超时
-    stdout: 'pipe',
-    stderr: 'pipe',
-  },
+  // Dual server configuration for frontend and backend
+  webServer: [
+    {
+      // Frontend server
+      command: 'npm run dev',
+      url: 'http://localhost:5173',
+      reuseExistingServer: true,  // Always reuse to avoid conflicts
+      timeout: 120 * 1000,  // 2 minutes timeout
+      stdout: 'pipe',
+      stderr: 'pipe',
+    },
+    {
+      // Backend server
+      command: 'cd ../../wenxin-backend && python -m uvicorn app.main:app --host 0.0.0.0 --port 8001',
+      url: 'http://localhost:8001/health',
+      reuseExistingServer: true,  // Always reuse to avoid conflicts
+      timeout: 120 * 1000,  // 2 minutes timeout
+      stdout: 'pipe',
+      stderr: 'pipe',
+    },
+  ],
 });
