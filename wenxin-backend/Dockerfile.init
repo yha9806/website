@@ -1,0 +1,32 @@
+# Production Dockerfile for database initialization
+# This container is used in Cloud Run Jobs to safely initialize production data
+FROM python:3.13-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY requirements.prod.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy only necessary files for initialization
+COPY app/ app/
+COPY alembic/ alembic/
+COPY alembic.ini alembic.ini
+COPY init_production_models.py init_production_models.py
+COPY migrate.py migrate.py
+
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+ENV ENVIRONMENT=production
+
+# Default command - can be overridden by Cloud Run Job
+CMD ["python", "init_production_models.py"]

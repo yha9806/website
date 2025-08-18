@@ -1,0 +1,153 @@
+# GitHub Actions workflow for initializing production database with 42 AI models
+# This workflow can be manually triggered to reset production data
+
+name: Initialize Production Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "yes" to confirm production data initialization'
+        required: true
+        default: 'no'
+
+env:
+  PROJECT_ID: wenxin-moyun-prod-new
+  REGION: asia-east1
+  REPO_NAME: wenxin-images
+
+jobs:
+  init-production-data:
+    name: Initialize Production Database
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'yes'
+    
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Configure Docker Authentication
+        run: |
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: Get commit SHA
+        id: vars
+        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Build initialization image
+        run: |
+          docker build -f wenxin-backend/Dockerfile.init \
+            -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-init:${{ steps.vars.outputs.SHORT_SHA }} \
+            wenxin-backend/
+
+      - name: Push initialization image
+        run: |
+          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-init:${{ steps.vars.outputs.SHORT_SHA }}
+
+      - name: Get database password
+        id: db-password
+        run: |
+          DB_PASSWORD=$(gcloud secrets versions access latest --secret="db-password" --project=${{ env.PROJECT_ID }})
+          echo "::add-mask::$DB_PASSWORD"
+          echo "password=$DB_PASSWORD" >> $GITHUB_OUTPUT
+
+      - name: Create and run initialization job
+        run: |
+          echo "🔄 Creating Cloud Run Job for data initialization..."
+          
+          # Create Cloud Run job for initialization
+          gcloud run jobs create wenxin-init-data-${{ steps.vars.outputs.SHORT_SHA }} \
+            --image=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-init:${{ steps.vars.outputs.SHORT_SHA }} \
+            --region=${{ env.REGION }} \
+            --task-timeout=900 \
+            --memory=2Gi \
+            --cpu=1 \
+            --parallelism=1 \
+            --max-retries=0 \
+            --set-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres \
+            --set-env-vars="DATABASE_URL=postgresql+asyncpg://wenxin:${{ steps.db-password.outputs.password }}@/wenxin_db?host=/cloudsql/${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres,ENVIRONMENT=production" \
+            --command="python" \
+            --args="init_production_models.py" \
+            --quiet
+
+          echo "🚀 Executing data initialization..."
+          # Execute initialization with wait
+          gcloud run jobs execute wenxin-init-data-${{ steps.vars.outputs.SHORT_SHA }} \
+            --region=${{ env.REGION }} \
+            --wait || {
+              echo "❌ Data initialization failed"
+              # Get logs for debugging
+              gcloud run jobs logs read wenxin-init-data-${{ steps.vars.outputs.SHORT_SHA }} \
+                --region=${{ env.REGION }} \
+                --limit=100 || true
+              # Clean up failed job
+              gcloud run jobs delete wenxin-init-data-${{ steps.vars.outputs.SHORT_SHA }} \
+                --region=${{ env.REGION }} \
+                --quiet || true
+              exit 1
+            }
+
+          echo "✅ Data initialization completed successfully"
+          
+          # Get detailed logs
+          echo "📋 Initialization logs:"
+          gcloud run jobs logs read wenxin-init-data-${{ steps.vars.outputs.SHORT_SHA }} \
+            --region=${{ env.REGION }} \
+            --limit=100
+          
+          # Clean up job
+          gcloud run jobs delete wenxin-init-data-${{ steps.vars.outputs.SHORT_SHA }} \
+            --region=${{ env.REGION }} \
+            --quiet || echo "⚠️ Warning: Could not clean up initialization job"
+
+      - name: Verify production data
+        run: |
+          echo "🔍 Verifying production data..."
+          
+          # Get backend URL
+          BACKEND_URL=$(gcloud run services describe wenxin-moyun-api --region=${{ env.REGION }} --format="value(status.url)")
+          
+          # Check model count
+          echo "Checking model count..."
+          MODEL_COUNT=$(curl -s "$BACKEND_URL/api/v1/models/" | jq '. | length')
+          echo "Found $MODEL_COUNT models in production"
+          
+          if [ "$MODEL_COUNT" -eq "42" ]; then
+            echo "✅ All 42 models successfully loaded!"
+            
+            # Show top 5 models
+            echo "Top 5 models by score:"
+            curl -s "$BACKEND_URL/api/v1/models/" | jq -r '.[:5] | .[] | "\(.name) (\(.organization)): Score \(.overall_score // "N/A") | Type: \(.model_type // "N/A")"'
+          else
+            echo "❌ Expected 42 models, found $MODEL_COUNT"
+            exit 1
+          fi
+
+      - name: Notify success
+        if: success()
+        run: |
+          echo "🎉 Production data initialization successful!"
+          echo "✅ 42 AI models loaded with all classification fields"
+          echo "📊 Frontend: https://storage.googleapis.com/${{ env.PROJECT_ID }}-static/"
+          echo "🔗 API: https://wenxin-moyun-api-229980166599.asia-east1.run.app"
+
+      - name: Notify failure
+        if: failure()
+        run: |
+          echo "❌ Production data initialization failed!"
+          echo "Please check the logs above for details."
