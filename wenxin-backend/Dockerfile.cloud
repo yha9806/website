@@ -1,5 +1,5 @@
 # Production Dockerfile for Google Cloud Run
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 # Set working directory
 WORKDIR /app
@@ -22,7 +22,7 @@ RUN mkdir -p /app/static/generated_images
 
 # Set environment variables
 ENV PYTHONPATH=/app
-ENV PORT=8080
+ENV PYTHONUNBUFFERED=1
 ENV ENVIRONMENT=production
 ENV USE_CLOUD_SQL=true
 ENV CLOUD_SQL_INSTANCE=wenxin-moyun-prod-new:asia-east1:wenxin-postgres
@@ -33,6 +33,6 @@ ENV POSTGRES_DB=wenxin_db
 # Expose port
 EXPOSE 8080
 
-# Run with production settings using simple CMD
-# This approach has been proven to work with Cloud Run
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+# Run with production settings using PORT environment variable
+# This ensures Cloud Run can dynamically set the port
+CMD ["sh", "-c", "python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}"]
