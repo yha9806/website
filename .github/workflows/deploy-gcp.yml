@@ -370,29 +370,49 @@ jobs:
 
       - name: Run database migration
         run: |
-          # Create temporary Cloud Run job for migration
+          echo "🔄 Creating Cloud Run Job for database migration..."
+          
+          # Create temporary Cloud Run job for migration with proper error handling
           gcloud run jobs create wenxin-migrate-${{ steps.vars.outputs.SHORT_SHA }} \
             --image=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:${{ steps.vars.outputs.SHORT_SHA }} \
             --region=${{ env.REGION }} \
-            --task-timeout=600 \
-            --memory=1Gi \
+            --task-timeout=900 \
+            --memory=2Gi \
             --cpu=1 \
             --parallelism=1 \
             --max-retries=0 \
             --set-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres \
-            --set-env-vars="DATABASE_URL=postgresql+asyncpg://wenxin:${{ steps.db-password.outputs.password }}@/wenxin_db?host=/cloudsql/${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres" \
+            --set-env-vars="DATABASE_URL=postgresql+asyncpg://wenxin:${{ steps.db-password.outputs.password }}@/wenxin_db?host=/cloudsql/${{ env.PROJECT_ID }}:${{ env.REGION }}:wenxin-postgres,ENVIRONMENT=production" \
             --command="python" \
-            --args="init_db.py" || true
+            --args="migrate.py" \
+            --quiet || {
+              echo "❌ Failed to create migration job"
+              exit 1
+            }
 
-          # Execute migration
+          echo "🚀 Executing database migration..."
+          # Execute migration with timeout and error handling
           gcloud run jobs execute wenxin-migrate-${{ steps.vars.outputs.SHORT_SHA }} \
             --region=${{ env.REGION }} \
-            --wait || true
+            --wait || {
+              echo "❌ Database migration failed"
+              # Get logs for debugging
+              gcloud run jobs logs read wenxin-migrate-${{ steps.vars.outputs.SHORT_SHA }} \
+                --region=${{ env.REGION }} \
+                --limit=50 || true
+              # Clean up failed job
+              gcloud run jobs delete wenxin-migrate-${{ steps.vars.outputs.SHORT_SHA }} \
+                --region=${{ env.REGION }} \
+                --quiet || true
+              exit 1
+            }
 
+          echo "✅ Database migration completed successfully"
+          
           # Clean up migration job
           gcloud run jobs delete wenxin-migrate-${{ steps.vars.outputs.SHORT_SHA }} \
             --region=${{ env.REGION }} \
-            --quiet || true
+            --quiet || echo "⚠️ Warning: Could not clean up migration job"
 
       - name: Deploy backend to Cloud Run
         run: |
