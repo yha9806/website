@@ -34,6 +34,6 @@ ENV POSTGRES_DB=wenxin_db
 # Expose port
 EXPOSE 8080
 
-# Run with production settings using PORT environment variable
-# This ensures Cloud Run can dynamically set the port
-CMD ["sh", "-c", "python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}"]
+# Run migrations then start server with production settings using PORT environment variable
+# This ensures database schema is up to date and Cloud Run can dynamically set the port
+CMD ["sh", "-c", "alembic upgrade head && python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}"]
