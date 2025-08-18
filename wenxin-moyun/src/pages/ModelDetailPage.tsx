@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { SafeLink as Link } from '../components/common/SafeLink';
+import RouterLink from '../components/common/RouterLink';
 import { ArrowLeft, Calendar, Tag, Trophy, Zap, Loader2 } from 'lucide-react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { mockModels } from '../data/mockData';
@@ -45,12 +45,12 @@ export default function ModelDetailPage() {
           <div className="flex flex-col items-center gap-4">
             <EmojiIcon category="feedback" name="error" size="lg" />
             <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Model Not Found</h2>
-            <Link to="/leaderboard">
+            <RouterLink to="/leaderboard">
               <IOSButton variant="primary">
                 <EmojiIcon category="actions" name="back" size="sm" />
                 Back to Rankings
               </IOSButton>
-            </Link>
+            </RouterLink>
           </div>
         </IOSCardContent>
       </IOSCard>
@@ -70,12 +70,12 @@ export default function ModelDetailPage() {
   return (
     <div className="max-w-7xl mx-auto">
       {/* Back Button */}
-      <Link to="/leaderboard" className="inline-block mb-6">
+      <RouterLink to="/leaderboard" className="inline-block mb-6">
         <IOSButton variant="secondary" size="md">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Rankings
         </IOSButton>
-      </Link>
+      </RouterLink>
 
       {/* Model Header */}
       <motion.div
@@ -339,7 +339,7 @@ export default function ModelDetailPage() {
                 .filter(m => m.id !== model.id && m.category === model.category)
                 .slice(0, 3)
                 .map((similarModel) => (
-                  <Link key={similarModel.id} to={`/model/${similarModel.id}`}>
+                  <RouterLink key={similarModel.id} to={`/model/${similarModel.id}`}>
                     <IOSCard variant="flat" interactive animate className="h-full">
                       <IOSCardContent className="p-4">
                         <div className="flex items-center space-x-3">
@@ -365,7 +365,7 @@ export default function ModelDetailPage() {
                         </div>
                       </IOSCardContent>
                     </IOSCard>
-                  </Link>
+                  </RouterLink>
                 ))}
             </IOSCardGrid>
           </IOSCardContent>

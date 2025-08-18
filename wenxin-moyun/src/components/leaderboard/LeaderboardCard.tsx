@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown, Minus, Trophy, Zap, Users, ChevronRight, Star } from 'lucide-react';
-import { SafeLink as Link } from '../common/SafeLink';
+import RouterLink from '../common/RouterLink';
 import type { LeaderboardEntry } from '../../types/types';
 
 interface LeaderboardCardProps {
@@ -198,13 +198,13 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
         )}
 
         {/* Action Button */}
-        <Link
+        <RouterLink
           to={`/model/${entry.model.id}`}
           className="flex items-center justify-center gap-2 w-full py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all duration-200 transform hover:scale-[1.02]"
         >
           <span className="text-sm font-medium">View Details</span>
           <ChevronRight className="w-4 h-4" />
-        </Link>
+        </RouterLink>
     </motion.div>
   );
 }

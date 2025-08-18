@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { SafeLink as Link } from '../components/common/SafeLink';
+import RouterLink from '../components/common/RouterLink';
 import { ArrowRight, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { mockBattles, categories } from '../data/mockData';
@@ -72,7 +72,7 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.6 }}
             >
-              <Link to="/leaderboard">
+              <RouterLink to="/leaderboard">
                 <IOSButton 
                   variant="primary" 
                   size="lg" 
@@ -83,7 +83,7 @@ export default function HomePage() {
                   <EmojiIcon category="rating" name="star" size="sm" />
                   Explore Rankings
                 </IOSButton>
-              </Link>
+              </RouterLink>
             </motion.div>
             
             <motion.div
@@ -93,7 +93,7 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.0, duration: 0.6 }}
             >
-              <Link to="/battle">
+              <RouterLink to="/battle">
                 <IOSButton 
                   variant="secondary" 
                   size="lg" 
@@ -103,7 +103,7 @@ export default function HomePage() {
                   <EmojiIcon category="actions" name="battle" size="sm" />
                   Model Battle
                 </IOSButton>
-              </Link>
+              </RouterLink>
             </motion.div>
           </div>
         </motion.div>
@@ -117,11 +117,11 @@ export default function HomePage() {
             Model Rankings
             <EmojiIcon category="trend" name="hot" size="sm" />
           </h2>
-          <Link to="/leaderboard">
+          <RouterLink to="/leaderboard">
             <IOSButton variant="text">
               View Full Rankings
             </IOSButton>
-          </Link>
+          </RouterLink>
         </div>
         
         <IOSCard variant="glass" className="overflow-hidden liquid-glass-container">
@@ -149,11 +149,11 @@ export default function HomePage() {
             Leading Models
             <EmojiIcon category="feedback" name="celebration" size="md" />
           </h2>
-          <Link to="/leaderboard">
+          <RouterLink to="/leaderboard">
             <IOSButton variant="text">
               View All Rankings
             </IOSButton>
-          </Link>
+          </RouterLink>
         </div>
 
         <IOSCardGrid columns={3} gap="lg">
@@ -199,7 +199,7 @@ export default function HomePage() {
               </IOSCardContent>
 
               <IOSCardFooter>
-                <Link to={`/model/${entry.model.id}`} className="w-full">
+                <RouterLink to={`/model/${entry.model.id}`} className="w-full">
                   <IOSButton 
                     variant="primary" 
                     size="md" 
@@ -207,7 +207,7 @@ export default function HomePage() {
                   >
                     View Details
                   </IOSButton>
-                </Link>
+                </RouterLink>
               </IOSCardFooter>
             </IOSCard>
           ))}
@@ -222,7 +222,7 @@ export default function HomePage() {
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {categories.map((category) => (
-            <Link 
+            <RouterLink 
               key={category.id} 
               to={`/leaderboard/${category.id}`}
               className="group"
@@ -233,7 +233,7 @@ export default function HomePage() {
                   {category.name}
                 </p>
               </div>
-            </Link>
+            </RouterLink>
           ))}
         </div>
       </section>
@@ -246,11 +246,11 @@ export default function HomePage() {
             Live Battles
             <EmojiIcon category="trend" name="hot" size="md" />
           </h2>
-          <Link to="/battle">
+          <RouterLink to="/battle">
             <IOSButton variant="text">
               Join Voting
             </IOSButton>
-          </Link>
+          </RouterLink>
         </div>
 
         <IOSCardGrid columns={2} gap="lg">
@@ -292,7 +292,7 @@ export default function HomePage() {
               </IOSCardContent>
 
               <IOSCardFooter>
-                <Link to="/battle" className="w-full">
+                <RouterLink to="/battle" className="w-full">
                   <IOSButton 
                     variant="secondary" 
                     size="md" 
@@ -301,7 +301,7 @@ export default function HomePage() {
                   >
                     Vote Now
                   </IOSButton>
-                </Link>
+                </RouterLink>
               </IOSCardFooter>
             </IOSCard>
           ))}

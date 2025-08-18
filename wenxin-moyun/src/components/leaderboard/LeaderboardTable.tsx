@@ -33,7 +33,7 @@ import {
 import { motion } from 'framer-motion';
 import type { LeaderboardEntry } from '../../types/types';
 import { exportData } from '../../utils/dataExport';
-import { SafeLink as Link } from '../common/SafeLink';
+import RouterLink from '../common/RouterLink';
 
 interface LeaderboardTableProps {
   data: LeaderboardEntry[];
@@ -109,7 +109,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
       cell: ({ row }) => {
         const model = row.original.model;
         return (
-          <Link 
+          <RouterLink 
             to={`/model/${model.id}`}
             className="flex items-center gap-3 group hover:text-blue-600 dark:hover:text-blue-400"
           >
@@ -122,7 +122,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
               <div className="font-medium">{model.name}</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">{model.organization}</div>
             </div>
-          </Link>
+          </RouterLink>
         );
       },
       filterFn: (row, columnId, filterValue) => {
@@ -232,12 +232,12 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
       header: '',
       cell: ({ row }) => (
         <div className="flex items-center justify-center gap-2">
-          <Link
+          <RouterLink
             to={`/model/${row.original.model.id}`}
             className="px-3 py-1 text-sm bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
           >
             View
-          </Link>
+          </RouterLink>
         </div>
       ),
     }),
