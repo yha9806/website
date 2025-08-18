@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import type { Model, Artwork } from '../types/types';
 import { modelsService } from '../services/models.service';
 import { artworksService } from '../services/artworks.service';
-import { mockModels } from '../data/mockData';
 
 export function useModelDetail(modelId: string | undefined) {
   const [model, setModel] = useState<Model | null>(null);
@@ -22,22 +21,33 @@ export function useModelDetail(modelId: string | undefined) {
       
       try {
         // Fetch model details
+        console.log('[useModelDetail] Fetching model:', modelId);
         const modelResponse = await modelsService.getModel(modelId);
+        console.log('[useModelDetail] Model response:', modelResponse);
         setModel(modelResponse);
         
         // Fetch artworks for this model
-        const artworksResponse = await artworksService.getArtworksByModel(modelId);
-        setArtworks(artworksResponse.artworks || []);
-      } catch (err) {
-        console.error('Error fetching model detail:', err);
-        // Fallback to mock data
-        const mockModel = mockModels.find(m => m.id === modelId);
-        if (mockModel) {
-          setModel(mockModel);
-          setArtworks(mockModel.works || []);
-        } else {
-          setError('Failed to load model details');
+        try {
+          const artworksResponse = await artworksService.getArtworksByModel(modelId);
+          console.log('[useModelDetail] Artworks response:', artworksResponse);
+          setArtworks(artworksResponse.artworks || []);
+        } catch (artworkErr) {
+          console.warn('[useModelDetail] Failed to fetch artworks:', artworkErr);
+          // Don't fail if artworks fetch fails
+          setArtworks([]);
         }
+      } catch (err: any) {
+        console.error('[useModelDetail] Error fetching model detail:', err);
+        console.error('[useModelDetail] Error response:', err.response);
+        
+        // Set proper error message instead of falling back to mock data
+        const errorMessage = err.response?.data?.detail || 
+                           err.message || 
+                           'Failed to load model details';
+        setError(errorMessage);
+        
+        // Don't hide the error by using mock data
+        // This allows us to see what's actually going wrong
       } finally {
         setLoading(false);
       }

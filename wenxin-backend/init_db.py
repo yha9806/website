@@ -166,7 +166,7 @@ async def init_models(session: AsyncSession):
             "version": "3.0",
             "category": "image",
             "description": "Advanced text-to-image generation with precise control",
-            "overall_score": null,  // Image models don't have text scores
+            "overall_score": None,  # Image models don't have text scores
             "metrics": {
                 "rhythm": 0,
                 "composition": 95,
@@ -184,7 +184,7 @@ async def init_models(session: AsyncSession):
             "version": "2.0",
             "category": "image",
             "description": "Previous generation image model with artistic capabilities",
-            "overall_score": null,
+            "overall_score": None,
             "metrics": {
                 "rhythm": 0,
                 "composition": 90,
@@ -404,7 +404,7 @@ async def init_models(session: AsyncSession):
             "version": "2.0",
             "category": "image",
             "description": "Advanced text-to-image generation model",
-            "overall_score": null,
+            "overall_score": None,
             "metrics": {
                 "rhythm": 0,
                 "composition": 94,
