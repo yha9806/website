@@ -33,7 +33,7 @@ import {
 import { motion } from 'framer-motion';
 import type { LeaderboardEntry } from '../../types/types';
 import { exportData } from '../../utils/dataExport';
-import { Link } from 'react-router-dom';
+import { SafeLink as Link } from '../common/SafeLink';
 
 interface LeaderboardTableProps {
   data: LeaderboardEntry[];

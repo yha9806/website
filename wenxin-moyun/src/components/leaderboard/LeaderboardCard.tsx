@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown, Minus, Trophy, Zap, Users, ChevronRight, Star } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { SafeLink as Link } from '../common/SafeLink';
 import type { LeaderboardEntry } from '../../types/types';
 
 interface LeaderboardCardProps {

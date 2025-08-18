@@ -1,4 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { SafeLink as Link } from '../components/common/SafeLink';
 import { ArrowRight, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { mockBattles, categories } from '../data/mockData';
