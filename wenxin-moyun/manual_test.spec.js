@@ -1,0 +1,164 @@
+import { test, expect } from '@playwright/test';
+
+test.describe('WenXin MoYun 首页模型测试', () => {
+  test('测试首页Model Rankings功能', async ({ page }) => {
+    console.log('🚀 开始测试 WenXin MoYun 首页和模型功能...\n');
+    
+    // 1. 访问首页
+    console.log('1. 访问 http://localhost:5173/#/');
+    await page.goto('http://localhost:5173/#/', { waitUntil: 'networkidle' });
+    await page.waitForTimeout(2000);
+    
+    const title = await page.title();
+    console.log('   ✅ 页面标题:', title);
+    
+    // 2. 查看首页的 "Model Rankings" 部分
+    console.log('\n2. 查找首页的 "Model Rankings" 部分');
+    
+    // 等待页面加载并查找相关元素
+    await page.waitForTimeout(3000);
+    
+    // 寻找Model Rankings相关的文本或元素
+    const modelText = await page.locator('text=Model').count();
+    console.log('   找到包含"Model"的元素数量:', modelText);
+    
+    const rankingText = await page.locator('text=Ranking').count();
+    console.log('   找到包含"Ranking"的元素数量:', rankingText);
+    
+    // 查找可能的排行榜或表格元素
+    const tables = await page.locator('table').count();
+    console.log('   找到表格元素数量:', tables);
+    
+    const cards = await page.locator('[class*="card"], [class*="Card"]').count();
+    console.log('   找到卡片元素数量:', cards);
+    
+    // 截取页面截图查看当前状态
+    await page.screenshot({ path: 'homepage_screenshot.png', fullPage: true });
+    console.log('   📸 已保存页面截图: homepage_screenshot.png');
+    
+    // 3. 检查是否有AI模型数据显示
+    console.log('\n3. 检查AI模型数据');
+    
+    // 查找OpenAI相关文本
+    const openaiCount = await page.locator('text=/OpenAI|GPT|gpt/i').count();
+    console.log('   找到OpenAI/GPT相关元素数量:', openaiCount);
+    
+    // 查找可能的模型名称
+    const modelNames = ['GPT-4', 'GPT-3.5', 'Claude', 'Gemini', 'DALL-E'];
+    for (const modelName of modelNames) {
+      const count = await page.locator(`text=${modelName}`).count();
+      if (count > 0) {
+        console.log(`   ✅ 找到模型: ${modelName} (${count}个元素)`);
+      }
+    }
+    
+    // 4. 查找并点击View按钮
+    console.log('\n4. 查找View按钮');
+    
+    const viewButtonCount = await page.locator('text=View').count();
+    console.log('   找到"View"按钮数量:', viewButtonCount);
+    
+    // 查找其他可能的按钮文本
+    const buttonTexts = ['View', 'Details', '详情', '查看', 'See More', 'Explore'];
+    let foundButton = null;
+    
+    for (const buttonText of buttonTexts) {
+      const count = await page.locator(`text=${buttonText}`).count();
+      if (count > 0) {
+        console.log(`   找到"${buttonText}"按钮: ${count}个`);
+        if (!foundButton) {
+          foundButton = page.locator(`text=${buttonText}`).first();
+        }
+      }
+    }
+    
+    // 检查是否有任何按钮类元素
+    const allButtons = await page.locator('button').count();
+    console.log('   总按钮数量:', allButtons);
+    
+    const linkButtons = await page.locator('a').count();
+    console.log('   总链接数量:', linkButtons);
+    
+    // 5. 如果找到按钮，尝试点击
+    if (foundButton && await foundButton.count() > 0) {
+      console.log('\n5. 点击第一个找到的按钮');
+      const currentUrl = page.url();
+      console.log('   点击前URL:', currentUrl);
+      
+      await foundButton.click();
+      await page.waitForTimeout(2000);
+      
+      const newUrl = page.url();
+      console.log('   点击后URL:', newUrl);
+      
+      if (currentUrl !== newUrl) {
+        console.log('   ✅ URL发生变化，跳转成功');
+        
+        // 检查新页面内容
+        const newTitle = await page.title();
+        console.log('   新页面标题:', newTitle);
+        
+        // 截取新页面截图
+        await page.screenshot({ path: 'detail_page_screenshot.png', fullPage: true });
+        console.log('   📸 已保存详情页截图: detail_page_screenshot.png');
+        
+      } else {
+        console.log('   ⚠️ URL未变化，可能是页面内操作');
+      }
+    } else {
+      console.log('\n5. ❌ 未找到可点击的View按钮');
+      
+      // 尝试查找任何可点击的元素
+      const clickableElements = await page.locator('button, a, [role="button"]').count();
+      console.log('   总可点击元素数量:', clickableElements);
+      
+      if (clickableElements > 0) {
+        console.log('   尝试点击第一个可点击元素...');
+        const firstClickable = page.locator('button, a, [role="button"]').first();
+        const elementText = await firstClickable.textContent();
+        console.log('   元素文本:', elementText);
+        
+        const currentUrl = page.url();
+        await firstClickable.click();
+        await page.waitForTimeout(2000);
+        const newUrl = page.url();
+        
+        if (currentUrl !== newUrl) {
+          console.log('   ✅ 点击成功，URL变化:', newUrl);
+          await page.screenshot({ path: 'clicked_page_screenshot.png', fullPage: true });
+        }
+      }
+    }
+    
+    // 6. 检查错误信息
+    console.log('\n6. 检查页面错误');
+    
+    // 检查页面文本内容
+    const pageContent = await page.textContent('body');
+    if (pageContent.includes('Error') || pageContent.includes('404') || pageContent.includes('error')) {
+      console.log('   ❌ 页面包含错误信息');
+    } else {
+      console.log('   ✅ 页面未发现明显错误');
+    }
+    
+    // 7. 直接测试API端点
+    console.log('\n7. 直接测试API端点');
+    try {
+      const response = await page.request.get('http://localhost:8001/api/models');
+      const status = response.status();
+      console.log('   API /api/models 状态码:', status);
+      
+      if (status === 200) {
+        const data = await response.json();
+        console.log('   ✅ API响应成功，模型数量:', data.length || '未知');
+        if (data && data.length > 0) {
+          console.log('   前3个模型:', data.slice(0, 3).map(m => m.name || m.id || '未知'));
+        }
+      }
+    } catch (error) {
+      console.log('   ❌ API测试失败:', error.message);
+    }
+    
+    console.log('\n✅ 测试完成');
+  });
+});

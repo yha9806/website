@@ -1,404 +1,53 @@
-<testsuites id="" name="" tests="56" failures="8" skipped="34" errors="0" time="134.406992">
-<testsuite name="ai-models.spec.ts" timestamp="2025-08-18T10:06:49.621Z" hostname="chromium" tests="8" failures="0" skipped="0" time="48.689" errors="0">
-<testcase name="AI Models Leaderboard › 应该显示AI模型排行榜" classname="ai-models.spec.ts" time="5.311">
+<testsuites id="" name="" tests="6" failures="2" skipped="1" errors="0" time="3596.9406639999997">
+<testsuite name="auth-fixed.spec.ts" timestamp="2025-08-18T09:59:33.819Z" hostname="chromium" tests="6" failures="2" skipped="1" time="3589.307" errors="0">
+<testcase name="Authentication Flow › User can successfully login with valid credentials" classname="auth-fixed.spec.ts" time="3008.877">
 </testcase>
-<testcase name="AI Models Leaderboard › 应该正确处理NULL分数显示" classname="ai-models.spec.ts" time="4.447">
+<testcase name="Authentication Flow › Guest mode allows access without authentication" classname="auth-fixed.spec.ts" time="17.982">
 </testcase>
-<testcase name="AI Models Leaderboard › 应该支持模型类型筛选" classname="ai-models.spec.ts" time="4.618">
+<testcase name="Authentication Flow › Login fails with invalid credentials" classname="auth-fixed.spec.ts" time="230.601">
 </testcase>
-<testcase name="AI Models Leaderboard › 应该支持排序功能" classname="ai-models.spec.ts" time="4.266">
-</testcase>
-<testcase name="AI Models Leaderboard › 模型详情页面跳转" classname="ai-models.spec.ts" time="4.681">
-</testcase>
-<testcase name="AI Models Leaderboard › 响应式设计测试" classname="ai-models.spec.ts" time="16.529">
-<system-out>
-<![CDATA[开始响应式设计测试
-测试桌面端布局 (1920x1080)
-测试平板端布局 (768x1024)
-测试移动端布局 (375x667)
-找到 5 个移动端特定元素
-响应式设计测试完成
-]]>
-</system-out>
-</testcase>
-<testcase name="AI Models Leaderboard › 搜索功能测试" classname="ai-models.spec.ts" time="4.587">
-</testcase>
-<testcase name="AI Models Leaderboard › 数据加载状态测试" classname="ai-models.spec.ts" time="4.25">
-</testcase>
-</testsuite>
-<testsuite name="auth-fixed.spec.ts" timestamp="2025-08-18T10:06:49.621Z" hostname="chromium" tests="6" failures="0" skipped="0" time="31.827" errors="0">
-<testcase name="Authentication Flow › User can successfully login with valid credentials" classname="auth-fixed.spec.ts" time="3.48">
-</testcase>
-<testcase name="Authentication Flow › Guest mode allows access without authentication" classname="auth-fixed.spec.ts" time="6.692">
-</testcase>
-<testcase name="Authentication Flow › Login fails with invalid credentials" classname="auth-fixed.spec.ts" time="3.39">
-</testcase>
-<testcase name="Authentication Flow › JWT token persists across page refreshes" classname="auth-fixed.spec.ts" time="8.185">
-</testcase>
-<testcase name="Authentication Flow › Logout functionality clears authentication" classname="auth-fixed.spec.ts" time="6.831">
-</testcase>
-<testcase name="Authentication Flow › Admin user has access to admin features" classname="auth-fixed.spec.ts" time="3.249">
-</testcase>
-</testsuite>
-<testsuite name="auth.spec.ts" timestamp="2025-08-18T10:06:49.621Z" hostname="chromium" tests="7" failures="2" skipped="5" time="32.114" errors="0">
-<testcase name="Authentication Flow › User can successfully login with valid credentials" classname="auth.spec.ts" time="32.114">
-<failure message="auth.spec.ts:111:3 User can successfully login with valid credentials" type="FAILURE">
-<![CDATA[  [chromium] › auth.spec.ts:111:3 › Authentication Flow › User can successfully login with valid credentials 
+<testcase name="Authentication Flow › JWT token persists across page refreshes" classname="auth-fixed.spec.ts" time="331.847">
+<failure message="auth-fixed.spec.ts:112:3 JWT token persists across page refreshes" type="FAILURE">
+<![CDATA[  [chromium] › auth-fixed.spec.ts:112:3 › Authentication Flow › JWT token persists across page refreshes 
 
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
-
-    Locator: locator('form, .glass-effect form')
-    Expected: visible
-    Received: <element(s) not found>
+    Error: page.goto: Target page, context or browser has been closed
     Call log:
-      - Expect "toBeVisible" with timeout 10000ms
-      - waiting for locator('form, .glass-effect form')
+      - navigating to "http://localhost:5173/", waiting until "load"
 
 
-      117 |     
-      118 |     // Wait for login form to be visible
-    > 119 |     await expect(loginPage.loginForm).toBeVisible({ timeout: 10000 });
-          |                                       ^
-      120 |     console.log('Test: Login form is visible');
-      121 |     
-      122 |     // Perform login
-        at I:\website\wenxin-moyun\tests\e2e\specs\auth.spec.ts:119:39
+      39 |     
+      40 |     // Clear storage before each test
+    > 41 |     await page.goto('/');
+         |                ^
+      42 |     await page.evaluate(() => {
+      43 |       localStorage.clear();
+      44 |       sessionStorage.clear();
+        at I:\website\wenxin-moyun\tests\e2e\specs\auth-fixed.spec.ts:41:16
 
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium\error-context.md
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    ..\..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium\trace.zip
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\..\test-results\auth-fixed-Authentication--2922b-sists-across-page-refreshes-chromium\trace.zip
     Usage:
 
-        npx playwright show-trace ..\..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium\trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
-
-    Locator: locator('form, .glass-effect form')
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - Expect "toBeVisible" with timeout 10000ms
-      - waiting for locator('form, .glass-effect form')
-
-
-      117 |     
-      118 |     // Wait for login form to be visible
-    > 119 |     await expect(loginPage.loginForm).toBeVisible({ timeout: 10000 });
-          |                                       ^
-      120 |     console.log('Test: Login form is visible');
-      121 |     
-      122 |     // Perform login
-        at I:\website\wenxin-moyun\tests\e2e\specs\auth.spec.ts:119:39
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium-retry1\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium-retry1\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium-retry1\error-context.md
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    ..\..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium-retry1\trace.zip
-    Usage:
-
-        npx playwright show-trace ..\..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium-retry1\trace.zip
+        npx playwright show-trace ..\..\..\test-results\auth-fixed-Authentication--2922b-sists-across-page-refreshes-chromium\trace.zip
 
     ────────────────────────────────────────────────────────────────────────────────────────────────
 ]]>
 </failure>
 <system-out>
-<![CDATA[Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
-Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
-Test: Starting login test with credentials: demo
-Test: Navigating to login page
-Auth API response: http://localhost:5173/login [33m200[39m
-Response body: <!doctype html>
-<html lang="en">
-  <head>
-    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
-injectIntoGlobalHook(window);
-window.$RefreshReg$ = () => {};
-window.$Refr
-Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
-Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
-
-[[ATTACHMENT|..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium\test-failed-1.png]]
-
-[[ATTACHMENT|..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium\video.webm]]
-
-[[ATTACHMENT|..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium\error-context.md]]
-
-[[ATTACHMENT|..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium\trace.zip]]
-Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
-Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
-Test: Starting login test with credentials: demo
-Test: Navigating to login page
-Auth API response: http://localhost:5173/login [33m200[39m
-Response body: <!doctype html>
-<html lang="en">
-  <head>
-    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
-injectIntoGlobalHook(window);
-window.$RefreshReg$ = () => {};
-window.$Refr
-Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
-Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
-
-[[ATTACHMENT|..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium-retry1\test-failed-1.png]]
-
-[[ATTACHMENT|..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium-retry1\video.webm]]
-
-[[ATTACHMENT|..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium-retry1\error-context.md]]
-
-[[ATTACHMENT|..\..\test-results\auth-Authentication-Flow-U-930cf-ogin-with-valid-credentials-chromium-retry1\trace.zip]]
+<![CDATA[
+[[ATTACHMENT|..\..\test-results\auth-fixed-Authentication--2922b-sists-across-page-refreshes-chromium\trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Authentication Flow › Guest mode allows access without authentication" classname="auth.spec.ts" time="0">
-<failure message="auth.spec.ts:142:3 Guest mode allows access without authentication" type="FAILURE">
-<![CDATA[  [chromium] › auth.spec.ts:142:3 › Authentication Flow › Guest mode allows access without authentication 
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+<testcase name="Authentication Flow › Logout functionality clears authentication" classname="auth-fixed.spec.ts" time="0">
+<failure message="auth-fixed.spec.ts:132:3 Logout functionality clears authentication" type="FAILURE">
+<![CDATA[  [chromium] › auth-fixed.spec.ts:132:3 › Authentication Flow › Logout functionality clears authentication 
 
     Error: worker process exited unexpectedly (code=3221225794, signal=null)
 ]]>
 </failure>
 </testcase>
-<testcase name="Authentication Flow › Login fails with invalid credentials" classname="auth.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Authentication Flow › JWT token persists across page refreshes" classname="auth.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Authentication Flow › Logout functionality clears authentication" classname="auth.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Authentication Flow › Admin user has access to admin features" classname="auth.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Authentication Flow › Guest session respects daily usage limits" classname="auth.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="basic-navigation.spec.ts" timestamp="2025-08-18T10:06:49.621Z" hostname="chromium" tests="4" failures="1" skipped="3" time="0" errors="0">
-<testcase name="Basic Navigation › Homepage loads successfully" classname="basic-navigation.spec.ts" time="0">
-<failure message="basic-navigation.spec.ts:4:3 Homepage loads successfully" type="FAILURE">
-<![CDATA[  [chromium] › basic-navigation.spec.ts:4:3 › Basic Navigation › Homepage loads successfully ───────
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-]]>
-</failure>
-</testcase>
-<testcase name="Basic Navigation › Can navigate to leaderboard" classname="basic-navigation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Basic Navigation › Can navigate to login page directly" classname="basic-navigation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Basic Navigation › Backend health check works" classname="basic-navigation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="battle.spec.ts" timestamp="2025-08-18T10:06:49.621Z" hostname="chromium" tests="4" failures="1" skipped="3" time="0" errors="0">
-<testcase name="Battle System › Random model matchup generation" classname="battle.spec.ts" time="0">
-<failure message="battle.spec.ts:141:3 Random model matchup generation" type="FAILURE">
-<![CDATA[  [chromium] › battle.spec.ts:141:3 › Battle System › Random model matchup generation ──────────────
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-]]>
-</failure>
-</testcase>
-<testcase name="Battle System › Vote submission and result update" classname="battle.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Battle System › Battle statistics tracking" classname="battle.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Battle System › Skip battle functionality" classname="battle.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="evaluation.spec.ts" timestamp="2025-08-18T10:06:49.621Z" hostname="chromium" tests="7" failures="1" skipped="6" time="0" errors="0">
-<testcase name="Evaluation System › Create new evaluation task successfully" classname="evaluation.spec.ts" time="0">
-<failure message="evaluation.spec.ts:120:3 Create new evaluation task successfully" type="FAILURE">
-<![CDATA[  [chromium] › evaluation.spec.ts:120:3 › Evaluation System › Create new evaluation task successfully 
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-]]>
-</failure>
-</testcase>
-<testcase name="Evaluation System › Real-time progress update visualization" classname="evaluation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Evaluation System › Display evaluation results with scoring" classname="evaluation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Evaluation System › Guest evaluation daily limit enforcement" classname="evaluation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Evaluation System › View evaluation history" classname="evaluation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Evaluation System › Evaluation task error handling" classname="evaluation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Evaluation System › Cancel ongoing evaluation" classname="evaluation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="homepage.spec.ts" timestamp="2025-08-18T10:06:49.621Z" hostname="chromium" tests="5" failures="1" skipped="4" time="0" errors="0">
-<testcase name="Homepage › 应该正确显示页面标题和主要导航" classname="homepage.spec.ts" time="0">
-<failure message="homepage.spec.ts:15:3 应该正确显示页面标题和主要导航" type="FAILURE">
-<![CDATA[  [chromium] › homepage.spec.ts:15:3 › Homepage › 应该正确显示页面标题和主要导航 ──────────────────────────────────
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-]]>
-</failure>
-</testcase>
-<testcase name="Homepage › 应该显示主要内容区域" classname="homepage.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Homepage › 应该响应式适配移动端" classname="homepage.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Homepage › 导航链接应该正确跳转" classname="homepage.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Homepage › 页面加载性能测试" classname="homepage.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="ios-components.spec.ts" timestamp="2025-08-18T10:06:49.621Z" hostname="chromium" tests="10" failures="1" skipped="9" time="0" errors="0">
-<testcase name="iOS Components › iOS button components should render and interact correctly" classname="ios-components.spec.ts" time="0">
-<failure message="ios-components.spec.ts:9:3 iOS button components should render and interact correctly" type="FAILURE">
-<![CDATA[  [chromium] › ios-components.spec.ts:9:3 › iOS Components › iOS button components should render and interact correctly 
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-]]>
-</failure>
-</testcase>
-<testcase name="iOS Components › iOS card components should display correctly" classname="ios-components.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="iOS Components › iOS-style glass morphism effects" classname="ios-components.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="iOS Components › iOS color system application" classname="ios-components.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="iOS Components › iOS typography system application" classname="ios-components.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="iOS Components › iOS toggle switch components" classname="ios-components.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="iOS Components › iOS slider components" classname="ios-components.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="iOS Components › iOS alerts and modal dialogs" classname="ios-components.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="iOS Components › Responsive iOS component adaptation" classname="ios-components.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="iOS Components › iOS component animations and transition effects" classname="ios-components.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="navigation.spec.ts" timestamp="2025-08-18T10:06:49.621Z" hostname="chromium" tests="5" failures="1" skipped="4" time="0" errors="0">
-<testcase name="Navigation System › Main navigation menu functionality" classname="navigation.spec.ts" time="0">
-<failure message="navigation.spec.ts:18:3 Main navigation menu functionality" type="FAILURE">
-<![CDATA[  [chromium] › navigation.spec.ts:18:3 › Navigation System › Main navigation menu functionality ────
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-]]>
-</failure>
-</testcase>
-<testcase name="Navigation System › Route switching and page transitions" classname="navigation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Navigation System › 404 page handling for invalid routes" classname="navigation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Navigation System › Breadcrumb navigation functionality" classname="navigation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Navigation System › Mobile navigation menu (responsive)" classname="navigation.spec.ts" time="0">
+<testcase name="Authentication Flow › Admin user has access to admin features" classname="auth-fixed.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
