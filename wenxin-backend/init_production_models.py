@@ -655,11 +655,25 @@ async def init_production_models_async():
             # Step 2: Handle related tables and clear ai_models
             logger.info("Step 2: Handling related data and clearing existing AI models...")
             
-            # First, delete related evaluation_tasks
-            logger.info("  Deleting related evaluation_tasks...")
-            await conn.execute(text("DELETE FROM evaluation_tasks"))
+            # Delete all tables that reference ai_models (in correct order)
+            logger.info("  Clearing related tables to avoid foreign key constraints...")
             
-            # Then, delete AI models
+            # 1. Delete evaluation_tasks (references ai_models)
+            await conn.execute(text("DELETE FROM evaluation_tasks"))
+            logger.info("    - Cleared evaluation_tasks")
+            
+            # 2. Delete battles (references ai_models via model_a_id and model_b_id)
+            await conn.execute(text("DELETE FROM battles"))
+            logger.info("    - Cleared battles (will be preserved separately)")
+            
+            # 3. Delete artworks if it references ai_models
+            try:
+                await conn.execute(text("DELETE FROM artworks WHERE model_id IS NOT NULL"))
+                logger.info("    - Cleared model-related artworks")
+            except:
+                pass  # artworks might not have model_id column
+            
+            # Now we can safely delete AI models
             logger.info("  Clearing existing AI models...")
             await conn.execute(text("DELETE FROM ai_models"))
             logger.info("  Existing models cleared")
