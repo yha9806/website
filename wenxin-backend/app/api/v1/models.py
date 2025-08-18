@@ -72,17 +72,9 @@ async def get_model(
     db: AsyncSession = Depends(get_db)
 ) -> Any:
     """Get AI model by ID with statistics and benchmark results"""
-    # Use raw SQL to get all columns including benchmark_results
+    # Use simpler query without potentially missing columns
     query = text("""
-        SELECT id, name, organization, version, category, description, 
-               api_endpoint, api_key_encrypted, overall_score, metrics,
-               is_active, is_verified, release_date, created_at, updated_at,
-               tags, avatar_url, data_source, verification_count,
-               benchmark_score, benchmark_metadata, confidence_level,
-               last_benchmark_at, rhythm_score, composition_score,
-               narrative_score, emotion_score, creativity_score,
-               cultural_score, benchmark_results
-        FROM ai_models
+        SELECT * FROM ai_models
         WHERE id = :model_id
     """)
     
