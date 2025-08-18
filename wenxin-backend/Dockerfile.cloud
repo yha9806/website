@@ -17,8 +17,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-# Copy SQLite database to container
-COPY wenxin.db ./wenxin.db
+# Initialize database with all models
+RUN python init_all_models.py
 
 # Create static directory for file uploads
 RUN mkdir -p /app/static/generated_images
