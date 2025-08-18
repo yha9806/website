@@ -59,25 +59,124 @@ def get_current_revision():
         logger.warning(f"Failed to get current revision: {e}")
         return None
 
-def force_schema_sync():
-    """Force database schema synchronization by running migrations from base."""
-    logger.info("🔄 Force syncing database schema...")
+def direct_column_fix():
+    """Directly check and add missing columns without relying on Alembic."""
+    logger.info("🔧 Direct column fix - checking and adding missing columns...")
     
     try:
-        # First, drop the alembic_version table to start fresh
-        logger.info("📍 Clearing Alembic version table...")
+        # Convert asyncpg URL to sync for direct operations
+        database_url = os.getenv('DATABASE_URL')
+        if not database_url:
+            logger.error("DATABASE_URL not set")
+            return False
+            
+        sync_url = database_url.replace('postgresql+asyncpg://', 'postgresql://')
+        engine = create_engine(sync_url)
+        
+        with engine.connect() as conn:
+            # Check if ai_models table exists
+            result = conn.execute(text("SELECT to_regclass('public.ai_models')"))
+            if result.fetchone()[0] is None:
+                logger.error("ai_models table does not exist")
+                return False
+            
+            # Get current columns
+            result = conn.execute(text("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name = 'ai_models' 
+                AND table_schema = 'public'
+            """))
+            existing_columns = {row[0] for row in result.fetchall()}
+            logger.info(f"Existing columns: {existing_columns}")
+            
+            # Define required columns
+            required_columns = {
+                'rhythm_score': 'FLOAT DEFAULT 0.0',
+                'composition_score': 'FLOAT DEFAULT 0.0', 
+                'narrative_score': 'FLOAT DEFAULT 0.0',
+                'emotion_score': 'FLOAT DEFAULT 0.0',
+                'creativity_score': 'FLOAT DEFAULT 0.0',
+                'cultural_score': 'FLOAT DEFAULT 0.0'
+            }
+            
+            # Add missing columns
+            added_columns = []
+            for col_name, col_def in required_columns.items():
+                if col_name not in existing_columns:
+                    logger.info(f"Adding missing column: {col_name}")
+                    conn.execute(text(f"ALTER TABLE ai_models ADD COLUMN {col_name} {col_def}"))
+                    added_columns.append(col_name)
+                else:
+                    logger.info(f"Column {col_name} already exists")
+            
+            conn.commit()
+            
+            if added_columns:
+                logger.info(f"✅ Added columns: {added_columns}")
+            else:
+                logger.info("✅ All required columns already exist")
+            
+            return True
+            
+    except Exception as e:
+        logger.error(f"❌ Direct column fix failed: {e}")
+        return False
+
+def force_alembic_migration():
+    """Force re-execution of specific migration using pure Alembic approach."""
+    logger.info("🔄 Force Alembic migration - using revision-specific approach...")
+    
+    try:
+        # Method A: Use repair migration approach
+        logger.info("🛠️ Method A: Trying repair migration approach...")
+        
+        # First, upgrade to the repair migration
         result = subprocess.run(
-            ['alembic', 'stamp', 'base'],
+            ['alembic', 'upgrade', 'fix_missing_columns'],
             capture_output=True,
             text=True,
-            timeout=60
+            timeout=300
+        )
+        
+        if result.returncode == 0:
+            logger.info("✅ Repair migration completed successfully")
+            logger.info(f"Migration output: {result.stdout}")
+            return True
+        else:
+            logger.warning(f"Repair migration failed: {result.stderr}")
+        
+        # Method B: Downgrade and re-upgrade approach
+        logger.info("🔄 Method B: Trying downgrade/upgrade approach...")
+        
+        # Step 1: Move to the revision before the problematic one
+        target_revision = "3703a6d60754"  # The revision before the score columns
+        logger.info(f"📍 Moving to revision {target_revision}...")
+        
+        result = subprocess.run(
+            ['alembic', 'downgrade', target_revision],
+            capture_output=True,
+            text=True,
+            timeout=180
         )
         
         if result.returncode != 0:
-            logger.warning(f"Could not stamp base (table might not exist): {result.stderr}")
+            logger.warning(f"Downgrade failed: {result.stderr}")
+            # If downgrade fails, force stamp
+            result = subprocess.run(
+                ['alembic', 'stamp', target_revision],
+                capture_output=True,
+                text=True,
+                timeout=60
+            )
+            if result.returncode != 0:
+                logger.error(f"Could not set revision: {result.stderr}")
+                return False
         
-        # Now run all migrations from the beginning
-        logger.info("🚀 Running all migrations from base...")
+        logger.info("✅ Moved to base revision")
+        
+        # Step 2: Now upgrade to head, which will execute all missing migrations
+        logger.info("🚀 Upgrading to head (this will add missing columns)...")
         result = subprocess.run(
             ['alembic', 'upgrade', 'head'],
             capture_output=True,
@@ -86,11 +185,69 @@ def force_schema_sync():
         )
         
         if result.returncode == 0:
-            logger.info("✅ Schema sync completed successfully")
+            logger.info("✅ Alembic migration completed successfully")
             logger.info(f"Migration output: {result.stdout}")
             return True
         else:
-            logger.error(f"❌ Schema sync failed: {result.stderr}")
+            logger.error(f"❌ Alembic migration failed: {result.stderr}")
+            return False
+            
+    except Exception as e:
+        logger.error(f"❌ Failed Alembic migration: {e}")
+        return False
+
+def force_schema_sync():
+    """Force database schema synchronization using Alembic-first approach."""
+    logger.info("🔄 Force syncing database schema...")
+    
+    try:
+        # Method 1: Try Alembic-based approach first
+        logger.info("🎯 Attempting Alembic-based migration...")
+        if force_alembic_migration():
+            return True
+        
+        # Method 2: Fallback to direct column fix if Alembic fails
+        logger.info("⚠️ Alembic approach failed, trying direct column fix...")
+        if direct_column_fix():
+            logger.info("✅ Direct column fix successful, updating Alembic state...")
+            # Update Alembic to head state
+            result = subprocess.run(
+                ['alembic', 'stamp', 'head'],
+                capture_output=True,
+                text=True,
+                timeout=60
+            )
+            if result.returncode == 0:
+                logger.info("✅ Alembic state updated to head")
+                return True
+            else:
+                logger.warning(f"Alembic stamp failed but columns were added: {result.stderr}")
+                return True  # Still consider success if columns were added
+        
+        # Method 3: Full reset as last resort
+        logger.info("🔄 Last resort: Full Alembic reset...")
+        result = subprocess.run(
+            ['alembic', 'stamp', 'base'],
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+        
+        if result.returncode != 0:
+            logger.warning(f"Could not stamp base: {result.stderr}")
+        
+        result = subprocess.run(
+            ['alembic', 'upgrade', 'head'],
+            capture_output=True,
+            text=True,
+            timeout=300
+        )
+        
+        if result.returncode == 0:
+            logger.info("✅ Full reset migration completed")
+            return True
+        else:
+            logger.error(f"❌ Full reset failed: {result.stderr}")
             return False
             
     except Exception as e:
