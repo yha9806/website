@@ -765,7 +765,22 @@ async def init_all_models(session: AsyncSession):
     
     created_models = []
     for model_data in models:
-        model = AIModel(**model_data)
+        # Extract metrics to separate fields for database compatibility
+        metrics = model_data.get("metrics", {})
+        
+        # Create enhanced model data with individual score columns
+        enhanced_model_data = {
+            **model_data,
+            # Set individual score columns for production database compatibility
+            "rhythm_score": metrics.get("rhythm", 0),
+            "composition_score": metrics.get("composition", 0), 
+            "narrative_score": metrics.get("narrative", 0),
+            "emotion_score": metrics.get("emotion", 0),
+            "creativity_score": metrics.get("creativity", 0),
+            "cultural_score": metrics.get("cultural", 0)
+        }
+        
+        model = AIModel(**enhanced_model_data)
         session.add(model)
         created_models.append(model)
     

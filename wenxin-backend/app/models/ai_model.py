@@ -26,6 +26,14 @@ class AIModel(Base):
     overall_score = Column(Float, default=0.0)
     metrics = Column(JSON, default={})  # Store all metrics as JSON
     
+    # Individual score columns (for production database compatibility)
+    rhythm_score = Column(Float, default=0.0)
+    composition_score = Column(Float, default=0.0)
+    narrative_score = Column(Float, default=0.0)
+    emotion_score = Column(Float, default=0.0)
+    creativity_score = Column(Float, default=0.0)
+    cultural_score = Column(Float, default=0.0)
+    
     # Status
     is_active = Column(Boolean, default=True)
     is_verified = Column(Boolean, default=False)
