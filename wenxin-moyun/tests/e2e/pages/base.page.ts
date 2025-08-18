@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test';
-import { withRoute, urlMatcher } from '../../../src/test-utils/route';
+import { withRoute, urlMatcher } from '../utils/route-helper';
 
 export class BasePage {
   constructor(protected page: Page) {}

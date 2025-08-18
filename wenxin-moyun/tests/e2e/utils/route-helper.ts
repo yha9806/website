@@ -1,22 +1,18 @@
 /**
- * Route utilities for HashRouter/BrowserRouter compatibility
- * Shared between frontend and E2E tests
+ * Route utilities for E2E tests
+ * Handles HashRouter URL formatting
  */
 
-// Handle both browser and Node.js environments
-export const ROUTER_MODE = 
-  typeof process !== 'undefined' && process.env?.VITE_ROUTER_MODE 
-    ? process.env.VITE_ROUTER_MODE
-    : (typeof import !== 'undefined' && typeof import.meta !== 'undefined' && import.meta.env?.VITE_ROUTER_MODE) 
-      ? import.meta.env.VITE_ROUTER_MODE 
-      : 'hash'; // Default to hash router
+// For E2E tests, we always use hash router in production
+// Can be overridden via environment variable
+const ROUTER_MODE = process.env.VITE_ROUTER_MODE || 'hash';
 
 /**
  * Convert a path to the correct format based on router mode
  * @param p - Path starting with or without /
  * @returns Properly formatted path for current router mode
  */
-export const withRoute = (p: string) => {
+export const withRoute = (p: string): string => {
   // Ensure path starts with /
   const path = p.startsWith('/') ? p : `/${p}`;
   return ROUTER_MODE === 'hash' ? `/#${path}` : path;
@@ -27,7 +23,7 @@ export const withRoute = (p: string) => {
  * @param path - Path to match
  * @returns RegExp that matches the path in current router mode
  */
-export const urlMatcher = (path: string) => {
+export const urlMatcher = (path: string): RegExp => {
   const cleanPath = path.replace(/^\//, '');
   const pattern = ROUTER_MODE === 'hash' 
     ? `/#/${cleanPath}(\\?.*)?$`
@@ -38,7 +34,7 @@ export const urlMatcher = (path: string) => {
 /**
  * Get the base path for the current router mode
  */
-export const getBasePath = () => {
+export const getBasePath = (): string => {
   return ROUTER_MODE === 'hash' ? '/#/' : '/';
 };
 
