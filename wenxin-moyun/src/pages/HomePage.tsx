@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { mockBattles, categories } from '../data/mockData';
@@ -18,6 +18,7 @@ import {
 import LeaderboardTable from '../components/leaderboard/LeaderboardTable';
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const { entries: leaderboard } = useLeaderboard();
   const topModels = leaderboard.slice(0, 3);
 
@@ -133,7 +134,7 @@ export default function HomePage() {
                 winRate: (entry.score || 0) * 0.8 + Math.random() * 10
               }))}
               loading={false}
-              onRowClick={(entry) => window.location.href = `/model/${entry.model.id}`}
+              onRowClick={(entry) => navigate(`/model/${entry.model.id}`)}
             />
           </IOSCardContent>
         </IOSCard>
