@@ -58,15 +58,26 @@ else:
     if os.getenv("USE_CLOUD_SQL") == "true" and "/cloudsql/" not in database_url:
         connect_args["ssl"] = "require"
     
-    engine = create_async_engine(
-        database_url,
-        echo=settings.DEBUG,
-        future=True,
-        pool_size=10,
-        max_overflow=20,
-        pool_pre_ping=True,
-        connect_args=connect_args if connect_args else None,
-    )
+    # Only pass connect_args if it has actual configuration
+    if connect_args:
+        engine = create_async_engine(
+            database_url,
+            echo=settings.DEBUG,
+            future=True,
+            pool_size=10,
+            max_overflow=20,
+            pool_pre_ping=True,
+            connect_args=connect_args,
+        )
+    else:
+        engine = create_async_engine(
+            database_url,
+            echo=settings.DEBUG,
+            future=True,
+            pool_size=10,
+            max_overflow=20,
+            pool_pre_ping=True,
+        )
 
 # Create async session factory
 AsyncSessionLocal = async_sessionmaker(
