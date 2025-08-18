@@ -4,14 +4,37 @@
 
 import json
 import sqlite3
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text, select, delete
+from pydantic import BaseModel, Field
 from app.core.database import get_db
+from app.core.auth import get_current_admin_user
 from app.models.ai_model import AIModel
+from app.models.user import User
+from app.repositories import ModelRepository
 
 router = APIRouter()
+
+
+class UpdateScoresRequest(BaseModel):
+    """Request model for updating scores"""
+    overall_score: Optional[float] = Field(None, ge=0, le=100)
+    rhythm_score: Optional[float] = Field(None, ge=0, le=100)
+    composition_score: Optional[float] = Field(None, ge=0, le=100)
+    narrative_score: Optional[float] = Field(None, ge=0, le=100)
+    emotion_score: Optional[float] = Field(None, ge=0, le=100)
+    creativity_score: Optional[float] = Field(None, ge=0, le=100)
+    cultural_score: Optional[float] = Field(None, ge=0, le=100)
+
+
+class BatchUpdateRequest(BaseModel):
+    """Request model for batch score updates"""
+    updates: List[Dict[str, Any]] = Field(
+        ..., 
+        description="List of updates with model_id and scores"
+    )
 
 @router.delete("/clear-all-mock-models")
 async def clear_all_mock_models(db: AsyncSession = Depends(get_db)):
@@ -443,3 +466,225 @@ async def clear_mock_data(db: AsyncSession = Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to clear mock data: {str(e)}"
         )
+
+
+@router.put("/models/{model_id}/scores")
+async def update_model_scores(
+    model_id: str,
+    scores: UpdateScoresRequest,
+    db: AsyncSession = Depends(get_db),
+    current_admin: User = Depends(get_current_admin_user)
+):
+    """
+    Update scores for a specific model
+    Requires admin authentication
+    """
+    repo = ModelRepository(db)
+    
+    # Get existing model
+    model = await repo.get_by_id(model_id)
+    if not model:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Model {model_id} not found"
+        )
+    
+    # Prepare update data
+    update_data = {}
+    if scores.overall_score is not None:
+        update_data["overall_score"] = scores.overall_score
+    
+    # Update individual scores
+    score_fields = [
+        "rhythm_score", "composition_score", "narrative_score",
+        "emotion_score", "creativity_score", "cultural_score"
+    ]
+    
+    for field in score_fields:
+        value = getattr(scores, field)
+        if value is not None:
+            update_data[field] = value
+    
+    # Also update metrics JSON for backward compatibility
+    if any(f in update_data for f in score_fields):
+        update_data["metrics"] = {
+            "rhythm": scores.rhythm_score if scores.rhythm_score is not None else (model.rhythm_score or 0),
+            "composition": scores.composition_score if scores.composition_score is not None else (model.composition_score or 0),
+            "narrative": scores.narrative_score if scores.narrative_score is not None else (model.narrative_score or 0),
+            "emotion": scores.emotion_score if scores.emotion_score is not None else (model.emotion_score or 0),
+            "creativity": scores.creativity_score if scores.creativity_score is not None else (model.creativity_score or 0),
+            "cultural": scores.cultural_score if scores.cultural_score is not None else (model.cultural_score or 0)
+        }
+    
+    # Update model
+    updated_model = await repo.update(model_id, update_data)
+    
+    return {
+        "message": "Scores updated successfully",
+        "model_id": model_id,
+        "updated_fields": list(update_data.keys())
+    }
+
+
+@router.post("/models/batch-update-scores")
+async def batch_update_scores(
+    request: BatchUpdateRequest,
+    db: AsyncSession = Depends(get_db),
+    current_admin: User = Depends(get_current_admin_user)
+):
+    """
+    Batch update scores for multiple models
+    
+    Example request:
+    {
+        "updates": [
+            {
+                "model_id": "gpt-4o",
+                "overall_score": 95.0,
+                "creativity_score": 96.0
+            },
+            {
+                "model_id": "claude-3-opus",
+                "overall_score": 93.5
+            }
+        ]
+    }
+    """
+    repo = ModelRepository(db)
+    results = []
+    errors = []
+    
+    for update in request.updates:
+        model_id = update.get("model_id")
+        if not model_id:
+            errors.append({"error": "model_id is required", "data": update})
+            continue
+        
+        try:
+            # Get existing model
+            model = await repo.get_by_id(model_id)
+            if not model:
+                errors.append({
+                    "model_id": model_id,
+                    "error": f"Model {model_id} not found"
+                })
+                continue
+            
+            # Prepare update data
+            update_data = {}
+            
+            # Update overall score if provided
+            if "overall_score" in update:
+                update_data["overall_score"] = update["overall_score"]
+            
+            # Update individual scores
+            score_fields = [
+                "rhythm_score", "composition_score", "narrative_score",
+                "emotion_score", "creativity_score", "cultural_score"
+            ]
+            
+            for field in score_fields:
+                if field in update:
+                    update_data[field] = update[field]
+            
+            # Update metrics JSON
+            if any(f in update_data for f in score_fields):
+                update_data["metrics"] = {
+                    "rhythm": update.get("rhythm_score", model.rhythm_score or 0),
+                    "composition": update.get("composition_score", model.composition_score or 0),
+                    "narrative": update.get("narrative_score", model.narrative_score or 0),
+                    "emotion": update.get("emotion_score", model.emotion_score or 0),
+                    "creativity": update.get("creativity_score", model.creativity_score or 0),
+                    "cultural": update.get("cultural_score", model.cultural_score or 0)
+                }
+            
+            # Update model
+            await repo.update(model_id, update_data)
+            results.append({
+                "model_id": model_id,
+                "status": "success",
+                "updated_fields": list(update_data.keys())
+            })
+            
+        except Exception as e:
+            errors.append({
+                "model_id": model_id,
+                "error": str(e)
+            })
+    
+    return {
+        "message": f"Batch update completed. Success: {len(results)}, Errors: {len(errors)}",
+        "successful_updates": results,
+        "errors": errors
+    }
+
+
+@router.get("/models/{model_id}/scores")
+async def get_model_scores(
+    model_id: str,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Get current scores for a model
+    Public endpoint (no auth required for reading)
+    """
+    repo = ModelRepository(db)
+    model = await repo.get_by_id(model_id)
+    
+    if not model:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Model {model_id} not found"
+        )
+    
+    return {
+        "model_id": model_id,
+        "name": model.name,
+        "overall_score": model.overall_score,
+        "scores": {
+            "rhythm": model.rhythm_score,
+            "composition": model.composition_score,
+            "narrative": model.narrative_score,
+            "emotion": model.emotion_score,
+            "creativity": model.creativity_score,
+            "cultural": model.cultural_score
+        },
+        "metrics": model.metrics
+    }
+
+
+@router.post("/models/reset-to-seed")
+async def reset_to_seed_data(
+    db: AsyncSession = Depends(get_db),
+    current_admin: User = Depends(get_current_admin_user)
+):
+    """
+    Reset all models to seed data scores
+    WARNING: This will overwrite all current scores!
+    """
+    from app.core.seed_data import SEED_DATA
+    
+    repo = ModelRepository(db)
+    updated_count = 0
+    
+    for seed_model in SEED_DATA:
+        model = await repo.get_by_name(seed_model["name"])
+        if model:
+            # Update with seed data scores
+            update_data = {
+                "overall_score": seed_model["overall_score"],
+                "rhythm_score": seed_model["rhythm_score"],
+                "composition_score": seed_model["composition_score"],
+                "narrative_score": seed_model["narrative_score"],
+                "emotion_score": seed_model["emotion_score"],
+                "creativity_score": seed_model["creativity_score"],
+                "cultural_score": seed_model["cultural_score"],
+                "metrics": seed_model["metrics"]
+            }
+            await repo.update(model.id, update_data)
+            updated_count += 1
+    
+    return {
+        "message": f"Reset complete. Updated {updated_count} models to seed data scores",
+        "updated_count": updated_count
+    }

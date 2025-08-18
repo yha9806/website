@@ -50,6 +50,21 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 
 async def init_db():
-    """Initialize database tables"""
+    """Initialize database tables and data"""
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+    
+    # Import here to avoid circular imports
+    from app.models import AIModel
+    from sqlalchemy import select
+    
+    # Check if data already exists
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(select(AIModel).limit(1))
+        existing_models = result.scalars().first()
+        
+        if not existing_models:
+            print("No models found in database, initializing with seed data...")
+            from app.core.seed_data import seed_database
+            await seed_database(session)
+            print("Database initialized successfully!")

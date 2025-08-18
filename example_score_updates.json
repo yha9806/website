@@ -1,0 +1,31 @@
+{
+  "updates": [
+    {
+      "model_id": "gpt-4o",
+      "overall_score": 95.5,
+      "creativity_score": 96.0,
+      "narrative_score": 97.0
+    },
+    {
+      "model_id": "claude-3-5-sonnet",
+      "overall_score": 94.5,
+      "emotion_score": 95.0
+    },
+    {
+      "model_id": "gemini-1-5-pro",
+      "overall_score": 92.5,
+      "composition_score": 93.0,
+      "cultural_score": 88.0
+    },
+    {
+      "model_id": "llama-3-1-405b",
+      "overall_score": 93.5,
+      "rhythm_score": 90.0
+    },
+    {
+      "model_id": "qwen-max",
+      "overall_score": 91.8,
+      "cultural_score": 92.0
+    }
+  ]
+}

@@ -8,9 +8,11 @@ from .scoring_advice import router as scoring_advice_router
 from .websocket_simple import router as websocket_router
 from .benchmarks import router as benchmarks_router
 from .admin import router as admin_router
+from .health import router as health_router
 
 api_router = APIRouter()
 
+api_router.include_router(health_router, prefix="/health", tags=["Health Check"])
 api_router.include_router(auth_router, prefix="/auth", tags=["Authentication"])
 api_router.include_router(models_router, prefix="/models", tags=["AI Models"])
 api_router.include_router(battles_router, prefix="/battles", tags=["Battles"])

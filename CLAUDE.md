@@ -4,16 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-WenXin MoYun - Enterprise-grade AI art evaluation platform supporting **42 AI models** from **15 organizations**. Full-stack application featuring complete iOS design system, real AI model benchmarking with **Unified Model Interface**, comprehensive E2E testing infrastructure, and **production Google Cloud Platform deployment**.
+WenXin MoYun - Enterprise-grade AI art evaluation platform supporting **42 AI models** from **13 organizations**. Full-stack application featuring iOS design system, real AI model benchmarking with Unified Model Interface, comprehensive E2E testing, and production Google Cloud Platform deployment.
 
 ### Production Access
-- **Frontend**: https://storage.googleapis.com/wenxin-moyun-prod-new-static/index.html#/ (HashRouter, use # for routes)
+- **Frontend**: https://storage.googleapis.com/wenxin-moyun-prod-new-static/index.html#/ (HashRouter required)
 - **Backend API**: https://wenxin-moyun-api-229980166599.asia-east1.run.app
 - **API Docs**: https://wenxin-moyun-api-229980166599.asia-east1.run.app/docs
 
 ## Essential Commands
 
-### Quick Start (One-click Setup)
+### Quick Start
 ```bash
 # Windows
 start.bat              # Initializes DB, starts backend (:8001) + frontend (:5173)
@@ -24,266 +24,210 @@ start.bat              # Initializes DB, starts backend (:8001) + frontend (:517
 
 ### Frontend Development (wenxin-moyun/)
 ```bash
-npm install --legacy-peer-deps  # Initial setup (required for React 19)
+npm install --legacy-peer-deps  # Required for React 19 compatibility
 npm run dev            # Start dev server (port 5173+)
 npm run build          # TypeScript check + production build
 npm run build:prod     # Production build with env vars
 npm run lint           # ESLint validation
-npm run preview        # Preview production build
 
-# E2E Testing (Playwright - 64 test cases)
+# E2E Testing (Playwright)
 npm run test:e2e       # Run all tests headless
-npm run test:e2e:ui    # Interactive UI mode for debugging
-npm run test:e2e:debug # Step-by-step debugging mode
-npm run test:e2e:headed # Run tests in visible browser
-npm run test:e2e:report # Show HTML test report
-npm run test:e2e -- tests/e2e/specs/auth-fixed.spec.ts  # Run specific test file
-npx playwright test --config=tests/e2e/playwright.ci.config.ts  # CI-specific config
+npm run test:e2e:ui    # Interactive UI mode
+npm run test:e2e:debug # Step-by-step debugging
+npm run test:e2e -- tests/e2e/specs/auth-fixed.spec.ts  # Run specific test
 ```
 
 ### Backend Development (wenxin-backend/)
 ```bash
-pip install -r requirements.txt -c constraints.txt     # Install with version constraints
-python -m uvicorn app.main:app --reload --port 8001   # Start API server
-python init_db.py                                     # Reset database with AI models
-python add_test_users.py                              # Add test users (demo, admin, test)
+pip install -r requirements.txt -c constraints.txt  # Use constraints for bcrypt compatibility
+python -m uvicorn app.main:app --reload --port 8001
+
+# Database Management
+python init_db.py              # Initialize with 42 AI models
+python create_admin_user.py    # Create admin user (admin/admin123)
+python add_test_users.py       # Add test users
+
+# Database Migrations (Alembic)
+alembic upgrade head           # Apply migrations
+alembic revision --autogenerate -m "Description"  # Create new migration
+
+# Score Management
+python update_scores_async.py --login admin admin123  # Get auth token
+python update_scores_async.py --token <token> --model <uuid> --overall 95.0
+python update_scores_async.py --token <token> --batch example_score_updates.json
 
 # Testing
-pytest                 # Run all tests
-pytest tests/test_auth.py -v  # Run specific test verbose
-pytest -k "test_login" -v     # Run tests matching pattern
-pytest --cov=app tests/       # Test coverage
-
-# AI Model Testing
-python test_unified_interface.py  # Verify models use correct APIs
-python openai_benchmark.py        # Run real AI benchmarks
+pytest                         # Run all tests
+pytest tests/test_auth.py -v   # Run specific test
+pytest --cov=app tests/        # Test coverage
 ```
 
-### Database Operations
+### Deployment
 ```bash
-# Development (SQLite)
-cd wenxin-backend
-rm wenxin.db           # Delete existing database (Windows: del wenxin.db)
-python init_db.py      # Recreate with schema + 42 AI models
-python add_test_users.py  # Add test users (demo/demo123, admin/admin123, test/test123)
-
-# Check model rankings
-python -c "import sqlite3; conn = sqlite3.connect('wenxin.db'); cursor = conn.cursor(); cursor.execute('SELECT name, model_type, overall_score FROM ai_models ORDER BY overall_score DESC NULLS LAST'); print([f'{row[0]}: {row[2] if row[2] is not None else \"N/A\"}' for row in cursor.fetchall()[:10]]); conn.close()"
-
-# Check users
-python -c "import sqlite3; conn = sqlite3.connect('wenxin.db'); cursor = conn.cursor(); cursor.execute('SELECT username FROM users'); print('Users:', cursor.fetchall()); conn.close()"
-```
-
-### GitHub Actions & Deployment
-```bash
-# Check deployment status
+# GitHub Actions (auto-deploys on push to main)
 gh run list --workflow=deploy-gcp.yml --limit=5
-gh run view <run_id> --log
+gh workflow run deploy-gcp.yml  # Manual trigger
 
-# Create and manage PRs
-gh pr create --title "Title" --body "Description"
-gh pr merge --squash
-
-# Manual deployment trigger
-gh workflow run deploy-gcp.yml
+# Manual Docker Deployment
+docker build -f wenxin-backend/Dockerfile.cloud -t asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest wenxin-backend/
+docker push asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest
+gcloud run deploy wenxin-moyun-api --image=asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest --region=asia-east1
 ```
 
 ## High-Level Architecture
 
-### System Architecture
+### System Components
 ```
-Frontend (React 19 + iOS Design)  ←→  Backend (FastAPI + SQLAlchemy)  ←→  AI Providers (8 providers)
+Frontend (React 19 + iOS Design)  ←→  Backend (FastAPI + SQLAlchemy)  ←→  AI Providers
         ↓                                       ↓                              ↓
   iOS Components                         Unified Model Interface          Model Adapters
-  Zustand State                          Evaluation Engine                Provider-specific APIs
-  Playwright Tests                       Real-time WebSockets             Intelligent Scoring
+  Zustand State                          Repository Pattern               Provider APIs
+  HashRouter                             Alembic Migrations              Score Management
         ↓                                       ↓                              ↓
   Cloud Storage (Static)  ←→  Cloud Run (Backend API)  ←→  Secret Manager (API Keys)
                                         ↓
                               Cloud SQL (PostgreSQL)
 ```
 
-### Critical System Components
+### Critical Architecture Patterns
 
-#### Routing Configuration (Important)
-**Frontend uses HashRouter**: Due to Cloud Storage static hosting limitations, all routes use hash-based navigation:
-- Homepage: `#/`
-- Leaderboard: `#/leaderboard`
-- Battle: `#/battle`
-- Model Detail: `#/model/:id`
-- Login: `#/login`
-
-Configuration in `src/App.tsx` uses `HashRouter` instead of `BrowserRouter`.
-
-**E2E Test Compatibility**: Tests use route helpers in `tests/e2e/utils/route-helper.ts` to handle HashRouter URLs:
+#### 1. HashRouter Navigation (Frontend)
+All routes MUST use hash format (`#/path`) due to Cloud Storage static hosting:
 ```typescript
+// src/App.tsx uses HashRouter
+<HashRouter>
+  <Routes>
+    <Route path="/" element={<HomePage />} />
+    <Route path="/model/:id" element={<ModelDetail />} />
+  </Routes>
+</HashRouter>
+
+// E2E tests use helper in tests/e2e/utils/route-helper.ts
 const withRoute = (path: string): string => {
   return ROUTER_MODE === 'hash' ? `/#${path}` : path;
 };
 ```
 
-#### Unified Model Interface (Core AI Integration)
+#### 2. Database Architecture (Backend)
+**Dual-format score storage for compatibility:**
+```python
+# app/models/ai_model.py
+class AIModel(Base):
+    # Individual score columns (for PostgreSQL compatibility)
+    rhythm_score = Column(Float)
+    composition_score = Column(Float)
+    # ... other scores
+    
+    # JSON metrics (backward compatibility)
+    metrics = Column(JSON)
+```
+
+**Repository Pattern for data access:**
+```python
+# app/repositories/model_repository.py
+class ModelRepository:
+    def _normalize_model(self, model: AIModel) -> AIModel:
+        # Ensures both formats are populated
+```
+
+#### 3. Authentication System
+**Admin-only operations require JWT token:**
+```python
+# app/core/auth.py
+async def get_current_admin_user(...) -> User:
+    # Validates admin role
+    if not user.is_superuser:
+        raise HTTPException(status_code=403)
+```
+
+**OAuth2 login requires form-encoded data:**
+```python
+# NOT JSON - must be form data
+data = aiohttp.FormData()
+data.add_field('username', username)
+data.add_field('password', password)
+```
+
+#### 4. Unified Model Interface
 **Location**: `wenxin-backend/app/services/models/`
 
-**Key Files:**
-- `unified_client.py` - Central interface for all AI models with special parameter handling
-- `model_registry.py` - Registry managing 42 AI models from 15 organizations
-- `adapters/` - Provider-specific adapters (OpenAI, Anthropic, Google, etc.)
-
-**Critical Pattern**: Models have different API requirements:
+**Special parameter handling for different models:**
 ```python
-# GPT-5 series require max_completion_tokens (not max_tokens)
+# GPT-5 series require max_completion_tokens
 response = await client.generate(
     model_id="gpt-5",
-    prompt="Write a poem",
     max_completion_tokens=500  # NOT max_tokens
 )
 
-# o1 series don't support temperature parameter
+# o1 series don't support temperature
 response = await client.generate(
-    model_id="o1-mini", 
-    prompt="Solve this problem",
-    # temperature automatically removed for o1 models
+    model_id="o1-mini",
+    # temperature automatically removed
 )
 ```
 
-#### iOS Design System (Frontend)
-**Location**: `wenxin-moyun/src/components/ios/`
-
-**Core Components:**
-- `IOSButton`, `IOSCard`, `IOSToggle`, `IOSSlider`, `IOSAlert`
-- 60+ Fluent Emoji SVGs with semantic categorization
-- Theme system with iOS colors (#007AFF, #34C759, #FF9500, #FF3B30)
-- Glass morphism effects and San Francisco font stack
-
-#### Database Models & NULL Handling Pattern
-**Critical Business Rule**: Image models have NULL `overall_score` (intentional)
+#### 5. NULL Score Handling
+**Image models intentionally have NULL overall_score:**
 ```typescript
-// Frontend - Always check for null scores
+// Always check for null
 {score != null ? score.toFixed(1) : 'N/A'}
 
-// Sorting with NULL handling
+// Sort with NULLS LAST
 .sort((a, b) => {
-  if (a.overall_score == null && b.overall_score == null) return 0;
-  if (a.overall_score == null) return 1;  // NULL scores go to end
+  if (a.overall_score == null) return 1;
   if (b.overall_score == null) return -1;
   return b.overall_score - a.overall_score;
 })
 ```
 
-#### Authentication System
-**Backend**: FastAPI OAuth2 with JWT tokens
-- Login endpoint requires `application/x-www-form-urlencoded` format (not JSON)
-- Test users: demo/demo123, admin/admin123, test/test123
+## Database Management
 
-**Frontend**: Token stored in localStorage
-```typescript
-// Login request (form-urlencoded)
-const formParams = new URLSearchParams();
-formParams.append('username', username);
-formParams.append('password', password);
+### Migrations (Alembic)
+- Migrations auto-run on Docker startup
+- Support both SQLite (dev) and PostgreSQL (prod)
+- Location: `wenxin-backend/alembic/versions/`
 
-await apiClient.post('/auth/login', formParams, {
-  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-});
-```
+### Seed Data
+- 42 AI models from 13 organizations
+- Location: `wenxin-backend/app/core/seed_data.py`
+- Auto-loads when database is empty
 
-## Testing Architecture
-
-### E2E Testing (Playwright)
-**Configuration**: 
-- Local: `tests/e2e/playwright.config.ts` (dual-server setup)
-- CI: `tests/e2e/playwright.ci.config.ts` (optimized for CI stability)
-
-**Test Files**:
-- `auth-fixed.spec.ts` - Fixed authentication tests with HashRouter support
-- `ai-models.spec.ts` - Leaderboard, NULL score handling, filtering
-- `basic-navigation.spec.ts` - Basic navigation and health checks
-- `homepage.spec.ts`, `battle.spec.ts`, `evaluation.spec.ts` - Core features
-
-**Page Objects Pattern**: Tests use page objects in `tests/e2e/pages/` for maintainability:
-```typescript
-// HomePage doesn't have login button - navigate directly to login
-async navigateToLogin() {
-  await this.navigateTo('/login');
-}
-```
-
-## Deployment
-
-### Automated Deployment (GitHub Actions)
-**Workflow**: `.github/workflows/deploy-gcp.yml`
-**Triggers**: Every push to main/master branch
-**Process**: Test → Build Docker → Push to Artifact Registry → Deploy to Cloud Run → Update Static Files
-
-### Manual Deployment
-```bash
-# Backend Deployment
-docker build -f wenxin-backend/Dockerfile.cloud -t asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest wenxin-backend/
-docker push asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest
-gcloud run deploy wenxin-moyun-api --image=asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest --region=asia-east1
-
-# Frontend Deployment  
-cd wenxin-moyun && npm run build
-gsutil -m rsync -r -d dist/ gs://wenxin-moyun-prod-new-static/
-```
+### Score Updates
+Use admin API endpoints or CLI tools:
+- `PUT /api/v1/admin/models/{id}/scores` - Update single model
+- `POST /api/v1/admin/models/batch-update-scores` - Batch update
+- `POST /api/v1/admin/models/reset-to-seed` - Reset to defaults
 
 ## Common Issues & Solutions
 
-### E2E Test Failures
-- **Issue**: Tests timeout looking for login button on homepage
-- **Solution**: HomePage doesn't have login button; tests navigate directly to `/login`
-- **Fix**: Update page objects to match actual UI structure
+### Frontend Issues
+- **npm install fails**: Use `npm install --legacy-peer-deps` for React 19
+- **404 on direct URLs**: All routes must use hash format (`#/path`)
+- **Login button missing on homepage**: Navigate directly to `#/login`
 
-### Authentication Failures (401)
-- **Issue**: Login returns 401 Unauthorized
-- **Solution**: Ensure test users exist in database - run `python add_test_users.py`
-- **Note**: Backend expects form-urlencoded data, not JSON
+### Backend Issues
+- **bcrypt error**: Use `pip install -r requirements.txt -c constraints.txt`
+- **500 errors on production**: Check database columns with health endpoint
+- **Auth failures**: Ensure form-urlencoded format for login
 
-### HashRouter URL Issues
-- **Issue**: Direct URL access shows 404 or tests fail with wrong URLs
-- **Solution**: All routes must use hash format (`#/path`)
-- **Testing**: Use route helpers in `tests/e2e/utils/route-helper.ts`
+### Testing Issues
+- **E2E tests fail on Windows**: Check path separators in playwright.config.ts
+- **Tests timeout**: HomePage navigates directly to login, no button
+- **HashRouter URLs**: Use route helpers for correct URL format
 
-### bcrypt Dependency Conflicts
-- **Issue**: `AttributeError: module 'bcrypt' has no attribute '__about__'`
-- **Solution**: Use constraints.txt with `bcrypt==4.0.1`
-- **Install**: `pip install -r requirements.txt -c constraints.txt`
+## GCP Configuration
 
-### Frontend Build Issues
-- **Issue**: npm install fails with peer dependency conflicts
-- **Solution**: Use `npm install --legacy-peer-deps` (required for React 19)
-
-### Windows Path Issues
-- **Issue**: Playwright config fails to find backend on Windows
-- **Solution**: Use platform-specific paths in playwright.config.ts:
-```typescript
-command: process.platform === 'win32' 
-  ? 'cd ..\\wenxin-backend && python -m uvicorn app.main:app --port 8001'
-  : 'cd ../wenxin-backend && python -m uvicorn app.main:app --port 8001'
-```
-
-## Google Cloud Platform Configuration
-
-### Project Setup
+### Project Details
 - **Project ID**: `wenxin-moyun-prod-new`
 - **Region**: `asia-east1`
-- **Service Account**: `github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com`
+- **Services**: Cloud Run, Cloud Storage, Cloud SQL, Secret Manager
 
-### Required Secrets (GitHub Repository Settings)
+### GitHub Secrets Required
 - `GCP_SA_KEY` - Service account JSON
 - `OPENAI_API_KEY` - OpenAI API access
 - `ANTHROPIC_API_KEY` - Anthropic API access
-- `GEMINI_API_KEY` - Google Gemini API (optional)
 
-### GCP Services Used
-- Cloud Run (Backend API)
-- Cloud Storage (Frontend static hosting)
-- Cloud SQL (PostgreSQL database)
-- Secret Manager (API keys)
-- Artifact Registry (Docker images)
-
-## Test Accounts
-- Demo: `demo` / `demo123`
-- Admin: `admin` / `admin123`
-- Test: `test` / `test123`
+### Test Accounts
+- **Admin**: `admin` / `admin123` (full access)
+- **Demo**: `demo` / `demo123` (read-only)
+- **Test**: `test` / `test123` (for testing)
