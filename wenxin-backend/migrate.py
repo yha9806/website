@@ -59,12 +59,50 @@ def get_current_revision():
         logger.warning(f"Failed to get current revision: {e}")
         return None
 
-def reset_alembic_state():
-    """Reset Alembic state by stamping current head revision."""
-    logger.info("🔄 Resetting Alembic version state...")
+def force_schema_sync():
+    """Force database schema synchronization by running migrations from base."""
+    logger.info("🔄 Force syncing database schema...")
     
     try:
-        # First, get the head revision
+        # First, drop the alembic_version table to start fresh
+        logger.info("📍 Clearing Alembic version table...")
+        result = subprocess.run(
+            ['alembic', 'stamp', 'base'],
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+        
+        if result.returncode != 0:
+            logger.warning(f"Could not stamp base (table might not exist): {result.stderr}")
+        
+        # Now run all migrations from the beginning
+        logger.info("🚀 Running all migrations from base...")
+        result = subprocess.run(
+            ['alembic', 'upgrade', 'head'],
+            capture_output=True,
+            text=True,
+            timeout=300
+        )
+        
+        if result.returncode == 0:
+            logger.info("✅ Schema sync completed successfully")
+            logger.info(f"Migration output: {result.stdout}")
+            return True
+        else:
+            logger.error(f"❌ Schema sync failed: {result.stderr}")
+            return False
+            
+    except Exception as e:
+        logger.error(f"❌ Failed to sync schema: {e}")
+        return False
+
+def reset_alembic_state():
+    """Reset Alembic state by stamping current head revision - DEPRECATED."""
+    logger.warning("⚠️  Using deprecated stamp method - prefer force_schema_sync")
+    
+    try:
+        # Get the head revision
         result = subprocess.run(
             ['alembic', 'heads'],
             capture_output=True,
@@ -76,10 +114,10 @@ def reset_alembic_state():
             logger.error(f"Failed to get head revision: {result.stderr}")
             return False
             
-        head_revision = result.stdout.strip().split()[0]  # Get first word (revision ID)
+        head_revision = result.stdout.strip().split()[0]
         logger.info(f"Head revision: {head_revision}")
         
-        # Stamp the database with the head revision (this forces the alembic_version table)
+        # Stamp the database with the head revision
         result = subprocess.run(
             ['alembic', 'stamp', head_revision],
             capture_output=True,
@@ -122,27 +160,18 @@ def run_migrations():
             logger.warning("⚠️ Migration failed, attempting recovery...")
             logger.warning(f"STDERR: {result.stderr}")
             
-            # If migration failed due to transaction issues, reset and retry
-            if "InFailedSqlTransaction" in result.stderr or "transaction is aborted" in result.stderr:
-                logger.info("🔄 Transaction error detected, resetting Alembic state...")
+            # If migration failed due to transaction issues or schema mismatch, force sync
+            if ("InFailedSqlTransaction" in result.stderr or 
+                "transaction is aborted" in result.stderr or
+                "does not exist" in result.stderr or
+                "UndefinedColumnError" in result.stderr):
+                logger.info("🔄 Schema/transaction error detected, forcing schema sync...")
                 
-                if reset_alembic_state():
-                    logger.info("🔄 Retrying migration after state reset...")
-                    retry_result = subprocess.run(
-                        ['alembic', 'upgrade', 'head'],
-                        capture_output=True,
-                        text=True,
-                        timeout=300
-                    )
-                    
-                    if retry_result.returncode == 0:
-                        logger.info("✅ Migration completed successfully after reset")
-                        return True
-                    else:
-                        logger.error(f"❌ Migration still failed after reset: {retry_result.stderr}")
-                        return False
+                if force_schema_sync():
+                    logger.info("✅ Migration completed successfully after schema sync")
+                    return True
                 else:
-                    logger.error("❌ Failed to reset Alembic state")
+                    logger.error("❌ Failed to sync schema")
                     return False
             else:
                 logger.error(f"❌ Migration failed with unknown error: {result.stderr}")
