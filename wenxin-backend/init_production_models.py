@@ -7,6 +7,7 @@ import os
 import sys
 import json
 import asyncio
+import uuid
 from datetime import datetime
 from sqlalchemy import create_engine, text
 from sqlalchemy.ext.asyncio import create_async_engine
@@ -702,6 +703,9 @@ async def init_production_models_async():
                 else:
                     rhythm = composition = narrative = emotion = creativity = cultural = None
                 
+                # Generate UUID for the model
+                model_uuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, model['id']))
+                
                 # Insert model
                 await conn.execute(text("""
                     INSERT INTO ai_models (
@@ -722,7 +726,7 @@ async def init_production_models_async():
                         CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
                     )
                 """), {
-                    'id': model['id'],
+                    'id': model_uuid,
                     'name': model['name'],
                     'organization': model['organization'],
                     'version': model['version'],
