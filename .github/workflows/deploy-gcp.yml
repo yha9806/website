@@ -84,14 +84,35 @@ jobs:
         run: |
           npx playwright install --with-deps
 
-      - name: Run E2E tests (if not PR) - Use CI config
+      - name: Initialize test database
+        if: github.event_name != 'pull_request'
+        working-directory: wenxin-backend
+        run: |
+          python init_test_db.py
+        env:
+          DATABASE_URL: sqlite+aiosqlite:///./test.db
+
+      - name: Start backend test server
+        if: github.event_name != 'pull_request'
+        working-directory: wenxin-backend
+        run: |
+          python -m uvicorn app.main:app --host 0.0.0.0 --port 8001 &
+          sleep 10
+          curl -f http://localhost:8001/health || exit 1
+        env:
+          DATABASE_URL: sqlite+aiosqlite:///./test.db
+          SECRET_KEY: test-secret-key
+          ENVIRONMENT: test
+
+      - name: Run E2E tests with proper servers
         if: github.event_name != 'pull_request'
         working-directory: wenxin-moyun
         run: |
-          # Use CI-specific config that handles server management properly
+          # Backend is already running, start frontend and run tests
           npx playwright test --config=tests/e2e/playwright.ci.config.ts
         env:
           CI: true
+          VITE_API_BASE_URL: http://localhost:8001
         timeout-minutes: 15
 
   # Job 2: Deploy to staging (for PRs) or production (for main)
