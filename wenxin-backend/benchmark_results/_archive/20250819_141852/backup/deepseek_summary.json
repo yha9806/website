@@ -1,0 +1,47 @@
+{
+  "provider": "DeepSeek",
+  "test_date": "2025-08-19T12:54:42.681778",
+  "models_tested": 3,
+  "successful_tests": 7,
+  "rankings": [
+    {
+      "model_id": "deepseek-v3",
+      "average_score": 76.94333333333333,
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 88.33333333333333,
+        "narrative": 73.33333333333333,
+        "emotion": 68.33333333333333,
+        "creativity": 86.0,
+        "cultural": 68.33333333333333
+      },
+      "tests_completed": 3
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "average_score": 68.33500000000001,
+      "average_dimensions": {
+        "rhythm": 77.5,
+        "composition": 77.5,
+        "narrative": 67.5,
+        "emotion": 50.0,
+        "creativity": 77.5,
+        "cultural": 60.0
+      },
+      "tests_completed": 2
+    },
+    {
+      "model_id": "deepseek-r1",
+      "average_score": 66.66499999999999,
+      "average_dimensions": {
+        "rhythm": 72.5,
+        "composition": 77.5,
+        "narrative": 65.0,
+        "emotion": 55.0,
+        "creativity": 75.0,
+        "cultural": 60.0
+      },
+      "tests_completed": 2
+    }
+  ]
+}

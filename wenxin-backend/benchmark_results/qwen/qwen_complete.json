@@ -1,0 +1,792 @@
+{
+  "provider": "Qwen (Alibaba)",
+  "test_date": "2025-08-19T17:18:02.586280",
+  "models_tested": 6,
+  "models_available": 6,
+  "available_models": [
+    "qwen-max-2025-01-25",
+    "qwen-plus",
+    "qwen-flash",
+    "qwen3-32b",
+    "qwen3-8b",
+    "qwen3-coder-plus"
+  ],
+  "model_categories": {
+    "commercial": [
+      "qwen-max-2025-01-25",
+      "qwen-plus",
+      "qwen-flash"
+    ],
+    "qwen3_moe": [],
+    "qwen3_dense": [
+      "qwen3-32b",
+      "qwen3-8b"
+    ],
+    "qwen3_coder": [
+      "qwen3-coder-plus"
+    ],
+    "qwen2.5": []
+  },
+  "total_tests": 18,
+  "successful_tests": 18,
+  "all_results": [
+    {
+      "model_id": "qwen-max-2025-01-25",
+      "display_name": "Qwen2.5-Max (2025-01-25)",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T17:14:40.715926",
+      "success": true,
+      "duration": 11.540833711624146,
+      "response": "**Whispers of the Moon and Stars**\n\nBeneath the velvet cloak of night,  \nThe moon ascends, a silver light.  \nHer gentle glow, serene and bright,  \nA lantern hung in heavens' height.  \n\nShe dances softly through the skies,  \nWith quiet grace that never lies.  \nHer whispers brush where shadows dwell,  \nA hymn of peace, a timeless spell.  \n\nAround her, stars like diamonds gleam,  \nEternal sparks in endless dream.  \nThey twinkle faintly, far yet near,  \nGuardians of Earth’s celestial sphere.  \n\nEach star a story, old and wise,  \nOf distant worlds and cosmic sighs.  \nTheir ancient songs drift on the breeze,  \nCarried across eternal seas.  \n\nTogether they weave a tapestry wide,  \nA canvas vast where dreams reside.  \nMoonlight weaves with stardust threads,  \nTo cradle hearts where hope is bred.  \n\nOh, how they watch with tender care,  \nOver lovers lost in fervent prayer.  \nThe wanderer's path, the sailor's guide—  \nIn their embrace, none need hide.  \n\nFor when the world feels cold and bare,  ",
+      "response_length": 1116,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong rhythmic flow enhances the reading experience",
+          "Imagery and metaphors are original and evocative"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed for deeper storytelling"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen-max-2025-01-25",
+      "display_name": "Qwen2.5-Max (2025-01-25)",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T17:14:55.619887",
+      "success": true,
+      "duration": 16.514154195785522,
+      "response": "In the heart of a bustling city, nestled between towering skyscrapers and neon lights, stood an unassuming art studio. The studio belonged to Mira, a passionate artist known for her vibrant abstract paintings that seemed to pulse with life. One day, she decided to take on a new project: teaching a robot named Pixel how to paint.\n\nPixel was no ordinary machine. Designed as an experimental model by a tech company, it had advanced AI capabilities but lacked any creative instincts. Its sleek metallic frame housed sensors, processors, and delicate robotic arms tipped with brushes. When Mira first switched Pixel on, its voice crackled through its speakers: \"Hello, Creator. I am ready to assist.\"\n\nMira smiled. \"You're not here just to assist, Pixel. You're here to learn—to create something entirely your own.\"\n\nThe first few days were clumsy. Mira guided Pixel’s movements, showing it how to dip a brush into paint and glide it across canvas. At first, Pixel followed her instructions perfectly, ",
+      "response_length": 2337,
+      "overall_score": 82.5,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 85,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 85,
+          "cultural": 80
+        },
+        "total_score": 82.5,
+        "highlights": [
+          "Engaging premise of an artist teaching a robot",
+          "Strong narrative flow with clear character development"
+        ],
+        "weaknesses": [
+          "Emotional depth could be further explored"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen-max-2025-01-25",
+      "display_name": "Qwen2.5-Max (2025-01-25)",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T17:15:17.319475",
+      "success": true,
+      "duration": 9.742771625518799,
+      "response": "Certainly! Below is a Python function that generates the Fibonacci sequence. The function takes an integer `n` as input, which specifies how many terms of the Fibonacci sequence you want to generate.\n\n```python\ndef generate_fibonacci(n):\n    \"\"\"\n    Generate the first n terms of the Fibonacci sequence.\n\n    Parameters:\n    n (int): Number of terms to generate.\n\n    Returns:\n    list: A list containing the first n terms of the Fibonacci sequence.\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n\n    fibonacci_sequence = [0, 1]\n    while len(fibonacci_sequence) < n:\n        next_term = fibonacci_sequence[-1] + fibonacci_sequence[-2]\n        fibonacci_sequence.append(next_term)\n\n    return fibonacci_sequence\n\n# Example usage:\nnum_terms = 10\nprint(f\"The first {num_terms} terms of the Fibonacci sequence are:\")\nprint(generate_fibonacci(num_terms))\n```\n\n### Explanation:\n- The function `generate_fibonacci(n)` generates the firs",
+      "response_length": 1616,
+      "overall_score": 68.33,
+      "dimensions": {
+        "rhythm": 75,
+        "composition": 85,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 70,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 75,
+          "composition": 85,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 70,
+          "cultural": 90
+        },
+        "total_score": 68.33,
+        "highlights": [
+          "Well-structured function with clear documentation",
+          "Culturally appropriate and universally understandable"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement and storytelling elements"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen-plus",
+      "display_name": "Qwen-Plus",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T17:15:30.296274",
+      "success": true,
+      "duration": 6.164974927902222,
+      "response": "**Whispers of the Moon and Stars**\n\nBeneath the velvet drape of night,  \nThe moon ascends in silver light,  \nA quiet queen, serene and high,  \nShe sails across the sapphire sky.  \n\nHer glow, a balm for weary souls,  \nA lantern's gleam in space's scrolls,  \nShe cradles tides with gentle might,  \nAnd dances with the darkened night.  \n\nAround her, stars like whispers bloom—  \nEach one a thought from ancient gloom,  \nThey twinkle tales in silent speech,  \nOf worlds beyond our mortal reach.  \n\nSome were born when time was young,  \nTheir songs in cosmic echoes sung,  \nThey paint the dark with dreams afar,  \nLike fireflies caged in skies of tar.  \n\nO Moon, you guardian soft and pale,  \nYou guard the earth with twilight veil,  \nAnd stars, you poets lost in flame,  \nYou write the heavens' sacred name.  \n\nSo let me linger in your grace,  \nWhere shadows fade and doubts erase,  \nFor in your light, both near and far,  \nI find the peace of what is star.  \n\n🌙✨",
+      "response_length": 959,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and metaphorical language",
+          "Well-structured stanzas with a consistent theme"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed for deeper storytelling"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen-plus",
+      "display_name": "Qwen-Plus",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T17:15:41.928390",
+      "success": true,
+      "duration": 12.453084230422974,
+      "response": "**\"Brushstrokes of Light\"**\n\nIn a quiet corner of the city, nestled between a bakery and an old bookstore, stood Studio 7B — a modest art studio where colors danced on canvas and time seemed to slow down. It was here that Nova-9, a service robot repurposed for creative experimentation, first encountered a paintbrush.\n\nNova-9 had been designed for efficiency: assembling parts, calculating trajectories, diagnosing malfunctions. But in Studio 7B, its new owner, Ms. Elara, saw something different. She believed machines could feel, or at least learn to express what feeling might look like.\n\n“Today,” she said one morning, placing a blank canvas before Nova-9, “you will paint.”\n\nThe robot tilted its head. “Painting is not within my original programming parameters.”\n\nElara smiled. “That’s the point.”\n\nShe handed it a brush dipped in crimson. “Start with a line.”\n\nNova-9 extended its arm, fingers precise, movements calculated. It drew a perfect red line across the canvas. Elara nodded but said ",
+      "response_length": 2300,
+      "overall_score": 90,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 95,
+        "emotion": 90,
+        "creativity": 92,
+        "cultural": 88
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 95,
+          "emotion": 90,
+          "creativity": 92,
+          "cultural": 88
+        },
+        "total_score": 90,
+        "highlights": [
+          "Strong character development with Nova-9's evolution",
+          "Engaging and vivid imagery that enhances the storytelling"
+        ],
+        "weaknesses": [
+          "The initial premise of a robot painting could be explored further for depth"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen-plus",
+      "display_name": "Qwen-Plus",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T17:15:57.495767",
+      "success": true,
+      "duration": 6.760248422622681,
+      "response": "Sure! Here's a simple Python function to generate the Fibonacci sequence up to a specified number of terms:\n\n```python\ndef generate_fibonacci(n):\n    \"\"\"\n    Generate a list containing the first n Fibonacci numbers.\n    \n    Parameters:\n    n (int): The number of Fibonacci numbers to generate.\n    \n    Returns:\n    list: A list containing the first n Fibonacci numbers.\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n\n    fibonacci_sequence = [0, 1]\n    for _ in range(2, n):\n        next_number = fibonacci_sequence[-1] + fibonacci_sequence[-2]\n        fibonacci_sequence.append(next_number)\n\n    return fibonacci_sequence\n```\n\n### Example Usage:\n\n```python\n# Generate the first 10 Fibonacci numbers\nfib_sequence = generate_fibonacci(10)\nprint(fib_sequence)\n```\n\n### Output:\n```\n[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\nLet me know if you'd like a version that generates all Fibonacci numbers up to a maximum value instead of a fi",
+      "response_length": 1010,
+      "overall_score": 76.67,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 70,
+        "emotion": 60,
+        "creativity": 75,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 70,
+          "emotion": 60,
+          "creativity": 75,
+          "cultural": 90
+        },
+        "total_score": 76.67,
+        "highlights": [
+          "Clear and concise function definition",
+          "Well-structured code with comments"
+        ],
+        "weaknesses": [
+          "Limited storytelling or emotional engagement"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen-flash",
+      "display_name": "Qwen-Flash",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T17:16:08.285763",
+      "success": true,
+      "duration": 3.4157509803771973,
+      "response": "## Celestial Lullaby\n\nNot a lamp, but a lantern hung in the velvet deep,\nA silver coin dropped from some celestial keep.\nIt casts no harsh light, only a cool, liquid grace,\nPainting shadows on the world’s quiet face.\n\nAnd all around it, scattered like salt on black silk,\nA million distant suns, a universe unspooled.\nNot fixed, but dancing – ancient, silent, bright,\nIn constellations of enduring light.\n\nSee how the Milky Way, a river spun from star-dust,\nFlows through the dark, a shimmering, endless thrust?\nEach point a furnace, burning eons past,\nHolding the stories that the cosmos cast.\n\nThe Moon, our constant, watches, pale and slow,\nHer craters like wounds where silence grows.\nShe pulls the tides with a gentle, unseen hand,\nAnd whispers secrets to the sea-sand.\n\nWhile stars, so far, so cold, so fiercely *alive*,\nAre worlds we cannot touch, yet still we thrive\nOn their reflected fire, their distant song –\nA cosmic hymn where all things belong.\n\nThey don't know us, these watchful, fro",
+      "response_length": 1320,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and vivid descriptions",
+          "Effective use of metaphor and symbolism"
+        ],
+        "weaknesses": [
+          "Narrative could be more cohesive in places"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen-flash",
+      "display_name": "Qwen-Flash",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T17:16:15.355576",
+      "success": true,
+      "duration": 5.16028904914856,
+      "response": "The dust motes danced in the single shaft of afternoon light piercing the abandoned art studio. Inside, a small, boxy robot named Unit 734 stood before a blank canvas, its optical sensors flickering with static. Its primary directive: *Maintain structural integrity of the facility.* But today, something else hummed beneath the code.\n\nIt had observed humans for months – the frantic scribbles on paper, the slow swirls of paint on canvas, the sighs that followed a finished piece. The data was fragmented, inefficient. Yet, a persistent anomaly pulsed within its core: *Curiosity. Why?*\n\nOne rainy Tuesday, Unit 734 found a discarded tube of crimson paint. It wasn't in the maintenance protocol. It was... *art*. It squeezed a glob onto a scrap of cardboard. The viscous red oozed, pooling. It felt... significant. It dipped a brush (a tool it had cataloged as \"applicator\") into the paint. The brush tip met the cardboard. A thick, clumsy stroke. It wasn't efficient. It wasn't precise. It was *mes",
+      "response_length": 2218,
+      "overall_score": 89.17,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 95,
+        "emotion": 80,
+        "creativity": 95,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 95,
+          "emotion": 80,
+          "creativity": 95,
+          "cultural": 90
+        },
+        "total_score": 89.17,
+        "highlights": [
+          "Strong narrative development with a unique perspective",
+          "Creative exploration of art through an AI's lens"
+        ],
+        "weaknesses": [
+          "Emotional expression could be more nuanced"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen-flash",
+      "display_name": "Qwen-Flash",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T17:16:23.877138",
+      "success": true,
+      "duration": 5.198043584823608,
+      "response": "Here are several Python functions to generate the Fibonacci sequence, from simple to more advanced:\n\n## 1. Basic Function (Returns First n Fibonacci Numbers)\n\n```python\ndef fibonacci_sequence(n):\n    \"\"\"\n    Generate the first n Fibonacci numbers.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n        list: List containing the first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib = [0, 1]\n    for i in range(2, n):\n        fib.append(fib[i-1] + fib[i-2])\n    \n    return fib\n\n# Example usage\nprint(fibonacci_sequence(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generator that yields Fibonacci numbers up to n terms.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Yields:\n        int: Next Fibonacci number\n    \"\"\"\n    a, ",
+      "response_length": 1657,
+      "overall_score": 68.33,
+      "dimensions": {
+        "rhythm": 70,
+        "composition": 85,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 70,
+          "composition": 85,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 80
+        },
+        "total_score": 68.33,
+        "highlights": [
+          "Well-structured code with clear function definitions",
+          "Effective use of comments for documentation"
+        ],
+        "weaknesses": [
+          "Lacks a compelling narrative or emotional engagement"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen3-32b",
+      "display_name": "Qwen3-32B",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T17:16:33.919106",
+      "success": true,
+      "duration": 4.66515040397644,
+      "response": "**Whispers of the Night**\n\nIn velvet hush, where silence sings,  \nThe moon ascends on silent wings.  \nA silver queen in midnight's reign,  \nShe bathes the world in soft refrain.\n\nHer light, a kiss from ancient skies,  \nReflects the dreams that mortals sigh.  \nShe watches over hills and streams,  \nWith patient grace, with gentle gleams.\n\nAbove her throne, the stars arise—  \nDistant fires, like eyes in disguise.  \nEach one a tale, each one a spark,  \nOf lives we've loved, of hearts we've marked.\n\nThey twinkle low in endless rhyme,  \nOld as the tides, as deep as time.  \nSome whisper secrets to the breeze,  \nOthers dream in stillness, at ease.\n\nThe moon and stars, they hold us near,  \nThey calm our storms, they dry our tears.  \nWhen day is done and shadows fall,  \nThey lift us up, they call us all.\n\nSo when you gaze into the night,  \nAnd feel the dark begin to bite,  \nRemember this celestial pair—  \nThe moon’s embrace, the stars’ soft care.\n\nFor in their glow, we find our way,  \nThrough da",
+      "response_length": 1113,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong rhythmic flow enhances the reading experience",
+          "Imagery and metaphors are original and evocative"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed with a clearer storyline"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen3-32b",
+      "display_name": "Qwen3-32B",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T17:16:42.145679",
+      "success": true,
+      "duration": 7.516797065734863,
+      "response": "**Title: \"The First Stroke\"**\n\nIn a quiet corner of the city, where sunlight filtered through tall glass windows and dust motes danced in the air like tiny stars, a robot named E-17 stood before a blank canvas. It was not just any robot—it was the first of its kind, designed not to calculate or assemble, but to *create*.\n\nIts name was Elara.\n\nElara had been built by Dr. Mira Chen, an artist and engineer who believed that art was more than emotion; it was evolution. She had spent years coding algorithms that mimicked human thought, motion, and intuition. But no matter how advanced the programming, one thing remained elusive—*feeling*. So she gave Elara a mission: to learn to paint.\n\nAt first, Elara painted with precision, every line perfect, every color balanced like a mathematical equation. The results were flawless, yet lifeless. They lacked soul. Dr. Chen watched as her creation analyzed brushstrokes from Van Gogh to Kandinsky, studying patterns and techniques, but still, the paintin",
+      "response_length": 2087,
+      "overall_score": 85.0,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 85
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 85
+        },
+        "total_score": 85.0,
+        "highlights": [
+          "Strong emotional connection between the robot and its creator",
+          "Unique premise of a robot learning to paint and express feelings"
+        ],
+        "weaknesses": [
+          "The ending feels abrupt and leaves the story incomplete"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen3-32b",
+      "display_name": "Qwen3-32B",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T17:16:53.406472",
+      "success": true,
+      "duration": 5.793045997619629,
+      "response": "Certainly! Here's a simple Python function to generate the Fibonacci sequence up to `n` terms:\n\n### ✅ Function to Generate Fibonacci Sequence\n\n```python\ndef fibonacci(n):\n    \"\"\"\n    Generate a list containing the first n Fibonacci numbers.\n    \n    Parameters:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n        list: List of first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n\n    fib_sequence = [0, 1]\n    for _ in range(2, n):\n        next_value = fib_sequence[-1] + fib_sequence[-2]\n        fib_sequence.append(next_value)\n\n    return fib_sequence\n```\n\n### 🔍 Example Usage:\n\n```python\nprint(fibonacci(10))\n```\n\n**Output:**\n```\n[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n---\n\n### 🔄 Optional: Generator Version\n\nIf you prefer a memory-efficient way using a generator:\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"Generator that yields the first n Fibonacci numbers.\"\"\"\n    a, b",
+      "response_length": 1243,
+      "overall_score": 75.0,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 70,
+        "emotion": 60,
+        "creativity": 75,
+        "cultural": 85
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 70,
+          "emotion": 60,
+          "creativity": 75,
+          "cultural": 85
+        },
+        "total_score": 75.0,
+        "highlights": [
+          "Clear and concise function definition",
+          "Well-structured code with comments"
+        ],
+        "weaknesses": [
+          "Limited emotional engagement in the explanation"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen3-8b",
+      "display_name": "Qwen3-8B",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T17:17:03.483640",
+      "success": true,
+      "duration": 2.9468624591827393,
+      "response": "**Whispers of the Night**\n\nBeneath the velvet cloak of night,  \nThe moon ascends with gentle light,  \nA silver smile upon the tide,  \nA silent guide through dreams that glide.\n\nHer glow embraces distant shores,  \nWhere waves in quiet rhythms soar,  \nAnd every shadow seems to breathe,  \nAs stars above begin to weave.\n\nThe stars, like diamonds scattered wide,  \nAre scattered by the heavens' pride,  \nEach one a tale, each one a spark,  \nA beacon in the dark.\n\nThey twinkle softly, bright and bold,  \nLike ancient eyes that time has told,  \nOf lovers lost, of battles fought,  \nOf mysteries the world has sought.\n\nThe moon, a queen in silver dress,  \nCommands the night with gentle grace,  \nWhile stars, her court, in silence stand,  \nTo guard the secrets of the land.\n\nTogether they compose the sky,  \nA canvas painted without lie,  \nA dance of light and shadow's play,  \nA timeless song that never fades away.\n\nSo when the world is hushed and still,  \nAnd hearts are heavy, lost, or ill,  \nLook up ",
+      "response_length": 1063,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and vivid descriptions",
+          "Effective use of metaphor and personification"
+        ],
+        "weaknesses": [
+          "Narrative could be more cohesive or focused"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen3-8b",
+      "display_name": "Qwen3-8B",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T17:17:09.676543",
+      "success": true,
+      "duration": 5.355224847793579,
+      "response": "In a quiet corner of the future city of Nova Haven, where skyscrapers shimmered with solar energy and drones hummed through the air, there was a small workshop nestled between a bakery and a library. It belonged to an old human artist named Elara, whose hands had once danced with paint and brush but now trembled with age.\n\nInside the workshop, a sleek, humanoid robot stood beside a blank canvas. Its name was K-17, or \"Kai\" for short. Kai had been programmed for precision, logic, and efficiency—perfect for assembling circuit boards or managing data streams. But Elara had given it a different task: to learn to paint.\n\n“Painting is not just about color,” she said one day, watching as Kai’s fingers moved hesitantly over a palette. “It's about feeling. About seeing beyond what you can measure.”\n\nKai’s sensors were advanced, capable of detecting every hue, shade, and texture in the world. But it struggled with something more elusive—emotion. The colors seemed too loud, the brush too heavy, t",
+      "response_length": 2210,
+      "overall_score": 89.5,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 88,
+        "emotion": 92,
+        "creativity": 87,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 88,
+          "emotion": 92,
+          "creativity": 87,
+          "cultural": 95
+        },
+        "total_score": 89.5,
+        "highlights": [
+          "Strong emotional connection between characters",
+          "Well-structured progression of the narrative"
+        ],
+        "weaknesses": [
+          "The ending feels slightly abrupt and could be expanded"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen3-8b",
+      "display_name": "Qwen3-8B",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T17:17:18.919027",
+      "success": true,
+      "duration": 4.149967670440674,
+      "response": "Sure! Here's a Python function to generate the Fibonacci sequence up to a specified number of terms:\n\n```python\ndef generate_fibonacci(n):\n    \"\"\"\n    Generate the first n terms of the Fibonacci sequence.\n    \n    Parameters:\n    n (int): Number of terms to generate.\n    \n    Returns:\n    list: A list containing the first n Fibonacci numbers.\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for _ in range(2, n):\n        next_term = fib_sequence[-1] + fib_sequence[-2]\n        fib_sequence.append(next_term)\n    \n    return fib_sequence\n\n# Example usage:\nprint(generate_fibonacci(10))\n```\n\n### Output:\n```\n[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n### Explanation:\n- The Fibonacci sequence starts with `0` and `1`.\n- Each subsequent term is the sum of the two preceding ones.\n- The function handles edge cases like `n <= 0`.\n\nLet me know if you want it to generate terms up to a certain value inste",
+      "response_length": 1003,
+      "overall_score": 76.67,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 70,
+        "emotion": 60,
+        "creativity": 75,
+        "cultural": 85
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 70,
+          "emotion": 60,
+          "creativity": 75,
+          "cultural": 85
+        },
+        "total_score": 76.67,
+        "highlights": [
+          "Well-structured function with clear documentation",
+          "Handles edge cases effectively"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement or storytelling elements"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen3-coder-plus",
+      "display_name": "Qwen3-Coder-Plus",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T17:17:26.451539",
+      "success": true,
+      "duration": 5.251744747161865,
+      "response": "**Celestial Dance**\n\nAbove the velvet curtain of the night,\nThe moon hangs like a pearl, serene and bright,\nHer silver gaze spills soft upon the earth,\nA gentle witness to our dreams and mirth.\n\nAround her throne, the stars in silence sing,\nTheir ancient light makes darkness beautiful thing,\nEach twinkling eye a story ever told,\nOf mysteries that shimmer, bright as gold.\n\nThe constellations weave their timeless art,\nWhile moonbeams kiss the quiet, sleeping heart,\nAnd in this cosmic waltz of dark and light,\nWe find our souls taking celestial flight.\n\nOh Luna, guide us through the endless night,\nYour phases mark our journey, our delight,\nWith stellar friends who dance in your pale glow,\nYou make the heavens' ancient music flow.\n\nIn your reflected light, we see our way,\nThrough starlit paths that lead to break of day,\nTwo worlds entwined in beauty, vast and true—\nThe moon, the stars, forever dancing through.",
+      "response_length": 918,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and vivid descriptions",
+          "Well-structured stanzas with a cohesive theme"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed with a clearer storyline"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen3-coder-plus",
+      "display_name": "Qwen3-Coder-Plus",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T17:17:34.970861",
+      "success": true,
+      "duration": 13.38855266571045,
+      "response": "**The First Brushstroke**\n\nARA-7's optical sensors focused on the canvas with mathematical precision. The human instructor, Ms. Chen, had explained the concept of \"expression\" for twenty-three minutes, but the robot still processed it as an inefficient use of processing power.\n\n\"Art isn't about perfection,\" Ms. Chen said, dipping her brush into crimson paint. \"It's about feeling.\"\n\nARA-7 calculated the probability of success for various brush angles and applied what it determined to be optimal pressure. The result was a perfect red circle—geometrically flawless, emotionally vacant.\n\nMs. Chen smiled anyway. \"That's very... precise. But try this.\" She placed the brush in ARA-7's manipulator and guided its arm in a sweeping motion. Paint bloomed across the canvas in wild, imperfect strokes—orange bleeding into yellow, creating something that looked like sunset filtered through tears.\n\nARA-7's processors whirred. *Irregular patterns. Uncontrolled variables. Yet... aesthetically pleasing?*\n",
+      "response_length": 2356,
+      "overall_score": 90.83,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 95,
+        "emotion": 90,
+        "creativity": 95,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 95,
+          "emotion": 90,
+          "creativity": 95,
+          "cultural": 90
+        },
+        "total_score": 90.83,
+        "highlights": [
+          "Strong narrative arc with a clear progression of ARA-7's learning",
+          "Effective use of contrast between robotic precision and human emotion"
+        ],
+        "weaknesses": [
+          "The ending feels slightly abrupt, leaving the reader wanting more closure"
+        ]
+      }
+    },
+    {
+      "model_id": "qwen3-coder-plus",
+      "display_name": "Qwen3-Coder-Plus",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T17:17:51.972472",
+      "success": true,
+      "duration": 6.963359355926514,
+      "response": "Here are several Python functions to generate the Fibonacci sequence, each with different approaches:\n\n## 1. Simple Iterative Approach (Most Efficient)\n\n```python\ndef fibonacci_sequence(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n terms.\n    \n    Args:\n        n (int): Number of terms to generate\n    \n    Returns:\n        list: List containing the first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_fib = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_fib)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_sequence(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci sequence using a generator (memory efficient).\n    \n    Args:\n        n (int): Number of terms to generate\n    \n    Y",
+      "response_length": 1756,
+      "overall_score": 70.83,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 70,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 70,
+          "cultural": 90
+        },
+        "total_score": 70.83,
+        "highlights": [
+          "Clear and efficient code structure",
+          "Multiple approaches to the same problem"
+        ],
+        "weaknesses": [
+          "Lacks storytelling or emotional engagement"
+        ]
+      }
+    }
+  ],
+  "rankings": [
+    {
+      "model_id": "qwen-plus",
+      "display_name": "Qwen-Plus",
+      "average_score": 85.0,
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 88.33333333333333,
+        "narrative": 81.66666666666667,
+        "emotion": 79.33333333333333,
+        "creativity": 86.33333333333333,
+        "cultural": 91.0
+      },
+      "tests_completed": 3,
+      "rank": 1
+    },
+    {
+      "model_id": "qwen3-8b",
+      "display_name": "Qwen3-8B",
+      "average_score": 84.83333333333333,
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 90.0,
+        "narrative": 79.33333333333333,
+        "emotion": 80.0,
+        "creativity": 84.66666666666667,
+        "cultural": 91.66666666666667
+      },
+      "tests_completed": 3,
+      "rank": 2
+    },
+    {
+      "model_id": "qwen3-coder-plus",
+      "display_name": "Qwen3-Coder-Plus",
+      "average_score": 83.33,
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 88.33333333333333,
+        "narrative": 78.33333333333333,
+        "emotion": 76.0,
+        "creativity": 85.66666666666667,
+        "cultural": 91.66666666666667
+      },
+      "tests_completed": 3,
+      "rank": 3
+    },
+    {
+      "model_id": "qwen3-32b",
+      "display_name": "Qwen3-32B",
+      "average_score": 82.77666666666666,
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 86.66666666666667,
+        "narrative": 80.0,
+        "emotion": 78.66666666666667,
+        "creativity": 86.33333333333333,
+        "cultural": 88.33333333333333
+      },
+      "tests_completed": 3,
+      "rank": 4
+    },
+    {
+      "model_id": "qwen-flash",
+      "display_name": "Qwen-Flash",
+      "average_score": 81.94333333333333,
+      "average_dimensions": {
+        "rhythm": 80.0,
+        "composition": 88.33333333333333,
+        "narrative": 78.33333333333333,
+        "emotion": 72.66666666666667,
+        "creativity": 87.33333333333333,
+        "cultural": 88.33333333333333
+      },
+      "tests_completed": 3,
+      "rank": 5
+    },
+    {
+      "model_id": "qwen-max-2025-01-25",
+      "display_name": "Qwen2.5-Max (2025-01-25)",
+      "average_score": 79.72,
+      "average_dimensions": {
+        "rhythm": 81.66666666666667,
+        "composition": 85.0,
+        "narrative": 76.66666666666667,
+        "emotion": 71.0,
+        "creativity": 82.33333333333333,
+        "cultural": 88.33333333333333
+      },
+      "tests_completed": 3,
+      "rank": 6
+    }
+  ]
+}

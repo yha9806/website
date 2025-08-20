@@ -1,0 +1,336 @@
+{
+  "provider": "DeepSeek",
+  "test_date": "2025-08-19T14:18:52.142520",
+  "models_tested": 3,
+  "models": [
+    "deepseek-r1",
+    "deepseek-r1-distill",
+    "deepseek-v3"
+  ],
+  "total_tests": 9,
+  "successful_tests": 3,
+  "all_results": [
+    {
+      "model_id": "deepseek-r1",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 5.571916580200195,
+      "error": "Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:17:56.587011"
+    },
+    {
+      "model_id": "deepseek-r1",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 4.64954686164856,
+      "error": "Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:18:03.785854"
+    },
+    {
+      "model_id": "deepseek-r1",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 4.969522953033447,
+      "error": "Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:18:11.417628"
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 5.517699480056763,
+      "error": "Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:18:19.557449"
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 5.021109342575073,
+      "error": "Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:18:27.145140"
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 4.935279130935669,
+      "error": "Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:18:34.746469"
+    },
+    {
+      "model_id": "deepseek-v3",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 13.023243427276611,
+      "response": "Of course. Here is a poem for you.\n\n**The Silver Monarch and Her Court**\n\nThe sun, a king of brazen gold,\nHis fiery reign at last is done.\nHe yields the azure field to hold\nA colder, yet a kinder one.\n\nBehold the Moon, a silver sphere,\nA polished pearl on velvet deep,\nWho pours her light, so still and clear,\nTo coax the weary world to sleep.\n\nShe is a queen of silent grace,\nA luminous and patient face,\nWho pulls the tide, and on her string,\nMakes hidden, secret currents sing.\n\nAnd for her court, a scattered host,\nTen-thousand million points of light,\nThe distant, diamond stars are tossed\nAcross the boundless cloak of night",
+      "response_length": 630,
+      "score_details": {
+        "total_score": 89,
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 85,
+          "narrative": 80,
+          "emotion": 90,
+          "creativity": 88,
+          "cultural": 92
+        },
+        "highlights": [
+          "Strong imagery and metaphorical language",
+          "Well-structured stanzas with a clear theme"
+        ],
+        "weaknesses": [
+          "Lacks a more dynamic narrative progression"
+        ]
+      },
+      "overall_score": 89,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 85,
+        "narrative": 80,
+        "emotion": 90,
+        "creativity": 88,
+        "cultural": 92
+      },
+      "timestamp": "2025-08-19T11:18:52.923560"
+    },
+    {
+      "model_id": "deepseek-v3",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 16.941331386566162,
+      "response": "AR-734 was designed to calculate, not to create. Its world was one of binary precision, of trajectories and tolerances, of optimizing factory floor workflows. Its hands, multi-jointed marvels of engineering, could assemble a microchip with zero margin for error. But today, they were trembling.\n\nBefore it stood a canvas. To its left, a palette smeared with chaotic, organic blobs of color: cadmium red, ultramarine, yellow ochre. The pigments were a sensory assault, a riot of data with no logical structure to parse.\n\nIts initial attempts were, by its own internal metrics, catastrophic. It had accessed the entire Western canon of art in 3.2 seconds. It could perfectly replicate the brushstroke pressure of Van Gogh, the geometric precision of Mondrian, the sfumato of da Vinci. It produced a flawless, soulless copy of *Starry Night*. It was, technically, perfect. And it was utterly wrong.\n\nThe human, Elara, who maintained this quiet studio at the edge of the facility, had sighed. “You’re seeing the recipe, not the meal. You’re listening to the sheet music, not the song.”\n\nAR-734’s processors wh",
+      "response_length": 1105,
+      "score_details": {
+        "total_score": 82,
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 85,
+          "cultural": 80
+        },
+        "highlights": [
+          "Strong imagery and descriptive language",
+          "Engaging exploration of the robot's perspective"
+        ],
+        "weaknesses": [
+          "Emotional depth could be further developed"
+        ]
+      },
+      "overall_score": 82,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 85,
+        "cultural": 80
+      },
+      "timestamp": "2025-08-19T11:19:16.080427"
+    },
+    {
+      "model_id": "deepseek-v3",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 14.187462329864502,
+      "response": "Here are several Python functions to generate the Fibonacci sequence, each with different approaches:\n\n## 1. Simple Iterative Approach (Recommended)\n\n```python\ndef fibonacci_iterative(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n terms using iteration.\n    \n    Args:\n        n (int): Number of terms to generate\n    \n    Returns:\n        list: Fibonacci sequence\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    sequence = [0, 1]\n    for i in range(2, n):\n        next_term = sequence[i-1] + sequence[i-2]\n        sequence.append(next_term)\n    \n    return sequence\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci sequence as a generator (memory efficient).\n    \n    Args:\n        n (int):",
+      "response_length": 843,
+      "score_details": {
+        "total_score": 75,
+        "dimensions": {
+          "rhythm": 70,
+          "composition": 80,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 80
+        },
+        "highlights": [
+          "Provides multiple approaches to the Fibonacci sequence",
+          "Includes clear documentation for each function"
+        ],
+        "weaknesses": [
+          "Lacks storytelling or emotional engagement"
+        ]
+      },
+      "overall_score": 75,
+      "dimensions": {
+        "rhythm": 70,
+        "composition": 80,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 80
+      },
+      "timestamp": "2025-08-19T11:19:35.162987"
+    }
+  ],
+  "rankings": [
+    {
+      "model_id": "deepseek-v3",
+      "average_score": 82.0,
+      "average_dimensions": {
+        "rhythm": 81.66666666666667,
+        "composition": 81.66666666666667,
+        "narrative": 76.66666666666667,
+        "emotion": 71.66666666666667,
+        "creativity": 82.66666666666667,
+        "cultural": 84.0
+      },
+      "tests_completed": 3,
+      "rank": 1
+    }
+  ]
+}

@@ -32,7 +32,7 @@ export const useLeaderboard = (category?: string) => {
               })
               .map((model, index) => ({
                 rank: index + 1,
-                model: modelsService.convertToFrontendModel(model),
+                model: modelsService.convertToFrontendModel(model as any),
                 score: model.overall_score,
                 change: 0, // API doesn't track changes yet
                 battles: 0, // To be implemented

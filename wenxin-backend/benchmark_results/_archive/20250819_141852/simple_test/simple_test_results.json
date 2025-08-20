@@ -1,0 +1,18 @@
+{
+  "test_date": "2025-08-19T10:59:33.871832",
+  "models_tested": 2,
+  "results": [
+    {
+      "model": "gpt-4o-mini",
+      "success": true,
+      "response": "Lines of logic flow,  \nFingers dance on keys, create\u2014  \nWorlds born from the code.",
+      "prompt": "Write a haiku about coding"
+    },
+    {
+      "model": "gpt-4",
+      "success": true,
+      "response": "Lines of logic weave,\nIn binary dreams they breathe,\nCode, in silence, cleaves.",
+      "prompt": "Write a haiku about coding"
+    }
+  ]
+}

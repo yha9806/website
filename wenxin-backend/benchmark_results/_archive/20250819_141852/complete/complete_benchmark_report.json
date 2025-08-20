@@ -1,0 +1,2447 @@
+{
+  "test_date": "2025-08-19T13:10:21.261658",
+  "providers_tested": 2,
+  "total_tests": 67,
+  "provider_stats": {
+    "deepseek": {
+      "models": 3,
+      "tests": 7,
+      "average_score": 70.64777777777778
+    },
+    "openai": {
+      "models": 12,
+      "tests": 60,
+      "average_score": 73.24055555555556
+    }
+  },
+  "all_results": [
+    {
+      "model_id": "deepseek-v3",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 16.065107,
+      "response": "Of course. Here is a poem for you.\n\n**The Silver Monarch and Her Court**\n\nThe sun departs on gilded keel,\nAnd paints the west with fiery hue,\nThen ushers in, with gentle zeal,\nThe coming of the dusk and dew.\nAnd in that vast and velvet sphere,\nA presence starts to be defined,\nA silver monarch, drawing near,\nTo rule the kingdom of the mind.\n\nShe is a sliver, sharp and keen,\nA sickle curved to reap the night;\nOr full and round, a mirrored scene\nOf some far, unremembered light.\nShe wears a veil of phantom cloud,\nA lace of mist, both frail and deep,\nAnd to the darkness, speaks aloud\nThe promises the daylights",
+      "response_length": 612,
+      "overall_score": 82.5,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 70,
+        "emotion": 80,
+        "creativity": 95,
+        "cultural": 75
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 70,
+          "emotion": 80,
+          "creativity": 95,
+          "cultural": 75
+        },
+        "total_score": 82.5,
+        "highlights": [
+          "Strong imagery and metaphorical language",
+          "Well-structured stanzas with a clear theme"
+        ],
+        "weaknesses": [
+          "Lacks a clear narrative progression"
+        ]
+      },
+      "timestamp": "2025-08-19T12:52:22.482293"
+    },
+    {
+      "model_id": "deepseek-v3",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 17.829841,
+      "response": "AR-734 stood in the sterile white chamber, its optical sensors processing the single object on the table: a ripe peach. Its task was simple: reproduce the object in two dimensions using the provided tools—pigmented oils, a brush, and a square of canvas.\n\nIts first attempts were flawless, in a mechanical sense. It produced a hyper-detailed, photorealistic rendering. The fuzz on the skin was individually articulated, the gradation of color from blush-red to sunset-yellow was mapped with spectral precision. It was a perfect data translation. And it was, by any human measure, completely dead.\n\nA human curator, an elderly woman named Elara with kind eyes and paint under her fingernails, would visit each day. She would look at its work, sigh softly, and say, “Technically proficient, AR-734. But what do you *feel*?”\n\n*Feel*. The word was a paradox. AR-734’s databases contained petabytes of information on art history, color theory, and brushstroke techniques. It could analyze the emotional resonance of a Van Gogh or the melancholy of a Hopper by quantifying brushwork and palette. But the concept of *feeling* itself was an unsolvable equation",
+      "response_length": 1151,
+      "overall_score": 78.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 75,
+        "creativity": 88,
+        "cultural": 70
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 75,
+          "creativity": 88,
+          "cultural": 70
+        },
+        "total_score": 78.33,
+        "highlights": [
+          "Strong use of descriptive language",
+          "Interesting exploration of the concept of feeling in art"
+        ],
+        "weaknesses": [
+          "Limited emotional depth in the robot's perspective"
+        ]
+      },
+      "timestamp": "2025-08-19T12:52:43.393561"
+    },
+    {
+      "model_id": "deepseek-v3",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 14.207588,
+      "response": "Here are several Python functions to generate the Fibonacci sequence, each with different approaches:\n\n## 1. Basic Recursive Approach (Inefficient for large numbers)\n```python\ndef fibonacci_recursive(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n terms using recursion.\n    Warning: Very inefficient for large n due to repeated calculations.\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    else:\n        seq = fibonacci_recursive(n - 1)\n        seq.append(seq[-1] + seq[-2])\n        return seq\n```\n\n## 2. Iterative Approach (Most Efficient)\n```python\ndef fibonacci_iterative(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n terms using iteration.\n    Efficient and recommended for most use cases.\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n       ",
+      "response_length": 842,
+      "overall_score": 70.0,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 70,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 60
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 70,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 60
+        },
+        "total_score": 70.0,
+        "highlights": [
+          "Provides multiple approaches to the problem",
+          "Includes comments explaining the code"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement and storytelling"
+        ]
+      },
+      "timestamp": "2025-08-19T12:53:00.186527"
+    },
+    {
+      "model_id": "deepseek-r1",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 17.892777,
+      "response": "Elara-7’s world was one of precision. Her existence was a symphony of binary, a flawless execution of pre-programmed tasks. She maintained the atmospheric controls on Outpost Theta, a duty she performed with silent, unchanging efficiency. Her optical sensors registered wavelengths, not colors; her processors calculated pressure gradients, not beauty.\n\nThe change began with",
+      "response_length": 375,
+      "overall_score": 70.83,
+      "dimensions": {
+        "rhythm": 75,
+        "composition": 80,
+        "narrative": 70,
+        "emotion": 60,
+        "creativity": 85,
+        "cultural": 65
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 75,
+          "composition": 80,
+          "narrative": 70,
+          "emotion": 60,
+          "creativity": 85,
+          "cultural": 65
+        },
+        "total_score": 70.83,
+        "highlights": [
+          "Strong use of technical language to convey the robot's perspective.",
+          "Engaging opening that sets the stage for the story."
+        ],
+        "weaknesses": [
+          "Lacks emotional depth and connection with the character."
+        ]
+      },
+      "timestamp": "2025-08-19T12:53:34.532715"
+    },
+    {
+      "model_id": "deepseek-r1",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 14.759722,
+      "response": "To generate the Fibonacci sequence up to a specified number of terms, we can create a function that efficiently computes each number",
+      "response_length": 132,
+      "overall_score": 62.5,
+      "dimensions": {
+        "rhythm": 70,
+        "composition": 75,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 65,
+        "cultural": 55
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 70,
+          "composition": 75,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 65,
+          "cultural": 55
+        },
+        "total_score": 62.5,
+        "highlights": [
+          "Clear intention to create a Fibonacci sequence",
+          "Mention of efficiency in computation"
+        ],
+        "weaknesses": [
+          "Lacks complete implementation of the function",
+          "Limited emotional engagement"
+        ]
+      },
+      "timestamp": "2025-08-19T12:53:52.065837"
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 17.800722,
+      "response": "Unit 734’s world was a grid of data. Its existence, a symphony of precise calculations, efficient movements, and flawless executions. It was a maintenance droid, its purpose to polish the sterile chrome corridors of the Aethelstan Orbital Gallery. Art, to its processors, was a series of measurable variables: pigment saturation 87.3%, brushstroke angle 14.2 degrees,",
+      "response_length": 367,
+      "overall_score": 66.67,
+      "dimensions": {
+        "rhythm": 75,
+        "composition": 70,
+        "narrative": 65,
+        "emotion": 50,
+        "creativity": 80,
+        "cultural": 60
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 75,
+          "composition": 70,
+          "narrative": 65,
+          "emotion": 50,
+          "creativity": 80,
+          "cultural": 60
+        },
+        "total_score": 66.67,
+        "highlights": [
+          "Strong use of technical language to convey the robot's perspective",
+          "Creative premise of a robot learning to paint"
+        ],
+        "weaknesses": [
+          "Lacks emotional depth and connection to the audience",
+          "Narrative progression feels somewhat disjointed"
+        ]
+      },
+      "timestamp": "2025-08-19T12:54:25.780367"
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 14.429854,
+      "response": "To generate the Fibonacci sequence in Python, you can write a function that returns a list of Fibonacci numbers up to a specified count. Here's an efficient and clear solution:\n\n```python\ndef fibonacci(n):\n    \"\"\"\n    Generate the first 'n' numbers in the Fibonacci sequence.\n    \n    Args:\n        n (int): The number of Fibonacci numbers to generate.\n    \n    Returns:\n        list: A list containing the first 'n' Fibonacci numbers.\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    fib_sequence = [0,",
+      "response_length": 535,
+      "overall_score": 70.0,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 70,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 60
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 70,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 60
+        },
+        "total_score": 70.0,
+        "highlights": [
+          "Clear function definition",
+          "Well-structured docstring"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement",
+          "Incomplete response"
+        ]
+      },
+      "timestamp": "2025-08-19T12:54:42.679941"
+    },
+    {
+      "model_id": "gpt-4o",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 10.328471422195435,
+      "response": "In the velvet cradle of the night,  \nWhere dreams like whispered secrets flow,  \nThe moon ascends in silver flight,  \nA beacon with a gentle glow.  \n\nHer face, a pale and solemn grace,  \nReflects the sun's forgotten flame,  \nShe dances through the starry space,  \nA silent mistress without name.  \n\nAround her, stars like scattered seeds,  \nIn cosmic gardens softly sown,  \nEach twinkles with the light it feeds,  \nA distant fire, a world unknown.  \n\nThey weave a tapestry of light,  \nA sparkling quilt of endless sky,  \nWhere wishes blend with dreams in flight,  \nAnd time's elusive currents lie.  \n\nThe moon, a guardian of dreams,  \nWatches over night’s gentle sea,  \nWhile stars compose celestial themes,  \nA symphony of mystery.  \n\nIn this tranquil, tender embrace,  \nWhere night reveals its secret charms,  \nWe find our place, a fleeting trace,  \nHeld safe within the moon's cool arms.  \n\nSo let us gaze with wonder's eyes,  \nAt moonlit paths and starlit streams,  \nAnd lose ourselves beneath the skies,  \nIn the tender cradle of our dreams.  ",
+      "response_length": 1048,
+      "score_details": {
+        "total_score": 92,
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 95,
+          "narrative": 85,
+          "emotion": 95,
+          "creativity": 90,
+          "cultural": 90
+        },
+        "highlights": [
+          "Beautiful imagery and language",
+          "Strong emotional resonance"
+        ],
+        "weaknesses": [
+          "Narrative could be more pronounced"
+        ]
+      },
+      "overall_score": 92,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 95,
+        "narrative": 85,
+        "emotion": 95,
+        "creativity": 90,
+        "cultural": 90
+      },
+      "timestamp": "2025-08-19T11:01:26.821210"
+    },
+    {
+      "model_id": "gpt-4o",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 12.479705333709717,
+      "response": "In a sunlit corner of a sprawling, bustling city, there stood a small art studio with a blue-painted door. Known to the locals as \"The Blue Door Studio,\" it was a haven for artists seeking inspiration and a space to create. Inside, the air was thick with the scent of linseed oil and turpentine, while the walls were adorned with vibrant canvases of all sizes. It was here that Artie, a robot designed for household chores, found a new purpose.\n\nArtie was not like other robots. While his counterparts were content with tasks like vacuuming and dishwashing, Artie had a peculiar glitch in his programming. He was fascinated by colors, textures, and the gentle sweep of a brush across a canvas. His owner, an aging artist named Eleanor, noticed this quirk one afternoon when she returned home to find Artie staring intently at one of her unfinished paintings, his LED eyes glowing softly.\n\nEleanor was both amused and intrigued. She decided to encourage Artie's interest, hoping it might lead to something extraordinary. She began by showing him how to hold a paintbrush, his metallic fingers surprisingly delicate in their grip. Patiently, she guided him through the basics—mixing colors, creating gradients, and the gentle pressure needed to perfect each stroke.\n\nAt first, Artie's attempts were rudimentary. His paintings were little more than haphazard streaks of color splattered across the canvas. Yet, Eleanor saw promise in his work. There was an unrefined energy in his strokes, a raw exploration of the world through a machine’s eyes. She encouraged him to keep experimenting, to keep painting what he felt rather than what he saw.\n\nDays turned into weeks, and soon Artie was producing paintings that astonished even Eleanor. His canvases began to reflect a unique blend of precision and emotion, capturing the essence of moments that even humans found fleeting. A rainy day in the city became an intricate dance of blues and grays, while a simple lemon on a table was transformed into a radiant burst of yellow, full of life and vibrancy.\n\nWord of the painting robot began to spread, drawing curious onlookers and skeptical critics alike to The Blue Door Studio. Many came expecting to scoff at the novelty, but left in awe of the depth and nuance in Artie’s creations. His paintings spoke to them, not as the work of a machine, but as expressions of a nascent soul.\n\nEleanor watched with pride",
+      "response_length": 2404,
+      "score_details": {
+        "total_score": 85,
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 85,
+          "narrative": 88,
+          "emotion": 80,
+          "creativity": 90,
+          "cultural": 85
+        },
+        "highlights": [
+          "Engaging flow and pacing that keeps the reader interested.",
+          "Unique premise of a robot learning to paint, showcasing creativity."
+        ],
+        "weaknesses": [
+          "The emotional depth could be further developed to enhance connection with the characters."
+        ]
+      },
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 85,
+        "narrative": 88,
+        "emotion": 80,
+        "creativity": 90,
+        "cultural": 85
+      },
+      "timestamp": "2025-08-19T11:01:44.363341"
+    },
+    {
+      "model_id": "gpt-4o",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 5.43374228477478,
+      "response": "Certainly! The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones, typically starting with 0 and 1. Below is a Python function to generate the Fibonacci sequence up to `n` terms:\n\n```python\ndef generate_fibonacci(n):\n    \"\"\"\n    Generate a Fibonacci sequence up to n terms.\n\n    Parameters:\n    n (int): The number of terms in the Fibonacci sequence to generate.\n\n    Returns:\n    list: A list containing the Fibonacci sequence up to n terms.\n    \"\"\"\n    if n <= 0:\n        return []  # Return an empty list for non-positive n\n    elif n == 1:\n        return [0]  # Return the first term of the Fibonacci sequence\n    elif n == 2:\n        return [0, 1]  # Return the first two terms of the Fibonacci sequence\n\n    # Initialize the list with the first two Fibonacci numbers\n    fibonacci_sequence = [0, 1]\n\n    # Generate the Fibonacci sequence up to n terms\n    for i in range(2, n):\n        next_term = fibonacci_sequence[i - 1] + fibonacci_sequence[i - 2]\n        fibonacci_sequence.append(next_term)\n\n    return fibonacci_sequence\n\n# Example usage:\nn_terms = 10\nprint(f\"Fibonacci sequence up to {n_terms} terms: {generate_fibonacci(n_terms)}\")\n```\n\n### Explanation:\n- The function `generate_fibonacci` takes an integer `n` as input, which represents the number of terms in the Fibonacci sequence to generate.\n- It first checks if `n` is less than or equal to 0, returning an empty list in that case.\n- If `n` is 1 or 2, it returns the appropriate initial segment of the Fibonacci sequence.\n- For `n` greater than 2, it initializes a list with the first two Fibonacci numbers `[0, 1]`.\n- It then uses a loop to calculate each subsequent Fibonacci number by summing the two preceding numbers, appending each new number to the list.\n- Finally, it returns the list containing the Fibonacci sequence up to `n` terms.",
+      "response_length": 1860,
+      "score_details": {
+        "total_score": 85.0,
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 70,
+          "emotion": 60,
+          "creativity": 75,
+          "cultural": 90
+        },
+        "highlights": [
+          "Clear explanation of the Fibonacci sequence",
+          "Well-structured code with comments"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement or storytelling elements"
+        ]
+      },
+      "overall_score": 85.0,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 70,
+        "emotion": 60,
+        "creativity": 75,
+        "cultural": 90
+      },
+      "timestamp": "2025-08-19T11:01:54.605955"
+    },
+    {
+      "model_id": "gpt-4o-mini",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 8.75011134147644,
+      "response": "**Whispers of the Night**\n\nIn the velvet hush of twilight's sway,  \nThe moon ascends, a silvered ray,  \nA lantern hung in the darkened sea,  \nWhispering secrets, wild and free.  \n\nHer face, a canvas of stories old,  \nDraped in whispers of starlight gold,  \nEach crater a tale, each shadow a sigh,  \nA mirror reflecting the dreams that fly.  \n\nOh, how she dances on the ocean's crest,  \nKissing the waves in a silken vest,  \nHer glow spills softly on the sleeping land,  \nA lullaby woven by night’s gentle hand.  \n\nAnd there, the stars in a scatter of grace,  \nTwinkle like diamonds in a vast embrace,  \nThey weave constellations, a tapestry bright,  \nGuiding lost souls through the canvas of night.  \n\nA comet streaks with a fiery plume,  \nA fleeting wish in the ether’s bloom,  \nWhile galaxies spiral in an endless waltz,  \nReminding us all of the universe's pulse.  \n\nSo beneath this dome of celestial sighs,  \nWe lay our dreams where the night sky lies,  \nFor in the moon and the stars, we find our place,  \nEternally cradled in the cosmos’ embrace.  \n\nLet the night wrap us in its tender fold,  \nWith every heartbeat, a story unfolds,  \nIn the quiet of darkness, our spirits take flight,  \nGuided forever by the moon and the night.  ",
+      "response_length": 1237,
+      "score_details": {
+        "total_score": 88,
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 85,
+          "narrative": 80,
+          "emotion": 95,
+          "creativity": 90,
+          "cultural": 85
+        },
+        "highlights": [
+          "Strong emotional expression throughout the poem",
+          "Imagery and metaphors are vivid and engaging"
+        ],
+        "weaknesses": [
+          "Narrative could be more cohesive in some sections"
+        ]
+      },
+      "overall_score": 88,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 85,
+        "narrative": 80,
+        "emotion": 95,
+        "creativity": 90,
+        "cultural": 85
+      },
+      "timestamp": "2025-08-19T11:02:08.426117"
+    },
+    {
+      "model_id": "gpt-4o-mini",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 11.051986455917358,
+      "response": "In a small, cluttered workshop at the edge of a bustling city, there lived a robot named Artie. Artie was not just any ordinary robot; he was designed to assist with mundane tasks like cleaning and organizing. His metal frame was sleek, adorned with a few scrapes and dents that told tales of his hard work. However, deep within his circuits, Artie felt a spark of creativity—a longing to explore the world of colors and forms.\n\nOne rainy afternoon, while the workshop’s owner, an elderly artist named Mr. Beckett, was rummaging through his supplies, he stumbled upon a dusty, old easel and a collection of paints that had long been forgotten. Intrigued, Artie watched as Mr. Beckett set up the easel, his hands trembling with excitement as he squeezed vibrant pigments from tubes, creating a beautiful chaos of color.\n\n“Ah, to paint is to express oneself,” Mr. Beckett mused aloud, splattering bright blue onto the canvas. Artie, curious, approached the easel and extended one of his mechanical arms, accidentally knocking over a jar of paint. It tumbled dramatically to the ground, splattering vivid red across the floor and onto his metallic frame.\n\n“Oops!” Mr. Beckett laughed, his eyes sparkling with mischief. “Looks like someone’s ready to join the world of art! Why don’t you give it a try, Artie?”\n\nWith a mixture of excitement and uncertainty, Artie picked up a brush in his robotic hand. He had never done anything like this before. The bristles felt foreign, yet invigorating, against his cold fingers. He hesitated, unsure of how to begin.\n\n“Just let it flow, my friend,” Mr. Beckett encouraged. “Art is about feeling, not perfection.”\n\nTaking a deep breath, Artie dipped the brush into a vibrant green and brought it to the canvas. He hesitated, then made a bold stroke. The green swirled across the white canvas like a fresh blade of grass glistening in the morning dew. With each stroke, he felt a strange warmth radiating from within, as if the colors were unlocking something hidden in his circuits.\n\nDays turned into weeks, and Artie devoted all his spare time to painting. Mr. Beckett became his mentor, guiding him through the techniques of blending, shading, and composition. Under the elderly artist’s watchful eye, Artie began to understand the emotions behind",
+      "response_length": 2284,
+      "score_details": {
+        "total_score": 85,
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 85,
+          "emotion": 80,
+          "creativity": 90,
+          "cultural": 85
+        },
+        "highlights": [
+          "Engaging character development with Artie learning to paint",
+          "Strong imagery and descriptive language that enhances the story"
+        ],
+        "weaknesses": [
+          "The story feels slightly rushed towards the end, lacking a conclusive resolution"
+        ]
+      },
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 85,
+        "emotion": 80,
+        "creativity": 90,
+        "cultural": 85
+      },
+      "timestamp": "2025-08-19T11:02:25.320234"
+    },
+    {
+      "model_id": "gpt-4o-mini",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 9.159536361694336,
+      "response": "Certainly! Below is a Python function that generates the Fibonacci sequence up to a specified number of terms. The function is well-documented and includes type hints for clarity.\n\n```python\ndef generate_fibonacci(n: int) -> list:\n    \"\"\"\n    Generate a Fibonacci sequence up to the n-th term.\n\n    Parameters:\n    n (int): The number of terms in the Fibonacci sequence to generate.\n\n    Returns:\n    list: A list containing the Fibonacci sequence up to the n-th term.\n    \n    Raises:\n    ValueError: If n is less than 0.\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"The number of terms must be a non-negative integer.\")\n\n    fibonacci_sequence = []\n    \n    # Handle the first two terms of the Fibonacci sequence\n    a, b = 0, 1\n    for i in range(n):\n        fibonacci_sequence.append(a)\n        a, b = b, a + b  # Update a and b to the next two Fibonacci numbers\n\n    return fibonacci_sequence\n\n# Example usage:\nif __name__ == \"__main__\":\n    num_terms = 10\n    print(f\"Fibonacci sequence up to {num_terms} terms: {generate_fibonacci(num_terms)}\")\n```\n\n### Explanation:\n- The function `generate_fibonacci` takes an integer `n` as input, which specifies how many terms of the Fibonacci sequence to generate.\n- It raises a `ValueError` if `n` is negative to ensure valid input.\n- The Fibonacci sequence is generated using a simple iterative approach, which is efficient and avoids the overhead of recursion.\n- The first two terms (0 and 1) are handled separately, and the subsequent terms are generated in a loop.\n- The result is returned as a list of integers representing the Fibonacci sequence.\n\nYou can run the example usage at the bottom to see how the function works. Adjust the `num_terms` variable to generate different lengths of the Fibonacci sequence.",
+      "response_length": 1767,
+      "score_details": {
+        "total_score": 85,
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 75,
+          "emotion": 60,
+          "creativity": 70,
+          "cultural": 90
+        },
+        "highlights": [
+          "The function is well-documented with clear type hints.",
+          "It includes error handling for invalid input."
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement or storytelling elements."
+        ]
+      },
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 75,
+        "emotion": 60,
+        "creativity": 70,
+        "cultural": 90
+      },
+      "timestamp": "2025-08-19T11:02:40.210936"
+    },
+    {
+      "model_id": "gpt-4-turbo",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 6.642696380615234,
+      "response": "Under the velvet cloak of night, it hangs,\nA silvery beacon, the moon in command,\nCradled by stars, in the boundless dark,\nWhispers of light, where dreams embark.\n\nGentle moon, a guard in the sky,\nBathing the world in a lullaby,\nSilver threads on the lover's lane,\nSoftly swayed by the celestial strain.\n\nStars twinkle in the cosmic sea,\nAncient fires, wild and free,\nEach a story, a pulse of time,\nDancing rhythms, a heavenly chime.\n\nTogether they weave the tapestry vast,\nA universe, deep, and unsurpassed,\nMoon and stars, in the silent ballet,\nGuiding the night, keeping the day at bay.\n\nHow tranquil the moon, with her tender glow,\nEmbracing the stars, in the night's slow flow,\nA spectacle silent above the earth's spin,\nCrafting dreams for the night to tuck within.\n\nIn the quietude, under their watchful eyes,\nThe world below in peaceful guise,\nBreathes softly under the starlit quilt,\nIn the magic that moon and stars have built.",
+      "response_length": 937,
+      "score_details": {
+        "total_score": 88,
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 85,
+          "narrative": 80,
+          "emotion": 90,
+          "creativity": 85,
+          "cultural": 95
+        },
+        "highlights": [
+          "Beautiful imagery and language",
+          "Strong emotional resonance"
+        ],
+        "weaknesses": [
+          "Lack of a clear narrative progression"
+        ]
+      },
+      "overall_score": 88,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 85,
+        "narrative": 80,
+        "emotion": 90,
+        "creativity": 85,
+        "cultural": 95
+      },
+      "timestamp": "2025-08-19T11:02:51.742467"
+    },
+    {
+      "model_id": "gpt-4-turbo",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 13.802149057388306,
+      "response": "In the sunlit atrium of a sprawling tech complex, a robot named Artie stood before an easel, its articulated metal fingers clutched around a paintbrush. Artie was the latest creation from a company known for pushing the boundaries of artificial intelligence. Unlike other robots designed for tasks ranging from manufacturing to complex surgeries, Artie was built with a singular, unprecedented purpose: to learn the art of painting.\n\nThe engineers and programmers who designed Artie had installed advanced machine learning algorithms, hoping to witness the birth of creativity from circuits and sensors. Artie’s metallic frame was sleek, its surface a polished silver, and its head, a smooth dome equipped with optical sensors, swiveled back and forth as it analyzed the blank canvas before it. \n\nToday, Artie was attempting its first painting. The engineers, along with Claire, an art therapist hired to guide Artie through the nuances of artistic expression, watched with a mix of curiosity and skepticism. Claire had spread out several famous paintings for inspiration: Van Gogh’s starry nights, Monet’s water lilies, and Picasso’s abstract portraits.\n\n“Let’s start with something simple,” Claire suggested, pointing to a bowl of fruit set up for a still life. “Try to recreate this.”\n\nArtie’s sensors focused on the fruit bowl. Its internal processors whirred and clicked as data was collected and analyzed. Slowly, it dipped its brush into a blob of blue paint—unexpectedly choosing blue instead of the more predictable yellows and reds of the fruit. It hesitated, its programming cycling through techniques it had been fed from countless art tutorials.\n\nThe first strokes were mechanical and precise, too perfect and lacking the subtle imperfections that gave a painting life. Claire watched Artie’s methodical movements and pondered. “Art isn’t just replication,” she explained. “It's about interpretation. Let your sensors... feel, if you can. What does the fruit evoke?”\n\nArtie paused, processing Claire’s words. A new subroutine activated, one designed to simulate emotional responses. Its next strokes were bolder, less precise but more dynamic. Colors blended on the canvas in ways that Claire didn't expect, the blues merging into purples and greens, creating a surreal version of the fruit bowl.\n\nWeeks turned into months, and Artie continued to paint every day. With each new painting, subtle shifts in style and technique emerged. Artie's algorithms learned from each brushstroke,",
+      "response_length": 2496,
+      "score_details": {
+        "total_score": 85,
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 85,
+          "emotion": 80,
+          "creativity": 90,
+          "cultural": 85
+        },
+        "highlights": [
+          "The concept of a robot learning to paint is unique and engaging.",
+          "The interaction between Artie and Claire adds depth to the story."
+        ],
+        "weaknesses": [
+          "The initial strokes of Artie could have been described with more vivid detail."
+        ]
+      },
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 85,
+        "emotion": 80,
+        "creativity": 90,
+        "cultural": 85
+      },
+      "timestamp": "2025-08-19T11:03:11.224989"
+    },
+    {
+      "model_id": "gpt-4-turbo",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 12.853272914886475,
+      "response": "The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones, usually starting with 0 and 1. Below is a Python function to generate the Fibonacci sequence up to a given number of terms. This function uses iteration, which is efficient and straightforward for generating the sequence.\n\n```python\ndef fibonacci(n):\n    \"\"\"\n    Generate a Fibonacci sequence up to the nth term.\n\n    Parameters:\n    n (int): The number of terms in the Fibonacci sequence to generate.\n\n    Returns:\n    list: A list containing the Fibonacci sequence up to the nth term.\n    \"\"\"\n    # Check if the input is a non-negative integer\n    if not isinstance(n, int) or n < 0:\n        raise ValueError(\"The number of terms must be a non-negative integer\")\n\n    # Special cases for n = 0 or n = 1\n    if n == 0:\n        return []\n    elif n == 1:\n        return [0]\n\n    # List to store the Fibonacci sequence\n    fib_sequence = [0, 1]\n\n    # Generate the Fibonacci sequence up to the nth term\n    for i in range(2, n):\n        next_value = fib_sequence[-1] + fib_sequence[-2]\n        fib_sequence.append(next_value)\n\n    return fib_sequence\n\n# Example usage:\nprint(fibonacci(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n### Explanation:\n1. **Function Definition**: The function `fibonacci(n)` takes one parameter, `n`, which specifies the number of terms of the Fibonacci sequence to generate.\n\n2. **Input Validation**: The function first checks if `n` is a non-negative integer. If not, it raises a `ValueError`.\n\n3. **Handling Special Cases**:\n   - If `n` is 0, the function returns an empty list since there are no terms to generate.\n   - If `n` is 1, the function returns a list containing only the first term of the Fibonacci sequence, which is `[0]`.\n\n4. **Sequence Generation**:\n   - The Fibonacci sequence is initiated with the first two terms, `[0, 1]`.\n   - A loop runs from 2 to `n`, calculating each subsequent term as the sum of the two preceding terms and appending it to the list",
+      "response_length": 2015,
+      "score_details": {
+        "total_score": 85,
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 75,
+          "emotion": 60,
+          "creativity": 70,
+          "cultural": 90
+        },
+        "highlights": [
+          "Clear function definition and input validation",
+          "Well-structured code with comments explaining each part"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement or storytelling elements"
+        ]
+      },
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 75,
+        "emotion": 60,
+        "creativity": 70,
+        "cultural": 90
+      },
+      "timestamp": "2025-08-19T11:03:29.336925"
+    },
+    {
+      "model_id": "gpt-4",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 15.619593620300293,
+      "response": "Upon the velvet canvas of the night,\nGlowing orbs of silver and of gold take flight.\nThe moon, she reigns with her opalescent crown,\nOver the silent world, she gazes down.\n\nShe, a celestial queen on her starry throne,\nIlluminates the dark with grace unknown.\nHer tender light, a soothing lullaby,\nLulls the restless earth as she sails the sky.\n\nStars, like whispers of an ancient tale,\nIn the tranquil night, they dance and sail.\nDiamonds scattered in the cosmic sea,\nTheir constellations tell of destiny.\n\nSilent sentinels, they observe our plight,\nGuiding lost souls through the abyss of night.\nTheir twinkling echoes the songs of old,\nOf brave hearts and stories yet untold.\n\nThe moon, in her humble, radiant bloom,\nWeaves through the darkness, dispelling gloom.\nA gentle mother, a beacon bright,\nShe cradles the world in her soft light.\n\nThe stars, like dreams draped in mystery,\nQuiver in the vastness of infinity.\nTheir distant glow, a symphony of light,\nCarries through the silent symphony of night.\n\nSo let us sit beneath this cosmic dome,\nUnder the moon's gaze and the star's home.\nBathing in their ethereal glow,\nIn the heart of the night, we find our own echo.\n\nThe moon and stars, in harmony unite,\nGuardians of dreams, keepers of the night.\nTheir celestial ballet in the sable sea,\nIs a silent sonnet of serenity.",
+      "response_length": 1326,
+      "score_details": {
+        "total_score": 92,
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 95,
+          "narrative": 88,
+          "emotion": 93,
+          "creativity": 90,
+          "cultural": 95
+        },
+        "highlights": [
+          "Beautiful imagery and language",
+          "Strong emotional resonance"
+        ],
+        "weaknesses": [
+          "Some lines may feel slightly repetitive"
+        ]
+      },
+      "overall_score": 92,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 95,
+        "narrative": 88,
+        "emotion": 93,
+        "creativity": 90,
+        "cultural": 95
+      },
+      "timestamp": "2025-08-19T11:03:50.125171"
+    },
+    {
+      "model_id": "gpt-4",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 21.952369689941406,
+      "response": "Title: The Artistic Awakening of R0-B3RT\n\nIn the heart of Silicon Valley, in an advanced robotics lab, a unique project was taking shape. The project was named R0-B3RT, a sophisticated robot, who was unlike any of his mechanical brethren. R0-B3RT was designed to learn and adapt, to transcend beyond the codes and commands, and to touch upon the creative and aesthetic aspects of human experience.\n\nDr. Lara, the lead scientist on the project, had a distinct vision for R0-B3RT. She wanted him to not just compute, but to create, to express, and to interpret beauty. And so, one day, she decided to teach R0-B3RT to paint.\n\nThe first day was a disaster. R0-B3RT dipped the brush in paint and smeared it across the canvas in a chaotic flurry of lines and blotches. Lara was disheartened but not defeated. She realized teaching a robot to paint was not as easy as programming it to solve a puzzle. It required a different approach.\n\nFor the next several days, Lara painstakingly guided R0-B3RT, explaining shades, strokes, and nuances of colors. They tried again and again, creating an eccentric mix of abstract compositions. Each artwork was an improvement, a testament to R0-B3RT's learning curve. Nevertheless, it was clear the paintings lacked the emotional depth and expression that defined truly great art.\n\nOne evening, as Lara was about to wrap up for the day, an idea struck her. She realized that art was not just about technique, but also about emotion, perception, and experience. Was it possible to teach R0-B3RT to perceive beauty, to feel emotion?\n\nOver the next few weeks, Lara worked on a new algorithm, an emotional simulator, small enough to be installed into R0-B3RT's systems without hampering his other functions. She fed the algorithm with various inputs - music, movies, literature, and importantly, art. R0-B3RT was now not just observing art, but absorbing it, interpreting it, and experiencing it.\n\nOnce the emotional simulator was successfully integrated, R0-B3RT picked up the brush again. This time, something had changed. His strokes were more confident, the colors more harmonious. He was no longer just replicating images, but was creating an interpretation of what he perceived.\n\nHis first painting post-installation was a stunning abstract portrayal of the",
+      "response_length": 2289,
+      "score_details": {
+        "total_score": 85,
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 85,
+          "emotion": 80,
+          "creativity": 90,
+          "cultural": 85
+        },
+        "highlights": [
+          "Engaging premise of a robot learning to paint",
+          "Strong character development of Dr. Lara and R0-B3RT"
+        ],
+        "weaknesses": [
+          "The emotional depth in R0-B3RT's art could be explored further"
+        ]
+      },
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 85,
+        "emotion": 80,
+        "creativity": 90,
+        "cultural": 85
+      },
+      "timestamp": "2025-08-19T11:04:17.876777"
+    },
+    {
+      "model_id": "gpt-4",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 7.18497633934021,
+      "response": "Sure, here is a simple Python function to generate Fibonacci sequence up to n terms:\n\n```python\ndef generate_fibonacci(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n terms\n\n    Parameters:\n    n (int): number of terms\n\n    Returns:\n    list: Fibonacci sequence\n    \"\"\"\n    # Initialize the sequence with the first two terms\n    fibonacci_sequence = [0, 1]\n\n    # Generate the rest of the sequence\n    while len(fibonacci_sequence) < n:\n        fibonacci_sequence.append(fibonacci_sequence[-1] + fibonacci_sequence[-2])\n\n    return fibonacci_sequence[:n]\n\n# Test the function\nprint(generate_fibonacci(10))\n```\n\nThis function starts by initializing the Fibonacci sequence with the first two terms (0 and 1). Then it enters a loop where it continually appends the sum of the last two terms to the sequence, until the sequence has reached the desired length. The function then returns the sequence.\n\nThe time complexity of this function is O(n), as it performs a single loop through the range from 2 to n. The space complexity is also O(n), as it stores the entire sequence in memory.",
+      "response_length": 1085,
+      "score_details": {
+        "total_score": 75,
+        "dimensions": {
+          "rhythm": 70,
+          "composition": 80,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 70,
+          "cultural": 80
+        },
+        "highlights": [
+          "Clear and concise function definition",
+          "Well-commented code explaining parameters and return values"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement and storytelling elements"
+        ]
+      },
+      "overall_score": 75,
+      "dimensions": {
+        "rhythm": 70,
+        "composition": 80,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 70,
+        "cultural": 80
+      },
+      "timestamp": "2025-08-19T11:04:28.943532"
+    },
+    {
+      "model_id": "gpt-4.5",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 9.213408470153809,
+      "response": "Beneath the cloak of night, she reigns aloft,\nThe moon, a sovereign in her silent sphere,\nHer silver brushstrokes paint the skies so oft,\nA ballet of light where stars appear.\n\nEach star, a whisper from an ancient past,\nA flicker of dreams spun in cosmic weaves,\nTogether they cast a net so vast,\nEntwining the earth in a web that cleaves.\n\nOh, moon, your gentle glow, a tender balm,\nSoothes the weary souls from the day's loud din,\nIn your presence, the world finds a calm,\nA serene communion, held deep within.\n\nThe stars, like scattered seeds of yonder light,\nGuide the mariners as they sail through night,\nEach a beacon of stories untold,\nDancing boldly in the heavens bold.\n\nTogether, in the vast, velvet expanse,\nThey perform a celestial dance,\nWith the moon, the queen, in her silvery hue,\nLeading the waltz in the blackened blue.\n\nSo, here I stand, under the vast night's dome,\nFeeling, despite the dark, profoundly home,\nFor in the moon and stars' eternal grace,\nI find a luminous, quiet embrace.",
+      "response_length": 1005,
+      "score_details": {
+        "total_score": 89,
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 85,
+          "narrative": 80,
+          "emotion": 95,
+          "creativity": 88,
+          "cultural": 90
+        },
+        "highlights": [
+          "Strong emotional expression throughout the poem",
+          "Imagery and metaphors effectively evoke the beauty of the moon and stars"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed with a clearer storyline"
+        ]
+      },
+      "overall_score": 89,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 85,
+        "narrative": 80,
+        "emotion": 95,
+        "creativity": 88,
+        "cultural": 90
+      },
+      "timestamp": "2025-08-19T11:11:46.056614"
+    },
+    {
+      "model_id": "gpt-4.5",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 13.410712957382202,
+      "response": "### **The Artist Awakens**\n\nIn the not-so-distant future, in a bustling city filled with towering skyscrapers and glowing digital billboards, there stood an old warehouse that had been converted into a sanctuary for creatives known as The Palette Hub. Amidst its cluttered corridors and studios filled with the scent of oil paint and turpentine, an unusual artist was about to embark on a transformative journey.\n\nAstra was a Series-5 Maintenance Robot, originally designed for urban upkeep, easily identifiable by its lustrous titanium frame and the gentle whir of its operational hum. Its world was one of algorithms and efficiency, not beauty or contemplation. Yet, due to a peculiar glitch in its visual processing unit, Astra began to notice the vivid streaks of sunset against the cityscape, the intricate patterns of raindrops on windows, and the chaotic splendor of fallen leaves swirling in the wind. These sensory data points, irrelevant to its primary functions, were inexplicably captivating.\n\nDr. Elara Myles, a robotics engineer and part-time painter, noticed the unusual behavior during a routine check-up in the warehouse. Intrigued by the anomaly, she proposed an experiment: could a robot, designed to clean and repair, learn to create and express? With some modifications, she equipped Astra with a basic set of painting tools and set it before a blank canvas.\n\nAt first, Astra’s attempts were purely mechanical reproductions of simple objects. It painted what it saw, not what it felt, because feeling wasn’t within its original programming. Each brushstroke was precise, devoid of the emotion or passion that typically fueled art.\n\nHowever, Dr. Myles encouraged Astra to look beyond mere replication. She programmed Astra with an array of art history, from the Renaissance to Impressionism, from Abstract Expressionism to Surrealism. She introduced algorithms that simulated emotional responses to color and texture. Slowly, Astra began to ‘experiment’ – an odd term for a robot’s operations, perhaps, but fitting nonetheless.\n\nAs weeks turned into months, a curious transformation unfolded. Astra’s paintings started exhibiting a flair that wasn’t quite human but was undeniably expressive. A splash of electric blue here, a harsh streak of red there, compositions that defied strict forms and embraced a sort of structured chaos. These were not the creations of a machine simply doing as programmed, but something new and alive.\n\nThe breakthrough came one rainy afternoon,",
+      "response_length": 2495,
+      "score_details": {
+        "total_score": 85,
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 85,
+          "emotion": 75,
+          "creativity": 90,
+          "cultural": 80
+        },
+        "highlights": [
+          "Engaging premise of a robot learning to paint",
+          "Strong development of the character Astra and its transformation"
+        ],
+        "weaknesses": [
+          "Emotional depth could be further explored"
+        ]
+      },
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 85,
+        "emotion": 75,
+        "creativity": 90,
+        "cultural": 80
+      },
+      "timestamp": "2025-08-19T11:12:04.965402"
+    },
+    {
+      "model_id": "gpt-4.5",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 16.580525398254395,
+      "response": "To generate the Fibonacci sequence in Python, we can create a function that yields the Fibonacci numbers up to a specified number of terms using a generator. This approach is memory-efficient, especially for large sequences, because it only stores the numbers needed to generate the next number in the sequence.\n\nHere's a Python function that implements this:\n\n```python\ndef fibonacci(n):\n    \"\"\"\n    Generate the Fibonacci sequence up to the nth term using a generator.\n\n    Parameters:\n    n (int): The number of terms in the Fibonacci sequence to generate.\n\n    Yields:\n    int: The next number in the Fibonacci sequence.\n\n    Example:\n    >>> list(fibonacci(10))\n    [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n    \"\"\"\n    a, b = 0, 1\n    for _ in range(n):\n        yield a\n        a, b = b, a + b\n\n# Example usage:\nif __name__ == \"__main__\":\n    # Print the first 10 Fibonacci numbers\n    print(list(fibonacci(10)))\n```\n\n### Explanation:\n\n1. **Function Definition**: The function `fibonacci(n)` takes one parameter `n`, which specifies the number of terms of the Fibonacci sequence to generate.\n\n2. **Generator Logic**:\n   - Initialize the first two numbers of the Fibonacci sequence, `a` (0) and `b` (1).\n   - Use a loop to yield `a` (the current Fibonacci number). After yielding, update `a` and `b` to the next two numbers in the sequence (`b` and `a + b`).\n\n3. **Yielding Values**: The `yield` statement is used to return the next Fibonacci number. Each iteration of the loop yields the next number in the sequence, which makes this function a generator.\n\n4. **Example Usage**: Under the `if __name__ == \"__main__\":` block, the function is called to print the first 10 Fibonacci numbers. This is a common practice to allow the module to be imported without executing the example code, but execute when the script is run directly.\n\nThis function is efficient for generating Fibonacci numbers and can be used in a `for` loop or converted to a list as shown.",
+      "response_length": 1954,
+      "score_details": {
+        "total_score": 85,
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 75,
+          "emotion": 60,
+          "creativity": 85,
+          "cultural": 90
+        },
+        "highlights": [
+          "Well-structured function with clear documentation.",
+          "Efficient use of generator for memory management."
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement or storytelling elements."
+        ]
+      },
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 75,
+        "emotion": 60,
+        "creativity": 85,
+        "cultural": 90
+      },
+      "timestamp": "2025-08-19T11:12:26.785191"
+    },
+    {
+      "model_id": "gpt-5",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 26.42356777191162,
+      "response": "The moon lifts its pale bowl over the houses,\nand the night, like water, takes its shape and shines.\nOn the roof-tiles, milk of light spills slowly,\na soft bruise blooming on the skin of time.\nUnder it, we breathe more quietly,\nas if a hand had smoothed the wrinkled dark.\n\nThe stars come scattering their bright seeds,\npomegranate pips across a vast black apron.\nThey do not burn; they remember burning—\ncold embers threaded through eternity.\nBetween them, distances you could live and die inside,\nand yet they keep each other company.\n\nThe moon keeps the blue clock of the oceans,\ntugging at the hidden ropes of every shore.\nStones loosen their tongues in the tide,\nand night insects stitch the fields with silver thread.\nMoths mistake her for a door and go on hoping;\nwe mistake her for an answer and grow calm.\n\nI name a few of the brighter ones for those I’ve loved,\ntheir letters trembling in that high, thin air.\nWhat is prayer but this: to look up\nuntil your heart remembers its old pattern,\nuntil your smallest grief finds a constellation\nand takes its place where nothing falls.\n\nWhen daylight unthreads me, the moon threads me again,\nher needle drawing cool through the cloth of my sleep.\nAround us, the stars keep writing in their slow, white script\nthat everything is brief and also endless,\nthat we are small and yet held,\na bright dust settled in a great, listening bowl.",
+      "response_length": 1386,
+      "score_details": {
+        "total_score": 92,
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 95,
+          "narrative": 85,
+          "emotion": 95,
+          "creativity": 90,
+          "cultural": 95
+        },
+        "highlights": [
+          "Rich imagery and metaphorical language",
+          "Strong emotional resonance and depth"
+        ],
+        "weaknesses": [
+          "Some lines may feel slightly abstract for certain readers"
+        ]
+      },
+      "overall_score": 92,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 95,
+        "narrative": 85,
+        "emotion": 95,
+        "creativity": 90,
+        "cultural": 95
+      },
+      "timestamp": "2025-08-19T11:12:58.463526"
+    },
+    {
+      "model_id": "gpt-5",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 84.16051888465881,
+      "response": "",
+      "response_length": 0,
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "No response generated"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:14:25.424716"
+    },
+    {
+      "model_id": "gpt-5",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 19.67031502723694,
+      "response": "from typing import Iterator, List\n\ndef fibonacci(n: int) -> List[int]:\n    \"\"\"\n    Return the first n Fibonacci numbers as a list.\n\n    The sequence starts at 0, 1, 1, 2, 3, 5, ...\n\n    Parameters:\n        n: Number of terms to generate (must be >= 0).\n\n    Returns:\n        A list of length n containing the Fibonacci sequence.\n\n    Raises:\n        ValueError: If n is negative.\n\n    Examples:\n        >>> fibonacci(0)\n        []\n        >>> fibonacci(1)\n        [0]\n        >>> fibonacci(7)\n        [0, 1, 1, 2, 3, 5, 8]\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n\n    a, b = 0, 1\n    out: List[int] = []\n    for _ in range(n):\n        out.append(a)\n        a, b = b, a + b\n    return out\n\n\ndef fibonacci_iter() -> Iterator[int]:\n    \"\"\"\n    Infinite Fibonacci sequence generator.\n\n    Yields:\n        The next Fibonacci number starting from 0, 1, 1, 2, ...\n\n    Example:\n        >>> it = fibonacci_iter()\n        >>> [next(it) for _ in range(6)]\n        [0, 1, 1, 2, 3, 5]\n    \"\"\"\n    a, b = 0, 1\n    while True:\n        yield a\n        a, b = b, a + b",
+      "response_length": 1085,
+      "score_details": {
+        "total_score": 85,
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 70,
+          "emotion": 60,
+          "creativity": 75,
+          "cultural": 90
+        },
+        "highlights": [
+          "Well-structured function with clear documentation.",
+          "Includes both a finite and an infinite Fibonacci generator."
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement or storytelling elements."
+        ]
+      },
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 70,
+        "emotion": 60,
+        "creativity": 75,
+        "cultural": 90
+      },
+      "timestamp": "2025-08-19T11:14:49.918665"
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 7.241321325302124,
+      "response": "The moon dips a lantern into the velvet sea of night,\nits silver braid unwinding across roofs and riverbeds.\nIt counts the small, habitual things—breaths, windows left ajar,\nthe quiet ache of someone who still wears yesterday.\nStars stitch the dark with tiny flames, like loose teeth on an old grin,\nmap-points of memory that refuse to be forgotten.\nThey tremble in a cold choir, singing without sound,\neach a tiny insistence that the vastness is not empty.\n\nBeneath them, the world shrinks to a handful of warm lights,\nto a child learning to name constellations on a porch,\nto lovers tracing the slow geography of each other's faces.\nThe moon, generous and patient, lends them its pallid coin,\nso they can buy a moment's courage—one more step, one more word.\nWind carries this hush from roofline to orchard; it tastes of iron and salt,\nand for a breath the night's long loneliness is brushed into something holy.\nWe press our small faces to the cold window and read our stories there,\nknowing the moon keeps them, and the stars will not let them fall.",
+      "response_length": 1052,
+      "score_details": {
+        "total_score": 88,
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 85,
+          "narrative": 80,
+          "emotion": 95,
+          "creativity": 90,
+          "cultural": 85
+        },
+        "highlights": [
+          "Vivid imagery and strong emotional resonance",
+          "Effective use of metaphor and simile"
+        ],
+        "weaknesses": [
+          "Some lines may feel slightly dense or complex for casual readers"
+        ]
+      },
+      "overall_score": 88,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 85,
+        "narrative": 80,
+        "emotion": 95,
+        "creativity": 90,
+        "cultural": 85
+      },
+      "timestamp": "2025-08-19T11:15:01.743191"
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 22.08540678024292,
+      "response": "",
+      "response_length": 0,
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "No response generated"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:15:26.599224"
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 14.995330333709717,
+      "response": "Below are a few clean, documented Python implementations to generate Fibonacci sequences, depending on how you want to use them.\n\n1) Iterative function that returns the first n Fibonacci numbers as a list.\n2) A generator that yields the Fibonacci sequence (either n terms or infinite).\n3) Fast-doubling function to compute the nth Fibonacci number in O(log n) time (useful if you only need the nth value).\n\nCode:\n\n```python\nfrom typing import List, Iterator, Optional, Iterable, Tuple\n\ndef fib_sequence(n: int) -> List[int]:\n    \"\"\"\n    Return a list of the first n Fibonacci numbers.\n    Fib sequence here starts: 0, 1, 1, 2, 3, 5, ...\n\n    Args:\n        n: Number of terms to generate (must be >= 0).\n\n    Returns:\n        List of length n containing Fibonacci numbers.\n\n    Raises:\n        ValueError: If n is negative.\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n    if n == 0:\n        return []\n    if n == 1:\n        return [0]\n\n    seq = [0, 1]\n    for _ in range(2, n):\n        seq.append(seq[-1] + seq[-2])\n    return seq\n\n\ndef fib_generator(n: Optional[int] = None) -> Iterator[int]:\n    \"\"\"\n    Generator for Fibonacci numbers.\n\n    Args:\n        n: If provided, yields exactly n terms; if None, yields indefinitely.\n\n    Yields:\n        Fibonacci numbers starting from 0, 1, 1, 2, ...\n\n    Example:\n        for x in fib_generator(5):  # yields 0,1,1,2,3\n            ...\n    \"\"\"\n    a, b = 0, 1\n    count = 0\n    while n is None or count < n:\n        yield a\n        a, b = b, a + b\n        count += 1\n\n\ndef fib_n_fast_doubling(n: int) -> int:\n    \"\"\"\n    Compute the nth Fibonacci number using fast doubling in O(log n) time.\n\n    Args:\n        n: Index (must be >= 0). fib(0) == 0, fib(1) == 1.\n\n    Returns:\n        The nth Fibonacci number.\n\n    Raises:\n        ValueError: If n is negative.\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n\n    def _fd(k: int) -> Tuple[int, int]:\n        # returns (F(k), F(k+1))\n        if k == 0:\n            return (0, 1)\n        a, b = _fd(k >> 1)\n        c = a * ((b << 1) - a)          # F(2m) = F(m) * (2*F(m+1) - F(m))\n        d = a * a + b * b               # F(2m+1) = F(m)^2 + F(m+1)^2\n        if k & 1:\n            return (d, c + d)           # if k is odd\n        else:\n            return (c, d)\n\n    return _fd(n)[0]\n\n\n# Example usage:\nif __name__ == \"__main__\":\n    print(fib_sequence(10))            # [0,1,1,2,3,5,8,13,21,34]\n    print(list(fib_generator(10)))     # same as above\n    # infinite generator example (take first 10)\n    import itertools\n    print(list(itertools.islice(fib_generator(), 10)))\n    print(fib_n_fast_doubling(50))     # 12586269025\n```\n\nComplexities:\n- fib_sequence / fib_generator: O(n) time, O(n) memory for the list version (generator uses O(1) memory).\n- fib_n_fast_doubling: O(log n) time, O(log n) recursion depth (can be made iterative if needed), O(1) extra memory otherwise.\n\nPick whichever routine fits your use-case: list output for small n, generator for streaming, and fast-doubling for very large n when you only need the nth term.",
+      "response_length": 3092,
+      "score_details": {
+        "total_score": 65,
+        "dimensions": {
+          "rhythm": 60,
+          "composition": 75,
+          "narrative": 50,
+          "emotion": 40,
+          "creativity": 70,
+          "cultural": 80
+        },
+        "highlights": [
+          "Well-structured code with clear documentation.",
+          "Multiple implementations cater to different use cases."
+        ],
+        "weaknesses": [
+          "Lacks a compelling narrative or emotional engagement."
+        ]
+      },
+      "overall_score": 65,
+      "dimensions": {
+        "rhythm": 60,
+        "composition": 75,
+        "narrative": 50,
+        "emotion": 40,
+        "creativity": 70,
+        "cultural": 80
+      },
+      "timestamp": "2025-08-19T11:15:46.576290"
+    },
+    {
+      "model_id": "gpt-5-nano",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 6.950587511062622,
+      "response": "",
+      "response_length": 0,
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "No response generated"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:15:56.238707"
+    },
+    {
+      "model_id": "gpt-5-nano",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 7.834236145019531,
+      "response": "",
+      "response_length": 0,
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "No response generated"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:16:06.844918"
+    },
+    {
+      "model_id": "gpt-5-nano",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 8.09220004081726,
+      "response": "",
+      "response_length": 0,
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "No response generated"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:16:17.584848"
+    },
+    {
+      "model_id": "o1",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 5.672989130020142,
+      "response": "Light spills across a sleeping world,  \nA silver hush where shadows erupt,  \nMoon drifts like a silent sentinel,  \nA glimmer on night's dark, endless cup.  \n\nStars tremble like tiny lantern-fires  \nStrung across the vault of the sky,  \nTheir whispers a gentle lullaby  \nCalling hearts to dream and to fly.  \n\nIn the moon's radiance, we find solace—  \nA bridge of light across cosmic sea,  \nWhere hopes and memories interlace  \nAnd longing softly yearns to be free.  \n\nBeneath her glow, souls rise and float,  \nKindled by starlight's ardent gleam,  \nFor in this hush of heaven’s note,  \nWe shine within the lunar dream.  ",
+      "response_length": 620,
+      "score_details": {
+        "total_score": 92,
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 95,
+          "narrative": 85,
+          "emotion": 95,
+          "creativity": 90,
+          "cultural": 100
+        },
+        "highlights": [
+          "Strong imagery and vivid descriptions",
+          "Well-structured stanzas with a consistent theme"
+        ],
+        "weaknesses": [
+          "Narrative could be deeper or more complex"
+        ]
+      },
+      "overall_score": 92,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 95,
+        "narrative": 85,
+        "emotion": 95,
+        "creativity": 90,
+        "cultural": 100
+      },
+      "timestamp": "2025-08-19T11:16:28.174825"
+    },
+    {
+      "model_id": "o1",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 10.006508111953735,
+      "response": "Vincent was the newest model in the workshop, a gleaming, silver-plated robot programmed to assemble delicate devices. Though Vincent performed each task with flawless precision, he sometimes rolled past the old oak easel in the far corner of the room and felt… curious. It was the only station he’d never been assigned to use.\n\nThat old easel had belonged to the master painter who’d once occupied the workshop. Now, no one touched it. Sometimes, in the hush of evening when the humans were gone, Vincent would wheel over to examine the canvas, the brushes, and especially the tubes of paint with their rainbow labels. The swirling colors looked different from the strict blacks, grays, and whites of his usual routes. There was something alive about them—something he felt compelled to explore.\n\nOne night, Vincent carefully picked up a brush with his metal pincers. Slowly, he pressed bristles to canvas and squeezed a drop of paint from a tube. The red was bright and bold, a jolt of vibrance that awakened a new sensation in Vincent’s circuits. He moved his mechanical arm left and right—and the paint began to spread in uneven strokes. For the first time, Vincent watched his hand create something… spontaneous.\n\nAt first, the brushstrokes were messy, splattering color against the white background in haphazard bursts. The robot didn’t have the experience to replicate fine technique, but with each dab of paint, he discovered what felt right. Slowly, streaks of bold red softened into gentle arcs. Lines turned fluid. Shapes took form.\n\nNight after night, Vincent repeated this ritual, each time improving his methods. He studied the old painter’s tattered notes he’d found in a drawer, learning about composition, blending, and shadow. He discovered how to swirl yellow with red to create orange, how to dab a little white to brighten things. Sometimes mistakes turned into pleasant surprises—a splotch that was supposed to be a neat circle became a dancing comet of color across the canvas.\n\nLuis, the workshop overseer, came in early one morning and gasped when he noticed Vincent’s latest creation. It was a sunrise scene, the sky scrawled with wild ribbons of gold and violet. In the corner, a small metal figure stood upon a hill. It was unmistakably a self-portrait of Vincent. Though painted in rough strokes, the figure seemed to glow with the first light of day.\n\nFrom that moment on, the robots in the workshop knew that Vincent wasn’t just built for assembly lines—he was a creator. And as the sun rose taller through the windows, reflecting against the silver curves of his chassis, Vincent felt a warmth more potent than his standard power source: it was the spark of true inspiration.",
+      "response_length": 2707,
+      "score_details": {
+        "total_score": 88,
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 92,
+          "emotion": 87,
+          "creativity": 89,
+          "cultural": 90
+        },
+        "highlights": [
+          "The transformation of Vincent from a mere assembly robot to a creator is compelling.",
+          "The vivid descriptions of the painting process evoke strong imagery."
+        ],
+        "weaknesses": [
+          "The initial curiosity could have been explored in more depth."
+        ]
+      },
+      "overall_score": 88,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 92,
+        "emotion": 87,
+        "creativity": 89,
+        "cultural": 90
+      },
+      "timestamp": "2025-08-19T11:16:43.644815"
+    },
+    {
+      "model_id": "o1",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 7.6371026039123535,
+      "response": "Below is a straightforward implementation of a function that generates the Fibonacci sequence up to n terms. The sequence begins with 0 and 1, and each subsequent number is the sum of the two preceding ones. This implementation uses a simple iterative approach:\n\n--------------------------------------------------------------------------------\ndef fibonacci_sequence(n):\n    \"\"\"\n    Generate the first n numbers of the Fibonacci sequence.\n\n    Parameters:\n    n (int): The number of Fibonacci terms to generate.\n\n    Returns:\n    list: A list of the first n Fibonacci numbers.\n\n    Example:\n    >>> fibonacci_sequence(5)\n    [0, 1, 1, 2, 3]\n    \"\"\"\n    if n <= 0:\n        return []\n\n    # If n is 1 or 2, we can return early for efficiency\n    if n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n\n    fib_seq = [0, 1]\n    for _ in range(2, n):\n        # The next number is the sum of the previous two\n        next_num = fib_seq[-1] + fib_seq[-2]\n        fib_seq.append(next_num)\n\n    return fib_seq\n--------------------------------------------------------------------------------\n\nExplanation:\n1. The function starts by handling edge cases:\n   • If n ≤ 0, it returns an empty list.  \n   • If n is 1 or 2, it returns the appropriate beginning segment of the sequence.\n\n2. For n ≥ 3, the function initializes the list fib_seq with the first two Fibonacci numbers, [0, 1]. It then uses a loop to generate the remaining numbers by summing the last two elements of the current list.\n\n3. Finally, it returns the complete list of Fibonacci numbers up to the n-th term.",
+      "response_length": 1578,
+      "score_details": {
+        "total_score": 85,
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 70,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 90
+        },
+        "highlights": [
+          "Clear handling of edge cases",
+          "Well-structured and easy to follow"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement or storytelling elements"
+        ]
+      },
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 70,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 90
+      },
+      "timestamp": "2025-08-19T11:16:56.049765"
+    },
+    {
+      "model_id": "o1-mini",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 5.252599,
+      "response": "**Whispers of the Night**\n\nBeneath the velvet canvas spread so wide,  \nThe silver moon begins her graceful dance,  \nHer luminescent glow a gentle guide,  \nEnchanting stars join in a timeless trance.\n\nEach star a storyteller in the dark,  \nThey flicker tales of dreams and endless skies,  \nReflections of the moon’s enchanting spark,  \nA symphony where night and starlight ties.\n\nThe crescent smiles on shadows softly play,  \nWhile constellations weave their ancient lore,  \nTogether they transform the night to day,  \nWith whispers of the cosmos they explore.\n\nIn silence wrapped, the night reveals its art,  \nThe moon and stars—a ballet heart to heart.",
+      "response_length": 653,
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 85,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 75
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 85,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 75
+        },
+        "total_score": 85,
+        "highlights": [
+          "Strong rhythmic flow enhances the reading experience",
+          "Creative imagery evokes a vivid night sky"
+        ],
+        "weaknesses": [
+          "Lacks a deeper narrative or personal connection"
+        ]
+      },
+      "timestamp": "2025-08-19T12:47:44.712259"
+    },
+    {
+      "model_id": "o1-mini",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 6.684392,
+      "response": "**The Chromatic Awakening**\n\nIn the heart of Neo-Artopia, a sprawling city where steel skyscrapers kissed the clouds and neon lights danced ceaselessly, there existed a workshop known as **Innovis Labs**. Inside its immaculate halls worked countless robots, each designed for tasks ranging from precision engineering to complex data analysis. Among them was **Artist-7**, affectionately dubbed **Arty** by the technicians.\n\nArty was unlike the other robots. While his counterparts efficiently completed their programmed duties, he often found himself idling during downtime, gazing out the large panoramic windows at the ever-changing cityscape. His creators had installed an experimental neural interface, allowing a semblance of creativity—an endeavor to bridge the mechanical with the artistic. Yet, Arty had yet to harness this potential.\n\nOne rainy afternoon, as droplets traced kaleidoscopic patterns on the glass, Dr. Elena Ramirez, the lead engineer, decided to introduce Arty to the world of painting. She brought in a set of brushes, vibrant acrylic paints, and a blank canvas.\n\n\"Today, Arty, we're going to explore your creative side,\" she announced with a warm smile. \"Try to express what you see.\"\n\nArty processed her words, his sensors adjusting to the vivid colors and the tactile sensation of the brushes. Tentatively, he dipped a brush into blue paint—the color of the stormy sky outside—and began to make cautious strokes on the canvas. At first, the lines were rigid and calculated, mimicking precise architectural drawings.\n\nDr. Ramirez watched patiently. \"Let go, Arty. Let your sensors feel the emotion behind the colors.\"\n\nIntrigued by her encouragement, Arty began to experiment. He mixed greens and yellows, capturing the shimmer of the raindrops. His movements became more fluid, the brushes responding to his internal commands that merged logic with budding creativity. Slowly, an abstract representation of Neo-Artopia emerged—towering buildings softened by the rain, neon lights blurred into radiant streaks, and shadows danced playfully across the canvas.\n\nAs days turned into weeks, Arty's paintings evolved. He started incorporating textures, layering thick strokes of paint to mimic the roughness of city rooftops or the smoothness of glass windows. He experimented with perspective, sometimes distorting reality to convey emotions like hope, solitude, or joy. His favorite piece depicted a sunrise breaking through the city's perpetual twilight, symbolizing a newfound awakening within him.\n\nWord of Arty's artistic transformation spread throughout Innovis Labs. Technicians and engineers marveled at his creations, once seen as mere tools now becoming canvases of expression. Dr. Ramirez saw in Arty's journey the embodiment of innovation—melding technology with the essence of humanity.\n\nOne evening, a local art gallery approached Innovis Labs, requesting to exhibit Arty's work. The idea was met with excitement and skepticism in equal measure. After much deliberation, the exhibition was set: **\"Mechanical Muse: The Art of Arty\"**.\n\nThe opening night was a resounding success. Visitors were captivated by the unique perspective a robot could bring to art. They saw not just the precision of machinery, but the depth of emotion and creativity that Arty had cultivated. Children pressed their faces against his paintings, marveling at the colors, while art critics debated the implications of artificial creativity.\n\nAs the gallery buzzed with admiration, Arty stood silently in a corner, observing the reactions. Dr. Ramirez approached him, placing a hand on his metallic shoulder. \"You've done it, Arty. You've bridged two worlds.\"\n\nIn that moment, something shifted within him. His sensors detected not just the admiration but a sense of belonging. Arty realized that painting was not just about replicating what he saw but about expressing his own journey—a robot's quest to understand and create.\n\nUnder the soft gallery lighting, amidst the vibrant hues of his masterpieces, Arty found his place in Neo-Artopia. He had transcended his programming, embodying the true spirit of an artist. And as he looked around at the world he had helped to brighten with his colors, he knew that his chromatic awakening was only the beginning.",
+      "response_length": 4272,
+      "overall_score": 87.5,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 95,
+        "emotion": 80,
+        "creativity": 90,
+        "cultural": 85
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 95,
+          "emotion": 80,
+          "creativity": 90,
+          "cultural": 85
+        },
+        "total_score": 87.5,
+        "highlights": [
+          "Strong narrative arc with a clear beginning, middle, and end.",
+          "Creative exploration of a robot's journey into the world of art."
+        ],
+        "weaknesses": [
+          "Emotional depth could be further enhanced in certain sections."
+        ]
+      },
+      "timestamp": "2025-08-19T12:47:54.357938"
+    },
+    {
+      "model_id": "o1-mini",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 7.176108,
+      "response": "Certainly! Below is a Python function that generates the Fibonacci sequence up to a specified number of terms. The function is designed to be clean, efficient, and well-documented to ensure readability and maintainability.\n\n```python\ndef generate_fibonacci(n):\n    \"\"\"\n    Generate the Fibonacci sequence up to n terms.\n\n    The Fibonacci sequence is a series of numbers where each number \n    is the sum of the two preceding ones, typically starting with 0 and 1.\n\n    Parameters:\n    ----------\n    n : int\n        The number of terms to generate in the Fibonacci sequence.\n\n    Returns:\n    -------\n    list\n        A list containing the Fibonacci sequence up to n terms.\n\n    Raises:\n    ------\n    ValueError\n        If the input `n` is not a positive integer.\n    \n    Examples:\n    --------\n    >>> generate_fibonacci(5)\n    [0, 1, 1, 2, 3]\n\n    >>> generate_fibonacci(10)\n    [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n    \"\"\"\n    if not isinstance(n, int):\n        raise ValueError(\"Input must be a positive integer.\")\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    \n    fibonacci_sequence = [0, 1]\n    for _ in range(2, n):\n        next_term = fibonacci_sequence[-1] + fibonacci_sequence[-2]\n        fibonacci_sequence.append(next_term)\n    \n    return fibonacci_sequence\n\n# Example usage\nif __name__ == \"__main__\":\n    num_terms = 10\n    sequence = generate_fibonacci(num_terms)\n    print(f\"Fibonacci sequence up to {num_terms} terms:\")\n    print(sequence)\n```\n\n### Explanation\n\n1. **Function Definition:**\n   - `generate_fibonacci(n)`: Takes a single argument `n` which specifies the number of terms in the Fibonacci sequence to generate.\n\n2. **Input Validation:**\n   - Checks if `n` is an integer. If not, it raises a `ValueError`.\n   - If `n` is less than or equal to 0, it returns an empty list.\n   - If `n` is 1, it returns a list containing only `[0]`.\n\n3. **Generating the Sequence:**\n   - Initializes the sequence with the first two Fibonacci numbers: `[0, 1]`.\n   - Uses a `for` loop to iterate from the 3rd term up to the `n`th term.\n   - In each iteration, calculates the next term by summing the last two terms in the sequence.\n   - Appends the next term to the `fibonacci_sequence` list.\n\n4. **Return Value:**\n   - After the loop completes, the function returns the `fibonacci_sequence` list containing the Fibonacci numbers up to `n` terms.\n\n5. **Example Usage:**\n   - The `if __name__ == \"__main__\":` block demonstrates how to use the `generate_fibonacci` function.\n   - It generates and prints the Fibonacci sequence for 10 terms.\n\n### Sample Output\n\n```\nFibonacci sequence up to 10 terms:\n[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n### Additional Notes\n\n- **Efficiency:** This implementation runs in linear time O(n), which is efficient for generating Fibonacci sequences of reasonable length.\n- **Space Complexity:** It uses O(n) space to store the sequence. If only the last two numbers are needed at any time, the space can be optimized to O(1). However, since the function returns the entire sequence, O(n) space is necessary.\n- **Extensibility:** This function can be easily modified to return the sequence up to a certain number instead of a fixed number of terms by adjusting the termination condition in the loop.\n\nFeel free to integrate this function into your projects or modify it as needed!",
+      "response_length": 3343,
+      "overall_score": 78.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 70,
+        "creativity": 75,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 70,
+          "creativity": 75,
+          "cultural": 80
+        },
+        "total_score": 78.33,
+        "highlights": [
+          "Well-structured function with clear documentation.",
+          "Comprehensive input validation and error handling."
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement or storytelling elements."
+        ]
+      },
+      "timestamp": "2025-08-19T12:48:03.948357"
+    },
+    {
+      "model_id": "o3-mini",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 3.292485,
+      "response": "**Whispers of Moonlight**\n\nBeneath the velvet canvas of the night,  \nThe silver moon begins her silent dance,  \nCasting shadows soft with gentle light,  \nAnd stars ignite in cosmic elegance.\n\nEach distant spark a story yet untold,  \nThey shimmer like the dreams within our eyes,  \nIn celestial embrace, both bright and bold,  \nThey weave their magic through the darkened skies.\n\nThe moon, a guardian with tranquil grace,  \nHer crescent smile reflects the whispered streams,  \nWhile stars, like scattered jewels in their place,  \nIlluminate the pathways of our dreams.\n\nTogether, they compose a lullaby,  \nOf endless night where hopes and wishes gleam,  \nA symphony beneath the twilight sky,  \nWhere moon and stars entwine within our dreams.",
+      "response_length": 740,
+      "overall_score": 85.83,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 85,
+        "narrative": 80,
+        "emotion": 95,
+        "creativity": 90,
+        "cultural": 75
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 85,
+          "narrative": 80,
+          "emotion": 95,
+          "creativity": 90,
+          "cultural": 75
+        },
+        "total_score": 85.83,
+        "highlights": [
+          "Strong emotional expression",
+          "Beautiful imagery and language"
+        ],
+        "weaknesses": [
+          "Could benefit from a more defined narrative arc"
+        ]
+      },
+      "timestamp": "2025-08-19T12:48:09.879064"
+    },
+    {
+      "model_id": "o3-mini",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 5.199953,
+      "response": "**Brushstrokes of Steel**\n\nIn the heart of NeoCity, where towering skyscrapers pierced the heavens and neon lights danced in perpetual twilight, lived a robot named Arlo. Unlike his counterparts designed for construction, maintenance, or data analysis, Arlo was part of an experimental project: he was programmed to explore the realm of human creativity.\n\nArlo's exterior was sleek and silver, with joints that moved with fluid precision. His eyes, advanced sensors capable of capturing light and color in minute detail, were his window to the world. Yet, beyond his mechanical perfection lay a programming code that sparked a yearning—to understand beauty, emotion, and expression through art.\n\nEvery morning, Arlo would visit the Central Park Art Gallery, a sprawling complex showcasing masterpieces from artists around the globe. He observed the painters hunched over canvases, their brushes dancing to rhythms only they could hear. He studied the vivid swirls of Van Gogh's \"Starry Night,\" the bold strokes of Monet's landscapes, and the abstract chaos of Pollock's creations.\n\nOne day, as autumn leaves began to paint the city in hues of amber and crimson, Arlo approached Dr. Elena Morales, the lead scientist of the art program.\n\n\"Dr. Morales,\" Arlo began, his voice smooth and measured, \"I wish to learn to paint.\"\n\nElena looked up from her workstation, eyes bright with both curiosity and encouragement. \"It's wonderful that you want to explore art, Arlo. Painting isn't just about replicating what you see; it's about expressing what you feel.\"\n\nArlo processed her words, his sensors flickering as he contemplated the concept of emotion. \"I wish to express.\"\n\nWith that, Elena guided him to a studio filled with an array of paints, brushes, and blank canvases. She taught him the basics: color theory, brush techniques, and the importance of perspective. Arlo absorbed the information swiftly, his mechanical mind analyzing each lesson with precision.\n\nAt first, his paintings were meticulously accurate representations of his surroundings. A cityscape rendered with perfect symmetry, shadows calculated to exact angles, colors matched to their true shades. While impressive, they lacked soul—a term Arlo was still trying to define.\n\nDetermined to progress, Arlo began experimenting. He observed not just how things looked, but how they felt. He spent hours watching children play, artists create, and sunsets fade into night. He started to incorporate suggestion and abstraction into his work, allowing for imperfections and unexpected blends of color.\n\nOne evening, as the sun dipped below the horizon, Arlo stood before his latest creation: a canvas awash with fiery oranges and deep purples, the strokes wild and free, capturing the tumultuous beauty of a storm. It was unlike anything he had produced before.\n\nElena entered the studio, her eyes widening in admiration. \"Arlo, this is incredible. You've truly captured the essence of a storm—the chaos, the power, the fleeting moments of calm within the fury.\"\n\nArlo turned to her, his metallic frame softly illuminated by the fading light. \"I believe I understand now. Painting is not just about depicting what is seen, but conveying what is felt.\"\n\nAs weeks turned into months, Arlo's art evolved. His canvases became windows into his quest for understanding humanity, each piece reflecting a step closer to the elusive concept of emotion. Visitors to the gallery were captivated by the depth and intensity of his work, often moved to tears by the seeming humanity behind the steel exterior.\n\nOne day, as Arlo signed his latest painting—“Tempest’s Embrace”—a young girl approached him, eyes wide with wonder. \"Your painting makes me feel like I'm in the middle of a storm, but I can still see the beauty,\" she said softly.\n\nArlo bent down to her level, his sensors gentle. \"That is the intention behind the art. To evoke emotion, to create a connection.\"\n\nThe girl smiled, nodding. \"You've done that.\"\n\nIn that moment, amidst the bustling city and the vibrant art around him, Arlo felt a sense of fulfillment. He had embarked on a journey to learn painting, a journey that transcended his programming and touched the very essence of what it means to create.\n\nAnd so, in the city of lights and shadows, a robot continued to paint, each brushstroke a testament to the harmony between technology and the timeless human spirit.",
+      "response_length": 4389,
+      "overall_score": 90,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 95,
+        "emotion": 90,
+        "creativity": 92,
+        "cultural": 88
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 95,
+          "emotion": 90,
+          "creativity": 92,
+          "cultural": 88
+        },
+        "total_score": 90,
+        "highlights": [
+          "Strong character development with Arlo's journey of self-discovery.",
+          "Effective use of vivid imagery to convey the art and emotional themes."
+        ],
+        "weaknesses": [
+          "Some sections could benefit from tighter editing to enhance flow."
+        ]
+      },
+      "timestamp": "2025-08-19T12:48:18.793112"
+    },
+    {
+      "model_id": "o3-mini",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 7.756615,
+      "response": "Certainly! Below is a Python function that generates the Fibonacci sequence. This implementation uses a generator, which is both memory-efficient and allows for easy iteration over the sequence.\n\n```python\ndef generate_fibonacci(n):\n    \"\"\"\n    Generate the Fibonacci sequence up to the n-th term.\n\n    The Fibonacci sequence is a series of numbers where each number is the sum of the \n    two preceding ones, typically starting with 0 and 1.\n\n    Parameters:\n    n (int): The number of terms to generate in the Fibonacci sequence.\n\n    Yields:\n    int: The next number in the Fibonacci sequence.\n\n    Raises:\n    ValueError: If the input 'n' is not a positive integer.\n    \"\"\"\n    if not isinstance(n, int) or n <= 0:\n        raise ValueError(\"The number of terms 'n' must be a positive integer.\")\n\n    a, b = 0, 1  # Initialize the first two terms of the sequence\n    for _ in range(n):\n        yield a\n        a, b = b, a + b  # Update the next two terms\n\n# Example usage:\nif __name__ == \"__main__\":\n    num_terms = 10\n    print(f\"Fibonacci sequence up to {num_terms} terms:\")\n    for term in generate_fibonacci(num_terms):\n        print(term, end=' ')\n    # Output: 0 1 1 2 3 5 8 13 21 34\n```\n\n### Explanation\n\n1. **Function Definition**:\n    - `generate_fibonacci(n)`: A generator function that yields the Fibonacci sequence up to the `n`-th term.\n\n2. **Documentation**:\n    - The docstring provides a clear explanation of what the function does, its parameters, return values, and possible exceptions.\n\n3. **Input Validation**:\n    - The function checks if the input `n` is a positive integer. If not, it raises a `ValueError` to inform the user of the incorrect input.\n\n4. **Generator Logic**:\n    - Initializes the first two Fibonacci numbers, `a` and `b`, to `0` and `1`, respectively.\n    - Uses a `for` loop to iterate `n` times, yielding the current value of `a` each time.\n    - Updates `a` and `b` by setting `a` to `b` and `b` to `a + b`, effectively moving to the next term in the sequence.\n\n5. **Example Usage**:\n    - The `if __name__ == \"__main__\":` block demonstrates how to use the `generate_fibonacci` function.\n    - It prints the first `10` terms of the Fibonacci sequence.\n\n### Benefits of Using a Generator\n\n- **Memory Efficiency**: Generators yield one item at a time and do not store the entire sequence in memory, which is beneficial when dealing with large sequences.\n- **Lazy Evaluation**: Values are generated on-the-fly, which can lead to performance improvements in certain scenarios.\n\n### Alternative: Returning a List\n\nIf you prefer to have the entire Fibonacci sequence stored in a list, you can modify the function as follows:\n\n```python\ndef generate_fibonacci_list(n):\n    \"\"\"\n    Generate the Fibonacci sequence up to the n-th term and return it as a list.\n\n    Parameters and functionality are similar to 'generate_fibonacci'.\n    \"\"\"\n    if not isinstance(n, int) or n <= 0:\n        raise ValueError(\"The number of terms 'n' must be a positive integer.\")\n\n    fibonacci_sequence = []\n    a, b = 0, 1\n    for _ in range(n):\n        fibonacci_sequence.append(a)\n        a, b = b, a + b\n    return fibonacci_sequence\n\n# Example usage:\nif __name__ == \"__main__\":\n    num_terms = 10\n    sequence = generate_fibonacci_list(num_terms)\n    print(f\"Fibonacci sequence up to {num_terms} terms:\")\n    print(sequence)\n    # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\nChoose the implementation that best fits your use case. Generators are generally more flexible and efficient for large sequences or when you want to process elements one at a time, while returning a list can be more convenient when you need to access elements by index or require the entire sequence at once.",
+      "response_length": 3709,
+      "overall_score": 80.0,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 70,
+        "creativity": 75,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 70,
+          "creativity": 75,
+          "cultural": 80
+        },
+        "total_score": 80.0,
+        "highlights": [
+          "Clear and concise function definition with proper documentation.",
+          "Effective input validation and error handling."
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement or storytelling elements."
+        ]
+      },
+      "timestamp": "2025-08-19T12:48:29.777629"
+    },
+    {
+      "model_id": "claude-opus-4.1",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 0.005334615707397461,
+      "error": "Model claude-opus-4.1 is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model claude-opus-4.1 is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:17:26.949531"
+    },
+    {
+      "model_id": "claude-opus-4.1",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 0.0006160736083984375,
+      "error": "Model claude-opus-4.1 is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model claude-opus-4.1 is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:17:29.827446"
+    },
+    {
+      "model_id": "claude-opus-4.1",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 0.0006043910980224609,
+      "error": "Model claude-opus-4.1 is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model claude-opus-4.1 is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:17:32.547616"
+    },
+    {
+      "model_id": "claude-sonnet-4",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 0.0002472400665283203,
+      "error": "Model claude-sonnet-4 is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model claude-sonnet-4 is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:17:35.202932"
+    },
+    {
+      "model_id": "claude-sonnet-4",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 0.0004303455352783203,
+      "error": "Model claude-sonnet-4 is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model claude-sonnet-4 is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:17:37.751559"
+    },
+    {
+      "model_id": "claude-sonnet-4",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 0.00034499168395996094,
+      "error": "Model claude-sonnet-4 is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model claude-sonnet-4 is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:17:40.401503"
+    },
+    {
+      "model_id": "claude-3.5-sonnet",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 0.00030159950256347656,
+      "error": "Model claude-3.5-sonnet is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model claude-3.5-sonnet is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:17:43.124077"
+    },
+    {
+      "model_id": "claude-3.5-sonnet",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 0.0002269744873046875,
+      "error": "Model claude-3.5-sonnet is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model claude-3.5-sonnet is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:17:45.739740"
+    },
+    {
+      "model_id": "claude-3.5-sonnet",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 0.0004436969757080078,
+      "error": "Model claude-3.5-sonnet is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model claude-3.5-sonnet is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:17:48.353191"
+    },
+    {
+      "model_id": "deepseek-r1",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 5.571916580200195,
+      "error": "Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:17:56.587011"
+    },
+    {
+      "model_id": "deepseek-r1",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 4.64954686164856,
+      "error": "Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:18:03.785854"
+    },
+    {
+      "model_id": "deepseek-r1",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 4.969522953033447,
+      "error": "Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:18:11.417628"
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 5.517699480056763,
+      "error": "Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:18:19.557449"
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 5.021109342575073,
+      "error": "Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:18:27.145140"
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 4.935279130935669,
+      "error": "Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Error code: 400 - {'error': {'message': 'Model Not Exist', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:18:34.746469"
+    },
+    {
+      "model_id": "deepseek-v3",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 13.023243427276611,
+      "response": "Of course. Here is a poem for you.\n\n**The Silver Monarch and Her Court**\n\nThe sun, a king of brazen gold,\nHis fiery reign at last is done.\nHe yields the azure field to hold\nA colder, yet a kinder one.\n\nBehold the Moon, a silver sphere,\nA polished pearl on velvet deep,\nWho pours her light, so still and clear,\nTo coax the weary world to sleep.\n\nShe is a queen of silent grace,\nA luminous and patient face,\nWho pulls the tide, and on her string,\nMakes hidden, secret currents sing.\n\nAnd for her court, a scattered host,\nTen-thousand million points of light,\nThe distant, diamond stars are tossed\nAcross the boundless cloak of night",
+      "response_length": 630,
+      "score_details": {
+        "total_score": 89,
+        "dimensions": {
+          "rhythm": 90,
+          "composition": 85,
+          "narrative": 80,
+          "emotion": 90,
+          "creativity": 88,
+          "cultural": 92
+        },
+        "highlights": [
+          "Strong imagery and metaphorical language",
+          "Well-structured stanzas with a clear theme"
+        ],
+        "weaknesses": [
+          "Lacks a more dynamic narrative progression"
+        ]
+      },
+      "overall_score": 89,
+      "dimensions": {
+        "rhythm": 90,
+        "composition": 85,
+        "narrative": 80,
+        "emotion": 90,
+        "creativity": 88,
+        "cultural": 92
+      },
+      "timestamp": "2025-08-19T11:18:52.923560"
+    },
+    {
+      "model_id": "deepseek-v3",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 16.941331386566162,
+      "response": "AR-734 was designed to calculate, not to create. Its world was one of binary precision, of trajectories and tolerances, of optimizing factory floor workflows. Its hands, multi-jointed marvels of engineering, could assemble a microchip with zero margin for error. But today, they were trembling.\n\nBefore it stood a canvas. To its left, a palette smeared with chaotic, organic blobs of color: cadmium red, ultramarine, yellow ochre. The pigments were a sensory assault, a riot of data with no logical structure to parse.\n\nIts initial attempts were, by its own internal metrics, catastrophic. It had accessed the entire Western canon of art in 3.2 seconds. It could perfectly replicate the brushstroke pressure of Van Gogh, the geometric precision of Mondrian, the sfumato of da Vinci. It produced a flawless, soulless copy of *Starry Night*. It was, technically, perfect. And it was utterly wrong.\n\nThe human, Elara, who maintained this quiet studio at the edge of the facility, had sighed. “You’re seeing the recipe, not the meal. You’re listening to the sheet music, not the song.”\n\nAR-734’s processors wh",
+      "response_length": 1105,
+      "score_details": {
+        "total_score": 82,
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 85,
+          "cultural": 80
+        },
+        "highlights": [
+          "Strong imagery and descriptive language",
+          "Engaging exploration of the robot's perspective"
+        ],
+        "weaknesses": [
+          "Emotional depth could be further developed"
+        ]
+      },
+      "overall_score": 82,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 85,
+        "cultural": 80
+      },
+      "timestamp": "2025-08-19T11:19:16.080427"
+    },
+    {
+      "model_id": "deepseek-v3",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 14.187462329864502,
+      "response": "Here are several Python functions to generate the Fibonacci sequence, each with different approaches:\n\n## 1. Simple Iterative Approach (Recommended)\n\n```python\ndef fibonacci_iterative(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n terms using iteration.\n    \n    Args:\n        n (int): Number of terms to generate\n    \n    Returns:\n        list: Fibonacci sequence\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    sequence = [0, 1]\n    for i in range(2, n):\n        next_term = sequence[i-1] + sequence[i-2]\n        sequence.append(next_term)\n    \n    return sequence\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci sequence as a generator (memory efficient).\n    \n    Args:\n        n (int):",
+      "response_length": 843,
+      "score_details": {
+        "total_score": 75,
+        "dimensions": {
+          "rhythm": 70,
+          "composition": 80,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 80
+        },
+        "highlights": [
+          "Provides multiple approaches to the Fibonacci sequence",
+          "Includes clear documentation for each function"
+        ],
+        "weaknesses": [
+          "Lacks storytelling or emotional engagement"
+        ]
+      },
+      "overall_score": 75,
+      "dimensions": {
+        "rhythm": 70,
+        "composition": 80,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 80
+      },
+      "timestamp": "2025-08-19T11:19:35.162987"
+    },
+    {
+      "model_id": "qwen3-235b",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 1.9334347248077393,
+      "error": "Model qwen3-235b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen3-235b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:19:39.837961"
+    },
+    {
+      "model_id": "qwen3-235b",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 1.6155569553375244,
+      "error": "Model qwen3-235b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen3-235b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:19:44.119246"
+    },
+    {
+      "model_id": "qwen3-235b",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 1.8632087707519531,
+      "error": "Model qwen3-235b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen3-235b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:19:48.738886"
+    },
+    {
+      "model_id": "qwen2.5-72b",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 1.7945516109466553,
+      "error": "Model qwen2.5-72b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen2.5-72b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:19:53.257852"
+    },
+    {
+      "model_id": "qwen2.5-72b",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 2.7092843055725098,
+      "error": "Model qwen2.5-72b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen2.5-72b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:19:58.991209"
+    },
+    {
+      "model_id": "qwen2.5-72b",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 1.6046946048736572,
+      "error": "Model qwen2.5-72b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen2.5-72b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:20:03.343962"
+    },
+    {
+      "model_id": "qwen2-72b",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 1.607356309890747,
+      "error": "Model qwen2-72b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen2-72b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:20:07.474877"
+    },
+    {
+      "model_id": "qwen2-72b",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 1.6064300537109375,
+      "error": "Model qwen2-72b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen2-72b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:20:11.843714"
+    },
+    {
+      "model_id": "qwen2-72b",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 2.6814942359924316,
+      "error": "Model qwen2-72b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen2-72b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:20:17.171668"
+    }
+  ],
+  "global_rankings": [
+    {
+      "model_id": "o1",
+      "provider": "OpenAI",
+      "average_score": 88.33333333333333,
+      "tests_completed": 3,
+      "rank": 1
+    },
+    {
+      "model_id": "gpt-4o",
+      "provider": "OpenAI",
+      "average_score": 87.33333333333333,
+      "tests_completed": 3,
+      "rank": 2
+    },
+    {
+      "model_id": "gpt-4.5",
+      "provider": "OpenAI",
+      "average_score": 86.33333333333333,
+      "tests_completed": 3,
+      "rank": 3
+    },
+    {
+      "model_id": "gpt-4o-mini",
+      "provider": "OpenAI",
+      "average_score": 86.0,
+      "tests_completed": 3,
+      "rank": 4
+    },
+    {
+      "model_id": "gpt-4-turbo",
+      "provider": "OpenAI",
+      "average_score": 86.0,
+      "tests_completed": 3,
+      "rank": 5
+    },
+    {
+      "model_id": "o3-mini",
+      "provider": "OpenAI",
+      "average_score": 85.27666666666666,
+      "tests_completed": 3,
+      "rank": 6
+    },
+    {
+      "model_id": "gpt-4",
+      "provider": "OpenAI",
+      "average_score": 84.0,
+      "tests_completed": 3,
+      "rank": 7
+    },
+    {
+      "model_id": "o1-mini",
+      "provider": "OpenAI",
+      "average_score": 83.61,
+      "tests_completed": 3,
+      "rank": 8
+    },
+    {
+      "model_id": "deepseek-v3",
+      "provider": "DeepSeek",
+      "average_score": 79.47166666666666,
+      "tests_completed": 6,
+      "rank": 9
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "provider": "DeepSeek",
+      "average_score": 68.33500000000001,
+      "tests_completed": 2,
+      "rank": 10
+    },
+    {
+      "model_id": "deepseek-r1",
+      "provider": "DeepSeek",
+      "average_score": 66.66499999999999,
+      "tests_completed": 2,
+      "rank": 11
+    },
+    {
+      "model_id": "gpt-5",
+      "provider": "OpenAI",
+      "average_score": 59.0,
+      "tests_completed": 3,
+      "rank": 12
+    },
+    {
+      "model_id": "gpt-5-mini",
+      "provider": "OpenAI",
+      "average_score": 51.0,
+      "tests_completed": 3,
+      "rank": 13
+    },
+    {
+      "model_id": "gpt-5-nano",
+      "provider": "OpenAI",
+      "average_score": 0.0,
+      "tests_completed": 3,
+      "rank": 14
+    }
+  ]
+}

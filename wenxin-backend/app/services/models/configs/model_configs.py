@@ -7,6 +7,14 @@ from ..model_registry import ModelConfig, model_registry
 def load_all_models():
     """加载所有模型配置到注册表"""
     
+    # 如果已经加载过，不要重复加载
+    if len(model_registry._models) > 0:
+        try:
+            print(f"[INFO] Models already loaded: {len(model_registry._models)} models in registry")
+        except:
+            pass
+        return model_registry.get_stats()
+    
     # ========== OpenAI Models ==========
     
     # GPT-5 Series (2025 releases)
@@ -200,7 +208,7 @@ def load_all_models():
         model_id='deepseek-r1',
         display_name='DeepSeek R1',
         provider='deepseek',
-        api_model_name='deepseek-r1',
+        api_model_name='deepseek-chat',  # Changed: use deepseek-chat for poetry support
         organization='DeepSeek',
         capabilities=['text', 'code', 'reasoning', 'math'],
         model_type='llm',
@@ -216,7 +224,7 @@ def load_all_models():
         model_id='deepseek-r1-distill',
         display_name='DeepSeek R1-distill',
         provider='deepseek',
-        api_model_name='deepseek-r1-distill',
+        api_model_name='deepseek-chat',  # Changed: use deepseek-chat for poetry support
         organization='DeepSeek',
         capabilities=['text', 'code', 'reasoning'],
         model_type='llm',
@@ -250,7 +258,7 @@ def load_all_models():
         model_id='qwen3-235b',
         display_name='Qwen3-235B',
         provider='qwen',
-        api_model_name='qwen-max',
+        api_model_name='qwen-max-2025-01-25',  # Updated to 2025 version
         organization='Alibaba',
         capabilities=['text', 'code', 'reasoning'],
         model_type='llm',
@@ -300,7 +308,7 @@ def load_all_models():
         model_id='claude-opus-4.1',
         display_name='Claude Opus 4.1',
         provider='anthropic',
-        api_model_name='claude-opus-4.1',
+        api_model_name='claude-3-opus-20240229',  # Use actual API model name
         organization='Anthropic',
         capabilities=['text', 'code', 'reasoning', 'vision'],
         model_type='multimodal',
@@ -316,7 +324,7 @@ def load_all_models():
         model_id='claude-sonnet-4',
         display_name='Claude Sonnet 4',
         provider='anthropic',
-        api_model_name='claude-sonnet-4',
+        api_model_name='claude-3-sonnet-20240229',  # Use actual API model name
         organization='Anthropic',
         capabilities=['text', 'code', 'reasoning'],
         model_type='llm',
@@ -332,7 +340,7 @@ def load_all_models():
         model_id='claude-3.5-sonnet',
         display_name='Claude 3.5 Sonnet',
         provider='anthropic',
-        api_model_name='claude-3-5-sonnet-20240620',
+        api_model_name='claude-3-5-sonnet-20241022',  # Updated to latest version
         organization='Anthropic',
         capabilities=['text', 'code', 'reasoning'],
         model_type='llm',
@@ -394,7 +402,10 @@ def load_all_models():
         description='Open-source image generation model'
     ))
     
-    print(f"Loaded {len(model_registry._models)} models into registry")
+    try:
+        print(f"Loaded {len(model_registry._models)} models into registry")
+    except:
+        pass
     return model_registry.get_stats()
 
 
@@ -408,7 +419,9 @@ def list_available_models(provider: str = None) -> list:
     return model_registry.list_models(provider=provider)
 
 
-# 自动加载所有模型
-if __name__ != "__main__":
-    # 当模块被导入时自动加载
-    load_all_models()
+# 注意：模型会在 __init__.py 中自动加载，这里不需要重复加载
+# 保留这个条件以备调试使用
+if __name__ == "__main__":
+    # 仅在直接运行此文件时加载（用于测试）
+    stats = load_all_models()
+    print(f"Test load complete: {stats}")

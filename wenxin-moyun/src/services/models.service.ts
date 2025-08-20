@@ -32,6 +32,11 @@ export interface AIModelWithStats extends AIModelResponse {
   total_battles: number;
   win_rate: number;
   recent_works: any[];
+  score_highlights?: string[];
+  score_weaknesses?: string[];
+  benchmark_responses?: any;
+  benchmark_metadata?: any;
+  data_source?: string;
 }
 
 export interface ModelListParams {
@@ -72,7 +77,7 @@ class ModelsService {
   }
 
   // Convert API response to frontend Model type
-  convertToFrontendModel(apiModel: AIModelResponse): Model {
+  convertToFrontendModel(apiModel: AIModelWithStats): Model {
     return {
       id: apiModel.id,
       name: apiModel.name,
@@ -92,7 +97,12 @@ class ModelsService {
       },
       works: [],
       avatar: apiModel.avatar_url || `https://picsum.photos/seed/${apiModel.id}/200/200`,
-      tags: apiModel.tags || []
+      tags: apiModel.tags || [],
+      scoreHighlights: apiModel.score_highlights,
+      scoreWeaknesses: apiModel.score_weaknesses,
+      benchmarkResponses: apiModel.benchmark_responses,
+      benchmarkMetadata: apiModel.benchmark_metadata,
+      dataSource: apiModel.data_source
     };
   }
 }

@@ -1,0 +1,471 @@
+{
+  "report_date": "2025-08-19T17:21:43.605503",
+  "title": "AI Model Benchmark Comprehensive Report",
+  "summary": {
+    "total_providers": 4,
+    "total_models_configured": 28,
+    "total_models_tested": 25,
+    "total_tests_run": 90,
+    "successful_tests": 78,
+    "failed_tests": 12
+  },
+  "provider_statistics": {
+    "openai": {
+      "models_configured": 11,
+      "models_tested": 10,
+      "total_tests": 33,
+      "successful_tests": 33,
+      "failed_tests": 0,
+      "average_score": 85.18866666666666,
+      "top_model": "gpt-5",
+      "top_rank": 1
+    },
+    "deepseek": {
+      "models_configured": 3,
+      "models_tested": 1,
+      "total_tests": 9,
+      "successful_tests": 3,
+      "failed_tests": 6,
+      "average_score": 82.0,
+      "top_model": "deepseek-v3",
+      "top_rank": 18
+    },
+    "anthropic": {
+      "models_configured": 8,
+      "models_tested": 8,
+      "total_tests": 30,
+      "successful_tests": 24,
+      "failed_tests": 6,
+      "average_score": 81.03416666666666,
+      "top_model": "claude-opus-4-0",
+      "top_rank": 13
+    },
+    "qwen": {
+      "models_configured": 6,
+      "models_tested": 0,
+      "total_tests": 18,
+      "successful_tests": 18,
+      "failed_tests": 0,
+      "average_score": 0,
+      "top_model": "N/A",
+      "top_rank": "N/A"
+    }
+  },
+  "global_rankings": [
+    {
+      "rank": 1,
+      "model_id": "gpt-5",
+      "provider": "OpenAI",
+      "average_score": 88.5,
+      "tests_completed": 2,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon"
+      ],
+      "average_dimensions": {
+        "rhythm": 85.0,
+        "composition": 92.5,
+        "narrative": 77.5,
+        "emotion": 77.5,
+        "creativity": 82.5,
+        "cultural": 92.5
+      }
+    },
+    {
+      "rank": 2,
+      "model_id": "o1",
+      "provider": "OpenAI",
+      "average_score": 88.33333333333333,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 85.0,
+        "composition": 91.66666666666667,
+        "narrative": 82.33333333333333,
+        "emotion": 77.33333333333333,
+        "creativity": 84.66666666666667,
+        "cultural": 93.33333333333333
+      }
+    },
+    {
+      "rank": 3,
+      "model_id": "gpt-4o",
+      "provider": "OpenAI",
+      "average_score": 87.33333333333333,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 86.66666666666667,
+        "composition": 90.0,
+        "narrative": 81.0,
+        "emotion": 78.33333333333333,
+        "creativity": 85.0,
+        "cultural": 88.33333333333333
+      }
+    },
+    {
+      "rank": 4,
+      "model_id": "gpt-4.5",
+      "provider": "OpenAI",
+      "average_score": 86.33333333333333,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 88.33333333333333,
+        "narrative": 80.0,
+        "emotion": 76.66666666666667,
+        "creativity": 87.66666666666667,
+        "cultural": 86.66666666666667
+      }
+    },
+    {
+      "rank": 5,
+      "model_id": "gpt-4o-mini",
+      "provider": "OpenAI",
+      "average_score": 86.0,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 88.33333333333333,
+        "narrative": 80.0,
+        "emotion": 78.33333333333333,
+        "creativity": 83.33333333333333,
+        "cultural": 86.66666666666667
+      }
+    },
+    {
+      "rank": 6,
+      "model_id": "gpt-4-turbo",
+      "provider": "OpenAI",
+      "average_score": 86.0,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 88.33333333333333,
+        "narrative": 80.0,
+        "emotion": 76.66666666666667,
+        "creativity": 81.66666666666667,
+        "cultural": 90.0
+      }
+    },
+    {
+      "rank": 7,
+      "model_id": "o3-mini",
+      "provider": "OpenAI",
+      "average_score": 85.27666666666666,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 86.66666666666667,
+        "composition": 88.33333333333333,
+        "narrative": 85.0,
+        "emotion": 85.0,
+        "creativity": 85.66666666666667,
+        "cultural": 81.0
+      }
+    },
+    {
+      "rank": 8,
+      "model_id": "qwen-plus",
+      "provider": "Alibaba",
+      "average_score": 85.0,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 88.33333333333333,
+        "narrative": 81.66666666666667,
+        "emotion": 79.33333333333333,
+        "creativity": 86.33333333333333,
+        "cultural": 91.0
+      }
+    },
+    {
+      "rank": 9,
+      "model_id": "qwen3-8b",
+      "provider": "Alibaba",
+      "average_score": 84.83333333333333,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 90.0,
+        "narrative": 79.33333333333333,
+        "emotion": 80.0,
+        "creativity": 84.66666666666667,
+        "cultural": 91.66666666666667
+      }
+    },
+    {
+      "rank": 10,
+      "model_id": "gpt-4",
+      "provider": "OpenAI",
+      "average_score": 84.0,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 80.0,
+        "composition": 88.33333333333333,
+        "narrative": 77.66666666666667,
+        "emotion": 74.33333333333333,
+        "creativity": 83.33333333333333,
+        "cultural": 86.66666666666667
+      }
+    },
+    {
+      "rank": 11,
+      "model_id": "o1-mini",
+      "provider": "OpenAI",
+      "average_score": 83.61,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 86.66666666666667,
+        "composition": 88.33333333333333,
+        "narrative": 85.0,
+        "emotion": 79.33333333333333,
+        "creativity": 85.66666666666667,
+        "cultural": 80.0
+      }
+    },
+    {
+      "rank": 12,
+      "model_id": "qwen3-coder-plus",
+      "provider": "Alibaba",
+      "average_score": 83.33,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 88.33333333333333,
+        "narrative": 78.33333333333333,
+        "emotion": 76.0,
+        "creativity": 85.66666666666667,
+        "cultural": 91.66666666666667
+      }
+    },
+    {
+      "rank": 13,
+      "model_id": "claude-opus-4-0",
+      "provider": "Anthropic",
+      "average_score": 82.77666666666666,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 88.33333333333333,
+        "narrative": 79.33333333333333,
+        "emotion": 76.0,
+        "creativity": 86.33333333333333,
+        "cultural": 90.0
+      }
+    },
+    {
+      "rank": 14,
+      "model_id": "qwen3-32b",
+      "provider": "Alibaba",
+      "average_score": 82.77666666666666,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 86.66666666666667,
+        "narrative": 80.0,
+        "emotion": 78.66666666666667,
+        "creativity": 86.33333333333333,
+        "cultural": 88.33333333333333
+      }
+    },
+    {
+      "rank": 15,
+      "model_id": "claude-opus-4-20250514",
+      "provider": "Anthropic",
+      "average_score": 82.66666666666667,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 85.0,
+        "narrative": 80.0,
+        "emotion": 71.0,
+        "creativity": 85.0,
+        "cultural": 91.66666666666667
+      }
+    },
+    {
+      "rank": 16,
+      "model_id": "claude-sonnet-4-0",
+      "provider": "Anthropic",
+      "average_score": 82.5,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 86.66666666666667,
+        "narrative": 80.0,
+        "emotion": 71.0,
+        "creativity": 87.33333333333333,
+        "cultural": 86.66666666666667
+      }
+    },
+    {
+      "rank": 17,
+      "model_id": "claude-3-5-haiku-20241022",
+      "provider": "Anthropic",
+      "average_score": 82.11333333333333,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 85.0,
+        "narrative": 80.0,
+        "emotion": 74.33333333333333,
+        "creativity": 81.66666666666667,
+        "cultural": 91.66666666666667
+      }
+    },
+    {
+      "rank": 18,
+      "model_id": "deepseek-v3",
+      "provider": "DeepSeek",
+      "average_score": 82.0,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 81.66666666666667,
+        "composition": 81.66666666666667,
+        "narrative": 76.66666666666667,
+        "emotion": 71.66666666666667,
+        "creativity": 82.66666666666667,
+        "cultural": 84.0
+      }
+    },
+    {
+      "rank": 19,
+      "model_id": "qwen-flash",
+      "provider": "Alibaba",
+      "average_score": 81.94333333333333,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 80.0,
+        "composition": 88.33333333333333,
+        "narrative": 78.33333333333333,
+        "emotion": 72.66666666666667,
+        "creativity": 87.33333333333333,
+        "cultural": 88.33333333333333
+      }
+    },
+    {
+      "rank": 20,
+      "model_id": "claude-3-5-sonnet-20241022",
+      "provider": "Anthropic",
+      "average_score": 80.55333333333333,
+      "tests_completed": 3,
+      "test_coverage": [
+        "code_fibonacci",
+        "poem_moon",
+        "story_robot"
+      ],
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 85.0,
+        "narrative": 76.66666666666667,
+        "emotion": 66.66666666666667,
+        "creativity": 79.33333333333333,
+        "cultural": 86.66666666666667
+      }
+    }
+  ],
+  "metadata": {
+    "test_cases": [
+      "poem_moon",
+      "story_robot",
+      "code_fibonacci"
+    ],
+    "scoring_model": "gpt-4o-mini",
+    "scoring_dimensions": [
+      "rhythm",
+      "composition",
+      "narrative",
+      "emotion",
+      "creativity",
+      "cultural"
+    ]
+  }
+}

@@ -85,9 +85,15 @@ class ModelRegistry:
     def register_model(self, model_config: ModelConfig) -> None:
         """注册新模型"""
         if model_config.model_id in self._models:
-            print(f"Warning: Overwriting existing model {model_config.model_id}")
+            try:
+                print(f"Warning: Overwriting existing model {model_config.model_id}")
+            except:
+                pass  # Ignore print errors during import
         self._models[model_config.model_id] = model_config
-        print(f"Registered model: {model_config.model_id}")
+        try:
+            print(f"Registered model: {model_config.model_id}")
+        except:
+            pass  # Ignore print errors during import
     
     def get_model(self, model_id: str) -> ModelConfig:
         """获取模型配置"""

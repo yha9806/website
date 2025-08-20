@@ -258,6 +258,69 @@ export default function ModelDetailPage() {
         </motion.div>
       </IOSCardGrid>
 
+      {/* Strengths & Weaknesses */}
+      {((model.scoreHighlights && model.scoreHighlights.length > 0) || 
+        (model.scoreWeaknesses && model.scoreWeaknesses.length > 0)) && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className="mt-8"
+        >
+          <IOSCardGrid columns={2} gap="lg">
+            {/* Highlights */}
+            {model.scoreHighlights && model.scoreHighlights.length > 0 && (
+              <IOSCard variant="elevated" padding="lg">
+                <IOSCardHeader
+                  title="Strengths & Highlights"
+                  emoji={<EmojiIcon category="rating" name="star" size="md" />}
+                />
+                <IOSCardContent>
+                  <div className="relative overflow-hidden rounded-xl p-4 bg-gradient-to-br from-green-50/80 to-emerald-50/80 dark:from-green-900/20 dark:to-emerald-900/20 backdrop-blur-sm border border-green-200/50 dark:border-green-700/50">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"></div>
+                    <div className="relative space-y-3">
+                      {model.scoreHighlights.map((highlight, idx) => (
+                        <div key={idx} className="flex items-start">
+                          <span className="text-green-500 mr-3 mt-0.5">✦</span>
+                          <span className="text-sm text-green-700 dark:text-green-300 leading-relaxed">
+                            {highlight}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </IOSCardContent>
+              </IOSCard>
+            )}
+
+            {/* Weaknesses */}
+            {model.scoreWeaknesses && model.scoreWeaknesses.length > 0 && (
+              <IOSCard variant="elevated" padding="lg">
+                <IOSCardHeader
+                  title="Areas for Improvement"
+                  emoji={<EmojiIcon category="feedback" name="error" size="md" />}
+                />
+                <IOSCardContent>
+                  <div className="relative overflow-hidden rounded-xl p-4 bg-gradient-to-br from-orange-50/80 to-amber-50/80 dark:from-orange-900/20 dark:to-amber-900/20 backdrop-blur-sm border border-orange-200/50 dark:border-orange-700/50">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"></div>
+                    <div className="relative space-y-3">
+                      {model.scoreWeaknesses.map((weakness, idx) => (
+                        <div key={idx} className="flex items-start">
+                          <span className="text-orange-500 mr-3 mt-0.5">◈</span>
+                          <span className="text-sm text-orange-700 dark:text-orange-300 leading-relaxed">
+                            {weakness}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </IOSCardContent>
+              </IOSCard>
+            )}
+          </IOSCardGrid>
+        </motion.div>
+      )}
+
       {/* Sample Works */}
       {artworks.length > 0 && (
         <motion.div

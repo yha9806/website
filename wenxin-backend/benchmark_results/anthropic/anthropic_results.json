@@ -1,0 +1,312 @@
+{
+  "provider": "Anthropic",
+  "test_date": "2025-08-19T14:44:15.942226",
+  "models_tested": 3,
+  "models": [
+    "claude-3.5-sonnet",
+    "claude-sonnet-4",
+    "claude-opus-4.1"
+  ],
+  "total_tests": 9,
+  "successful_tests": 0,
+  "all_results": [
+    {
+      "model_id": "claude-3.5-sonnet",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T14:42:34.769271",
+      "success": false,
+      "duration": 9.597856998443604,
+      "error": "slice(None, 1000, None)",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: slice(None, 1000, None)"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-3.5-sonnet",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T14:42:45.376479",
+      "success": false,
+      "duration": 14.9080069065094,
+      "error": "slice(None, 1000, None)",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: slice(None, 1000, None)"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-3.5-sonnet",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T14:43:01.292151",
+      "success": false,
+      "duration": 11.589715719223022,
+      "error": "slice(None, 1000, None)",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: slice(None, 1000, None)"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T14:43:13.890704",
+      "success": false,
+      "duration": 2.5301942825317383,
+      "error": "Anthropic API error: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-sonnet-20240229'}, 'request_id': 'req_011CSHAdynUfaE6GBeoTw94P'}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Anthropic API error: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-sonnet-20240229'}, 'request_id': 'req_011CSHAdynUfaE6GBeoTw94P'}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T14:43:17.428507",
+      "success": false,
+      "duration": 2.5705440044403076,
+      "error": "Anthropic API error: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-sonnet-20240229'}, 'request_id': 'req_011CSHAeF4zLPFFoyCReJZUJ'}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Anthropic API error: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-sonnet-20240229'}, 'request_id': 'req_011CSHAeF4zLPFFoyCReJZUJ'}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T14:43:21.003383",
+      "success": false,
+      "duration": 2.737820625305176,
+      "error": "Anthropic API error: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-sonnet-20240229'}, 'request_id': 'req_011CSHAeX3v5ZvvuF94n3tYz'}",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Anthropic API error: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-sonnet-20240229'}, 'request_id': 'req_011CSHAeX3v5ZvvuF94n3tYz'}"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4.1",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T14:43:24.755261",
+      "success": false,
+      "duration": 13.183592796325684,
+      "error": "slice(None, 1000, None)",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: slice(None, 1000, None)"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4.1",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T14:43:38.948139",
+      "success": false,
+      "duration": 16.44330358505249,
+      "error": "slice(None, 1000, None)",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: slice(None, 1000, None)"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4.1",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T14:43:56.398579",
+      "success": false,
+      "duration": 18.530086994171143,
+      "error": "slice(None, 1000, None)",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: slice(None, 1000, None)"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    }
+  ],
+  "rankings": []
+}

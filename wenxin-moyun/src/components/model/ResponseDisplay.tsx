@@ -131,48 +131,66 @@ const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
         {/* Expanded analysis */}
         {isExpanded && detail.analysis && (
           <div className="space-y-3 pt-3 border-t">
-            {/* Strengths */}
-            {detail.analysis.strengths?.length > 0 && (
-              <div>
-                <h5 className="text-xs font-semibold text-green-700 mb-1">✅ Strengths</h5>
-                <ul className="text-xs text-gray-600 space-y-1">
-                  {detail.analysis.strengths.map((strength, idx) => (
-                    <li key={idx} className="flex items-start gap-1">
-                      <span className="text-green-500 mt-0.5">•</span>
-                      <span>{strength}</span>
-                    </li>
-                  ))}
-                </ul>
+            {/* Highlights with iOS glass effect */}
+            {(detail.analysis.highlights?.length > 0 || detail.analysis.strengths?.length > 0) && (
+              <div className="relative overflow-hidden rounded-xl p-4 bg-gradient-to-br from-green-50/80 to-emerald-50/80 dark:from-green-900/20 dark:to-emerald-900/20 backdrop-blur-sm border border-green-200/50 dark:border-green-700/50">
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"></div>
+                <div className="relative">
+                  <h5 className="text-xs font-semibold text-green-700 dark:text-green-400 mb-2 flex items-center">
+                    <EmojiIcon category="rating" name="star" size="xs" className="mr-1.5" />
+                    Highlights & Strengths
+                  </h5>
+                  <ul className="space-y-1.5">
+                    {(detail.analysis.highlights || detail.analysis.strengths || []).map((item, idx) => (
+                      <li key={idx} className="text-xs text-green-600 dark:text-green-300 flex items-start">
+                        <span className="mr-2 mt-0.5 text-green-500">✦</span>
+                        <span className="leading-relaxed">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             )}
 
-            {/* Weaknesses */}
+            {/* Weaknesses with iOS glass effect */}
             {detail.analysis.weaknesses?.length > 0 && (
-              <div>
-                <h5 className="text-xs font-semibold text-red-700 mb-1">⚠️ Weaknesses</h5>
-                <ul className="text-xs text-gray-600 space-y-1">
-                  {detail.analysis.weaknesses.map((weakness, idx) => (
-                    <li key={idx} className="flex items-start gap-1">
-                      <span className="text-red-500 mt-0.5">•</span>
-                      <span>{weakness}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="relative overflow-hidden rounded-xl p-4 bg-gradient-to-br from-orange-50/80 to-amber-50/80 dark:from-orange-900/20 dark:to-amber-900/20 backdrop-blur-sm border border-orange-200/50 dark:border-orange-700/50">
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"></div>
+                <div className="relative">
+                  <h5 className="text-xs font-semibold text-orange-700 dark:text-orange-400 mb-2 flex items-center">
+                    <span className="mr-1.5">⚠️</span>
+                    Areas for Improvement
+                  </h5>
+                  <ul className="space-y-1.5">
+                    {detail.analysis.weaknesses.map((weakness, idx) => (
+                      <li key={idx} className="text-xs text-orange-600 dark:text-orange-300 flex items-start">
+                        <span className="mr-2 mt-0.5 text-orange-500">◈</span>
+                        <span className="leading-relaxed">{weakness}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             )}
 
-            {/* Suggestions */}
+            {/* Suggestions with iOS glass effect */}
             {detail.analysis.suggestions?.length > 0 && (
-              <div>
-                <h5 className="text-xs font-semibold text-blue-700 mb-1">💡 Suggestions</h5>
-                <ul className="text-xs text-gray-600 space-y-1">
-                  {detail.analysis.suggestions.map((suggestion, idx) => (
-                    <li key={idx} className="flex items-start gap-1">
-                      <span className="text-blue-500 mt-0.5">•</span>
-                      <span>{suggestion}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="relative overflow-hidden rounded-xl p-4 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 dark:from-blue-900/20 dark:to-indigo-900/20 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50">
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"></div>
+                <div className="relative">
+                  <h5 className="text-xs font-semibold text-blue-700 dark:text-blue-400 mb-2 flex items-center">
+                    <span className="mr-1.5">💡</span>
+                    Suggestions
+                  </h5>
+                  <ul className="space-y-1.5">
+                    {detail.analysis.suggestions.map((suggestion, idx) => (
+                      <li key={idx} className="text-xs text-blue-600 dark:text-blue-300 flex items-start">
+                        <span className="mr-2 mt-0.5 text-blue-500">◆</span>
+                        <span className="leading-relaxed">{suggestion}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             )}
           </div>

@@ -37,9 +37,14 @@ class OpenAIAdapter(BaseAdapter):
             raise ValueError("Invalid request parameters")
         
         # 准备API调用参数
+        model_name = request['model']
         params = {
-            'model': request['model'],  # 使用传入的模型名称！
-            'messages': self._prepare_messages(request['prompt'], request.get('task_type', 'general'))
+            'model': model_name,  # 使用传入的模型名称！
+            'messages': self._prepare_messages(
+                request['prompt'], 
+                request.get('task_type', 'general'),
+                model_name  # Pass model name to handle o1 series
+            )
         }
         
         # 处理max_tokens - GPT-5和o1系列需要特殊处理
@@ -85,41 +90,54 @@ class OpenAIAdapter(BaseAdapter):
             logger.error(f"OpenAI API error: {e}")
             raise
     
-    def _prepare_messages(self, prompt: str, task_type: str) -> list:
+    def _prepare_messages(self, prompt: str, task_type: str, model_name: str = '') -> list:
         """
         准备消息列表
         
         Args:
             prompt: 用户提示
             task_type: 任务类型
+            model_name: 模型名称（用于判断是否需要特殊处理）
             
         Returns:
             消息列表
         """
         messages = []
         
-        # 根据任务类型添加系统提示
+        # Check if this is an o1 series model that doesn't support system messages
+        # Note: o1, o1-mini, o3-mini all don't support system messages
+        model_lower = model_name.lower()
+        is_o1_series = (
+            model_lower == 'o1' or 
+            model_lower == 'o1-mini' or 
+            model_lower == 'o3-mini' or
+            model_lower == 'o1-preview' or
+            'o1-' in model_lower or
+            'o3-' in model_lower
+        )
+        
+        # 根据任务类型准备系统提示
+        system_content = None
         if task_type == 'poem':
-            messages.append({
-                "role": "system",
-                "content": "You are a talented poet. Create beautiful, meaningful poems with rich imagery and emotion."
-            })
+            system_content = "You are a talented poet. Create beautiful, meaningful poems with rich imagery and emotion."
         elif task_type == 'story':
-            messages.append({
-                "role": "system",
-                "content": "You are a creative storyteller. Write engaging stories with vivid characters and compelling plots."
-            })
+            system_content = "You are a creative storyteller. Write engaging stories with vivid characters and compelling plots."
         elif task_type == 'code':
-            messages.append({
-                "role": "system",
-                "content": "You are an expert programmer. Write clean, efficient, and well-documented code."
-            })
+            system_content = "You are an expert programmer. Write clean, efficient, and well-documented code."
         elif task_type == 'analysis':
-            messages.append({
-                "role": "system",
-                "content": "You are an analytical expert. Provide thorough, insightful analysis with clear reasoning."
-            })
-        # 默认不添加系统提示，让模型自由发挥
+            system_content = "You are an analytical expert. Provide thorough, insightful analysis with clear reasoning."
+        
+        # Handle system message based on model type
+        if system_content:
+            if is_o1_series:
+                # For o1 series, merge system content into user message
+                prompt = f"{system_content}\n\n{prompt}"
+            else:
+                # For other models, use system message normally
+                messages.append({
+                    "role": "system",
+                    "content": system_content
+                })
         
         # 添加用户消息
         messages.append({

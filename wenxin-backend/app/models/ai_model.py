@@ -55,6 +55,13 @@ class AIModel(Base):
     confidence_level = Column(Float, default=0.0)  # 0-1 confidence in score accuracy
     last_benchmark_at = Column(DateTime(timezone=True), nullable=True)
     
+    # Enhanced benchmark results (v2)
+    benchmark_responses = Column(JSON, default={})  # Store actual API responses
+    scoring_details = Column(JSON, default={})  # Detailed scoring from GPT-4o-mini
+    score_highlights = Column(JSON, default=[])  # Highlighted excellent parts
+    score_weaknesses = Column(JSON, default=[])  # Identified weaknesses
+    improvement_suggestions = Column(Text, nullable=True)  # Improvement recommendations
+    
     # Model type and ranking fields
     model_type = Column(String(20), nullable=True)  # llm, image, multimodal
     model_tier = Column(String(20), nullable=True)  # flagship, professional, efficient, lightweight

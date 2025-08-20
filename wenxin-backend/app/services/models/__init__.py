@@ -13,9 +13,15 @@ from .configs.model_configs import load_all_models
 # Initialize models on import
 try:
     stats = load_all_models()
-    print(f"Unified Model Interface initialized: {stats}")
+    try:
+        print(f"Unified Model Interface initialized: {stats}")
+    except:
+        pass  # Ignore print errors during import
 except Exception as e:
-    print(f"Warning: Failed to auto-load models: {e}")
+    try:
+        print(f"Warning: Failed to auto-load models: {e}")
+    except:
+        pass  # Ignore print errors during import
 
 __all__ = [
     'ModelConfig',

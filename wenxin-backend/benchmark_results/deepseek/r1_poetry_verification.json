@@ -1,0 +1,18 @@
+{
+  "test_date": "2025-08-19T13:38:41.368316",
+  "fix_applied": "deepseek-reasoner → deepseek-chat",
+  "results": [
+    {
+      "model_id": "deepseek-r1",
+      "success": true,
+      "response_length": 587,
+      "preview": "Of course. Here is a poem for you.\n\n**The Silver Monarch and His Court**\n\nThe weary sun has sunk to rest,\nIn quilts of violet, gold, and rose,\nAnd in the quiet of the west,\nA single, silver sovereign grows.\n\nBehold the Moon, a polished sphere,\nA pearl on velvet, deep and vast,\nWho pours her liquid, "
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "success": true,
+      "response_length": 653,
+      "preview": "Of course. Here is a poem for you.\n\n**The Silver Monarch and Her Court**\n\nShe is a coin of tarnished silver, tossed\nInto the velvet purse of endless night.\nA silent, watchful sentinel, embossed\nWith tales of cold and solitary light.\n\nShe pulls the tides, a melancholy force,\nAnd paints the world in p"
+    }
+  ]
+}

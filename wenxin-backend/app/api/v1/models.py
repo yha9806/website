@@ -44,6 +44,22 @@ async def get_models(
     # Convert database models to response format, handling NULL values
     result_models = []
     for model in models:
+        # Parse JSON fields
+        score_highlights = []
+        score_weaknesses = []
+        
+        if model.score_highlights:
+            try:
+                score_highlights = json.loads(model.score_highlights) if isinstance(model.score_highlights, str) else model.score_highlights
+            except:
+                score_highlights = []
+        
+        if model.score_weaknesses:
+            try:
+                score_weaknesses = json.loads(model.score_weaknesses) if isinstance(model.score_weaknesses, str) else model.score_weaknesses
+            except:
+                score_weaknesses = []
+        
         model_dict = {
             "id": str(model.id),
             "name": model.name,
@@ -56,6 +72,8 @@ async def get_models(
             "avatar_url": model.avatar_url,
             "overall_score": model.overall_score,
             "metrics": model.metrics if model.metrics else None,
+            "score_highlights": score_highlights,
+            "score_weaknesses": score_weaknesses,
             "is_active": model.is_active,
             "is_verified": model.is_verified,
             "created_at": model.created_at,
@@ -113,10 +131,44 @@ async def get_model(
         except:
             model_data['benchmark_metadata'] = {}
     
-    # Return complete model data
+    # Parse additional JSON fields for benchmark data
+    benchmark_responses = {}
+    scoring_details = {}
+    score_highlights = []
+    score_weaknesses = []
+    
+    if model_data.get('benchmark_responses'):
+        try:
+            benchmark_responses = json.loads(model_data['benchmark_responses']) if isinstance(model_data['benchmark_responses'], str) else model_data['benchmark_responses']
+        except:
+            benchmark_responses = {}
+    
+    if model_data.get('scoring_details'):
+        try:
+            scoring_details = json.loads(model_data['scoring_details']) if isinstance(model_data['scoring_details'], str) else model_data['scoring_details']
+        except:
+            scoring_details = {}
+    
+    if model_data.get('score_highlights'):
+        try:
+            score_highlights = json.loads(model_data['score_highlights']) if isinstance(model_data['score_highlights'], str) else model_data['score_highlights']
+        except:
+            score_highlights = []
+    
+    if model_data.get('score_weaknesses'):
+        try:
+            score_weaknesses = json.loads(model_data['score_weaknesses']) if isinstance(model_data['score_weaknesses'], str) else model_data['score_weaknesses']
+        except:
+            score_weaknesses = []
+    
+    # Return complete model data with new fields
     return {
         **model_data,
         "metrics": metrics,
+        "benchmark_responses": benchmark_responses,
+        "scoring_details": scoring_details,
+        "score_highlights": score_highlights,
+        "score_weaknesses": score_weaknesses,
         "total_evaluations": 0,
         "total_battles": 0,
         "win_rate": 0.0,

@@ -1,0 +1,312 @@
+{
+  "provider": "Qwen",
+  "test_date": "2025-08-19T14:18:52.122806",
+  "models_tested": 3,
+  "models": [
+    "qwen2-72b",
+    "qwen2.5-72b",
+    "qwen3-235b"
+  ],
+  "total_tests": 9,
+  "successful_tests": 0,
+  "all_results": [
+    {
+      "model_id": "qwen3-235b",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 1.9334347248077393,
+      "error": "Model qwen3-235b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen3-235b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:19:39.837961"
+    },
+    {
+      "model_id": "qwen3-235b",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 1.6155569553375244,
+      "error": "Model qwen3-235b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen3-235b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:19:44.119246"
+    },
+    {
+      "model_id": "qwen3-235b",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 1.8632087707519531,
+      "error": "Model qwen3-235b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen3-235b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:19:48.738886"
+    },
+    {
+      "model_id": "qwen2.5-72b",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 1.7945516109466553,
+      "error": "Model qwen2.5-72b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen2.5-72b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:19:53.257852"
+    },
+    {
+      "model_id": "qwen2.5-72b",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 2.7092843055725098,
+      "error": "Model qwen2.5-72b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen2.5-72b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:19:58.991209"
+    },
+    {
+      "model_id": "qwen2.5-72b",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 1.6046946048736572,
+      "error": "Model qwen2.5-72b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen2.5-72b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:20:03.343962"
+    },
+    {
+      "model_id": "qwen2-72b",
+      "test_id": "poem_moon",
+      "success": false,
+      "duration": 1.607356309890747,
+      "error": "Model qwen2-72b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen2-72b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:20:07.474877"
+    },
+    {
+      "model_id": "qwen2-72b",
+      "test_id": "story_robot",
+      "success": false,
+      "duration": 1.6064300537109375,
+      "error": "Model qwen2-72b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen2-72b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:20:11.843714"
+    },
+    {
+      "model_id": "qwen2-72b",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "duration": 2.6814942359924316,
+      "error": "Model qwen2-72b is not available",
+      "response": "",
+      "score_details": {
+        "total_score": 0,
+        "dimensions": {
+          "rhythm": 0,
+          "composition": 0,
+          "narrative": 0,
+          "emotion": 0,
+          "creativity": 0,
+          "cultural": 0
+        },
+        "highlights": [],
+        "weaknesses": [
+          "Failed: Model qwen2-72b is not available"
+        ]
+      },
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      },
+      "timestamp": "2025-08-19T11:20:17.171668"
+    }
+  ],
+  "rankings": []
+}

@@ -1,0 +1,74 @@
+{
+  "provider": "Qwen",
+  "test_date": "2025-08-19T13:56:02.761226",
+  "all_results": [
+    {
+      "model_id": "qwen3-235b",
+      "test_id": "poem_moon",
+      "success": false,
+      "error": "Model qwen3-235b is not available",
+      "timestamp": "2025-08-19T13:55:41.770816"
+    },
+    {
+      "model_id": "qwen3-235b",
+      "test_id": "story_robot",
+      "success": false,
+      "error": "Model qwen3-235b is not available",
+      "timestamp": "2025-08-19T13:55:44.139691"
+    },
+    {
+      "model_id": "qwen3-235b",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "error": "Model qwen3-235b is not available",
+      "timestamp": "2025-08-19T13:55:46.518946"
+    },
+    {
+      "model_id": "qwen2.5-72b",
+      "test_id": "poem_moon",
+      "success": false,
+      "error": "Model qwen2.5-72b is not available",
+      "timestamp": "2025-08-19T13:55:48.895846"
+    },
+    {
+      "model_id": "qwen2.5-72b",
+      "test_id": "story_robot",
+      "success": false,
+      "error": "Model qwen2.5-72b is not available",
+      "timestamp": "2025-08-19T13:55:51.262986"
+    },
+    {
+      "model_id": "qwen2.5-72b",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "error": "Model qwen2.5-72b is not available",
+      "timestamp": "2025-08-19T13:55:53.633246"
+    },
+    {
+      "model_id": "qwen2-72b",
+      "test_id": "poem_moon",
+      "success": false,
+      "error": "Model qwen2-72b is not available",
+      "timestamp": "2025-08-19T13:55:55.995069"
+    },
+    {
+      "model_id": "qwen2-72b",
+      "test_id": "story_robot",
+      "success": false,
+      "error": "Model qwen2-72b is not available",
+      "timestamp": "2025-08-19T13:55:58.380998"
+    },
+    {
+      "model_id": "qwen2-72b",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "error": "Model qwen2-72b is not available",
+      "timestamp": "2025-08-19T13:56:00.746252"
+    }
+  ],
+  "models_tested": 3,
+  "total_tests": 9,
+  "successful_tests": 0,
+  "rankings": [],
+  "average_score": 0
+}

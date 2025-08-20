@@ -1,0 +1,74 @@
+{
+  "provider": "Anthropic",
+  "test_date": "2025-08-19T13:55:38.511102",
+  "all_results": [
+    {
+      "model_id": "claude-opus-4.1",
+      "test_id": "poem_moon",
+      "success": false,
+      "error": "Model claude-opus-4.1 is not available",
+      "timestamp": "2025-08-19T13:55:20.458925"
+    },
+    {
+      "model_id": "claude-opus-4.1",
+      "test_id": "story_robot",
+      "success": false,
+      "error": "Model claude-opus-4.1 is not available",
+      "timestamp": "2025-08-19T13:55:22.464215"
+    },
+    {
+      "model_id": "claude-opus-4.1",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "error": "Model claude-opus-4.1 is not available",
+      "timestamp": "2025-08-19T13:55:24.474570"
+    },
+    {
+      "model_id": "claude-sonnet-4",
+      "test_id": "poem_moon",
+      "success": false,
+      "error": "Model claude-sonnet-4 is not available",
+      "timestamp": "2025-08-19T13:55:26.477353"
+    },
+    {
+      "model_id": "claude-sonnet-4",
+      "test_id": "story_robot",
+      "success": false,
+      "error": "Model claude-sonnet-4 is not available",
+      "timestamp": "2025-08-19T13:55:28.486177"
+    },
+    {
+      "model_id": "claude-sonnet-4",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "error": "Model claude-sonnet-4 is not available",
+      "timestamp": "2025-08-19T13:55:30.489055"
+    },
+    {
+      "model_id": "claude-3.5-sonnet",
+      "test_id": "poem_moon",
+      "success": false,
+      "error": "Model claude-3.5-sonnet is not available",
+      "timestamp": "2025-08-19T13:55:32.496102"
+    },
+    {
+      "model_id": "claude-3.5-sonnet",
+      "test_id": "story_robot",
+      "success": false,
+      "error": "Model claude-3.5-sonnet is not available",
+      "timestamp": "2025-08-19T13:55:34.500925"
+    },
+    {
+      "model_id": "claude-3.5-sonnet",
+      "test_id": "code_fibonacci",
+      "success": false,
+      "error": "Model claude-3.5-sonnet is not available",
+      "timestamp": "2025-08-19T13:55:36.509948"
+    }
+  ],
+  "models_tested": 3,
+  "total_tests": 9,
+  "successful_tests": 0,
+  "rankings": [],
+  "average_score": 0
+}

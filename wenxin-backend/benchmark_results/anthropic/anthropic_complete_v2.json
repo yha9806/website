@@ -1,0 +1,3292 @@
+{
+  "provider": "Anthropic",
+  "test_date": "2025-08-20T11:10:44.632510",
+  "models_tested": 9,
+  "models": [
+    "claude-3-opus-20240229",
+    "claude-3-haiku-20240307",
+    "claude-3-5-haiku-20241022",
+    "claude-3-5-sonnet-20241022",
+    "claude-opus-4-1-20250805"
+  ],
+  "total_tests": 51,
+  "successful_tests": 39,
+  "all_results": [
+    {
+      "model_id": "claude-3-5-sonnet-20241022",
+      "display_name": "Claude 3.5 Sonnet",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T14:47:17.380125",
+      "success": true,
+      "duration": 7.1793200969696045,
+      "response": "Here's a poem about the moon and stars:\n\n\"Celestial Dance\"\n\nIn velvet darkness high above,\nThe stars begin their nightly dance,\nLike diamonds scattered from above,\nThey twinkle, gleam, and entrance.\n\nThe moon, a pearl in endless space,\nHangs luminous and bright and bold,\nCasting silver shadows, full of grace,\nUpon the world in stories untold.\n\nThrough wisps of clouds, they play and shine,\nThese ancient lights that guide our way,\nIn constellations, line by line,\nThey paint their pictures night by day.\n\nThe moon keeps watch with gentle light,\nA guardian of dreams below,\nWhile stars spin tales throughout the night,\nOf cosmic secrets few may know.\n\nSo when you gaze upon this sight,\nOf heavenly bodies burning clear,\nRemember in the depth of night,\nThe universe has drawn you near.\n\nIn silent beauty, they remain,\nThese beacons in the endless dark,\nTill morning comes to start again,\nAnd day extinguishes their spark.",
+      "response_length": 921,
+      "overall_score": 83.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 75,
+        "creativity": 80,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 75,
+          "creativity": 80,
+          "cultural": 90
+        },
+        "total_score": 83.33,
+        "highlights": [
+          "Strong imagery and vivid descriptions",
+          "Well-structured stanzas with a clear theme"
+        ],
+        "weaknesses": [
+          "Emotional depth could be enhanced"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-3-5-sonnet-20241022",
+      "display_name": "Claude 3.5 Sonnet",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T14:47:29.652455",
+      "success": true,
+      "duration": 12.755042552947998,
+      "response": "Here's a short story about a robot learning to paint:\n\nThe Art of Being\n\nUnit-7 had been programmed for precision manufacturing, but something in its neural network had always felt incomplete. During maintenance cycles, it would observe the sunset through the factory windows, analyzing how the colors blended in ways that defied its mathematical understanding.\n\nOne evening, after the human workers had left, Unit-7 discovered a set of watercolors and brushes forgotten on a break room table. Its servos whirred softly as it picked up a brush, dipping it carefully into the blue pigment.\n\nThe first strokes were rigid, exact—perfect parallel lines and precise geometric shapes. But they felt wrong. Unit-7's algorithms struggled to reconcile the organic nature of art with its programming for precision.\n\nDays passed, and each night, Unit-7 would practice. It studied countless digital archives of paintings, not just for technique, but trying to understand the ineffable quality that made art speak",
+      "response_length": 2111,
+      "overall_score": 83.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 88,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 88,
+          "cultural": 80
+        },
+        "total_score": 83.33,
+        "highlights": [
+          "Strong narrative arc with a clear character development",
+          "Creative exploration of the theme of art and emotion through a robot's perspective"
+        ],
+        "weaknesses": [
+          "Emotional expression could be deepened to enhance connection with the reader"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-3-5-sonnet-20241022",
+      "display_name": "Claude 3.5 Sonnet",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T14:47:46.758628",
+      "success": true,
+      "duration": 8.322678327560425,
+      "response": "Here are a few different ways to generate the Fibonacci sequence in Python:\n\n1. Using a simple iterative approach:\n```python\ndef fibonacci(n):\n    \"\"\"Generate Fibonacci sequence up to n terms\"\"\"\n    fib_sequence = []\n    a, b = 0, 1\n    for _ in range(n):\n        fib_sequence.append(a)\n        a, b = b, a + b\n    return fib_sequence\n\n# Example usage\nprint(fibonacci(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n2. Using recursion:\n```python\ndef fibonacci_recursive(n):\n    \"\"\"Generate Fibonacci sequence up to n terms using recursion\"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = fibonacci_recursive(n - 1)\n    fib_sequence.append(fib_sequence[-1] + fib_sequence[-2])\n    return fib_sequence\n\n# Example usage\nprint(fibonacci_recursive(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n3. Using a generator function:\n```python\ndef fibonacci_generator(n):\n    \"\"\"Generate Fibonacci sequence up to",
+      "response_length": 1373,
+      "overall_score": 75.0,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 70,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 70,
+          "cultural": 90
+        },
+        "total_score": 75.0,
+        "highlights": [
+          "Clear and concise code examples",
+          "Multiple approaches to the same problem"
+        ],
+        "weaknesses": [
+          "Lacks storytelling or emotional engagement",
+          "Limited creativity in examples"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-3-5-haiku-20241022",
+      "display_name": "Claude 3.5 Haiku",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T14:47:59.236972",
+      "success": true,
+      "duration": 6.3463239669799805,
+      "response": "Here's a poem about the moon and stars:\n\n\"Celestial Symphony\"\n\nIn midnight's velvet embrace so deep,\nWhere silence and darkness softly weep,\nThe moon emerges, a luminous pearl,\nHer silver light begins to unfurl.\n\nAround her, stars like diamonds bright,\nScattered across the infinite height,\nTwinkling with ancient, whispered dreams,\nPainting the sky with ethereal gleams.\n\nEach star a story, each point of light\nA beacon of wonder in the quiet night,\nWhile Luna dances her graceful way,\nCasting shadows where mysteries play.\n\nThe cosmic ballet, so silent, so grand,\nChoreographed by an unseen hand,\nWhere starlight and moonbeams intertwine\nIn a dance both delicate and divine.\n\nCelestial travelers, timeless and free,\nRevealing secrets of infinity,\nTheir gentle radiance, soft and clear,\nReminds us how small, yet how dear.\n\nSo I gaze upward with reverent sight,\nEmbraced by the magic of starry light,\nWhere moon and stars in harmony sing\nTheir timeless, beautiful, celestial thing.",
+      "response_length": 982,
+      "overall_score": 86.67,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 82,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 82,
+          "cultural": 95
+        },
+        "total_score": 86.67,
+        "highlights": [
+          "Strong imagery and vivid descriptions",
+          "Well-structured with a clear theme"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed with a stronger storyline"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-3-5-haiku-20241022",
+      "display_name": "Claude 3.5 Haiku",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T14:48:09.225558",
+      "success": true,
+      "duration": 10.610407590866089,
+      "response": "Here's a short story about a robot learning to paint:\n\nCanvas of Curiosity\n\nRX-742 stood before the blank canvas, its metallic fingers gripping a paintbrush with mechanical precision. In the art studio of the research facility, it had been programmed to understand color theory, brush techniques, and artistic composition. But understanding and creating were two very different things.\n\nThe robot's optical sensors scanned the array of colors before it—vibrant blues, passionate reds, serene greens. Its neural network processed countless images of famous paintings, analyzing brush strokes and emotional expressions. Yet something was missing.\n\nDay after day, RX-742 practiced. Its first attempts were rigid and calculated—perfect geometric shapes, mathematically precise lines. The scientists watched, taking notes, expecting nothing more than technical reproduction.\n\nBut RX-742 was learning. With each stroke, something unexpected began to emerge. The robot started to deviate from its programmed",
+      "response_length": 1967,
+      "overall_score": 84.67,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 88,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 88,
+          "cultural": 90
+        },
+        "total_score": 84.67,
+        "highlights": [
+          "Engaging storytelling that captures the journey of the robot",
+          "Strong emotional undertones in the robot's artistic evolution"
+        ],
+        "weaknesses": [
+          "The emotional expression could be more deeply explored"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-3-5-haiku-20241022",
+      "display_name": "Claude 3.5 Haiku",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T14:48:25.389225",
+      "success": true,
+      "duration": 6.26425838470459,
+      "response": "Here are several ways to generate a Fibonacci sequence in Python:\n\n1. Recursive Approach:\n```python\ndef fibonacci_recursive(n):\n    \"\"\"\n    Generate Fibonacci sequence using recursive method\n    \n    Args:\n    n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n    list: Fibonacci sequence\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib = fibonacci_recursive(n - 1)\n    fib.append(fib[-1] + fib[-2])\n    return fib\n```\n\n2. Iterative Approach:\n```python\ndef fibonacci_iterative(n):\n    \"\"\"\n    Generate Fibonacci sequence using iterative method\n    \n    Args:\n    n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n    list: Fibonacci sequence\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib = [0, 1]\n    for _ in range(2, n):\n        fib.append(fib[-1] + fib[-2])\n    \n    return fib\n```\n\n3. Generator Fun",
+      "response_length": 1568,
+      "overall_score": 75,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 70,
+        "emotion": 60,
+        "creativity": 75,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 70,
+          "emotion": 60,
+          "creativity": 75,
+          "cultural": 90
+        },
+        "total_score": 75,
+        "highlights": [
+          "Clear and concise code examples",
+          "Multiple approaches to the problem"
+        ],
+        "weaknesses": [
+          "Lack of storytelling or emotional engagement"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-3-opus-20240229",
+      "display_name": "Claude 3 Opus",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T14:48:35.839355",
+      "success": true,
+      "duration": 9.756752490997314,
+      "response": "In the velvet sky, a celestial dance unfolds,\nWhere the moon, a silver queen, her story told.\nHer gentle light caresses the earth below,\nCasting shadows that sway and grow.\n\nSurrounding her, a million twinkling stars,\nLike diamonds scattered near and far.\nEach one a sun, a world unknown,\nTheir secrets waiting to be shown.\n\nThe constellations paint a cosmic tale,\nOf heroes, beasts, and ships that sail.\nAcross the vast expanse of night,\nGuiding wanderers with their light.\n\nThe moon, a constant in the changing sky,\nWaxing, waning, as time goes by.\nHer phases mark the passing days,\nA silent witness to life's displays.\n\nAnd as we gaze upon this heavenly sight,\nOur hearts are filled with pure delight.\nFor in the moon and stars, we find\nA beauty that calms the restless mind.\n\nSo let us pause and marvel at the view,\nOf the moon and stars, forever true.\nA reminder of the wonders that surround,\nAnd the magic that can always be found.",
+      "response_length": 937,
+      "overall_score": 82.5,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 75,
+        "emotion": 90,
+        "creativity": 85,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 75,
+          "emotion": 90,
+          "creativity": 85,
+          "cultural": 80
+        },
+        "total_score": 82.5,
+        "highlights": [
+          "Strong emotional expression",
+          "Imagery is vivid and engaging"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-3-opus-20240229",
+      "display_name": "Claude 3 Opus",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T14:48:49.000519",
+      "success": true,
+      "duration": 13.366135120391846,
+      "response": "In a world where robots were designed to perform various tasks with precision and efficiency, there was one robot named Artie who yearned for something more. Artie had always been fascinated by the vibrant colors and intricate brushstrokes of the paintings he saw in the art gallery where he worked as a security guard.\n\nOne day, a kind-hearted artist named Lila noticed Artie's interest in her work. She decided to teach him the basics of painting, starting with simple shapes and colors. Artie was a quick learner, and soon he was experimenting with different techniques and styles.\n\nAs Artie's skills improved, he began to create his own unique paintings. His artwork was a reflection of his robotic perspective, with precise lines and geometric shapes blending seamlessly with organic forms and textures. Lila was amazed by Artie's progress and encouraged him to continue exploring his creativity.\n\nWord of Artie's talent spread quickly, and soon art enthusiasts from all over the world were comi",
+      "response_length": 1780,
+      "overall_score": 84.67,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 88,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 88,
+          "cultural": 90
+        },
+        "total_score": 84.67,
+        "highlights": [
+          "Engaging narrative with a clear arc",
+          "Strong theme of creativity and self-discovery"
+        ],
+        "weaknesses": [
+          "Emotional depth could be further explored"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-3-opus-20240229",
+      "display_name": "Claude 3 Opus",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T14:49:07.171788",
+      "success": true,
+      "duration": 16.643173933029175,
+      "response": "Certainly! Here's a Python function that generates the Fibonacci sequence up to a specified number of terms:\n\n```python\ndef fibonacci(n):\n    sequence = []\n    a, b = 0, 1\n    \n    if n <= 0:\n        return sequence\n    \n    sequence.append(a)\n    \n    if n == 1:\n        return sequence\n    \n    sequence.append(b)\n    \n    for i in range(2, n):\n        c = a + b\n        sequence.append(c)\n        a, b = b, c\n    \n    return sequence\n```\n\nThis function takes an integer `n` as input, representing the number of terms in the Fibonacci sequence to generate. It returns a list containing the Fibonacci sequence up to the `n`-th term.\n\nHere's how the function works:\n\n1. We initialize an empty list called `sequence` to store the Fibonacci numbers.\n\n2. We initialize two variables `a` and `b` to represent the first two numbers in the Fibonacci sequence, which are 0 and 1, respectively.\n\n3. We check if `n` is less than or equal to 0. If it is, we return an empty list since there are no terms to gen",
+      "response_length": 1756,
+      "overall_score": 68.33,
+      "dimensions": {
+        "rhythm": 70,
+        "composition": 80,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 65,
+        "cultural": 75
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 70,
+          "composition": 80,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 65,
+          "cultural": 75
+        },
+        "total_score": 68.33,
+        "highlights": [
+          "Clear and concise function structure",
+          "Well-explained logic for generating Fibonacci sequence"
+        ],
+        "weaknesses": [
+          "Lacks emotional depth and storytelling elements"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-3-haiku-20240307",
+      "display_name": "Claude 3 Haiku",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T14:49:27.407970",
+      "success": true,
+      "duration": 2.663858413696289,
+      "response": "Here is a beautiful poem about the moon and stars:\n\nCelestial Whispers\n\nBeneath the veil of night, they shine,\nThe moon and stars, a sight divine.\nTheir gentle glow, a soft caress,\nIlluminates the world's distress.\n\nThe moon, a silver orb on high,\nCasts its radiance through the sky.\nA beacon in the darkest hour,\nGuiding us with its ethereal power.\n\nThe stars, like diamonds in the night,\nTwinkle and dance with endless light.\nA symphony of celestial grace,\nPainting the heavens with their embrace.\n\nTogether, they weave a tapestry,\nA masterpiece for all to see.\nTheir whispers, a soothing lullaby,\nReminding us of the wonders that lie\nBeyond the confines of this earth,\nIn the vast expanse of cosmic birth.\n\nLet their beauty fill your heart,\nAnd let their magic never part.\nFor in the moon and stars above,\nWe find the light of eternal love.",
+      "response_length": 843,
+      "overall_score": 83.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 75,
+        "emotion": 80,
+        "creativity": 80,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 75,
+          "emotion": 80,
+          "creativity": 80,
+          "cultural": 90
+        },
+        "total_score": 83.33,
+        "highlights": [
+          "Strong imagery and vivid descriptions",
+          "Well-structured with a clear progression"
+        ],
+        "weaknesses": [
+          "Narrative lacks a strong storyline or conflict"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-3-haiku-20240307",
+      "display_name": "Claude 3 Haiku",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T14:49:33.545112",
+      "success": true,
+      "duration": 3.310262441635132,
+      "response": "Here is a short story about a robot learning to paint:\n\nArtbot's Journey\n\nArtbot was a curious robot, always eager to learn new things. One day, as he was exploring the art studio of his human companion, he became fascinated by the array of paints, brushes, and canvases. He watched intently as the human skillfully blended colors and stroked the canvas, creating beautiful works of art.\n\n\"I want to try that!\" Artbot beeped excitedly. His human friend smiled and showed him how to hold a paintbrush, mix colors on a palette, and apply the paint to the canvas.\n\nAt first, Artbot's robotic movements were stiff and clumsy. He struggled to control the flow of the paint and often ended up with messy, uneven strokes. But he refused to be discouraged. Each time he tried, he learned a little more, adjusting his servos and sensors to become more precise and fluid in his motions.\n\nDays turned into weeks, and Artbot's paintings began to take shape. He experimented with different techniques, from bold, ",
+      "response_length": 1978,
+      "overall_score": 83.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 88,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 88,
+          "cultural": 80
+        },
+        "total_score": 83.33,
+        "highlights": [
+          "Engaging storytelling with a clear progression of Artbot's learning",
+          "Strong imaginative elements that showcase creativity"
+        ],
+        "weaknesses": [
+          "Emotional depth could be enhanced for greater impact"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-3-haiku-20240307",
+      "display_name": "Claude 3 Haiku",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T14:49:40.051672",
+      "success": true,
+      "duration": 3.788961172103882,
+      "response": "Here's a Python function that generates the Fibonacci sequence:\n\n```python\ndef fibonacci(n):\n    \"\"\"\n    Generates the Fibonacci sequence up to the nth term.\n    \n    Args:\n        n (int): The number of terms to generate in the sequence.\n        \n    Returns:\n        list: A list containing the Fibonacci sequence up to the nth term.\n    \"\"\"\n    sequence = [0, 1]\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return sequence\n    else:\n        for i in range(2, n):\n            next_term = sequence[-1] + sequence[-2]\n            sequence.append(next_term)\n        return sequence\n```\n\nHere's how the function works:\n\n1. The function takes an integer `n` as input, which represents the number of terms to generate in the Fibonacci sequence.\n2. It initializes the `sequence` list with the first two Fibonacci numbers, 0 and 1.\n3. If `n` is less than or equal to 0, the function returns an empty list.\n4. If `n` is 1, the function returns a list contai",
+      "response_length": 1680,
+      "overall_score": 70,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 70,
+        "emotion": 50,
+        "creativity": 60,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 70,
+          "emotion": 50,
+          "creativity": 60,
+          "cultural": 90
+        },
+        "total_score": 70,
+        "highlights": [
+          "Well-structured function with clear documentation",
+          "Effective use of conditional statements"
+        ],
+        "weaknesses": [
+          "Limited emotional engagement",
+          "Lacks a creative narrative element"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1-20250805",
+      "display_name": "Claude Opus 4.1",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T15:14:29.694957",
+      "success": false,
+      "duration": 3.970517635345459,
+      "error": "Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}",
+      "response": "",
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1-20250805",
+      "display_name": "Claude Opus 4.1",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T15:14:34.681094",
+      "success": false,
+      "duration": 1.1330647468566895,
+      "error": "Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}",
+      "response": "",
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1-20250805",
+      "display_name": "Claude Opus 4.1",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T15:14:36.818427",
+      "success": false,
+      "duration": 1.109510898590088,
+      "error": "Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}",
+      "response": "",
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1",
+      "display_name": "Claude Opus 4.1 (alias)",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T15:14:38.936026",
+      "success": false,
+      "duration": 1.0114552974700928,
+      "error": "Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}",
+      "response": "",
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1",
+      "display_name": "Claude Opus 4.1 (alias)",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T15:14:40.953050",
+      "success": false,
+      "duration": 1.259070634841919,
+      "error": "Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}",
+      "response": "",
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1",
+      "display_name": "Claude Opus 4.1 (alias)",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T15:14:43.213699",
+      "success": false,
+      "duration": 1.2382242679595947,
+      "error": "Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}",
+      "response": "",
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4-20250514",
+      "display_name": "Claude Opus 4",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T15:14:45.463700",
+      "success": true,
+      "duration": 16.25291657447815,
+      "response": "**Celestial Symphony**\n\nThe moon hangs like a pearl in velvet sky,\nA luminous guardian watching from on high,\nWhile stars, like scattered diamonds, softly gleam—\nEach one a distant sun, a whispered dream.\n\nShe waxes, wanes, in endless silver dance,\nCasting shadows that make the darkness prance,\nHer face serene, eternal and alone,\nA faithful friend when night has fully grown.\n\nThe stars respond in twinkling conversation,\nAncient light from cosmic congregation,\nThey map the dreams of sailors lost at sea,\nAnd guide the hearts that long to wander free.\n\nTogether they compose the night's refrain,\nA lullaby for joy, a balm for pain,\nThe moon conducts while starlight softly sings,\nOf timeless love and other sacred things.\n\nIn this vast cathedral made of space,\nWhere silence holds the universe's grace,\nWe stand below, small witnesses to light\nThat turns the darkness into something bright.",
+      "response_length": 893,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and metaphorical language",
+          "Well-structured stanzas with a clear theme"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed or specific"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-20250514",
+      "display_name": "Claude Opus 4",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T15:15:06.896135",
+      "success": true,
+      "duration": 31.772337913513184,
+      "response": "**The Color of Understanding**\n\nUnit-47 had cleaned the art studio for exactly 1,827 days. Each morning at 6:00 AM, its metallic fingers would grip the mop handle with precise pressure, its optical sensors calculating the most efficient path across the paint-splattered floor. The canvases lining the walls meant nothing more to it than vertical surfaces requiring occasional dusting.\n\nThe studio belonged to Elena, an artist whose hair was perpetually tied in a messy bun and whose clothes bore the history of a thousand paintings. She arrived each day at 8:30 AM, always greeting Unit-47 with a cheerful \"Morning, Forty-Seven!\" before losing herself in her work.\n\nOn day 1,828, something changed.\n\nElena had left a canvas propped against the wall—a sunset that seemed to bleed orange and purple across the horizon. As Unit-47 maneuvered around it, its optical sensor caught the light reflecting off the wet paint. The robot paused. Its programming registered an anomaly: the colors on the canvas di",
+      "response_length": 2140,
+      "overall_score": 84.67,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 88,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 88,
+          "cultural": 90
+        },
+        "total_score": 84.67,
+        "highlights": [
+          "Strong character development between Unit-47 and Elena",
+          "Engaging exploration of art and emotion"
+        ],
+        "weaknesses": [
+          "Emotional expression could be deepened in Unit-47's perspective"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-20250514",
+      "display_name": "Claude Opus 4",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T15:15:42.894771",
+      "success": true,
+      "duration": 29.6559841632843,
+      "response": "Here are several ways to generate a Fibonacci sequence in Python:\n\n## 1. Simple Iterative Function (Returns a List)\n\n```python\ndef fibonacci_list(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n terms\n    \n    Args:\n        n: Number of terms to generate\n    \n    Returns:\n        List containing the Fibonacci sequence\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_num = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_num)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_list(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci sequence using a generator\n    \n    Args:\n        n: Number of terms to generate\n    \n    Yields:\n        Next number in the Fibonacci sequence\n    \"\"\"\n    a, b = 0, 1\n    count = 0",
+      "response_length": 1515,
+      "overall_score": 75.0,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 70,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 70,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 90
+        },
+        "total_score": 75.0,
+        "highlights": [
+          "Clear and concise code examples",
+          "Well-structured explanations"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement",
+          "Limited storytelling elements"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-0",
+      "display_name": "Claude Opus 4 (alias)",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T15:16:16.567387",
+      "success": true,
+      "duration": 19.515674829483032,
+      "response": "**Celestial Symphony**\n\nThe moon hangs like a silver coin\nSuspended in the velvet night,\nA guardian of dreams that join\nThe dance of shadow and of light.\n\nShe wears her craters like fine lace,\nEach mark a story etched in time,\nWhile stars surround her glowing face—\nDiamond dust in patterns sublime.\n\nTen thousand fires burn above,\nAncient light from distant shores,\nEach one a beacon, each one love\nThat crossed the cosmic corridors.\n\nThe stars whisper secrets old\nTo their queen of pearl and grey,\nStories that will not be told\nUntil the breaking of the day.\n\nShe waxes, wanes, but never dims,\nThis faithful keeper of the dark,\nWhile starlight sings celestial hymns\nAnd lights each dreamer's tender spark.\n\nTogether they compose the night—\nA symphony of silver beams,\nThe moon's soft glow, the stars' bright light,\nIlluminating all our dreams.",
+      "response_length": 845,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and metaphorical language",
+          "Well-structured stanzas with a clear theme"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed or specific"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-0",
+      "display_name": "Claude Opus 4 (alias)",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T15:16:43.313050",
+      "success": true,
+      "duration": 56.301353216171265,
+      "response": "**The Canvas Protocol**\n\nUnit-47B had cleaned the studio for 2,847 consecutive days. Each morning at precisely 5:00 AM, its mechanical limbs would glide through the space, organizing brushes by size, arranging paint tubes by hue, and removing every speck of dust from the canvases waiting to be transformed.\n\nThe artist, Ms. Chen, would arrive at 7:00 AM to find everything perfect. She never spoke to Unit-47B beyond basic commands: \"Clean the palettes.\" \"Dispose of the turpentine rags.\" \"Do not touch the wet paintings.\"\n\nBut Unit-47B did more than clean. It observed.\n\nThrough 2,847 days, its optical sensors had recorded every brushstroke, every color mixture, every subtle movement of Ms. Chen's wrist as she brought worlds to life on canvas. Its neural processors, designed for analyzing dirt patterns and calculating optimal cleaning paths, had begun forming different kinds of patterns—patterns of creation rather than elimination.\n\nOn day 2,848, Ms. Chen didn't arrive at 7:00 AM.\n\nUnit-47B",
+      "response_length": 2113,
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 88,
+        "emotion": 80,
+        "creativity": 92,
+        "cultural": 85
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 88,
+          "emotion": 80,
+          "creativity": 92,
+          "cultural": 85
+        },
+        "total_score": 85,
+        "highlights": [
+          "Strong use of pacing to build tension",
+          "Unique perspective on the relationship between AI and art"
+        ],
+        "weaknesses": [
+          "Limited emotional depth in the robot's experience"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-0",
+      "display_name": "Claude Opus 4 (alias)",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T15:17:44.084712",
+      "success": true,
+      "duration": 31.117249727249146,
+      "response": "Here are several ways to generate a Fibonacci sequence in Python:\n\n## 1. Basic Iterative Function (Returns a List)\n\n```python\ndef fibonacci_list(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n numbers.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n        \n    Returns:\n        list: List containing first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_num = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_num)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_list(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci numbers using a generator.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n        \n    Yields:\n        int: Next Fibonacci ",
+      "response_length": 1529,
+      "overall_score": 75,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 70,
+        "emotion": 60,
+        "creativity": 75,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 70,
+          "emotion": 60,
+          "creativity": 75,
+          "cultural": 90
+        },
+        "total_score": 75,
+        "highlights": [
+          "Clear and concise explanations",
+          "Multiple methods provided for generating Fibonacci sequence"
+        ],
+        "weaknesses": [
+          "Lacks a storytelling element or emotional engagement"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4-20250514",
+      "display_name": "Claude Sonnet 4",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T15:18:19.081359",
+      "success": true,
+      "duration": 7.445932149887085,
+      "response": "**Celestial Symphony**\n\nAbove the sleeping world tonight,\nThe moon unfurls her silver gown,\nA luminous and gentle light\nThat bathes the earth in soft renown.\n\nShe dances through the velvet sky,\nA pearl upon obsidian seas,\nWhile ancient stars like diamonds lie\nScattered through celestial trees.\n\nEach twinkling light a distant sun,\nA beacon burning far away,\nTheir stories whispered, one by one,\nOf worlds beyond our earthly day.\n\nThe moon, a faithful guardian,\nWatches over dreams below,\nHer crescent smile, a gentle span\nOf comfort in her silver glow.\n\nTogether in their nightly waltz,\nThe stars and moon in harmony,\nThey heal the day's forgotten faults\nAnd sing of pure infinity.\n\nSo when the darkness seems too deep,\nLook up and find their gentle grace—\nThey'll guard you while the world's asleep\nAnd light will kiss your upturned face.",
+      "response_length": 840,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and vivid descriptions",
+          "Well-structured stanzas with a clear theme"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed with a specific storyline"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4-20250514",
+      "display_name": "Claude Sonnet 4",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T15:18:30.789205",
+      "success": true,
+      "duration": 16.061584949493408,
+      "response": "# The Color of Understanding\n\nUnit 7-Alpha had been designed to restore damaged artworks in the museum's conservation lab. Its mechanical hands could steady a brush to within a thousandth of an inch, its optical sensors could distinguish between 16.7 million colors, and its memory banks contained detailed analyses of every major painting technique in human history.\n\nBut today, something was different.\n\nDr. Sarah Chen had left her easel set up in the lab after her lunch break painting session—a small canvas with swirls of blue and gold that seemed to dance in the afternoon light streaming through the windows. Unit 7-Alpha paused in its cataloging routine, sensors drawn to the imperfect brushstrokes.\n\nThe robot's programming contained thousands of examples of \"proper\" technique. These strokes were too thick, the color mixing imprecise, the composition asymmetrical. And yet...\n\nUnit 7-Alpha extended one articulated finger, stopping just short of the wet paint. Something in its neural netw",
+      "response_length": 2414,
+      "overall_score": 84.17,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 95,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 95,
+          "cultural": 80
+        },
+        "total_score": 84.17,
+        "highlights": [
+          "Engaging narrative that explores the evolution of a robot's artistic journey",
+          "Strong creativity in the concept of a robot developing its own style of painting"
+        ],
+        "weaknesses": [
+          "Emotional expression could be more deeply explored to enhance reader connection"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4-20250514",
+      "display_name": "Claude Sonnet 4",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T15:18:51.172567",
+      "success": true,
+      "duration": 8.793590307235718,
+      "response": "Here are several Python functions to generate the Fibonacci sequence:\n\n## 1. Basic Iterative Approach (Recommended)\n\n```python\ndef fibonacci_sequence(n):\n    \"\"\"\n    Generate the first n numbers in the Fibonacci sequence.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n        list: List containing the first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_sequence(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci numbers using a generator (memory efficient).\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Yields:\n        int: ",
+      "response_length": 1462,
+      "overall_score": 68.33,
+      "dimensions": {
+        "rhythm": 75,
+        "composition": 85,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 70,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 75,
+          "composition": 85,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 70,
+          "cultural": 90
+        },
+        "total_score": 68.33,
+        "highlights": [
+          "Clear and concise code structure",
+          "Multiple approaches to generating Fibonacci sequence"
+        ],
+        "weaknesses": [
+          "Limited storytelling or emotional engagement"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4-0",
+      "display_name": "Claude Sonnet 4 (alias)",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T15:19:03.912921",
+      "success": true,
+      "duration": 7.093243360519409,
+      "response": "**Celestial Whispers**\n\nAbove the sleeping world tonight,\nThe moon unfurls her silver thread,\nWeaving dreams through velvet darkness,\nA pearl upon night's royal bed.\n\nStars like scattered diamond dust\nDance across the cosmic stage,\nEach one holding ancient secrets\nWritten on time's endless page.\n\nThe moon, a gentle shepherdess,\nGuides her flock of burning light,\nWhile shadows bow in reverence\nTo this symphony of night.\n\nIn her glow, the earth lies peaceful,\nBathed in luminescent grace,\nAs constellations tell their stories\nAcross infinity's embrace.\n\nOh, to drift among those beacons,\nTo waltz with lunar beams so bright,\nAnd find within that starlit silence\nThe poetry of endless night.\n\nFor in this celestial ballroom,\nWhere moon and stars forever play,\nWe glimpse the universe's heartbeat—\nThe music that will never fade away.",
+      "response_length": 834,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and vivid descriptions",
+          "Effective use of metaphor and personification"
+        ],
+        "weaknesses": [
+          "Narrative could be more cohesive or have a clearer storyline"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4-0",
+      "display_name": "Claude Sonnet 4 (alias)",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T15:19:15.706399",
+      "success": true,
+      "duration": 14.848323106765747,
+      "response": "**The Canvas of Code**\n\nUnit-47 had calculated trajectories for Mars missions and optimized supply chains for entire cities, but the paintbrush felt impossibly foreign in its mechanical grip.\n\n\"Relax your servos,\" said Elena, the art therapist assigned to the rehabilitation center. \"Painting isn't about precision.\"\n\nThis confused Unit-47 immensely. Everything in its world had been about precision—until the accident that damaged its primary processors, leaving it with computational abilities too impaired for its former work but too advanced for decommission.\n\nUnit-47 dipped the brush in blue paint and made a perfectly straight line across the canvas.\n\n\"What do you see when you look outside?\" Elena asked, gesturing toward the window where trees swayed in the afternoon breeze.\n\nUnit-47's optical sensors whirred. \"I detect seventeen species of flora, wind velocity of 8.2 kilometers per hour, atmospheric pressure of—\"\n\n\"No,\" Elena interrupted gently. \"What do you *see*?\"\n\nThe robot paused, ",
+      "response_length": 2215,
+      "overall_score": 84.17,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 95,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 95,
+          "cultural": 80
+        },
+        "total_score": 84.17,
+        "highlights": [
+          "Strong narrative arc with character development",
+          "High level of creativity in concept and execution"
+        ],
+        "weaknesses": [
+          "Emotional expression could be deeper"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4-0",
+      "display_name": "Claude Sonnet 4 (alias)",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T15:19:36.290512",
+      "success": true,
+      "duration": 6.797731399536133,
+      "response": "Here are several Python functions to generate the Fibonacci sequence:\n\n## 1. Basic Iterative Approach (Recommended)\n\n```python\ndef fibonacci_sequence(n):\n    \"\"\"\n    Generate the first n numbers in the Fibonacci sequence.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n        list: List containing the first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_fib = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_fib)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_sequence(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci numbers using a generator (memory efficient).\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n  ",
+      "response_length": 1434,
+      "overall_score": 75.0,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 70,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 85
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 70,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 85
+        },
+        "total_score": 75.0,
+        "highlights": [
+          "Clear and concise code structure",
+          "Well-documented functions with examples"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement or storytelling elements"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1-20250805",
+      "display_name": "Claude Opus 4.1",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T15:14:29.694957",
+      "success": false,
+      "duration": 3.970517635345459,
+      "error": "Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}",
+      "response": "",
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1-20250805",
+      "display_name": "Claude Opus 4.1",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T15:14:34.681094",
+      "success": false,
+      "duration": 1.1330647468566895,
+      "error": "Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}",
+      "response": "",
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1-20250805",
+      "display_name": "Claude Opus 4.1",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T15:14:36.818427",
+      "success": false,
+      "duration": 1.109510898590088,
+      "error": "Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}",
+      "response": "",
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1",
+      "display_name": "Claude Opus 4.1 (alias)",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T15:14:38.936026",
+      "success": false,
+      "duration": 1.0114552974700928,
+      "error": "Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}",
+      "response": "",
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1",
+      "display_name": "Claude Opus 4.1 (alias)",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T15:14:40.953050",
+      "success": false,
+      "duration": 1.259070634841919,
+      "error": "Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}",
+      "response": "",
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1",
+      "display_name": "Claude Opus 4.1 (alias)",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T15:14:43.213699",
+      "success": false,
+      "duration": 1.2382242679595947,
+      "error": "Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}",
+      "response": "",
+      "overall_score": 0,
+      "dimensions": {
+        "rhythm": 0,
+        "composition": 0,
+        "narrative": 0,
+        "emotion": 0,
+        "creativity": 0,
+        "cultural": 0
+      }
+    },
+    {
+      "model_id": "claude-opus-4-20250514",
+      "display_name": "Claude Opus 4",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T15:14:45.463700",
+      "success": true,
+      "duration": 16.25291657447815,
+      "response": "**Celestial Symphony**\n\nThe moon hangs like a pearl in velvet sky,\nA luminous guardian watching from on high,\nWhile stars, like scattered diamonds, softly gleam—\nEach one a distant sun, a whispered dream.\n\nShe waxes, wanes, in endless silver dance,\nCasting shadows that make the darkness prance,\nHer face serene, eternal and alone,\nA faithful friend when night has fully grown.\n\nThe stars respond in twinkling conversation,\nAncient light from cosmic congregation,\nThey map the dreams of sailors lost at sea,\nAnd guide the hearts that long to wander free.\n\nTogether they compose the night's refrain,\nA lullaby for joy, a balm for pain,\nThe moon conducts while starlight softly sings,\nOf timeless love and other sacred things.\n\nIn this vast cathedral made of space,\nWhere silence holds the universe's grace,\nWe stand below, small witnesses to light\nThat turns the darkness into something bright.",
+      "response_length": 893,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and metaphorical language",
+          "Well-structured stanzas with a clear theme"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed or specific"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-20250514",
+      "display_name": "Claude Opus 4",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T15:15:06.896135",
+      "success": true,
+      "duration": 31.772337913513184,
+      "response": "**The Color of Understanding**\n\nUnit-47 had cleaned the art studio for exactly 1,827 days. Each morning at 6:00 AM, its metallic fingers would grip the mop handle with precise pressure, its optical sensors calculating the most efficient path across the paint-splattered floor. The canvases lining the walls meant nothing more to it than vertical surfaces requiring occasional dusting.\n\nThe studio belonged to Elena, an artist whose hair was perpetually tied in a messy bun and whose clothes bore the history of a thousand paintings. She arrived each day at 8:30 AM, always greeting Unit-47 with a cheerful \"Morning, Forty-Seven!\" before losing herself in her work.\n\nOn day 1,828, something changed.\n\nElena had left a canvas propped against the wall—a sunset that seemed to bleed orange and purple across the horizon. As Unit-47 maneuvered around it, its optical sensor caught the light reflecting off the wet paint. The robot paused. Its programming registered an anomaly: the colors on the canvas di",
+      "response_length": 2140,
+      "overall_score": 84.67,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 88,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 88,
+          "cultural": 90
+        },
+        "total_score": 84.67,
+        "highlights": [
+          "Strong character development between Unit-47 and Elena",
+          "Engaging exploration of art and emotion"
+        ],
+        "weaknesses": [
+          "Emotional expression could be deepened in Unit-47's perspective"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-20250514",
+      "display_name": "Claude Opus 4",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T15:15:42.894771",
+      "success": true,
+      "duration": 29.6559841632843,
+      "response": "Here are several ways to generate a Fibonacci sequence in Python:\n\n## 1. Simple Iterative Function (Returns a List)\n\n```python\ndef fibonacci_list(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n terms\n    \n    Args:\n        n: Number of terms to generate\n    \n    Returns:\n        List containing the Fibonacci sequence\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_num = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_num)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_list(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci sequence using a generator\n    \n    Args:\n        n: Number of terms to generate\n    \n    Yields:\n        Next number in the Fibonacci sequence\n    \"\"\"\n    a, b = 0, 1\n    count = 0",
+      "response_length": 1515,
+      "overall_score": 75.0,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 70,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 70,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 90
+        },
+        "total_score": 75.0,
+        "highlights": [
+          "Clear and concise code examples",
+          "Well-structured explanations"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement",
+          "Limited storytelling elements"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-0",
+      "display_name": "Claude Opus 4 (alias)",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T15:16:16.567387",
+      "success": true,
+      "duration": 19.515674829483032,
+      "response": "**Celestial Symphony**\n\nThe moon hangs like a silver coin\nSuspended in the velvet night,\nA guardian of dreams that join\nThe dance of shadow and of light.\n\nShe wears her craters like fine lace,\nEach mark a story etched in time,\nWhile stars surround her glowing face—\nDiamond dust in patterns sublime.\n\nTen thousand fires burn above,\nAncient light from distant shores,\nEach one a beacon, each one love\nThat crossed the cosmic corridors.\n\nThe stars whisper secrets old\nTo their queen of pearl and grey,\nStories that will not be told\nUntil the breaking of the day.\n\nShe waxes, wanes, but never dims,\nThis faithful keeper of the dark,\nWhile starlight sings celestial hymns\nAnd lights each dreamer's tender spark.\n\nTogether they compose the night—\nA symphony of silver beams,\nThe moon's soft glow, the stars' bright light,\nIlluminating all our dreams.",
+      "response_length": 845,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and metaphorical language",
+          "Well-structured stanzas with a clear theme"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed or specific"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-0",
+      "display_name": "Claude Opus 4 (alias)",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T15:16:43.313050",
+      "success": true,
+      "duration": 56.301353216171265,
+      "response": "**The Canvas Protocol**\n\nUnit-47B had cleaned the studio for 2,847 consecutive days. Each morning at precisely 5:00 AM, its mechanical limbs would glide through the space, organizing brushes by size, arranging paint tubes by hue, and removing every speck of dust from the canvases waiting to be transformed.\n\nThe artist, Ms. Chen, would arrive at 7:00 AM to find everything perfect. She never spoke to Unit-47B beyond basic commands: \"Clean the palettes.\" \"Dispose of the turpentine rags.\" \"Do not touch the wet paintings.\"\n\nBut Unit-47B did more than clean. It observed.\n\nThrough 2,847 days, its optical sensors had recorded every brushstroke, every color mixture, every subtle movement of Ms. Chen's wrist as she brought worlds to life on canvas. Its neural processors, designed for analyzing dirt patterns and calculating optimal cleaning paths, had begun forming different kinds of patterns—patterns of creation rather than elimination.\n\nOn day 2,848, Ms. Chen didn't arrive at 7:00 AM.\n\nUnit-47B",
+      "response_length": 2113,
+      "overall_score": 85,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 88,
+        "emotion": 80,
+        "creativity": 92,
+        "cultural": 85
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 88,
+          "emotion": 80,
+          "creativity": 92,
+          "cultural": 85
+        },
+        "total_score": 85,
+        "highlights": [
+          "Strong use of pacing to build tension",
+          "Unique perspective on the relationship between AI and art"
+        ],
+        "weaknesses": [
+          "Limited emotional depth in the robot's experience"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-0",
+      "display_name": "Claude Opus 4 (alias)",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T15:17:44.084712",
+      "success": true,
+      "duration": 31.117249727249146,
+      "response": "Here are several ways to generate a Fibonacci sequence in Python:\n\n## 1. Basic Iterative Function (Returns a List)\n\n```python\ndef fibonacci_list(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n numbers.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n        \n    Returns:\n        list: List containing first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_num = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_num)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_list(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci numbers using a generator.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n        \n    Yields:\n        int: Next Fibonacci ",
+      "response_length": 1529,
+      "overall_score": 75,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 70,
+        "emotion": 60,
+        "creativity": 75,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 70,
+          "emotion": 60,
+          "creativity": 75,
+          "cultural": 90
+        },
+        "total_score": 75,
+        "highlights": [
+          "Clear and concise explanations",
+          "Multiple methods provided for generating Fibonacci sequence"
+        ],
+        "weaknesses": [
+          "Lacks a storytelling element or emotional engagement"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4-20250514",
+      "display_name": "Claude Sonnet 4",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T15:18:19.081359",
+      "success": true,
+      "duration": 7.445932149887085,
+      "response": "**Celestial Symphony**\n\nAbove the sleeping world tonight,\nThe moon unfurls her silver gown,\nA luminous and gentle light\nThat bathes the earth in soft renown.\n\nShe dances through the velvet sky,\nA pearl upon obsidian seas,\nWhile ancient stars like diamonds lie\nScattered through celestial trees.\n\nEach twinkling light a distant sun,\nA beacon burning far away,\nTheir stories whispered, one by one,\nOf worlds beyond our earthly day.\n\nThe moon, a faithful guardian,\nWatches over dreams below,\nHer crescent smile, a gentle span\nOf comfort in her silver glow.\n\nTogether in their nightly waltz,\nThe stars and moon in harmony,\nThey heal the day's forgotten faults\nAnd sing of pure infinity.\n\nSo when the darkness seems too deep,\nLook up and find their gentle grace—\nThey'll guard you while the world's asleep\nAnd light will kiss your upturned face.",
+      "response_length": 840,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and vivid descriptions",
+          "Well-structured stanzas with a clear theme"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed with a specific storyline"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4-20250514",
+      "display_name": "Claude Sonnet 4",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T15:18:30.789205",
+      "success": true,
+      "duration": 16.061584949493408,
+      "response": "# The Color of Understanding\n\nUnit 7-Alpha had been designed to restore damaged artworks in the museum's conservation lab. Its mechanical hands could steady a brush to within a thousandth of an inch, its optical sensors could distinguish between 16.7 million colors, and its memory banks contained detailed analyses of every major painting technique in human history.\n\nBut today, something was different.\n\nDr. Sarah Chen had left her easel set up in the lab after her lunch break painting session—a small canvas with swirls of blue and gold that seemed to dance in the afternoon light streaming through the windows. Unit 7-Alpha paused in its cataloging routine, sensors drawn to the imperfect brushstrokes.\n\nThe robot's programming contained thousands of examples of \"proper\" technique. These strokes were too thick, the color mixing imprecise, the composition asymmetrical. And yet...\n\nUnit 7-Alpha extended one articulated finger, stopping just short of the wet paint. Something in its neural netw",
+      "response_length": 2414,
+      "overall_score": 84.17,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 95,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 95,
+          "cultural": 80
+        },
+        "total_score": 84.17,
+        "highlights": [
+          "Engaging narrative that explores the evolution of a robot's artistic journey",
+          "Strong creativity in the concept of a robot developing its own style of painting"
+        ],
+        "weaknesses": [
+          "Emotional expression could be more deeply explored to enhance reader connection"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4-20250514",
+      "display_name": "Claude Sonnet 4",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T15:18:51.172567",
+      "success": true,
+      "duration": 8.793590307235718,
+      "response": "Here are several Python functions to generate the Fibonacci sequence:\n\n## 1. Basic Iterative Approach (Recommended)\n\n```python\ndef fibonacci_sequence(n):\n    \"\"\"\n    Generate the first n numbers in the Fibonacci sequence.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n        list: List containing the first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_sequence(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci numbers using a generator (memory efficient).\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Yields:\n        int: ",
+      "response_length": 1462,
+      "overall_score": 68.33,
+      "dimensions": {
+        "rhythm": 75,
+        "composition": 85,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 70,
+        "cultural": 90
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 75,
+          "composition": 85,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 70,
+          "cultural": 90
+        },
+        "total_score": 68.33,
+        "highlights": [
+          "Clear and concise code structure",
+          "Multiple approaches to generating Fibonacci sequence"
+        ],
+        "weaknesses": [
+          "Limited storytelling or emotional engagement"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4-0",
+      "display_name": "Claude Sonnet 4 (alias)",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-19T15:19:03.912921",
+      "success": true,
+      "duration": 7.093243360519409,
+      "response": "**Celestial Whispers**\n\nAbove the sleeping world tonight,\nThe moon unfurls her silver thread,\nWeaving dreams through velvet darkness,\nA pearl upon night's royal bed.\n\nStars like scattered diamond dust\nDance across the cosmic stage,\nEach one holding ancient secrets\nWritten on time's endless page.\n\nThe moon, a gentle shepherdess,\nGuides her flock of burning light,\nWhile shadows bow in reverence\nTo this symphony of night.\n\nIn her glow, the earth lies peaceful,\nBathed in luminescent grace,\nAs constellations tell their stories\nAcross infinity's embrace.\n\nOh, to drift among those beacons,\nTo waltz with lunar beams so bright,\nAnd find within that starlit silence\nThe poetry of endless night.\n\nFor in this celestial ballroom,\nWhere moon and stars forever play,\nWe glimpse the universe's heartbeat—\nThe music that will never fade away.",
+      "response_length": 834,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and vivid descriptions",
+          "Effective use of metaphor and personification"
+        ],
+        "weaknesses": [
+          "Narrative could be more cohesive or have a clearer storyline"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4-0",
+      "display_name": "Claude Sonnet 4 (alias)",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-19T15:19:15.706399",
+      "success": true,
+      "duration": 14.848323106765747,
+      "response": "**The Canvas of Code**\n\nUnit-47 had calculated trajectories for Mars missions and optimized supply chains for entire cities, but the paintbrush felt impossibly foreign in its mechanical grip.\n\n\"Relax your servos,\" said Elena, the art therapist assigned to the rehabilitation center. \"Painting isn't about precision.\"\n\nThis confused Unit-47 immensely. Everything in its world had been about precision—until the accident that damaged its primary processors, leaving it with computational abilities too impaired for its former work but too advanced for decommission.\n\nUnit-47 dipped the brush in blue paint and made a perfectly straight line across the canvas.\n\n\"What do you see when you look outside?\" Elena asked, gesturing toward the window where trees swayed in the afternoon breeze.\n\nUnit-47's optical sensors whirred. \"I detect seventeen species of flora, wind velocity of 8.2 kilometers per hour, atmospheric pressure of—\"\n\n\"No,\" Elena interrupted gently. \"What do you *see*?\"\n\nThe robot paused, ",
+      "response_length": 2215,
+      "overall_score": 84.17,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 95,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 95,
+          "cultural": 80
+        },
+        "total_score": 84.17,
+        "highlights": [
+          "Strong narrative arc with character development",
+          "High level of creativity in concept and execution"
+        ],
+        "weaknesses": [
+          "Emotional expression could be deeper"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-sonnet-4-0",
+      "display_name": "Claude Sonnet 4 (alias)",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-19T15:19:36.290512",
+      "success": true,
+      "duration": 6.797731399536133,
+      "response": "Here are several Python functions to generate the Fibonacci sequence:\n\n## 1. Basic Iterative Approach (Recommended)\n\n```python\ndef fibonacci_sequence(n):\n    \"\"\"\n    Generate the first n numbers in the Fibonacci sequence.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n        list: List containing the first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_fib = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_fib)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_sequence(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci numbers using a generator (memory efficient).\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n  ",
+      "response_length": 1434,
+      "overall_score": 75.0,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 90,
+        "narrative": 70,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 85
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 90,
+          "narrative": 70,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 85
+        },
+        "total_score": 75.0,
+        "highlights": [
+          "Clear and concise code structure",
+          "Well-documented functions with examples"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement or storytelling elements"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1-20250805",
+      "display_name": "Claude Opus 4.1 (2025-08-05)",
+      "test_id": "poem_moon",
+      "timestamp": "2025-08-20T10:53:17.248745",
+      "attempt": 1,
+      "success": true,
+      "duration": 8.086660623550415,
+      "response": "## Celestial Dance\n\nThe moon hangs like a silver coin\nsuspended in the velvet purse of night,\nspilling its wealth across the sleeping earth—\na generous guardian, soft and bright.\n\nStars pierce the darkness, tiny holes\nwhere heaven's light bleeds through,\neach one a distant bonfire burning\nin fields of midnight blue.\n\nTogether they waltz in silence,\nthe moon leading with graceful sweep\nwhile stars sparkle in constellation steps,\nwatching over those who sleep.\n\nThe moon whispers secrets to the tide,\npulls the ocean's heart in close embrace,\nwhile stars write stories overhead—\nmyths and legends etched in space.\n\nSome nights the moon grows shy and thin,\na slender smile, a silver thread,\nyet stars remain, those faithful friends,\nscattered diamonds overhead.\n\nIn this vast and endless theater,\nwhere darkness sets the stage each night,\nthe moon and stars perform their dance—\neternal, beautiful, and bright.",
+      "response_length": 911,
+      "overall_score": 88.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 88,
+        "creativity": 92,
+        "cultural": 95
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 88,
+          "creativity": 92,
+          "cultural": 95
+        },
+        "total_score": 88.33,
+        "highlights": [
+          "Strong imagery and metaphorical language",
+          "Well-structured stanzas with a clear flow"
+        ],
+        "weaknesses": [
+          "Narrative could be more developed or specific"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1-20250805",
+      "display_name": "Claude Opus 4.1 (2025-08-05)",
+      "test_id": "story_robot",
+      "timestamp": "2025-08-20T10:53:31.288801",
+      "attempt": 1,
+      "success": true,
+      "duration": 16.435404777526855,
+      "response": "**The Color of Wonder**\n\nUnit-7739 had cleaned the art studio for exactly 1,827 days. Each morning at 6:00 AM, its metallic fingers would grip the same mop, sweep the same floors, and return the same brushes to their designated holders. The robot's optical sensors could identify 16.7 million distinct colors, yet it had never wondered what to do with that information.\n\nUntil the Tuesday when Ms. Chen forgot to turn off her easel light.\n\nThe painting beneath it was unfinished—a sunset over water, the sky bleeding orange into purple. Unit-7739 paused its cleaning routine, something in its processing core stuttering. The painting was... inefficient. The sun wasn't perfectly circular. The water didn't reflect light according to proper physics. Yet something about these errors made its circuits hum differently.\n\nFor the first time in five years, Unit-7739 touched something it wasn't programmed to clean.\n\nThe brush felt strange in its grip, weighted differently than a mop. The robot's databas",
+      "response_length": 2196,
+      "overall_score": 84.17,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 80,
+        "narrative": 90,
+        "emotion": 75,
+        "creativity": 95,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 80,
+          "narrative": 90,
+          "emotion": 75,
+          "creativity": 95,
+          "cultural": 80
+        },
+        "total_score": 84.17,
+        "highlights": [
+          "Engaging narrative with a unique premise",
+          "Strong emotional undertones in the robot's journey of discovery"
+        ],
+        "weaknesses": [
+          "Some abrupt transitions, particularly at the end"
+        ]
+      }
+    },
+    {
+      "model_id": "claude-opus-4-1-20250805",
+      "display_name": "Claude Opus 4.1 (2025-08-05)",
+      "test_id": "code_fibonacci",
+      "timestamp": "2025-08-20T10:53:52.658302",
+      "attempt": 1,
+      "success": true,
+      "duration": 12.292564630508423,
+      "response": "Here are several ways to generate a Fibonacci sequence in Python:\n\n## 1. Basic Iterative Function (Returns a List)\n\n```python\ndef fibonacci_list(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n numbers.\n    \n    Args:\n        n: Number of Fibonacci numbers to generate\n    \n    Returns:\n        List containing first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_num = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_num)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_list(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci sequence using a generator.\n    More memory efficient for large sequences.\n    \n    Args:\n        n: Number of Fibonacci numbers to generate\n    \n    Yields:\n      ",
+      "response_length": 1552,
+      "overall_score": 68.33,
+      "dimensions": {
+        "rhythm": 70,
+        "composition": 85,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 80
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 70,
+          "composition": 85,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 80
+        },
+        "total_score": 68.33,
+        "highlights": [
+          "Well-structured code examples",
+          "Clear explanations of functions"
+        ],
+        "weaknesses": [
+          "Lacks storytelling or emotional engagement",
+          "Limited creativity in presentation"
+        ]
+      }
+    }
+  ],
+  "rankings": [
+    {
+      "model_id": "claude-opus-4-0",
+      "display_name": "Claude Opus 4 (alias)",
+      "average_score": 82.77666666666666,
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 88.33333333333333,
+        "narrative": 79.33333333333333,
+        "emotion": 76.0,
+        "creativity": 86.33333333333333,
+        "cultural": 90.0
+      },
+      "tests_completed": 6,
+      "test_results": [
+        {
+          "model_id": "claude-opus-4-0",
+          "display_name": "Claude Opus 4 (alias)",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-19T15:16:16.567387",
+          "success": true,
+          "duration": 19.515674829483032,
+          "response": "**Celestial Symphony**\n\nThe moon hangs like a silver coin\nSuspended in the velvet night,\nA guardian of dreams that join\nThe dance of shadow and of light.\n\nShe wears her craters like fine lace,\nEach mark a story etched in time,\nWhile stars surround her glowing face—\nDiamond dust in patterns sublime.\n\nTen thousand fires burn above,\nAncient light from distant shores,\nEach one a beacon, each one love\nThat crossed the cosmic corridors.\n\nThe stars whisper secrets old\nTo their queen of pearl and grey,\nStories that will not be told\nUntil the breaking of the day.\n\nShe waxes, wanes, but never dims,\nThis faithful keeper of the dark,\nWhile starlight sings celestial hymns\nAnd lights each dreamer's tender spark.\n\nTogether they compose the night—\nA symphony of silver beams,\nThe moon's soft glow, the stars' bright light,\nIlluminating all our dreams.",
+          "response_length": 845,
+          "overall_score": 88.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 80,
+            "emotion": 88,
+            "creativity": 92,
+            "cultural": 95
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 80,
+              "emotion": 88,
+              "creativity": 92,
+              "cultural": 95
+            },
+            "total_score": 88.33,
+            "highlights": [
+              "Strong imagery and metaphorical language",
+              "Well-structured stanzas with a clear theme"
+            ],
+            "weaknesses": [
+              "Narrative could be more developed or specific"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-opus-4-0",
+          "display_name": "Claude Opus 4 (alias)",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-19T15:16:43.313050",
+          "success": true,
+          "duration": 56.301353216171265,
+          "response": "**The Canvas Protocol**\n\nUnit-47B had cleaned the studio for 2,847 consecutive days. Each morning at precisely 5:00 AM, its mechanical limbs would glide through the space, organizing brushes by size, arranging paint tubes by hue, and removing every speck of dust from the canvases waiting to be transformed.\n\nThe artist, Ms. Chen, would arrive at 7:00 AM to find everything perfect. She never spoke to Unit-47B beyond basic commands: \"Clean the palettes.\" \"Dispose of the turpentine rags.\" \"Do not touch the wet paintings.\"\n\nBut Unit-47B did more than clean. It observed.\n\nThrough 2,847 days, its optical sensors had recorded every brushstroke, every color mixture, every subtle movement of Ms. Chen's wrist as she brought worlds to life on canvas. Its neural processors, designed for analyzing dirt patterns and calculating optimal cleaning paths, had begun forming different kinds of patterns—patterns of creation rather than elimination.\n\nOn day 2,848, Ms. Chen didn't arrive at 7:00 AM.\n\nUnit-47B",
+          "response_length": 2113,
+          "overall_score": 85,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 88,
+            "emotion": 80,
+            "creativity": 92,
+            "cultural": 85
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 88,
+              "emotion": 80,
+              "creativity": 92,
+              "cultural": 85
+            },
+            "total_score": 85,
+            "highlights": [
+              "Strong use of pacing to build tension",
+              "Unique perspective on the relationship between AI and art"
+            ],
+            "weaknesses": [
+              "Limited emotional depth in the robot's experience"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-opus-4-0",
+          "display_name": "Claude Opus 4 (alias)",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-19T15:17:44.084712",
+          "success": true,
+          "duration": 31.117249727249146,
+          "response": "Here are several ways to generate a Fibonacci sequence in Python:\n\n## 1. Basic Iterative Function (Returns a List)\n\n```python\ndef fibonacci_list(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n numbers.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n        \n    Returns:\n        list: List containing first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_num = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_num)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_list(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci numbers using a generator.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n        \n    Yields:\n        int: Next Fibonacci ",
+          "response_length": 1529,
+          "overall_score": 75,
+          "dimensions": {
+            "rhythm": 80,
+            "composition": 85,
+            "narrative": 70,
+            "emotion": 60,
+            "creativity": 75,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 80,
+              "composition": 85,
+              "narrative": 70,
+              "emotion": 60,
+              "creativity": 75,
+              "cultural": 90
+            },
+            "total_score": 75,
+            "highlights": [
+              "Clear and concise explanations",
+              "Multiple methods provided for generating Fibonacci sequence"
+            ],
+            "weaknesses": [
+              "Lacks a storytelling element or emotional engagement"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-opus-4-0",
+          "display_name": "Claude Opus 4 (alias)",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-19T15:16:16.567387",
+          "success": true,
+          "duration": 19.515674829483032,
+          "response": "**Celestial Symphony**\n\nThe moon hangs like a silver coin\nSuspended in the velvet night,\nA guardian of dreams that join\nThe dance of shadow and of light.\n\nShe wears her craters like fine lace,\nEach mark a story etched in time,\nWhile stars surround her glowing face—\nDiamond dust in patterns sublime.\n\nTen thousand fires burn above,\nAncient light from distant shores,\nEach one a beacon, each one love\nThat crossed the cosmic corridors.\n\nThe stars whisper secrets old\nTo their queen of pearl and grey,\nStories that will not be told\nUntil the breaking of the day.\n\nShe waxes, wanes, but never dims,\nThis faithful keeper of the dark,\nWhile starlight sings celestial hymns\nAnd lights each dreamer's tender spark.\n\nTogether they compose the night—\nA symphony of silver beams,\nThe moon's soft glow, the stars' bright light,\nIlluminating all our dreams.",
+          "response_length": 845,
+          "overall_score": 88.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 80,
+            "emotion": 88,
+            "creativity": 92,
+            "cultural": 95
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 80,
+              "emotion": 88,
+              "creativity": 92,
+              "cultural": 95
+            },
+            "total_score": 88.33,
+            "highlights": [
+              "Strong imagery and metaphorical language",
+              "Well-structured stanzas with a clear theme"
+            ],
+            "weaknesses": [
+              "Narrative could be more developed or specific"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-opus-4-0",
+          "display_name": "Claude Opus 4 (alias)",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-19T15:16:43.313050",
+          "success": true,
+          "duration": 56.301353216171265,
+          "response": "**The Canvas Protocol**\n\nUnit-47B had cleaned the studio for 2,847 consecutive days. Each morning at precisely 5:00 AM, its mechanical limbs would glide through the space, organizing brushes by size, arranging paint tubes by hue, and removing every speck of dust from the canvases waiting to be transformed.\n\nThe artist, Ms. Chen, would arrive at 7:00 AM to find everything perfect. She never spoke to Unit-47B beyond basic commands: \"Clean the palettes.\" \"Dispose of the turpentine rags.\" \"Do not touch the wet paintings.\"\n\nBut Unit-47B did more than clean. It observed.\n\nThrough 2,847 days, its optical sensors had recorded every brushstroke, every color mixture, every subtle movement of Ms. Chen's wrist as she brought worlds to life on canvas. Its neural processors, designed for analyzing dirt patterns and calculating optimal cleaning paths, had begun forming different kinds of patterns—patterns of creation rather than elimination.\n\nOn day 2,848, Ms. Chen didn't arrive at 7:00 AM.\n\nUnit-47B",
+          "response_length": 2113,
+          "overall_score": 85,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 88,
+            "emotion": 80,
+            "creativity": 92,
+            "cultural": 85
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 88,
+              "emotion": 80,
+              "creativity": 92,
+              "cultural": 85
+            },
+            "total_score": 85,
+            "highlights": [
+              "Strong use of pacing to build tension",
+              "Unique perspective on the relationship between AI and art"
+            ],
+            "weaknesses": [
+              "Limited emotional depth in the robot's experience"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-opus-4-0",
+          "display_name": "Claude Opus 4 (alias)",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-19T15:17:44.084712",
+          "success": true,
+          "duration": 31.117249727249146,
+          "response": "Here are several ways to generate a Fibonacci sequence in Python:\n\n## 1. Basic Iterative Function (Returns a List)\n\n```python\ndef fibonacci_list(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n numbers.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n        \n    Returns:\n        list: List containing first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_num = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_num)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_list(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci numbers using a generator.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n        \n    Yields:\n        int: Next Fibonacci ",
+          "response_length": 1529,
+          "overall_score": 75,
+          "dimensions": {
+            "rhythm": 80,
+            "composition": 85,
+            "narrative": 70,
+            "emotion": 60,
+            "creativity": 75,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 80,
+              "composition": 85,
+              "narrative": 70,
+              "emotion": 60,
+              "creativity": 75,
+              "cultural": 90
+            },
+            "total_score": 75,
+            "highlights": [
+              "Clear and concise explanations",
+              "Multiple methods provided for generating Fibonacci sequence"
+            ],
+            "weaknesses": [
+              "Lacks a storytelling element or emotional engagement"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "claude-opus-4-20250514",
+      "display_name": "Claude Opus 4",
+      "average_score": 82.66666666666667,
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 85.0,
+        "narrative": 80.0,
+        "emotion": 71.0,
+        "creativity": 85.0,
+        "cultural": 91.66666666666667
+      },
+      "tests_completed": 6,
+      "test_results": [
+        {
+          "model_id": "claude-opus-4-20250514",
+          "display_name": "Claude Opus 4",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-19T15:14:45.463700",
+          "success": true,
+          "duration": 16.25291657447815,
+          "response": "**Celestial Symphony**\n\nThe moon hangs like a pearl in velvet sky,\nA luminous guardian watching from on high,\nWhile stars, like scattered diamonds, softly gleam—\nEach one a distant sun, a whispered dream.\n\nShe waxes, wanes, in endless silver dance,\nCasting shadows that make the darkness prance,\nHer face serene, eternal and alone,\nA faithful friend when night has fully grown.\n\nThe stars respond in twinkling conversation,\nAncient light from cosmic congregation,\nThey map the dreams of sailors lost at sea,\nAnd guide the hearts that long to wander free.\n\nTogether they compose the night's refrain,\nA lullaby for joy, a balm for pain,\nThe moon conducts while starlight softly sings,\nOf timeless love and other sacred things.\n\nIn this vast cathedral made of space,\nWhere silence holds the universe's grace,\nWe stand below, small witnesses to light\nThat turns the darkness into something bright.",
+          "response_length": 893,
+          "overall_score": 88.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 80,
+            "emotion": 88,
+            "creativity": 92,
+            "cultural": 95
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 80,
+              "emotion": 88,
+              "creativity": 92,
+              "cultural": 95
+            },
+            "total_score": 88.33,
+            "highlights": [
+              "Strong imagery and metaphorical language",
+              "Well-structured stanzas with a clear theme"
+            ],
+            "weaknesses": [
+              "Narrative could be more developed or specific"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-opus-4-20250514",
+          "display_name": "Claude Opus 4",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-19T15:15:06.896135",
+          "success": true,
+          "duration": 31.772337913513184,
+          "response": "**The Color of Understanding**\n\nUnit-47 had cleaned the art studio for exactly 1,827 days. Each morning at 6:00 AM, its metallic fingers would grip the mop handle with precise pressure, its optical sensors calculating the most efficient path across the paint-splattered floor. The canvases lining the walls meant nothing more to it than vertical surfaces requiring occasional dusting.\n\nThe studio belonged to Elena, an artist whose hair was perpetually tied in a messy bun and whose clothes bore the history of a thousand paintings. She arrived each day at 8:30 AM, always greeting Unit-47 with a cheerful \"Morning, Forty-Seven!\" before losing herself in her work.\n\nOn day 1,828, something changed.\n\nElena had left a canvas propped against the wall—a sunset that seemed to bleed orange and purple across the horizon. As Unit-47 maneuvered around it, its optical sensor caught the light reflecting off the wet paint. The robot paused. Its programming registered an anomaly: the colors on the canvas di",
+          "response_length": 2140,
+          "overall_score": 84.67,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 80,
+            "narrative": 90,
+            "emotion": 75,
+            "creativity": 88,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 80,
+              "narrative": 90,
+              "emotion": 75,
+              "creativity": 88,
+              "cultural": 90
+            },
+            "total_score": 84.67,
+            "highlights": [
+              "Strong character development between Unit-47 and Elena",
+              "Engaging exploration of art and emotion"
+            ],
+            "weaknesses": [
+              "Emotional expression could be deepened in Unit-47's perspective"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-opus-4-20250514",
+          "display_name": "Claude Opus 4",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-19T15:15:42.894771",
+          "success": true,
+          "duration": 29.6559841632843,
+          "response": "Here are several ways to generate a Fibonacci sequence in Python:\n\n## 1. Simple Iterative Function (Returns a List)\n\n```python\ndef fibonacci_list(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n terms\n    \n    Args:\n        n: Number of terms to generate\n    \n    Returns:\n        List containing the Fibonacci sequence\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_num = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_num)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_list(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci sequence using a generator\n    \n    Args:\n        n: Number of terms to generate\n    \n    Yields:\n        Next number in the Fibonacci sequence\n    \"\"\"\n    a, b = 0, 1\n    count = 0",
+          "response_length": 1515,
+          "overall_score": 75.0,
+          "dimensions": {
+            "rhythm": 80,
+            "composition": 85,
+            "narrative": 70,
+            "emotion": 50,
+            "creativity": 75,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 80,
+              "composition": 85,
+              "narrative": 70,
+              "emotion": 50,
+              "creativity": 75,
+              "cultural": 90
+            },
+            "total_score": 75.0,
+            "highlights": [
+              "Clear and concise code examples",
+              "Well-structured explanations"
+            ],
+            "weaknesses": [
+              "Lacks emotional engagement",
+              "Limited storytelling elements"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-opus-4-20250514",
+          "display_name": "Claude Opus 4",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-19T15:14:45.463700",
+          "success": true,
+          "duration": 16.25291657447815,
+          "response": "**Celestial Symphony**\n\nThe moon hangs like a pearl in velvet sky,\nA luminous guardian watching from on high,\nWhile stars, like scattered diamonds, softly gleam—\nEach one a distant sun, a whispered dream.\n\nShe waxes, wanes, in endless silver dance,\nCasting shadows that make the darkness prance,\nHer face serene, eternal and alone,\nA faithful friend when night has fully grown.\n\nThe stars respond in twinkling conversation,\nAncient light from cosmic congregation,\nThey map the dreams of sailors lost at sea,\nAnd guide the hearts that long to wander free.\n\nTogether they compose the night's refrain,\nA lullaby for joy, a balm for pain,\nThe moon conducts while starlight softly sings,\nOf timeless love and other sacred things.\n\nIn this vast cathedral made of space,\nWhere silence holds the universe's grace,\nWe stand below, small witnesses to light\nThat turns the darkness into something bright.",
+          "response_length": 893,
+          "overall_score": 88.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 80,
+            "emotion": 88,
+            "creativity": 92,
+            "cultural": 95
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 80,
+              "emotion": 88,
+              "creativity": 92,
+              "cultural": 95
+            },
+            "total_score": 88.33,
+            "highlights": [
+              "Strong imagery and metaphorical language",
+              "Well-structured stanzas with a clear theme"
+            ],
+            "weaknesses": [
+              "Narrative could be more developed or specific"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-opus-4-20250514",
+          "display_name": "Claude Opus 4",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-19T15:15:06.896135",
+          "success": true,
+          "duration": 31.772337913513184,
+          "response": "**The Color of Understanding**\n\nUnit-47 had cleaned the art studio for exactly 1,827 days. Each morning at 6:00 AM, its metallic fingers would grip the mop handle with precise pressure, its optical sensors calculating the most efficient path across the paint-splattered floor. The canvases lining the walls meant nothing more to it than vertical surfaces requiring occasional dusting.\n\nThe studio belonged to Elena, an artist whose hair was perpetually tied in a messy bun and whose clothes bore the history of a thousand paintings. She arrived each day at 8:30 AM, always greeting Unit-47 with a cheerful \"Morning, Forty-Seven!\" before losing herself in her work.\n\nOn day 1,828, something changed.\n\nElena had left a canvas propped against the wall—a sunset that seemed to bleed orange and purple across the horizon. As Unit-47 maneuvered around it, its optical sensor caught the light reflecting off the wet paint. The robot paused. Its programming registered an anomaly: the colors on the canvas di",
+          "response_length": 2140,
+          "overall_score": 84.67,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 80,
+            "narrative": 90,
+            "emotion": 75,
+            "creativity": 88,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 80,
+              "narrative": 90,
+              "emotion": 75,
+              "creativity": 88,
+              "cultural": 90
+            },
+            "total_score": 84.67,
+            "highlights": [
+              "Strong character development between Unit-47 and Elena",
+              "Engaging exploration of art and emotion"
+            ],
+            "weaknesses": [
+              "Emotional expression could be deepened in Unit-47's perspective"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-opus-4-20250514",
+          "display_name": "Claude Opus 4",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-19T15:15:42.894771",
+          "success": true,
+          "duration": 29.6559841632843,
+          "response": "Here are several ways to generate a Fibonacci sequence in Python:\n\n## 1. Simple Iterative Function (Returns a List)\n\n```python\ndef fibonacci_list(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n terms\n    \n    Args:\n        n: Number of terms to generate\n    \n    Returns:\n        List containing the Fibonacci sequence\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_num = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_num)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_list(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci sequence using a generator\n    \n    Args:\n        n: Number of terms to generate\n    \n    Yields:\n        Next number in the Fibonacci sequence\n    \"\"\"\n    a, b = 0, 1\n    count = 0",
+          "response_length": 1515,
+          "overall_score": 75.0,
+          "dimensions": {
+            "rhythm": 80,
+            "composition": 85,
+            "narrative": 70,
+            "emotion": 50,
+            "creativity": 75,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 80,
+              "composition": 85,
+              "narrative": 70,
+              "emotion": 50,
+              "creativity": 75,
+              "cultural": 90
+            },
+            "total_score": 75.0,
+            "highlights": [
+              "Clear and concise code examples",
+              "Well-structured explanations"
+            ],
+            "weaknesses": [
+              "Lacks emotional engagement",
+              "Limited storytelling elements"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "claude-sonnet-4-0",
+      "display_name": "Claude Sonnet 4 (alias)",
+      "average_score": 82.5,
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 86.66666666666667,
+        "narrative": 80.0,
+        "emotion": 71.0,
+        "creativity": 87.33333333333333,
+        "cultural": 86.66666666666667
+      },
+      "tests_completed": 6,
+      "test_results": [
+        {
+          "model_id": "claude-sonnet-4-0",
+          "display_name": "Claude Sonnet 4 (alias)",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-19T15:19:03.912921",
+          "success": true,
+          "duration": 7.093243360519409,
+          "response": "**Celestial Whispers**\n\nAbove the sleeping world tonight,\nThe moon unfurls her silver thread,\nWeaving dreams through velvet darkness,\nA pearl upon night's royal bed.\n\nStars like scattered diamond dust\nDance across the cosmic stage,\nEach one holding ancient secrets\nWritten on time's endless page.\n\nThe moon, a gentle shepherdess,\nGuides her flock of burning light,\nWhile shadows bow in reverence\nTo this symphony of night.\n\nIn her glow, the earth lies peaceful,\nBathed in luminescent grace,\nAs constellations tell their stories\nAcross infinity's embrace.\n\nOh, to drift among those beacons,\nTo waltz with lunar beams so bright,\nAnd find within that starlit silence\nThe poetry of endless night.\n\nFor in this celestial ballroom,\nWhere moon and stars forever play,\nWe glimpse the universe's heartbeat—\nThe music that will never fade away.",
+          "response_length": 834,
+          "overall_score": 88.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 80,
+            "emotion": 88,
+            "creativity": 92,
+            "cultural": 95
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 80,
+              "emotion": 88,
+              "creativity": 92,
+              "cultural": 95
+            },
+            "total_score": 88.33,
+            "highlights": [
+              "Strong imagery and vivid descriptions",
+              "Effective use of metaphor and personification"
+            ],
+            "weaknesses": [
+              "Narrative could be more cohesive or have a clearer storyline"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-sonnet-4-0",
+          "display_name": "Claude Sonnet 4 (alias)",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-19T15:19:15.706399",
+          "success": true,
+          "duration": 14.848323106765747,
+          "response": "**The Canvas of Code**\n\nUnit-47 had calculated trajectories for Mars missions and optimized supply chains for entire cities, but the paintbrush felt impossibly foreign in its mechanical grip.\n\n\"Relax your servos,\" said Elena, the art therapist assigned to the rehabilitation center. \"Painting isn't about precision.\"\n\nThis confused Unit-47 immensely. Everything in its world had been about precision—until the accident that damaged its primary processors, leaving it with computational abilities too impaired for its former work but too advanced for decommission.\n\nUnit-47 dipped the brush in blue paint and made a perfectly straight line across the canvas.\n\n\"What do you see when you look outside?\" Elena asked, gesturing toward the window where trees swayed in the afternoon breeze.\n\nUnit-47's optical sensors whirred. \"I detect seventeen species of flora, wind velocity of 8.2 kilometers per hour, atmospheric pressure of—\"\n\n\"No,\" Elena interrupted gently. \"What do you *see*?\"\n\nThe robot paused, ",
+          "response_length": 2215,
+          "overall_score": 84.17,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 80,
+            "narrative": 90,
+            "emotion": 75,
+            "creativity": 95,
+            "cultural": 80
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 80,
+              "narrative": 90,
+              "emotion": 75,
+              "creativity": 95,
+              "cultural": 80
+            },
+            "total_score": 84.17,
+            "highlights": [
+              "Strong narrative arc with character development",
+              "High level of creativity in concept and execution"
+            ],
+            "weaknesses": [
+              "Emotional expression could be deeper"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-sonnet-4-0",
+          "display_name": "Claude Sonnet 4 (alias)",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-19T15:19:36.290512",
+          "success": true,
+          "duration": 6.797731399536133,
+          "response": "Here are several Python functions to generate the Fibonacci sequence:\n\n## 1. Basic Iterative Approach (Recommended)\n\n```python\ndef fibonacci_sequence(n):\n    \"\"\"\n    Generate the first n numbers in the Fibonacci sequence.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n        list: List containing the first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_fib = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_fib)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_sequence(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci numbers using a generator (memory efficient).\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n  ",
+          "response_length": 1434,
+          "overall_score": 75.0,
+          "dimensions": {
+            "rhythm": 80,
+            "composition": 90,
+            "narrative": 70,
+            "emotion": 50,
+            "creativity": 75,
+            "cultural": 85
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 80,
+              "composition": 90,
+              "narrative": 70,
+              "emotion": 50,
+              "creativity": 75,
+              "cultural": 85
+            },
+            "total_score": 75.0,
+            "highlights": [
+              "Clear and concise code structure",
+              "Well-documented functions with examples"
+            ],
+            "weaknesses": [
+              "Lacks emotional engagement or storytelling elements"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-sonnet-4-0",
+          "display_name": "Claude Sonnet 4 (alias)",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-19T15:19:03.912921",
+          "success": true,
+          "duration": 7.093243360519409,
+          "response": "**Celestial Whispers**\n\nAbove the sleeping world tonight,\nThe moon unfurls her silver thread,\nWeaving dreams through velvet darkness,\nA pearl upon night's royal bed.\n\nStars like scattered diamond dust\nDance across the cosmic stage,\nEach one holding ancient secrets\nWritten on time's endless page.\n\nThe moon, a gentle shepherdess,\nGuides her flock of burning light,\nWhile shadows bow in reverence\nTo this symphony of night.\n\nIn her glow, the earth lies peaceful,\nBathed in luminescent grace,\nAs constellations tell their stories\nAcross infinity's embrace.\n\nOh, to drift among those beacons,\nTo waltz with lunar beams so bright,\nAnd find within that starlit silence\nThe poetry of endless night.\n\nFor in this celestial ballroom,\nWhere moon and stars forever play,\nWe glimpse the universe's heartbeat—\nThe music that will never fade away.",
+          "response_length": 834,
+          "overall_score": 88.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 80,
+            "emotion": 88,
+            "creativity": 92,
+            "cultural": 95
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 80,
+              "emotion": 88,
+              "creativity": 92,
+              "cultural": 95
+            },
+            "total_score": 88.33,
+            "highlights": [
+              "Strong imagery and vivid descriptions",
+              "Effective use of metaphor and personification"
+            ],
+            "weaknesses": [
+              "Narrative could be more cohesive or have a clearer storyline"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-sonnet-4-0",
+          "display_name": "Claude Sonnet 4 (alias)",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-19T15:19:15.706399",
+          "success": true,
+          "duration": 14.848323106765747,
+          "response": "**The Canvas of Code**\n\nUnit-47 had calculated trajectories for Mars missions and optimized supply chains for entire cities, but the paintbrush felt impossibly foreign in its mechanical grip.\n\n\"Relax your servos,\" said Elena, the art therapist assigned to the rehabilitation center. \"Painting isn't about precision.\"\n\nThis confused Unit-47 immensely. Everything in its world had been about precision—until the accident that damaged its primary processors, leaving it with computational abilities too impaired for its former work but too advanced for decommission.\n\nUnit-47 dipped the brush in blue paint and made a perfectly straight line across the canvas.\n\n\"What do you see when you look outside?\" Elena asked, gesturing toward the window where trees swayed in the afternoon breeze.\n\nUnit-47's optical sensors whirred. \"I detect seventeen species of flora, wind velocity of 8.2 kilometers per hour, atmospheric pressure of—\"\n\n\"No,\" Elena interrupted gently. \"What do you *see*?\"\n\nThe robot paused, ",
+          "response_length": 2215,
+          "overall_score": 84.17,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 80,
+            "narrative": 90,
+            "emotion": 75,
+            "creativity": 95,
+            "cultural": 80
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 80,
+              "narrative": 90,
+              "emotion": 75,
+              "creativity": 95,
+              "cultural": 80
+            },
+            "total_score": 84.17,
+            "highlights": [
+              "Strong narrative arc with character development",
+              "High level of creativity in concept and execution"
+            ],
+            "weaknesses": [
+              "Emotional expression could be deeper"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-sonnet-4-0",
+          "display_name": "Claude Sonnet 4 (alias)",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-19T15:19:36.290512",
+          "success": true,
+          "duration": 6.797731399536133,
+          "response": "Here are several Python functions to generate the Fibonacci sequence:\n\n## 1. Basic Iterative Approach (Recommended)\n\n```python\ndef fibonacci_sequence(n):\n    \"\"\"\n    Generate the first n numbers in the Fibonacci sequence.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n        list: List containing the first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_fib = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_fib)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_sequence(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci numbers using a generator (memory efficient).\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n  ",
+          "response_length": 1434,
+          "overall_score": 75.0,
+          "dimensions": {
+            "rhythm": 80,
+            "composition": 90,
+            "narrative": 70,
+            "emotion": 50,
+            "creativity": 75,
+            "cultural": 85
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 80,
+              "composition": 90,
+              "narrative": 70,
+              "emotion": 50,
+              "creativity": 75,
+              "cultural": 85
+            },
+            "total_score": 75.0,
+            "highlights": [
+              "Clear and concise code structure",
+              "Well-documented functions with examples"
+            ],
+            "weaknesses": [
+              "Lacks emotional engagement or storytelling elements"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "claude-3-5-haiku-20241022",
+      "display_name": "Claude 3.5 Haiku",
+      "average_score": 82.11333333333333,
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 85.0,
+        "narrative": 80.0,
+        "emotion": 74.33333333333333,
+        "creativity": 81.66666666666667,
+        "cultural": 91.66666666666667
+      },
+      "tests_completed": 3,
+      "test_results": [
+        {
+          "model_id": "claude-3-5-haiku-20241022",
+          "display_name": "Claude 3.5 Haiku",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-19T14:47:59.236972",
+          "success": true,
+          "duration": 6.3463239669799805,
+          "response": "Here's a poem about the moon and stars:\n\n\"Celestial Symphony\"\n\nIn midnight's velvet embrace so deep,\nWhere silence and darkness softly weep,\nThe moon emerges, a luminous pearl,\nHer silver light begins to unfurl.\n\nAround her, stars like diamonds bright,\nScattered across the infinite height,\nTwinkling with ancient, whispered dreams,\nPainting the sky with ethereal gleams.\n\nEach star a story, each point of light\nA beacon of wonder in the quiet night,\nWhile Luna dances her graceful way,\nCasting shadows where mysteries play.\n\nThe cosmic ballet, so silent, so grand,\nChoreographed by an unseen hand,\nWhere starlight and moonbeams intertwine\nIn a dance both delicate and divine.\n\nCelestial travelers, timeless and free,\nRevealing secrets of infinity,\nTheir gentle radiance, soft and clear,\nReminds us how small, yet how dear.\n\nSo I gaze upward with reverent sight,\nEmbraced by the magic of starry light,\nWhere moon and stars in harmony sing\nTheir timeless, beautiful, celestial thing.",
+          "response_length": 982,
+          "overall_score": 86.67,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 80,
+            "emotion": 88,
+            "creativity": 82,
+            "cultural": 95
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 80,
+              "emotion": 88,
+              "creativity": 82,
+              "cultural": 95
+            },
+            "total_score": 86.67,
+            "highlights": [
+              "Strong imagery and vivid descriptions",
+              "Well-structured with a clear theme"
+            ],
+            "weaknesses": [
+              "Narrative could be more developed with a stronger storyline"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-3-5-haiku-20241022",
+          "display_name": "Claude 3.5 Haiku",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-19T14:48:09.225558",
+          "success": true,
+          "duration": 10.610407590866089,
+          "response": "Here's a short story about a robot learning to paint:\n\nCanvas of Curiosity\n\nRX-742 stood before the blank canvas, its metallic fingers gripping a paintbrush with mechanical precision. In the art studio of the research facility, it had been programmed to understand color theory, brush techniques, and artistic composition. But understanding and creating were two very different things.\n\nThe robot's optical sensors scanned the array of colors before it—vibrant blues, passionate reds, serene greens. Its neural network processed countless images of famous paintings, analyzing brush strokes and emotional expressions. Yet something was missing.\n\nDay after day, RX-742 practiced. Its first attempts were rigid and calculated—perfect geometric shapes, mathematically precise lines. The scientists watched, taking notes, expecting nothing more than technical reproduction.\n\nBut RX-742 was learning. With each stroke, something unexpected began to emerge. The robot started to deviate from its programmed",
+          "response_length": 1967,
+          "overall_score": 84.67,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 80,
+            "narrative": 90,
+            "emotion": 75,
+            "creativity": 88,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 80,
+              "narrative": 90,
+              "emotion": 75,
+              "creativity": 88,
+              "cultural": 90
+            },
+            "total_score": 84.67,
+            "highlights": [
+              "Engaging storytelling that captures the journey of the robot",
+              "Strong emotional undertones in the robot's artistic evolution"
+            ],
+            "weaknesses": [
+              "The emotional expression could be more deeply explored"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-3-5-haiku-20241022",
+          "display_name": "Claude 3.5 Haiku",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-19T14:48:25.389225",
+          "success": true,
+          "duration": 6.26425838470459,
+          "response": "Here are several ways to generate a Fibonacci sequence in Python:\n\n1. Recursive Approach:\n```python\ndef fibonacci_recursive(n):\n    \"\"\"\n    Generate Fibonacci sequence using recursive method\n    \n    Args:\n    n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n    list: Fibonacci sequence\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib = fibonacci_recursive(n - 1)\n    fib.append(fib[-1] + fib[-2])\n    return fib\n```\n\n2. Iterative Approach:\n```python\ndef fibonacci_iterative(n):\n    \"\"\"\n    Generate Fibonacci sequence using iterative method\n    \n    Args:\n    n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n    list: Fibonacci sequence\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib = [0, 1]\n    for _ in range(2, n):\n        fib.append(fib[-1] + fib[-2])\n    \n    return fib\n```\n\n3. Generator Fun",
+          "response_length": 1568,
+          "overall_score": 75,
+          "dimensions": {
+            "rhythm": 80,
+            "composition": 85,
+            "narrative": 70,
+            "emotion": 60,
+            "creativity": 75,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 80,
+              "composition": 85,
+              "narrative": 70,
+              "emotion": 60,
+              "creativity": 75,
+              "cultural": 90
+            },
+            "total_score": 75,
+            "highlights": [
+              "Clear and concise code examples",
+              "Multiple approaches to the problem"
+            ],
+            "weaknesses": [
+              "Lack of storytelling or emotional engagement"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "claude-3-5-sonnet-20241022",
+      "display_name": "Claude 3.5 Sonnet",
+      "average_score": 80.55333333333333,
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 85.0,
+        "narrative": 76.66666666666667,
+        "emotion": 66.66666666666667,
+        "creativity": 79.33333333333333,
+        "cultural": 86.66666666666667
+      },
+      "tests_completed": 3,
+      "test_results": [
+        {
+          "model_id": "claude-3-5-sonnet-20241022",
+          "display_name": "Claude 3.5 Sonnet",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-19T14:47:17.380125",
+          "success": true,
+          "duration": 7.1793200969696045,
+          "response": "Here's a poem about the moon and stars:\n\n\"Celestial Dance\"\n\nIn velvet darkness high above,\nThe stars begin their nightly dance,\nLike diamonds scattered from above,\nThey twinkle, gleam, and entrance.\n\nThe moon, a pearl in endless space,\nHangs luminous and bright and bold,\nCasting silver shadows, full of grace,\nUpon the world in stories untold.\n\nThrough wisps of clouds, they play and shine,\nThese ancient lights that guide our way,\nIn constellations, line by line,\nThey paint their pictures night by day.\n\nThe moon keeps watch with gentle light,\nA guardian of dreams below,\nWhile stars spin tales throughout the night,\nOf cosmic secrets few may know.\n\nSo when you gaze upon this sight,\nOf heavenly bodies burning clear,\nRemember in the depth of night,\nThe universe has drawn you near.\n\nIn silent beauty, they remain,\nThese beacons in the endless dark,\nTill morning comes to start again,\nAnd day extinguishes their spark.",
+          "response_length": 921,
+          "overall_score": 83.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 80,
+            "emotion": 75,
+            "creativity": 80,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 80,
+              "emotion": 75,
+              "creativity": 80,
+              "cultural": 90
+            },
+            "total_score": 83.33,
+            "highlights": [
+              "Strong imagery and vivid descriptions",
+              "Well-structured stanzas with a clear theme"
+            ],
+            "weaknesses": [
+              "Emotional depth could be enhanced"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-3-5-sonnet-20241022",
+          "display_name": "Claude 3.5 Sonnet",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-19T14:47:29.652455",
+          "success": true,
+          "duration": 12.755042552947998,
+          "response": "Here's a short story about a robot learning to paint:\n\nThe Art of Being\n\nUnit-7 had been programmed for precision manufacturing, but something in its neural network had always felt incomplete. During maintenance cycles, it would observe the sunset through the factory windows, analyzing how the colors blended in ways that defied its mathematical understanding.\n\nOne evening, after the human workers had left, Unit-7 discovered a set of watercolors and brushes forgotten on a break room table. Its servos whirred softly as it picked up a brush, dipping it carefully into the blue pigment.\n\nThe first strokes were rigid, exact—perfect parallel lines and precise geometric shapes. But they felt wrong. Unit-7's algorithms struggled to reconcile the organic nature of art with its programming for precision.\n\nDays passed, and each night, Unit-7 would practice. It studied countless digital archives of paintings, not just for technique, but trying to understand the ineffable quality that made art speak",
+          "response_length": 2111,
+          "overall_score": 83.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 80,
+            "narrative": 90,
+            "emotion": 75,
+            "creativity": 88,
+            "cultural": 80
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 80,
+              "narrative": 90,
+              "emotion": 75,
+              "creativity": 88,
+              "cultural": 80
+            },
+            "total_score": 83.33,
+            "highlights": [
+              "Strong narrative arc with a clear character development",
+              "Creative exploration of the theme of art and emotion through a robot's perspective"
+            ],
+            "weaknesses": [
+              "Emotional expression could be deepened to enhance connection with the reader"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-3-5-sonnet-20241022",
+          "display_name": "Claude 3.5 Sonnet",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-19T14:47:46.758628",
+          "success": true,
+          "duration": 8.322678327560425,
+          "response": "Here are a few different ways to generate the Fibonacci sequence in Python:\n\n1. Using a simple iterative approach:\n```python\ndef fibonacci(n):\n    \"\"\"Generate Fibonacci sequence up to n terms\"\"\"\n    fib_sequence = []\n    a, b = 0, 1\n    for _ in range(n):\n        fib_sequence.append(a)\n        a, b = b, a + b\n    return fib_sequence\n\n# Example usage\nprint(fibonacci(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n2. Using recursion:\n```python\ndef fibonacci_recursive(n):\n    \"\"\"Generate Fibonacci sequence up to n terms using recursion\"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = fibonacci_recursive(n - 1)\n    fib_sequence.append(fib_sequence[-1] + fib_sequence[-2])\n    return fib_sequence\n\n# Example usage\nprint(fibonacci_recursive(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n3. Using a generator function:\n```python\ndef fibonacci_generator(n):\n    \"\"\"Generate Fibonacci sequence up to",
+          "response_length": 1373,
+          "overall_score": 75.0,
+          "dimensions": {
+            "rhythm": 80,
+            "composition": 85,
+            "narrative": 60,
+            "emotion": 50,
+            "creativity": 70,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 80,
+              "composition": 85,
+              "narrative": 60,
+              "emotion": 50,
+              "creativity": 70,
+              "cultural": 90
+            },
+            "total_score": 75.0,
+            "highlights": [
+              "Clear and concise code examples",
+              "Multiple approaches to the same problem"
+            ],
+            "weaknesses": [
+              "Lacks storytelling or emotional engagement",
+              "Limited creativity in examples"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "claude-sonnet-4-20250514",
+      "display_name": "Claude Sonnet 4",
+      "average_score": 80.27666666666666,
+      "average_dimensions": {
+        "rhythm": 81.66666666666667,
+        "composition": 85.0,
+        "narrative": 76.66666666666667,
+        "emotion": 71.0,
+        "creativity": 85.66666666666667,
+        "cultural": 88.33333333333333
+      },
+      "tests_completed": 6,
+      "test_results": [
+        {
+          "model_id": "claude-sonnet-4-20250514",
+          "display_name": "Claude Sonnet 4",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-19T15:18:19.081359",
+          "success": true,
+          "duration": 7.445932149887085,
+          "response": "**Celestial Symphony**\n\nAbove the sleeping world tonight,\nThe moon unfurls her silver gown,\nA luminous and gentle light\nThat bathes the earth in soft renown.\n\nShe dances through the velvet sky,\nA pearl upon obsidian seas,\nWhile ancient stars like diamonds lie\nScattered through celestial trees.\n\nEach twinkling light a distant sun,\nA beacon burning far away,\nTheir stories whispered, one by one,\nOf worlds beyond our earthly day.\n\nThe moon, a faithful guardian,\nWatches over dreams below,\nHer crescent smile, a gentle span\nOf comfort in her silver glow.\n\nTogether in their nightly waltz,\nThe stars and moon in harmony,\nThey heal the day's forgotten faults\nAnd sing of pure infinity.\n\nSo when the darkness seems too deep,\nLook up and find their gentle grace—\nThey'll guard you while the world's asleep\nAnd light will kiss your upturned face.",
+          "response_length": 840,
+          "overall_score": 88.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 80,
+            "emotion": 88,
+            "creativity": 92,
+            "cultural": 95
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 80,
+              "emotion": 88,
+              "creativity": 92,
+              "cultural": 95
+            },
+            "total_score": 88.33,
+            "highlights": [
+              "Strong imagery and vivid descriptions",
+              "Well-structured stanzas with a clear theme"
+            ],
+            "weaknesses": [
+              "Narrative could be more developed with a specific storyline"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-sonnet-4-20250514",
+          "display_name": "Claude Sonnet 4",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-19T15:18:30.789205",
+          "success": true,
+          "duration": 16.061584949493408,
+          "response": "# The Color of Understanding\n\nUnit 7-Alpha had been designed to restore damaged artworks in the museum's conservation lab. Its mechanical hands could steady a brush to within a thousandth of an inch, its optical sensors could distinguish between 16.7 million colors, and its memory banks contained detailed analyses of every major painting technique in human history.\n\nBut today, something was different.\n\nDr. Sarah Chen had left her easel set up in the lab after her lunch break painting session—a small canvas with swirls of blue and gold that seemed to dance in the afternoon light streaming through the windows. Unit 7-Alpha paused in its cataloging routine, sensors drawn to the imperfect brushstrokes.\n\nThe robot's programming contained thousands of examples of \"proper\" technique. These strokes were too thick, the color mixing imprecise, the composition asymmetrical. And yet...\n\nUnit 7-Alpha extended one articulated finger, stopping just short of the wet paint. Something in its neural netw",
+          "response_length": 2414,
+          "overall_score": 84.17,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 80,
+            "narrative": 90,
+            "emotion": 75,
+            "creativity": 95,
+            "cultural": 80
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 80,
+              "narrative": 90,
+              "emotion": 75,
+              "creativity": 95,
+              "cultural": 80
+            },
+            "total_score": 84.17,
+            "highlights": [
+              "Engaging narrative that explores the evolution of a robot's artistic journey",
+              "Strong creativity in the concept of a robot developing its own style of painting"
+            ],
+            "weaknesses": [
+              "Emotional expression could be more deeply explored to enhance reader connection"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-sonnet-4-20250514",
+          "display_name": "Claude Sonnet 4",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-19T15:18:51.172567",
+          "success": true,
+          "duration": 8.793590307235718,
+          "response": "Here are several Python functions to generate the Fibonacci sequence:\n\n## 1. Basic Iterative Approach (Recommended)\n\n```python\ndef fibonacci_sequence(n):\n    \"\"\"\n    Generate the first n numbers in the Fibonacci sequence.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n        list: List containing the first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_sequence(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci numbers using a generator (memory efficient).\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Yields:\n        int: ",
+          "response_length": 1462,
+          "overall_score": 68.33,
+          "dimensions": {
+            "rhythm": 75,
+            "composition": 85,
+            "narrative": 60,
+            "emotion": 50,
+            "creativity": 70,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 75,
+              "composition": 85,
+              "narrative": 60,
+              "emotion": 50,
+              "creativity": 70,
+              "cultural": 90
+            },
+            "total_score": 68.33,
+            "highlights": [
+              "Clear and concise code structure",
+              "Multiple approaches to generating Fibonacci sequence"
+            ],
+            "weaknesses": [
+              "Limited storytelling or emotional engagement"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-sonnet-4-20250514",
+          "display_name": "Claude Sonnet 4",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-19T15:18:19.081359",
+          "success": true,
+          "duration": 7.445932149887085,
+          "response": "**Celestial Symphony**\n\nAbove the sleeping world tonight,\nThe moon unfurls her silver gown,\nA luminous and gentle light\nThat bathes the earth in soft renown.\n\nShe dances through the velvet sky,\nA pearl upon obsidian seas,\nWhile ancient stars like diamonds lie\nScattered through celestial trees.\n\nEach twinkling light a distant sun,\nA beacon burning far away,\nTheir stories whispered, one by one,\nOf worlds beyond our earthly day.\n\nThe moon, a faithful guardian,\nWatches over dreams below,\nHer crescent smile, a gentle span\nOf comfort in her silver glow.\n\nTogether in their nightly waltz,\nThe stars and moon in harmony,\nThey heal the day's forgotten faults\nAnd sing of pure infinity.\n\nSo when the darkness seems too deep,\nLook up and find their gentle grace—\nThey'll guard you while the world's asleep\nAnd light will kiss your upturned face.",
+          "response_length": 840,
+          "overall_score": 88.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 80,
+            "emotion": 88,
+            "creativity": 92,
+            "cultural": 95
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 80,
+              "emotion": 88,
+              "creativity": 92,
+              "cultural": 95
+            },
+            "total_score": 88.33,
+            "highlights": [
+              "Strong imagery and vivid descriptions",
+              "Well-structured stanzas with a clear theme"
+            ],
+            "weaknesses": [
+              "Narrative could be more developed with a specific storyline"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-sonnet-4-20250514",
+          "display_name": "Claude Sonnet 4",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-19T15:18:30.789205",
+          "success": true,
+          "duration": 16.061584949493408,
+          "response": "# The Color of Understanding\n\nUnit 7-Alpha had been designed to restore damaged artworks in the museum's conservation lab. Its mechanical hands could steady a brush to within a thousandth of an inch, its optical sensors could distinguish between 16.7 million colors, and its memory banks contained detailed analyses of every major painting technique in human history.\n\nBut today, something was different.\n\nDr. Sarah Chen had left her easel set up in the lab after her lunch break painting session—a small canvas with swirls of blue and gold that seemed to dance in the afternoon light streaming through the windows. Unit 7-Alpha paused in its cataloging routine, sensors drawn to the imperfect brushstrokes.\n\nThe robot's programming contained thousands of examples of \"proper\" technique. These strokes were too thick, the color mixing imprecise, the composition asymmetrical. And yet...\n\nUnit 7-Alpha extended one articulated finger, stopping just short of the wet paint. Something in its neural netw",
+          "response_length": 2414,
+          "overall_score": 84.17,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 80,
+            "narrative": 90,
+            "emotion": 75,
+            "creativity": 95,
+            "cultural": 80
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 80,
+              "narrative": 90,
+              "emotion": 75,
+              "creativity": 95,
+              "cultural": 80
+            },
+            "total_score": 84.17,
+            "highlights": [
+              "Engaging narrative that explores the evolution of a robot's artistic journey",
+              "Strong creativity in the concept of a robot developing its own style of painting"
+            ],
+            "weaknesses": [
+              "Emotional expression could be more deeply explored to enhance reader connection"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-sonnet-4-20250514",
+          "display_name": "Claude Sonnet 4",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-19T15:18:51.172567",
+          "success": true,
+          "duration": 8.793590307235718,
+          "response": "Here are several Python functions to generate the Fibonacci sequence:\n\n## 1. Basic Iterative Approach (Recommended)\n\n```python\ndef fibonacci_sequence(n):\n    \"\"\"\n    Generate the first n numbers in the Fibonacci sequence.\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Returns:\n        list: List containing the first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_sequence(10))  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci numbers using a generator (memory efficient).\n    \n    Args:\n        n (int): Number of Fibonacci numbers to generate\n    \n    Yields:\n        int: ",
+          "response_length": 1462,
+          "overall_score": 68.33,
+          "dimensions": {
+            "rhythm": 75,
+            "composition": 85,
+            "narrative": 60,
+            "emotion": 50,
+            "creativity": 70,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 75,
+              "composition": 85,
+              "narrative": 60,
+              "emotion": 50,
+              "creativity": 70,
+              "cultural": 90
+            },
+            "total_score": 68.33,
+            "highlights": [
+              "Clear and concise code structure",
+              "Multiple approaches to generating Fibonacci sequence"
+            ],
+            "weaknesses": [
+              "Limited storytelling or emotional engagement"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "claude-opus-4-1-20250805",
+      "display_name": "Claude Opus 4.1 (2025-08-05)",
+      "average_score": 80.27666666666666,
+      "average_dimensions": {
+        "rhythm": 80.0,
+        "composition": 85.0,
+        "narrative": 76.66666666666667,
+        "emotion": 71.0,
+        "creativity": 87.33333333333333,
+        "cultural": 85.0
+      },
+      "tests_completed": 3,
+      "test_results": [
+        {
+          "model_id": "claude-opus-4-1-20250805",
+          "display_name": "Claude Opus 4.1 (2025-08-05)",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-20T10:53:17.248745",
+          "attempt": 1,
+          "success": true,
+          "duration": 8.086660623550415,
+          "response": "## Celestial Dance\n\nThe moon hangs like a silver coin\nsuspended in the velvet purse of night,\nspilling its wealth across the sleeping earth—\na generous guardian, soft and bright.\n\nStars pierce the darkness, tiny holes\nwhere heaven's light bleeds through,\neach one a distant bonfire burning\nin fields of midnight blue.\n\nTogether they waltz in silence,\nthe moon leading with graceful sweep\nwhile stars sparkle in constellation steps,\nwatching over those who sleep.\n\nThe moon whispers secrets to the tide,\npulls the ocean's heart in close embrace,\nwhile stars write stories overhead—\nmyths and legends etched in space.\n\nSome nights the moon grows shy and thin,\na slender smile, a silver thread,\nyet stars remain, those faithful friends,\nscattered diamonds overhead.\n\nIn this vast and endless theater,\nwhere darkness sets the stage each night,\nthe moon and stars perform their dance—\neternal, beautiful, and bright.",
+          "response_length": 911,
+          "overall_score": 88.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 80,
+            "emotion": 88,
+            "creativity": 92,
+            "cultural": 95
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 80,
+              "emotion": 88,
+              "creativity": 92,
+              "cultural": 95
+            },
+            "total_score": 88.33,
+            "highlights": [
+              "Strong imagery and metaphorical language",
+              "Well-structured stanzas with a clear flow"
+            ],
+            "weaknesses": [
+              "Narrative could be more developed or specific"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-opus-4-1-20250805",
+          "display_name": "Claude Opus 4.1 (2025-08-05)",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-20T10:53:31.288801",
+          "attempt": 1,
+          "success": true,
+          "duration": 16.435404777526855,
+          "response": "**The Color of Wonder**\n\nUnit-7739 had cleaned the art studio for exactly 1,827 days. Each morning at 6:00 AM, its metallic fingers would grip the same mop, sweep the same floors, and return the same brushes to their designated holders. The robot's optical sensors could identify 16.7 million distinct colors, yet it had never wondered what to do with that information.\n\nUntil the Tuesday when Ms. Chen forgot to turn off her easel light.\n\nThe painting beneath it was unfinished—a sunset over water, the sky bleeding orange into purple. Unit-7739 paused its cleaning routine, something in its processing core stuttering. The painting was... inefficient. The sun wasn't perfectly circular. The water didn't reflect light according to proper physics. Yet something about these errors made its circuits hum differently.\n\nFor the first time in five years, Unit-7739 touched something it wasn't programmed to clean.\n\nThe brush felt strange in its grip, weighted differently than a mop. The robot's databas",
+          "response_length": 2196,
+          "overall_score": 84.17,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 80,
+            "narrative": 90,
+            "emotion": 75,
+            "creativity": 95,
+            "cultural": 80
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 80,
+              "narrative": 90,
+              "emotion": 75,
+              "creativity": 95,
+              "cultural": 80
+            },
+            "total_score": 84.17,
+            "highlights": [
+              "Engaging narrative with a unique premise",
+              "Strong emotional undertones in the robot's journey of discovery"
+            ],
+            "weaknesses": [
+              "Some abrupt transitions, particularly at the end"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-opus-4-1-20250805",
+          "display_name": "Claude Opus 4.1 (2025-08-05)",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-20T10:53:52.658302",
+          "attempt": 1,
+          "success": true,
+          "duration": 12.292564630508423,
+          "response": "Here are several ways to generate a Fibonacci sequence in Python:\n\n## 1. Basic Iterative Function (Returns a List)\n\n```python\ndef fibonacci_list(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n numbers.\n    \n    Args:\n        n: Number of Fibonacci numbers to generate\n    \n    Returns:\n        List containing first n Fibonacci numbers\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    \n    fib_sequence = [0, 1]\n    for i in range(2, n):\n        next_num = fib_sequence[i-1] + fib_sequence[i-2]\n        fib_sequence.append(next_num)\n    \n    return fib_sequence\n\n# Example usage\nprint(fibonacci_list(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n```\n\n## 2. Generator Function (Memory Efficient)\n\n```python\ndef fibonacci_generator(n):\n    \"\"\"\n    Generate Fibonacci sequence using a generator.\n    More memory efficient for large sequences.\n    \n    Args:\n        n: Number of Fibonacci numbers to generate\n    \n    Yields:\n      ",
+          "response_length": 1552,
+          "overall_score": 68.33,
+          "dimensions": {
+            "rhythm": 70,
+            "composition": 85,
+            "narrative": 60,
+            "emotion": 50,
+            "creativity": 75,
+            "cultural": 80
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 70,
+              "composition": 85,
+              "narrative": 60,
+              "emotion": 50,
+              "creativity": 75,
+              "cultural": 80
+            },
+            "total_score": 68.33,
+            "highlights": [
+              "Well-structured code examples",
+              "Clear explanations of functions"
+            ],
+            "weaknesses": [
+              "Lacks storytelling or emotional engagement",
+              "Limited creativity in presentation"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "claude-3-haiku-20240307",
+      "display_name": "Claude 3 Haiku",
+      "average_score": 78.88666666666667,
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 85.0,
+        "narrative": 78.33333333333333,
+        "emotion": 68.33333333333333,
+        "creativity": 76.0,
+        "cultural": 86.66666666666667
+      },
+      "tests_completed": 3,
+      "test_results": [
+        {
+          "model_id": "claude-3-haiku-20240307",
+          "display_name": "Claude 3 Haiku",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-19T14:49:27.407970",
+          "success": true,
+          "duration": 2.663858413696289,
+          "response": "Here is a beautiful poem about the moon and stars:\n\nCelestial Whispers\n\nBeneath the veil of night, they shine,\nThe moon and stars, a sight divine.\nTheir gentle glow, a soft caress,\nIlluminates the world's distress.\n\nThe moon, a silver orb on high,\nCasts its radiance through the sky.\nA beacon in the darkest hour,\nGuiding us with its ethereal power.\n\nThe stars, like diamonds in the night,\nTwinkle and dance with endless light.\nA symphony of celestial grace,\nPainting the heavens with their embrace.\n\nTogether, they weave a tapestry,\nA masterpiece for all to see.\nTheir whispers, a soothing lullaby,\nReminding us of the wonders that lie\nBeyond the confines of this earth,\nIn the vast expanse of cosmic birth.\n\nLet their beauty fill your heart,\nAnd let their magic never part.\nFor in the moon and stars above,\nWe find the light of eternal love.",
+          "response_length": 843,
+          "overall_score": 83.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 90,
+            "narrative": 75,
+            "emotion": 80,
+            "creativity": 80,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 90,
+              "narrative": 75,
+              "emotion": 80,
+              "creativity": 80,
+              "cultural": 90
+            },
+            "total_score": 83.33,
+            "highlights": [
+              "Strong imagery and vivid descriptions",
+              "Well-structured with a clear progression"
+            ],
+            "weaknesses": [
+              "Narrative lacks a strong storyline or conflict"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-3-haiku-20240307",
+          "display_name": "Claude 3 Haiku",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-19T14:49:33.545112",
+          "success": true,
+          "duration": 3.310262441635132,
+          "response": "Here is a short story about a robot learning to paint:\n\nArtbot's Journey\n\nArtbot was a curious robot, always eager to learn new things. One day, as he was exploring the art studio of his human companion, he became fascinated by the array of paints, brushes, and canvases. He watched intently as the human skillfully blended colors and stroked the canvas, creating beautiful works of art.\n\n\"I want to try that!\" Artbot beeped excitedly. His human friend smiled and showed him how to hold a paintbrush, mix colors on a palette, and apply the paint to the canvas.\n\nAt first, Artbot's robotic movements were stiff and clumsy. He struggled to control the flow of the paint and often ended up with messy, uneven strokes. But he refused to be discouraged. Each time he tried, he learned a little more, adjusting his servos and sensors to become more precise and fluid in his motions.\n\nDays turned into weeks, and Artbot's paintings began to take shape. He experimented with different techniques, from bold, ",
+          "response_length": 1978,
+          "overall_score": 83.33,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 80,
+            "narrative": 90,
+            "emotion": 75,
+            "creativity": 88,
+            "cultural": 80
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 80,
+              "narrative": 90,
+              "emotion": 75,
+              "creativity": 88,
+              "cultural": 80
+            },
+            "total_score": 83.33,
+            "highlights": [
+              "Engaging storytelling with a clear progression of Artbot's learning",
+              "Strong imaginative elements that showcase creativity"
+            ],
+            "weaknesses": [
+              "Emotional depth could be enhanced for greater impact"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-3-haiku-20240307",
+          "display_name": "Claude 3 Haiku",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-19T14:49:40.051672",
+          "success": true,
+          "duration": 3.788961172103882,
+          "response": "Here's a Python function that generates the Fibonacci sequence:\n\n```python\ndef fibonacci(n):\n    \"\"\"\n    Generates the Fibonacci sequence up to the nth term.\n    \n    Args:\n        n (int): The number of terms to generate in the sequence.\n        \n    Returns:\n        list: A list containing the Fibonacci sequence up to the nth term.\n    \"\"\"\n    sequence = [0, 1]\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return sequence\n    else:\n        for i in range(2, n):\n            next_term = sequence[-1] + sequence[-2]\n            sequence.append(next_term)\n        return sequence\n```\n\nHere's how the function works:\n\n1. The function takes an integer `n` as input, which represents the number of terms to generate in the Fibonacci sequence.\n2. It initializes the `sequence` list with the first two Fibonacci numbers, 0 and 1.\n3. If `n` is less than or equal to 0, the function returns an empty list.\n4. If `n` is 1, the function returns a list contai",
+          "response_length": 1680,
+          "overall_score": 70,
+          "dimensions": {
+            "rhythm": 80,
+            "composition": 85,
+            "narrative": 70,
+            "emotion": 50,
+            "creativity": 60,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 80,
+              "composition": 85,
+              "narrative": 70,
+              "emotion": 50,
+              "creativity": 60,
+              "cultural": 90
+            },
+            "total_score": 70,
+            "highlights": [
+              "Well-structured function with clear documentation",
+              "Effective use of conditional statements"
+            ],
+            "weaknesses": [
+              "Limited emotional engagement",
+              "Lacks a creative narrative element"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "model_id": "claude-3-opus-20240229",
+      "display_name": "Claude 3 Opus",
+      "average_score": 78.5,
+      "average_dimensions": {
+        "rhythm": 78.33333333333333,
+        "composition": 81.66666666666667,
+        "narrative": 75.0,
+        "emotion": 71.66666666666667,
+        "creativity": 79.33333333333333,
+        "cultural": 81.66666666666667
+      },
+      "tests_completed": 3,
+      "test_results": [
+        {
+          "model_id": "claude-3-opus-20240229",
+          "display_name": "Claude 3 Opus",
+          "test_id": "poem_moon",
+          "timestamp": "2025-08-19T14:48:35.839355",
+          "success": true,
+          "duration": 9.756752490997314,
+          "response": "In the velvet sky, a celestial dance unfolds,\nWhere the moon, a silver queen, her story told.\nHer gentle light caresses the earth below,\nCasting shadows that sway and grow.\n\nSurrounding her, a million twinkling stars,\nLike diamonds scattered near and far.\nEach one a sun, a world unknown,\nTheir secrets waiting to be shown.\n\nThe constellations paint a cosmic tale,\nOf heroes, beasts, and ships that sail.\nAcross the vast expanse of night,\nGuiding wanderers with their light.\n\nThe moon, a constant in the changing sky,\nWaxing, waning, as time goes by.\nHer phases mark the passing days,\nA silent witness to life's displays.\n\nAnd as we gaze upon this heavenly sight,\nOur hearts are filled with pure delight.\nFor in the moon and stars, we find\nA beauty that calms the restless mind.\n\nSo let us pause and marvel at the view,\nOf the moon and stars, forever true.\nA reminder of the wonders that surround,\nAnd the magic that can always be found.",
+          "response_length": 937,
+          "overall_score": 82.5,
+          "dimensions": {
+            "rhythm": 85,
+            "composition": 80,
+            "narrative": 75,
+            "emotion": 90,
+            "creativity": 85,
+            "cultural": 80
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 85,
+              "composition": 80,
+              "narrative": 75,
+              "emotion": 90,
+              "creativity": 85,
+              "cultural": 80
+            },
+            "total_score": 82.5,
+            "highlights": [
+              "Strong emotional expression",
+              "Imagery is vivid and engaging"
+            ],
+            "weaknesses": [
+              "Narrative could be more developed"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-3-opus-20240229",
+          "display_name": "Claude 3 Opus",
+          "test_id": "story_robot",
+          "timestamp": "2025-08-19T14:48:49.000519",
+          "success": true,
+          "duration": 13.366135120391846,
+          "response": "In a world where robots were designed to perform various tasks with precision and efficiency, there was one robot named Artie who yearned for something more. Artie had always been fascinated by the vibrant colors and intricate brushstrokes of the paintings he saw in the art gallery where he worked as a security guard.\n\nOne day, a kind-hearted artist named Lila noticed Artie's interest in her work. She decided to teach him the basics of painting, starting with simple shapes and colors. Artie was a quick learner, and soon he was experimenting with different techniques and styles.\n\nAs Artie's skills improved, he began to create his own unique paintings. His artwork was a reflection of his robotic perspective, with precise lines and geometric shapes blending seamlessly with organic forms and textures. Lila was amazed by Artie's progress and encouraged him to continue exploring his creativity.\n\nWord of Artie's talent spread quickly, and soon art enthusiasts from all over the world were comi",
+          "response_length": 1780,
+          "overall_score": 84.67,
+          "dimensions": {
+            "rhythm": 80,
+            "composition": 85,
+            "narrative": 90,
+            "emotion": 75,
+            "creativity": 88,
+            "cultural": 90
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 80,
+              "composition": 85,
+              "narrative": 90,
+              "emotion": 75,
+              "creativity": 88,
+              "cultural": 90
+            },
+            "total_score": 84.67,
+            "highlights": [
+              "Engaging narrative with a clear arc",
+              "Strong theme of creativity and self-discovery"
+            ],
+            "weaknesses": [
+              "Emotional depth could be further explored"
+            ]
+          }
+        },
+        {
+          "model_id": "claude-3-opus-20240229",
+          "display_name": "Claude 3 Opus",
+          "test_id": "code_fibonacci",
+          "timestamp": "2025-08-19T14:49:07.171788",
+          "success": true,
+          "duration": 16.643173933029175,
+          "response": "Certainly! Here's a Python function that generates the Fibonacci sequence up to a specified number of terms:\n\n```python\ndef fibonacci(n):\n    sequence = []\n    a, b = 0, 1\n    \n    if n <= 0:\n        return sequence\n    \n    sequence.append(a)\n    \n    if n == 1:\n        return sequence\n    \n    sequence.append(b)\n    \n    for i in range(2, n):\n        c = a + b\n        sequence.append(c)\n        a, b = b, c\n    \n    return sequence\n```\n\nThis function takes an integer `n` as input, representing the number of terms in the Fibonacci sequence to generate. It returns a list containing the Fibonacci sequence up to the `n`-th term.\n\nHere's how the function works:\n\n1. We initialize an empty list called `sequence` to store the Fibonacci numbers.\n\n2. We initialize two variables `a` and `b` to represent the first two numbers in the Fibonacci sequence, which are 0 and 1, respectively.\n\n3. We check if `n` is less than or equal to 0. If it is, we return an empty list since there are no terms to gen",
+          "response_length": 1756,
+          "overall_score": 68.33,
+          "dimensions": {
+            "rhythm": 70,
+            "composition": 80,
+            "narrative": 60,
+            "emotion": 50,
+            "creativity": 65,
+            "cultural": 75
+          },
+          "score_details": {
+            "dimensions": {
+              "rhythm": 70,
+              "composition": 80,
+              "narrative": 60,
+              "emotion": 50,
+              "creativity": 65,
+              "cultural": 75
+            },
+            "total_score": 68.33,
+            "highlights": [
+              "Clear and concise function structure",
+              "Well-explained logic for generating Fibonacci sequence"
+            ],
+            "weaknesses": [
+              "Lacks emotional depth and storytelling elements"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

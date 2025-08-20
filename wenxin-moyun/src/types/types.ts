@@ -11,6 +11,11 @@ export interface Model {
   works: Artwork[];
   avatar?: string;
   tags: string[];
+  scoreHighlights?: string[];
+  scoreWeaknesses?: string[];
+  benchmarkResponses?: any;
+  benchmarkMetadata?: any;
+  dataSource?: string;
 }
 
 export interface ModelMetrics {

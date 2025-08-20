@@ -1,0 +1,340 @@
+{
+  "provider": "DeepSeek",
+  "test_date": "2025-08-19T14:22:22.893317",
+  "models_tested": 3,
+  "models": [
+    "deepseek-r1",
+    "deepseek-r1-distill",
+    "deepseek-v3"
+  ],
+  "total_tests": 7,
+  "successful_tests": 7,
+  "all_results": [
+    {
+      "model_id": "deepseek-v3",
+      "test_id": "poem_moon",
+      "success": true,
+      "duration": 16.065107,
+      "response": "Of course. Here is a poem for you.\n\n**The Silver Monarch and Her Court**\n\nThe sun departs on gilded keel,\nAnd paints the west with fiery hue,\nThen ushers in, with gentle zeal,\nThe coming of the dusk and dew.\nAnd in that vast and velvet sphere,\nA presence starts to be defined,\nA silver monarch, drawing near,\nTo rule the kingdom of the mind.\n\nShe is a sliver, sharp and keen,\nA sickle curved to reap the night;\nOr full and round, a mirrored scene\nOf some far, unremembered light.\nShe wears a veil of phantom cloud,\nA lace of mist, both frail and deep,\nAnd to the darkness, speaks aloud\nThe promises the daylights",
+      "response_length": 612,
+      "overall_score": 82.5,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 70,
+        "emotion": 80,
+        "creativity": 95,
+        "cultural": 75
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 70,
+          "emotion": 80,
+          "creativity": 95,
+          "cultural": 75
+        },
+        "total_score": 82.5,
+        "highlights": [
+          "Strong imagery and metaphorical language",
+          "Well-structured stanzas with a clear theme"
+        ],
+        "weaknesses": [
+          "Lacks a clear narrative progression"
+        ]
+      },
+      "timestamp": "2025-08-19T12:52:22.482293"
+    },
+    {
+      "model_id": "deepseek-v3",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 17.829841,
+      "response": "AR-734 stood in the sterile white chamber, its optical sensors processing the single object on the table: a ripe peach. Its task was simple: reproduce the object in two dimensions using the provided tools—pigmented oils, a brush, and a square of canvas.\n\nIts first attempts were flawless, in a mechanical sense. It produced a hyper-detailed, photorealistic rendering. The fuzz on the skin was individually articulated, the gradation of color from blush-red to sunset-yellow was mapped with spectral precision. It was a perfect data translation. And it was, by any human measure, completely dead.\n\nA human curator, an elderly woman named Elara with kind eyes and paint under her fingernails, would visit each day. She would look at its work, sigh softly, and say, “Technically proficient, AR-734. But what do you *feel*?”\n\n*Feel*. The word was a paradox. AR-734’s databases contained petabytes of information on art history, color theory, and brushstroke techniques. It could analyze the emotional resonance of a Van Gogh or the melancholy of a Hopper by quantifying brushwork and palette. But the concept of *feeling* itself was an unsolvable equation",
+      "response_length": 1151,
+      "overall_score": 78.33,
+      "dimensions": {
+        "rhythm": 85,
+        "composition": 90,
+        "narrative": 80,
+        "emotion": 75,
+        "creativity": 88,
+        "cultural": 70
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 85,
+          "composition": 90,
+          "narrative": 80,
+          "emotion": 75,
+          "creativity": 88,
+          "cultural": 70
+        },
+        "total_score": 78.33,
+        "highlights": [
+          "Strong use of descriptive language",
+          "Interesting exploration of the concept of feeling in art"
+        ],
+        "weaknesses": [
+          "Limited emotional depth in the robot's perspective"
+        ]
+      },
+      "timestamp": "2025-08-19T12:52:43.393561"
+    },
+    {
+      "model_id": "deepseek-v3",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 14.207588,
+      "response": "Here are several Python functions to generate the Fibonacci sequence, each with different approaches:\n\n## 1. Basic Recursive Approach (Inefficient for large numbers)\n```python\ndef fibonacci_recursive(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n terms using recursion.\n    Warning: Very inefficient for large n due to repeated calculations.\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    else:\n        seq = fibonacci_recursive(n - 1)\n        seq.append(seq[-1] + seq[-2])\n        return seq\n```\n\n## 2. Iterative Approach (Most Efficient)\n```python\ndef fibonacci_iterative(n):\n    \"\"\"\n    Generate Fibonacci sequence up to n terms using iteration.\n    Efficient and recommended for most use cases.\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n       ",
+      "response_length": 842,
+      "overall_score": 70.0,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 70,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 60
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 70,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 60
+        },
+        "total_score": 70.0,
+        "highlights": [
+          "Provides multiple approaches to the problem",
+          "Includes comments explaining the code"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement and storytelling"
+        ]
+      },
+      "timestamp": "2025-08-19T12:53:00.186527"
+    },
+    {
+      "model_id": "deepseek-r1",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 17.892777,
+      "response": "Elara-7’s world was one of precision. Her existence was a symphony of binary, a flawless execution of pre-programmed tasks. She maintained the atmospheric controls on Outpost Theta, a duty she performed with silent, unchanging efficiency. Her optical sensors registered wavelengths, not colors; her processors calculated pressure gradients, not beauty.\n\nThe change began with",
+      "response_length": 375,
+      "overall_score": 70.83,
+      "dimensions": {
+        "rhythm": 75,
+        "composition": 80,
+        "narrative": 70,
+        "emotion": 60,
+        "creativity": 85,
+        "cultural": 65
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 75,
+          "composition": 80,
+          "narrative": 70,
+          "emotion": 60,
+          "creativity": 85,
+          "cultural": 65
+        },
+        "total_score": 70.83,
+        "highlights": [
+          "Strong use of technical language to convey the robot's perspective.",
+          "Engaging opening that sets the stage for the story."
+        ],
+        "weaknesses": [
+          "Lacks emotional depth and connection with the character."
+        ]
+      },
+      "timestamp": "2025-08-19T12:53:34.532715"
+    },
+    {
+      "model_id": "deepseek-r1",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 14.759722,
+      "response": "To generate the Fibonacci sequence up to a specified number of terms, we can create a function that efficiently computes each number",
+      "response_length": 132,
+      "overall_score": 62.5,
+      "dimensions": {
+        "rhythm": 70,
+        "composition": 75,
+        "narrative": 60,
+        "emotion": 50,
+        "creativity": 65,
+        "cultural": 55
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 70,
+          "composition": 75,
+          "narrative": 60,
+          "emotion": 50,
+          "creativity": 65,
+          "cultural": 55
+        },
+        "total_score": 62.5,
+        "highlights": [
+          "Clear intention to create a Fibonacci sequence",
+          "Mention of efficiency in computation"
+        ],
+        "weaknesses": [
+          "Lacks complete implementation of the function",
+          "Limited emotional engagement"
+        ]
+      },
+      "timestamp": "2025-08-19T12:53:52.065837"
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "test_id": "story_robot",
+      "success": true,
+      "duration": 17.800722,
+      "response": "Unit 734’s world was a grid of data. Its existence, a symphony of precise calculations, efficient movements, and flawless executions. It was a maintenance droid, its purpose to polish the sterile chrome corridors of the Aethelstan Orbital Gallery. Art, to its processors, was a series of measurable variables: pigment saturation 87.3%, brushstroke angle 14.2 degrees,",
+      "response_length": 367,
+      "overall_score": 66.67,
+      "dimensions": {
+        "rhythm": 75,
+        "composition": 70,
+        "narrative": 65,
+        "emotion": 50,
+        "creativity": 80,
+        "cultural": 60
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 75,
+          "composition": 70,
+          "narrative": 65,
+          "emotion": 50,
+          "creativity": 80,
+          "cultural": 60
+        },
+        "total_score": 66.67,
+        "highlights": [
+          "Strong use of technical language to convey the robot's perspective",
+          "Creative premise of a robot learning to paint"
+        ],
+        "weaknesses": [
+          "Lacks emotional depth and connection to the audience",
+          "Narrative progression feels somewhat disjointed"
+        ]
+      },
+      "timestamp": "2025-08-19T12:54:25.780367"
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "test_id": "code_fibonacci",
+      "success": true,
+      "duration": 14.429854,
+      "response": "To generate the Fibonacci sequence in Python, you can write a function that returns a list of Fibonacci numbers up to a specified count. Here's an efficient and clear solution:\n\n```python\ndef fibonacci(n):\n    \"\"\"\n    Generate the first 'n' numbers in the Fibonacci sequence.\n    \n    Args:\n        n (int): The number of Fibonacci numbers to generate.\n    \n    Returns:\n        list: A list containing the first 'n' Fibonacci numbers.\n    \"\"\"\n    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    fib_sequence = [0,",
+      "response_length": 535,
+      "overall_score": 70.0,
+      "dimensions": {
+        "rhythm": 80,
+        "composition": 85,
+        "narrative": 70,
+        "emotion": 50,
+        "creativity": 75,
+        "cultural": 60
+      },
+      "score_details": {
+        "dimensions": {
+          "rhythm": 80,
+          "composition": 85,
+          "narrative": 70,
+          "emotion": 50,
+          "creativity": 75,
+          "cultural": 60
+        },
+        "total_score": 70.0,
+        "highlights": [
+          "Clear function definition",
+          "Well-structured docstring"
+        ],
+        "weaknesses": [
+          "Lacks emotional engagement",
+          "Incomplete response"
+        ]
+      },
+      "timestamp": "2025-08-19T12:54:42.679941"
+    }
+  ],
+  "rankings": [
+    {
+      "model_id": "deepseek-v3",
+      "average_score": 76.94333333333333,
+      "average_dimensions": {
+        "rhythm": 83.33333333333333,
+        "composition": 88.33333333333333,
+        "narrative": 73.33333333333333,
+        "emotion": 68.33333333333333,
+        "creativity": 86.0,
+        "cultural": 68.33333333333333
+      },
+      "tests_completed": 3,
+      "rank": 1
+    },
+    {
+      "model_id": "deepseek-r1-distill",
+      "average_score": 68.33500000000001,
+      "average_dimensions": {
+        "rhythm": 77.5,
+        "composition": 77.5,
+        "narrative": 67.5,
+        "emotion": 50.0,
+        "creativity": 77.5,
+        "cultural": 60.0
+      },
+      "tests_completed": 2,
+      "rank": 2
+    },
+    {
+      "model_id": "deepseek-r1",
+      "average_score": 66.66499999999999,
+      "average_dimensions": {
+        "rhythm": 72.5,
+        "composition": 77.5,
+        "narrative": 65.0,
+        "emotion": 55.0,
+        "creativity": 75.0,
+        "cultural": 60.0
+      },
+      "tests_completed": 2,
+      "rank": 3
+    }
+  ],
+  "test_coverage": {
+    "deepseek-v3": [
+      "story_robot",
+      "poem_moon",
+      "code_fibonacci"
+    ],
+    "deepseek-r1": [
+      "story_robot",
+      "code_fibonacci"
+    ],
+    "deepseek-r1-distill": [
+      "story_robot",
+      "code_fibonacci"
+    ]
+  },
+  "missing_tests": {
+    "deepseek-r1": [
+      "poem_moon"
+    ],
+    "deepseek-r1-distill": [
+      "poem_moon"
+    ]
+  },
+  "notes": {
+    "deepseek-r1": "Configuration fixed: deepseek-reasoner → deepseek-chat. Poetry generation verified working but needs scoring.",
+    "deepseek-r1-distill": "Configuration fixed: deepseek-reasoner → deepseek-chat. Poetry generation verified working but needs scoring."
+  }
+}
