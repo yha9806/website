@@ -1,8 +1,8 @@
 # WenXin MoYun - Production Dockerfile for Google Cloud Run
 # Optimized for Cloud Run deployment with better security and performance
 
-# Use Python 3.10 slim image as base
-FROM python:3.10-slim
+# Use Python 3.13 slim image as base (matching production requirements)
+FROM python:3.13-slim
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
