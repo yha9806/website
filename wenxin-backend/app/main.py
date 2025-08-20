@@ -15,7 +15,9 @@ async def lifespan(app: FastAPI):
     """Handle startup and shutdown events"""
     # Startup
     print("Starting up...")
-    await init_db()
+    # Skip init_db in production - database is initialized via migrations
+    if os.getenv("ENVIRONMENT") != "production":
+        await init_db()
     yield
     # Shutdown
     print("Shutting down...")
