@@ -52,11 +52,8 @@ cors_origins = [
     "http://127.0.0.1:5179",
     "http://127.0.0.1:5180",
     "http://127.0.0.1:5181",
-    # Production URLs - Add all possible URL patterns
-    "https://storage.googleapis.com",
-    "https://wenxin-moyun-prod-new-static.storage.googleapis.com",
-    "https://storage.googleapis.com/wenxin-moyun-prod-new-static",
-    "https://storage.cloud.google.com"
+    # Production URLs - The single official URL
+    "https://storage.googleapis.com"
 ]
 print(f"Setting up CORS with origins: {cors_origins}")
 app.add_middleware(
