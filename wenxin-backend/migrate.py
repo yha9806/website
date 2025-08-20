@@ -300,6 +300,12 @@ def run_migrations():
     # First, try to get current revision
     current_revision = get_current_revision()
     
+    # Check if already at head
+    if current_revision and "(head)" in current_revision:
+        logger.info("✅ Database is already at the latest revision")
+        logger.info(f"Current revision: {current_revision}")
+        return True
+    
     try:
         # Try normal migration first
         result = subprocess.run(
@@ -311,7 +317,13 @@ def run_migrations():
         
         if result.returncode == 0:
             logger.info("✅ Migrations completed successfully")
-            logger.info(f"Migration output: {result.stdout}")
+            # Check if there was actual migration or already at head
+            if "Running upgrade" in result.stdout:
+                logger.info(f"Migration output: {result.stdout}")
+            elif not result.stdout.strip() or "nothing to do" in result.stdout.lower():
+                logger.info("Database was already up to date")
+            else:
+                logger.info(f"Migration output: {result.stdout}")
             return True
         else:
             logger.warning("⚠️ Migration failed, attempting recovery...")
