@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Toaster, toast } from 'react-hot-toast';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
@@ -15,6 +15,7 @@ import type { LeaderboardEntry } from '../types/types';
 
 export default function LeaderboardPage() {
   const { category = 'overall' } = useParams();
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState(category);
   const { entries, loading, error } = useLeaderboard(selectedCategory === 'overall' ? undefined : selectedCategory);
   const [hoveredEntry, setHoveredEntry] = useState<LeaderboardEntry | null>(null);
@@ -171,7 +172,7 @@ export default function LeaderboardPage() {
             <LeaderboardTable 
               data={filteredData}
               loading={loading}
-              onRowClick={(entry) => window.location.href = `/model/${entry.model.id}`}
+              onRowClick={(entry) => navigate(`/model/${entry.model.id}`)}
             />
           ) : viewMode === 'card' || viewMode === 'detailed' ? (
             <div className={`

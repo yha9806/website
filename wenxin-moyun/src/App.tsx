@@ -20,12 +20,18 @@ import TestAdvancedIOSComponents from './pages/TestAdvancedIOSComponents';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
-  // Initialize cache warming on app start
+  // Initialize cache warming on app start with version check
   useEffect(() => {
+    // Immediate version check to clear outdated cache
+    const versionUpdated = cacheUtils.checkVersion();
+    
     // Warm up cache after a short delay to not block initial render
     const timer = setTimeout(() => {
+      if (versionUpdated) {
+        console.log('App: Version updated, warming cache with fresh data');
+      }
       cacheUtils.warmUp();
-    }, 2000);
+    }, versionUpdated ? 500 : 2000); // Shorter delay if version was updated
     
     return () => clearTimeout(timer);
   }, []);

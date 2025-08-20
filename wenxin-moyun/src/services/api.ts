@@ -135,6 +135,12 @@ export const retryPendingRequests = () => {
 
 export default apiClient;
 
+// Cache version control for data updates
+const CACHE_VERSION = 'v2.1.0'; // Increment when 28-model data is deployed
+const VERSION_KEY = 'cache_version';
+const MODEL_COUNT_KEY = 'expected_model_count';
+const EXPECTED_MODEL_COUNT = 28; // Expected number of real models
+
 // Cache management utilities
 export const cacheUtils = {
   // Get cache statistics for debugging
@@ -142,6 +148,8 @@ export const cacheUtils = {
     return {
       api: apiCache.getStats(),
       static: staticCache.getStats(),
+      version: localStorage.getItem(VERSION_KEY),
+      expectedModels: EXPECTED_MODEL_COUNT,
     };
   },
   
@@ -149,17 +157,81 @@ export const cacheUtils = {
   clearAll: () => {
     apiCache.clear();
     staticCache.clear();
+    localStorage.removeItem('models_cache');
+    sessionStorage.removeItem('models_data');
   },
   
-  // Warm up essential caches
+  // Clear model-specific cache
+  clearModelCache: () => {
+    staticCache.invalidatePattern(/^models/);
+    staticCache.invalidatePattern(/^leaderboard/);
+    localStorage.removeItem('models_cache');
+    sessionStorage.removeItem('models_data');
+  },
+  
+  // Check and update cache version
+  checkVersion: () => {
+    const currentVersion = localStorage.getItem(VERSION_KEY);
+    if (currentVersion !== CACHE_VERSION) {
+      console.log(`Cache: Version update detected (${currentVersion} → ${CACHE_VERSION}), clearing caches`);
+      cacheUtils.clearAll();
+      localStorage.setItem(VERSION_KEY, CACHE_VERSION);
+      return true; // Version was updated
+    }
+    return false; // No version change
+  },
+  
+  // Validate model data integrity
+  validateModelData: (models: any[]) => {
+    if (!Array.isArray(models)) {
+      console.warn('Cache: Invalid model data format');
+      return false;
+    }
+    
+    const modelCount = models.length;
+    if (modelCount !== EXPECTED_MODEL_COUNT) {
+      console.warn(`Cache: Model count mismatch (${modelCount} !== ${EXPECTED_MODEL_COUNT}), clearing cache`);
+      cacheUtils.clearModelCache();
+      return false;
+    }
+    
+    // Check for real data indicators
+    const realModels = models.filter(model => 
+      model.score_highlights || 
+      model.benchmark_responses || 
+      model.data_source === 'real'
+    );
+    
+    if (realModels.length === 0) {
+      console.warn('Cache: No real model data detected, clearing cache');
+      cacheUtils.clearModelCache();
+      return false;
+    }
+    
+    console.log(`Cache: Model data validated (${modelCount} models, ${realModels.length} with real data)`);
+    return true;
+  },
+  
+  // Warm up essential caches with version check
   warmUp: async () => {
     try {
+      // Check version first
+      cacheUtils.checkVersion();
+      
       // Preload commonly accessed data
-      await Promise.allSettled([
+      const results = await Promise.allSettled([
+        modelsApi.getModels(true), // Force refresh for models
         galleryApi.getArtworks(),
-        modelsApi.getModels(),
-        // leaderboardApi uses same data as modelsApi, no need to call twice
       ]);
+      
+      // Validate models data
+      if (results[0].status === 'fulfilled') {
+        const modelsResponse = results[0].value;
+        if (modelsResponse.data) {
+          cacheUtils.validateModelData(modelsResponse.data);
+        }
+      }
+      
       console.log('Cache: Warmed up successfully');
     } catch (error) {
       console.warn('Cache: Warm up failed:', error);
@@ -255,20 +327,43 @@ export const galleryApi = {
   },
 };
 
-// Models API with caching
+// Models API with caching and force refresh
 export const modelsApi = {
   // Get all models (static cache - changes infrequently)
-  getModels: async (params?: any) => {
+  getModels: async (forceRefresh = false, params?: any) => {
     const cacheKey = cacheKeys.models(params);
-    return staticCache.get(
+    
+    if (forceRefresh) {
+      // Clear cache and fetch fresh data
+      staticCache.invalidate(cacheKey);
+      console.log('Models API: Force refresh requested, bypassing cache');
+    }
+    
+    const result = await staticCache.get(
       cacheKey,
-      () => apiClient.get('/models/', { params })
+      async () => {
+        console.log('Models API: Fetching fresh data from server');
+        return apiClient.get('/models/', { params });
+      }
     );
+    
+    // Validate data after fetch
+    if (result.data) {
+      cacheUtils.validateModelData(result.data);
+    }
+    
+    return result;
   },
 
-  // Get single model (static cache)
-  getModel: async (id: string) => {
+  // Get single model (static cache with force refresh support)
+  getModel: async (id: string, forceRefresh = false) => {
     const cacheKey = cacheKeys.model(id);
+    
+    if (forceRefresh) {
+      staticCache.invalidate(cacheKey);
+      console.log(`Models API: Force refresh for model ${id}`);
+    }
+    
     return staticCache.get(
       cacheKey,
       () => apiClient.get(`/models/${id}`)

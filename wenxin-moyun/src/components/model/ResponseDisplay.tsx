@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, Star, MessageSquare, Lightbulb, Target } from 'lucide-react';
 import { IOSCard, IOSCardHeader, IOSCardContent, IOSButton, EmojiIcon } from '../ios';
+import TextChunker from './TextChunker';
 
 interface AnalysisData {
   strengths: string[];
@@ -57,34 +58,81 @@ const ScoreAnnotation: React.FC<{ score: number; text: string }> = ({ score, tex
 
 const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [useChunkedView, setUseChunkedView] = useState(true);
   const config = dimensionConfig[detail.dimension] || dimensionConfig.rhythm;
   const Icon = config.icon;
 
-  // Parse and highlight response
+  // Enhanced highlight response with interactive tooltips
   const renderHighlightedResponse = () => {
     if (!detail.response) {
       return <p className="text-gray-500 italic">No response content</p>;
     }
 
-    // Split response into segments and highlight based on analysis
     const highlights = detail.analysis?.highlights || [];
-    let highlightedText = detail.response;
+    if (highlights.length === 0) {
+      return (
+        <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+          {detail.response}
+        </div>
+      );
+    }
 
-    // Highlight each segment mentioned in highlights
+    // Split text and create interactive highlights
+    let parts = [detail.response];
+    
     highlights.forEach((highlight, index) => {
-      if (highlight && highlightedText.includes(highlight)) {
-        highlightedText = highlightedText.replace(
-          highlight,
-          `<mark class="bg-yellow-200 px-1 rounded" data-score="${85 + index * 2}">${highlight}</mark>`
-        );
-      }
+      if (!highlight) return;
+      
+      const score = 85 + index * 2; // Generate score for each highlight
+      const newParts: React.ReactNode[] = [];
+      
+      parts.forEach((part) => {
+        if (typeof part === 'string' && part.toLowerCase().includes(highlight.toLowerCase())) {
+          const regex = new RegExp(`(${highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+          const splitParts = part.split(regex);
+          
+          splitParts.forEach((splitPart, splitIndex) => {
+            if (splitPart.toLowerCase() === highlight.toLowerCase()) {
+              newParts.push(
+                <span key={`${index}-${splitIndex}`} className="group relative inline-block">
+                  <mark className={`
+                    px-1.5 py-0.5 rounded-md cursor-help backdrop-blur-sm transition-all duration-200
+                    ${score >= 90 
+                      ? 'bg-gradient-to-r from-green-200/90 to-emerald-200/90 border border-green-300/50 hover:shadow-sm' 
+                      : score >= 85 
+                      ? 'bg-gradient-to-r from-blue-200/90 to-indigo-200/90 border border-blue-300/50 hover:shadow-sm'
+                      : 'bg-gradient-to-r from-yellow-200/90 to-amber-200/90 border border-yellow-300/50 hover:shadow-sm'
+                    }
+                    dark:from-opacity-40 dark:to-opacity-40
+                  `}>
+                    {splitPart}
+                  </mark>
+                  <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20 pointer-events-none">
+                    <div className="bg-black/90 dark:bg-white/90 text-white dark:text-black text-xs px-3 py-2 rounded-lg backdrop-blur-sm shadow-lg whitespace-nowrap">
+                      Score: {score}/100 • {score >= 90 ? 'Excellent' : score >= 85 ? 'Good' : 'Fair'}
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-2 h-2 bg-black/90 dark:bg-white/90 rotate-45 -mt-1"></div>
+                    </div>
+                  </div>
+                </span>
+              );
+            } else {
+              newParts.push(splitPart);
+            }
+          });
+        } else {
+          newParts.push(part);
+        }
+      });
+      
+      parts = newParts;
     });
 
     return (
-      <div 
-        className="prose prose-sm max-w-none"
-        dangerouslySetInnerHTML={{ __html: highlightedText }}
-      />
+      <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+        {parts.map((part, index) => (
+          <React.Fragment key={index}>{part}</React.Fragment>
+        ))}
+      </div>
     );
   };
 
@@ -117,9 +165,42 @@ const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
 
       <IOSCardContent>
         {/* Response with highlights */}
-        <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-          <h5 className="text-xs font-semibold text-gray-700 mb-2">Model Response:</h5>
-          {renderHighlightedResponse()}
+        <div className="mb-4">
+          <div className="flex items-center justify-between mb-3">
+            <h5 className="text-xs font-semibold text-gray-700 dark:text-gray-300">Model Response:</h5>
+            <div className="flex items-center gap-2">
+              <IOSButton
+                variant={useChunkedView ? "primary" : "secondary"}
+                size="sm"
+                onClick={() => setUseChunkedView(true)}
+              >
+                <EmojiIcon category="content" name="paragraph" size="xs" />
+                Chunked
+              </IOSButton>
+              <IOSButton
+                variant={!useChunkedView ? "primary" : "secondary"}
+                size="sm"
+                onClick={() => setUseChunkedView(false)}
+              >
+                <EmojiIcon category="rating" name="highlight" size="xs" />
+                Traditional
+              </IOSButton>
+            </div>
+          </div>
+          
+          {useChunkedView ? (
+            <TextChunker 
+              text={detail.response}
+              highlights={detail.analysis?.highlights || []}
+              onChunkClick={(chunk) => {
+                console.log('Clicked chunk:', chunk);
+              }}
+            />
+          ) : (
+            <div className="p-3 bg-gray-50/80 dark:bg-gray-800/80 rounded-lg backdrop-blur-sm">
+              {renderHighlightedResponse()}
+            </div>
+          )}
         </div>
 
         {/* Performance metrics */}
