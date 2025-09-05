@@ -114,12 +114,6 @@ export function useVULCAData(initialModelIds?: number[]): UseVULCADataReturn {
     };
   }, []);
 
-  // Load initial comparison if model IDs provided
-  useEffect(() => {
-    if (initialModelIds && initialModelIds.length >= 2 && isConnected) {
-      compareModels(initialModelIds);
-    }
-  }, [initialModelIds?.join(','), isConnected]);
   
   // Initialize all data
   const initializeData = async () => {
@@ -293,6 +287,13 @@ export function useVULCAData(initialModelIds?: number[]): UseVULCADataReturn {
       }
     }
   }, []);
+
+  // Load initial comparison if model IDs provided
+  useEffect(() => {
+    if (initialModelIds && initialModelIds.length >= 2 && isConnected) {
+      compareModels(initialModelIds);
+    }
+  }, [initialModelIds?.join(','), isConnected, compareModels]);
 
   const loadDemoData = useCallback(async () => {
     try {
