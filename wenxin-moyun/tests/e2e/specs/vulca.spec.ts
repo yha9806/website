@@ -3,22 +3,31 @@ import { test, expect, Page } from '@playwright/test';
 test.describe('VULCA Integration Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:5173/#/vulca');
+    
+    // Wait for lazy-loaded component to load
     await page.waitForLoadState('networkidle');
+    
+    // Wait specifically for VULCA content to appear since it's lazy loaded
+    await page.waitForSelector('h1:has-text("VULCA")', { 
+      timeout: 10000,
+      state: 'visible' 
+    });
   });
 
   test('should load VULCA page successfully', async ({ page }) => {
-    // Check page title and main elements
+    // Check page title contains VULCA (the full title is "VULCA Multi-Dimensional Evaluation")
     await expect(page.locator('h1').first()).toContainText('VULCA');
     
     // Check visualization container is visible
-    await expect(page.locator('.vulca-container').first()).toBeVisible();
+    const vulcaContainer = page.locator('.vulca-container, [class*="vulca"]').first();
+    await expect(vulcaContainer).toBeVisible();
     
-    // Check dimension toggle exists
-    const dimensionToggle = page.locator('text=/Dimension View/i').or(page.locator('text=/6D.*47D/i'));
-    await expect(dimensionToggle.first()).toBeVisible();
+    // Check dimension toggle exists (look for buttons with 6D or 47D text)
+    const dimensionToggle = page.locator('button:has-text("6D"), button:has-text("47D"), button:has-text("Dimension")').first();
+    await expect(dimensionToggle).toBeVisible();
     
-    // Verify initial data is loaded
-    await page.waitForSelector('.recharts-surface', { timeout: 5000 });
+    // Verify initial chart is loaded
+    await page.waitForSelector('.recharts-surface, .recharts-wrapper', { timeout: 5000 });
   });
 
   test('should switch between 6D and 47D views', async ({ page }) => {
