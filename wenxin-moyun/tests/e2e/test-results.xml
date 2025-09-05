@@ -1,55 +1,95 @@
-<testsuites id="" name="" tests="6" failures="2" skipped="1" errors="0" time="3596.9406639999997">
-<testsuite name="auth-fixed.spec.ts" timestamp="2025-08-18T09:59:33.819Z" hostname="chromium" tests="6" failures="2" skipped="1" time="3589.307" errors="0">
-<testcase name="Authentication Flow › User can successfully login with valid credentials" classname="auth-fixed.spec.ts" time="3008.877">
-</testcase>
-<testcase name="Authentication Flow › Guest mode allows access without authentication" classname="auth-fixed.spec.ts" time="17.982">
-</testcase>
-<testcase name="Authentication Flow › Login fails with invalid credentials" classname="auth-fixed.spec.ts" time="230.601">
-</testcase>
-<testcase name="Authentication Flow › JWT token persists across page refreshes" classname="auth-fixed.spec.ts" time="331.847">
-<failure message="auth-fixed.spec.ts:112:3 JWT token persists across page refreshes" type="FAILURE">
-<![CDATA[  [chromium] › auth-fixed.spec.ts:112:3 › Authentication Flow › JWT token persists across page refreshes 
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="44.931455">
+<testsuite name="vulca.spec.ts" timestamp="2025-09-05T15:08:36.262Z" hostname="chromium" tests="1" failures="1" skipped="0" time="33.51" errors="0">
+<testcase name="VULCA Integration Tests › should load VULCA page successfully" classname="vulca.spec.ts" time="33.51">
+<failure message="vulca.spec.ts:27:3 should load VULCA page successfully" type="FAILURE">
+<![CDATA[  [chromium] › vulca.spec.ts:27:3 › VULCA Integration Tests › should load VULCA page successfully ──
 
-    Error: page.goto: Target page, context or browser has been closed
+    TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.
     Call log:
-      - navigating to "http://localhost:5173/", waiting until "load"
+      - waiting for locator('h1:has-text("VULCA")') to be visible
 
 
-      39 |     
-      40 |     // Clear storage before each test
-    > 41 |     await page.goto('/');
+       9 |     
+      10 |     // Wait specifically for VULCA content to appear since it's lazy loaded
+    > 11 |     await page.waitForSelector('h1:has-text("VULCA")', { 
          |                ^
-      42 |     await page.evaluate(() => {
-      43 |       localStorage.clear();
-      44 |       sessionStorage.clear();
-        at I:\website\wenxin-moyun\tests\e2e\specs\auth-fixed.spec.ts:41:16
+      12 |       timeout: 10000,
+      13 |       state: 'visible' 
+      14 |     });
+        at I:\website\wenxin-moyun\tests\e2e\specs\vulca.spec.ts:11:16
 
-    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
-    ..\..\..\test-results\auth-fixed-Authentication--2922b-sists-across-page-refreshes-chromium\trace.zip
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium\trace.zip
     Usage:
 
-        npx playwright show-trace ..\..\..\test-results\auth-fixed-Authentication--2922b-sists-across-page-refreshes-chromium\trace.zip
+        npx playwright show-trace ..\..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('h1:has-text("VULCA")') to be visible
+
+
+       9 |     
+      10 |     // Wait specifically for VULCA content to appear since it's lazy loaded
+    > 11 |     await page.waitForSelector('h1:has-text("VULCA")', { 
+         |                ^
+      12 |       timeout: 10000,
+      13 |       state: 'visible' 
+      14 |     });
+        at I:\website\wenxin-moyun\tests\e2e\specs\vulca.spec.ts:11:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium-retry1\trace.zip
 
     ────────────────────────────────────────────────────────────────────────────────────────────────
 ]]>
 </failure>
 <system-out>
 <![CDATA[
-[[ATTACHMENT|..\..\test-results\auth-fixed-Authentication--2922b-sists-across-page-refreshes-chromium\trace.zip]]
+[[ATTACHMENT|..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium\video.webm]]
+
+[[ATTACHMENT|..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium\error-context.md]]
+
+[[ATTACHMENT|..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium\trace.zip]]
+
+[[ATTACHMENT|..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium-retry1\video.webm]]
+
+[[ATTACHMENT|..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium-retry1\error-context.md]]
+
+[[ATTACHMENT|..\..\test-results\vulca-VULCA-Integration-Te-74e87-oad-VULCA-page-successfully-chromium-retry1\trace.zip]]
 ]]>
 </system-out>
-</testcase>
-<testcase name="Authentication Flow › Logout functionality clears authentication" classname="auth-fixed.spec.ts" time="0">
-<failure message="auth-fixed.spec.ts:132:3 Logout functionality clears authentication" type="FAILURE">
-<![CDATA[  [chromium] › auth-fixed.spec.ts:132:3 › Authentication Flow › Logout functionality clears authentication 
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-]]>
-</failure>
-</testcase>
-<testcase name="Authentication Flow › Admin user has access to admin features" classname="auth-fixed.spec.ts" time="0">
-<skipped>
-</skipped>
 </testcase>
 </testsuite>
 </testsuites>
