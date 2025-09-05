@@ -8,6 +8,7 @@ import os
 from app.core.config import settings
 from app.core.database import init_db
 from app.api.v1 import api_router
+from app.vulca import vulca_router
 
 
 @asynccontextmanager
@@ -86,6 +87,9 @@ else:
 
 # Include API router
 app.include_router(api_router, prefix=settings.API_V1_STR)
+
+# Include VULCA router
+app.include_router(vulca_router)
 
 
 @app.get("/health")

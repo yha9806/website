@@ -14,6 +14,7 @@ export default function Header() {
     { name: 'Rankings', href: '/leaderboard', icon: Trophy, emoji: 'leaderboard' },
     { name: 'Battles', href: '/battle', icon: Swords, emoji: 'battle' },
     { name: 'Compare', href: '/compare', icon: GitCompare, emoji: 'compare' },
+    { name: 'VULCA', href: '/vulca', icon: BarChart3, emoji: 'analytics' },
     { name: 'Tasks', href: '/evaluations', icon: FlaskConical, emoji: 'evaluation' },
     { name: 'Gallery', href: '/gallery', icon: Image, emoji: 'visual' },
     { name: 'Dashboard', href: '/dashboard', icon: BarChart3, emoji: 'analytics' },

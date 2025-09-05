@@ -9,6 +9,9 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:clean": "rm -rf node_modules/.vite .vite && vite",
+    "dev:fresh": "rm -rf node_modules/.vite .vite node_modules/.tmp && vite",
+    "cache:clear": "rm -rf node_modules/.vite .vite node_modules/.tmp dist",
     "build": "tsc -b && vite build",
     "build:prod": "vite build",
     "type-check": "tsc --noEmit",

@@ -3,7 +3,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/common/Layout';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import { cacheUtils } from './services/api';
-import { useEffect } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
 import HomePage from './pages/HomePage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import ModelDetailPage from './pages/ModelDetailPage';
@@ -18,6 +18,9 @@ import LoginPage from './pages/LoginPage';
 import TestIOSComponents from './pages/TestIOSComponents';
 import TestAdvancedIOSComponents from './pages/TestAdvancedIOSComponents';
 import NotFoundPage from './pages/NotFoundPage';
+
+// Lazy load VULCA page to avoid import issues during initial load
+const VULCADemoPage = lazy(() => import('./pages/vulca/VULCADemoPage'));
 
 function App() {
   // Initialize cache warming on app start with version check
@@ -75,6 +78,16 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/test-ios" element={<TestIOSComponents />} />
           <Route path="/test-ios-advanced" element={<TestAdvancedIOSComponents />} />
+          <Route path="/vulca" element={
+            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading VULCA Demo...</p>
+              </div>
+            </div>}>
+              <VULCADemoPage />
+            </Suspense>
+          } />
           {/* 404 catch-all route */}
           <Route path="*" element={<NotFoundPage />} />
         </Route>

@@ -1,0 +1,271 @@
+/**
+ * VULCA API Service
+ * Handles all API calls to VULCA backend endpoints
+ */
+
+import axios, { AxiosError } from 'axios';
+import type {
+  VULCAEvaluation,
+  VULCAComparison,
+  VULCADimensionInfo,
+  VULCACulturalPerspectiveInfo,
+  VULCAScore6D,
+} from '../../types/vulca';
+
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
+const VULCA_API_PREFIX = '/api/v1/vulca';
+
+// Create axios instance with default config
+// Cache configuration
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+  ttl: number;
+}
+
+class APICache {
+  private cache = new Map<string, CacheEntry<any>>();
+  
+  set<T>(key: string, data: T, ttl = 300000): void { // 5 minutes default
+    this.cache.set(key, {
+      data,
+      timestamp: Date.now(),
+      ttl
+    });
+  }
+  
+  get<T>(key: string): T | null {
+    const entry = this.cache.get(key);
+    if (!entry) return null;
+    
+    if (Date.now() - entry.timestamp > entry.ttl) {
+      this.cache.delete(key);
+      return null;
+    }
+    
+    return entry.data;
+  }
+  
+  clear(): void {
+    this.cache.clear();
+  }
+}
+
+const apiCache = new APICache();
+
+// Retry configuration
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 1000; // Start with 1 second
+
+// Create axios instance with default config
+const vulcaApi = axios.create({
+  baseURL: `${API_BASE_URL}${VULCA_API_PREFIX}`,
+  timeout: 30000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Request interceptor for auth token
+vulcaApi.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor for error handling
+vulcaApi.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as any;
+    
+    // Handle 401 Unauthorized
+    if (error.response?.status === 401) {
+      localStorage.removeItem('authToken');
+      // Don't redirect if already on login page
+      if (!window.location.pathname.includes('/login')) {
+        window.location.href = '/login';
+      }
+    }
+    
+    // Implement retry logic for network errors or 5xx errors
+    if (
+      !originalRequest._retry &&
+      originalRequest._retryCount < MAX_RETRIES &&
+      (error.code === 'ECONNABORTED' || 
+       error.code === 'ERR_NETWORK' ||
+       (error.response && error.response.status >= 500))
+    ) {
+      originalRequest._retry = true;
+      originalRequest._retryCount = (originalRequest._retryCount || 0) + 1;
+      
+      // Exponential backoff
+      const delay = RETRY_DELAY * Math.pow(2, originalRequest._retryCount - 1);
+      await new Promise(resolve => setTimeout(resolve, delay));
+      
+      return vulcaApi(originalRequest);
+    }
+    
+    // Enhanced error with more details
+    const enhancedError = {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+      endpoint: error.config?.url,
+      method: error.config?.method,
+    };
+    
+    return Promise.reject(enhancedError);
+  }
+);
+
+// Helper function to handle cached requests
+async function cachedRequest<T>(
+  cacheKey: string,
+  requestFn: () => Promise<T>,
+  ttl?: number
+): Promise<T> {
+  // Check cache first
+  const cachedData = apiCache.get<T>(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
+  
+  // Make request and cache result
+  const data = await requestFn();
+  apiCache.set(cacheKey, data, ttl);
+  return data;
+}
+
+export const vulcaService = {
+  /**
+   * Get VULCA system information
+   */
+  async getInfo() {
+    return cachedRequest(
+      'vulca:info',
+      async () => {
+        const response = await vulcaApi.get('/info');
+        return response.data;
+      },
+      600000 // 10 minutes cache
+    );
+  },
+
+  /**
+   * Evaluate a model with VULCA framework
+   */
+  async evaluateModel(
+    modelId: number,
+    scores6D: VULCAScore6D,
+    modelName?: string
+  ): Promise<VULCAEvaluation> {
+    const response = await vulcaApi.post('/evaluate', {
+      model_id: modelId,
+      model_name: modelName,
+      scores_6d: scores6D,
+    });
+    return response.data;
+  },
+
+  /**
+   * Compare multiple models
+   */
+  async compareModels(
+    modelIds: number[],
+    includeDetails = true
+  ): Promise<VULCAComparison> {
+    const response = await vulcaApi.post('/compare', {
+      model_ids: modelIds,
+      include_details: includeDetails,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get all 47 dimensions information
+   */
+  async getDimensions(): Promise<VULCADimensionInfo[]> {
+    return cachedRequest(
+      'vulca:dimensions',
+      async () => {
+        const response = await vulcaApi.get('/dimensions');
+        return response.data;
+      },
+      1800000 // 30 minutes cache
+    );
+  },
+
+  /**
+   * Get cultural perspectives information
+   */
+  async getCulturalPerspectives(): Promise<VULCACulturalPerspectiveInfo[]> {
+    return cachedRequest(
+      'vulca:cultural-perspectives',
+      async () => {
+        const response = await vulcaApi.get('/cultural-perspectives');
+        return response.data;
+      },
+      1800000 // 30 minutes cache
+    );
+  },
+
+  /**
+   * Get model evaluation history
+   */
+  async getModelHistory(modelId: number, limit = 10) {
+    const response = await vulcaApi.get(`/history/${modelId}`, {
+      params: { limit },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get sample evaluation for testing
+   */
+  async getSampleEvaluation(modelId: number): Promise<VULCAEvaluation> {
+    const response = await vulcaApi.get(`/sample-evaluation/${modelId}`);
+    return response.data.evaluation;
+  },
+
+  /**
+   * Get demo comparison data
+   */
+  async getDemoComparison(): Promise<VULCAComparison> {
+    return cachedRequest(
+      'vulca:demo-comparison',
+      async () => {
+        const response = await vulcaApi.get('/demo-comparison');
+        return response.data.comparison;
+      },
+      300000 // 5 minutes cache
+    );
+  },
+  
+  /**
+   * Clear all cached data
+   */
+  clearCache() {
+    apiCache.clear();
+  },
+  
+  /**
+   * Check API health status
+   */
+  async healthCheck(): Promise<boolean> {
+    try {
+      await vulcaApi.get('/info');
+      return true;
+    } catch {
+      return false;
+    }
+  },
+};
+
+export default vulcaService;

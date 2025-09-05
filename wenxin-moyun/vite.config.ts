@@ -11,6 +11,9 @@ export default defineConfig({
     ? './' 
     : '/',
   
+  // Vite cache optimization for Windows compatibility
+  cacheDir: '.vite',
+  
   // Production optimizations
   build: {
     target: 'esnext',
@@ -42,12 +45,22 @@ export default defineConfig({
     // Already set minify: 'esbuild' above
   },
   
-  // Development server configuration
+  // Development server configuration with cache fix
   server: {
     port: 5173,
     host: true,
     headers: {
       'Cache-Control': 'no-cache, no-store, must-revalidate'
+    },
+    // Windows file watching optimization
+    watch: {
+      usePolling: true,
+      interval: 100
+    },
+    // HMR configuration for better reliability
+    hmr: {
+      overlay: true,
+      timeout: 60000
     }
   },
   
@@ -63,9 +76,29 @@ export default defineConfig({
     __BUILD_TIME__: JSON.stringify(new Date().toISOString())
   },
   
-  // Optimize dependencies
+  // Optimize dependencies with better cache handling
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-    exclude: ['@vite/client', '@vite/env']
+    include: [
+      'react', 
+      'react-dom', 
+      'react-router-dom',
+      'framer-motion',
+      '@headlessui/react'
+    ],
+    exclude: ['@vite/client', '@vite/env'],
+    // Force dependency pre-bundling to avoid stale cache
+    force: true,
+    // Entries to scan for dependencies
+    entries: ['src/**/*.tsx', 'src/**/*.ts']
+  },
+  
+  // Module resolution optimization
+  resolve: {
+    // Preserve symlinks for better module resolution
+    preserveSymlinks: false,
+    // Optimize extension resolution
+    extensions: ['.tsx', '.ts', '.jsx', '.js'],
+    // Clear module cache on file changes
+    dedupe: ['react', 'react-dom']
   }
 })
