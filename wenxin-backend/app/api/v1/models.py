@@ -15,6 +15,7 @@ from app.schemas.ai_model import (
     AIModelUpdate,
     AIModelWithStats
 )
+from app.services.cache_service import cache_service, CacheKeys, CacheTTL
 
 router = APIRouter()
 
@@ -25,9 +26,18 @@ async def get_models(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=100),
     category: Optional[str] = None,
-    is_active: bool = True
+    is_active: bool = True,
+    include_vulca: bool = Query(False, description="Include VULCA evaluation data")
 ) -> Any:
-    """Get list of AI models"""
+    """Get list of AI models with optional VULCA data"""
+    # 构建缓存键
+    cache_key = f"{CacheKeys.MODELS_ALL}:{skip}:{limit}:{category}:{is_active}:{include_vulca}"
+    
+    # 尝试从缓存获取
+    cached_data = cache_service.get(cache_key)
+    if cached_data:
+        return cached_data
+    
     query = select(AIModel)
     
     if category:
@@ -79,7 +89,33 @@ async def get_models(
             "created_at": model.created_at,
             "updated_at": model.updated_at
         }
+        
+        # Add VULCA data if requested
+        if include_vulca:
+            model_dict["vulca_scores_47d"] = model.vulca_scores_47d
+            model_dict["vulca_cultural_perspectives"] = model.vulca_cultural_perspectives
+            model_dict["vulca_evaluation_date"] = model.vulca_evaluation_date
+            model_dict["vulca_sync_status"] = model.vulca_sync_status
+            
+            # Parse JSON strings to dictionaries for Pydantic validation
+            if model_dict.get('vulca_scores_47d'):
+                if isinstance(model_dict['vulca_scores_47d'], str):
+                    try:
+                        model_dict['vulca_scores_47d'] = json.loads(model_dict['vulca_scores_47d'])
+                    except json.JSONDecodeError:
+                        model_dict['vulca_scores_47d'] = None
+                        
+            if model_dict.get('vulca_cultural_perspectives'):
+                if isinstance(model_dict['vulca_cultural_perspectives'], str):
+                    try:
+                        model_dict['vulca_cultural_perspectives'] = json.loads(model_dict['vulca_cultural_perspectives'])
+                    except json.JSONDecodeError:
+                        model_dict['vulca_cultural_perspectives'] = None
+        
         result_models.append(AIModelSchema.model_validate(model_dict))
+    
+    # 缓存结果
+    cache_service.set(cache_key, result_models, CacheTTL.MODELS)
     
     return result_models
 
@@ -87,9 +123,16 @@ async def get_models(
 @router.get("/{model_id}")
 async def get_model(
     model_id: str,  # 改为str以支持SQLite
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    include_vulca: bool = Query(True, description="Include VULCA evaluation data")
 ) -> Any:
-    """Get AI model by ID with statistics and benchmark results"""
+    """Get AI model by ID with statistics, benchmark results and VULCA data"""
+    # 尝试从缓存获取
+    cache_key = f"{CacheKeys.RANKINGS_MODEL.format(model_id=model_id)}:{include_vulca}"
+    cached_data = cache_service.get(cache_key)
+    if cached_data:
+        return cached_data
+    
     # Use simpler query without potentially missing columns
     query = text("""
         SELECT * FROM ai_models
@@ -161,8 +204,8 @@ async def get_model(
         except:
             score_weaknesses = []
     
-    # Return complete model data with new fields
-    return {
+    # Build response dictionary
+    response_data = {
         **model_data,
         "metrics": metrics,
         "benchmark_responses": benchmark_responses,
@@ -174,6 +217,34 @@ async def get_model(
         "win_rate": 0.0,
         "recent_works": []
     }
+    
+    # Add VULCA data if requested and available
+    if include_vulca:
+        vulca_scores = model_data.get('vulca_scores_47d')
+        vulca_perspectives = model_data.get('vulca_cultural_perspectives')
+        
+        # Parse JSON strings to dictionaries for proper response
+        if vulca_scores and isinstance(vulca_scores, str):
+            try:
+                vulca_scores = json.loads(vulca_scores)
+            except json.JSONDecodeError:
+                vulca_scores = None
+                
+        if vulca_perspectives and isinstance(vulca_perspectives, str):
+            try:
+                vulca_perspectives = json.loads(vulca_perspectives)
+            except json.JSONDecodeError:
+                vulca_perspectives = None
+        
+        response_data["vulca_scores_47d"] = vulca_scores
+        response_data["vulca_cultural_perspectives"] = vulca_perspectives
+        response_data["vulca_evaluation_date"] = model_data.get('vulca_evaluation_date')
+        response_data["vulca_sync_status"] = model_data.get('vulca_sync_status', 'pending')
+    
+    # 缓存结果
+    cache_service.set(cache_key, response_data, CacheTTL.RANKINGS)
+    
+    return response_data
 
 
 @router.post("/", response_model=AIModelSchema)

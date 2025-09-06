@@ -16,6 +16,11 @@ export interface Model {
   benchmarkResponses?: any;
   benchmarkMetadata?: any;
   dataSource?: string;
+  // VULCA integration fields
+  vulca_scores_47d?: any;
+  vulca_cultural_perspectives?: any;
+  vulca_evaluation_date?: string;
+  vulca_sync_status?: string;
 }
 
 export interface ModelMetrics {

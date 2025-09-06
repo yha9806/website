@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, Suspense, lazy } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -32,18 +32,34 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { LeaderboardEntry } from '../../types/types';
+import type { VULCAEvaluation } from '../../types/vulca';
 import { exportData } from '../../utils/dataExport';
 import RouterLink from '../common/RouterLink';
+
+// 懒加载VULCA可视化组件
+const VULCAVisualization = lazy(() => 
+  import('../vulca/VULCAVisualization').then(module => ({
+    default: module.VULCAVisualization
+  }))
+);
 
 interface LeaderboardTableProps {
   data: LeaderboardEntry[];
   loading?: boolean;
   onRowClick?: (entry: LeaderboardEntry) => void;
+  expandedVulcaModels?: Set<string>;
+  onToggleVulca?: (modelId: string) => void;
 }
 
 const columnHelper = createColumnHelper<LeaderboardEntry>();
 
-export default function LeaderboardTable({ data, loading, onRowClick }: LeaderboardTableProps) {
+export default function LeaderboardTable({ 
+  data, 
+  loading, 
+  onRowClick, 
+  expandedVulcaModels = new Set(), 
+  onToggleVulca 
+}: LeaderboardTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -228,20 +244,39 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
     // 操作列
     columnHelper.display({
       id: 'actions',
-      size: 100,
+      size: 150,
       header: '',
-      cell: ({ row }) => (
-        <div className="flex items-center justify-center gap-2">
-          <RouterLink
-            to={`/model/${row.original.model.id}`}
-            className="px-3 py-1 text-sm bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
-          >
-            View
-          </RouterLink>
-        </div>
-      ),
+      cell: ({ row }) => {
+        const modelId = row.original.model.id;
+        const hasVulca = row.original.model.vulca_scores_47d != null;
+        const isExpanded = expandedVulcaModels.has(modelId);
+        
+        return (
+          <div className="flex items-center justify-center gap-2">
+            {hasVulca && onToggleVulca && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleVulca(modelId);
+                }}
+                className="px-2 py-1 text-sm bg-purple-600 dark:bg-purple-500 text-white rounded-lg hover:bg-purple-700 dark:hover:bg-purple-600 transition-colors flex items-center gap-1"
+                title="View VULCA 47D Analysis"
+              >
+                47D
+                {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+              </button>
+            )}
+            <RouterLink
+              to={`/model/${modelId}`}
+              className="px-3 py-1 text-sm bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
+            >
+              View
+            </RouterLink>
+          </div>
+        );
+      },
     }),
-  ], []);
+  ], [expandedVulcaModels, onToggleVulca]);
 
   // 创建表格实例
   const table = useReactTable({
@@ -333,7 +368,7 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
       </div>
 
       {/* 表格 */}
-      <div className="overflow-x-auto ios-glass liquid-glass-container rounded-lg border border-gray-200 dark:border-[#30363D]">
+      <div className="leaderboard-table overflow-x-auto ios-glass liquid-glass-container rounded-lg border border-gray-200 dark:border-[#30363D]">
         <table className="w-full">
           <thead className="ios-glass backdrop-blur-sm border-b border-gray-200 dark:border-[#30363D]">
             {table.getHeaderGroups().map(headerGroup => (
@@ -385,22 +420,157 @@ export default function LeaderboardTable({ data, loading, onRowClick }: Leaderbo
                 </td>
               </tr>
             ) : (
-              table.getRowModel().rows.map(row => (
-                <tr 
-                  key={row.id}
-                  className="hover:bg-gray-100/20 dark:hover:bg-[#1C2128] transition-colors cursor-pointer"
-                  onClick={() => onRowClick?.(row.original)}
-                >
-                  {row.getVisibleCells().map(cell => (
-                    <td 
-                      key={cell.id}
-                      className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"
+              table.getRowModel().rows.map(row => {
+                const modelId = row.original.model.id;
+                const isExpanded = expandedVulcaModels?.has(modelId);
+                const hasVulcaData = row.original.model.vulca_scores_47d != null;
+                
+                // 解析VULCA数据
+                const parseVulcaData = (vulcaScores: any) => {
+                  if (!vulcaScores) return null;
+                  if (typeof vulcaScores === 'string') {
+                    try {
+                      return JSON.parse(vulcaScores);
+                    } catch {
+                      return null;
+                    }
+                  }
+                  return vulcaScores;
+                };
+                
+                const parseCulturalPerspectives = (perspectives: any) => {
+                  if (!perspectives) return null;
+                  if (typeof perspectives === 'string') {
+                    try {
+                      return JSON.parse(perspectives);
+                    } catch {
+                      return null;
+                    }
+                  }
+                  return perspectives;
+                };
+                
+                // 从47维中提取6个核心维度
+                const extractScores6D = (scores47D: any) => {
+                  if (!scores47D) return {};
+                  return {
+                    creativity: scores47D.creativity || scores47D.originality || scores47D.imagination || 0,
+                    technique: scores47D.technique || scores47D.precision || scores47D.skill_level || 0,
+                    emotion: scores47D.emotion || scores47D.emotional_depth || scores47D.emotional_resonance || 0,
+                    context: scores47D.context || scores47D.relevance || scores47D.contextual_awareness || 0,
+                    innovation: scores47D.innovation || scores47D.uniqueness || scores47D.novelty || 0,
+                    impact: scores47D.impact || scores47D.influence || scores47D.significance || 0
+                  };
+                };
+                
+                // 转换单个模型数据为VULCAEvaluation格式
+                const convertToEvaluation = (model: any): VULCAEvaluation => {
+                  const scores47D = parseVulcaData(model.vulca_scores_47d) || {};
+                  const culturalPerspectives = parseCulturalPerspectives(model.vulca_cultural_perspectives) || {};
+                  
+                  return {
+                    modelId: parseInt(model.id) || 0,
+                    modelName: model.name || 'Unknown Model',
+                    scores6D: extractScores6D(scores47D),
+                    scores47D: scores47D,
+                    culturalPerspectives: culturalPerspectives,
+                    evaluationDate: model.vulca_evaluation_date || new Date().toISOString()
+                  };
+                };
+                
+                // 从VULCA分数生成维度定义
+                const getDefaultDimensions = (scores: any) => {
+                  if (!scores || typeof scores !== 'object') return [];
+                  
+                  return Object.keys(scores).map(key => ({
+                    id: key,
+                    name: key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                    description: `${key.replace(/_/g, ' ')} dimension`
+                  }));
+                };
+                
+                return (
+                  <React.Fragment key={row.id}>
+                    <tr 
+                      className="hover:bg-gray-100/20 dark:hover:bg-[#1C2128] transition-colors cursor-pointer"
+                      onClick={(e) => {
+                        // 防止点击47D按钮时触发行点击
+                        if (!(e.target as HTMLElement).closest('button')) {
+                          onRowClick?.(row.original);
+                        }
+                      }}
                     >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
-                </tr>
-              ))
+                      {row.getVisibleCells().map(cell => (
+                        <td 
+                          key={cell.id}
+                          className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"
+                        >
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </td>
+                      ))}
+                    </tr>
+                    
+                    {/* VULCA展开行 */}
+                    {isExpanded && hasVulcaData && (
+                      <tr className="vulca-visualization">
+                        <td colSpan={columns.length} className="p-0">
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="bg-gray-50 dark:bg-[#0d1117] border-t border-gray-200 dark:border-[#30363D]"
+                          >
+                            <div className="p-6">
+                              <Suspense fallback={
+                                <div className="flex items-center justify-center py-8">
+                                  <div className="flex items-center gap-2 text-gray-500">
+                                    <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
+                                    Loading VULCA Analysis...
+                                  </div>
+                                </div>
+                              }>
+                                {(() => {
+                                  try {
+                                    const vulcaScores = parseVulcaData(row.original.model.vulca_scores_47d);
+                                    if (!vulcaScores || Object.keys(vulcaScores).length === 0) {
+                                      return (
+                                        <div className="p-8 text-center text-gray-500">
+                                          No VULCA data available for this model
+                                        </div>
+                                      );
+                                    }
+                                    
+                                    const evaluation = convertToEvaluation(row.original.model);
+                                    const dimensions = getDefaultDimensions(vulcaScores);
+                                    
+                                    return (
+                                      <VULCAVisualization
+                                        evaluations={[evaluation]}
+                                        dimensions={dimensions}
+                                        viewMode="47d"
+                                        visualizationType="radar"
+                                        culturalPerspective="eastern"
+                                      />
+                                    );
+                                  } catch (error) {
+                                    console.error('Error rendering VULCA visualization:', error);
+                                    return (
+                                      <div className="p-8 text-center text-red-500">
+                                        Error loading VULCA visualization
+                                      </div>
+                                    );
+                                  }
+                                })()}
+                              </Suspense>
+                            </div>
+                          </motion.div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                );
+              })
             )}
           </tbody>
         </table>

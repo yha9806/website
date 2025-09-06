@@ -10,6 +10,7 @@ This guide covers the complete deployment of WenXin MoYun to Google Cloud Platfo
 - **Database**: Cloud SQL PostgreSQL with automated backups
 - **Monitoring**: Complete observability with Cloud Monitoring and Logging
 - **CI/CD**: Automated deployments with GitHub Actions
+- **NEW: VULCA Integration**: 47-dimensional evaluation system integrated with Rankings
 
 ## Architecture
 
@@ -224,6 +225,12 @@ gsutil iam ch allUsers:objectViewer gs://$PROJECT_ID-static
 # Run migration script
 cd wenxin-backend
 python scripts/migrate-to-cloud-sql.py
+
+# VULCA Integration: Run additional migrations
+alembic upgrade head
+
+# Generate initial VULCA test data (optional)
+python generate_vulca_test_data.py
 ```
 
 ## Environment Configuration

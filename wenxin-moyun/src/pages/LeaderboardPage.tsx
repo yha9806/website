@@ -12,6 +12,16 @@ import ViewModeToggle from '../components/leaderboard/ViewModeToggle';
 import { useUIStore } from '../store/uiStore';
 import { useFilterStore } from '../store/filterStore';
 import type { LeaderboardEntry } from '../types/types';
+import { lazy, Suspense } from 'react';
+
+// 懒加载VULCA组件以优化性能
+const VULCAVisualization = lazy(() => 
+  import('../components/vulca/VULCAVisualization').then(module => ({
+    default: module.VULCAVisualization
+  }))
+);
+import { IOSButton } from '../components/ios/core/IOSButton';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function LeaderboardPage() {
   const { category = 'overall' } = useParams();
@@ -19,6 +29,7 @@ export default function LeaderboardPage() {
   const [selectedCategory, setSelectedCategory] = useState(category);
   const { entries, loading, error } = useLeaderboard(selectedCategory === 'overall' ? undefined : selectedCategory);
   const [hoveredEntry, setHoveredEntry] = useState<LeaderboardEntry | null>(null);
+  const [expandedVulcaModels, setExpandedVulcaModels] = useState<Set<string>>(new Set());
   const [listRef] = useAutoAnimate();
   
   const { viewMode } = useUIStore();
@@ -75,6 +86,19 @@ export default function LeaderboardPage() {
       winRateRange: values.winRateRange,
       dateRange: values.dateRange,
       weights: values.weights
+    });
+  };
+
+  // 处理VULCA展开/收起
+  const toggleVulcaExpansion = (modelId: string) => {
+    setExpandedVulcaModels(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(modelId)) {
+        newSet.delete(modelId);
+      } else {
+        newSet.add(modelId);
+      }
+      return newSet;
     });
   };
 
@@ -173,6 +197,8 @@ export default function LeaderboardPage() {
               data={filteredData}
               loading={loading}
               onRowClick={(entry) => navigate(`/model/${entry.model.id}`)}
+              expandedVulcaModels={expandedVulcaModels}
+              onToggleVulca={toggleVulcaExpansion}
             />
           ) : viewMode === 'card' || viewMode === 'detailed' ? (
             <div className={`

@@ -20,17 +20,11 @@ import {
   RefreshCw, AlertCircle, WifiOff, CheckCircle, Clock 
 } from 'lucide-react';
 
-// Available models for testing
-const AVAILABLE_MODELS = [
-  { id: 1, name: 'gpt-5', organization: 'OpenAI' },
-  { id: 2, name: 'claude-opus-4-1', organization: 'Anthropic' },
-  { id: 3, name: 'gpt-4o', organization: 'OpenAI' },
-  { id: 4, name: 'deepseek-v3', organization: 'DeepSeek' },
-  { id: 5, name: 'qwen-max', organization: 'Alibaba' },
-];
+// Models will be loaded dynamically from the API
 
 export const VULCADemoPage: React.FC = () => {
-  const [selectedModels, setSelectedModels] = useState<number[]>([1, 2]); // Default: gpt-5 vs claude
+  const [availableModels, setAvailableModels] = useState<Array<{id: number, name: string, organization: string}>>([]);
+  const [selectedModels, setSelectedModels] = useState<number[]>([]); // Will be set after models load
   const [viewMode, setViewMode] = useState<ViewMode>('6d');
   const [visualizationType, setVisualizationType] = useState<VisualizationType>('radar');
   const [culturalPerspective, setCulturalPerspective] = useState<string>('eastern');
@@ -56,6 +50,47 @@ export const VULCADemoPage: React.FC = () => {
     retryConnection,
   } = useVULCAData(selectedModels);
   
+  // Load available models from API
+  useEffect(() => {
+    const loadModels = async () => {
+      try {
+        // Use the main models API with VULCA data
+        const response = await fetch('http://localhost:8001/api/v1/models/?include_vulca=true&limit=50');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.length > 0) {
+            // Filter models that have VULCA data
+            const modelsWithVulca = data.filter((m: any) => m.vulca_scores_47d != null);
+            const models = modelsWithVulca.map((m: any) => ({
+              id: m.id,
+              name: m.name,
+              organization: m.organization
+            }));
+            setAvailableModels(models);
+            // Select first two models by default
+            if (models.length >= 2) {
+              setSelectedModels([models[0].id, models[1].id]);
+            } else if (models.length === 1) {
+              setSelectedModels([models[0].id]);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load models:', error);
+        // Fallback to some default models that exist in database
+        setAvailableModels([
+          { id: 1, name: 'GPT-4o', organization: 'OpenAI' },
+          { id: 2, name: 'Claude 3.5 Sonnet', organization: 'Anthropic' },
+          { id: 3, name: 'o1-preview', organization: 'OpenAI' },
+          { id: 4, name: 'Llama 3.1 405B', organization: 'Meta' },
+          { id: 5, name: 'GPT-4 Turbo', organization: 'OpenAI' },
+        ]);
+        setSelectedModels([1, 2]);
+      }
+    };
+    loadModels();
+  }, []);
+  
   // Handle model selection
   const handleModelSelect = useCallback((modelId: number) => {
     setSelectedModels(prev => {
@@ -73,10 +108,10 @@ export const VULCADemoPage: React.FC = () => {
   
   // Trigger comparison when models change
   useEffect(() => {
-    if (selectedModels.length >= 2) {
+    if (selectedModels.length >= 2 && availableModels.length > 0) {
       compareModels(selectedModels);
     }
-  }, [selectedModels.join(','), compareModels]);
+  }, [selectedModels.join(','), availableModels.length, compareModels]);
   
   // Export functionality
   const handleExport = useCallback(() => {
@@ -224,7 +259,7 @@ export const VULCADemoPage: React.FC = () => {
                   Select Models (2-5)
                 </label>
                 <ModelSelector
-                  models={AVAILABLE_MODELS}
+                  models={availableModels}
                   selectedModels={selectedModels}
                   onModelSelect={handleModelSelect}
                 />

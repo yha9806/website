@@ -61,13 +61,31 @@ async def evaluate_model(
     Evaluate a model using VULCA framework
     
     Expands 6D scores to 47D and calculates cultural perspectives
+    Now supports all models, not limited to hardcoded list
     """
     try:
+        # Evaluate the model
         result = await service.evaluate_model(
             model_id=request.model_id,
             scores_6d=request.scores_6d.dict(),
             model_name=request.model_name
         )
+        
+        # Auto-sync to ai_models table after successful evaluation
+        from app.services.vulca_migration_service import VULCAMigrationService
+        migration_service = VULCAMigrationService(service.db)
+        sync_success = await migration_service.sync_single_evaluation(
+            model_id=request.model_id,
+            evaluation={
+                "scores_47d": result['scores_47d'],
+                "cultural_perspectives": result['cultural_perspectives']
+            }
+        )
+        
+        if sync_success:
+            result['sync_status'] = 'completed'
+        else:
+            result['sync_status'] = 'failed'
         
         return VULCAEvaluationResponse(
             model_id=result['model_id'],
@@ -236,3 +254,56 @@ async def get_demo_comparison():
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Demo generation failed: {str(e)}")
+
+@router.get("/models")
+async def get_vulca_models(
+    db: AsyncSession = Depends(get_db),
+    has_evaluation: bool = Query(False, description="Filter models with VULCA evaluations"),
+    limit: int = Query(100, ge=1, le=500)
+):
+    """
+    Get list of models available for VULCA evaluation
+    
+    Returns all AI models from the main database, not limited to hardcoded list
+    Optionally filter to show only models with existing VULCA evaluations
+    """
+    from sqlalchemy import select
+    from app.models.ai_model import AIModel
+    
+    try:
+        # Build query
+        query = select(AIModel)
+        
+        # Filter by VULCA evaluation status if requested
+        if has_evaluation:
+            query = query.where(AIModel.vulca_sync_status == "completed")
+        
+        query = query.order_by(AIModel.overall_score.desc()).limit(limit)
+        
+        # Execute query
+        result = await db.execute(query)
+        models = result.scalars().all()
+        
+        # Format response
+        model_list = []
+        for model in models:
+            model_data = {
+                "id": str(model.id),
+                "name": model.name,
+                "organization": model.organization,
+                "category": model.category,
+                "overall_score": model.overall_score,
+                "has_vulca": model.vulca_scores_47d is not None,
+                "vulca_sync_status": model.vulca_sync_status,
+                "vulca_evaluation_date": model.vulca_evaluation_date.isoformat() if model.vulca_evaluation_date else None
+            }
+            model_list.append(model_data)
+        
+        return {
+            "total": len(model_list),
+            "models": model_list,
+            "message": f"Found {len(model_list)} models {'with' if has_evaluation else 'available for'} VULCA evaluation"
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get models: {str(e)}")

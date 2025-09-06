@@ -17,7 +17,8 @@ export const useLeaderboard = (category?: string) => {
         try {
           const apiModels = await modelsService.getModels({ 
             category,
-            is_active: true 
+            is_active: true,
+            include_vulca: true // 请求包含VULCA数据
           });
           
           if (apiModels.length > 0) {

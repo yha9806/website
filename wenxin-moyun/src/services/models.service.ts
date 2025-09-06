@@ -25,6 +25,11 @@ export interface AIModelResponse {
   updated_at?: string;
   tags: string[];
   avatar_url?: string;
+  // VULCA integration fields
+  vulca_scores_47d?: any;
+  vulca_cultural_perspectives?: any;
+  vulca_evaluation_date?: string;
+  vulca_sync_status?: string;
 }
 
 export interface AIModelWithStats extends AIModelResponse {
@@ -44,6 +49,7 @@ export interface ModelListParams {
   limit?: number;
   category?: string;
   is_active?: boolean;
+  include_vulca?: boolean;
 }
 
 class ModelsService {
@@ -102,7 +108,12 @@ class ModelsService {
       scoreWeaknesses: apiModel.score_weaknesses,
       benchmarkResponses: apiModel.benchmark_responses,
       benchmarkMetadata: apiModel.benchmark_metadata,
-      dataSource: apiModel.data_source
+      dataSource: apiModel.data_source,
+      // VULCA integration fields
+      vulca_scores_47d: apiModel.vulca_scores_47d,
+      vulca_cultural_perspectives: apiModel.vulca_cultural_perspectives,
+      vulca_evaluation_date: apiModel.vulca_evaluation_date,
+      vulca_sync_status: apiModel.vulca_sync_status
     };
   }
 }

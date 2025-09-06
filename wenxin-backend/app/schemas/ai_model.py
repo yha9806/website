@@ -77,6 +77,12 @@ class AIModelResponse(AIModelBase):
     model_tier: Optional[str] = None  # flagship, professional, efficient, lightweight
     llm_rank: Optional[int] = None
     image_rank: Optional[int] = None
+    
+    # VULCA evaluation fields (optional, included when include_vulca=true)
+    vulca_scores_47d: Optional[Dict] = None
+    vulca_cultural_perspectives: Optional[Dict] = None
+    vulca_evaluation_date: Optional[datetime] = None
+    vulca_sync_status: Optional[str] = None
 
 
 class AIModelWithStats(AIModel):
@@ -95,3 +101,9 @@ class AIModelWithStats(AIModel):
     
     # Full benchmark results with response texts
     benchmark_results: Optional[str] = None  # JSON string of detailed test results
+    
+    # VULCA evaluation fields
+    vulca_scores_47d: Optional[Dict] = None
+    vulca_cultural_perspectives: Optional[Dict] = None
+    vulca_evaluation_date: Optional[datetime] = None
+    vulca_sync_status: Optional[str] = None

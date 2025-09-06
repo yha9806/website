@@ -4,7 +4,7 @@ Request and response models for VULCA API endpoints
 """
 
 from pydantic import BaseModel, Field, ConfigDict, field_validator
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Union
 from datetime import datetime
 
 class VULCAScore6D(BaseModel):
@@ -20,7 +20,7 @@ class VULCAScore6D(BaseModel):
 
 class VULCAEvaluationRequest(BaseModel):
     """Request model for model evaluation"""
-    model_id: int = Field(..., description="Unique model identifier")
+    model_id: Union[int, str] = Field(..., description="Unique model identifier (integer or UUID)")
     model_name: Optional[str] = Field(None, description="Model name")
     scores_6d: VULCAScore6D = Field(..., description="6-dimensional base scores")
     
@@ -28,7 +28,7 @@ class VULCAEvaluationRequest(BaseModel):
 
 class VULCAEvaluationResponse(BaseModel):
     """Response model for model evaluation"""
-    model_id: int
+    model_id: Union[int, str]
     model_name: str
     scores_6d: Dict[str, float]
     scores_47d: Dict[str, float]
@@ -40,14 +40,14 @@ class VULCAEvaluationResponse(BaseModel):
 
 class VULCAComparisonRequest(BaseModel):
     """Request model for model comparison"""
-    model_ids: List[int] = Field(..., min_length=2, max_length=10, description="List of model IDs to compare")
+    model_ids: List[Union[int, str]] = Field(..., min_length=2, max_length=10, description="List of model IDs to compare (integer or UUID)")
     include_details: bool = Field(True, description="Include detailed scores in response")
     
     model_config = ConfigDict(from_attributes=True)
 
 class VULCAModelSummary(BaseModel):
     """Summary of a model in comparison"""
-    model_id: int
+    model_id: Union[int, str]
     model_name: str
     scores_47d: Optional[Dict[str, float]] = None
     cultural_scores: Optional[Dict[str, float]] = None
