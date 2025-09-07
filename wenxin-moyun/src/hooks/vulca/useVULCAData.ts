@@ -37,8 +37,8 @@ interface UseVULCADataReturn {
   lastSync: Date | null;
   
   // Actions
-  evaluateModel: (modelId: number, scores6D: VULCAScore6D, modelName?: string) => Promise<void>;
-  compareModels: (modelIds: number[]) => Promise<void>;
+  evaluateModel: (modelId: string, scores6D: VULCAScore6D, modelName?: string) => Promise<void>;
+  compareModels: (modelIds: string[]) => Promise<void>;
   loadDimensions: () => Promise<void>;
   loadPerspectives: () => Promise<void>;
   loadDemoData: () => Promise<void>;
@@ -87,7 +87,7 @@ function loadFromSessionStorage(key: string, maxAge = 1800000): any | null {
   }
 }
 
-export function useVULCAData(initialModelIds?: number[]): UseVULCADataReturn {
+export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
   const [evaluations, setEvaluations] = useState<VULCAEvaluation[]>([]);
   const [comparison, setComparison] = useState<VULCAComparison | null>(null);
   const [dimensions, setDimensions] = useState<VULCADimensionInfo[]>([]);
@@ -103,77 +103,95 @@ export function useVULCAData(initialModelIds?: number[]): UseVULCADataReturn {
   const [isConnected, setIsConnected] = useState(false);
   const [lastSync, setLastSync] = useState<Date | null>(null);
   
-  const isMounted = useRef(true);
-
+  const isMounted = useRef(false);
+  
   // Initialize data on mount
   useEffect(() => {
-    initializeData();
+    console.log('[VULCA] useEffect mount - starting initialization');
+    isMounted.current = true;
     
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  
-  // Initialize all data
-  const initializeData = async () => {
-    try {
-      setInitializing(true);
+    const initializeData = async () => {
+      console.log('[VULCA] Starting initialization...');
+      console.log('[VULCA] isMounted.current:', isMounted.current);
       
-      // Check connection first
-      const connected = await vulcaService.healthCheck();
-      setIsConnected(connected);
-      
-      if (!connected) {
-        // Try to load from session storage
+      try {
+        setInitializing(true);
+        
+        // Check connection first
+        console.log('[VULCA] Checking health...');
+        const connected = await vulcaService.healthCheck();
+        console.log('[VULCA] Health check result:', connected);
+        setIsConnected(connected);
+        
+        if (!connected) {
+          // Try to load from session storage
+          const cachedDims = loadFromSessionStorage('dimensions');
+          const cachedPersp = loadFromSessionStorage('perspectives');
+          
+          if (cachedDims) setDimensions(cachedDims);
+          if (cachedPersp) setPerspectives(cachedPersp);
+          
+          setError('Unable to connect to VULCA API. Using cached data.');
+          setInitializing(false);
+          return;
+        }
+        
+        // Load all initial data in parallel
+        console.log('[VULCA] Loading initial data...');
+        const [info, dims, persp] = await Promise.all([
+          vulcaService.getInfo(),
+          vulcaService.getDimensions(),
+          vulcaService.getCulturalPerspectives()
+        ]);
+        
+        console.log('[VULCA] Data loaded:', { info, dims: dims?.length, persp: persp?.length });
+        
+        if (isMounted.current) {
+          setSystemInfo(info);
+          setDimensions(dims);
+          setPerspectives(persp);
+          setLastSync(new Date());
+          
+          // Save to session storage
+          saveToSessionStorage('dimensions', dims);
+          saveToSessionStorage('perspectives', persp);
+          console.log('[VULCA] Data saved to state and session storage');
+        }
+        
+      } catch (err: any) {
+        console.error('[VULCA] Error initializing VULCA data:', err);
+        
+        // Try to load from session storage as fallback
         const cachedDims = loadFromSessionStorage('dimensions');
         const cachedPersp = loadFromSessionStorage('perspectives');
         
         if (cachedDims) setDimensions(cachedDims);
         if (cachedPersp) setPerspectives(cachedPersp);
         
-        setError('Unable to connect to VULCA API. Using cached data.');
-        return;
+        if (isMounted.current) {
+          setError(err.message || 'Failed to initialize VULCA data');
+          setErrorDetails(err);
+        }
+      } finally {
+        console.log('[VULCA] Finally block - setting initializing to false');
+        console.log('[VULCA] isMounted.current before setting:', isMounted.current);
+        if (isMounted.current) {
+          setInitializing(false);
+          console.log('[VULCA] Successfully set initializing to false');
+        } else {
+          console.log('[VULCA] Component unmounted, not setting initializing');
+        }
       }
-      
-      // Load all initial data in parallel
-      const [info, dims, persp] = await Promise.all([
-        vulcaService.getInfo(),
-        vulcaService.getDimensions(),
-        vulcaService.getCulturalPerspectives()
-      ]);
-      
-      if (isMounted.current) {
-        setSystemInfo(info);
-        setDimensions(dims);
-        setPerspectives(persp);
-        setLastSync(new Date());
-        
-        // Save to session storage
-        saveToSessionStorage('dimensions', dims);
-        saveToSessionStorage('perspectives', persp);
-      }
-      
-    } catch (err: any) {
-      console.error('Error initializing VULCA data:', err);
-      
-      // Try to load from session storage as fallback
-      const cachedDims = loadFromSessionStorage('dimensions');
-      const cachedPersp = loadFromSessionStorage('perspectives');
-      
-      if (cachedDims) setDimensions(cachedDims);
-      if (cachedPersp) setPerspectives(cachedPersp);
-      
-      if (isMounted.current) {
-        setError(err.message || 'Failed to initialize VULCA data');
-        setErrorDetails(err);
-      }
-    } finally {
-      if (isMounted.current) {
-        setInitializing(false);
-      }
-    }
-  };
+    };
+    
+    // Call the initialization function
+    initializeData();
+    
+    return () => {
+      console.log('[VULCA] useEffect unmount - cleanup');
+      isMounted.current = false;
+    };
+  }, []);
 
   const loadDimensions = useCallback(async () => {
     try {
@@ -220,7 +238,7 @@ export function useVULCAData(initialModelIds?: number[]): UseVULCADataReturn {
   }, []);
 
   const evaluateModel = useCallback(async (
-    modelId: number,
+    modelId: string,
     scores6D: VULCAScore6D,
     modelName?: string
   ) => {
@@ -256,7 +274,7 @@ export function useVULCAData(initialModelIds?: number[]): UseVULCADataReturn {
     }
   }, []);
 
-  const compareModels = useCallback(async (modelIds: number[]) => {
+  const compareModels = useCallback(async (modelIds: string[]) => {
     if (modelIds.length < 2) {
       setError('At least 2 models required for comparison');
       return;
@@ -322,19 +340,59 @@ export function useVULCAData(initialModelIds?: number[]): UseVULCADataReturn {
   
   const refreshAll = useCallback(async () => {
     vulcaService.clearCache();
-    await initializeData();
+    // Reset states and trigger re-initialization
+    setInitializing(true);
+    setError(null);
+    setErrorDetails(null);
+    
+    try {
+      const connected = await vulcaService.healthCheck();
+      setIsConnected(connected);
+      
+      if (connected) {
+        const [info, dims, persp] = await Promise.all([
+          vulcaService.getInfo(),
+          vulcaService.getDimensions(),
+          vulcaService.getCulturalPerspectives()
+        ]);
+        
+        setSystemInfo(info);
+        setDimensions(dims);
+        setPerspectives(persp);
+        setLastSync(new Date());
+        
+        saveToSessionStorage('dimensions', dims);
+        saveToSessionStorage('perspectives', persp);
+      }
+    } catch (err: any) {
+      console.error('[VULCA] Error refreshing data:', err);
+      setError(err.message || 'Failed to refresh VULCA data');
+      setErrorDetails(err);
+    } finally {
+      setInitializing(false);
+    }
   }, []);
   
   const retryConnection = useCallback(async () => {
     setError(null);
     setErrorDetails(null);
-    await initializeData();
-  }, []);
+    await refreshAll();
+  }, [refreshAll]);
   
   const clearError = useCallback(() => {
     setError(null);
     setErrorDetails(null);
   }, []);
+
+  // Debug log the state before returning
+  console.log('[VULCA] Hook returning state:', {
+    initializing,
+    isConnected,
+    dimensionsLength: dimensions.length,
+    perspectivesLength: perspectives.length,
+    evaluationsLength: evaluations.length,
+    error
+  });
 
   return {
     // Data

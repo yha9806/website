@@ -3,7 +3,7 @@
  * Provides multiple visualization types for VULCA evaluation data
  */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   RadarChart,
   PolarGrid,
@@ -25,11 +25,13 @@ import {
   Cell,
 } from 'recharts';
 import { IOSCard } from '../ios/core/IOSCard';
+import { IOSButton } from '../ios/core/IOSButton';
 import type {
   ViewMode,
   VisualizationType,
   VULCAEvaluation,
 } from '../../types/vulca';
+import { DIMENSION_CATEGORIES, getDimensionCategory } from '../../utils/vulca-dimensions';
 
 interface VULCAVisualizationProps {
   evaluations: VULCAEvaluation[];
@@ -47,43 +49,63 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
   culturalPerspective = 'eastern',
 }) => {
   const colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  
+  // Filter dimensions by category for 47D mode
+  const filteredDimensions = useMemo(() => {
+    if (viewMode === '6d') {
+      return dimensions.slice(0, 6);
+    }
+    if (selectedCategory === 'all') {
+      return dimensions;
+    }
+    return dimensions.filter(dim => getDimensionCategory(dim.id) === selectedCategory);
+  }, [dimensions, viewMode, selectedCategory]);
   
   // Prepare data for different visualization types
   const radarData = useMemo(() => {
-    if (!evaluations.length || !dimensions.length) return [];
+    if (!evaluations.length || !filteredDimensions.length) return [];
     
-    return dimensions.slice(0, viewMode === '6d' ? 6 : 10).map(dim => {
+    // For radar chart, show all dimensions when in 47D mode
+    const radarDimensions = filteredDimensions.slice(0, viewMode === '6d' ? 6 : 
+      filteredDimensions.length);
+    
+    return radarDimensions.map(dim => {
       const dataPoint: any = { dimension: dim.name };
       
       evaluations.forEach((evaluation, index) => {
         const scores = viewMode === '6d' ? evaluation.scores6D : evaluation.scores47D;
-        dataPoint[`model_${index}`] = scores[dim.id as keyof typeof scores] || 0;
+        dataPoint[`model_${index}`] = scores ? (scores[dim.id as keyof typeof scores] || 0) : 0;
       });
       
       return dataPoint;
     });
-  }, [evaluations, dimensions, viewMode]);
+  }, [evaluations, filteredDimensions, viewMode]);
   
   const barData = useMemo(() => {
     if (!evaluations.length) return [];
     
-    return evaluations.map((evaluation, index) => ({
-      model: evaluation.modelName,
-      ...Object.entries(viewMode === '6d' ? evaluation.scores6D : evaluation.scores47D)
-        .slice(0, 8)
-        .reduce((acc, [key, value]) => ({
-          ...acc,
-          [key]: value,
-        }), {}),
-      color: colors[index % colors.length],
-    }));
+    return evaluations.map((evaluation, index) => {
+      const scores = viewMode === '6d' ? evaluation.scores6D : evaluation.scores47D;
+      return {
+        model: evaluation.modelName,
+        ...(scores ? Object.entries(scores)
+          .slice(0, 8)
+          .reduce((acc, [key, value]) => ({
+            ...acc,
+            [key]: value,
+          }), {}) : {}),
+        color: colors[index % colors.length],
+      };
+    });
   }, [evaluations, viewMode]);
   
   const heatmapData = useMemo(() => {
-    if (!evaluations.length || !dimensions.length) return [];
+    if (!evaluations.length || !filteredDimensions.length) return [];
     
     const data: any[] = [];
-    const dimSlice = dimensions.slice(0, viewMode === '6d' ? 6 : 12);
+    const dimSlice = filteredDimensions.slice(0, viewMode === '6d' ? 6 : 
+      filteredDimensions.length);
     
     evaluations.forEach((evaluation, modelIndex) => {
       dimSlice.forEach((dim, dimIndex) => {
@@ -91,7 +113,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
         data.push({
           x: dimIndex,
           y: modelIndex,
-          value: scores[dim.id as keyof typeof scores] || 0,
+          value: scores ? (scores[dim.id as keyof typeof scores] || 0) : 0,
           model: evaluation.modelName,
           dimension: dim.name,
         });
@@ -99,13 +121,14 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
     });
     
     return data;
-  }, [evaluations, dimensions, viewMode]);
+  }, [evaluations, filteredDimensions, viewMode]);
   
   const parallelData = useMemo(() => {
     if (!evaluations.length) return [];
     
     // Prepare data for parallel coordinates
-    const selectedDimensions = dimensions.slice(0, viewMode === '6d' ? 6 : 8);
+    const selectedDimensions = filteredDimensions.slice(0, viewMode === '6d' ? 6 : 
+      filteredDimensions.length);
     
     return evaluations.map((evaluation, index) => {
       const scores = viewMode === '6d' ? evaluation.scores6D : evaluation.scores47D;
@@ -115,12 +138,12 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
       };
       
       selectedDimensions.forEach(dim => {
-        dataPoint[dim.id] = scores[dim.id as keyof typeof scores] || 0;
+        dataPoint[dim.id] = scores ? (scores[dim.id as keyof typeof scores] || 0) : 0;
       });
       
       return dataPoint;
     });
-  }, [evaluations, dimensions, viewMode]);
+  }, [evaluations, filteredDimensions, viewMode]);
   
   // Custom tooltip for heatmap
   const HeatmapTooltip = ({ active, payload }: any) => {
@@ -130,7 +153,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
         <div className="bg-white dark:bg-gray-800 p-2 rounded shadow-lg border">
           <p className="font-semibold">{data.model}</p>
           <p className="text-sm">{data.dimension}</p>
-          <p className="text-sm font-medium">Score: {data.value.toFixed(1)}</p>
+          <p className="text-sm font-medium">Score: {data.value?.toFixed(1) || 'N/A'}</p>
         </div>
       );
     }
@@ -182,7 +205,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
               <Tooltip />
               <Legend />
               
-              {dimensions.slice(0, viewMode === '6d' ? 6 : 8).map((dim, index) => (
+              {filteredDimensions.map((dim, index) => (
                 <Bar
                   key={dim.id}
                   dataKey={dim.id}
@@ -195,6 +218,9 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
         );
       
       case 'heatmap':
+        const heatmapDimSlice = filteredDimensions.slice(0, viewMode === '6d' ? 6 : 
+          filteredDimensions.length);
+        
         return (
           <div>
             <ResponsiveContainer width="100%" height={400}>
@@ -204,10 +230,10 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   type="number"
-                  domain={[0, dimensions.slice(0, viewMode === '6d' ? 6 : 12).length - 1]}
-                  ticks={dimensions.slice(0, viewMode === '6d' ? 6 : 12).map((_, i) => i)}
+                  domain={[0, heatmapDimSlice.length - 1]}
+                  ticks={heatmapDimSlice.map((_, i) => i)}
                   tickFormatter={(value) => 
-                    dimensions[value]?.name.substring(0, 8) || ''
+                    heatmapDimSlice[value]?.name.substring(0, 8) || ''
                   }
                   angle={-45}
                   textAnchor="end"
@@ -255,7 +281,8 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
         );
       
       case 'parallel':
-        const selectedDims = dimensions.slice(0, viewMode === '6d' ? 6 : 8);
+        const selectedDims = filteredDimensions.slice(0, viewMode === '6d' ? 6 : 
+          filteredDimensions.length);
         
         return (
           <div>
@@ -304,13 +331,15 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
     
     const culturalScores = evaluations.map(e => ({
       model: e.modelName,
-      score: e.culturalPerspectives[culturalPerspective as keyof typeof e.culturalPerspectives] || 0,
+      score: e.culturalPerspectives && culturalPerspective 
+        ? (e.culturalPerspectives[culturalPerspective as keyof typeof e.culturalPerspectives] || 0)
+        : 0,
     }));
     
     return (
       <IOSCard variant="elevated" className="mt-4">
         <h4 className="text-sm font-medium mb-3">
-          Cultural Perspective: {culturalPerspective.replace('_', ' ').toUpperCase()}
+          Cultural Perspective: {culturalPerspective ? culturalPerspective.replace('_', ' ').toUpperCase() : 'EASTERN'}
         </h4>
         
         <ResponsiveContainer width="100%" height={150}>
@@ -339,6 +368,33 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
   
   return (
     <div className="space-y-6">
+      {/* Category selector for 47D mode */}
+      {viewMode === '47d' && (
+        <div className="flex flex-wrap gap-2 p-4 bg-white dark:bg-gray-900 rounded-lg">
+          <IOSButton
+            variant={selectedCategory === 'all' ? 'primary' : 'secondary'}
+            size="sm"
+            onClick={() => setSelectedCategory('all')}
+          >
+            All Dimensions ({dimensions.length})
+          </IOSButton>
+          {Object.entries(DIMENSION_CATEGORIES).map(([key, category]) => (
+            <IOSButton
+              key={key}
+              variant={selectedCategory === key ? 'primary' : 'secondary'}
+              size="sm"
+              onClick={() => setSelectedCategory(key)}
+              style={{
+                borderColor: selectedCategory === key ? category.color : undefined,
+                color: selectedCategory === key ? category.color : undefined
+              }}
+            >
+              {category.name} ({category.range[1] - category.range[0] + 1})
+            </IOSButton>
+          ))}
+        </div>
+      )}
+      
       {/* Main visualization */}
       <div className="bg-white dark:bg-gray-900 rounded-lg p-6">
         {renderVisualization()}
@@ -351,8 +407,8 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {evaluations.map((evaluation, index) => {
           const avgScore = viewMode === '6d'
-            ? Object.values(evaluation.scores6D).reduce((a, b) => a + b, 0) / 6
-            : Object.values(evaluation.scores47D).slice(0, 47).reduce((a, b) => a + b, 0) / 47;
+            ? (evaluation.scores6D ? Object.values(evaluation.scores6D).reduce((a, b) => a + b, 0) / 6 : 0)
+            : (evaluation.scores47D ? Object.values(evaluation.scores47D).slice(0, 47).reduce((a, b) => a + b, 0) / 47 : 0);
           
           return (
             <IOSCard key={evaluation.modelId} variant="elevated">

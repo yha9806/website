@@ -1,0 +1,199 @@
+# VULCA Weight Configuration
+# Version: 2.0
+# Last Updated: 2025-09-07
+# Purpose: Multi-dimensional weight matrix for VULCA evaluation
+
+version: "2.0"
+last_updated: "2025-09-07"
+author: "VULCA Team"
+
+# Multi-dimensional weight factors
+dimensions:
+  # Base factor weights for score calculation
+  base_factors:
+    overall_score: 0.3
+    category: 0.2
+    version: 0.15
+    release_date: 0.1
+    organization: 0.25
+
+  # Organization-specific profiles
+  organization_profiles:
+    OpenAI:
+      creativity: 0.95
+      technique: 1.0
+      emotion: 0.85
+      context: 0.95
+      innovation: 1.0
+      impact: 0.95
+    
+    Anthropic:
+      creativity: 0.90
+      technique: 0.95
+      emotion: 0.95
+      context: 1.0
+      innovation: 0.90
+      impact: 0.90
+    
+    Google:
+      creativity: 0.85
+      technique: 0.95
+      emotion: 0.80
+      context: 0.95
+      innovation: 0.90
+      impact: 0.85
+    
+    Meta:
+      creativity: 0.85
+      technique: 0.90
+      emotion: 0.85
+      context: 0.85
+      innovation: 0.85
+      impact: 0.90
+    
+    Alibaba:
+      creativity: 0.85
+      technique: 0.90
+      emotion: 0.85
+      context: 0.90
+      innovation: 0.85
+      impact: 0.85
+    
+    DeepSeek:
+      creativity: 0.80
+      technique: 0.90
+      emotion: 0.75
+      context: 0.85
+      innovation: 0.85
+      impact: 0.80
+    
+    Baidu:
+      creativity: 0.80
+      technique: 0.85
+      emotion: 0.85
+      context: 0.90
+      innovation: 0.80
+      impact: 0.80
+    
+    "Mistral AI":
+      creativity: 0.85
+      technique: 0.90
+      emotion: 0.80
+      context: 0.85
+      innovation: 0.85
+      impact: 0.80
+    
+    "Stability AI":
+      creativity: 1.0
+      technique: 0.90
+      emotion: 0.90
+      context: 0.75
+      innovation: 0.95
+      impact: 0.90
+    
+    Midjourney:
+      creativity: 1.0
+      technique: 0.85
+      emotion: 0.95
+      context: 0.70
+      innovation: 0.95
+      impact: 0.95
+    
+    Cohere:
+      creativity: 0.80
+      technique: 0.85
+      emotion: 0.80
+      context: 0.85
+      innovation: 0.80
+      impact: 0.75
+    
+    "Technology Innovation Institute":
+      creativity: 0.75
+      technique: 0.80
+      emotion: 0.75
+      context: 0.80
+      innovation: 0.75
+      impact: 0.75
+    
+    "01.AI":
+      creativity: 0.80
+      technique: 0.85
+      emotion: 0.80
+      context: 0.85
+      innovation: 0.80
+      impact: 0.75
+
+  # Category-specific weights
+  category_weights:
+    text:
+      creativity: 0.85
+      technique: 0.95
+      emotion: 0.80
+      context: 0.95
+      innovation: 0.85
+      impact: 0.85
+    
+    multimodal:
+      creativity: 0.90
+      technique: 0.90
+      emotion: 0.85
+      context: 0.90
+      innovation: 0.90
+      impact: 0.90
+    
+    image:
+      creativity: 1.0
+      technique: 0.85
+      emotion: 0.90
+      context: 0.70
+      innovation: 0.95
+      impact: 0.95
+    
+    default:
+      creativity: 0.85
+      technique: 0.85
+      emotion: 0.85
+      context: 0.85
+      innovation: 0.85
+      impact: 0.85
+
+  # Temporal decay factors
+  temporal_decay:
+    current_year: 1.0
+    last_year: 0.95
+    two_years: 0.90
+    older: 0.85
+
+# Adjustment parameters
+adjustments:
+  noise_variance: 3.0
+  score_normalization: true
+  cultural_bias_correction: true
+  min_score: 0.0
+  max_score: 100.0
+
+# Score range mappings
+score_ranges:
+  elite:
+    min: 90
+    max: 100
+    vulca_base: 85
+    vulca_range: 10
+  
+  advanced:
+    min: 80
+    max: 90
+    vulca_base: 75
+    vulca_range: 10
+  
+  standard:
+    min: 70
+    max: 80
+    vulca_base: 65
+    vulca_range: 10
+  
+  basic:
+    min: 0
+    max: 70
+    vulca_base: 55
+    vulca_range: 10

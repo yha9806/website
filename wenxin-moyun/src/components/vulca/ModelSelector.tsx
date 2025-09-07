@@ -1,15 +1,15 @@
 import React from 'react';
 
 interface Model {
-  id: number;
+  id: string;
   name: string;
   organization?: string;
 }
 
 interface ModelSelectorProps {
   models: Model[];
-  selectedModels: number[];
-  onModelSelect: (modelId: number) => void;
+  selectedModels: string[];
+  onModelSelect: (modelId: string) => void;
   maxSelection?: number;
 }
 

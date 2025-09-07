@@ -21,6 +21,7 @@ import LeaderboardTable from '../components/leaderboard/LeaderboardTable';
 export default function HomePage() {
   const navigate = useNavigate();
   const { entries: leaderboard } = useLeaderboard();
+  console.log("HomePage: leaderboard data:", leaderboard);
   const topModels = leaderboard.slice(0, 3);
 
   return (

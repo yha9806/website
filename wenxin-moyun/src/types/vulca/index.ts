@@ -31,7 +31,7 @@ export interface CulturalPerspective {
 
 // Main Evaluation Type
 export interface VULCAEvaluation {
-  modelId: number;
+  modelId: string;
   modelName: string;
   scores6D: VULCAScore6D;
   scores47D: VULCAScore47D;

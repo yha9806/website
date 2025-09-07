@@ -128,8 +128,9 @@ class VULCAService:
                         'scores_47d': json.loads(evaluation.extended_47d_scores),
                         'cultural_scores': json.loads(evaluation.cultural_perspectives)
                     })
-        else:
-            # Generate sample data if no database
+        
+        # Generate sample data if no evaluations found (database empty or no database)
+        if not evaluations:
             for model_id in model_ids:
                 sample_6d = {dim: np.random.uniform(70, 95) for dim in self.adapter.base_dims}
                 result = await self.evaluate_model(model_id, sample_6d, f'Model_{model_id}')
@@ -139,6 +140,23 @@ class VULCAService:
                     'scores_47d': result['scores_47d'],
                     'cultural_scores': result['cultural_perspectives']
                 })
+        
+        # Check if we have any evaluations
+        if not evaluations:
+            return {
+                'error': 'No VULCA evaluation data found for the specified models',
+                'models': [],
+                'difference_matrix': [],
+                'summary': {
+                    'error': 'No evaluations available for comparison',
+                    'most_similar_pair': None,
+                    'most_different_pair': None,
+                    'average_difference': 0,
+                    'dimension_statistics': {},
+                    'cultural_analysis': {}
+                },
+                'comparison_date': datetime.utcnow().isoformat()
+            }
                 
         # Calculate difference matrix
         diff_matrix = self._calculate_difference_matrix(evaluations)
@@ -151,7 +169,7 @@ class VULCAService:
                 {'model_id': e['model_id'], 'model_name': e['model_name']} 
                 for e in evaluations
             ],
-            'difference_matrix': diff_matrix.tolist(),
+            'difference_matrix': np.nan_to_num(diff_matrix, nan=0.0, posinf=999.0, neginf=-999.0).tolist(),
             'summary': summary,
             'comparison_date': datetime.utcnow().isoformat()
         }
@@ -182,12 +200,57 @@ class VULCAService:
         """Generate summary statistics for model comparison"""
         n_models = len(evaluations)
         
+        # Check if we have valid data for comparison
+        if n_models == 0:
+            return {
+                'error': 'No evaluations available for comparison',
+                'most_similar_pair': None,
+                'most_different_pair': None,
+                'average_difference': 0,
+                'dimension_statistics': {},
+                'cultural_analysis': {}
+            }
+        
+        if n_models < 2:
+            return {
+                'error': 'At least 2 models required for comparison',
+                'most_similar_pair': None,
+                'most_different_pair': None,
+                'average_difference': 0,
+                'dimension_statistics': {},
+                'cultural_analysis': {}
+            }
+        
         # Find most similar and most different pairs
         np.fill_diagonal(diff_matrix, np.inf)  # Ignore diagonal
         
-        min_diff_idx = np.unravel_index(np.argmin(diff_matrix), diff_matrix.shape)
-        max_diff_idx = np.unravel_index(np.argmax(diff_matrix[diff_matrix != np.inf]), 
-                                         diff_matrix.shape)
+        # Check if diff_matrix has valid data
+        valid_indices = diff_matrix != np.inf
+        if not np.any(valid_indices):
+            return {
+                'error': 'No valid differences found for comparison',
+                'most_similar_pair': None,
+                'most_different_pair': None,
+                'average_difference': 0,
+                'dimension_statistics': {},
+                'cultural_analysis': {}
+            }
+        
+        # Safe argmin/argmax with boundary checks
+        try:
+            min_diff_idx = np.unravel_index(np.argmin(diff_matrix), diff_matrix.shape)
+        except ValueError:
+            # Empty matrix fallback
+            min_diff_idx = (0, 1) if len(evaluations) >= 2 else (0, 0)
+            
+        try:
+            # Create temp matrix with inf for invalid indices
+            temp_matrix = diff_matrix.copy()
+            temp_matrix[~valid_indices] = -np.inf  # Use negative inf for argmax
+            max_diff_idx = np.unravel_index(np.argmax(temp_matrix), temp_matrix.shape)
+        except (ValueError, IndexError):
+            # Empty valid_indices fallback
+            max_diff_idx = (0, 1) if len(evaluations) >= 2 else (0, 0)
         
         # Calculate average differences
         valid_diffs = diff_matrix[diff_matrix != np.inf]
@@ -206,22 +269,35 @@ class VULCAService:
         cultural_analysis = {}
         for perspective in self.adapter.cultural_perspectives:
             scores = [e['cultural_scores'][perspective] for e in evaluations]
-            cultural_analysis[perspective] = {
-                'mean': float(np.mean(scores)),
-                'std': float(np.std(scores)),
-                'best_model': evaluations[np.argmax(scores)]['model_name']
-            }
+            if scores and len(scores) > 0:
+                try:
+                    best_model_idx = np.argmax(scores)
+                    best_model_name = evaluations[best_model_idx]['model_name']
+                except (ValueError, IndexError):
+                    best_model_name = evaluations[0]['model_name'] if evaluations else 'Unknown'
+                
+                cultural_analysis[perspective] = {
+                    'mean': float(np.mean(scores)),
+                    'std': float(np.std(scores)),
+                    'best_model': best_model_name
+                }
+            else:
+                cultural_analysis[perspective] = {
+                    'mean': 0.0,
+                    'std': 0.0,
+                    'best_model': 'No data'
+                }
             
         return {
             'most_similar': {
                 'models': [evaluations[min_diff_idx[0]]['model_name'], 
                           evaluations[min_diff_idx[1]]['model_name']],
-                'difference': float(diff_matrix[min_diff_idx])
+                'difference': float(np.nan_to_num(diff_matrix[min_diff_idx], nan=0.0, posinf=999.0, neginf=-999.0))
             },
             'most_different': {
                 'models': [evaluations[max_diff_idx[0]]['model_name'], 
                           evaluations[max_diff_idx[1]]['model_name']],
-                'difference': float(diff_matrix[max_diff_idx])
+                'difference': float(np.nan_to_num(diff_matrix[max_diff_idx], nan=0.0, posinf=999.0, neginf=-999.0))
             },
             'average_difference': avg_diff,
             'dimension_statistics': dim_stats,

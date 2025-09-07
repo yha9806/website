@@ -36,6 +36,14 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
   viewMode,
   culturalPerspective = 'eastern',
 }) => {
+  // Early return if comparison data is invalid
+  if (!comparison || !comparison.models || comparison.models.length === 0) {
+    return (
+      <div className="text-center text-gray-500 p-8">
+        <p>No comparison data available</p>
+      </div>
+    );
+  }
   // Prepare data for bar chart
   const barChartData = useMemo(() => {
     if (!comparison.models || comparison.models.length === 0) return [];
@@ -49,7 +57,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
       
       comparison.models.forEach((model, index) => {
         const scores = viewMode === '6d' ? model.scores6D : model.scores47D;
-        dataPoint[`model_${index}`] = scores[dim as keyof typeof scores] || 0;
+        dataPoint[`model_${index}`] = scores ? (scores[dim as keyof typeof scores] || 0) : 0;
       });
       
       return dataPoint;
@@ -62,7 +70,9 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
     
     return comparison.models.map(model => ({
       model: model.modelName,
-      score: model.culturalPerspectives[culturalPerspective as keyof typeof model.culturalPerspectives] || 0,
+      score: model.culturalPerspectives && culturalPerspective 
+        ? (model.culturalPerspectives[culturalPerspective as keyof typeof model.culturalPerspectives] || 0)
+        : 0,
     }));
   }, [comparison, culturalPerspective]);
   
@@ -80,40 +90,48 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <IOSCard variant="elevated">
-          <h4 className="text-sm font-medium text-gray-600 mb-2">Most Similar Pair</h4>
-          <p className="text-lg font-semibold">
-            {comparison.summary.mostSimilar.models.join(' & ')}
-          </p>
-          <span className="inline-block px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded mt-2">
-            Difference: {comparison.summary.mostSimilar.difference.toFixed(2)}
-          </span>
-        </IOSCard>
-        
-        <IOSCard variant="elevated">
-          <h4 className="text-sm font-medium text-gray-600 mb-2">Most Different Pair</h4>
-          <p className="text-lg font-semibold">
-            {comparison.summary.mostDifferent.models.join(' & ')}
-          </p>
-          <span className="inline-block px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded mt-2">
-            Difference: {comparison.summary.mostDifferent.difference.toFixed(2)}
-          </span>
-        </IOSCard>
-        
-        <IOSCard variant="elevated">
-          <h4 className="text-sm font-medium text-gray-600 mb-2">Average Difference</h4>
-          <p className="text-2xl font-bold">
-            {comparison.summary.averageDifference.toFixed(2)}
-          </p>
-          <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-            <div 
-              className="bg-blue-500 h-2 rounded-full" 
-              style={{ width: `${Math.min(comparison.summary.averageDifference, 100)}%` }}
-            ></div>
-          </div>
-        </IOSCard>
-      </div>
+      {comparison.summary && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {comparison.summary.mostSimilar && (
+            <IOSCard variant="elevated">
+              <h4 className="text-sm font-medium text-gray-600 mb-2">Most Similar Pair</h4>
+              <p className="text-lg font-semibold">
+                {comparison.summary.mostSimilar.models?.join(' & ') || 'N/A'}
+              </p>
+              <span className="inline-block px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded mt-2">
+                Difference: {comparison.summary.mostSimilar.difference?.toFixed(2) || 'N/A'}
+              </span>
+            </IOSCard>
+          )}
+          
+          {comparison.summary.mostDifferent && (
+            <IOSCard variant="elevated">
+              <h4 className="text-sm font-medium text-gray-600 mb-2">Most Different Pair</h4>
+              <p className="text-lg font-semibold">
+                {comparison.summary.mostDifferent.models?.join(' & ') || 'N/A'}
+              </p>
+              <span className="inline-block px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded mt-2">
+                Difference: {comparison.summary.mostDifferent.difference?.toFixed(2) || 'N/A'}
+              </span>
+            </IOSCard>
+          )}
+          
+          <IOSCard variant="elevated">
+            <h4 className="text-sm font-medium text-gray-600 mb-2">Average Difference</h4>
+            <p className="text-2xl font-bold">
+              {comparison.summary.averageDifference?.toFixed(2) || 'N/A'}
+            </p>
+            {comparison.summary.averageDifference != null && (
+              <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                <div 
+                  className="bg-blue-500 h-2 rounded-full" 
+                  style={{ width: `${Math.min(comparison.summary.averageDifference, 100)}%` }}
+                ></div>
+              </div>
+            )}
+          </IOSCard>
+        </div>
+      )}
       
       {/* Dimension Comparison Chart */}
       <IOSCard variant="elevated">
@@ -150,7 +168,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
       {/* Cultural Perspective Analysis */}
       <IOSCard variant="elevated">
         <h3 className="text-lg font-semibold mb-4">
-          Cultural Perspective Analysis: {culturalPerspective.replace('_', ' ').toUpperCase()}
+          Cultural Perspective Analysis: {culturalPerspective ? culturalPerspective.replace('_', ' ').toUpperCase() : 'EASTERN'}
         </h3>
         
         <ResponsiveContainer width="100%" height={300}>
@@ -163,20 +181,24 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
           </BarChart>
         </ResponsiveContainer>
         
-        {comparison.summary.culturalAnalysis && (
+        {comparison.summary?.culturalAnalysis && culturalPerspective && comparison.summary.culturalAnalysis[culturalPerspective] && (
           <div className="mt-4 p-4 bg-gray-50 rounded-lg">
             <h4 className="font-medium mb-2">Cultural Analysis Insights</h4>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
                 <span className="text-gray-600">Best Model:</span>
                 <span className="ml-2 font-medium">
-                  {comparison.summary.culturalAnalysis[culturalPerspective]?.bestModel}
+                  {comparison.summary?.culturalAnalysis && culturalPerspective 
+                    ? comparison.summary.culturalAnalysis[culturalPerspective]?.bestModel 
+                    : 'N/A'}
                 </span>
               </div>
               <div>
                 <span className="text-gray-600">Average Score:</span>
                 <span className="ml-2 font-medium">
-                  {comparison.summary.culturalAnalysis[culturalPerspective]?.mean.toFixed(2)}
+                  {comparison.summary?.culturalAnalysis && culturalPerspective 
+                    ? comparison.summary.culturalAnalysis[culturalPerspective]?.mean?.toFixed(2) 
+                    : 'N/A'}
                 </span>
               </div>
             </div>
@@ -202,38 +224,40 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
             </thead>
             <tbody>
               {comparison.models.map((model, index) => {
-                const baseline = comparison.models[0].scores6D.creativity;
+                const baseline = comparison.models[0]?.scores6D?.creativity || 0;
                 return (
                   <tr key={model.modelId} className="border-b">
                     <td className="py-3 font-medium">{model.modelName}</td>
                     <td className="text-center py-3">
                       <span className="px-2 py-1 border border-gray-300 rounded text-sm">
-                        {(Object.values(model.scores6D).reduce((a, b) => a + b, 0) / 6).toFixed(1)}
+                        {model.scores6D ? (Object.values(model.scores6D).reduce((a, b) => a + b, 0) / 6).toFixed(1) : 'N/A'}
                       </span>
                     </td>
                     <td className="text-center py-3">
                       <div className="flex items-center justify-center gap-1">
-                        <span>{model.scores6D.creativity.toFixed(1)}</span>
-                        {getPerformanceIndicator(model.scores6D.creativity, baseline)}
+                        <span>{model.scores6D?.creativity ? model.scores6D.creativity.toFixed(1) : 'N/A'}</span>
+                        {model.scores6D?.creativity ? getPerformanceIndicator(model.scores6D.creativity, baseline) : null}
                       </div>
                     </td>
                     <td className="text-center py-3">
                       <div className="flex items-center justify-center gap-1">
-                        <span>{model.scores6D.technique.toFixed(1)}</span>
-                        {getPerformanceIndicator(model.scores6D.technique, baseline)}
+                        <span>{model.scores6D?.technique ? model.scores6D.technique.toFixed(1) : 'N/A'}</span>
+                        {model.scores6D?.technique ? getPerformanceIndicator(model.scores6D.technique, baseline) : null}
                       </div>
                     </td>
                     <td className="text-center py-3">
-                      {model.culturalPerspectives[culturalPerspective as keyof typeof model.culturalPerspectives]?.toFixed(1)}
+                      {model.culturalPerspectives && culturalPerspective && model.culturalPerspectives[culturalPerspective as keyof typeof model.culturalPerspectives]
+                        ? model.culturalPerspectives[culturalPerspective as keyof typeof model.culturalPerspectives].toFixed(1)
+                        : 'N/A'}
                     </td>
                     <td className="text-center py-3">
                       <div className="inline-flex">
                         <ResponsiveContainer width={60} height={30}>
                           <LineChart
                             data={[
-                              { x: 0, y: model.scores6D.creativity },
-                              { x: 1, y: model.scores6D.technique },
-                              { x: 2, y: model.scores6D.emotion },
+                              { x: 0, y: model.scores6D?.creativity || 0 },
+                              { x: 1, y: model.scores6D?.technique || 0 },
+                              { x: 2, y: model.scores6D?.emotion || 0 },
                             ]}
                           >
                             <Line

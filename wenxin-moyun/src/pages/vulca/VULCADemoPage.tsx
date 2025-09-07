@@ -23,8 +23,8 @@ import {
 // Models will be loaded dynamically from the API
 
 export const VULCADemoPage: React.FC = () => {
-  const [availableModels, setAvailableModels] = useState<Array<{id: number, name: string, organization: string}>>([]);
-  const [selectedModels, setSelectedModels] = useState<number[]>([]); // Will be set after models load
+  const [availableModels, setAvailableModels] = useState<Array<{id: string, name: string, organization: string}>>([]);
+  const [selectedModels, setSelectedModels] = useState<string[]>([]); // Will be set after models load
   const [viewMode, setViewMode] = useState<ViewMode>('6d');
   const [visualizationType, setVisualizationType] = useState<VisualizationType>('radar');
   const [culturalPerspective, setCulturalPerspective] = useState<string>('eastern');
@@ -79,20 +79,17 @@ export const VULCADemoPage: React.FC = () => {
         console.error('Failed to load models:', error);
         // Fallback to some default models that exist in database
         setAvailableModels([
-          { id: 1, name: 'GPT-4o', organization: 'OpenAI' },
-          { id: 2, name: 'Claude 3.5 Sonnet', organization: 'Anthropic' },
-          { id: 3, name: 'o1-preview', organization: 'OpenAI' },
-          { id: 4, name: 'Llama 3.1 405B', organization: 'Meta' },
-          { id: 5, name: 'GPT-4 Turbo', organization: 'OpenAI' },
+          { id: '9a410997-12fe-400a-b3ed-95098ffd007a', name: 'GPT-4o', organization: 'OpenAI' },
+          { id: '95c5586d-dcad-4648-bee5-a42b209fd26d', name: 'Claude 3.5 Sonnet', organization: 'Anthropic' },
         ]);
-        setSelectedModels([1, 2]);
+        setSelectedModels(['9a410997-12fe-400a-b3ed-95098ffd007a', '95c5586d-dcad-4648-bee5-a42b209fd26d']);
       }
     };
     loadModels();
   }, []);
   
   // Handle model selection
-  const handleModelSelect = useCallback((modelId: number) => {
+  const handleModelSelect = useCallback((modelId: string) => {
     setSelectedModels(prev => {
       if (prev.includes(modelId)) {
         // Remove model
@@ -358,7 +355,7 @@ export const VULCADemoPage: React.FC = () => {
                   <div className="flex justify-between">
                     <span className="text-gray-600">Avg Difference:</span>
                     <span className="font-medium">
-                      {comparison.summary.averageDifference.toFixed(2)}
+                      {comparison.summary?.averageDifference?.toFixed(2) || 'N/A'}
                     </span>
                   </div>
                 </>
@@ -458,7 +455,7 @@ export const VULCADemoPage: React.FC = () => {
             
             {activeTab === 'comparison' && (
               <div className="mt-6">
-                {selectedModels.length >= 2 && comparison ? (
+                {selectedModels.length >= 2 && comparison && comparison.summary ? (
                   <ComparisonView
                     comparison={comparison}
                     viewMode={viewMode}

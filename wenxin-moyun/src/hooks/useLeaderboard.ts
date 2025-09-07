@@ -21,7 +21,8 @@ export const useLeaderboard = (category?: string) => {
             include_vulca: true // 请求包含VULCA数据
           });
           
-          if (apiModels.length > 0) {
+          console.log("useLeaderboard: API returned", apiModels.length, "models");
+          if (apiModels && apiModels.length > 0) {
             // Convert to leaderboard entries
             const leaderboardData = apiModels
               .sort((a, b) => {
