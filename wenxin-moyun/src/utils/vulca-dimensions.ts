@@ -104,6 +104,17 @@ export const DIMENSION_CATEGORIES = {
 
 // Helper function to get dimension label
 export const getDimensionLabel = (key: string): string => {
+  // Handle backend format "dim_0", "dim_1", etc.
+  if (key.startsWith('dim_')) {
+    const index = parseInt(key.replace('dim_', ''));
+    const dimensionKeys = Object.keys(VULCA_47_DIMENSIONS);
+    if (index >= 0 && index < dimensionKeys.length) {
+      const actualKey = dimensionKeys[index];
+      return VULCA_47_DIMENSIONS[actualKey as keyof typeof VULCA_47_DIMENSIONS];
+    }
+  }
+  
+  // Direct lookup for proper keys
   return VULCA_47_DIMENSIONS[key as keyof typeof VULCA_47_DIMENSIONS] || key;
 };
 
@@ -210,7 +221,15 @@ export const CULTURAL_PERSPECTIVES = {
 // Get dimension category for a given dimension key
 export const getDimensionCategory = (key: string): string | null => {
   const keys = Object.keys(VULCA_47_DIMENSIONS);
-  const index = keys.indexOf(key);
+  let index = keys.indexOf(key);
+  
+  // Handle backend format "dim_0", "dim_1", etc.
+  if (index === -1 && key.startsWith('dim_')) {
+    const dimIndex = parseInt(key.replace('dim_', ''));
+    if (dimIndex >= 0 && dimIndex < keys.length) {
+      index = dimIndex;
+    }
+  }
   
   if (index === -1) return null;
   

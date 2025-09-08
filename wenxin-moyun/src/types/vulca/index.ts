@@ -95,6 +95,18 @@ export interface VULCACulturalPerspectiveInfo {
 export type ViewMode = '6d' | '47d';
 export type VisualizationType = 'radar' | 'heatmap' | 'bar' | 'parallel';
 
+// View Level for Progressive Display
+export type ViewLevel = 'overview' | 'grouped' | 'detailed';
+
+// Dimension Group for 47D Organization
+export interface DimensionGroup {
+  id: string;
+  name: string;
+  dimensions: string[];
+  color: string;
+  icon?: string;
+}
+
 // API Response Type
 export interface VULCAApiResponse<T> {
   data?: T;

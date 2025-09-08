@@ -1,2 +1,89 @@
-<testsuites id="" name="" tests="0" failures="0" skipped="0" errors="0" time="6.231899">
+<testsuites id="" name="" tests="3" failures="1" skipped="0" errors="0" time="50.33364">
+<testsuite name="vulca-47d-issue.spec.ts" timestamp="2025-09-08T09:27:04.937Z" hostname="chromium" tests="3" failures="1" skipped="0" time="34.314" errors="0">
+<testcase name="VULCA 47D Display Issues › 检查47D按钮和数据显示问题" classname="vulca-47d-issue.spec.ts" time="18.575">
+<failure message="vulca-47d-issue.spec.ts:9:3 检查47D按钮和数据显示问题" type="FAILURE">
+<![CDATA[  [chromium] › vulca-47d-issue.spec.ts:9:3 › VULCA 47D Display Issues › 检查47D按钮和数据显示问题 ─────────────
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      106 |     
+      107 |     // 期望至少有一个47D按钮
+    > 108 |     expect(hasButton).toBeTruthy();
+          |                       ^
+      109 |   });
+      110 |
+      111 |   test('检查47D数据完整性', async ({ page }) => {
+        at I:\website\wenxin-moyun\tests\e2e\specs\vulca-47d-issue.spec.ts:108:23
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      106 |     
+      107 |     // 期望至少有一个47D按钮
+    > 108 |     expect(hasButton).toBeTruthy();
+          |                       ^
+      109 |   });
+      110 |
+      111 |   test('检查47D数据完整性', async ({ page }) => {
+        at I:\website\wenxin-moyun\tests\e2e\specs\vulca-47d-issue.spec.ts:108:23
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[开始检查47D显示问题...
+47D按钮存在: false
+
+[[ATTACHMENT|..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium\video.webm]]
+
+[[ATTACHMENT|..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium\error-context.md]]
+
+[[ATTACHMENT|..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium\trace.zip]]
+开始检查47D显示问题...
+47D按钮存在: false
+
+[[ATTACHMENT|..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium-retry1\video.webm]]
+
+[[ATTACHMENT|..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium-retry1\error-context.md]]
+
+[[ATTACHMENT|..\..\test-results\vulca-47d-issue-VULCA-47D-Display-Issues-检查47D按钮和数据显示问题-chromium-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="VULCA 47D Display Issues › 检查47D数据完整性" classname="vulca-47d-issue.spec.ts" time="8.475">
+</testcase>
+<testcase name="VULCA 47D Display Issues › 检查47D视图切换功能" classname="vulca-47d-issue.spec.ts" time="7.264">
+</testcase>
+</testsuite>
 </testsuites>

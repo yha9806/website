@@ -50,7 +50,9 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
     
     const dimensions = viewMode === '6d'
       ? ['creativity', 'technique', 'emotion', 'context', 'innovation', 'impact']
-      : Object.keys(comparison.models[0].scores47D).slice(0, 10); // Show first 10 for 47D
+      : comparison.models[0]?.scores47D 
+        ? Object.keys(comparison.models[0].scores47D).slice(0, 10)
+        : []; // Show first 10 for 47D, empty array if no scores47D
     
     return dimensions.map(dim => {
       const dataPoint: any = { dimension: dim };

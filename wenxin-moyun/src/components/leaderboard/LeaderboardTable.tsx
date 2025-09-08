@@ -36,6 +36,7 @@ import type { VULCAEvaluation } from '../../types/vulca';
 import { exportData } from '../../utils/dataExport';
 import RouterLink from '../common/RouterLink';
 import { VULCA_47_DIMENSIONS, getDimensionLabel } from '../../utils/vulca-dimensions';
+import { vulcaDataManager } from '../../services/vulcaDataManager';
 
 // 懒加载VULCA可视化组件
 const VULCAVisualization = lazy(() => 
@@ -43,6 +44,103 @@ const VULCAVisualization = lazy(() =>
     default: module.VULCAVisualization
   }))
 );
+
+// VULCA数据显示组件
+interface VULCADataDisplayProps {
+  model: any;
+  score: number | null;
+  convertToEvaluation: (model: any) => Promise<VULCAEvaluation>;
+  getDefaultDimensions: (scores: any) => any[];
+  calculate47DAverage: (scores: any) => number | null;
+}
+
+const VULCADataDisplay: React.FC<VULCADataDisplayProps> = ({
+  model,
+  score,
+  convertToEvaluation,
+  getDefaultDimensions,
+  calculate47DAverage
+}) => {
+  const [evaluation, setEvaluation] = useState<VULCAEvaluation | null>(null);
+  const [dimensions, setDimensions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  React.useEffect(() => {
+    const loadVulcaData = async () => {
+      try {
+        setLoading(true);
+        const evalData = await convertToEvaluation(model);
+        setEvaluation(evalData);
+        setDimensions(getDefaultDimensions(evalData.scores47D));
+        setError(null);
+      } catch (err) {
+        console.error('Error loading VULCA data:', err);
+        setError('Failed to load VULCA data');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadVulcaData();
+  }, [model.id]);
+  
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="flex items-center gap-2 text-gray-500">
+          <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
+          Loading VULCA Analysis...
+        </div>
+      </div>
+    );
+  }
+  
+  if (error || !evaluation) {
+    return (
+      <div className="p-8 text-center text-red-500">
+        {error || 'No VULCA data available for this model'}
+      </div>
+    );
+  }
+  
+  const vulcaAverage = calculate47DAverage(evaluation.scores47D);
+  
+  return (
+    <div className="space-y-4">
+      {/* 分数说明 */}
+      <div className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+        <div className="flex items-center gap-6">
+          <div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">Overall Score</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              {score != null ? score.toFixed(3) : 'N/A'}
+            </div>
+          </div>
+          <div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">VULCA 47D Average</div>
+            <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+              {vulcaAverage != null ? vulcaAverage.toFixed(1) : 'N/A'}
+            </div>
+          </div>
+        </div>
+        <div className="text-xs text-gray-500 dark:text-gray-400 max-w-md">
+          <p><strong>Overall Score</strong> is the model's comprehensive evaluation score.</p>
+          <p><strong>VULCA 47D Average</strong> is the mean of all 47 dimension scores.</p>
+        </div>
+      </div>
+      
+      {/* VULCA可视化 */}
+      <VULCAVisualization
+        evaluations={[evaluation]}
+        dimensions={dimensions}
+        viewMode="47d"
+        visualizationType="radar"
+        culturalPerspective="eastern"
+      />
+    </div>
+  );
+};
 
 interface LeaderboardTableProps {
   data: LeaderboardEntry[];
@@ -465,30 +563,26 @@ export default function LeaderboardTable({
                 };
                 
                 // 转换单个模型数据为VULCAEvaluation格式
-                const convertToEvaluation = (model: any): VULCAEvaluation => {
-                  const rawScores = parseVulcaData(model.vulca_scores_47d);
+                const convertToEvaluation = async (model: any): Promise<VULCAEvaluation> => {
+                  // 使用VULCADataManager获取完整的VULCA数据
+                  const evaluation = await vulcaDataManager.getModelVULCAData(
+                    model.id.toString(),
+                    model.name || 'Unknown Model'
+                  );
                   
-                  // Generate mock VULCA data if null (using real dimension names)
-                  let scores47D = rawScores || {};
-                  if (!rawScores || Object.keys(rawScores).length === 0) {
-                    // Generate mock data with real dimension names from vulca-dimensions.ts
-                    const dimensionKeys = Object.keys(VULCA_47_DIMENSIONS);
-                    scores47D = {};
-                    dimensionKeys.forEach(key => {
-                      scores47D[key] = 90 + Math.random() * 10; // Random scores between 90-100
-                    });
+                  // 如果后端有实际数据，合并使用
+                  const rawScores = parseVulcaData(model.vulca_scores_47d);
+                  if (rawScores && Object.keys(rawScores).length > 0) {
+                    evaluation.scores47D = rawScores;
+                    evaluation.scores6D = extractScores6D(rawScores);
                   }
                   
-                  const culturalPerspectives = parseCulturalPerspectives(model.vulca_cultural_perspectives) || {};
+                  const culturalPerspectives = parseCulturalPerspectives(model.vulca_cultural_perspectives);
+                  if (culturalPerspectives && Object.keys(culturalPerspectives).length > 0) {
+                    evaluation.culturalPerspectives = culturalPerspectives;
+                  }
                   
-                  return {
-                    modelId: parseInt(model.id) || 0,
-                    modelName: model.name || 'Unknown Model',
-                    scores6D: extractScores6D(scores47D),
-                    scores47D: scores47D,
-                    culturalPerspectives: culturalPerspectives,
-                    evaluationDate: model.vulca_evaluation_date || new Date().toISOString()
-                  };
+                  return evaluation;
                 };
                 
                 // 从VULCA分数生成维度定义，使用真实的47维度名称
@@ -551,64 +645,14 @@ export default function LeaderboardTable({
                                   </div>
                                 </div>
                               }>
-                                {(() => {
-                                  try {
-                                    const vulcaScores = parseVulcaData(row.original.model.vulca_scores_47d);
-                                    if (!vulcaScores || Object.keys(vulcaScores).length === 0) {
-                                      return (
-                                        <div className="p-8 text-center text-gray-500">
-                                          No VULCA data available for this model
-                                        </div>
-                                      );
-                                    }
+                                <VULCADataDisplay
+                                  model={row.original.model}
+                                  score={row.original.score}
+                                  convertToEvaluation={convertToEvaluation}
+                                  getDefaultDimensions={getDefaultDimensions}
+                                  calculate47DAverage={calculate47DAverage}
+                                />
                                     
-                                    const evaluation = convertToEvaluation(row.original.model);
-                                    const dimensions = getDefaultDimensions(vulcaScores);
-                                    const vulcaAverage = calculate47DAverage(vulcaScores);
-                                    
-                                    return (
-                                      <div className="space-y-4">
-                                        {/* 分数说明 */}
-                                        <div className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                                          <div className="flex items-center gap-6">
-                                            <div>
-                                              <div className="text-sm text-gray-500 dark:text-gray-400">Overall Score</div>
-                                              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                                                {row.original.score != null ? row.original.score.toFixed(3) : 'N/A'}
-                                              </div>
-                                            </div>
-                                            <div>
-                                              <div className="text-sm text-gray-500 dark:text-gray-400">VULCA 47D Average</div>
-                                              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                                                {vulcaAverage != null ? vulcaAverage.toFixed(1) : 'N/A'}
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="text-xs text-gray-500 dark:text-gray-400 max-w-md">
-                                            <p><strong>Overall Score</strong> is the model's comprehensive evaluation score.</p>
-                                            <p><strong>VULCA 47D Average</strong> is the mean of all 47 dimension scores.</p>
-                                          </div>
-                                        </div>
-                                        
-                                        {/* VULCA可视化 */}
-                                        <VULCAVisualization
-                                          evaluations={[evaluation]}
-                                          dimensions={dimensions}
-                                          viewMode="47d"
-                                          visualizationType="radar"
-                                          culturalPerspective="eastern"
-                                        />
-                                      </div>
-                                    );
-                                  } catch (error) {
-                                    console.error('Error rendering VULCA visualization:', error);
-                                    return (
-                                      <div className="p-8 text-center text-red-500">
-                                        Error loading VULCA visualization
-                                      </div>
-                                    );
-                                  }
-                                })()}
                               </Suspense>
                             </div>
                           </motion.div>

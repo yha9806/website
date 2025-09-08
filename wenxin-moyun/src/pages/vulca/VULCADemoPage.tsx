@@ -11,7 +11,7 @@ import { CulturalPerspectiveSelector } from '../../components/vulca/CulturalPers
 import { VULCAVisualization } from '../../components/vulca/VULCAVisualization';
 import { ExportButton } from '../../components/vulca/ExportButton';
 import { useVULCAData } from '../../hooks/vulca/useVULCAData';
-import type { ViewMode, VisualizationType } from '../../types/vulca';
+import type { ViewMode, VisualizationType, ViewLevel } from '../../types/vulca';
 import { IOSAlert } from '../../components/ios/core/IOSAlert';
 import { IOSCard } from '../../components/ios/core/IOSCard';
 import { IOSButton } from '../../components/ios/core/IOSButton';
@@ -26,6 +26,7 @@ export const VULCADemoPage: React.FC = () => {
   const [availableModels, setAvailableModels] = useState<Array<{id: string, name: string, organization: string}>>([]);
   const [selectedModels, setSelectedModels] = useState<string[]>([]); // Will be set after models load
   const [viewMode, setViewMode] = useState<ViewMode>('6d');
+  const [viewLevel, setViewLevel] = useState<ViewLevel>('overview');
   const [visualizationType, setVisualizationType] = useState<VisualizationType>('radar');
   const [culturalPerspective, setCulturalPerspective] = useState<string>('eastern');
   const [activeTab, setActiveTab] = useState<'visualization' | 'comparison'>('visualization');
@@ -273,46 +274,55 @@ export const VULCADemoPage: React.FC = () => {
                 />
               </div>
               
-              {/* Visualization Type */}
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Visualization
-                </label>
-                <div className="grid grid-cols-2 gap-2">
+              {/* View Level Selector - Only show for 47D mode */}
+              {viewMode === '47d' && (
+                <div>
+                  <label className="text-sm font-medium mb-2 block">
+                    View Level
+                  </label>
+                  <div className="grid grid-cols-1 gap-2">
+                    <IOSButton
+                      variant={viewLevel === 'overview' ? 'primary' : 'secondary'}
+                      size="sm"
+                      onClick={() => setViewLevel('overview')}
+                    >
+                      Overview (6D)
+                    </IOSButton>
+                    <IOSButton
+                      variant={viewLevel === 'grouped' ? 'primary' : 'secondary'}
+                      size="sm"
+                      onClick={() => setViewLevel('grouped')}
+                    >
+                      Grouped (8 Categories)
+                    </IOSButton>
+                    <IOSButton
+                      variant={viewLevel === 'detailed' ? 'primary' : 'secondary'}
+                      size="sm"
+                      onClick={() => setViewLevel('detailed')}
+                    >
+                      Detailed (All 47D)
+                    </IOSButton>
+                  </div>
+                </div>
+              )}
+              
+              {/* Visualization Type - Simplified */}
+              {viewMode === '6d' && (
+                <div>
+                  <label className="text-sm font-medium mb-2 block">
+                    Visualization
+                  </label>
                   <IOSButton
-                    variant={visualizationType === 'radar' ? 'primary' : 'secondary'}
+                    variant="primary"
                     size="sm"
-                    onClick={() => setVisualizationType('radar')}
+                    className="w-full"
+                    disabled
                   >
                     <Radar className="w-4 h-4 mr-1" />
-                    Radar
-                  </IOSButton>
-                  <IOSButton
-                    variant={visualizationType === 'heatmap' ? 'primary' : 'secondary'}
-                    size="sm"
-                    onClick={() => setVisualizationType('heatmap')}
-                  >
-                    <Grid3x3 className="w-4 h-4 mr-1" />
-                    Heatmap
-                  </IOSButton>
-                  <IOSButton
-                    variant={visualizationType === 'bar' ? 'primary' : 'secondary'}
-                    size="sm"
-                    onClick={() => setVisualizationType('bar')}
-                  >
-                    <BarChart3 className="w-4 h-4 mr-1" />
-                    Bar
-                  </IOSButton>
-                  <IOSButton
-                    variant={visualizationType === 'parallel' ? 'primary' : 'secondary'}
-                    size="sm"
-                    onClick={() => setVisualizationType('parallel')}
-                  >
-                    <BarChart3 className="w-4 h-4 mr-1" />
-                    Parallel
+                    Radar Chart
                   </IOSButton>
                 </div>
-              </div>
+              )}
               
               {/* Cultural Perspective */}
               <div>
@@ -430,6 +440,7 @@ export const VULCADemoPage: React.FC = () => {
                       evaluations={evaluations}
                       dimensions={viewMode === '6d' ? dimensions.slice(0, 6) : dimensions}
                       viewMode={viewMode}
+                      viewLevel={viewLevel}
                       visualizationType={visualizationType}
                       culturalPerspective={culturalPerspective}
                     />

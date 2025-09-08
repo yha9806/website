@@ -29,9 +29,11 @@ import { IOSButton } from '../ios/core/IOSButton';
 import type {
   ViewMode,
   VisualizationType,
+  ViewLevel,
   VULCAEvaluation,
 } from '../../types/vulca';
-import { DIMENSION_CATEGORIES, getDimensionCategory } from '../../utils/vulca-dimensions';
+import DimensionGroupView from './DimensionGroupView';
+import { DIMENSION_CATEGORIES, getDimensionCategory, getDimensionLabel, CULTURAL_PERSPECTIVES } from '../../utils/vulca-dimensions';
 
 interface VULCAVisualizationProps {
   evaluations: VULCAEvaluation[];
@@ -39,6 +41,7 @@ interface VULCAVisualizationProps {
   viewMode: ViewMode;
   visualizationType: VisualizationType;
   culturalPerspective?: string;
+  viewLevel?: ViewLevel;
 }
 
 export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
@@ -47,19 +50,30 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
   viewMode,
   visualizationType,
   culturalPerspective = 'eastern',
+  viewLevel = 'overview',
 }) => {
   const colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
+  const [selectedCulturalPerspective, setSelectedCulturalPerspective] = useState<string>('eastern');
   
   // Filter dimensions by category for 47D mode
   const filteredDimensions = useMemo(() => {
     if (viewMode === '6d') {
       return dimensions.slice(0, 6);
     }
+    
+    // Debug: Log dimensions to see what we're working with
+    console.log('VULCAVisualization dimensions:', dimensions.slice(0, 3));
+    
     if (selectedCategory === 'all') {
       return dimensions;
     }
-    return dimensions.filter(dim => getDimensionCategory(dim.id) === selectedCategory);
+    const filtered = dimensions.filter(dim => {
+      const category = getDimensionCategory(dim.id);
+      return category === selectedCategory;
+    });
+    return filtered;
   }, [dimensions, viewMode, selectedCategory]);
   
   // Prepare data for different visualization types
@@ -71,11 +85,12 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
       filteredDimensions.length);
     
     return radarDimensions.map(dim => {
-      const dataPoint: any = { dimension: dim.name };
+      const dataPoint: any = { dimension: getDimensionLabel(dim.id) };
       
       evaluations.forEach((evaluation, index) => {
         const scores = viewMode === '6d' ? evaluation.scores6D : evaluation.scores47D;
-        dataPoint[`model_${index}`] = scores ? (scores[dim.id as keyof typeof scores] || 0) : 0;
+        const modelKey = evaluation.modelName || `model_${index}`;
+        dataPoint[modelKey] = scores ? (scores[dim.id as keyof typeof scores] || 0) : 0;
       });
       
       return dataPoint;
@@ -115,7 +130,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
           y: modelIndex,
           value: scores ? (scores[dim.id as keyof typeof scores] || 0) : 0,
           model: evaluation.modelName,
-          dimension: dim.name,
+          dimension: getDimensionLabel(dim.id),
         });
       });
     });
@@ -167,33 +182,498 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
     return `hsl(${hue}, 70%, 50%)`;
   };
   
-  // Render based on visualization type
-  const renderVisualization = () => {
-    switch (visualizationType) {
-      case 'radar':
-        return (
-          <ResponsiveContainer width="100%" height={500}>
-            <RadarChart data={radarData}>
-              <PolarGrid gridType="polygon" />
-              <PolarAngleAxis dataKey="dimension" />
-              <PolarRadiusAxis angle={90} domain={[0, 100]} />
-              <Tooltip />
-              <Legend />
+  // Render detailed parallel coordinates view with filtering
+  const renderDetailedParallelView = () => {
+    // Filter dimensions based on selected category
+    const detailedDims = selectedCategory === 'all' 
+      ? filteredDimensions 
+      : filteredDimensions.filter(dim => getDimensionCategory(dim.id) === selectedCategory);
+    
+    // Prepare data with difference highlighting
+    const enhancedData = evaluations.map((evaluation, evalIndex) => {
+      const scores = viewMode === '6d' ? evaluation.scores6D : evaluation.scores47D;
+      const dataPoint: any = {
+        model: evaluation.modelName,
+        modelIndex: evalIndex,
+      };
+      
+      detailedDims.forEach(dim => {
+        const score = scores ? (scores[dim.id as keyof typeof scores] || 0) : 0;
+        dataPoint[dim.id] = score;
+        
+        // Calculate variance for this dimension across all models
+        if (evaluations.length > 1) {
+          const allScores = evaluations.map(e => {
+            const s = viewMode === '6d' ? e.scores6D : e.scores47D;
+            return s ? (s[dim.id as keyof typeof s] || 0) : 0;
+          });
+          const avg = allScores.reduce((a, b) => a + b, 0) / allScores.length;
+          const variance = Math.sqrt(allScores.reduce((sum, s) => sum + Math.pow(s - avg, 2), 0) / allScores.length);
+          dataPoint[`${dim.id}_variance`] = variance;
+          dataPoint[`${dim.id}_diff`] = Math.abs(score - avg);
+        }
+      });
+      
+      return dataPoint;
+    });
+    
+    // Find dimensions with highest variance (most differentiating)
+    const dimensionVariances = detailedDims.map(dim => {
+      if (evaluations.length <= 1) return { dim, variance: 0 };
+      
+      const allScores = evaluations.map(e => {
+        const s = viewMode === '6d' ? e.scores6D : e.scores47D;
+        return s ? (s[dim.id as keyof typeof s] || 0) : 0;
+      });
+      const avg = allScores.reduce((a, b) => a + b, 0) / allScores.length;
+      const variance = Math.sqrt(allScores.reduce((sum, s) => sum + Math.pow(s - avg, 2), 0) / allScores.length);
+      
+      return { dim, variance };
+    }).sort((a, b) => b.variance - a.variance);
+    
+    // Select dimensions based on current filter
+    let topDims = dimensionVariances.slice(0, 15).map(dv => dv.dim);
+    
+    switch (dimensionFilter) {
+      case 'all':
+        topDims = detailedDims.slice(0, 25); // Show more when all is selected
+        break;
+      case 'high-variance':
+        topDims = dimensionVariances.slice(0, 15).map(dv => dv.dim);
+        break;
+      case 'top-performance':
+        // Find dimensions with highest average scores across models
+        const performanceDims = detailedDims.map(dim => {
+          const avgScore = evaluations.reduce((sum, e) => {
+            const scores = viewMode === '6d' ? e.scores6D : e.scores47D;
+            return sum + (scores ? (scores[dim.id as keyof typeof scores] || 0) : 0);
+          }, 0) / evaluations.length;
+          return { dim, avgScore };
+        }).sort((a, b) => b.avgScore - a.avgScore);
+        topDims = performanceDims.slice(0, 10).map(pd => pd.dim);
+        break;
+      case 'custom':
+        topDims = detailedDims.slice(0, customDimensionCount);
+        break;
+      default:
+        topDims = dimensionVariances.slice(0, 15).map(dv => dv.dim);
+    }
+    
+    return (
+      <div className="space-y-4">
+        {/* Smart dimension selection based on filter */}
+        <div className="flex flex-wrap gap-2 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+              📊 Showing {topDims.length} dimensions
+            </span>
+            <span className="text-xs text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/50 px-2 py-1 rounded">
+              {dimensionFilter === 'all' && 'All Available'}
+              {dimensionFilter === 'high-variance' && 'High Variance'}
+              {dimensionFilter === 'top-performance' && 'Top Performers'}
+              {dimensionFilter === 'custom' && `Custom (${customDimensionCount})`}
+            </span>
+          </div>
+          
+          {/* Quick filter toggles */}
+          <div className="flex gap-1 ml-auto">
+            <IOSButton
+              variant="text"
+              size="sm"
+              onClick={() => setDimensionFilter('high-variance')}
+              className="text-xs"
+            >
+              ⚡ High Variance
+            </IOSButton>
+            <IOSButton
+              variant="text"
+              size="sm"
+              onClick={() => setDimensionFilter('top-performance')}
+              className="text-xs"
+            >
+              🏆 Top Performers
+            </IOSButton>
+          </div>
+        </div>
+        
+        {/* Enhanced parallel coordinates chart */}
+        <ResponsiveContainer width="100%" height={600}>
+          <LineChart data={enhancedData}>
+            <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+            <XAxis
+              dataKey="model"
+              angle={-45}
+              textAnchor="end"
+              height={100}
+              tick={{ fontSize: 12 }}
+            />
+            <YAxis 
+              domain={[0, 100]} 
+              ticks={[0, 25, 50, 75, 100]}
+              tick={{ fontSize: 12 }}
+            />
+            <Tooltip 
+              content={({ active, payload, label }) => {
+                if (!active || !payload || !payload.length) return null;
+                
+                const data = payload[0].payload;
+                const topDiffs = payload
+                  .filter(p => !p.dataKey.includes('_variance') && !p.dataKey.includes('_diff'))
+                  .sort((a, b) => {
+                    const diffA = data[`${a.dataKey}_diff`] || 0;
+                    const diffB = data[`${b.dataKey}_diff`] || 0;
+                    return diffB - diffA;
+                  })
+                  .slice(0, 5);
+                
+                return (
+                  <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border">
+                    <p className="font-semibold mb-2">{label}</p>
+                    <div className="space-y-1">
+                      {topDiffs.map(entry => (
+                        <div key={entry.dataKey} className="flex justify-between gap-4 text-sm">
+                          <span>{entry.name}:</span>
+                          <span className="font-medium">
+                            {entry.value?.toFixed(1)}
+                            {data[`${entry.dataKey}_diff`] > 10 && (
+                              <span className="text-orange-500 ml-1">⚡</span>
+                            )}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }}
+            />
+            <Legend 
+              wrapperStyle={{ paddingTop: '20px' }}
+              iconType="line"
+            />
+            
+            {/* Render lines with enhanced difference highlighting */}
+            {topDims.map((dim, index) => {
+              const variance = dimensionVariances.find(dv => dv.dim.id === dim.id)?.variance || 0;
+              const avgScore = evaluations.reduce((sum, e) => {
+                const scores = viewMode === '6d' ? e.scores6D : e.scores47D;
+                return sum + (scores ? (scores[dim.id as keyof typeof scores] || 0) : 0);
+              }, 0) / evaluations.length;
               
-              {evaluations.map((evaluation, index) => (
+              // Classification based on variance and performance
+              const isHighVariance = variance > 15;
+              const isMediumVariance = variance > 8 && variance <= 15;
+              const isHighPerformer = avgScore > 75;
+              const isLowPerformer = avgScore < 40;
+              
+              // Dynamic styling based on characteristics
+              let strokeColor = '#ccc';
+              let strokeWidth = 1.5;
+              let strokeOpacity = 0.5;
+              let dotSize = 3;
+              
+              if (isHighVariance) {
+                strokeColor = isHighPerformer ? '#10B981' : isLowPerformer ? '#EF4444' : colors[index % colors.length];
+                strokeWidth = 3.5;
+                strokeOpacity = 1;
+                dotSize = 6;
+              } else if (isMediumVariance) {
+                strokeColor = colors[index % colors.length];
+                strokeWidth = 2.5;
+                strokeOpacity = 0.8;
+                dotSize = 4;
+              } else if (isHighPerformer) {
+                strokeColor = '#10B981'; // Green for high performers
+                strokeWidth = 2;
+                strokeOpacity = 0.7;
+                dotSize = 4;
+              } else if (isLowPerformer) {
+                strokeColor = '#F59E0B'; // Orange for low performers
+                strokeWidth = 2;
+                strokeOpacity = 0.6;
+                dotSize = 3;
+              }
+              
+              return (
+                <Line
+                  key={dim.id}
+                  type="monotone"
+                  dataKey={dim.id}
+                  name={`${getDimensionLabel(dim.id)} (σ:${variance.toFixed(1)})`}
+                  stroke={strokeColor}
+                  strokeWidth={strokeWidth}
+                  strokeOpacity={strokeOpacity}
+                  strokeDasharray={isHighVariance ? '0' : isMediumVariance ? '5,5' : '0'}
+                  dot={{ 
+                    r: dotSize, 
+                    fill: strokeColor,
+                    stroke: '#fff',
+                    strokeWidth: 1
+                  }}
+                  activeDot={{ 
+                    r: dotSize + 2, 
+                    fill: strokeColor,
+                    stroke: '#fff',
+                    strokeWidth: 2
+                  }}
+                />
+              );
+            })}
+          </LineChart>
+        </ResponsiveContainer>
+        
+        {/* Enhanced analysis with difference highlighting - Mobile responsive */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <IOSCard variant="flat" className="border-l-4 border-red-500">
+            <div className="p-4">
+              <h5 className="text-sm font-medium text-red-600 dark:text-red-400 flex items-center">
+                📊 Most Differentiating
+              </h5>
+              <p className="text-lg font-semibold mt-1">
+                {dimensionVariances[0] ? getDimensionLabel(dimensionVariances[0].dim.id) : 'N/A'}
+              </p>
+              <p className="text-sm text-red-500 mt-1">
+                σ = {dimensionVariances[0]?.variance.toFixed(1) || '0'}
+              </p>
+            </div>
+          </IOSCard>
+          
+          <IOSCard variant="flat" className="border-l-4 border-green-500">
+            <div className="p-4">
+              <h5 className="text-sm font-medium text-green-600 dark:text-green-400 flex items-center">
+                🏆 Highest Performing
+              </h5>
+              <p className="text-lg font-semibold mt-1">
+                {(() => {
+                  const perfDims = dimensionVariances.map(dv => {
+                    const avg = evaluations.reduce((sum, e) => {
+                      const scores = viewMode === '6d' ? e.scores6D : e.scores47D;
+                      return sum + (scores ? (scores[dv.dim.id as keyof typeof scores] || 0) : 0);
+                    }, 0) / evaluations.length;
+                    return { ...dv, avgScore: avg };
+                  }).sort((a, b) => b.avgScore - a.avgScore);
+                  return perfDims[0] ? getDimensionLabel(perfDims[0].dim.id) : 'N/A';
+                })()}
+              </p>
+              <p className="text-sm text-green-500 mt-1">
+                Avg: {(() => {
+                  const perfDims = dimensionVariances.map(dv => {
+                    const avg = evaluations.reduce((sum, e) => {
+                      const scores = viewMode === '6d' ? e.scores6D : e.scores47D;
+                      return sum + (scores ? (scores[dv.dim.id as keyof typeof scores] || 0) : 0);
+                    }, 0) / evaluations.length;
+                    return avg;
+                  }).sort((a, b) => b - a);
+                  return perfDims[0]?.toFixed(1) || '0';
+                })()} pts
+              </p>
+            </div>
+          </IOSCard>
+          
+          <IOSCard variant="flat" className="border-l-4 border-gray-500">
+            <div className="p-4">
+              <h5 className="text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center">
+                ⚖️ Most Consistent
+              </h5>
+              <p className="text-lg font-semibold mt-1">
+                {dimensionVariances[dimensionVariances.length - 1] ? getDimensionLabel(dimensionVariances[dimensionVariances.length - 1].dim.id) : 'N/A'}
+              </p>
+              <p className="text-sm text-gray-500 mt-1">
+                σ = {dimensionVariances[dimensionVariances.length - 1]?.variance.toFixed(1) || '0'}
+              </p>
+            </div>
+          </IOSCard>
+          
+          <IOSCard variant="flat" className="border-l-4 border-blue-500">
+            <div className="p-4">
+              <h5 className="text-sm font-medium text-blue-600 dark:text-blue-400 flex items-center">
+                📈 Overview
+              </h5>
+              <p className="text-lg font-semibold mt-1">
+                {dimensionVariances.length} dims
+              </p>
+              <p className="text-sm text-blue-500 mt-1">
+                Avg σ: {(dimensionVariances.reduce((sum, dv) => sum + dv.variance, 0) / dimensionVariances.length).toFixed(1)}
+              </p>
+            </div>
+          </IOSCard>
+        </div>
+        
+        {/* Legend for line styles and colors - Mobile responsive */}
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 sm:p-4">
+          <h5 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center">
+            🎨 Visual Legend
+          </h5>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-xs">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-0.5 bg-green-500"></div>
+              <span>High Variance + High Score</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-0.5 bg-red-500"></div>
+              <span>High Variance + Low Score</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-0.5 bg-blue-500 opacity-80" style={{borderTop: '1px dashed'}}></div>
+              <span>Medium Variance</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-0.5 bg-gray-400 opacity-60"></div>
+              <span>Low Variance</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Showing {topDims.length} dimensions with enhanced difference highlighting.
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+            Line thickness and color intensity indicate variance levels. 
+            Green = High performance, Red = High variance + Low performance, Dashed = Medium variance.
+          </p>
+        </div>
+      </div>
+    );
+  };
+  
+  // Render based on visualization type and view level
+  const renderVisualization = () => {
+    // For 47D mode with grouped view level, show dimension groups
+    if (viewMode === '47d' && viewLevel === 'grouped' && evaluations.length > 0) {
+      return (
+        <DimensionGroupView
+          scores47D={evaluations[0].scores47D}
+          modelName={evaluations[0].modelName}
+          expanded={expandedGroup}
+          onExpandGroup={setExpandedGroup}
+        />
+      );
+    }
+    
+    // For overview mode or 6D, show simplified visualization
+    if (viewMode === '6d') {
+      // Use radar chart for 6D mode
+      return (
+        <ResponsiveContainer width="100%" height={500}>
+          <RadarChart data={radarData.slice(0, 6)}>
+            <PolarGrid gridType="polygon" />
+            <PolarAngleAxis dataKey="dimension" />
+            <PolarRadiusAxis angle={90} domain={[0, 100]} />
+            <Tooltip />
+            <Legend />
+            
+            {evaluations.map((evaluation, index) => {
+              const modelKey = evaluation.modelName || `model_${index}`;
+              return (
                 <Radar
-                  key={`model_${index}`}
+                  key={modelKey}
                   name={evaluation.modelName}
-                  dataKey={`model_${index}`}
+                  dataKey={modelKey}
                   stroke={colors[index % colors.length]}
                   fill={colors[index % colors.length]}
                   fillOpacity={0.3}
                   strokeWidth={2}
                 />
+              );
+            })}
+          </RadarChart>
+        </ResponsiveContainer>
+      );
+    }
+    
+    // For 47D mode with many dimensions, use bar chart for better readability
+    if (viewMode === '47d' && filteredDimensions.length > 12) {
+      // Prepare bar data for 47D visualization
+      const barData47D = filteredDimensions.map(dim => {
+        // Use getDimensionLabel to get the proper dimension name
+        const properName = getDimensionLabel(dim.id);
+        const dataPoint: any = { 
+          dimension: properName.length > 15 ? properName.substring(0, 15) + '...' : properName,
+          fullName: properName
+        };
+        evaluations.forEach((evaluation) => {
+          const scores = evaluation.scores47D;
+          dataPoint[evaluation.modelName] = scores ? (scores[dim.id as keyof typeof scores] || 0) : 0;
+        });
+        return dataPoint;
+      });
+
+      return (
+        <div className="space-y-4">
+          <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            Showing {filteredDimensions.length} dimensions for {evaluations.map(e => e.modelName).join(', ')}
+          </div>
+          <ResponsiveContainer width="100%" height={Math.max(600, filteredDimensions.length * 25)}>
+            <BarChart 
+              data={barData47D} 
+              layout="horizontal"
+              margin={{ top: 5, right: 30, left: 120, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis type="number" domain={[0, 100]} />
+              <YAxis dataKey="dimension" type="category" width={100} tick={{ fontSize: 10 }} />
+              <Tooltip content={({ active, payload }) => {
+                if (active && payload && payload.length) {
+                  return (
+                    <div className="bg-white dark:bg-gray-800 p-2 border rounded shadow">
+                      <p className="text-sm font-medium">{payload[0].payload.fullName}</p>
+                      {payload.map((entry: any, index: number) => (
+                        <p key={index} className="text-xs" style={{ color: entry.color }}>
+                          {entry.name}: {entry.value?.toFixed(1)}
+                        </p>
+                      ))}
+                    </div>
+                  );
+                }
+                return null;
+              }} />
+              <Legend />
+              {evaluations.map((evaluation, index) => (
+                <Bar
+                  key={evaluation.modelName}
+                  dataKey={evaluation.modelName}
+                  fill={colors[index % colors.length]}
+                />
               ))}
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      );
+    }
+
+    // Original detailed visualization logic for smaller dimension sets
+    switch (visualizationType) {
+      case 'radar':
+        // Use radar only for smaller dimension sets (<=12)
+        if (filteredDimensions.length <= 12) {
+          return (
+            <ResponsiveContainer width="100%" height={500}>
+              <RadarChart data={radarData}>
+                <PolarGrid gridType="polygon" />
+                <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 10 }} />
+                <PolarRadiusAxis angle={90} domain={[0, 100]} />
+                <Tooltip />
+                <Legend />
+              
+              {evaluations.map((evaluation, index) => {
+                const modelKey = evaluation.modelName || `model_${index}`;
+                return (
+                  <Radar
+                    key={modelKey}
+                    name={evaluation.modelName}
+                    dataKey={modelKey}
+                    stroke={colors[index % colors.length]}
+                    fill={colors[index % colors.length]}
+                    fillOpacity={0.3}
+                    strokeWidth={2}
+                  />
+                );
+              })}
             </RadarChart>
           </ResponsiveContainer>
-        );
+          );
+        }
+        // Fall through to bar chart for large dimension sets
       
       case 'bar':
         return (
@@ -209,7 +689,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
                 <Bar
                   key={dim.id}
                   dataKey={dim.id}
-                  name={dim.name}
+                  name={getDimensionLabel(dim.id)}
                   fill={colors[index % colors.length]}
                 />
               ))}
@@ -281,8 +761,14 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
         );
       
       case 'parallel':
+        // For detailed view, show enhanced parallel coordinates
+        if (viewLevel === 'detailed' && viewMode === '47d') {
+          return renderDetailedParallelView();
+        }
+        
+        // Original parallel view for overview/grouped modes
         const selectedDims = filteredDimensions.slice(0, viewMode === '6d' ? 6 : 
-          filteredDimensions.length);
+          Math.min(filteredDimensions.length, 12)); // Limit to 12 for readability
         
         return (
           <div>
@@ -304,7 +790,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
                     key={dim.id}
                     type="monotone"
                     dataKey={dim.id}
-                    name={dim.name}
+                    name={getDimensionLabel(dim.id)}
                     stroke={colors[index % colors.length]}
                     strokeWidth={2}
                     dot={{ r: 4 }}
@@ -331,16 +817,27 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
     
     const culturalScores = evaluations.map(e => ({
       model: e.modelName,
-      score: e.culturalPerspectives && culturalPerspective 
-        ? (e.culturalPerspectives[culturalPerspective as keyof typeof e.culturalPerspectives] || 0)
+      score: e.culturalPerspectives && selectedCulturalPerspective 
+        ? (e.culturalPerspectives[selectedCulturalPerspective as keyof typeof e.culturalPerspectives] || 0)
         : 0,
     }));
     
     return (
       <IOSCard variant="elevated" className="mt-4">
-        <h4 className="text-sm font-medium mb-3">
-          Cultural Perspective: {culturalPerspective ? culturalPerspective.replace('_', ' ').toUpperCase() : 'EASTERN'}
-        </h4>
+        <div className="flex items-center justify-between mb-3">
+          <h4 className="text-sm font-medium">Cultural Perspective</h4>
+          <select
+            value={selectedCulturalPerspective}
+            onChange={(e) => setSelectedCulturalPerspective(e.target.value)}
+            className="text-sm px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            {Object.entries(CULTURAL_PERSPECTIVES).map(([key, perspective]) => (
+              <option key={key} value={key}>
+                {perspective.name}
+              </option>
+            ))}
+          </select>
+        </div>
         
         <ResponsiveContainer width="100%" height={150}>
           <BarChart data={culturalScores} layout="horizontal">
@@ -368,56 +865,101 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
   
   return (
     <div className="space-y-6">
-      {/* Category selector for 47D mode */}
+      {/* Category selector for 47D mode - Mobile Optimized */}
       {viewMode === '47d' && (
-        <div className="flex flex-wrap gap-2 p-4 bg-white dark:bg-gray-900 rounded-lg">
-          <IOSButton
-            variant={selectedCategory === 'all' ? 'primary' : 'secondary'}
-            size="sm"
-            onClick={() => setSelectedCategory('all')}
-          >
-            All Dimensions ({dimensions.length})
-          </IOSButton>
-          {Object.entries(DIMENSION_CATEGORIES).map(([key, category]) => (
+        <div className="bg-white dark:bg-gray-900 rounded-lg p-3 sm:p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Categories:
+            </span>
+            <span className="text-xs text-gray-500 dark:text-gray-400 sm:ml-auto">
+              {filteredDimensions.length} dimensions
+            </span>
+          </div>
+          
+          {/* Mobile: Scrollable horizontal buttons */}
+          <div className="block sm:hidden">
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+              <IOSButton
+                variant={selectedCategory === 'all' ? 'primary' : 'secondary'}
+                size="sm"
+                onClick={() => setSelectedCategory('all')}
+                className="whitespace-nowrap flex-shrink-0"
+              >
+                All ({dimensions.length})
+              </IOSButton>
+              {Object.entries(DIMENSION_CATEGORIES).map(([key, category]) => (
+                <IOSButton
+                  key={key}
+                  variant={selectedCategory === key ? 'primary' : 'secondary'}
+                  size="sm"
+                  onClick={() => setSelectedCategory(key)}
+                  className="whitespace-nowrap flex-shrink-0"
+                  style={{
+                    borderColor: selectedCategory === key ? category.color : undefined,
+                    color: selectedCategory === key ? category.color : undefined
+                  }}
+                >
+                  {category.name.split(' ')[0]} ({category.range[1] - category.range[0] + 1})
+                </IOSButton>
+              ))}
+            </div>
+          </div>
+          
+          {/* Desktop: Flexbox wrap */}
+          <div className="hidden sm:flex flex-wrap gap-2">
             <IOSButton
-              key={key}
-              variant={selectedCategory === key ? 'primary' : 'secondary'}
+              variant={selectedCategory === 'all' ? 'primary' : 'secondary'}
               size="sm"
-              onClick={() => setSelectedCategory(key)}
-              style={{
-                borderColor: selectedCategory === key ? category.color : undefined,
-                color: selectedCategory === key ? category.color : undefined
-              }}
+              onClick={() => setSelectedCategory('all')}
             >
-              {category.name} ({category.range[1] - category.range[0] + 1})
+              All Dimensions ({dimensions.length})
             </IOSButton>
-          ))}
+            {Object.entries(DIMENSION_CATEGORIES).map(([key, category]) => (
+              <IOSButton
+                key={key}
+                variant={selectedCategory === key ? 'primary' : 'secondary'}
+                size="sm"
+                onClick={() => setSelectedCategory(key)}
+                style={{
+                  borderColor: selectedCategory === key ? category.color : undefined,
+                  color: selectedCategory === key ? category.color : undefined
+                }}
+              >
+                {category.name} ({category.range[1] - category.range[0] + 1})
+              </IOSButton>
+            ))}
+          </div>
         </div>
       )}
       
-      {/* Main visualization */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg p-6">
-        {renderVisualization()}
+      {/* Main visualization - Mobile responsive */}
+      <div className="bg-white dark:bg-gray-900 rounded-lg p-3 sm:p-6">
+        <div className="h-[350px] sm:h-[500px] lg:h-[600px]">
+          {renderVisualization()}
+        </div>
       </div>
       
       {/* Cultural perspective overlay */}
       {renderCulturalOverlay()}
       
-      {/* Statistics summary */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Statistics summary - Mobile responsive grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {evaluations.map((evaluation, index) => {
           const avgScore = viewMode === '6d'
             ? (evaluation.scores6D ? Object.values(evaluation.scores6D).reduce((a, b) => a + b, 0) / 6 : 0)
             : (evaluation.scores47D ? Object.values(evaluation.scores47D).slice(0, 47).reduce((a, b) => a + b, 0) / 47 : 0);
           
           return (
-            <IOSCard key={evaluation.modelId} variant="elevated">
-              <div
-                className="w-3 h-3 rounded-full mb-2"
-                style={{ backgroundColor: colors[index % colors.length] }}
-              />
-              <h5 className="font-medium text-sm">{evaluation.modelName}</h5>
-              <p className="text-2xl font-bold mt-1">{avgScore.toFixed(1)}</p>
+            <IOSCard key={evaluation.modelId} variant="elevated" className="text-center">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <div
+                  className="w-3 h-3 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: colors[index % colors.length] }}
+                />
+                <h5 className="font-medium text-sm truncate">{evaluation.modelName}</h5>
+              </div>
+              <p className="text-xl sm:text-2xl font-bold mt-1">{avgScore.toFixed(1)}</p>
               <p className="text-xs text-gray-500">Average Score</p>
             </IOSCard>
           );
