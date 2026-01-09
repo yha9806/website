@@ -62,10 +62,19 @@ export interface Artist {
 export interface Dialogue {
   id: string;
   artwork_id: number;
-  participants: DialogueParticipant[];
+  artwork_title: string;
+  image_url?: string;
+  topic: string;
+  total_turns: number;
+  model_used: string;
+  created_at: string;
+  image_analyzed: boolean;
+  visual_analysis?: string;
+  participants: string[];
+  participant_names: string[];
   turns: DialogueTurn[];
-  language: 'en' | 'zh' | 'mixed';
-  generated_at?: string;
+  languages_used?: string[];
+  visual_tags?: string[];
 }
 
 export interface DialogueParticipant {
@@ -79,12 +88,12 @@ export interface DialogueParticipant {
 }
 
 export interface DialogueTurn {
+  turn_id: string;
   speaker_id: string;
   speaker_name: string;
   content: string;
-  content_zh?: string;
-  language: 'en' | 'zh';
-  timestamp?: number;
+  language: string;
+  chain_of_thought?: string;
 }
 
 // Chapter IDs from Echoes and Returns exhibition

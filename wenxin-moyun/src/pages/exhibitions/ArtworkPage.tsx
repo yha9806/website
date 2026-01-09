@@ -14,8 +14,11 @@ import { EmojiIcon } from '../../components/ios/core/EmojiIcon';
 export function ArtworkPage() {
   const { id: exhibitionId, artworkId } = useParams<{ id: string; artworkId: string }>();
   const navigate = useNavigate();
-  const { artwork, loading: artworkLoading, error: artworkError } = useArtwork(artworkId || '0');
+  const { artwork, dialogue, loading: artworkLoading, error: artworkError } = useArtwork(artworkId || '0');
   const { artworks } = useExhibitions();
+
+  // Get dialogues - prefer from artwork, fallback to direct hook result
+  const dialogues = artwork?.dialogues?.length ? artwork.dialogues : (dialogue ? [dialogue] : []);
 
   // Get related artworks (same chapter, excluding current)
   const relatedArtworks = artworks
@@ -82,9 +85,9 @@ export function ArtworkPage() {
       <ArtworkDetail artwork={artwork} />
 
       {/* AI Dialogue Section */}
-      {artwork.dialogues && artwork.dialogues.length > 0 && (
+      {dialogues.length > 0 && (
         <div className="mt-8">
-          <DialogueViewer dialogues={artwork.dialogues} artworkTitle={artwork.title} />
+          <DialogueViewer dialogues={dialogues} artworkTitle={artwork.title} />
         </div>
       )}
 

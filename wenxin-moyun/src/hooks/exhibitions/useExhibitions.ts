@@ -5,16 +5,18 @@
  */
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import type { Exhibition, Artwork, Chapter, ExhibitionFilters } from '../../types/exhibition';
+import type { Exhibition, Artwork, Chapter, ExhibitionFilters, Dialogue } from '../../types/exhibition';
 import { buildExhibition, EXHIBITION_INFO, type RawArtwork } from '../../data/exhibitions';
 
-// Data URL
+// Data URLs
 const ECHOES_DATA_URL = '/data/echoes-and-returns.json';
+const DIALOGUES_URL = '/data/dialogues.json';
 
 interface UseExhibitionsReturn {
   exhibition: Exhibition | null;
   artworks: Artwork[];
   chapters: Chapter[];
+  dialogues: Map<number, Dialogue>;
   loading: boolean;
   error: string | null;
   filters: ExhibitionFilters;
@@ -22,28 +24,57 @@ interface UseExhibitionsReturn {
   filteredArtworks: Artwork[];
   getArtworkById: (id: number) => Artwork | undefined;
   getChapterById: (id: number) => Chapter | undefined;
+  getDialogueByArtworkId: (artworkId: number) => Dialogue | undefined;
 }
 
 export function useExhibitions(): UseExhibitionsReturn {
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
+  const [dialogues, setDialogues] = useState<Map<number, Dialogue>>(new Map());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<ExhibitionFilters>({});
 
-  // Fetch exhibition data
+  // Fetch exhibition and dialogues data
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(ECHOES_DATA_URL);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch exhibition data: ${response.statusText}`);
+        // Fetch both datasets in parallel
+        const [artworksResponse, dialoguesResponse] = await Promise.all([
+          fetch(ECHOES_DATA_URL),
+          fetch(DIALOGUES_URL)
+        ]);
+
+        if (!artworksResponse.ok) {
+          throw new Error(`Failed to fetch exhibition data: ${artworksResponse.statusText}`);
         }
 
-        const rawData: RawArtwork[] = await response.json();
+        const rawData: RawArtwork[] = await artworksResponse.json();
         const exhibitionData = buildExhibition(rawData);
+
+        // Process dialogues if available
+        if (dialoguesResponse.ok) {
+          const dialoguesData: Dialogue[] = await dialoguesResponse.json();
+          const dialogueMap = new Map<number, Dialogue>();
+
+          dialoguesData.forEach((dialogue) => {
+            dialogueMap.set(dialogue.artwork_id, dialogue);
+          });
+
+          // Associate dialogues with artworks
+          exhibitionData.chapters.forEach((chapter) => {
+            chapter.artworks.forEach((artwork) => {
+              const dialogue = dialogueMap.get(artwork.id);
+              if (dialogue) {
+                artwork.dialogues = [dialogue];
+              }
+            });
+          });
+
+          setDialogues(dialogueMap);
+        }
 
         setExhibition(exhibitionData);
       } catch (err) {
@@ -115,10 +146,19 @@ export function useExhibitions(): UseExhibitionsReturn {
     [chapters]
   );
 
+  // Helper to get dialogue by artwork ID
+  const getDialogueByArtworkId = useCallback(
+    (artworkId: number) => {
+      return dialogues.get(artworkId);
+    },
+    [dialogues]
+  );
+
   return {
     exhibition,
     artworks,
     chapters,
+    dialogues,
     loading,
     error,
     filters,
@@ -126,20 +166,27 @@ export function useExhibitions(): UseExhibitionsReturn {
     filteredArtworks,
     getArtworkById,
     getChapterById,
+    getDialogueByArtworkId,
   };
 }
 
 // Hook for single artwork
 export function useArtwork(artworkId: number | string) {
-  const { artworks, loading, error, getArtworkById } = useExhibitions();
+  const { artworks, loading, error, getArtworkById, getDialogueByArtworkId } = useExhibitions();
+
+  const id = typeof artworkId === 'string' ? parseInt(artworkId, 10) : artworkId;
 
   const artwork = useMemo(() => {
-    const id = typeof artworkId === 'string' ? parseInt(artworkId, 10) : artworkId;
     return getArtworkById(id);
-  }, [artworkId, getArtworkById]);
+  }, [id, getArtworkById]);
+
+  const dialogue = useMemo(() => {
+    return getDialogueByArtworkId(id);
+  }, [id, getDialogueByArtworkId]);
 
   return {
     artwork,
+    dialogue,
     loading,
     error,
   };
