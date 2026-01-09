@@ -1,5 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 
+/**
+ * ⚠️ LOCKED: iOS Design System Configuration
+ *
+ * 此文件已锁定，不再接受修改。
+ * 颜色、字体、间距等设计Token均已固定。
+ *
+ * 如需扩展，请在 CSS 或组件中使用 CSS 变量。
+ *
+ * 锁定日期: 2026-01-09
+ * 设计系统版本: iOS 26 Style Guide
+ */
+
 export default {
   darkMode: 'class',
   content: [
@@ -9,6 +21,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        // ⚠️ LOCKED: iOS System Colors - DO NOT MODIFY
         // iOS System Colors - Static definitions for better performance
         blue: {
           50: '#E5F1FF',

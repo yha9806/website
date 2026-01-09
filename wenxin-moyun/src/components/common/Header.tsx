@@ -12,18 +12,17 @@ export default function Header() {
   const navigation = [
     { name: 'Home', href: '/', icon: Home, emoji: 'home' },
     { name: 'Rankings', href: '/leaderboard', icon: Trophy, emoji: 'leaderboard' },
+    { name: 'Exhibitions', href: '/exhibitions', icon: Image, emoji: 'visual' },
+    { name: 'VULCA', href: '/vulca', icon: BarChart3, emoji: 'analytics' },
     { name: 'Battles', href: '/battle', icon: Swords, emoji: 'battle' },
     { name: 'Compare', href: '/compare', icon: GitCompare, emoji: 'compare' },
-    { name: 'VULCA', href: '/vulca', icon: BarChart3, emoji: 'analytics' },
-    { name: 'Tasks', href: '/evaluations', icon: FlaskConical, emoji: 'evaluation' },
-    { name: 'Gallery', href: '/gallery', icon: Image, emoji: 'visual' },
-    { name: 'Dashboard', href: '/dashboard', icon: BarChart3, emoji: 'analytics' },
     { name: 'About', href: '/about', icon: Info, emoji: 'info' },
   ];
 
   const isActive = (path: string) => {
-    return location.pathname === path || 
-           (path === '/leaderboard' && location.pathname.startsWith('/leaderboard'));
+    return location.pathname === path ||
+           (path === '/leaderboard' && location.pathname.startsWith('/leaderboard')) ||
+           (path === '/exhibitions' && location.pathname.startsWith('/exhibitions'));
   };
 
   return (

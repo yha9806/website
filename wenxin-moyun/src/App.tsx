@@ -19,8 +19,11 @@ import TestIOSComponents from './pages/TestIOSComponents';
 import TestAdvancedIOSComponents from './pages/TestAdvancedIOSComponents';
 import NotFoundPage from './pages/NotFoundPage';
 
-// Lazy load VULCA page to avoid import issues during initial load
+// Lazy load pages to improve initial load time
 const VULCADemoPage = lazy(() => import('./pages/vulca/VULCADemoPage'));
+const ExhibitionsPage = lazy(() => import('./pages/exhibitions/ExhibitionsPage'));
+const ExhibitionDetailPage = lazy(() => import('./pages/exhibitions/ExhibitionDetailPage'));
+const ArtworkPage = lazy(() => import('./pages/exhibitions/ArtworkPage'));
 
 function App() {
   // Initialize cache warming on app start with version check
@@ -86,6 +89,37 @@ function App() {
               </div>
             </div>}>
               <VULCADemoPage />
+            </Suspense>
+          } />
+          {/* Exhibition Routes */}
+          <Route path="/exhibitions" element={
+            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading Exhibitions...</p>
+              </div>
+            </div>}>
+              <ExhibitionsPage />
+            </Suspense>
+          } />
+          <Route path="/exhibitions/:id" element={
+            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading Exhibition...</p>
+              </div>
+            </div>}>
+              <ExhibitionDetailPage />
+            </Suspense>
+          } />
+          <Route path="/exhibitions/:id/:artworkId" element={
+            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading Artwork...</p>
+              </div>
+            </div>}>
+              <ArtworkPage />
             </Suspense>
           } />
           {/* 404 catch-all route */}
