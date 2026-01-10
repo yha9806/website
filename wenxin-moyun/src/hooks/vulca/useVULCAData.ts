@@ -5,7 +5,9 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { vulcaService } from '../../utils/vulca/api';
-import type { 
+import { getDimensionLabel } from '../../utils/vulca-dimensions';
+import { createLogger } from '../../utils/logger';
+import type {
   VULCAEvaluation,
   VULCAComparison,
   VULCADimensionInfo,
@@ -13,6 +15,15 @@ import type {
   VULCAScore6D,
 } from '../../types/vulca';
 
+const logger = createLogger('VULCA');
+
+// Helper function to ensure dimensions have proper display names
+const transformDimensions = (dimensions: VULCADimensionInfo[]): VULCADimensionInfo[] => {
+  return dimensions.map(dim => ({
+    ...dim,
+    name: getDimensionLabel(dim.id) || dim.name
+  }));
+};
 
 interface UseVULCADataReturn {
   // Data
@@ -107,20 +118,20 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
   
   // Initialize data on mount
   useEffect(() => {
-    console.log('[VULCA] useEffect mount - starting initialization');
+    logger.log(' useEffect mount - starting initialization');
     isMounted.current = true;
     
     const initializeData = async () => {
-      console.log('[VULCA] Starting initialization...');
-      console.log('[VULCA] isMounted.current:', isMounted.current);
+      logger.log(' Starting initialization...');
+      logger.log(' isMounted.current:', isMounted.current);
       
       try {
         setInitializing(true);
         
         // Check connection first
-        console.log('[VULCA] Checking health...');
+        logger.log(' Checking health...');
         const connected = await vulcaService.healthCheck();
-        console.log('[VULCA] Health check result:', connected);
+        logger.log(' Health check result:', connected);
         setIsConnected(connected);
         
         if (!connected) {
@@ -128,7 +139,7 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
           const cachedDims = loadFromSessionStorage('dimensions');
           const cachedPersp = loadFromSessionStorage('perspectives');
           
-          if (cachedDims) setDimensions(cachedDims);
+          if (cachedDims) setDimensions(transformDimensions(cachedDims));
           if (cachedPersp) setPerspectives(cachedPersp);
           
           setError('Unable to connect to VULCA API. Using cached data.');
@@ -137,25 +148,25 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
         }
         
         // Load all initial data in parallel
-        console.log('[VULCA] Loading initial data...');
+        logger.log(' Loading initial data...');
         const [info, dims, persp] = await Promise.all([
           vulcaService.getInfo(),
           vulcaService.getDimensions(),
           vulcaService.getCulturalPerspectives()
         ]);
         
-        console.log('[VULCA] Data loaded:', { info, dims: dims?.length, persp: persp?.length });
+        logger.log(' Data loaded:', { info, dims: dims?.length, persp: persp?.length });
         
         if (isMounted.current) {
           setSystemInfo(info);
-          setDimensions(dims);
+          setDimensions(transformDimensions(dims));
           setPerspectives(persp);
           setLastSync(new Date());
           
           // Save to session storage
           saveToSessionStorage('dimensions', dims);
           saveToSessionStorage('perspectives', persp);
-          console.log('[VULCA] Data saved to state and session storage');
+          logger.log(' Data saved to state and session storage');
         }
         
       } catch (err: any) {
@@ -165,7 +176,7 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
         const cachedDims = loadFromSessionStorage('dimensions');
         const cachedPersp = loadFromSessionStorage('perspectives');
         
-        if (cachedDims) setDimensions(cachedDims);
+        if (cachedDims) setDimensions(transformDimensions(cachedDims));
         if (cachedPersp) setPerspectives(cachedPersp);
         
         if (isMounted.current) {
@@ -173,13 +184,13 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
           setErrorDetails(err);
         }
       } finally {
-        console.log('[VULCA] Finally block - setting initializing to false');
-        console.log('[VULCA] isMounted.current before setting:', isMounted.current);
+        logger.log(' Finally block - setting initializing to false');
+        logger.log(' isMounted.current before setting:', isMounted.current);
         if (isMounted.current) {
           setInitializing(false);
-          console.log('[VULCA] Successfully set initializing to false');
+          logger.log(' Successfully set initializing to false');
         } else {
-          console.log('[VULCA] Component unmounted, not setting initializing');
+          logger.log(' Component unmounted, not setting initializing');
         }
       }
     };
@@ -188,7 +199,7 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
     initializeData();
     
     return () => {
-      console.log('[VULCA] useEffect unmount - cleanup');
+      logger.log(' useEffect unmount - cleanup');
       isMounted.current = false;
     };
   }, []);
@@ -198,7 +209,7 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
       setLoading(true);
       const dims = await vulcaService.getDimensions();
       if (isMounted.current) {
-        setDimensions(dims);
+        setDimensions(transformDimensions(dims));
         saveToSessionStorage('dimensions', dims);
         setLastSync(new Date());
       }
@@ -357,7 +368,7 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
         ]);
         
         setSystemInfo(info);
-        setDimensions(dims);
+        setDimensions(transformDimensions(dims));
         setPerspectives(persp);
         setLastSync(new Date());
         
@@ -385,7 +396,7 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
   }, []);
 
   // Debug log the state before returning
-  console.log('[VULCA] Hook returning state:', {
+  logger.log(' Hook returning state:', {
     initializing,
     isConnected,
     dimensionsLength: dimensions.length,

@@ -1,7 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, CheckCircle, AlertCircle, Clock } from 'lucide-react';
 import apiClient from '../../services/api';
+import { createLogger } from '../../utils/logger';
+
+const logger = createLogger('Progress');
+
+// Polling configuration
+const POLL_INTERVAL = 5000;      // 5 seconds (was 2 seconds)
+const MAX_POLL_COUNT = 60;       // Maximum 60 polls (5 minutes total)
 
 interface ProgressData {
   task_id: string;
@@ -41,13 +48,25 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
   const [progressData, setProgressData] = useState<ProgressData | null>(null);
   const [isPolling, setIsPolling] = useState(true);
   const [currentStageIndex, setCurrentStageIndex] = useState(0);
+  const pollCountRef = useRef(0);
 
   const stages = progressStages[taskType] || progressStages.poem;
   const durations = stageDurations[taskType] || stageDurations.poem;
 
   useEffect(() => {
     if (isPolling) {
-      const interval = setInterval(fetchProgress, 2000); // Poll every 2 seconds
+      pollCountRef.current = 0; // Reset poll count on new task
+      const interval = setInterval(() => {
+        // Stop polling if max count reached
+        if (pollCountRef.current >= MAX_POLL_COUNT) {
+          logger.warn('Max poll count reached, stopping polling');
+          setIsPolling(false);
+          clearInterval(interval);
+          return;
+        }
+        pollCountRef.current++;
+        fetchProgress();
+      }, POLL_INTERVAL);
       fetchProgress(); // Initial fetch
       return () => clearInterval(interval);
     }
@@ -74,7 +93,12 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
         }
       }
     } catch (error) {
-      console.error('Failed to fetch progress:', error);
+      logger.error('Failed to fetch progress:', error);
+      // Stop polling on repeated errors
+      if (pollCountRef.current > 3) {
+        logger.warn('Multiple fetch errors, stopping polling');
+        setIsPolling(false);
+      }
     }
   };
 

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import { shouldUseGlassEffect, detectDevicePerformance } from '../../../utils/devicePerformance';
 
 interface LiquidGlassProps {
   children: ReactNode;
@@ -58,24 +59,37 @@ const LiquidGlass: React.FC<LiquidGlassProps> = ({
     }
   };
 
-  // Intensity configurations
-  const intensityConfig = {
-    subtle: {
-      blur: 'backdrop-blur-sm',
-      opacity: 'bg-opacity-30',
-      shadow: 'shadow-sm'
-    },
-    medium: {
-      blur: 'backdrop-blur-md',
-      opacity: 'bg-opacity-50',
-      shadow: 'shadow-md'
-    },
-    strong: {
-      blur: 'backdrop-blur-lg',
-      opacity: 'bg-opacity-70',
-      shadow: 'shadow-lg'
+  // 设备性能检测 - 低端设备禁用blur效果
+  const useGlassEffect = useMemo(() => shouldUseGlassEffect(), []);
+  const performanceLevel = useMemo(() => detectDevicePerformance(), []);
+
+  // Intensity configurations - 根据设备性能调整
+  const intensityConfig = useMemo(() => {
+    // 低端设备: 完全禁用blur，使用纯色背景
+    if (!useGlassEffect) {
+      return {
+        subtle: { blur: '', opacity: 'bg-opacity-90', shadow: 'shadow-sm' },
+        medium: { blur: '', opacity: 'bg-opacity-90', shadow: 'shadow-md' },
+        strong: { blur: '', opacity: 'bg-opacity-95', shadow: 'shadow-lg' },
+      };
     }
-  };
+
+    // 中等设备: 降低blur强度
+    if (performanceLevel === 'medium') {
+      return {
+        subtle: { blur: 'backdrop-blur-[2px]', opacity: 'bg-opacity-40', shadow: 'shadow-sm' },
+        medium: { blur: 'backdrop-blur-sm', opacity: 'bg-opacity-60', shadow: 'shadow-md' },
+        strong: { blur: 'backdrop-blur-md', opacity: 'bg-opacity-75', shadow: 'shadow-lg' },
+      };
+    }
+
+    // 高端设备: 完整效果
+    return {
+      subtle: { blur: 'backdrop-blur-sm', opacity: 'bg-opacity-30', shadow: 'shadow-sm' },
+      medium: { blur: 'backdrop-blur-md', opacity: 'bg-opacity-50', shadow: 'shadow-md' },
+      strong: { blur: 'backdrop-blur-lg', opacity: 'bg-opacity-70', shadow: 'shadow-lg' },
+    };
+  }, [useGlassEffect, performanceLevel]);
 
   const colors = colorConfig[color];
   const intensityStyles = intensityConfig[intensity];
@@ -127,8 +141,8 @@ const LiquidGlass: React.FC<LiquidGlassProps> = ({
       animate="animate"
       whileHover="hover"
     >
-      {/* Glass shimmer effect */}
-      {animated && (
+      {/* Glass shimmer effect - 仅在高端设备和启用动画时显示 */}
+      {animated && useGlassEffect && performanceLevel === 'high' && (
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
           variants={shimmerVariants}

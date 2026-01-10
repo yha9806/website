@@ -218,14 +218,19 @@ export const vulcaService = {
               culturalPerspectives: m.vulca_cultural_perspectives || {},
               evaluationDate: m.vulca_evaluation_date || new Date().toISOString()
             })),
+            differenceMatrix: [],
             summary: {
-              bestModel: selectedModels[0].name,
+              mostSimilar: {
+                models: selectedModels.length >= 2 ? [selectedModels[0].name, selectedModels[1].name] : [selectedModels[0].name],
+                difference: 3.2
+              },
+              mostDifferent: {
+                models: selectedModels.length >= 2 ? [selectedModels[0].name, selectedModels[selectedModels.length - 1].name] : [selectedModels[0].name],
+                difference: 8.5
+              },
               averageDifference: 5.2,
-              significantDimensions: ['creativity', 'innovation', 'impact'],
-              consensusDimensions: ['technique', 'context'],
             },
-            pairwiseComparisons: [],
-            timestamp: new Date().toISOString()
+            comparisonDate: new Date().toISOString()
           };
           
           return mockComparison;

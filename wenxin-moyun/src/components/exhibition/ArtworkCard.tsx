@@ -14,7 +14,11 @@ interface ArtworkCardProps {
 }
 
 export function ArtworkCard({ artwork, exhibitionId }: ArtworkCardProps) {
-  const thumbnail = artwork.images[0] || '/placeholder-artwork.jpg';
+  // Handle both string and ArtworkImage types
+  const firstImage = artwork.images[0];
+  const thumbnail = typeof firstImage === 'string'
+    ? firstImage
+    : firstImage?.url || artwork.image_url || '/placeholder-artwork.jpg';
 
   return (
     <Link to={`/exhibitions/${exhibitionId}/${artwork.id}`}>

@@ -15,7 +15,7 @@ import { EmojiIcon } from '../../components/ios/core/EmojiIcon';
 export function ExhibitionDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { exhibition, chapters, filteredArtworks, filters, setFilters, loading, error } =
-    useExhibitions();
+    useExhibitions(id);
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -45,7 +45,7 @@ export function ExhibitionDetailPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center max-w-md">
-          <EmojiIcon category="symbols" name="warning" size="xl" className="mx-auto mb-4" />
+          <EmojiIcon category="status" name="warning" size="xl" className="mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
             Exhibition Not Found
           </h2>
@@ -170,7 +170,7 @@ export function ExhibitionDetailPage() {
         </div>
       ) : (
         <div className="text-center py-16">
-          <EmojiIcon category="objects" name="search" size="xl" className="mx-auto mb-4 opacity-50" />
+          <EmojiIcon category="actions" name="search" size="xl" className="mx-auto mb-4 opacity-50" />
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
             No artworks found
           </h3>

@@ -1,9 +1,11 @@
 /**
- * Emoji Mapping Configuration
- * Maps business logic to Fluent Emoji assets
+ * Emoji Mapping Configuration (Optimized)
+ *
+ * 精简版本 - 从99个减少到52个 (-47.5%)
+ * 删除: lazyEmojis全部(30), model全部(5), 未使用的actions/rating/content项
  */
 
-// Core emojis that should be bundled (high frequency)
+// Core emojis - 仅保留实际使用的
 export const coreEmojis = {
   // Evaluation Status
   status: {
@@ -12,9 +14,8 @@ export const coreEmojis = {
     completed: '✅',
     failed: '❌',
     warning: '⚠️',
-    error: '❌',
   },
-  
+
   // Evaluation Types
   evaluationType: {
     poem: '📝',
@@ -23,7 +24,7 @@ export const coreEmojis = {
     music: '🎵',
     general: '✨',
   },
-  
+
   // Rankings
   rank: {
     1: '🥇',
@@ -33,167 +34,79 @@ export const coreEmojis = {
     rising: '🚀',
     new: '🆕',
   },
-  
+
   // Trends
   trend: {
     up: '📈',
     down: '📉',
     stable: '➖',
     hot: '🔥',
-    cold: '❄️',
   },
-  
+
   // User Feedback
   feedback: {
     success: '😊',
     error: '😔',
     info: 'ℹ️',
-    question: '❓',
     celebration: '🎉',
-    love: '❤️',
   },
-  
+
   // Navigation
   navigation: {
     home: '🏠',
     leaderboard: '📊',
     battle: '⚔️',
-    compare: '⚖️',
     evaluation: '📋',
-    analytics: '📈',
-    info: 'ℹ️',
     settings: '⚙️',
-    profile: '👤',
-    search: '🔍',
-    add: '➕',
-    close: '❌',
-    menu: '☰',
   },
-  
-  // Actions
+
+  // Actions (精简: 删除dislike, favorite, download, delete, sliders, balance)
   actions: {
     like: '👍',
-    dislike: '👎',
-    favorite: '⭐',
     share: '🔗',
-    download: '⬇️',
-    upload: '⬆️',
     edit: '✏️',
-    delete: '🗑️',
     refresh: '🔄',
     filter: '🔍',
-    search: '🔍',
-    close: '❌',
     check: '✅',
-    'chevron-down': '⬇️',
-    calendar: '📅',
-    sliders: '🎛️',
-    balance: '⚖️',
+    close: '❌',
     back: '◀️',
-    expand: '🔍',
-    layers: '📄',
-    maximize: '🔲',
-    list: '📋',
     warning: '⚠️',
     battle: '⚔️',
   },
-  
-  // Ratings
+
+  // Ratings (精简: 删除halfStar, emptyStar)
   rating: {
     star: '⭐',
-    halfStar: '⭐',
-    emptyStar: '☆',
     fire: '🔥',
     gem: '💎',
-    chart: '📊',
     trophy: '🏆',
+    highlight: '✨',
   },
-  
-  // AI Model
-  model: {
-    avatar: '🤖',
-    processing: '🧠',
-    creativity: '💡',
-    algorithm: '🔬',
-    neural: '🕸️',
-  },
-  
-  // Content Types
+
+  // Content Types (精简: 删除notifications, arrow, chapter, person)
   content: {
     organization: '🏢',
-    category: '📁',
     tag: '🏷️',
     text: '📝',
     visual: '🎨',
-    multimodal: '🔀',
-    portfolio: '📂',
-    compare: '🔄',
-    ranking: '📊',
-    notifications: '🔔',
+    frame: '🖼️',
+    video: '🎬',
+    gallery: '🎭',
+    exhibition: '🏛️',
   },
 };
 
-// Lazy-loaded emojis (low frequency, special occasions)
-export const lazyEmojis = {
-  // Special Achievements
-  achievements: {
-    firstPlace: '🏅',
-    milestone: '🎯',
-    breakthrough: '💡',
-    masterpiece: '🖼️',
-    legendary: '👑',
-    champion: '🏆',
-  },
-  
-  // Emotions (for detailed feedback)
-  emotions: {
-    love: '❤️',
-    excited: '🤩',
-    happy: '😄',
-    neutral: '😐',
-    sad: '😢',
-    angry: '😠',
-    surprised: '😮',
-    thinking: '🤔',
-  },
-  
-  // Special Events
-  events: {
-    birthday: '🎂',
-    anniversary: '🎊',
-    holiday: '🎁',
-    newYear: '🎆',
-    spring: '🌸',
-    summer: '☀️',
-    autumn: '🍂',
-    winter: '❄️',
-  },
-  
-  // Categories
-  categories: {
-    art: '🎨',
-    literature: '📚',
-    technology: '💻',
-    nature: '🌿',
-    culture: '🏛️',
-    innovation: '🚀',
-    tradition: '🏮',
-    modern: '🏙️',
-  },
-};
+// lazyEmojis 已删除 - 所有30个emoji从未使用
 
 // Helper function to get emoji with fallback
 export function getEmoji(
-  category: keyof typeof coreEmojis | keyof typeof lazyEmojis,
+  category: keyof typeof coreEmojis,
   key: string,
   fallback = '✨'
 ): string {
   try {
     if (category in coreEmojis) {
-      return (coreEmojis as any)[category][key] || fallback;
-    }
-    if (category in lazyEmojis) {
-      return (lazyEmojis as any)[category][key] || fallback;
+      return (coreEmojis as Record<string, Record<string, string>>)[category][key] || fallback;
     }
     return fallback;
   } catch {
@@ -203,22 +116,4 @@ export function getEmoji(
 
 // Type definitions for TypeScript support
 export type CoreEmojiCategory = keyof typeof coreEmojis;
-export type LazyEmojiCategory = keyof typeof lazyEmojis;
-export type EmojiKey<T extends CoreEmojiCategory | LazyEmojiCategory> = 
-  T extends CoreEmojiCategory ? keyof typeof coreEmojis[T] :
-  T extends LazyEmojiCategory ? keyof typeof lazyEmojis[T] : never;
-
-// Export emoji SVG paths (will be populated from fluent-emoji-complete.html)
-export const emojiSvgPaths: Record<string, string> = {};
-
-// Function to lazy load emoji SVG
-export async function loadEmojiSvg(emoji: string): Promise<string> {
-  if (emojiSvgPaths[emoji]) {
-    return emojiSvgPaths[emoji];
-  }
-  
-  // TODO: Implement SVG loading when emoji assets are available
-  // For now, return Unicode emoji directly to avoid build errors
-  console.debug(`Using Unicode fallback for emoji: ${emoji}`);
-  return emoji; // Fallback to Unicode emoji
-}
+export type EmojiKey<T extends CoreEmojiCategory> = keyof (typeof coreEmojis)[T];

@@ -3,6 +3,9 @@ import type { AxiosInstance, AxiosError } from 'axios';
 import { getGuestHeaders } from '../utils/guestSession';
 import { apiCache, staticCache, cacheKeys } from '../utils/cache';
 import { getItem, removeItem } from '../utils/storageUtils';
+import { createLogger } from '../utils/logger';
+
+const logger = createLogger('API');
 
 // API base configuration
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
@@ -173,7 +176,7 @@ export const cacheUtils = {
   checkVersion: () => {
     const currentVersion = localStorage.getItem(VERSION_KEY);
     if (currentVersion !== CACHE_VERSION) {
-      console.log(`Cache: Version update detected (${currentVersion} → ${CACHE_VERSION}), clearing caches`);
+      logger.log(`Cache: Version update detected (${currentVersion} → ${CACHE_VERSION}), clearing caches`);
       cacheUtils.clearAll();
       localStorage.setItem(VERSION_KEY, CACHE_VERSION);
       return true; // Version was updated
@@ -184,13 +187,13 @@ export const cacheUtils = {
   // Validate model data integrity
   validateModelData: (models: any[]) => {
     if (!Array.isArray(models)) {
-      console.warn('Cache: Invalid model data format');
+      logger.warn('Cache: Invalid model data format');
       return false;
     }
     
     const modelCount = models.length;
     if (modelCount !== EXPECTED_MODEL_COUNT) {
-      console.warn(`Cache: Model count mismatch (${modelCount} !== ${EXPECTED_MODEL_COUNT}), clearing cache`);
+      logger.warn(`Cache: Model count mismatch (${modelCount} !== ${EXPECTED_MODEL_COUNT}), clearing cache`);
       cacheUtils.clearModelCache();
       return false;
     }
@@ -203,12 +206,12 @@ export const cacheUtils = {
     );
     
     if (realModels.length === 0) {
-      console.warn('Cache: No real model data detected, clearing cache');
+      logger.warn('Cache: No real model data detected, clearing cache');
       cacheUtils.clearModelCache();
       return false;
     }
     
-    console.log(`Cache: Model data validated (${modelCount} models, ${realModels.length} with real data)`);
+    logger.log(`Cache: Model data validated (${modelCount} models, ${realModels.length} with real data)`);
     return true;
   },
   
@@ -232,9 +235,9 @@ export const cacheUtils = {
         }
       }
       
-      console.log('Cache: Warmed up successfully');
+      logger.log('Cache: Warmed up successfully');
     } catch (error) {
-      console.warn('Cache: Warm up failed:', error);
+      logger.warn('Cache: Warm up failed:', error);
     }
   },
 };
@@ -336,13 +339,13 @@ export const modelsApi = {
     if (forceRefresh) {
       // Clear cache and fetch fresh data
       staticCache.invalidate(cacheKey);
-      console.log('Models API: Force refresh requested, bypassing cache');
+      logger.log('Models API: Force refresh requested, bypassing cache');
     }
     
     const result = await staticCache.get(
       cacheKey,
       async () => {
-        console.log('Models API: Fetching fresh data from server');
+        logger.log('Models API: Fetching fresh data from server');
         return apiClient.get('/models/', { params });
       }
     );
@@ -361,7 +364,7 @@ export const modelsApi = {
     
     if (forceRefresh) {
       staticCache.invalidate(cacheKey);
-      console.log(`Models API: Force refresh for model ${id}`);
+      logger.log(`Models API: Force refresh for model ${id}`);
     }
     
     return staticCache.get(

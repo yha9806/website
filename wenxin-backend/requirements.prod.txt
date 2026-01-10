@@ -34,3 +34,9 @@ gunicorn==21.2.0
 cloud-sql-python-connector[asyncpg]==1.18.3
 google-cloud-secret-manager==2.18.1
 google-cloud-logging==3.8.0
+
+# Exhibition Module (LanceDB + Embeddings)
+lancedb>=0.4.0
+sentence-transformers==2.2.2
+torch>=2.0.0
+pyarrow>=14.0.0

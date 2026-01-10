@@ -5,10 +5,11 @@
 
 import { vulcaService } from '../utils/vulca/api';
 import { VULCA_47_DIMENSIONS, getDimensionLabel } from '../utils/vulca-dimensions';
-import type { 
-  VULCAEvaluation, 
+import type {
+  VULCAEvaluation,
   VULCAScore6D,
-  VULCADimensionInfo 
+  VULCADimensionInfo,
+  CulturalPerspective
 } from '../types/vulca';
 
 interface ModelVULCAData {
@@ -165,19 +166,19 @@ class VULCADataManager {
     const scores47D = this.generateComplete47DData(scores6D);
     
     // 生成文化视角数据
-    const culturalPerspectives = {
-      western: { score: 85 + Math.random() * 10 },
-      eastern: { score: 85 + Math.random() * 10 },
-      african: { score: 85 + Math.random() * 10 },
-      latin_american: { score: 85 + Math.random() * 10 },
-      middle_eastern: { score: 85 + Math.random() * 10 },
-      south_asian: { score: 85 + Math.random() * 10 },
-      oceanic: { score: 85 + Math.random() * 10 },
-      indigenous: { score: 85 + Math.random() * 10 },
+    const culturalPerspectives: CulturalPerspective = {
+      western: 85 + Math.random() * 10,
+      eastern: 85 + Math.random() * 10,
+      african: 85 + Math.random() * 10,
+      latin_american: 85 + Math.random() * 10,
+      middle_eastern: 85 + Math.random() * 10,
+      south_asian: 85 + Math.random() * 10,
+      oceanic: 85 + Math.random() * 10,
+      indigenous: 85 + Math.random() * 10,
     };
-    
+
     return {
-      modelId: parseInt(modelId) || 0,
+      modelId: modelId,
       modelName: modelName,
       scores6D,
       scores47D,

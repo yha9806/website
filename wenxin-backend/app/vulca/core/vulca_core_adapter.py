@@ -189,8 +189,8 @@ class VULCACoreAdapter:
             else:
                 scores_47d_named[key] = value
                 
-        return scores_47d
-        
+        return scores_47d_named
+
     def apply_cultural_perspective(
         self, 
         scores_47d: Dict[str, float], 

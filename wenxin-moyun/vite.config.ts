@@ -33,7 +33,9 @@ export default defineConfig({
           router: ['react-router-dom'],
           ui: ['framer-motion', '@headlessui/react'],
           charts: ['recharts', 'd3-array', 'd3-scale', 'd3-shape'],
-          utils: ['axios', 'clsx', 'zustand']
+          utils: ['axios', 'clsx', 'zustand'],
+          // 大数据文件独立分块 (780KB)
+          'exhibition-negative-space': ['./src/data/exhibitions/negative-space']
         }
       }
     },
@@ -52,15 +54,15 @@ export default defineConfig({
     headers: {
       'Cache-Control': 'no-cache, no-store, must-revalidate'
     },
-    // Windows file watching optimization
+    // Windows file watching optimization - 优化CPU占用
     watch: {
-      usePolling: true,
-      interval: 100
+      usePolling: false,  // 使用系统文件监听减少CPU轮询
+      interval: 1000      // 降低轮询频率
     },
     // HMR configuration for better reliability
     hmr: {
       overlay: true,
-      timeout: 60000
+      timeout: 30000      // 从60s降到30s
     }
   },
   
@@ -86,8 +88,8 @@ export default defineConfig({
       '@headlessui/react'
     ],
     exclude: ['@vite/client', '@vite/env'],
-    // Force dependency pre-bundling to avoid stale cache
-    force: true,
+    // 使用缓存提升启动速度 (移除force:true)
+    force: false,
     // Entries to scan for dependencies
     entries: ['src/**/*.tsx', 'src/**/*.ts']
   },

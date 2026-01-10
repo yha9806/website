@@ -81,18 +81,15 @@ export {
   hapticFeedback 
 } from './utils/animations';
 
-export { 
-  coreEmojis, 
-  lazyEmojis, 
-  getEmoji, 
-  loadEmojiSvg 
+export {
+  coreEmojis,
+  getEmoji,
 } from './utils/emojiMap';
 
 // Type exports
-export type { 
-  CoreEmojiCategory, 
-  LazyEmojiCategory, 
-  EmojiKey 
+export type {
+  CoreEmojiCategory,
+  EmojiKey,
 } from './utils/emojiMap';
 
 /**

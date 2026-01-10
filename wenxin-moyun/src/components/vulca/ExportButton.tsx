@@ -23,10 +23,13 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
   size = 'default',
   className = '',
 }) => {
+  // Map size to IOSButton compatible values
+  const iosSize = size === 'icon' ? 'sm' : size === 'default' ? 'md' : size;
+
   return (
     <IOSButton
       variant={variant === 'outline' ? 'secondary' : 'primary'}
-      size={size}
+      size={iosSize as 'sm' | 'md' | 'lg'}
       onClick={onClick}
       disabled={disabled}
       className={`flex items-center gap-2 ${className}`}

@@ -19,8 +19,17 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const hasMultipleImages = artwork.images.length > 1;
+  // Handle images - they can be strings or objects with url property
+  const getImageUrl = (image: string | { url: string }) => {
+    if (typeof image === 'string') return image;
+    return image?.url || '';
+  };
+
+  const hasMultipleImages = artwork.images && artwork.images.length > 1;
   const hasVideo = !!artwork.video_url;
+
+  // Get artist initials safely
+  const artistInitials = (artwork.artist?.firstName?.[0] || '') + (artwork.artist?.lastName?.[0] || '') || '?';
 
   return (
     <div className="space-y-6">
@@ -31,7 +40,7 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
           <AnimatePresence mode="wait">
             <motion.img
               key={currentImageIndex}
-              src={artwork.images[currentImageIndex]}
+              src={getImageUrl(artwork.images?.[currentImageIndex]) || artwork.image_url || ''}
               alt={`${artwork.title} - Image ${currentImageIndex + 1}`}
               className="w-full h-full object-contain"
               initial={{ opacity: 0 }}
@@ -93,7 +102,7 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
                   }
                 `}
               >
-                <img src={image} alt="" className="w-full h-full object-cover" />
+                <img src={getImageUrl(image)} alt="" className="w-full h-full object-cover" />
               </button>
             ))}
           </div>
@@ -109,36 +118,39 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
           className="block"
         >
           <IOSButton variant="secondary" className="w-full" glassMorphism>
-            <EmojiIcon category="objects" name="video" size="sm" />
+            <EmojiIcon category="content" name="video" size="sm" />
             Watch Video
           </IOSButton>
         </a>
       )}
 
       {/* Artwork Info */}
-      <IOSCard variant="filled">
+      <IOSCard variant="elevated">
         <IOSCardContent className="space-y-4">
           {/* Title & Chapter */}
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
               {artwork.title}
             </h1>
-            <p className="text-sm text-blue-500 mt-1">{artwork.chapter.name}</p>
+            {artwork.chapter && (
+              <p className="text-sm text-blue-500 mt-1">{artwork.chapter.name}</p>
+            )}
           </div>
 
           {/* Artist */}
           <div className="flex items-center gap-3 py-3 border-t border-b border-gray-200 dark:border-gray-700">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
-              {artwork.artist.firstName[0]}
-              {artwork.artist.lastName[0]}
+              {artistInitials}
             </div>
             <div>
               <p className="font-semibold text-gray-900 dark:text-white">
-                {artwork.artist.fullName}
+                {artwork.artist?.fullName || artwork.artist?.nickname || 'Unknown Artist'}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {artwork.artist.school} · {artwork.artist.major}
-              </p>
+              {(artwork.artist?.school || artwork.artist?.major) && (
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {[artwork.artist.school, artwork.artist.major].filter(Boolean).join(' · ')}
+                </p>
+              )}
             </div>
           </div>
 
@@ -175,27 +187,29 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
           </div>
 
           {/* Description */}
-          <div>
-            <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">About</p>
-            <div className={`text-sm text-gray-700 dark:text-gray-300 ${!isExpanded ? 'line-clamp-4' : ''}`}>
-              {artwork.description.split('\n').map((paragraph, index) => (
-                <p key={index} className="mb-2">
-                  {paragraph}
-                </p>
-              ))}
+          {artwork.description && (
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">About</p>
+              <div className={`text-sm text-gray-700 dark:text-gray-300 ${!isExpanded ? 'line-clamp-4' : ''}`}>
+                {artwork.description.split('\n').map((paragraph, index) => (
+                  <p key={index} className="mb-2">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+              {artwork.description.length > 300 && (
+                <button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="text-blue-500 text-sm font-medium mt-2"
+                >
+                  {isExpanded ? 'Show Less' : 'Read More'}
+                </button>
+              )}
             </div>
-            {artwork.description.length > 300 && (
-              <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="text-blue-500 text-sm font-medium mt-2"
-              >
-                {isExpanded ? 'Show Less' : 'Read More'}
-              </button>
-            )}
-          </div>
+          )}
 
           {/* Categories */}
-          {artwork.categories.length > 0 && (
+          {artwork.categories && artwork.categories.length > 0 && (
             <div className="flex flex-wrap gap-2 pt-3 border-t border-gray-200 dark:border-gray-700">
               {artwork.categories.map((category, index) => (
                 <span
@@ -212,7 +226,7 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
 
       {/* Artist Bio */}
       {artwork.artist.profile && (
-        <IOSCard variant="outlined">
+        <IOSCard variant="bordered">
           <IOSCardContent>
             <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
               About the Artist

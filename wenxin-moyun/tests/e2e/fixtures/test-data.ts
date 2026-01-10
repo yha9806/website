@@ -63,10 +63,11 @@ export const TEST_TIMEOUTS = {
 };
 
 export const TEST_URLS = {
-  home: '/',
-  login: '/login',
-  leaderboard: '/leaderboard',
-  battle: '/battle',
-  evaluations: '/evaluations',
-  about: '/about'
+  home: '/#/',
+  login: '/#/login',
+  leaderboard: '/#/leaderboard',
+  battle: '/#/battle',
+  evaluations: '/#/evaluations',
+  vulca: '/#/vulca',
+  about: '/#/about'
 };

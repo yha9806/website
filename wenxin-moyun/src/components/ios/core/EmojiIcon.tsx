@@ -1,19 +1,15 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  coreEmojis, 
-  lazyEmojis, 
-  getEmoji, 
-  loadEmojiSvg,
+import {
+  coreEmojis,
+  getEmoji,
   type CoreEmojiCategory,
-  type LazyEmojiCategory,
-  type EmojiKey
 } from '../utils/emojiMap';
-import { iosAnimations, hapticFeedback } from '../utils/animations';
+import { hapticFeedback } from '../utils/animations';
 
-interface EmojiIconProps<T extends CoreEmojiCategory | LazyEmojiCategory> {
-  category: T;
-  name: EmojiKey<T>;
+interface EmojiIconProps {
+  category: CoreEmojiCategory;
+  name: string;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   animated?: boolean;
   animationType?: 'pulse' | 'bounce' | 'rotate' | 'shake' | 'none';
@@ -68,7 +64,7 @@ const animationMap = {
   none: {},
 };
 
-export function EmojiIcon<T extends CoreEmojiCategory | LazyEmojiCategory>({
+export function EmojiIcon({
   category,
   name,
   size = 'md',
@@ -78,34 +74,11 @@ export function EmojiIcon<T extends CoreEmojiCategory | LazyEmojiCategory>({
   showTooltip = false,
   className = '',
   onClick,
-}: EmojiIconProps<T>) {
-  const [svgContent, setSvgContent] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+}: EmojiIconProps) {
   const [showTooltipState, setShowTooltipState] = useState(false);
-  
-  // Get the emoji character (Unicode fallback)
-  const emojiChar = getEmoji(category, name as string);
-  
-  // Load SVG content if available
-  useEffect(() => {
-    // For core emojis, we'll use Unicode directly for now
-    // In production, these would be imported as modules
-    if (category in coreEmojis) {
-      setSvgContent(null); // Use Unicode
-    } else {
-      // For lazy emojis, attempt to load SVG
-      setIsLoading(true);
-      loadEmojiSvg(emojiChar)
-        .then(svg => {
-          setSvgContent(svg);
-          setIsLoading(false);
-        })
-        .catch(() => {
-          setSvgContent(null); // Fallback to Unicode
-          setIsLoading(false);
-        });
-    }
-  }, [category, name, emojiChar]);
+
+  // Get the emoji character (Unicode)
+  const emojiChar = getEmoji(category, name);
   
   const handleClick = () => {
     if (onClick) {
@@ -113,13 +86,9 @@ export function EmojiIcon<T extends CoreEmojiCategory | LazyEmojiCategory>({
     }
   };
   
-  const emojiContent = svgContent ? (
-    <div 
-      className={`${sizeMap[size]} ${className}`}
-      dangerouslySetInnerHTML={{ __html: svgContent }}
-    />
-  ) : (
-    <span 
+  // 直接使用Unicode emoji
+  const emojiContent = (
+    <span
       className={`${sizeMap[size]} ${className} flex items-center justify-center`}
       style={{ fontSize: size === 'xs' ? '14px' : size === 'sm' ? '16px' : size === 'md' ? '20px' : size === 'lg' ? '28px' : size === 'xl' ? '36px' : '48px' }}
     >
@@ -144,11 +113,7 @@ export function EmojiIcon<T extends CoreEmojiCategory | LazyEmojiCategory>({
         onMouseLeave={() => showTooltip && setShowTooltipState(false)}
         {...motionProps}
       >
-        {isLoading ? (
-          <div className={`${sizeMap[size]} bg-gray-200 dark:bg-gray-700 rounded animate-pulse`} />
-        ) : (
-          emojiContent
-        )}
+        {emojiContent}
       </motion.div>
       
       {/* Tooltip */}
@@ -169,10 +134,13 @@ export function EmojiIcon<T extends CoreEmojiCategory | LazyEmojiCategory>({
   );
 }
 
+// Size type for convenience components
+type EmojiSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+
 // Convenience components for common emoji types
 export const StatusEmoji: React.FC<{
   status: keyof typeof coreEmojis.status;
-  size?: EmojiIconProps<'status'>['size'];
+  size?: EmojiSize;
   animated?: boolean;
 }> = ({ status, size = 'md', animated = true }) => {
   const animationType = status === 'processing' ? 'rotate' : 
@@ -192,15 +160,15 @@ export const StatusEmoji: React.FC<{
 
 export const RankEmoji: React.FC<{
   rank: number;
-  size?: EmojiIconProps<'rank'>['size'];
+  size?: EmojiSize;
   animated?: boolean;
 }> = ({ rank, size = 'md', animated = false }) => {
   const rankKey = rank <= 3 ? rank.toString() : rank <= 10 ? 'top10' : 'rising';
-  
+
   return (
     <EmojiIcon
       category="rank"
-      name={rankKey as keyof typeof coreEmojis.rank}
+      name={rankKey}
       size={size}
       animated={animated}
       animationType="pulse"
@@ -210,7 +178,7 @@ export const RankEmoji: React.FC<{
 
 export const TypeEmoji: React.FC<{
   type: keyof typeof coreEmojis.evaluationType;
-  size?: EmojiIconProps<'evaluationType'>['size'];
+  size?: EmojiSize;
 }> = ({ type, size = 'md' }) => {
   return (
     <EmojiIcon

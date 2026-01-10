@@ -6,27 +6,43 @@
 
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useArtwork, useExhibitions } from '../../hooks/exhibitions';
-import { ArtworkDetail, DialogueViewer, ArtworkCard } from '../../components/exhibition';
+import { useExhibitions } from '../../hooks/exhibitions';
+import { ArtworkDetail, DialogueViewer, ArtworkCard, CritiqueViewer } from '../../components/exhibition';
 import { IOSButton } from '../../components/ios/core/IOSButton';
 import { EmojiIcon } from '../../components/ios/core/EmojiIcon';
 
 export function ArtworkPage() {
   const { id: exhibitionId, artworkId } = useParams<{ id: string; artworkId: string }>();
   const navigate = useNavigate();
-  const { artwork, dialogue, loading: artworkLoading, error: artworkError } = useArtwork(artworkId || '0');
-  const { artworks } = useExhibitions();
+  const {
+    artworks,
+    getArtworkById,
+    getDialogueByArtworkId,
+    loading: artworkLoading,
+    error: artworkError,
+    exhibition
+  } = useExhibitions(exhibitionId);
+
+  // Get artwork and dialogue from the exhibition
+  const artwork = getArtworkById(artworkId || '');
+  const dialogue = getDialogueByArtworkId(artworkId || '');
 
   // Get dialogues - prefer from artwork, fallback to direct hook result
   const dialogues = artwork?.dialogues?.length ? artwork.dialogues : (dialogue ? [dialogue] : []);
 
-  // Get related artworks (same chapter, excluding current)
-  const relatedArtworks = artworks
-    .filter(
-      (a) =>
-        a.chapter.id === artwork?.chapter.id && a.id !== artwork?.id
-    )
-    .slice(0, 4);
+  // Get critiques and personas for RPAIT display (Negative Space exhibition)
+  const critiques = artwork?.critiques || [];
+  const personas = exhibition?.personas || [];
+
+  // Get related artworks (same chapter, excluding current, or random for flat exhibitions)
+  const relatedArtworks = artwork?.chapter
+    ? artworks
+        .filter(
+          (a) =>
+            a.chapter?.id === artwork.chapter?.id && a.id !== artwork.id
+        )
+        .slice(0, 4)
+    : artworks.filter((a) => a.id !== artwork?.id).slice(0, 4);
 
   // Navigate to next/prev artwork
   const currentIndex = artworks.findIndex((a) => a.id === artwork?.id);
@@ -48,7 +64,7 @@ export function ArtworkPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center max-w-md">
-          <EmojiIcon category="symbols" name="warning" size="xl" className="mx-auto mb-4" />
+          <EmojiIcon category="status" name="warning" size="xl" className="mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
             Artwork Not Found
           </h2>
@@ -88,6 +104,17 @@ export function ArtworkPage() {
       {dialogues.length > 0 && (
         <div className="mt-8">
           <DialogueViewer dialogues={dialogues} artworkTitle={artwork.title} />
+        </div>
+      )}
+
+      {/* RPAIT Critiques Section (Negative Space of the Tide) */}
+      {critiques.length > 0 && personas.length > 0 && (
+        <div className="mt-8">
+          <CritiqueViewer
+            critiques={critiques}
+            personas={personas}
+            artworkTitle={artwork.title}
+          />
         </div>
       )}
 
@@ -132,7 +159,7 @@ export function ArtworkPage() {
       {relatedArtworks.length > 0 && (
         <div className="mt-12">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-            More from {artwork.chapter.name}
+            {artwork.chapter ? `More from ${artwork.chapter.name}` : 'More Artworks'}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {relatedArtworks.map((related) => (

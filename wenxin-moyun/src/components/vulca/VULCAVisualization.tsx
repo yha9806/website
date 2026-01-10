@@ -35,6 +35,40 @@ import type {
 import DimensionGroupView from './DimensionGroupView';
 import { DIMENSION_CATEGORIES, getDimensionCategory, getDimensionLabel, CULTURAL_PERSPECTIVES } from '../../utils/vulca-dimensions';
 
+// Enhanced helper function to format dimension names from any format
+const formatDimensionName = (text: string): string => {
+  if (!text) return '';
+  
+  // If already has proper spacing (contains space and doesn't have underscore), return as-is
+  if (text.includes(' ') && !text.includes('_')) {
+    return text;
+  }
+  
+  // Handle snake_case: innovation_depth -> Innovation Depth
+  if (text.includes('_')) {
+    return text.split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  }
+  
+  // Handle camelCase/PascalCase: InnovationDepth -> Innovation Depth
+  // More comprehensive approach for better camelCase handling
+  let result = text
+    // Insert space before uppercase letters that follow lowercase letters or digits
+    .replace(/([a-z\d])([A-Z])/g, '$1 $2')
+    // Insert space between consecutive uppercase letters followed by lowercase
+    .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2');
+  
+  // Ensure first letter is uppercase
+  result = result.charAt(0).toUpperCase() + result.slice(1);
+  
+  // Clean up any multiple spaces
+  return result.replace(/\s+/g, ' ').trim();
+};
+
+// Keep the old function for compatibility
+const camelCaseToWords = formatDimensionName;
+
 interface VULCAVisualizationProps {
   evaluations: VULCAEvaluation[];
   dimensions: { id: string; name: string; description: string }[];
@@ -56,6 +90,8 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const [selectedCulturalPerspective, setSelectedCulturalPerspective] = useState<string>('eastern');
+  const [dimensionFilter, setDimensionFilter] = useState<'all' | 'high-variance' | 'top-performance' | 'custom'>('high-variance');
+  const [customDimensionCount, setCustomDimensionCount] = useState<number>(15);
   
   // Filter dimensions by category for 47D mode
   const filteredDimensions = useMemo(() => {
@@ -63,8 +99,6 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
       return dimensions.slice(0, 6);
     }
     
-    // Debug: Log dimensions to see what we're working with
-    console.log('VULCAVisualization dimensions:', dimensions.slice(0, 3));
     
     if (selectedCategory === 'all') {
       return dimensions;
@@ -85,7 +119,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
       filteredDimensions.length);
     
     return radarDimensions.map(dim => {
-      const dataPoint: any = { dimension: getDimensionLabel(dim.id) };
+      const dataPoint: any = { dimension: dim.name };
       
       evaluations.forEach((evaluation, index) => {
         const scores = viewMode === '6d' ? evaluation.scores6D : evaluation.scores47D;
@@ -130,7 +164,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
           y: modelIndex,
           value: scores ? (scores[dim.id as keyof typeof scores] || 0) : 0,
           model: evaluation.modelName,
-          dimension: getDimensionLabel(dim.id),
+          dimension: dim.name,
         });
       });
     });
@@ -584,12 +618,24 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
     // For 47D mode with many dimensions, use bar chart for better readability
     if (viewMode === '47d' && filteredDimensions.length > 12) {
       // Prepare bar data for 47D visualization
-      const barData47D = filteredDimensions.map(dim => {
-        // Use getDimensionLabel to get the proper dimension name
-        const properName = getDimensionLabel(dim.id);
+      const barData47D = filteredDimensions.map((dim, index) => {
+        // Store the raw dimension name/id for the Y-axis
+        // The tickFormatter will handle the formatting
+        const rawName = dim.name || dim.id;
+        
+        // Get the properly formatted name for tooltip display
+        let properName = getDimensionLabel(dim.id);
+        if (!properName || properName === dim.id) {
+          properName = formatDimensionName(rawName);
+        } else {
+          properName = formatDimensionName(properName);
+        }
+        
         const dataPoint: any = { 
-          dimension: properName.length > 15 ? properName.substring(0, 15) + '...' : properName,
-          fullName: properName
+          dimension: rawName,  // Raw name for Y-axis (tickFormatter will format it)
+          fullName: properName,  // Formatted name for tooltip
+          originalIndex: index,
+          dimensionId: dim.id
         };
         evaluations.forEach((evaluation) => {
           const scores = evaluation.scores47D;
@@ -611,7 +657,35 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis type="number" domain={[0, 100]} />
-              <YAxis dataKey="dimension" type="category" width={100} tick={{ fontSize: 10 }} />
+              <YAxis
+                dataKey="dimension"
+                type="category"
+                width={140}
+                tick={(props: { x: number; y: number; payload?: { value?: string } }) => {
+                  const { x, y, payload } = props;
+                  if (!payload?.value) {
+                    return <text x={x} y={y}></text>;
+                  }
+
+                  // Apply formatDimensionName to ensure proper spacing
+                  const formatted = formatDimensionName(payload.value);
+                  const displayText = formatted.length > 28 ? formatted.substring(0, 25) + '...' : formatted;
+
+                  return (
+                    <text
+                      x={x}
+                      y={y}
+                      dy={4}
+                      textAnchor="end"
+                      fill="#666"
+                      fontSize="10"
+                      className="recharts-text recharts-cartesian-axis-tick-value"
+                    >
+                      {displayText}
+                    </text>
+                  );
+                }}
+              />
               <Tooltip content={({ active, payload }) => {
                 if (active && payload && payload.length) {
                   return (
@@ -641,6 +715,9 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
       );
     }
 
+    // Capture viewMode to avoid type narrowing issues
+    const currentViewMode: ViewMode = viewMode as ViewMode;
+
     // Original detailed visualization logic for smaller dimension sets
     switch (visualizationType) {
       case 'radar':
@@ -654,7 +731,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
                 <PolarRadiusAxis angle={90} domain={[0, 100]} />
                 <Tooltip />
                 <Legend />
-              
+
               {evaluations.map((evaluation, index) => {
                 const modelKey = evaluation.modelName || `model_${index}`;
                 return (
@@ -673,8 +750,28 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
           </ResponsiveContainer>
           );
         }
-        // Fall through to bar chart for large dimension sets
-      
+        // For large dimension sets, render bar chart instead
+        return (
+          <ResponsiveContainer width="100%" height={500}>
+            <BarChart data={barData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="model" />
+              <YAxis domain={[0, 100]} />
+              <Tooltip />
+              <Legend />
+
+              {filteredDimensions.map((dim, index) => (
+                <Bar
+                  key={dim.id}
+                  dataKey={dim.id}
+                  name={getDimensionLabel(dim.id)}
+                  fill={colors[index % colors.length]}
+                />
+              ))}
+            </BarChart>
+          </ResponsiveContainer>
+        );
+
       case 'bar':
         return (
           <ResponsiveContainer width="100%" height={500}>
@@ -698,7 +795,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
         );
       
       case 'heatmap':
-        const heatmapDimSlice = filteredDimensions.slice(0, viewMode === '6d' ? 6 : 
+        const heatmapDimSlice = filteredDimensions.slice(0, currentViewMode === '6d' ? 6 :
           filteredDimensions.length);
         
         return (
@@ -762,12 +859,12 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
       
       case 'parallel':
         // For detailed view, show enhanced parallel coordinates
-        if (viewLevel === 'detailed' && viewMode === '47d') {
+        if (viewLevel === 'detailed' && currentViewMode === '47d') {
           return renderDetailedParallelView();
         }
-        
+
         // Original parallel view for overview/grouped modes
-        const selectedDims = filteredDimensions.slice(0, viewMode === '6d' ? 6 : 
+        const selectedDims = filteredDimensions.slice(0, currentViewMode === '6d' ? 6 :
           Math.min(filteredDimensions.length, 12)); // Limit to 12 for readability
         
         return (

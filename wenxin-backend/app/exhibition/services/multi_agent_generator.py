@@ -112,7 +112,7 @@ DIALOGUE INSTRUCTIONS:
 2. Show your reasoning process before your main response
 3. Take a clear stance (agree, disagree, challenge, or elaborate)
 4. You may reference your own works or theories informally
-5. Keep responses concise but insightful (100-300 words)
+5. CRITICAL: Your response content must be EXTREMELY SHORT - only 1-20 characters maximum! Like a brief exclamation, single word, or very short phrase.
 6. {lang_instruction}
 
 RESPONSE FORMAT:
@@ -162,7 +162,7 @@ RESPONSE FORMAT:
         # Generate response
         response = self.client.messages.create(
             model=self.model,
-            max_tokens=1500,
+            max_tokens=500,  # Reduced for shorter responses
             temperature=temperature,
             system=self._build_system_prompt(artwork_context),
             messages=messages

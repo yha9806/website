@@ -20,24 +20,29 @@ export function ChapterNav({
   onSelectChapter,
   showAll = true,
 }: ChapterNavProps) {
-  const options = [
-    ...(showAll ? [{ value: 'all', label: 'All Works' }] : []),
+  const segments = [
+    ...(showAll ? [{ id: 'all', label: 'All Works', value: 'all' }] : []),
     ...chapters.map((chapter) => ({
-      value: String(chapter.id),
+      id: String(chapter.id),
       label: chapter.name,
+      value: String(chapter.id),
     })),
   ];
 
-  const selectedValue = selectedChapterId === null ? 'all' : String(selectedChapterId);
+  // Find the selected index
+  const selectedIndex = selectedChapterId === null
+    ? 0
+    : segments.findIndex(s => s.value === String(selectedChapterId));
 
   return (
     <div className="w-full overflow-x-auto scrollbar-hide">
       <div className="min-w-max">
         <IOSSegmentedControl
-          options={options}
-          value={selectedValue}
-          onChange={(value) => {
-            onSelectChapter(value === 'all' ? null : parseInt(value, 10));
+          segments={segments}
+          selectedIndex={selectedIndex >= 0 ? selectedIndex : 0}
+          onChange={(index, segment) => {
+            const value = typeof segment === 'string' ? segment : segment.value;
+            onSelectChapter(value === 'all' ? null : parseInt(String(value), 10));
           }}
         />
       </div>

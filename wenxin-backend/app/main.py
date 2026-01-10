@@ -9,6 +9,8 @@ from app.core.config import settings
 from app.core.database import init_db
 from app.api.v1 import api_router
 from app.vulca import vulca_router
+# Temporarily disabled - requires sentence-transformers
+# from app.exhibition.api import router as exhibition_router
 
 
 @asynccontextmanager
@@ -32,34 +34,11 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Set up CORS  
-# Allow localhost origins for development and production URLs
-cors_origins = [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "http://localhost:5175",
-    "http://localhost:5176",
-    "http://localhost:5177",
-    "http://localhost:5178",
-    "http://localhost:5179",
-    "http://localhost:5180",
-    "http://localhost:5181",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:5174",
-    "http://127.0.0.1:5175",
-    "http://127.0.0.1:5176",
-    "http://127.0.0.1:5177",
-    "http://127.0.0.1:5178",
-    "http://127.0.0.1:5179",
-    "http://127.0.0.1:5180",
-    "http://127.0.0.1:5181",
-    # Production URLs - The single official URL
-    "https://storage.googleapis.com"
-]
-print(f"Setting up CORS with origins: {cors_origins}")
+# Set up CORS from configuration
+print(f"Setting up CORS with origins: {settings.CORS_ORIGINS}")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins,
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -90,6 +69,10 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 
 # Include VULCA router
 app.include_router(vulca_router)
+
+# Include Exhibition router (Echoes and Returns)
+# Temporarily disabled - requires sentence-transformers
+# app.include_router(exhibition_router, prefix=settings.API_V1_STR)
 
 
 @app.get("/health")
@@ -151,12 +134,6 @@ async def root():
     </html>
     """
     return HTMLResponse(content=html_content, status_code=200)
-
-
-@app.get("/health")
-async def health_check():
-    """Health check endpoint"""
-    return {"status": "healthy"}
 
 
 @app.get("/favicon.ico")

@@ -2,40 +2,21 @@
  * ExhibitionsPage
  *
  * Main page displaying all exhibitions
+ *
+ * @updated 2026-01-10 - Added multi-exhibition support
  */
 
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useExhibitions } from '../../hooks/exhibitions';
-import { ExhibitionCard } from '../../components/exhibition';
+import { ALL_EXHIBITIONS } from '../../data/exhibitions';
 import { EmojiIcon } from '../../components/ios/core/EmojiIcon';
+import { IOSCard, IOSCardContent, IOSCardHeader, IOSCardFooter } from '../../components/ios/core/IOSCard';
+import { IOSButton } from '../../components/ios/core/IOSButton';
 
 export function ExhibitionsPage() {
-  const { exhibition, loading, error } = useExhibitions();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto" />
-          <p className="mt-4 text-gray-500 dark:text-gray-400">Loading exhibitions...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <EmojiIcon category="symbols" name="warning" size="xl" className="mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-            Unable to Load Exhibitions
-          </h2>
-          <p className="text-gray-500 dark:text-gray-400">{error}</p>
-        </div>
-      </div>
-    );
-  }
+  // Calculate total stats
+  const totalArtworks = ALL_EXHIBITIONS.reduce((sum, e) => sum + e.artworks_count, 0);
+  const totalExhibitions = ALL_EXHIBITIONS.length;
 
   return (
     <motion.div
@@ -52,71 +33,138 @@ export function ExhibitionsPage() {
           transition={{ delay: 0.2, type: 'spring' }}
           className="inline-block mb-4"
         >
-          <EmojiIcon category="objects" name="frame" size="xl" />
+          <EmojiIcon category="content" name="frame" size="xl" />
         </motion.div>
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">
           Exhibitions
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           Discover contemporary art exhibitions featuring emerging artists from around the world.
-          Experience AI-powered art criticism dialogues for each artwork.
+          Experience AI-powered art criticism and RPAIT scoring for each artwork.
         </p>
       </div>
 
       {/* Exhibition Grid */}
-      {exhibition && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {ALL_EXHIBITIONS.map((exhibition, index) => (
           <motion.div
+            key={exhibition.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.3 + index * 0.1 }}
           >
-            <ExhibitionCard exhibition={exhibition} />
-          </motion.div>
+            <Link to={`/exhibitions/${exhibition.id}`}>
+              <IOSCard
+                variant="elevated"
+                interactive
+                animate
+                className="h-full overflow-hidden"
+              >
+                {/* Cover Image */}
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={exhibition.cover_image}
+                    alt={exhibition.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/placeholder-exhibition.jpg';
+                    }}
+                  />
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                  {/* Status Badge */}
+                  <div className="absolute top-3 right-3">
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        exhibition.status === 'live'
+                          ? 'bg-green-500 text-white'
+                          : exhibition.status === 'upcoming'
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-500 text-white'
+                      }`}
+                    >
+                      {exhibition.status.toUpperCase()}
+                    </span>
+                  </div>
+                  {/* Title Overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <h3 className="text-xl font-bold text-white mb-1">
+                      {exhibition.name}
+                    </h3>
+                    <p className="text-sm text-white/80">
+                      {exhibition.name_zh}
+                    </p>
+                  </div>
+                </div>
 
-          {/* Placeholder for future exhibitions */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center min-h-[300px]"
-          >
-            <div className="text-center p-6">
-              <EmojiIcon category="symbols" name="sparkles" size="lg" className="mx-auto mb-3 opacity-50" />
-              <p className="text-gray-400 dark:text-gray-500 font-medium">
-                More exhibitions coming soon
-              </p>
-            </div>
+                <IOSCardContent>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-4">
+                    {exhibition.description}
+                  </p>
+
+                  {/* Features */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {exhibition.has_chapters && (
+                      <span className="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg">
+                        Chapters
+                      </span>
+                    )}
+                    {exhibition.has_dialogues && (
+                      <span className="px-2 py-1 text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg">
+                        AI Dialogues
+                      </span>
+                    )}
+                    {exhibition.has_rpait && (
+                      <span className="px-2 py-1 text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-lg">
+                        RPAIT Scores
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Stats */}
+                  <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                    <span className="flex items-center gap-1">
+                      <EmojiIcon category="content" name="frame" size="xs" />
+                      {exhibition.artworks_count} artworks
+                    </span>
+                  </div>
+                </IOSCardContent>
+
+                <IOSCardFooter>
+                  <IOSButton variant="primary" className="w-full">
+                    View Exhibition
+                  </IOSButton>
+                </IOSCardFooter>
+              </IOSCard>
+            </Link>
           </motion.div>
-        </div>
-      )}
+        ))}
+      </div>
 
       {/* Stats Section */}
-      {exhibition && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
-        >
-          <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 text-center">
-            <p className="text-3xl font-bold text-blue-500">{exhibition.artworks_count}</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Artworks</p>
-          </div>
-          <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 text-center">
-            <p className="text-3xl font-bold text-green-500">{exhibition.chapters.length}</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Chapters</p>
-          </div>
-          <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 text-center">
-            <p className="text-3xl font-bold text-orange-500">50+</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Artists</p>
-          </div>
-          <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 text-center">
-            <p className="text-3xl font-bold text-purple-500">8</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">AI Critics</p>
-          </div>
-        </motion.div>
-      )}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
+      >
+        <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 text-center">
+          <p className="text-3xl font-bold text-blue-500">{totalArtworks}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Total Artworks</p>
+        </div>
+        <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 text-center">
+          <p className="text-3xl font-bold text-green-500">{totalExhibitions}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Exhibitions</p>
+        </div>
+        <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 text-center">
+          <p className="text-3xl font-bold text-orange-500">50+</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Artists</p>
+        </div>
+        <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 text-center">
+          <p className="text-3xl font-bold text-purple-500">14</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">AI Critics</p>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }

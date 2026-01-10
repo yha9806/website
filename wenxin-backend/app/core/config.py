@@ -43,10 +43,13 @@ class Settings(BaseSettings):
     # Production Environment Settings
     ENVIRONMENT: str = "development"  # development, staging, production
     
-    # CORS Configuration for production
+    # CORS Configuration - supports development ports and production URLs
     CORS_ORIGINS: List[str] = [
-        "http://localhost:5173",
+        # Development localhost ports (5173-5181 for Vite hot reload)
+        *[f"http://localhost:{port}" for port in range(5173, 5182)],
+        *[f"http://127.0.0.1:{port}" for port in range(5173, 5182)],
         "http://localhost:3000",
+        # Production URL
         "https://storage.googleapis.com"
     ]
     

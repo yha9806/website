@@ -18,8 +18,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
+# Copy exhibition data (LanceDB) for dialogue API
+COPY data/exhibition/ ./data/exhibition/
+
 # Create static directory for file uploads
-RUN mkdir -p /app/static/generated_images
+RUN mkdir -p /app/static/generated_images /app/data
 
 # Set environment variables
 ENV PYTHONPATH=/app
@@ -30,6 +33,10 @@ ENV CLOUD_SQL_INSTANCE=wenxin-moyun-prod-new:asia-east1:wenxin-postgres
 ENV POSTGRES_USER=wenxin
 ENV POSTGRES_DB=wenxin_db
 # DATABASE_URL will be set at runtime by Cloud Run
+
+# Exhibition API configuration
+ENV EXHIBITION_DB_PATH=/app/data/exhibition
+ENV EXHIBITION_API_KEYS=didot-exhibition-2024-prod
 
 # Expose port
 EXPOSE 8080

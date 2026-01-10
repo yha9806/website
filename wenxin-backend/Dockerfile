@@ -45,8 +45,11 @@ COPY --chown=appuser:appuser . .
 # Copy production database with real OpenAI evaluation data
 COPY --chown=appuser:appuser wenxin_production.db ./wenxin.db
 
+# Copy exhibition data (LanceDB) for dialogue API
+COPY --chown=appuser:appuser data/exhibition/ ./data/exhibition/
+
 # Create directories for logs and uploads
-RUN mkdir -p /app/logs /app/uploads /app/static && \
+RUN mkdir -p /app/logs /app/uploads /app/static /app/data && \
     chown -R appuser:appuser /app
 
 # Switch to non-root user

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>文心墨韵 × VULCA｜文化语境多模态评测与可视化</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Oswald:wght@400;600&display=swap');
+
+    :root {
+      --page-width: 420mm;   /* A3 横版 */
+      --page-height: 297mm;
+      --c-bg: #05070a;
+      --c-card: rgba(18, 20, 28, 0.9);
+      --c-border: rgba(255, 255, 255, 0.14);
+      --c-accent-cyan: #00f2ff;
+      --c-accent-purple: #bc13fe;
+      --c-text: #ffffff;
+      --c-text-sub: #b0b0c0;
+      --col-gap: 8mm;
+      --padding: 15mm;
+    }
+
+    html {
+      background: #05070a;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      width: var(--page-width);
+      height: var(--page-height);
+      background: radial-gradient(circle at 20% 20%, rgba(0,242,255,0.08), transparent 35%),
+                  radial-gradient(circle at 80% 60%, rgba(188,19,254,0.12), transparent 40%),
+                  linear-gradient(145deg, #05070a 0%, #070c12 50%, #05070a 100%);
+      font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+      color: var(--c-text);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      overflow: hidden;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    @page {
+      size: A3 landscape;
+      margin: 0;
+    }
+
+    @media print {
+      html, body {
+        width: var(--page-width);
+        height: var(--page-height);
+        background: #05070a;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .bg-layer {
+        position: fixed;
+        inset: 0;
+      }
+      .layout-grid {
+        position: relative;
+        z-index: 1;
+      }
+    }
+
+    .bg-layer {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(120deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 40%),
+                  linear-gradient(-120deg, rgba(0,242,255,0.08) 0%, rgba(0,0,0,0) 45%);
+      mask-image: radial-gradient(circle at 30% 20%, rgba(0,0,0,0.3), transparent 45%);
+    }
+
+    .layout-grid {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      padding: var(--padding);
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 16% 84%;
+      gap: var(--col-gap);
+      box-sizing: border-box;
+    }
+
+    .header {
+      grid-column: 1 / -1;
+      border-bottom: 6px solid var(--c-accent-cyan);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 10px;
+    }
+    .title-block h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 68px;
+      line-height: 0.9;
+      margin: 0;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #fff, #d8eaff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .title-block h2 {
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--c-accent-cyan);
+      margin: 10px 0 0 0;
+      letter-spacing: 1.5px;
+    }
+    .author-block { text-align: right; font-size: 17px; color: var(--c-text-sub); }
+    .author-block strong { color: #fff; font-size: 21px; display: block; margin-bottom: 6px;}
+    .meta-pills { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+    .pill { border: 1px solid rgba(255,255,255,0.3); padding: 4px 10px; border-radius: 999px; font-size: 14px; color: #d0e8ff; background: rgba(255,255,255,0.04); }
+
+    .col { display: flex; flex-direction: column; gap: var(--col-gap); height: 100%; }
+    .card {
+      background: var(--c-card);
+      border: 2px solid var(--c-border);
+      border-top: 6px solid rgba(255,255,255,0.3);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(8px);
+      flex: 1;
+      box-shadow: 0 18px 70px rgba(0,0,0,0.35);
+    }
+    .card h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 28px;
+      color: var(--c-accent-cyan);
+      margin: 0 0 12px 0;
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+      padding-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .card-content {
+      font-size: 17px;
+      line-height: 1.6;
+      color: #e6e6e6;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .highlight { color: #fff; font-weight: 700; background: rgba(0, 242, 255, 0.12); padding: 0 6px; }
+    ul { padding-left: 22px; margin: 6px 0; }
+    li { margin-bottom: 8px; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: auto;
+      background: rgba(0,0,0,0.35);
+      padding: 15px;
+      border-radius: 12px;
+    }
+    .stat-item { text-align: center; }
+    .stat-val { font-size: 36px; font-weight: 800; line-height: 1; color: var(--c-accent-purple); }
+    .stat-key { font-size: 14px; color: #aaa; margin-top: 4px; }
+
+    .persona-container { display: flex; flex-wrap: wrap; gap: 10px; }
+    .persona-tag {
+      background: linear-gradient(135deg, rgba(188, 19, 254, 0.2), rgba(188, 19, 254, 0.08));
+      border: 1px solid var(--c-accent-purple);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 15px;
+      color: #eadbff;
+    }
+
+    .viz-box { width: 100%; flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+    .bar-group { margin-top: 12px; width: 100%; }
+    .bar-label { display: flex; justify-content: space-between; font-size: 15px; margin-bottom: 4px; }
+    .bar-track { background: rgba(255,255,255,0.08); height: 14px; border-radius: 9px; overflow: hidden; }
+    .bar-fill { height: 100%; background: linear-gradient(90deg, var(--c-accent-cyan), #fff); width: 0; }
+
+    .badge-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .badge { border: 1px solid rgba(255,255,255,0.25); padding: 4px 10px; border-radius: 12px; font-size: 14px; color: #d5e6ff; }
+
+    .footer-info { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px; display: flex; align-items: center; gap: 12px; }
+    .qr { width: 80px; height: 80px; background:#fff; padding:4px; object-fit: contain; }
+  </style>
+</head>
+<body>
+  <div class="bg-layer"></div>
+
+  <div class="layout-grid">
+    <!-- 标题 -->
+    <header class="header">
+      <div class="title-block">
+        <h1>WenXin Moyun × VULCA</h1>
+        <h2>文化语境任务中多模态模型的评估、引导与可视化</h2>
+      </div>
+      <div class="author-block">
+        <strong>Haorui Yu · Ramon Ruiz-Dolz · Qiufeng Yi</strong>
+        EMNLP 2025 Findings · University of Dundee / Birmingham
+        <div class="meta-pills">
+          <span class="pill">42 模型 · 15 机构</span>
+          <span class="pill">28 真实上线 · 64 条 E2E</span>
+          <span class="pill">Cloud Run 生产 · 15m CI/CD</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 第1列 -->
+    <div class="col">
+      <div class="card">
+        <h3>01. 现状与挑战</h3>
+        <div class="card-content">
+          <p>多模态模型（GPT-4o、LLaVA 等）在<strong>高语境文化任务</strong>仍易“表层复述、缺乏意境”。</p>
+          <ul>
+            <li>中国画评论：难捕捉 <span class="highlight">意境 (Yijing)</span> 与 <span class="highlight">气韵 (Qiyun)</span>。</li>
+            <li>象征性推理不足，易丢失文化隐喻与历史脉络。</li>
+            <li>Benchmark 多聚焦事实问答，<span class="highlight">认知对齐</span> 缺位。</li>
+          </ul>
+          <p style="font-style:italic; color:#9ab;">“表层正确 ≠ 文化对齐；需要可解释的引导与量化评估。”</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>02. 数据与生产基线</h3>
+        <div class="card-content">
+          <p>以 <strong>郎世宁《十二月令》</strong> 专家评论构建 MHEB，支撑 VULCA 评估；文心墨韵平台提供实时演示与对战。</p>
+          <div class="stats-grid">
+            <div class="stat-item"><div class="stat-val">163</div><div class="stat-key">专家评论</div></div>
+            <div class="stat-item"><div class="stat-val">38</div><div class="stat-key">特征标签</div></div>
+            <div class="stat-item"><div class="stat-val">5</div><div class="stat-key">文化维度</div></div>
+            <div class="stat-item"><div class="stat-val">42</div><div class="stat-key">支持模型</div></div>
+            <div class="stat-item"><div class="stat-val">28</div><div class="stat-key">真实模型上线</div></div>
+            <div class="stat-item"><div class="stat-val">64</div><div class="stat-key">E2E 用例</div></div>
+          </div>
+          <div class="badge-row" style="margin-top:12px;">
+            <span class="badge">前端 React 19 + Tailwind</span>
+            <span class="badge">后端 FastAPI + SQLAlchemy</span>
+            <span class="badge">统一模型接口 + WebSocket</span>
+            <span class="badge">Cloud Run + Cloud SQL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第2列 -->
+    <div class="col">
+      <div class="card">
+        <h3>03. 角色引导 (8 Personas)</h3>
+        <div class="card-content">
+          <p>以文化视角构建 8 个批评者角色，结合知识库 Prompt，迫使模型进入特定认知框架。</p>
+          <div class="persona-container">
+            <div class="persona-tag">苏轼 · Su Shi</div>
+            <div class="persona-tag">郭熙 · Guo Xi</div>
+            <div class="persona-tag">John Ruskin</div>
+            <div class="persona-tag">冈仓天心 · Okakura Kakuzō</div>
+            <div class="persona-tag">Dr. Aris Thorne</div>
+            <div class="persona-tag">Mama Zola</div>
+            <div class="persona-tag">Professor Elena Petrova</div>
+            <div class="persona-tag">Brother Thomas</div>
+          </div>
+          <p style="margin-top:12px; font-size:18px;">
+            机制：Persona Prompt + JSON 知识库 → 减少幻觉，提升深度与文化贴合度。
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>04. 联合评测管线</h3>
+        <div class="card-content">
+          <div><strong>语义向量嵌入：</strong></div>
+          <div class="code-box">Model: BAAI/bge-large-zh-v1.5 · 1024-d</div>
+
+          <div><strong>质心距离 (Centroid Distance)：</strong></div>
+          <div class="formula">
+            C<sub>p</sub> = (1 / |D<sub>p</sub>|) · ∑ x<sub>d</sub>
+          </div>
+          <p style="font-size:18px; color:#a8b6c8;">
+            计算模型输出与专家群体的向量距离，越近代表文化对齐度越高；结合余弦相似度、EMD 与画像质心对齐（kmeans=5）。
+          </p>
+
+          <div><strong>生产就绪：</strong></div>
+          <ul>
+            <li>统一模型接口 + 队列：OpenAI / Anthropic / DeepSeek / Qwen。</li>
+            <li>前端高亮 + 智能切块，HashRouter 修复，缓存版本 v2.1.0。</li>
+            <li>CI/CD 15m，Cloud Run + Cloud Storage + Cloud SQL；WebSocket 对战推送。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第3列 -->
+    <div class="col">
+      <div class="card" style="flex:1.8;">
+        <h3>05. 文化理解可视化（论文表 1 & 表 4）</h3>
+        <div class="card-content">
+          <p>Top 5 组合（表 1）：Composite / Expert Alignment</p>
+          <div class="bar-group"><div class="bar-label"><span>Qwen2.5-VL-7B + Mama Zola + KB</span><span style="color:var(--c-accent-cyan)">9.2 / 100%</span></div><div class="bar-track"><div class="bar-fill" style="width:92%;"></div></div></div>
+          <div class="bar-group"><div class="bar-label"><span>Llama-4-Scout-17B + John Ruskin + KB</span><span style="color:#ffd200">8.9 / 97%</span></div><div class="bar-track"><div class="bar-fill" style="width:89%; background: linear-gradient(90deg, #ffd200, #fff);"></div></div></div>
+          <div class="bar-group"><div class="bar-label"><span>Llama-4-Scout-17B + Mama Zola + KB</span><span style="color:#ffd200">8.7 / 95%</span></div><div class="bar-track"><div class="bar-fill" style="width:87%; background: linear-gradient(90deg, #ffd200, #fff);"></div></div></div>
+          <div class="bar-group"><div class="bar-label"><span>Llama-4-Scout-17B + Brother Thomas + KB</span><span style="color:#ffd200">8.5 / 92%</span></div><div class="bar-track"><div class="bar-fill" style="width:85%; background: linear-gradient(90deg, #ffd200, #fff);"></div></div></div>
+          <div class="bar-group"><div class="bar-label"><span>Llama-4-Scout-17B + Su Shi + KB</span><span style="color:#ffd200">8.5 / 92%</span></div><div class="bar-track"><div class="bar-fill" style="width:85%; background: linear-gradient(90deg, #ffd200, #fff);"></div></div></div>
+          <p style="margin-top:8px;">关键维度（表 4 示例）：艺术意境 0.891 vs 0.851；笔墨技法 0.937 vs 0.903；章法布局 0.895 vs 0.916 （Qwen2.5-VL / Llama-4-Scout）。</p>
+        </div>
+      </div>
+
+      <div class="card" style="flex:1.2;">
+        <h3>06. 关键维度对比（论文表 4）</h3>
+        <div class="card-content">
+          <p>来源：2025.findings-emnlp.103.pdf 表 4（示例三维）· Qwen2.5-VL vs Llama-4-Scout</p>
+          <div class="bar-group"><div class="bar-label"><span>艺术意境 (Artistic Conception)</span><span style="color:var(--c-accent-cyan)">0.891</span></div><div class="bar-track"><div class="bar-fill" style="width:89%;"></div></div></div>
+          <div class="bar-group"><div class="bar-label"><span>艺术意境 · Llama-4</span><span style="color:#ffd200">0.851</span></div><div class="bar-track"><div class="bar-fill" style="width:85%; background: linear-gradient(90deg, #ffd200, #fff);"></div></div></div>
+          <div class="bar-group"><div class="bar-label"><span>笔墨技法 (Brushwork)</span><span style="color:var(--c-accent-cyan)">0.937</span></div><div class="bar-track"><div class="bar-fill" style="width:94%;"></div></div></div>
+          <div class="bar-group"><div class="bar-label"><span>笔墨技法 · Llama-4</span><span style="color:#ffd200">0.903</span></div><div class="bar-track"><div class="bar-fill" style="width:90%; background: linear-gradient(90deg, #ffd200, #fff);"></div></div></div>
+          <div class="bar-group"><div class="bar-label"><span>章法布局 (Layout)</span><span style="color:var(--c-accent-cyan)">0.895</span></div><div class="bar-track"><div class="bar-fill" style="width:90%;"></div></div></div>
+          <div class="bar-group"><div class="bar-label"><span>章法布局 · Llama-4</span><span style="color:#ffd200">0.916</span></div><div class="bar-track"><div class="bar-fill" style="width:92%; background: linear-gradient(90deg, #ffd200, #fff);"></div></div></div>
+          <p style="margin-top:6px; font-size:14px; color:#9ab;">表 4 关键示例：Qwen 在意境/笔墨领先，Llama-4 在布局略高；均为干预配置下的维度得分。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第4列 -->
+    <div class="col">
+      <div class="card">
+        <h3>07. 关键提升</h3>
+        <div class="card-content">
+          <div class="bar-group"><div class="bar-label"><span>Qwen2.5-VL-7B + Mama Zola</span><span style="color:var(--c-accent-cyan)">Composite 9.2 / Align 100%</span></div><div class="bar-track"><div class="bar-fill" style="width:92%;"></div></div></div>
+          <div class="bar-group"><div class="bar-label"><span>Llama-4-Scout + John Ruskin</span><span style="color:#ffd200">Composite 8.9 / Align 97%</span></div><div class="bar-track"><div class="bar-fill" style="width:89%; background: linear-gradient(90deg, #ffd200, #fff);"></div></div></div>
+          <div class="bar-group"><div class="bar-label"><span>Llama-4-Scout + Mama Zola</span><span style="color:#ffd200">Composite 8.7 / Align 95%</span></div><div class="bar-track"><div class="bar-fill" style="width:87%; background: linear-gradient(90deg, #ffd200, #fff);"></div></div></div>
+          <p style="margin-top:12px;">数据来源：2025.findings-emnlp.103.pdf 表 1（Top 5 配置）与表 4（维度得分）。</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>08. 技术剖析</h3>
+        <div class="card-content">
+          <ul>
+            <li><strong>前端</strong>：React19 + Tailwind，文本高亮/智能切块，HashRouter 导航修复，缓存版本 v2.1.0。</li>
+            <li><strong>后端</strong>：FastAPI + SQLAlchemy，统一模型接口；任务队列 + WebSocket 推送对战进度。</li>
+            <li><strong>嵌入/向量分析</strong>：BAAI/bge-large-zh-v1.5 (1024d)；质心距离 + 余弦相似度 + EMD；kmeans=5 聚类。</li>
+            <li><strong>数据</strong>：MHEB 163 评论 × 38 特征 × 5 文化维度；28 真实模型生产数据。</li>
+            <li><strong>评测</strong>：OpenAI 基准（11 模型 × 6 用例，GPT-4o-mini 87.2）；VULCA 雷达（Qwen2.5-VL 领先）。</li>
+            <li><strong>部署</strong>：GCP Cloud Run / Cloud SQL / Cloud Storage；CI/CD 15 分钟；64 E2E 守护。</li>
+          </ul>
+          <div class="badge-row">
+            <span class="badge">Persona Prompt + KB</span>
+            <span class="badge">多阶段评测管线</span>
+            <span class="badge">雷达 + 条形图可视化</span>
+            <span class="badge">真实对战 + 投票</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>09. 结论与下一步</h3>
+        <div class="card-content">
+          <ul>
+            <li><strong>文化适应性</strong> 需要 Persona + 知识库 + 语义质心联合约束。</li>
+            <li>文心墨韵提供真实生产链路：模型对战、评分可视化、64 E2E 守护质量。</li>
+            <li>可泛化领域：宗教文本、医学叙事、历史评论、设计批评。</li>
+          </ul>
+          <div class="footer-info">
+            <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/yha9806/VULCA-EMNLP2025" alt="QR">
+            <div>
+              <div style="color:var(--c-accent-cyan); font-weight:bold;">Demo & Code</div>
+              <div style="font-size:16px;">前端 http://localhost:5173 · 后端 http://localhost:8001 · demo/demo123</div>
+              <div style="font-size:16px;">更多：2025.findings-emnlp.103.pdf · openai_benchmark_v2_report.md</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -2,6 +2,9 @@
  * WebSocket连接和实时更新Hook
  */
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { createLogger } from '../utils/logger';
+
+const logger = createLogger('WebSocket');
 
 export interface WebSocketMessage {
   type: 'welcome' | 'battle_update' | 'evaluation_progress' | 'chat' | 'heartbeat' | 'pong';
@@ -49,6 +52,7 @@ export function useWebSocket(options: UseWebSocketOptions) {
   const [connectionError, setConnectionError] = useState<string | null>(null);
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
   const [useSSE, setUseSSE] = useState(false); // 是否降级到SSE
+  const [connectionDisabled, setConnectionDisabled] = useState(false); // 完全停止连接尝试
   const [lastConnectionAttempt, setLastConnectionAttempt] = useState(0);
   
   const wsRef = useRef<WebSocket | null>(null);
@@ -78,9 +82,9 @@ export function useWebSocket(options: UseWebSocketOptions) {
           type: 'ping',
           timestamp: new Date().toISOString()
         }));
-        console.log('WebSocket heartbeat sent');
+        logger.log('WebSocket heartbeat sent');
       } catch (error) {
-        console.error('Failed to send heartbeat:', error);
+        logger.error('Failed to send heartbeat:', error);
         connectionHealthRef.current = false;
       }
     }
@@ -88,20 +92,26 @@ export function useWebSocket(options: UseWebSocketOptions) {
 
   // 连接WebSocket
   const connect = useCallback(() => {
+    // 如果连接已被完全禁用，直接返回
+    if (connectionDisabled) {
+      logger.log('WebSocket: Connection disabled, skipping connect attempt');
+      return;
+    }
+
     // 渐进式重连延迟：防止过于频繁的连接尝试
     const now = Date.now();
     const timeSinceLastAttempt = now - lastConnectionAttempt;
     const minDelay = Math.min(1000 * Math.pow(2, reconnectAttempts), 30000); // 指数退避，最大30秒
-    
+
     if (timeSinceLastAttempt < minDelay) {
-      console.log(`WebSocket: waiting ${minDelay - timeSinceLastAttempt}ms before retry`);
+      logger.log(`WebSocket: waiting ${minDelay - timeSinceLastAttempt}ms before retry`);
       setTimeout(connect, minDelay - timeSinceLastAttempt);
       return;
     }
-    
+
     try {
       const url = getWebSocketUrl();
-      console.log(`Connecting to WebSocket: ${url} (attempt ${reconnectAttempts + 1})`);
+      logger.log(`Connecting to WebSocket: ${url} (attempt ${reconnectAttempts + 1})`);
       
       setLastConnectionAttempt(now);
       connectionHealthRef.current = false;
@@ -111,20 +121,21 @@ export function useWebSocket(options: UseWebSocketOptions) {
       // 设置连接超时
       connectionTimeoutRef.current = setTimeout(() => {
         if (wsRef.current?.readyState === WebSocket.CONNECTING) {
-          console.warn('WebSocket connection timeout');
+          logger.warn('WebSocket connection timeout');
           wsRef.current.close();
           setConnectionError('Connection timeout');
           
-          // 达到最大重连次数后降级到SSE
+          // 达到最大重连次数后降级到SSE并完全禁用重连
           if (reconnectAttempts >= maxReconnectAttempts - 1) {
-            console.log('Max reconnect attempts reached, fallback to SSE');
+            logger.log('Max reconnect attempts reached, disabling WebSocket completely');
             setUseSSE(true);
+            setConnectionDisabled(true);
           }
         }
       }, 10000); // 增加到10秒超时
 
       wsRef.current.onopen = () => {
-        console.log(`WebSocket connected to ${room} room`);
+        logger.log(`WebSocket connected to ${room} room`);
         if (connectionTimeoutRef.current) {
           clearTimeout(connectionTimeoutRef.current);
           connectionTimeoutRef.current = null;
@@ -146,7 +157,7 @@ export function useWebSocket(options: UseWebSocketOptions) {
       wsRef.current.onmessage = (event) => {
         try {
           const message: WebSocketMessage = JSON.parse(event.data);
-          console.log('WebSocket message received:', message);
+          logger.log('WebSocket message received:', message);
           
           // 调用通用消息处理器
           onMessage?.(message);
@@ -170,15 +181,15 @@ export function useWebSocket(options: UseWebSocketOptions) {
               break;
               
             default:
-              console.log('Unhandled message type:', message.type);
+              logger.log('Unhandled message type:', message.type);
           }
         } catch (error) {
-          console.error('Error parsing WebSocket message:', error);
+          logger.error('Error parsing WebSocket message:', error);
         }
       };
 
       wsRef.current.onclose = (event) => {
-        console.log('WebSocket closed:', event.code, event.reason);
+        logger.log('WebSocket closed:', event.code, event.reason);
         connectionHealthRef.current = false;
         setIsConnected(false);
         
@@ -195,7 +206,7 @@ export function useWebSocket(options: UseWebSocketOptions) {
           
           // 使用渐进式延迟重连
           const delay = Math.min(reconnectInterval * Math.pow(2, reconnectAttempts), 30000);
-          console.log(`Will attempt to reconnect in ${delay}ms (${reconnectAttempts + 1}/${maxReconnectAttempts})`);
+          logger.log(`Will attempt to reconnect in ${delay}ms (${reconnectAttempts + 1}/${maxReconnectAttempts})`);
           
           reconnectTimeoutRef.current = setTimeout(() => {
             connect();
@@ -203,21 +214,23 @@ export function useWebSocket(options: UseWebSocketOptions) {
         } else if (reconnectAttempts >= maxReconnectAttempts) {
           setConnectionError('Connection failed after multiple attempts');
           setUseSSE(true); // 降级到SSE
+          setConnectionDisabled(true); // 完全禁用重连
+          logger.log('WebSocket: Max reconnect attempts reached, connection disabled');
         } else if (event.code === 1000) {
           setConnectionError(null); // 正常关闭，不显示错误
         }
       };
 
       wsRef.current.onerror = (error) => {
-        console.error('WebSocket error:', error);
+        logger.error('WebSocket error:', error);
         setConnectionError('WebSocket connection failed');
       };
 
     } catch (error) {
-      console.error('Error creating WebSocket connection:', error);
+      logger.error('Error creating WebSocket connection:', error);
       setConnectionError(error instanceof Error ? error.message : 'Unknown connection error');
     }
-  }, [room, getWebSocketUrl, onMessage, onBattleUpdate, onEvaluationProgress, reconnectAttempts, maxReconnectAttempts, reconnectInterval, sendHeartbeat]);
+  }, [room, getWebSocketUrl, onMessage, onBattleUpdate, onEvaluationProgress, reconnectAttempts, maxReconnectAttempts, reconnectInterval, sendHeartbeat, connectionDisabled]);
 
   // 断开连接
   const disconnect = useCallback(() => {
@@ -245,6 +258,7 @@ export function useWebSocket(options: UseWebSocketOptions) {
     setReconnectAttempts(0);
     setConnectionError(null);
     setUseSSE(false);
+    setConnectionDisabled(false); // 重置禁用状态，允许手动重连
   }, []);
 
   // 发送消息
@@ -253,7 +267,7 @@ export function useWebSocket(options: UseWebSocketOptions) {
       wsRef.current.send(JSON.stringify(message));
       return true;
     }
-    console.warn('WebSocket is not connected');
+    logger.warn('WebSocket is not connected');
     return false;
   }, []);
 
@@ -291,6 +305,7 @@ export function useWebSocket(options: UseWebSocketOptions) {
     connectionError,
     reconnectAttempts,
     useSSE,
+    connectionDisabled,
     sendMessage,
     sendChatMessage,
     sendVoteMessage,
@@ -318,12 +333,12 @@ export function useServerSentEvents(options: {
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
       const apiVersion = import.meta.env.VITE_API_VERSION || 'v1';
       const url = `${apiBaseUrl}/api/${apiVersion}/sse/${room}`;
-      console.log(`Connecting to SSE: ${url}`);
+      logger.log(`Connecting to SSE: ${url}`);
       
       eventSourceRef.current = new EventSource(url);
 
       eventSourceRef.current.onopen = () => {
-        console.log(`SSE connected to ${room} room`);
+        logger.log(`SSE connected to ${room} room`);
         setIsConnected(true);
         setConnectionError(null);
       };
@@ -331,7 +346,7 @@ export function useServerSentEvents(options: {
       eventSourceRef.current.onmessage = (event) => {
         try {
           const message: WebSocketMessage = JSON.parse(event.data);
-          console.log('SSE message received:', message);
+          logger.log('SSE message received:', message);
           
           onMessage?.(message);
           
@@ -349,18 +364,18 @@ export function useServerSentEvents(options: {
               break;
           }
         } catch (error) {
-          console.error('Error parsing SSE message:', error);
+          logger.error('Error parsing SSE message:', error);
         }
       };
 
       eventSourceRef.current.onerror = () => {
-        console.error('SSE connection error');
+        logger.error('SSE connection error');
         setIsConnected(false);
         setConnectionError('SSE connection failed');
       };
 
     } catch (error) {
-      console.error('Error creating SSE connection:', error);
+      logger.error('Error creating SSE connection:', error);
       setConnectionError(error instanceof Error ? error.message : 'Unknown SSE error');
     }
   }, [room, onMessage, onBattleUpdate, onEvaluationProgress]);

@@ -2,8 +2,14 @@
  * Exhibitions Data Module
  *
  * Exports exhibition data and utilities for the VULCA Art Platform
+ * Supports multiple exhibitions:
+ * - Echoes and Returns (回响与归来)
+ * - Negative Space of the Tide (潮汐的负形)
+ *
+ * @updated 2026-01-10 - Added multi-exhibition support
  */
 
+// Echoes and Returns exports
 export {
   EXHIBITION_ID,
   EXHIBITION_INFO,
@@ -14,6 +20,17 @@ export {
 } from './echoes-and-returns';
 
 export type { RawArtwork } from './echoes-and-returns';
+
+// Negative Space of the Tide exports
+export {
+  NEGATIVE_SPACE_ID,
+  NEGATIVE_SPACE_INFO,
+  NEGATIVE_SPACE_THEME,
+  NEGATIVE_SPACE_FEATURES,
+  PERSONAS,
+  ARTWORKS as NEGATIVE_SPACE_ARTWORKS,
+  buildNegativeSpaceExhibition,
+} from './negative-space';
 
 // Re-export types for convenience
 export type {
@@ -26,19 +43,90 @@ export type {
   DialogueParticipant,
   ExhibitionFilters,
   ArtworkListItem,
+  // Multi-exhibition types
+  ArtworkFlat,
+  ArtworkImage,
+  ArtworkMetadata,
+  Persona,
+  Critique,
+  RPAITScores,
+  RPAITDimension,
+  ExhibitionTheme,
 } from '../../types/exhibition';
 
-// Static JSON data path
+export { RPAIT_LABELS, RPAIT_COLORS } from '../../types/exhibition';
+
+// Static JSON data paths
 export const ECHOES_DATA_URL = '/data/echoes-and-returns.json';
+
+// Exhibition IDs
+export const EXHIBITION_IDS = {
+  ECHOES_AND_RETURNS: 'echoes-and-returns',
+  NEGATIVE_SPACE: 'negative-space-of-the-tide',
+} as const;
+
+// All exhibitions metadata for listing
+export const ALL_EXHIBITIONS = [
+  {
+    id: 'echoes-and-returns',
+    name: 'Echoes and Returns',
+    name_zh: '回响与归来',
+    description: 'A contemporary art exhibition exploring themes of cultural transmission, innovation, resonance, and identity through 87 artworks.',
+    description_zh: '一场当代艺术展览，通过87件作品探索文化传承、创新、共鸣与身份认同的主题。',
+    cover_image: '/data/exhibitions/echoes-cover.jpg',
+    artworks_count: 87,
+    status: 'live' as const,
+    has_chapters: true,
+    has_dialogues: true,
+    has_rpait: false,
+  },
+  {
+    id: 'negative-space-of-the-tide',
+    name: 'Negative Space of the Tide',
+    name_zh: '潮汐的负形',
+    description: 'An in-depth dialogue on AI and artistic creation, exploring the nature of machine creativity through the perspectives of 6 critics from diverse cultural backgrounds.',
+    description_zh: '一场关于人工智能与艺术创作的深度对话，通过6位来自不同文化背景的评论家视角，探索机器创造力的本质。',
+    cover_image: '/exhibitions/negative-space/cover.jpg',
+    artworks_count: 43,
+    status: 'live' as const,
+    has_chapters: false,
+    has_dialogues: false,
+    has_rpait: true,
+    theme: {
+      primaryColor: '#B85C3C',
+      accentColor: '#D4A574',
+    },
+  },
+] as const;
+
+export type ExhibitionId = typeof EXHIBITION_IDS[keyof typeof EXHIBITION_IDS];
+
+// Import Exhibition type for use in function signatures
+import type { Exhibition } from '../../types/exhibition';
+import type { RawArtwork as RawArtworkType } from './echoes-and-returns';
 
 // Utility to fetch exhibition data
 export async function fetchExhibitionData(): Promise<Exhibition> {
-  const { buildExhibition, RawArtwork } = await import('./echoes-and-returns');
+  const { buildExhibition } = await import('./echoes-and-returns');
 
   // In production, this would fetch from API or static JSON
   // For now, we'll import the raw data directly
   const response = await fetch(ECHOES_DATA_URL);
-  const rawData: RawArtwork[] = await response.json();
+  const rawData: RawArtworkType[] = await response.json();
 
   return buildExhibition(rawData);
+}
+
+// Utility to get exhibition by ID
+export async function getExhibitionById(id: string): Promise<Exhibition | null> {
+  if (id === EXHIBITION_IDS.ECHOES_AND_RETURNS) {
+    return fetchExhibitionData();
+  }
+
+  if (id === EXHIBITION_IDS.NEGATIVE_SPACE) {
+    const { buildNegativeSpaceExhibition } = await import('./negative-space');
+    return buildNegativeSpaceExhibition();
+  }
+
+  return null;
 }

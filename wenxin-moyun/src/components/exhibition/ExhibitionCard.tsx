@@ -52,7 +52,7 @@ export function ExhibitionCard({ exhibition }: ExhibitionCardProps) {
       <IOSCardHeader
         title={exhibition.name}
         subtitle={exhibition.name_zh}
-        emoji={<EmojiIcon category="objects" name="frame" size="lg" />}
+        emoji={<EmojiIcon category="content" name="frame" size="lg" />}
       />
 
       <IOSCardContent>
@@ -63,13 +63,15 @@ export function ExhibitionCard({ exhibition }: ExhibitionCardProps) {
         {/* Stats */}
         <div className="flex items-center gap-4 mt-3 text-sm text-gray-500 dark:text-gray-400">
           <span className="flex items-center gap-1">
-            <EmojiIcon category="objects" name="art" size="sm" />
+            <EmojiIcon category="content" name="artwork" size="sm" />
             {exhibition.artworks_count} Artworks
           </span>
-          <span className="flex items-center gap-1">
-            <EmojiIcon category="objects" name="folder" size="sm" />
-            {exhibition.chapters.length} Chapters
-          </span>
+          {exhibition.chapters && exhibition.chapters.length > 0 && (
+            <span className="flex items-center gap-1">
+              <EmojiIcon category="content" name="folder" size="sm" />
+              {exhibition.chapters.length} Chapters
+            </span>
+          )}
         </div>
       </IOSCardContent>
 

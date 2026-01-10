@@ -152,15 +152,15 @@ async def get_evaluations(
     tasks = result.scalars().all()
     
     # Convert to response model with model info
-    response = []
+    tasks_response = []
     for task in tasks:
         task_dict = task.__dict__
         if task.model:
             task_dict['model_name'] = task.model.name
             task_dict['model_organization'] = task.model.organization
-        response.append(EvaluationTaskResponse(**task_dict))
-    
-    return response
+        tasks_response.append(EvaluationTaskResponse(**task_dict))
+
+    return tasks_response
 
 
 @router.get("/{task_id}", response_model=EvaluationTaskResponse)

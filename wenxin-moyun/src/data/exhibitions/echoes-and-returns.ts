@@ -57,8 +57,8 @@ export function transformArtwork(raw: RawArtwork): Artwork {
       nickname: raw.nickname,
       school: raw.school,
       major: raw.major,
-      profile: raw.profile || raw.userBio,
-      avatar: raw.avatar || raw.userAvatar,
+      profile: raw.profile || raw.userBio || undefined,
+      avatar: raw.avatar || raw.userAvatar || undefined,
     },
     chapter: {
       id: raw.chapterId,
@@ -80,6 +80,7 @@ export function groupByChapter(artworks: Artwork[]): Chapter[] {
   const chapterMap = new Map<number, Artwork[]>();
 
   artworks.forEach((artwork) => {
+    if (!artwork.chapter) return;
     const existing = chapterMap.get(artwork.chapter.id) || [];
     existing.push(artwork);
     chapterMap.set(artwork.chapter.id, existing);

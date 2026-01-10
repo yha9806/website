@@ -2,16 +2,38 @@ import { Page, Locator } from '@playwright/test';
 
 export class BasePage {
   readonly page: Page;
-  
+
   constructor(page: Page) {
     this.page = page;
+  }
+
+  /**
+   * Convert path to HashRouter format
+   * /login -> /#/login
+   * /#/login -> /#/login (no change)
+   */
+  protected withHash(path: string): string {
+    if (path.startsWith('/#')) return path;
+    if (path.startsWith('#')) return `/${path}`;
+    if (path.startsWith('/')) return `/#${path}`;
+    return `/#/${path}`;
   }
 
   async navigate(path: string) {
     // Support dynamic port detection for MCP integration
     const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:5173';
-    const fullURL = path.startsWith('http') ? path : `${baseURL}${path}`;
+    // Convert to hash route format for HashRouter
+    const hashPath = this.withHash(path);
+    const fullURL = path.startsWith('http') ? path : `${baseURL}${hashPath}`;
     await this.page.goto(fullURL);
+  }
+
+  /**
+   * Wait for URL to match (supports both hash and non-hash patterns)
+   */
+  async expectURL(path: string) {
+    const hashPath = this.withHash(path);
+    await this.page.waitForURL(new RegExp(hashPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
 
   async waitForLoadComplete() {
@@ -63,9 +85,11 @@ export class HomePage extends BasePage {
     if (await this.loginButton.isVisible({ timeout: 2000 })) {
       await this.loginButton.click();
     } else {
-      // Fallback: navigate directly to login page
+      // Fallback: navigate directly to login page (withHash will convert to /#/login)
       await this.navigate('/login');
     }
+    // Wait for login page to load
+    await this.page.waitForURL(/\/#\/login/);
   }
 
   async clickStartExperience() {
@@ -225,7 +249,7 @@ export class BattlePage extends BasePage {
     this.voteButton1 = this.model1Container;
     this.voteButton2 = this.model2Container;
     this.skipButton = page.locator('button:has-text("Refresh Battle"), .ios-button:has-text("Refresh"), button:has-text("Skip"), button:has-text("Next")');
-    this.resultMessage = page.locator('text=/Vote Rate/').or(page.locator('text=/votes/')).or(page.locator('.text-center:has-text("votes")'));
+    this.resultMessage = page.locator('text=/Vote Rate/, text=/votes/, .text-center:has-text("votes")').first();
     this.battleContainer = page.locator('.ios-glass.liquid-glass-container.rounded-xl.shadow-xl.p-8');
     this.statsContainer = page.locator('.mt-8.flex.justify-center.space-x-8');
     this.nextBattleButton = page.locator('button:has-text("Next Battle"), .ios-button svg.w-5.h-5');

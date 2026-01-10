@@ -102,7 +102,12 @@ export const DIMENSION_CATEGORIES = {
   }
 };
 
-// Helper function to get dimension label
+// Helper function to convert camelCase to snake_case
+const camelToSnakeCase = (str: string): string => {
+  return str.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
+};
+
+// Helper function to get dimension label with robust fallback
 export const getDimensionLabel = (key: string): string => {
   // Handle backend format "dim_0", "dim_1", etc.
   if (key.startsWith('dim_')) {
@@ -114,8 +119,49 @@ export const getDimensionLabel = (key: string): string => {
     }
   }
   
-  // Direct lookup for proper keys
-  return VULCA_47_DIMENSIONS[key as keyof typeof VULCA_47_DIMENSIONS] || key;
+  // Direct lookup for proper keys (snake_case)
+  const directResult = VULCA_47_DIMENSIONS[key as keyof typeof VULCA_47_DIMENSIONS];
+  if (directResult) return directResult;
+  
+  // Try converting camelCase to snake_case and lookup
+  if (key !== key.toLowerCase()) {
+    const snakeKey = camelToSnakeCase(key);
+    const snakeResult = VULCA_47_DIMENSIONS[snakeKey as keyof typeof VULCA_47_DIMENSIONS];
+    if (snakeResult) return snakeResult;
+  }
+  
+  // Try lowercase version for snake_case keys
+  const lowerKey = key.toLowerCase();
+  const lowerResult = VULCA_47_DIMENSIONS[lowerKey as keyof typeof VULCA_47_DIMENSIONS];
+  if (lowerResult) return lowerResult;
+  
+  // Enhanced fallback: format the key nicely using same logic as VULCAVisualization
+  // Handle snake_case: innovation_depth -> Innovation Depth
+  if (key.includes('_')) {
+    return key.split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  }
+  
+  // Handle camelCase/PascalCase: InnovationDepth -> Innovation Depth
+  if (key !== key.toLowerCase()) {
+    // Strategy: Add space before each uppercase letter (except at start)
+    let result = key.replace(/([A-Z])/g, (match, p1, offset) => {
+      return offset > 0 ? ' ' + p1 : p1;
+    });
+    
+    // Handle consecutive capitals (e.g., "XMLParser" -> "XML Parser")
+    result = result.replace(/([A-Z])([A-Z])([a-z])/g, '$1 $2$3');
+    
+    // Ensure first letter is uppercase
+    result = result.charAt(0).toUpperCase() + result.slice(1);
+    
+    // Clean up any multiple spaces
+    return result.replace(/\s+/g, ' ').trim();
+  }
+  
+  // Last resort: return original key
+  return key;
 };
 
 // 8个文化视角定义 - Based on EMNLP2025-VULCA Cultural Perspectives

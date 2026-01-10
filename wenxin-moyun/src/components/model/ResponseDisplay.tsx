@@ -78,8 +78,8 @@ const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
     }
 
     // Split text and create interactive highlights
-    let parts = [detail.response];
-    
+    let parts: React.ReactNode[] = [detail.response];
+
     highlights.forEach((highlight, index) => {
       if (!highlight) return;
       

@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { LeaderboardEntry } from '../../types/types';
-import type { VULCAEvaluation } from '../../types/vulca';
+import type { VULCAEvaluation, VULCAScore6D } from '../../types/vulca';
 import { exportData } from '../../utils/dataExport';
 import RouterLink from '../common/RouterLink';
 import { VULCA_47_DIMENSIONS, getDimensionLabel } from '../../utils/vulca-dimensions';
@@ -550,8 +550,16 @@ export default function LeaderboardTable({
                 };
                 
                 // 从47维中提取6个核心维度
-                const extractScores6D = (scores47D: any) => {
-                  if (!scores47D) return {};
+                const extractScores6D = (scores47D: any): VULCAScore6D => {
+                  const defaultScores: VULCAScore6D = {
+                    creativity: 0,
+                    technique: 0,
+                    emotion: 0,
+                    context: 0,
+                    innovation: 0,
+                    impact: 0
+                  };
+                  if (!scores47D) return defaultScores;
                   return {
                     creativity: scores47D.creativity || scores47D.originality || scores47D.imagination || 0,
                     technique: scores47D.technique || scores47D.precision || scores47D.skill_level || 0,
@@ -589,11 +597,21 @@ export default function LeaderboardTable({
                 const getDefaultDimensions = (scores: any) => {
                   if (!scores || typeof scores !== 'object') return [];
                   
-                  return Object.keys(scores).map(key => ({
-                    id: key,
-                    name: getDimensionLabel(key), // 使用真实的维度名称
-                    description: `${getDimensionLabel(key)} dimension`
-                  }));
+                  return Object.keys(scores).map(key => {
+                    // 确保使用getDimensionLabel获取正确的显示名称（带空格）
+                    const labelResult = getDimensionLabel(key);
+                    // 如果getDimensionLabel返回的还是没有空格的格式，则尝试其他方法
+                    const properName = labelResult === key ? 
+                      // 将camelCase转换为带空格的格式作为后备方案
+                      key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^[a-z]/, c => c.toUpperCase()) 
+                      : labelResult;
+                    
+                    return {
+                      id: key,
+                      name: properName,
+                      description: `${properName} dimension`
+                    };
+                  });
                 };
                 
                 // 计算47D平均分

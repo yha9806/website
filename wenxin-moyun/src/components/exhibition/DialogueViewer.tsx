@@ -74,7 +74,7 @@ export function DialogueViewer({ dialogues, artworkTitle }: DialogueViewerProps)
       <IOSCardHeader
         title="Art Criticism Dialogue"
         subtitle={`AI-generated discussion about "${artworkTitle}"`}
-        emoji={<EmojiIcon category="people" name="speaking" size="lg" />}
+        emoji={<EmojiIcon category="content" name="speaking" size="lg" />}
         action={
           <div className="flex gap-1">
             {['all', 'en', 'zh', 'ja'].map((lang) => (

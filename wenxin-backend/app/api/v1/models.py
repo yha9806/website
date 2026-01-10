@@ -9,6 +9,9 @@ from app.core.database import get_db
 from app.api.deps import get_current_user, get_current_active_superuser
 from app.models.ai_model import AIModel
 from app.models.user import User
+from app.models.battle import Battle, BattleStatus
+from app.models.evaluation_task import EvaluationTask, TaskStatus
+from sqlalchemy import or_
 from app.schemas.ai_model import (
     AIModelResponse as AIModelSchema,
     AIModelCreate,
@@ -81,7 +84,14 @@ async def get_models(
             "tags": model.tags if model.tags else [],
             "avatar_url": model.avatar_url,
             "overall_score": model.overall_score,
-            "metrics": model.metrics if model.metrics else None,
+            "metrics": model.metrics if model.metrics else {
+                "rhythm": 0,
+                "composition": 0,
+                "narrative": 0,
+                "emotion": 0,
+                "creativity": 0,
+                "cultural": 0
+            },
             "score_highlights": score_highlights,
             "score_weaknesses": score_weaknesses,
             "is_active": model.is_active,
@@ -203,7 +213,48 @@ async def get_model(
             score_weaknesses = json.loads(model_data['score_weaknesses']) if isinstance(model_data['score_weaknesses'], str) else model_data['score_weaknesses']
         except:
             score_weaknesses = []
-    
+
+    # Query real statistics
+    # Total evaluations for this model
+    eval_count_result = await db.execute(
+        select(func.count(EvaluationTask.id)).where(EvaluationTask.model_id == model_id)
+    )
+    total_evaluations = eval_count_result.scalar() or 0
+
+    # Total battles where this model participated
+    battle_count_result = await db.execute(
+        select(func.count(Battle.id)).where(
+            or_(Battle.model_a_id == model_id, Battle.model_b_id == model_id)
+        )
+    )
+    total_battles = battle_count_result.scalar() or 0
+
+    # Win rate calculation
+    win_rate = 0.0
+    if total_battles > 0:
+        # Count wins as model_a
+        wins_as_a_result = await db.execute(
+            select(func.count(Battle.id)).where(
+                Battle.model_a_id == model_id,
+                Battle.status == BattleStatus.completed,
+                Battle.votes_a > Battle.votes_b
+            )
+        )
+        wins_as_a = wins_as_a_result.scalar() or 0
+
+        # Count wins as model_b
+        wins_as_b_result = await db.execute(
+            select(func.count(Battle.id)).where(
+                Battle.model_b_id == model_id,
+                Battle.status == BattleStatus.completed,
+                Battle.votes_b > Battle.votes_a
+            )
+        )
+        wins_as_b = wins_as_b_result.scalar() or 0
+
+        total_wins = wins_as_a + wins_as_b
+        win_rate = (total_wins / total_battles) * 100.0
+
     # Build response dictionary
     response_data = {
         **model_data,
@@ -212,9 +263,9 @@ async def get_model(
         "scoring_details": scoring_details,
         "score_highlights": score_highlights,
         "score_weaknesses": score_weaknesses,
-        "total_evaluations": 0,
-        "total_battles": 0,
-        "win_rate": 0.0,
+        "total_evaluations": total_evaluations,
+        "total_battles": total_battles,
+        "win_rate": round(win_rate, 1),
         "recent_works": []
     }
     

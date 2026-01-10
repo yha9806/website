@@ -110,7 +110,7 @@ test.describe('Evaluation System', () => {
     
     // Setup guest session for testing
     await setGuestSession(page, 'test-guest-eval');
-    await page.goto('/evaluations');
+    await page.goto('/#/evaluations');
   });
 
   test.afterEach(async ({ page }) => {
@@ -237,7 +237,7 @@ test.describe('Evaluation System', () => {
 
   test('View evaluation history', async ({ page }) => {
     // Simplified history test - just verify history UI components exist
-    await page.goto('/evaluations');
+    await page.goto('/#/evaluations');
     await page.waitForLoadState('networkidle');
     
     // Verify history-related UI elements exist
