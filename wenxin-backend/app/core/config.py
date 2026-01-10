@@ -1,7 +1,7 @@
 from typing import List, Union
 from pydantic_settings import BaseSettings
 from pydantic import field_validator
-import secrets
+import os
 import json
 
 
@@ -9,11 +9,24 @@ class Settings(BaseSettings):
     # Application
     APP_NAME: str = "WenxinMoyun"
     APP_VERSION: str = "1.0.0"
-    DEBUG: bool = True
+    DEBUG: bool = False  # Default to False for security, enable via env var
     API_V1_STR: str = "/api/v1"
-    
-    # Security
-    SECRET_KEY: str = secrets.token_urlsafe(32)
+
+    # Security - MUST be set via environment variable in production
+    SECRET_KEY: str = ""
+
+    @field_validator("SECRET_KEY", mode="before")
+    @classmethod
+    def validate_secret_key(cls, v):
+        """Validate SECRET_KEY is properly set"""
+        if not v:
+            # Development environment: use a fixed dev key
+            if os.getenv("ENVIRONMENT") == "production":
+                raise ValueError("SECRET_KEY must be set in production environment")
+            return "dev-secret-key-do-not-use-in-production-32chars"
+        if len(v) < 32:
+            raise ValueError("SECRET_KEY must be at least 32 characters")
+        return v
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     

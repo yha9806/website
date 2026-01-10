@@ -15,10 +15,13 @@ import type { ViewMode, VisualizationType, ViewLevel } from '../../types/vulca';
 import { IOSAlert } from '../../components/ios/core/IOSAlert';
 import { IOSCard } from '../../components/ios/core/IOSCard';
 import { IOSButton } from '../../components/ios/core/IOSButton';
-import { 
-  Loader2, BarChart3, Radar, Grid3x3, Download, 
-  RefreshCw, AlertCircle, WifiOff, CheckCircle, Clock 
+import {
+  Loader2, BarChart3, Radar, Grid3x3, Download,
+  RefreshCw, AlertCircle, WifiOff, CheckCircle, Clock
 } from 'lucide-react';
+
+// API base URL from environment
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
 
 // Models will be loaded dynamically from the API
 
@@ -56,7 +59,7 @@ export const VULCADemoPage: React.FC = () => {
     const loadModels = async () => {
       try {
         // Use the main models API with VULCA data
-        const response = await fetch('http://localhost:8001/api/v1/models/?include_vulca=true&limit=50');
+        const response = await fetch(`${API_BASE_URL}/api/v1/models/?include_vulca=true&limit=50`);
         if (response.ok) {
           const data = await response.json();
           if (data && data.length > 0) {

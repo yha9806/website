@@ -22,6 +22,7 @@ const VULCAVisualization = lazy(() =>
 );
 import { IOSButton } from '../components/ios/core/IOSButton';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { LoadingOverlay } from '../components/common/LoadingOverlay';
 
 export default function LeaderboardPage() {
   const { category = 'overall' } = useParams();
@@ -177,9 +178,7 @@ export default function LeaderboardPage() {
 
       {/* Loading State */}
       {loading && (
-        <div className="flex justify-center items-center py-12">
-          <div className="text-gray-500">Loading...</div>
-        </div>
+        <LoadingOverlay message="Loading leaderboard data..." size="md" />
       )}
 
       {/* Error State */}
@@ -231,17 +230,37 @@ export default function LeaderboardPage() {
         </div>
       )}
       
-      {/* Empty State */}
+      {/* Empty State - Enhanced UI */}
       {!loading && !error && filteredData.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500 dark:text-gray-400">No models found matching the criteria</p>
-          <button
-            onClick={() => setFilters({})}
-            className="mt-4 text-primary-600 hover:text-primary-700"
-          >
-            Clear all filters
-          </button>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center py-16"
+        >
+          <div className="ios-glass rounded-2xl p-8 max-w-md mx-auto">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+              No Models Found
+            </h3>
+            <p className="text-gray-500 dark:text-gray-400 mb-6">
+              No models match your current filter criteria. Try adjusting your filters or reset to see all models.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <IOSButton
+                variant="primary"
+                onClick={clearFilters}
+              >
+                Reset All Filters
+              </IOSButton>
+              <IOSButton
+                variant="secondary"
+                onClick={() => setSelectedCategory('overall')}
+              >
+                View All Categories
+              </IOSButton>
+            </div>
+          </div>
+        </motion.div>
       )}
 
       {/* Stats Summary */}

@@ -12,6 +12,9 @@ from app.vulca import vulca_router
 # Temporarily disabled - requires sentence-transformers
 # from app.exhibition.api import router as exhibition_router
 
+# Determine production environment
+IS_PRODUCTION = os.getenv("ENVIRONMENT") == "production"
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -19,18 +22,21 @@ async def lifespan(app: FastAPI):
     # Startup
     print("Starting up...")
     # Skip init_db in production - database is initialized via migrations
-    if os.getenv("ENVIRONMENT") != "production":
+    if not IS_PRODUCTION:
         await init_db()
     yield
     # Shutdown
     print("Shutting down...")
 
 
-# Create FastAPI app
+# Create FastAPI app with conditional API docs
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
-    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    # Disable API docs in production for security
+    openapi_url=None if IS_PRODUCTION else f"{settings.API_V1_STR}/openapi.json",
+    docs_url=None if IS_PRODUCTION else "/docs",
+    redoc_url=None if IS_PRODUCTION else "/redoc",
     lifespan=lifespan
 )
 
@@ -54,6 +60,11 @@ async def add_security_headers(request: Request, call_next):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
+    # Additional security headers for production
+    if IS_PRODUCTION:
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Content-Security-Policy"] = "default-src 'self'"
     return response
 
 # Mount static files for generated images

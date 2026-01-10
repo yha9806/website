@@ -295,3 +295,38 @@ export const DIMENSION_LABELS = Object.values(VULCA_47_DIMENSIONS);
 
 // Get all cultural perspective keys
 export const CULTURAL_PERSPECTIVE_KEYS = Object.keys(CULTURAL_PERSPECTIVES);
+
+/**
+ * Format dimension name from any format (snake_case, camelCase, PascalCase)
+ * to Title Case with proper spacing
+ * @example formatDimensionName('innovation_depth') => 'Innovation Depth'
+ * @example formatDimensionName('InnovationDepth') => 'Innovation Depth'
+ * @example formatDimensionName('innovationDepth') => 'Innovation Depth'
+ */
+export const formatDimensionName = (text: string): string => {
+  if (!text) return '';
+
+  // If already has proper spacing (contains space and doesn't have underscore), return as-is
+  if (text.includes(' ') && !text.includes('_')) {
+    return text;
+  }
+
+  // Handle snake_case: innovation_depth -> Innovation Depth
+  if (text.includes('_')) {
+    return text.split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  }
+
+  // Handle camelCase/PascalCase: InnovationDepth -> Innovation Depth
+  const result = text
+    // Insert space before uppercase letters that follow lowercase letters or digits
+    .replace(/([a-z\d])([A-Z])/g, '$1 $2')
+    // Insert space between consecutive uppercase letters followed by lowercase
+    .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2');
+
+  // Ensure first letter is uppercase and clean up multiple spaces
+  return (result.charAt(0).toUpperCase() + result.slice(1))
+    .replace(/\s+/g, ' ')
+    .trim();
+};
