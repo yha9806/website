@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { motion } from 'framer-motion';
-import { IOSToggle, EmojiIcon } from '../ios';
-import { getItem, setItem } from '../../utils/storageUtils';
+import { IOSToggle } from '../ios';
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
@@ -62,35 +61,10 @@ export function ThemeSwitch() {
   );
 }
 
-// 语言切换组件
-function LanguageToggle() {
-  const [language, setLanguage] = useState<'zh' | 'en'>(() => {
-    return (getItem('language') as 'zh' | 'en') || 'en';
-  });
-
-  const toggleLanguage = () => {
-    const newLang = language === 'zh' ? 'en' : 'zh';
-    setLanguage(newLang);
-    setItem('language', newLang);
-  };
-
-  return (
-    <IOSToggle
-      checked={language === 'en'}
-      onChange={toggleLanguage}
-      color="green"
-      size="sm"
-      leftIcon={<span className="text-xs font-medium">CN</span>}
-      rightIcon={<span className="text-xs font-medium">EN</span>}
-    />
-  );
-}
-
-// 整合的头部控制组件
+// 整合的头部控制组件（语言切换功能已搁置）
 export function HeaderControls() {
   return (
     <div className="flex items-center gap-2">
-      <LanguageToggle />
       <ThemeToggle />
     </div>
   );
