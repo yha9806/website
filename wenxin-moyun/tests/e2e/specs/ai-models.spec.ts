@@ -7,7 +7,7 @@ test.describe('AI Models Leaderboard', () => {
 
   test('应该显示AI模型排行榜', async ({ page }) => {
     // 检查页面标题
-    await expect(page).toHaveTitle(/WenXin MoYun/);
+    await expect(page).toHaveTitle(/VULCA/);
 
     // 检查排行榜表格或卡片 - 使用CSS选择器列表并取第一个
     const leaderboard = page.locator('[class*="leaderboard"], table, [class*="model-list"]').first();

@@ -14,7 +14,7 @@ test.describe('Homepage', () => {
 
   test('应该正确显示页面标题和主要导航', async ({ page }) => {
     // 检查页面标题
-    await expect(page).toHaveTitle(/WenXin MoYun/);
+    await expect(page).toHaveTitle(/VULCA/);
 
     // 检查主要导航元素使用精确选择器
     await expect(homePage.navMenu).toBeVisible();
@@ -25,7 +25,7 @@ test.describe('Homepage', () => {
   test('应该显示主要内容区域', async ({ page }) => {
     // 检查主要标题使用特定选择器
     await expect(homePage.heroTitle).toBeVisible();
-    await expect(homePage.heroTitle).toContainText('WenXin MoYun');
+    await expect(homePage.heroTitle).toContainText('VULCA');
 
     // 检查iOS组件按钮
     await expect(homePage.exploreRankingsButton).toBeVisible();

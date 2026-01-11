@@ -1,4 +1,4 @@
-# WenXin MoYun Frontend - Production Dockerfile for Static Hosting
+# VULCA Frontend - Production Dockerfile for Static Hosting
 # Multi-stage build for optimized production deployment
 
 # Stage 1: Build the React application
@@ -60,7 +60,7 @@ RUN echo '<!DOCTYPE html>
     </style>
 </head>
 <body>
-    <div class="logo">🎨 WenXin MoYun</div>
+    <div class="logo">VULCA</div>
     <h1>404 - Page Not Found</h1>
     <p class="error">The page you are looking for could not be found.</p>
     <a href="/">Return to Homepage</a>

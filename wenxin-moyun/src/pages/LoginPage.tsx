@@ -69,7 +69,7 @@ const LoginPage: React.FC = () => {
               <LogIn className="w-10 h-10 text-white" />
             </div>
             <h2 className="text-3xl font-bold gradient-text mb-2">Welcome Back</h2>
-            <p className="text-gray-600 dark:text-gray-400">Sign in to WenXin MoYun Platform</p>
+            <p className="text-gray-600 dark:text-gray-400">Sign in to VULCA Platform</p>
           </div>
 
           {/* Error Message */}
@@ -160,8 +160,8 @@ const LoginPage: React.FC = () => {
 
         {/* Footer Info */}
         <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
-          <p>WenXin MoYun - AI Art Evaluation Platform</p>
-          <p className="mt-1">© 2024 All rights reserved</p>
+          <p>VULCA - Cultural AI Evaluation Platform</p>
+          <p className="mt-1">© 2025 VULCA Team. All rights reserved</p>
         </div>
       </motion.div>
     </div>

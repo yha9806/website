@@ -95,7 +95,7 @@ test.describe('iOS Components', () => {
     }
 
     // Check iOS title level classes - use CSS selector list
-    const largeTitleElements = page.locator('.text-large-title, [class*="large-title"], h1:has-text("WenXin MoYun"), h1:has-text("AI Art Evaluation")').first();
+    const largeTitleElements = page.locator('.text-large-title, [class*="large-title"], h1:has-text("VULCA"), h1:has-text("Cultural AI Evaluation")').first();
     if (await largeTitleElements.isVisible({ timeout: 3000 }).catch(() => false)) {
       await expect(largeTitleElements).toBeVisible();
     }

@@ -1,114 +1,113 @@
-# 文心墨韵 - AI 艺术创作能力评测平台
+# VULCA - Cultural AI Evaluation Platform
 
-一个专业的 AI 模型艺术创作能力评测平台，专注于评测 AI 在诗歌、绘画、叙事等艺术领域的创造力、美学价值和文化契合度。
+**VULCA** (Visually-grounded Understanding and Learning for Cultural Aesthetics) is a comprehensive 47-dimension evaluation framework for assessing AI models' cultural and artistic understanding across 8 cultural perspectives.
 
-## 功能特性
+## Key Features
 
-- **综合排行榜**: 展示所有模型在人文艺术领域的综合排名
-- **垂直分类榜单**: 包括诗词创作、绘画艺术、叙事文学、音乐创作等细分领域
-- **模型详情页**: 展示模型的能力雷达图、详细评分和代表作品
-- **模型对决**: 用户可以参与投票，对比不同模型的创作能力
-- **响应式设计**: 完美适配桌面和移动设备
+- **47-Dimension Evaluation**: Comprehensive framework covering creativity, technique, emotion, context, innovation, and impact
+- **8 Cultural Perspectives**: Eastern (Chinese, Japanese, Islamic, South Asian) + Western (Classical, Contemporary, Latin American) + Universal (African)
+- **Reproducible Benchmarking**: Version-controlled evaluations with BibTeX citation support
+- **Enterprise Reports**: Detailed diagnostic reports for model selection and release decisions
+- **Public Demo**: Free access to leaderboards, VULCA demo, and cross-cultural exhibitions
 
-## 技术栈
+## Tech Stack
 
-- **前端框架**: React 18 + TypeScript
-- **样式**: Tailwind CSS
-- **路由**: React Router DOM
-- **图表**: Recharts
-- **动画**: Framer Motion
-- **图标**: Lucide React
-- **构建工具**: Vite
+- **Frontend**: React 19 + TypeScript 5.8 + Vite 7.1
+- **Styling**: Tailwind CSS 4.1 with iOS Design System
+- **State**: Zustand 4.4
+- **Charts**: Recharts 3.1
+- **Animation**: Framer Motion 12.23
+- **Testing**: Playwright E2E
 
-## 快速开始
-
-### 安装依赖
+## Quick Start
 
 ```bash
-npm install
-```
+# Install dependencies
+npm install --legacy-peer-deps
 
-### 启动开发服务器
-
-```bash
+# Start development server
 npm run dev
-```
 
-访问 http://localhost:5173 查看应用
-
-### 构建生产版本
-
-```bash
+# Build for production
 npm run build
+
+# Run E2E tests
+npm run test:e2e
 ```
 
-### 预览生产版本
-
-```bash
-npm run preview
-```
-
-## 项目结构
+## Project Structure
 
 ```
-wenxin-moyun/
-├── src/
-│   ├── components/      # 组件
-│   │   ├── common/      # 通用组件（Header, Footer, Layout）
-│   │   ├── leaderboard/ # 排行榜相关组件
-│   │   ├── model/       # 模型相关组件
-│   │   └── battle/      # 对决相关组件
-│   ├── pages/           # 页面组件
-│   │   ├── HomePage.tsx
-│   │   ├── LeaderboardPage.tsx
-│   │   ├── ModelDetailPage.tsx
-│   │   ├── BattlePage.tsx
-│   │   └── AboutPage.tsx
-│   ├── data/            # 模拟数据
-│   ├── types/           # TypeScript 类型定义
-│   ├── hooks/           # 自定义 React Hooks
-│   └── utils/           # 工具函数
-├── public/              # 静态资源
-└── index.html          # HTML 入口文件
+src/
+├── components/
+│   ├── ios/           # iOS Design System components
+│   ├── vulca/         # VULCA evaluation components
+│   ├── report/        # Report generation components
+│   └── common/        # Shared components
+├── pages/
+│   ├── HomePage.tsx           # Marketing landing
+│   ├── LeaderboardPage.tsx    # Model rankings
+│   ├── ModelDetailPage.tsx    # Model details + report
+│   ├── vulca/                 # VULCA demo pages
+│   ├── solutions/             # Solution pages
+│   └── exhibitions/           # Cross-cultural exhibitions
+├── hooks/             # Custom React hooks
+├── services/          # API services
+├── utils/             # Utilities
+└── types/             # TypeScript definitions
 ```
 
-## 主要页面
+## URL Structure
 
-1. **首页** (`/`): 展示平台概览、顶级模型、实时对决等
-2. **排行榜** (`/leaderboard`): 展示完整的模型排行榜
-3. **模型详情** (`/model/:id`): 展示特定模型的详细信息和能力分析
-4. **模型对决** (`/battle`): 用户参与投票，对比模型创作能力
-5. **关于** (`/about`): 平台介绍、使命和发展路线图
+```
+/                    - Marketing homepage
+/product             - Product overview
+/solutions/*         - Solution pages (AI Labs, Research, Museums)
+/customers           - Customer cases
+/pricing             - Pricing tiers
+/trust               - Trust & Security
+/demo                - Book a demo
 
-## 开发计划
+/models              - Public leaderboard
+/model/:id           - Model details
+/model/:id/report    - Evaluation report
+/vulca               - VULCA demo
+/exhibitions         - Cross-cultural evidence
 
-### Phase 1 - MVP (已完成)
-- ✅ 基础排行榜功能
-- ✅ 模型对决功能
-- ✅ 核心评测维度展示
-- ✅ 响应式设计
+/methodology         - Framework documentation
+/dataset             - Dataset access
+/papers              - Academic papers
+```
 
-### Phase 2 - 功能扩展
-- [ ] API 接入支持
-- [ ] 自动化评测系统
-- [ ] 用户注册和登录
-- [ ] 社区画廊功能
+## VULCA Framework
 
-### Phase 3 - 生态建设
-- [ ] 定制化评测服务
-- [ ] 专家认证体系
-- [ ] 创作者社区
-- [ ] 模型提交入口
+### 6D Core Dimensions
+| Dimension | Description |
+|-----------|-------------|
+| Creativity | Originality and imagination |
+| Technique | Mastery of artistic forms |
+| Emotion | Emotional expression and resonance |
+| Context | Historical and cultural understanding |
+| Innovation | Breaking traditional boundaries |
+| Impact | Social influence potential |
 
-## 贡献
+### 8 Cultural Perspectives
+- **Eastern**: Chinese, Japanese, Islamic, South Asian
+- **Western**: Classical, Contemporary, Latin American
+- **Universal**: African
 
-欢迎提交 Issue 和 Pull Request！
+## Deployment
 
-## 许可证
+- **Frontend**: GCP Cloud Storage (static hosting)
+- **Backend**: GCP Cloud Run
+- **Database**: Cloud SQL (PostgreSQL)
+- **CI/CD**: GitHub Actions
+
+## License
 
 MIT
 
-## 联系方式
+## Contact
 
-- Email: contact@wenxinmoyun.ai
-- GitHub: [wenxin-moyun](https://github.com/wenxin-moyun)
+- GitHub: [EMNLP2025-VULCA](https://github.com/yha9806/EMNLP2025-VULCA)
+- Email: hello@vulca.ai
