@@ -39,6 +39,9 @@ const MethodologyPage = lazy(() => import('./pages/MethodologyPage'));
 const DatasetPage = lazy(() => import('./pages/DatasetPage'));
 const PapersPage = lazy(() => import('./pages/PapersPage'));
 
+// Report page - lazy loaded
+const ModelReportPage = lazy(() => import('./pages/ModelReportPage'));
+
 // Reusable loading component
 function PageLoader({ text = 'Loading...' }: { text?: string }) {
   return (
@@ -146,6 +149,11 @@ function App() {
               <Route path="/leaderboard" element={<ModelsPage />} />
               <Route path="/leaderboard/:category" element={<ModelsPage />} />
               <Route path="/model/:id" element={<ModelDetailPage />} />
+              <Route path="/model/:id/report" element={
+                <Suspense fallback={<PageLoader text="Loading Report..." />}>
+                  <ModelReportPage />
+                </Suspense>
+              } />
 
               {/* VULCA Demo */}
               <Route path="/vulca" element={

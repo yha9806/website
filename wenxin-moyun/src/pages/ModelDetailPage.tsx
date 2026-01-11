@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import RouterLink from '../components/common/RouterLink';
 import { Breadcrumb } from '../components/common/Breadcrumb';
-import { ArrowLeft, Calendar, Tag, Trophy, Zap, Loader2, Cpu } from 'lucide-react';
+import { ArrowLeft, Calendar, Tag, Trophy, Zap, Loader2, Cpu, FileText, Download, ExternalLink } from 'lucide-react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { mockModels } from '../data/mockData';
 import { motion } from 'framer-motion';
@@ -113,6 +113,37 @@ export default function ModelDetailPage() {
             <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
               <EmojiIcon category="content" name="category" size="sm" className="mr-2" />
               Type: {model.category === 'text' ? 'Text' : model.category === 'visual' ? 'Visual' : 'Multimodal'}
+            </div>
+          </div>
+
+          {/* VULCA Report CTA */}
+          <div className="p-4 rounded-xl bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-800">
+                  <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900 dark:text-white">
+                    VULCA Evaluation Report
+                  </h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    47-dimension analysis across 8 cultural perspectives
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-2 flex-shrink-0">
+                <RouterLink to={`/model/${id}/report`}>
+                  <IOSButton variant="primary" size="sm">
+                    <ExternalLink className="w-4 h-4 mr-1.5" />
+                    View Report
+                  </IOSButton>
+                </RouterLink>
+                <IOSButton variant="secondary" size="sm" onClick={() => alert('Demo: PDF generation available in Enterprise plan')}>
+                  <Download className="w-4 h-4 mr-1.5" />
+                  PDF
+                </IOSButton>
+              </div>
             </div>
           </div>
 
