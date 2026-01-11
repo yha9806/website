@@ -51,16 +51,17 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-neutral-50 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-neutral-50 dark:bg-[#161B22] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
       >
-        <div className="sticky top-0 bg-neutral-50 border-b p-6 flex items-center justify-between">
+        <div className="sticky top-0 bg-neutral-50 dark:bg-gray-900 border-b dark:border-gray-700 p-6 flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold gradient-text">人工评分</h2>
-            <p className="text-sm text-gray-600 mt-1">为AI创作内容打分并提供反馈</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">为AI创作内容打分并提供反馈</p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            aria-label="Close"
           >
             <X className="w-5 h-5" />
           </button>
@@ -72,7 +73,7 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
             <div className="glass-effect rounded-xl p-4">
               <h3 className="font-semibold mb-3">创作内容</h3>
               {evaluation.result.content && (
-                <p className="text-gray-700 whitespace-pre-wrap mb-3">
+                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap mb-3">
                   {evaluation.result.content}
                 </p>
               )}
@@ -84,8 +85,8 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
                 />
               )}
               
-              <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-600">AI评分</p>
+              <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <p className="text-sm text-gray-600 dark:text-gray-400">AI评分</p>
                 <p className="text-xl font-bold gradient-text">
                   {evaluation.result.score}/100
                 </p>
@@ -95,13 +96,15 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
 
           {/* Score Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label htmlFor="human-rating-score" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               您的评分
             </label>
-            
+
             <div className="flex items-center gap-4 mb-4">
               <input
                 type="range"
+                id="human-rating-score"
+                aria-label="Human rating score"
                 min="0"
                 max="100"
                 value={score}
@@ -112,7 +115,7 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
                 <div className={`text-3xl font-bold ${getScoreColor()}`}>
                   {score}
                 </div>
-                <div className="text-sm text-gray-600">{getScoreLabel()}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{getScoreLabel()}</div>
               </div>
             </div>
 
@@ -126,7 +129,7 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
                   className={`px-3 py-1 rounded-lg text-sm transition-all ${
                     score === quickScore
                       ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
                   }`}
                 >
                   {quickScore}
@@ -137,20 +140,20 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
 
           {/* Feedback Textarea */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               评价反馈
             </label>
             <textarea
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
               placeholder="请提供您的评价和建议..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
               rows={5}
             />
-            
+
             {/* Feedback Templates */}
             <div className="mt-2 flex flex-wrap gap-2">
-              <span className="text-xs text-gray-600">快速评价:</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">快速评价:</span>
               {[
                 '创意独特，表现力强',
                 '符合主题，质量优秀',
@@ -160,10 +163,10 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
                 <button
                   key={template}
                   type="button"
-                  onClick={() => setFeedback(prev => 
+                  onClick={() => setFeedback(prev =>
                     prev ? `${prev}；${template}` : template
                   )}
-                  className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                  className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors text-gray-700 dark:text-gray-300"
                 >
                   {template}
                 </button>
@@ -179,18 +182,18 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
                 className={`w-8 h-8 transition-colors ${
                   score >= star * 20
                     ? 'text-yellow-500 fill-yellow-500'
-                    : 'text-gray-300'
+                    : 'text-gray-300 dark:text-gray-600'
                 }`}
               />
             ))}
           </div>
 
           {/* Submit Buttons */}
-          <div className="flex justify-end gap-3 pt-4 border-t">
+          <div className="flex justify-end gap-3 pt-4 border-t dark:border-gray-700">
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              className="px-6 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
             >
               取消
             </button>

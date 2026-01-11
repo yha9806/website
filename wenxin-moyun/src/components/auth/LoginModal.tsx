@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, AlertCircle, Gift, Save, Clock, Star } from 'lucide-react';
 import authService from '../../services/auth.service';
@@ -86,9 +86,65 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
     username: '',
     password: ''
   });
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previousActiveElement = useRef<HTMLElement | null>(null);
 
   const config = triggerConfigs[trigger];
   const Icon = config.icon;
+
+  // Focus trap: keep focus within the modal
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape' && config.urgency !== 'high') {
+      onClose();
+      return;
+    }
+
+    if (e.key !== 'Tab') return;
+
+    const focusableElements = modalRef.current?.querySelectorAll(
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+
+    if (!focusableElements || focusableElements.length === 0) return;
+
+    const firstElement = focusableElements[0] as HTMLElement;
+    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+    if (e.shiftKey) {
+      if (document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      }
+    } else {
+      if (document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
+    }
+  }, [onClose, config.urgency]);
+
+  // Manage focus when modal opens/closes
+  useEffect(() => {
+    if (isOpen) {
+      previousActiveElement.current = document.activeElement as HTMLElement;
+
+      // Focus first input after animation
+      const timer = setTimeout(() => {
+        const firstInput = modalRef.current?.querySelector('input');
+        firstInput?.focus();
+      }, 100);
+
+      document.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    } else {
+      // Restore focus when closing
+      previousActiveElement.current?.focus();
+    }
+  }, [isOpen, handleKeyDown]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,14 +197,19 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-neutral-50 rounded-2xl shadow-2xl z-50 overflow-hidden"
+            ref={modalRef}
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-neutral-50 dark:bg-[#161B22] rounded-2xl shadow-2xl z-50 overflow-hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="login-modal-title"
           >
             {/* Header */}
             <div className="relative bg-gradient-to-r from-primary to-secondary p-6 text-white">
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 p-1 rounded-lg hover:bg-neutral-50/20 transition-colors"
+                className="absolute top-3 right-3 w-11 h-11 flex items-center justify-center rounded-lg hover:bg-neutral-50/20 transition-colors"
                 disabled={config.urgency === 'high' && !getItem('access_token')}
+                aria-label="Close"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -158,20 +219,20 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
                   <Icon className={`w-8 h-8 ${config.iconColor}`} />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold">{config.title}</h2>
+                  <h2 id="login-modal-title" className="text-2xl font-bold">{config.title}</h2>
                   <p className="text-white/90 mt-1">{config.subtitle}</p>
                 </div>
               </div>
             </div>
 
             {/* Benefits */}
-            <div className="p-6 bg-gray-50">
-              <h3 className="text-sm font-semibold text-gray-600 mb-3">After login you will get:</h3>
+            <div className="p-6 bg-gray-50 dark:bg-gray-800">
+              <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-3">After login you will get:</h3>
               <div className="grid grid-cols-2 gap-2">
                 {config.benefits.map((benefit, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    <span className="text-sm text-gray-700">{benefit}</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">{benefit}</span>
                   </div>
                 ))}
               </div>
@@ -180,37 +241,43 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
             {/* Login Form */}
             <form onSubmit={handleSubmit} className="p-6">
               {error && (
-                <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">
+                <div id="modal-login-error" role="alert" aria-live="assertive" className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-lg text-sm">
                   {error}
                 </div>
               )}
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Username
+                  <label htmlFor="login-username" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Username <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <input
+                    id="login-username"
                     type="text"
                     value={formData.username}
                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="Enter username"
                     required
+                    aria-invalid={error ? 'true' : undefined}
+                    aria-describedby={error ? 'modal-login-error' : undefined}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Password
+                  <label htmlFor="login-password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Password <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <input
+                    id="login-password"
                     type="password"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="Enter password"
                     required
+                    aria-invalid={error ? 'true' : undefined}
+                    aria-describedby={error ? 'modal-login-error' : undefined}
                   />
                 </div>
               </div>
@@ -219,7 +286,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium hover:shadow-lg transition-all disabled:opacity-50"
+                  className="w-full py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all disabled:opacity-50"
                 >
                   {isLoading ? 'Signing in...' : 'Sign In Now'}
                 </button>
@@ -228,7 +295,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
                   type="button"
                   onClick={handleQuickLogin}
                   disabled={isLoading}
-                  className="w-full py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
+                  className="w-full py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-colors disabled:opacity-50"
                 >
                   <Gift className="w-4 h-4 inline mr-2" />
                   Use Demo Account
@@ -236,7 +303,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, trigger
               </div>
 
               <div className="mt-4 text-center">
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
                   Don't have an account?
                   <a href="/register" className="text-primary hover:underline ml-1">
                     Sign Up Now

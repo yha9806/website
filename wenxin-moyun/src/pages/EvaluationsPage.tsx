@@ -76,7 +76,7 @@ const EvaluationsPage: React.FC = () => {
       case 'failed':
         return 'text-red-500';
       default:
-        return 'text-gray-500';
+        return 'text-gray-500 dark:text-gray-400';
     }
   };
 
@@ -129,7 +129,7 @@ const EvaluationsPage: React.FC = () => {
               <h1 className="text-4xl font-bold gradient-text mb-2">
                 AI Evaluation Tasks
               </h1>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-400">
                 Manage and view AI model artistic creation evaluation tasks
               </p>
             </div>
@@ -167,7 +167,7 @@ const EvaluationsPage: React.FC = () => {
                 <select
                   value={selectedType}
                   onChange={(e) => setSelectedType(e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-gray-200 ios-glass focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 ios-glass bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">All Types</option>
                   <option value="poem">Poetry Creation</option>
@@ -179,7 +179,7 @@ const EvaluationsPage: React.FC = () => {
                 <select
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-gray-200 ios-glass focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 ios-glass bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">All Status</option>
                   <option value="pending">Pending</option>
@@ -195,7 +195,7 @@ const EvaluationsPage: React.FC = () => {
                     👤 Guest Mode · {remainingUsage} uses left today
                   </div>
                 )}
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-gray-600 dark:text-gray-400">
                   📊 Total {total} tasks
                 </div>
               </div>
@@ -210,12 +210,12 @@ const EvaluationsPage: React.FC = () => {
           ) : error ? (
             <div className="glass-effect rounded-xl p-8 text-center">
               <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-              <p className="text-gray-600">{error}</p>
+              <p className="text-gray-600 dark:text-gray-400">{error}</p>
             </div>
           ) : filteredEvaluations.length === 0 ? (
             <div className="glass-effect rounded-xl p-8 text-center">
-              <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600">No evaluation tasks yet</p>
+              <AlertCircle className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+              <p className="text-gray-600 dark:text-gray-400">No evaluation tasks yet</p>
               <button
                 onClick={handleCreateButtonClick}
                 className="mt-4 px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg"
@@ -249,7 +249,7 @@ const EvaluationsPage: React.FC = () => {
                   className={`px-4 py-2 rounded-lg ${
                     p === page
                       ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
-                      : 'bg-neutral-50 text-gray-700 hover:bg-gray-100'
+                      : 'bg-neutral-50 dark:bg-[#21262D] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
                   {p}

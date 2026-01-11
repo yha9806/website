@@ -61,7 +61,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-neutral-50 rounded-xl p-6 shadow-sm border border-neutral-200"
+      className="bg-neutral-50 dark:bg-[#161B22] rounded-xl p-6 shadow-sm border border-neutral-200 dark:border-gray-700"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
@@ -165,7 +165,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
 
       {/* Additional Tips */}
       {data.sample_size >= 10 && (
-        <div className="mt-4 p-3 bg-neutral-50 rounded-lg">
+        <div className="mt-4 p-3 bg-neutral-50 dark:bg-[#21262D] rounded-lg">
           <p className="text-xs text-neutral-500">
             💡 提示：参考分数基于历史数据统计，仅供参考。请结合作品实际质量和您的专业判断进行评分。
           </p>

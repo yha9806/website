@@ -148,7 +148,7 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
   };
 
   return (
-    <div className="bg-neutral-50 rounded-xl p-6 shadow-lg border border-neutral-200">
+    <div className="bg-neutral-50 dark:bg-[#161B22] rounded-xl p-6 shadow-lg border border-neutral-200 dark:border-gray-700">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
@@ -196,8 +196,8 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
               className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
                 isActive ? 'bg-primary/10 border-2 border-primary shadow-sm' :
                 isCompleted ? 'bg-success-500/10 border border-success-500' :
-                isPending ? 'bg-neutral-50 border border-neutral-200' :
-                'bg-neutral-50 border border-neutral-200'
+                isPending ? 'bg-neutral-50 dark:bg-[#21262D] border border-neutral-200 dark:border-gray-700' :
+                'bg-neutral-50 dark:bg-[#21262D] border border-neutral-200 dark:border-gray-700'
               }`}
             >
               {/* Stage Icon */}
@@ -263,9 +263,9 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
       {/* Time Info */}
       {progressData?.started_at && (
         <div className="mt-4 flex items-center justify-between text-xs text-neutral-500">
-          <span>Start Time: {new Date(progressData.started_at).toLocaleTimeString()}</span>
+          <span>Start Time: {new Date(progressData.started_at).toLocaleTimeString(undefined, { timeStyle: 'short' })}</span>
           {progressData.completed_at && (
-            <span>Completion Time: {new Date(progressData.completed_at).toLocaleTimeString()}</span>
+            <span>Completion Time: {new Date(progressData.completed_at).toLocaleTimeString(undefined, { timeStyle: 'short' })}</span>
           )}
         </div>
       )}

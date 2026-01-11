@@ -48,10 +48,10 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
 
   const getConfidenceColor = (confidence: string) => {
     switch (confidence) {
-      case 'high': return 'text-green-600 bg-green-50';
-      case 'medium': return 'text-yellow-600 bg-yellow-50';
-      case 'low': return 'text-gray-600 bg-gray-50';
-      default: return 'text-gray-600 bg-gray-50';
+      case 'high': return 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20';
+      case 'medium': return 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20';
+      case 'low': return 'text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-800';
+      default: return 'text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-800';
     }
   };
 
@@ -68,7 +68,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
   if (isLoading) {
     return (
       <div className="animate-pulse">
-        <div className="h-32 bg-gray-100 rounded-lg"></div>
+        <div className="h-32 bg-gray-100 dark:bg-gray-800 rounded-lg"></div>
       </div>
     );
   }
@@ -81,15 +81,15 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200"
+      className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="p-2 bg-neutral-50 rounded-lg shadow-sm">
-            <TrendingUp className="w-5 h-5 text-blue-600" />
+          <div className="p-2 bg-neutral-50 dark:bg-[#21262D] rounded-lg shadow-sm">
+            <TrendingUp className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-800">AI 评分参考</h3>
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">AI 评分参考</h3>
         </div>
         <button
           onClick={() => setShowDetails(!showDetails)}
@@ -103,14 +103,14 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
       {/* Score Range Display */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-gray-600">建议评分范围</span>
+          <span className="text-sm text-gray-600 dark:text-gray-400">建议评分范围</span>
           <span className={`text-xs px-2 py-1 rounded-full ${getConfidenceColor(advice.confidence)}`}>
             {advice.confidence === 'high' ? '高置信度' : 
              advice.confidence === 'medium' ? '中置信度' : '低置信度'}
           </span>
         </div>
         
-        <div className="relative h-12 bg-neutral-50 rounded-lg shadow-inner p-2">
+        <div className="relative h-12 bg-neutral-50 dark:bg-[#21262D] rounded-lg shadow-inner p-2">
           <div className="relative h-full">
             {/* Score range bar */}
             <div 
@@ -133,7 +133,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
           </div>
           
           {/* Scale marks */}
-          <div className="absolute inset-x-2 -bottom-5 flex justify-between text-xs text-gray-500">
+          <div className="absolute inset-x-2 -bottom-5 flex justify-between text-xs text-gray-500 dark:text-gray-400">
             <span>0</span>
             <span>25</span>
             <span>50</span>
@@ -144,8 +144,8 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
       </div>
 
       {/* Suggestion */}
-      <div className="mt-8 p-3 bg-neutral-50 rounded-lg border border-blue-100">
-        <p className="text-sm text-gray-700">{advice.suggestion}</p>
+      <div className="mt-8 p-3 bg-neutral-50 dark:bg-[#21262D] rounded-lg border border-blue-100 dark:border-blue-800">
+        <p className="text-sm text-gray-700 dark:text-gray-300">{advice.suggestion}</p>
       </div>
 
       {/* Detailed Information */}
@@ -158,23 +158,23 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
         >
           {/* Sample Size */}
           <div className="flex items-center gap-2 text-sm">
-            <Users className="w-4 h-4 text-gray-500" />
-            <span className="text-gray-600">
+            <Users className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <span className="text-gray-600 dark:text-gray-400">
               基于 <strong>{advice.sample_size}</strong> 个同类作品分析
             </span>
           </div>
 
           {/* Task-specific ranges */}
           {Object.keys(advice.task_specific_ranges).length > 0 && (
-            <div className="bg-neutral-50 rounded-lg p-3 space-y-2">
-              <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+            <div className="bg-neutral-50 dark:bg-[#21262D] rounded-lg p-3 space-y-2">
+              <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                 <ChartBar className="w-4 h-4" />
                 <span>{getTaskTypeLabel(taskType)}细分指标参考</span>
               </div>
               {Object.entries(advice.task_specific_ranges).map(([metric, [min, max]]) => (
                 <div key={metric} className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600 capitalize">{metric}</span>
-                  <span className="font-medium text-gray-800">{min} - {max}</span>
+                  <span className="text-gray-600 dark:text-gray-400 capitalize">{metric}</span>
+                  <span className="font-medium text-gray-800 dark:text-gray-200">{min} - {max}</span>
                 </div>
               ))}
             </div>
@@ -184,19 +184,19 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
           <div className="flex gap-2">
             <button
               onClick={() => onScoreChange?.(advice.score_range.min)}
-              className="flex-1 py-2 text-sm bg-neutral-50 text-blue-600 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors"
+              className="flex-1 py-2 text-sm bg-neutral-50 dark:bg-[#21262D] text-blue-600 dark:text-blue-400 rounded-lg border border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
             >
               使用最低分 ({advice.score_range.min})
             </button>
             <button
               onClick={() => onScoreChange?.(advice.reference_score)}
-              className="flex-1 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex-1 py-2 text-sm bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
             >
               使用参考分 ({advice.reference_score})
             </button>
             <button
               onClick={() => onScoreChange?.(advice.score_range.max)}
-              className="flex-1 py-2 text-sm bg-neutral-50 text-blue-600 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors"
+              className="flex-1 py-2 text-sm bg-neutral-50 dark:bg-[#21262D] text-blue-600 dark:text-blue-400 rounded-lg border border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
             >
               使用最高分 ({advice.score_range.max})
             </button>

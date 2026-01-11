@@ -110,15 +110,16 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="bg-neutral-50 rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden relative"
+              className="bg-neutral-50 dark:bg-[#161B22] rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden relative"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close button */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 transition-colors z-10"
+                className="absolute top-3 right-3 w-11 h-11 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors z-10"
+                aria-label="Close"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               </button>
 
               {/* Header with gradient background */}
@@ -146,7 +147,7 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
 
               {/* Content */}
               <div className="p-6">
-                <p className="text-gray-600 mb-6 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
                   {config.description}
                 </p>
 
@@ -154,15 +155,15 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-green-500 rounded-full" />
-                    <span className="text-sm text-gray-700">Unlimited evaluations</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Unlimited evaluations</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-green-500 rounded-full" />
-                    <span className="text-sm text-gray-700">Save evaluation history</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Save evaluation history</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-green-500 rounded-full" />
-                    <span className="text-sm text-gray-700">Advanced analytics features</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Advanced analytics features</span>
                   </div>
                 </div>
 
@@ -176,7 +177,7 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
                   </button>
                   <button
                     onClick={onClose}
-                    className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                    className="px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                   >
                     Later
                   </button>
@@ -187,7 +188,7 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
                   <div className="mt-3 text-center">
                     <button
                       onClick={onClose}
-                      className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                      className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                     >
                       Continue as Guest
                     </button>
