@@ -5,18 +5,12 @@ import ErrorBoundary from './components/common/ErrorBoundary';
 import { cacheUtils } from './services/api';
 import { useEffect, Suspense, lazy } from 'react';
 import HomePage from './pages/HomePage';
-import LeaderboardPage from './pages/LeaderboardPage';
+import ModelsPage from './pages/LeaderboardPage';  // Renamed: Rankings -> Models
 import ModelDetailPage from './pages/ModelDetailPage';
-import BattlePage from './pages/BattlePage';
-import AboutPage from './pages/AboutPage';
-import ComparePage from './pages/ComparePage';
-import DashboardPage from './pages/DashboardPage';
 import EvaluationsPage from './pages/EvaluationsPage';
 import EvaluationDetailPage from './pages/EvaluationDetailPage';
 import GalleryPage from './pages/GalleryPage';
 import LoginPage from './pages/LoginPage';
-import TestIOSComponents from './pages/TestIOSComponents';
-import TestAdvancedIOSComponents from './pages/TestAdvancedIOSComponents';
 import NotFoundPage from './pages/NotFoundPage';
 
 // Lazy load pages to improve initial load time
@@ -24,6 +18,11 @@ const VULCADemoPage = lazy(() => import('./pages/vulca/VULCADemoPage'));
 const ExhibitionsPage = lazy(() => import('./pages/exhibitions/ExhibitionsPage'));
 const ExhibitionDetailPage = lazy(() => import('./pages/exhibitions/ExhibitionDetailPage'));
 const ArtworkPage = lazy(() => import('./pages/exhibitions/ArtworkPage'));
+
+// Academic/Research pages - lazy loaded
+const MethodologyPage = lazy(() => import('./pages/MethodologyPage'));
+const DatasetPage = lazy(() => import('./pages/DatasetPage'));
+const PapersPage = lazy(() => import('./pages/PapersPage'));
 
 function App() {
   // Initialize cache warming on app start with version check
@@ -66,26 +65,25 @@ function App() {
         {/* Login page without Layout */}
         <Route path="/login" element={<LoginPage />} />
         
-        {/* Other pages with Layout */}
+        {/* Core pages with Layout - Simplified navigation */}
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/leaderboard" element={<LeaderboardPage />} />
-          <Route path="/leaderboard/:category" element={<LeaderboardPage />} />
+          {/* Models (formerly Rankings/Leaderboard) */}
+          <Route path="/models" element={<ModelsPage />} />
+          <Route path="/models/:category" element={<ModelsPage />} />
+          {/* Legacy route redirect */}
+          <Route path="/leaderboard" element={<ModelsPage />} />
+          <Route path="/leaderboard/:category" element={<ModelsPage />} />
           <Route path="/model/:id" element={<ModelDetailPage />} />
-          <Route path="/battle" element={<BattlePage />} />
-          <Route path="/compare" element={<ComparePage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
+          {/* Evaluations */}
           <Route path="/evaluations" element={<EvaluationsPage />} />
           <Route path="/evaluations/:id" element={<EvaluationDetailPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/test-ios" element={<TestIOSComponents />} />
-          <Route path="/test-ios-advanced" element={<TestAdvancedIOSComponents />} />
           <Route path="/vulca" element={
             <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading VULCA Demo...</p>
+                <p className="text-gray-600 dark:text-gray-400">Loading VULCA Demo...</p>
               </div>
             </div>}>
               <VULCADemoPage />
@@ -96,7 +94,7 @@ function App() {
             <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading Exhibitions...</p>
+                <p className="text-gray-600 dark:text-gray-400">Loading Exhibitions...</p>
               </div>
             </div>}>
               <ExhibitionsPage />
@@ -106,7 +104,7 @@ function App() {
             <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading Exhibition...</p>
+                <p className="text-gray-600 dark:text-gray-400">Loading Exhibition...</p>
               </div>
             </div>}>
               <ExhibitionDetailPage />
@@ -116,10 +114,41 @@ function App() {
             <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading Artwork...</p>
+                <p className="text-gray-600 dark:text-gray-400">Loading Artwork...</p>
               </div>
             </div>}>
               <ArtworkPage />
+            </Suspense>
+          } />
+          {/* Academic/Research Routes */}
+          <Route path="/methodology" element={
+            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
+                <p className="text-gray-600 dark:text-gray-400">Loading Methodology...</p>
+              </div>
+            </div>}>
+              <MethodologyPage />
+            </Suspense>
+          } />
+          <Route path="/dataset" element={
+            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
+                <p className="text-gray-600 dark:text-gray-400">Loading Dataset...</p>
+              </div>
+            </div>}>
+              <DatasetPage />
+            </Suspense>
+          } />
+          <Route path="/papers" element={
+            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
+                <p className="text-gray-600 dark:text-gray-400">Loading Papers...</p>
+              </div>
+            </div>}>
+              <PapersPage />
             </Suspense>
           } />
           {/* 404 catch-all route */}

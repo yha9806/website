@@ -1,0 +1,15 @@
+# WenXin MoYun - AI Art Evaluation Platform
+# https://vulcaart.art
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://storage.googleapis.com/wenxin-moyun-prod-new-static/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Disallow API endpoints
+Disallow: /api/
+Disallow: /admin/
