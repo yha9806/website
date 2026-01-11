@@ -1,71 +1,264 @@
-import { Github, Twitter, Mail, Heart, Trophy, Image, FlaskConical } from 'lucide-react';
+/**
+ * Footer Component - Scale.com Style
+ *
+ * Comprehensive footer with:
+ * - Product links
+ * - Solutions links
+ * - Company links
+ * - Resources links
+ * - Newsletter signup
+ * - Social links
+ * - Legal links
+ */
+
+import { Link } from 'react-router-dom';
+import {
+  Github,
+  Twitter,
+  Linkedin,
+  Mail,
+  Heart,
+  ArrowRight,
+  ExternalLink
+} from 'lucide-react';
 import { IOSButton } from '../ios';
+import { useState } from 'react';
+
+const footerLinks = {
+  product: {
+    title: 'Product',
+    links: [
+      { name: 'Features', href: '/product' },
+      { name: 'Pricing', href: '/pricing' },
+      { name: 'Public Demo', href: '/vulca' },
+      { name: 'Leaderboard', href: '/models' },
+      { name: 'Exhibitions', href: '/exhibitions' },
+    ]
+  },
+  solutions: {
+    title: 'Solutions',
+    links: [
+      { name: 'AI Labs', href: '/solutions/ai-labs' },
+      { name: 'Research', href: '/solutions/research' },
+      { name: 'Museums', href: '/solutions/museums' },
+      { name: 'Enterprise', href: '/pricing' },
+    ]
+  },
+  company: {
+    title: 'Company',
+    links: [
+      { name: 'Customers', href: '/customers' },
+      { name: 'Trust & Security', href: '/trust' },
+      { name: 'Book a Demo', href: '/demo' },
+    ]
+  },
+  resources: {
+    title: 'Resources',
+    links: [
+      { name: 'Methodology', href: '/methodology' },
+      { name: 'Dataset', href: '/dataset' },
+      { name: 'Papers', href: '/papers' },
+      { name: 'GitHub', href: 'https://github.com/yha9806/EMNLP2025-VULCA', external: true },
+    ]
+  }
+};
+
+const socialLinks = [
+  { name: 'GitHub', icon: Github, href: 'https://github.com/yha9806/EMNLP2025-VULCA' },
+  { name: 'Twitter', icon: Twitter, href: 'https://twitter.com/vulca_ai' },
+  { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com/company/vulca-ai' },
+  { name: 'Email', icon: Mail, href: 'mailto:hello@vulca.ai' },
+];
 
 export default function Footer() {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      setSubscribed(true);
+      setEmail('');
+      // In production, this would call an API
+    }
+  };
+
   return (
-    <footer className="ios-glass border-t border-gray-200/20 dark:border-gray-700/20 mt-auto">
-      <div className="container mx-auto px-6 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* About Section */}
-          <div>
-            <h3 className="text-h3 mb-3">About</h3>
-            <p className="text-body text-gray-600 dark:text-gray-400">
-              AI art evaluation platform with multi-dimensional creativity assessment and intelligent analysis.
+    <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-auto">
+      <div className="container mx-auto px-6 py-12">
+        {/* Main Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
+          {/* Logo & Description */}
+          <div className="col-span-2">
+            <Link to="/" className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+                <span className="text-white font-bold text-lg">V</span>
+              </div>
+              <div>
+                <span className="font-bold text-gray-900 dark:text-white">VULCA</span>
+                <span className="block text-xs text-gray-500 dark:text-gray-400">Cultural AI Evaluation</span>
+              </div>
+            </Link>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 max-w-xs">
+              Comprehensive 47-dimensional evaluation framework for AI cultural understanding.
+              Trusted by AI labs, researchers, and museums worldwide.
             </p>
-          </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-h3 mb-3">Links</h3>
-            <div className="space-y-1">
-              <a href="#/models" className="block">
-                <IOSButton variant="text" size="sm" className="w-full justify-start gap-2">
-                  <Trophy className="w-4 h-4" />
-                  Models
-                </IOSButton>
-              </a>
-              <a href="#/exhibitions" className="block">
-                <IOSButton variant="text" size="sm" className="w-full justify-start gap-2">
-                  <Image className="w-4 h-4" />
-                  Exhibitions
-                </IOSButton>
-              </a>
-              <a href="#/vulca" className="block">
-                <IOSButton variant="text" size="sm" className="w-full justify-start gap-2">
-                  <FlaskConical className="w-4 h-4" />
-                  VULCA
-                </IOSButton>
-              </a>
+            {/* Newsletter Signup */}
+            <div className="mt-6">
+              <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                Stay Updated
+              </h4>
+              {subscribed ? (
+                <p className="text-sm text-green-600 dark:text-green-400">
+                  Thanks for subscribing!
+                </p>
+              ) : (
+                <form onSubmit={handleSubscribe} className="flex gap-2">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="flex-1 px-3 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <IOSButton variant="primary" size="sm" type="submit">
+                    <ArrowRight className="w-4 h-4" />
+                  </IOSButton>
+                </form>
+              )}
             </div>
           </div>
 
-          {/* Contact */}
+          {/* Product Links */}
           <div>
-            <h3 className="text-h3 mb-3">Connect</h3>
-            <div className="flex space-x-2 mb-3">
-              <IOSButton variant="glass" size="sm" className="p-2.5" aria-label="GitHub">
-                <Github className="w-4 h-4" />
-              </IOSButton>
-              <IOSButton variant="glass" size="sm" className="p-2.5" aria-label="Twitter">
-                <Twitter className="w-4 h-4" />
-              </IOSButton>
-              <IOSButton variant="glass" size="sm" className="p-2.5" aria-label="Email">
-                <Mail className="w-4 h-4" />
-              </IOSButton>
-            </div>
-            <p className="text-footnote text-gray-500 dark:text-gray-400">
-              hello@wenxinmoyun.ai
-            </p>
+            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">
+              {footerLinks.product.title}
+            </h4>
+            <ul className="space-y-2">
+              {footerLinks.product.links.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.href}
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Solutions Links */}
+          <div>
+            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">
+              {footerLinks.solutions.title}
+            </h4>
+            <ul className="space-y-2">
+              {footerLinks.solutions.links.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.href}
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company Links */}
+          <div>
+            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">
+              {footerLinks.company.title}
+            </h4>
+            <ul className="space-y-2">
+              {footerLinks.company.links.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.href}
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Resources Links */}
+          <div>
+            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">
+              {footerLinks.resources.title}
+            </h4>
+            <ul className="space-y-2">
+              {footerLinks.resources.links.map((link) => (
+                <li key={link.name}>
+                  {'external' in link && link.external ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-flex items-center gap-1"
+                    >
+                      {link.name}
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  ) : (
+                    <Link
+                      to={link.href}
+                      className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-200/20 dark:border-gray-700/20 mt-8 pt-8 text-center">
-          <p className="text-footnote text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1 mb-2">
-            Made with <Heart className="w-4 h-4 text-red-500" /> by WenXin MoYun Team
-          </p>
-          <p className="text-footnote text-gray-500 dark:text-gray-500">
-            © 2024 WenXin MoYun. All rights reserved.
-          </p>
+        {/* Bottom Bar */}
+        <div className="border-t border-gray-200 dark:border-gray-800 pt-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            {/* Copyright */}
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="flex items-center gap-1">
+                Made with <Heart className="w-4 h-4 text-red-500" /> by VULCA Team
+              </p>
+              <p className="mt-1">© 2025 VULCA. All rights reserved.</p>
+            </div>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-2">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  aria-label={social.name}
+                >
+                  <social.icon className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
+
+            {/* Legal Links */}
+            <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+              <a href="#/terms" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                Terms
+              </a>
+              <a href="#/privacy" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                Privacy
+              </a>
+              <Link to="/trust" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                Security
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

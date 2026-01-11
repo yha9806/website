@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
+import FloatingCTA from './FloatingCTA';
 import PageErrorBoundary from './PageErrorBoundary';
 import CacheStats from './CacheStats';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -223,6 +224,9 @@ export default function Layout() {
         </main>
         <Footer />
       </div>
+
+      {/* Floating CTA - Shows after scrolling */}
+      <FloatingCTA scrollThreshold={400} showOnMobile={true} />
     </div>
   );
 }
