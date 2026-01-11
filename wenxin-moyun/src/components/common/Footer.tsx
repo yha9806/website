@@ -1,53 +1,39 @@
-import { Github, Twitter, Mail, Heart } from 'lucide-react';
+import { Github, Twitter, Mail, Heart, Trophy, Image, FlaskConical } from 'lucide-react';
 import { IOSButton } from '../ios';
-import { EmojiIcon } from '../ios';
 
 export default function Footer() {
   return (
     <footer className="ios-glass border-t border-gray-200/20 dark:border-gray-700/20 mt-auto">
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About Section */}
           <div>
-            <h3 className="text-h3 mb-4 flex items-center gap-2">
-              <EmojiIcon category="feedback" name="info" size="sm" />
-              About WenXin MoYun
-            </h3>
-            <p className="text-body">
-              Modern AI art evaluation platform focused on creativity assessment, aesthetic analysis, and intelligent evaluation.
-              Bridging the gap between technology and artistic expression.
+            <h3 className="text-h3 mb-3">About</h3>
+            <p className="text-body text-gray-600 dark:text-gray-400">
+              AI art evaluation platform with multi-dimensional creativity assessment and intelligent analysis.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-h3 mb-4 flex items-center gap-2">
-              <EmojiIcon category="navigation" name="info" size="sm" />
-              Quick Links
-            </h3>
-            <div className="space-y-2">
-              <a href="/leaderboard" className="block">
-                <IOSButton variant="text" size="sm" className="w-full justify-start">
-                  <EmojiIcon category="navigation" name="leaderboard" size="xs" />
-                  Model Rankings
+            <h3 className="text-h3 mb-3">Links</h3>
+            <div className="space-y-1">
+              <a href="#/models" className="block">
+                <IOSButton variant="text" size="sm" className="w-full justify-start gap-2">
+                  <Trophy className="w-4 h-4" />
+                  Models
                 </IOSButton>
               </a>
-              <a href="/battle" className="block">
-                <IOSButton variant="text" size="sm" className="w-full justify-start">
-                  <EmojiIcon category="navigation" name="battle" size="xs" />
-                  Live Battles
+              <a href="#/exhibitions" className="block">
+                <IOSButton variant="text" size="sm" className="w-full justify-start gap-2">
+                  <Image className="w-4 h-4" />
+                  Exhibitions
                 </IOSButton>
               </a>
-              <a href="/evaluations" className="block">
-                <IOSButton variant="text" size="sm" className="w-full justify-start">
-                  <EmojiIcon category="evaluationType" name="general" size="xs" />
-                  Evaluation Tasks
-                </IOSButton>
-              </a>
-              <a href="/about" className="block">
-                <IOSButton variant="text" size="sm" className="w-full justify-start">
-                  <EmojiIcon category="feedback" name="info" size="xs" />
-                  Documentation
+              <a href="#/vulca" className="block">
+                <IOSButton variant="text" size="sm" className="w-full justify-start gap-2">
+                  <FlaskConical className="w-4 h-4" />
+                  VULCA
                 </IOSButton>
               </a>
             </div>
@@ -55,18 +41,15 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-h3 mb-4 flex items-center gap-2">
-              <EmojiIcon category="actions" name="share" size="sm" />
-              Connect With Us
-            </h3>
-            <div className="flex space-x-3 mb-4">
-              <IOSButton variant="glass" size="sm" className="p-3">
+            <h3 className="text-h3 mb-3">Connect</h3>
+            <div className="flex space-x-2 mb-3">
+              <IOSButton variant="glass" size="sm" className="p-2.5" aria-label="GitHub">
                 <Github className="w-4 h-4" />
               </IOSButton>
-              <IOSButton variant="glass" size="sm" className="p-3">
+              <IOSButton variant="glass" size="sm" className="p-2.5" aria-label="Twitter">
                 <Twitter className="w-4 h-4" />
               </IOSButton>
-              <IOSButton variant="glass" size="sm" className="p-3">
+              <IOSButton variant="glass" size="sm" className="p-2.5" aria-label="Email">
                 <Mail className="w-4 h-4" />
               </IOSButton>
             </div>

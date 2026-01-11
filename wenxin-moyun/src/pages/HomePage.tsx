@@ -1,32 +1,26 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import RouterLink from '../components/common/RouterLink';
-import { ArrowRight, TrendingUp } from 'lucide-react';
+import { ArrowRight, Trophy, FlaskConical, Image, Sparkles, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { mockBattles, categories } from '../data/mockData';
 import { useLeaderboard } from '../hooks/useLeaderboard';
-import { 
-  IOSButton, 
-  IOSCard, 
-  IOSCardHeader, 
-  IOSCardContent, 
+import {
+  IOSButton,
+  IOSCard,
+  IOSCardHeader,
+  IOSCardContent,
   IOSCardFooter,
   IOSCardGrid,
-  StatusEmoji, 
-  TypeEmoji,
-  RankEmoji,
-  EmojiIcon
+  RankEmoji
 } from '../components/ios';
-import LeaderboardTable from '../components/leaderboard/LeaderboardTable';
 
 export default function HomePage() {
   const navigate = useNavigate();
   const { entries: leaderboard } = useLeaderboard();
-  console.log("HomePage: leaderboard data:", leaderboard);
   const topModels = leaderboard.slice(0, 3);
 
   return (
     <div className="space-y-12">
-      {/* Modern iOS Hero Section */}
+      {/* Hero Section - Simplified */}
       <section className="relative overflow-hidden">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -34,8 +28,7 @@ export default function HomePage() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="liquid-glass-hero rounded-3xl p-12 text-center"
         >
-          {/* iOS Large Title */}
-          <motion.h1 
+          <motion.h1
             className="text-large-title mb-6"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -43,155 +36,96 @@ export default function HomePage() {
           >
             WenXin MoYun
           </motion.h1>
-          
-          {/* Subtitle */}
-          <motion.p 
-            className="text-h2 mb-8 max-w-3xl mx-auto text-gray-600 dark:text-gray-300"
+
+          <motion.p
+            className="text-h2 mb-4 max-w-3xl mx-auto text-gray-600 dark:text-gray-300"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
             AI Art Evaluation Platform
           </motion.p>
-          
-          {/* Description */}
-          <motion.p 
-            className="text-body mb-12 max-w-2xl mx-auto"
+
+          <motion.p
+            className="text-body mb-10 max-w-2xl mx-auto"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.6 }}
           >
-            Experience the future of AI creativity assessment with modern design and intelligent evaluation
+            Multi-dimensional AI creativity assessment with VULCA 47D framework
           </motion.p>
-          
-          {/* iOS Button Group */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-            >
-              <RouterLink to="/leaderboard">
-                <IOSButton 
-                  variant="primary" 
-                  size="lg" 
-                  emoji="favorite"
-                  glassMorphism={true}
-                  data-testid="explore-rankings-button"
-                >
-                  <EmojiIcon category="rating" name="star" size="sm" />
-                  Explore Rankings
-                </IOSButton>
-              </RouterLink>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.0, duration: 0.6 }}
-            >
-              <RouterLink to="/battle">
-                <IOSButton 
-                  variant="secondary" 
-                  size="lg" 
-                  glassMorphism={true}
-                  data-testid="model-battle-button"
-                >
-                  <EmojiIcon category="actions" name="battle" size="sm" />
-                  Model Battle
-                </IOSButton>
-              </RouterLink>
-            </motion.div>
-          </div>
+
+          {/* Single Primary CTA */}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+          >
+            <RouterLink to="/models">
+              <IOSButton
+                variant="primary"
+                size="lg"
+                glassMorphism={true}
+                data-testid="explore-models-button"
+              >
+                <Trophy className="w-5 h-5" />
+                Explore Models
+                <ArrowRight className="w-5 h-5 ml-1" />
+              </IOSButton>
+            </RouterLink>
+          </motion.div>
         </motion.div>
       </section>
 
-      {/* Top Models Table - Rich Content Section */}
+      {/* Featured Models - Top 3 */}
       <section>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-h2 flex items-center gap-2">
-            <EmojiIcon category="rating" name="chart" size="md" />
-            Model Rankings
-            <EmojiIcon category="trend" name="hot" size="sm" />
+            <Trophy className="w-6 h-6 text-blue-500" />
+            Top Models
           </h2>
-          <RouterLink to="/leaderboard">
-            <IOSButton variant="text">
-              View Full Rankings
-            </IOSButton>
-          </RouterLink>
-        </div>
-        
-        <IOSCard variant="glass" className="overflow-hidden liquid-glass-container">
-          <IOSCardContent className="p-0">
-            <LeaderboardTable 
-              data={leaderboard.slice(0, 10).map(entry => ({
-                ...entry,
-                // 确保数据格式匹配
-                change: Math.floor(Math.random() * 5) - 2, // 模拟趋势变化
-                battles: Math.floor(Math.random() * 100) + 20,
-                winRate: (entry.score || 0) * 0.8 + Math.random() * 10
-              }))}
-              loading={false}
-              onRowClick={(entry) => navigate(`/model/${entry.model.id}`)}
-            />
-          </IOSCardContent>
-        </IOSCard>
-      </section>
-
-      {/* Top Models - iOS Style */}
-      <section>
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-h2 flex items-center gap-2">
-            <RankEmoji rank={1} size="md" />
-            Leading Models
-            <EmojiIcon category="feedback" name="celebration" size="md" />
-          </h2>
-          <RouterLink to="/leaderboard">
-            <IOSButton variant="text">
-              View All Rankings
+          <RouterLink to="/models">
+            <IOSButton variant="text" size="sm" className="flex items-center gap-1">
+              View All <ArrowRight className="w-4 h-4" />
             </IOSButton>
           </RouterLink>
         </div>
 
-        <IOSCardGrid columns={3} gap="lg">
-          {topModels.map((entry, index) => (
+        <IOSCardGrid columns={3} gap="md">
+          {topModels.map((entry) => (
             <IOSCard
               key={entry.model.id}
-              variant="glass"
+              variant="elevated"
               interactive
               animate
-              className="relative liquid-glass-container"
+              className="relative"
             >
-              {/* Rank Badge - positioned at top-center to avoid blocking content */}
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                <RankEmoji rank={entry.rank} size="lg" />
+              {/* Rank Badge */}
+              <div className="absolute -top-3 -right-3 z-10">
+                <RankEmoji rank={entry.rank} size="md" />
               </div>
-              
+
               <IOSCardHeader
                 title={entry.model.name}
                 subtitle={entry.model.organization}
-                emoji={<TypeEmoji type="painting" size="lg" />}
                 action={
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    <div className="text-xl font-bold text-blue-600 dark:text-blue-400">
                       {entry.score != null ? entry.score.toFixed(1) : 'N/A'}
                     </div>
-                    <div className="text-footnote text-gray-500">Score</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">Score</div>
                   </div>
                 }
               />
 
               <IOSCardContent>
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {entry.model.tags.slice(0, 3).map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-xs rounded-full text-blue-600 dark:text-blue-400 font-medium"
+                      className="px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-xs rounded-md text-gray-600 dark:text-gray-400"
                     >
                       {tag}
                     </span>
@@ -201,12 +135,8 @@ export default function HomePage() {
 
               <IOSCardFooter>
                 <RouterLink to={`/model/${entry.model.id}`} className="w-full">
-                  <IOSButton 
-                    variant="primary" 
-                    size="md" 
-                    className="w-full"
-                  >
-                    View Details
+                  <IOSButton variant="secondary" size="sm" className="w-full">
+                    Details
                   </IOSButton>
                 </RouterLink>
               </IOSCardFooter>
@@ -215,137 +145,111 @@ export default function HomePage() {
         </IOSCardGrid>
       </section>
 
-      {/* Evaluation Categories - Liquid Glass Version */}
-      <section className="liquid-glass-container rounded-2xl p-6">
-        <h2 className="text-h2 mb-6 flex items-center gap-2">
-          <EmojiIcon category="evaluationType" name="general" size="md" />
-          Evaluation Dimensions
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          {categories.map((category) => (
-            <RouterLink 
-              key={category.id} 
-              to={`/leaderboard/${category.id}`}
-              className="group"
-            >
-              <div className="flex items-center gap-2 px-4 py-3 ios-glass liquid-glass-container rounded-xl hover:shadow-md hover:scale-105 transition-all duration-200 border border-gray-100 dark:border-gray-700">
-                <span className="text-2xl flex-shrink-0">{category.icon}</span>
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-primary-600 dark:group-hover:text-primary-400">
-                  {category.name}
-                </p>
-              </div>
-            </RouterLink>
-          ))}
-        </div>
-      </section>
-
-      {/* Active Battles */}
+      {/* VULCA + Exhibition */}
       <section>
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-h2 flex items-center gap-2">
-            <EmojiIcon category="navigation" name="battle" size="md" />
-            Live Battles
-            <EmojiIcon category="trend" name="hot" size="md" />
-          </h2>
-          <RouterLink to="/battle">
-            <IOSButton variant="text">
-              Join Voting
-            </IOSButton>
-          </RouterLink>
-        </div>
-
-        <IOSCardGrid columns={2} gap="lg">
-          {mockBattles.slice(0, 2).map((battle) => (
-            <IOSCard
-              key={battle.id}
-              variant="glass"
-              interactive
-              animate
-              className="liquid-glass-container"
-            >
-              <IOSCardHeader
-                title={battle.task.category}
-                subtitle={battle.task.prompt}
-                emoji={<StatusEmoji status="processing" size="lg" animated />}
-                action={<StatusEmoji status="pending" size="md" />}
-              />
-
-              <IOSCardContent>
-                <div className="flex justify-between items-center mb-4">
-                  <div className="text-center">
-                    <p className="font-semibold text-body">
-                      {battle.modelA.name}
-                    </p>
-                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      {battle.votesA}
-                    </p>
-                  </div>
-                  <div className="text-gray-400 font-bold">VS</div>
-                  <div className="text-center">
-                    <p className="font-semibold text-body">
-                      {battle.modelB.name}
-                    </p>
-                    <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                      {battle.votesB}
-                    </p>
-                  </div>
+        <IOSCardGrid columns={2} gap="md">
+          {/* VULCA */}
+          <IOSCard variant="elevated">
+            <IOSCardHeader
+              title="VULCA Framework"
+              subtitle="47D Evaluation System"
+              emoji={<FlaskConical className="w-6 h-6 text-purple-500" />}
+            />
+            <IOSCardContent>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Multi-cultural evaluation with 8 perspectives and 47 dimensions.
+              </p>
+              <div className="flex gap-6 text-sm">
+                <div>
+                  <div className="text-xl font-bold text-blue-600 dark:text-blue-400">47</div>
+                  <div className="text-xs text-gray-500">Dimensions</div>
                 </div>
-              </IOSCardContent>
+                <div>
+                  <div className="text-xl font-bold text-purple-600 dark:text-purple-400">8</div>
+                  <div className="text-xs text-gray-500">Perspectives</div>
+                </div>
+                <div>
+                  <div className="text-xl font-bold text-green-600 dark:text-green-400">6</div>
+                  <div className="text-xs text-gray-500">Core Areas</div>
+                </div>
+              </div>
+            </IOSCardContent>
+            <IOSCardFooter>
+              <RouterLink to="/vulca" className="w-full">
+                <IOSButton variant="secondary" size="sm" className="w-full">
+                  Explore <ArrowRight className="w-4 h-4 ml-1" />
+                </IOSButton>
+              </RouterLink>
+            </IOSCardFooter>
+          </IOSCard>
 
-              <IOSCardFooter>
-                <RouterLink to="/battle" className="w-full">
-                  <IOSButton 
-                    variant="secondary" 
-                    size="md" 
-                    className="w-full"
-                    emoji="like"
-                  >
-                    Vote Now
-                  </IOSButton>
-                </RouterLink>
-              </IOSCardFooter>
-            </IOSCard>
-          ))}
+          {/* Exhibition */}
+          <IOSCard variant="elevated">
+            <IOSCardHeader
+              title="Echoes and Returns"
+              subtitle="Contemporary Art"
+              emoji={<Image className="w-6 h-6 text-orange-500" />}
+            />
+            <IOSCardContent>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                AI dialogue on 87 artworks with multi-persona art criticism.
+              </p>
+              <div className="flex gap-6 text-sm">
+                <div>
+                  <div className="text-xl font-bold text-orange-600 dark:text-orange-400">87</div>
+                  <div className="text-xs text-gray-500">Artworks</div>
+                </div>
+                <div>
+                  <div className="text-xl font-bold text-pink-600 dark:text-pink-400">8</div>
+                  <div className="text-xs text-gray-500">Critics</div>
+                </div>
+                <div>
+                  <div className="text-xl font-bold text-teal-600 dark:text-teal-400">6</div>
+                  <div className="text-xs text-gray-500">Chapters</div>
+                </div>
+              </div>
+            </IOSCardContent>
+            <IOSCardFooter>
+              <RouterLink to="/exhibitions" className="w-full">
+                <IOSButton variant="secondary" size="sm" className="w-full">
+                  View <ArrowRight className="w-4 h-4 ml-1" />
+                </IOSButton>
+              </RouterLink>
+            </IOSCardFooter>
+          </IOSCard>
         </IOSCardGrid>
       </section>
 
-      {/* Platform Stats */}
+      {/* Stats Bar */}
       <section>
-        <IOSCard variant="glass" padding="lg" className="text-center liquid-glass-container">
-          <IOSCardHeader
-            title="Platform Statistics"
-            emoji={<TrendingUp className="w-8 h-8 text-green-600" />}
-          />
-          
-          <IOSCardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              <div>
-                <div className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                  {leaderboard.length}
-                </div>
-                <p className="text-footnote">AI Models</p>
+        <div className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-4">
+          <div className="flex justify-center gap-12 md:gap-20">
+            <div className="text-center">
+              <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                {leaderboard.length}
               </div>
-              <div>
-                <div className="text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">
-                  1,248
-                </div>
-                <p className="text-footnote">Battle Rounds</p>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">
-                  15,692
-                </div>
-                <p className="text-footnote">User Votes</p>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-orange-600 dark:text-orange-400 mb-2">
-                  6
-                </div>
-                <p className="text-footnote">Dimensions</p>
-              </div>
+              <p className="text-xs text-gray-500">Models</p>
             </div>
-          </IOSCardContent>
-        </IOSCard>
+            <div className="text-center">
+              <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                130
+              </div>
+              <p className="text-xs text-gray-500">Artworks</p>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                47
+              </div>
+              <p className="text-xs text-gray-500">Dimensions</p>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                8
+              </div>
+              <p className="text-xs text-gray-500">Perspectives</p>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   );
