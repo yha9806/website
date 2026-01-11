@@ -37,6 +37,41 @@
   --ios-color-secondary: #86868B;
   --ios-color-primary-dark: #F5F5F7;
   --ios-color-secondary-dark: #98989D;
+
+  /* 边框颜色 - WCAG AA 对比度 */
+  --border-subtle: #E5E5EA;
+  --border-default: #AEAEB2;
+  --border-strong: #8E8E93;
+  --border-focus: #007AFF;
+
+  /* 背景颜色 */
+  --bg-base: #FFFFFF;
+  --bg-surface: #F6F8FA;
+  --bg-elevated: #FFFFFF;
+  --bg-hover: #F3F4F6;
+
+  /* 语义颜色 */
+  --color-success: #1A7F37;
+  --color-warning: #9A6700;
+  --color-error: #CF222E;
+  --color-info: #007AFF;
+}
+
+.dark {
+  --border-subtle: #21262D;
+  --border-default: #484F58;
+  --border-strong: #6E7681;
+  --border-focus: #0A84FF;
+
+  --bg-base: #0D1117;
+  --bg-surface: #161B22;
+  --bg-elevated: #1C2128;
+  --bg-hover: #30363D;
+
+  --color-success: #30D158;
+  --color-warning: #D29922;
+  --color-error: #FF453A;
+  --color-info: #0A84FF;
 }
 
 /* Base iOS font class */
@@ -439,4 +474,220 @@
 
 .emoji-float {
   animation: emojiFloat 3s ease-in-out infinite;
+}
+
+/* ============= 无障碍支持 - prefers-reduced-motion ============= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .emoji-pulse,
+  .emoji-float,
+  .animate-shimmer {
+    animation: none !important;
+  }
+
+  .theme-transition,
+  .theme-transition *,
+  .theme-transition *::before,
+  .theme-transition *::after {
+    transition: none !important;
+  }
+}
+
+/* ============= 屏幕阅读器专用 ============= */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.not-sr-only {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Skip to main content link - visible on focus */
+.skip-to-main:focus {
+  position: absolute !important;
+  top: 1rem !important;
+  left: 1rem !important;
+  z-index: 9999 !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0.75rem 1rem !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  background-color: #2563eb !important;
+  color: white !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+  outline: 2px solid #1d4ed8 !important;
+  outline-offset: 2px !important;
+}
+
+/* ============= 响应式标题字体 ============= */
+@media (max-width: 1023px) {
+  .text-large-title {
+    font-size: 32px;
+    letter-spacing: -0.5px;
+  }
+
+  .text-h1 {
+    font-size: 28px;
+    letter-spacing: -0.3px;
+  }
+
+  .text-h2 {
+    font-size: 24px;
+    letter-spacing: -0.2px;
+  }
+
+  .text-h3 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 639px) {
+  .text-large-title {
+    font-size: 28px;
+    letter-spacing: -0.4px;
+  }
+
+  .text-h1 {
+    font-size: 24px;
+    letter-spacing: -0.2px;
+  }
+
+  .text-h2 {
+    font-size: 20px;
+    letter-spacing: -0.1px;
+  }
+
+  .text-h3 {
+    font-size: 18px;
+  }
+}
+
+/* ============= 打印样式支持 ============= */
+@media print {
+  /* 隐藏不需要打印的元素 */
+  header,
+  footer,
+  nav,
+  .no-print,
+  .skip-to-main,
+  button:not(.print-visible),
+  [role="navigation"],
+  [role="banner"],
+  [role="contentinfo"] {
+    display: none !important;
+  }
+
+  /* 重置背景和阴影 */
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* 确保文本可读性 */
+  body {
+    color: #000 !important;
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+  }
+
+  /* 链接样式 - 显示 URL */
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    color: #666;
+  }
+
+  /* 内部链接不显示完整 URL */
+  a[href^="#"]::after,
+  a[href^="javascript:"]::after {
+    content: "";
+  }
+
+  /* 图片适应页面 */
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  /* 表格样式 */
+  table {
+    border-collapse: collapse !important;
+  }
+
+  table th,
+  table td {
+    border: 1px solid #ccc !important;
+    padding: 8px !important;
+  }
+
+  /* 防止元素被分页切断 */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  p, blockquote, ul, ol, dl, table, pre {
+    page-break-inside: avoid;
+  }
+
+  /* 卡片和容器 */
+  .ios-glass,
+  .liquid-glass-container,
+  .liquid-glass-hero,
+  [class*="IOSCard"],
+  [class*="card"] {
+    border: 1px solid #ccc !important;
+    page-break-inside: avoid;
+  }
+
+  /* 确保内容区域全宽 */
+  main,
+  .container,
+  [role="main"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 页面边距 */
+  @page {
+    margin: 2cm;
+  }
+
+  /* 首页特殊处理 */
+  @page :first {
+    margin-top: 3cm;
+  }
 }

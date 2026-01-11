@@ -39,7 +39,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
               checked={isSelected}
               disabled={isDisabled}
               onChange={() => onModelSelect(model.id)}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded"
             />
             <label
               htmlFor={`model-${model.id}`}
@@ -57,7 +57,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
       })}
       
       {selectedModels.length >= maxSelection && (
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
           Maximum {maxSelection} models can be selected
         </p>
       )}

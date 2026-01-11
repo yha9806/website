@@ -287,7 +287,7 @@ export const ResponseDisplay: React.FC<ResponseDisplayProps> = ({ responses, dim
 
   if (dimensionResponses.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
+      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
         <p>No test results for {config.label} dimension</p>
       </div>
     );
@@ -299,7 +299,7 @@ export const ResponseDisplay: React.FC<ResponseDisplayProps> = ({ responses, dim
         <h3 className={`text-lg font-semibold ${config.color}`}>
           {config.label} Test Results
         </h3>
-        <span className="px-2 py-1 rounded-full bg-gray-100 text-xs font-medium">
+        <span className="px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-xs font-medium">
           {dimensionResponses.length} tests
         </span>
       </div>
@@ -311,23 +311,23 @@ export const ResponseDisplay: React.FC<ResponseDisplayProps> = ({ responses, dim
       </div>
 
       {/* Dimension summary */}
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+      <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
         <h4 className="text-sm font-semibold mb-2">Dimension Summary</h4>
         <div className="grid grid-cols-3 gap-4 text-xs">
           <div>
-            <span className="text-gray-600">Average:</span>
+            <span className="text-gray-600 dark:text-gray-400">Average:</span>
             <span className="ml-1 font-semibold">
               {(dimensionResponses.reduce((acc, r) => acc + r.score, 0) / dimensionResponses.length).toFixed(1)}
             </span>
           </div>
           <div>
-            <span className="text-gray-600">Highest:</span>
+            <span className="text-gray-600 dark:text-gray-400">Highest:</span>
             <span className="ml-1 font-semibold">
               {Math.max(...dimensionResponses.map(r => r.score)).toFixed(1)}
             </span>
           </div>
           <div>
-            <span className="text-gray-600">Lowest:</span>
+            <span className="text-gray-600 dark:text-gray-400">Lowest:</span>
             <span className="ml-1 font-semibold">
               {Math.min(...dimensionResponses.map(r => r.score)).toFixed(1)}
             </span>

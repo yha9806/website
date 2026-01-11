@@ -4,8 +4,10 @@ import Layout from './components/common/Layout';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import { cacheUtils } from './services/api';
 import { useEffect, Suspense, lazy } from 'react';
+
+// Core pages - eagerly loaded
 import HomePage from './pages/HomePage';
-import ModelsPage from './pages/LeaderboardPage';  // Renamed: Rankings -> Models
+import ModelsPage from './pages/LeaderboardPage';
 import ModelDetailPage from './pages/ModelDetailPage';
 import EvaluationsPage from './pages/EvaluationsPage';
 import EvaluationDetailPage from './pages/EvaluationDetailPage';
@@ -13,7 +15,20 @@ import GalleryPage from './pages/GalleryPage';
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 
-// Lazy load pages to improve initial load time
+// Marketing pages - lazy loaded (Scale.com style)
+const ProductPage = lazy(() => import('./pages/ProductPage'));
+const PricingPage = lazy(() => import('./pages/PricingPage'));
+const CustomersPage = lazy(() => import('./pages/CustomersPage'));
+const TrustPage = lazy(() => import('./pages/TrustPage'));
+const BookDemoPage = lazy(() => import('./pages/BookDemoPage'));
+
+// Solutions pages - lazy loaded
+const SolutionsPage = lazy(() => import('./pages/solutions/SolutionsPage'));
+const AILabSolutionPage = lazy(() => import('./pages/solutions/AILabSolutionPage'));
+const ResearchSolutionPage = lazy(() => import('./pages/solutions/ResearchSolutionPage'));
+const MuseumSolutionPage = lazy(() => import('./pages/solutions/MuseumSolutionPage'));
+
+// VULCA and Exhibitions - lazy loaded
 const VULCADemoPage = lazy(() => import('./pages/vulca/VULCADemoPage'));
 const ExhibitionsPage = lazy(() => import('./pages/exhibitions/ExhibitionsPage'));
 const ExhibitionDetailPage = lazy(() => import('./pages/exhibitions/ExhibitionDetailPage'));
@@ -24,36 +39,43 @@ const MethodologyPage = lazy(() => import('./pages/MethodologyPage'));
 const DatasetPage = lazy(() => import('./pages/DatasetPage'));
 const PapersPage = lazy(() => import('./pages/PapersPage'));
 
+// Reusable loading component
+function PageLoader({ text = 'Loading...' }: { text?: string }) {
+  return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+        <p className="text-gray-600 dark:text-gray-400">{text}</p>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   // Initialize cache warming on app start with version check
   useEffect(() => {
-    // Immediate version check to clear outdated cache
     const versionUpdated = cacheUtils.checkVersion();
-    
-    // Warm up cache after a short delay to not block initial render
+
     const timer = setTimeout(() => {
       if (versionUpdated) {
         console.log('App: Version updated, warming cache with fresh data');
       }
       cacheUtils.warmUp();
-    }, versionUpdated ? 500 : 2000); // Shorter delay if version was updated
-    
+    }, versionUpdated ? 500 : 2000);
+
     return () => clearTimeout(timer);
   }, []);
-  
+
   const handleError = (error: Error, errorInfo: React.ErrorInfo) => {
-    // Log error for debugging and reporting
     console.error('App Error Boundary caught an error:', {
       error: error.message,
       stack: error.stack,
       componentStack: errorInfo.componentStack,
       timestamp: new Date().toISOString(),
     });
-    
-    // In production, you could send this to an error reporting service
+
     if (process.env.NODE_ENV === 'production') {
-      // Example: Send to error reporting service
-      // errorReportingService.captureException(error, { extra: errorInfo });
+      // Error reporting would go here
     }
   };
 
@@ -61,101 +83,121 @@ function App() {
     <ErrorBoundary onError={handleError}>
       <ThemeProvider>
         <Router>
-        <Routes>
-        {/* Login page without Layout */}
-        <Route path="/login" element={<LoginPage />} />
-        
-        {/* Core pages with Layout - Simplified navigation */}
-        <Route element={<Layout />}>
-          <Route path="/" element={<HomePage />} />
-          {/* Models (formerly Rankings/Leaderboard) */}
-          <Route path="/models" element={<ModelsPage />} />
-          <Route path="/models/:category" element={<ModelsPage />} />
-          {/* Legacy route redirect */}
-          <Route path="/leaderboard" element={<ModelsPage />} />
-          <Route path="/leaderboard/:category" element={<ModelsPage />} />
-          <Route path="/model/:id" element={<ModelDetailPage />} />
-          {/* Evaluations */}
-          <Route path="/evaluations" element={<EvaluationsPage />} />
-          <Route path="/evaluations/:id" element={<EvaluationDetailPage />} />
-          <Route path="/gallery" element={<GalleryPage />} />
-          <Route path="/vulca" element={
-            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
-                <p className="text-gray-600 dark:text-gray-400">Loading VULCA Demo...</p>
-              </div>
-            </div>}>
-              <VULCADemoPage />
-            </Suspense>
-          } />
-          {/* Exhibition Routes */}
-          <Route path="/exhibitions" element={
-            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
-                <p className="text-gray-600 dark:text-gray-400">Loading Exhibitions...</p>
-              </div>
-            </div>}>
-              <ExhibitionsPage />
-            </Suspense>
-          } />
-          <Route path="/exhibitions/:id" element={
-            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
-                <p className="text-gray-600 dark:text-gray-400">Loading Exhibition...</p>
-              </div>
-            </div>}>
-              <ExhibitionDetailPage />
-            </Suspense>
-          } />
-          <Route path="/exhibitions/:id/:artworkId" element={
-            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
-                <p className="text-gray-600 dark:text-gray-400">Loading Artwork...</p>
-              </div>
-            </div>}>
-              <ArtworkPage />
-            </Suspense>
-          } />
-          {/* Academic/Research Routes */}
-          <Route path="/methodology" element={
-            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
-                <p className="text-gray-600 dark:text-gray-400">Loading Methodology...</p>
-              </div>
-            </div>}>
-              <MethodologyPage />
-            </Suspense>
-          } />
-          <Route path="/dataset" element={
-            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
-                <p className="text-gray-600 dark:text-gray-400">Loading Dataset...</p>
-              </div>
-            </div>}>
-              <DatasetPage />
-            </Suspense>
-          } />
-          <Route path="/papers" element={
-            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ios-blue mx-auto mb-4"></div>
-                <p className="text-gray-600 dark:text-gray-400">Loading Papers...</p>
-              </div>
-            </div>}>
-              <PapersPage />
-            </Suspense>
-          } />
-          {/* 404 catch-all route */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-        </Routes>
-      </Router>
+          <Routes>
+            {/* Login page without Layout */}
+            <Route path="/login" element={<LoginPage />} />
+
+            {/* All other pages with Layout */}
+            <Route element={<Layout />}>
+              {/* Marketing pages (Scale.com style) */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/product" element={
+                <Suspense fallback={<PageLoader text="Loading Product..." />}>
+                  <ProductPage />
+                </Suspense>
+              } />
+              <Route path="/pricing" element={
+                <Suspense fallback={<PageLoader text="Loading Pricing..." />}>
+                  <PricingPage />
+                </Suspense>
+              } />
+              <Route path="/customers" element={
+                <Suspense fallback={<PageLoader text="Loading Customers..." />}>
+                  <CustomersPage />
+                </Suspense>
+              } />
+              <Route path="/trust" element={
+                <Suspense fallback={<PageLoader text="Loading Trust & Security..." />}>
+                  <TrustPage />
+                </Suspense>
+              } />
+              <Route path="/demo" element={
+                <Suspense fallback={<PageLoader text="Loading Demo Scheduler..." />}>
+                  <BookDemoPage />
+                </Suspense>
+              } />
+
+              {/* Solutions pages */}
+              <Route path="/solutions" element={
+                <Suspense fallback={<PageLoader text="Loading Solutions..." />}>
+                  <SolutionsPage />
+                </Suspense>
+              } />
+              <Route path="/solutions/ai-labs" element={
+                <Suspense fallback={<PageLoader text="Loading AI Labs Solution..." />}>
+                  <AILabSolutionPage />
+                </Suspense>
+              } />
+              <Route path="/solutions/research" element={
+                <Suspense fallback={<PageLoader text="Loading Research Solution..." />}>
+                  <ResearchSolutionPage />
+                </Suspense>
+              } />
+              <Route path="/solutions/museums" element={
+                <Suspense fallback={<PageLoader text="Loading Museums Solution..." />}>
+                  <MuseumSolutionPage />
+                </Suspense>
+              } />
+
+              {/* Public Demo / Models */}
+              <Route path="/models" element={<ModelsPage />} />
+              <Route path="/models/:category" element={<ModelsPage />} />
+              {/* Legacy route redirects */}
+              <Route path="/leaderboard" element={<ModelsPage />} />
+              <Route path="/leaderboard/:category" element={<ModelsPage />} />
+              <Route path="/model/:id" element={<ModelDetailPage />} />
+
+              {/* VULCA Demo */}
+              <Route path="/vulca" element={
+                <Suspense fallback={<PageLoader text="Loading VULCA Demo..." />}>
+                  <VULCADemoPage />
+                </Suspense>
+              } />
+
+              {/* Exhibition Routes */}
+              <Route path="/exhibitions" element={
+                <Suspense fallback={<PageLoader text="Loading Exhibitions..." />}>
+                  <ExhibitionsPage />
+                </Suspense>
+              } />
+              <Route path="/exhibitions/:id" element={
+                <Suspense fallback={<PageLoader text="Loading Exhibition..." />}>
+                  <ExhibitionDetailPage />
+                </Suspense>
+              } />
+              <Route path="/exhibitions/:id/:artworkId" element={
+                <Suspense fallback={<PageLoader text="Loading Artwork..." />}>
+                  <ArtworkPage />
+                </Suspense>
+              } />
+
+              {/* Academic/Research Routes */}
+              <Route path="/methodology" element={
+                <Suspense fallback={<PageLoader text="Loading Methodology..." />}>
+                  <MethodologyPage />
+                </Suspense>
+              } />
+              <Route path="/dataset" element={
+                <Suspense fallback={<PageLoader text="Loading Dataset..." />}>
+                  <DatasetPage />
+                </Suspense>
+              } />
+              <Route path="/papers" element={
+                <Suspense fallback={<PageLoader text="Loading Papers..." />}>
+                  <PapersPage />
+                </Suspense>
+              } />
+
+              {/* User Evaluations */}
+              <Route path="/evaluations" element={<EvaluationsPage />} />
+              <Route path="/evaluations/:id" element={<EvaluationDetailPage />} />
+              <Route path="/gallery" element={<GalleryPage />} />
+
+              {/* 404 catch-all route */}
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
+          </Routes>
+        </Router>
       </ThemeProvider>
     </ErrorBoundary>
   );

@@ -35,21 +35,25 @@ export const IOSSlider: React.FC<IOSSliderProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  // Size configurations
+  // Size configurations - iOS HIG 44px minimum touch target
+  // Visual thumb stays small, but touch area is expanded via padding
   const sizeConfig = {
     sm: {
       height: 'h-1',
       thumbSize: 'w-5 h-5',
+      thumbTouchArea: 'min-w-[44px] min-h-[44px]', // Touch target expansion
       trackHeight: 4,
     },
     md: {
       height: 'h-2',
       thumbSize: 'w-6 h-6',
+      thumbTouchArea: 'min-w-[44px] min-h-[44px]', // Touch target expansion
       trackHeight: 8,
     },
     lg: {
       height: 'h-3',
       thumbSize: 'w-7 h-7',
+      thumbTouchArea: 'min-w-[48px] min-h-[48px]', // Larger touch target for lg
       trackHeight: 12,
     },
   };
@@ -138,31 +142,20 @@ export const IOSSlider: React.FC<IOSSliderProps> = ({
         {/* Track Highlight */}
         <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white/20 to-transparent pointer-events-none" />
         
-        {/* Thumb with Liquid Glass effect - Based on Figma iOS 26 */}
+        {/* Thumb wrapper with expanded touch area - iOS HIG 44px minimum */}
         <motion.div
           className={`
             absolute top-1/2 transform -translate-y-1/2
-            ${config.thumbSize}
-            rounded-full
+            ${config.thumbTouchArea}
+            flex items-center justify-center
             cursor-grab
             ${isDragging ? 'cursor-grabbing' : ''}
             ${disabled ? 'cursor-not-allowed' : ''}
           `}
-          style={{ 
-            left: `calc(${percentage}% - ${parseInt(config.thumbSize.split(' ')[0].substring(2)) * 4}px)`,
-            // Liquid Glass effect from iOS 26
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%)',
-            backdropFilter: 'blur(10px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-            boxShadow: `
-              0 4px 12px rgba(0, 0, 0, 0.08),
-              0 1px 3px rgba(0, 0, 0, 0.12),
-              inset 0 1px 1px rgba(255, 255, 255, 0.8),
-              inset 0 -1px 1px rgba(0, 0, 0, 0.04)
-            `,
-            border: '0.5px solid rgba(255, 255, 255, 0.3)'
+          style={{
+            left: `calc(${percentage}% - 22px)`, // Center the 44px touch area
           }}
-          whileHover={disabled ? {} : { scale: 1.1 }}
+          whileHover={disabled ? {} : { scale: 1.05 }}
           whileTap={disabled ? {} : { scale: 0.95 }}
           drag={disabled ? false : "x"}
           dragConstraints={sliderRef}
@@ -178,8 +171,26 @@ export const IOSSlider: React.FC<IOSSliderProps> = ({
           }}
           transition={iosAnimations.spring}
         >
-          {/* Liquid Glass inner reflection */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/40 via-transparent to-transparent pointer-events-none" />
+          {/* Visual thumb with Liquid Glass effect - Based on Figma iOS 26 */}
+          <div
+            className={`${config.thumbSize} rounded-full`}
+            style={{
+              // Liquid Glass effect from iOS 26
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%)',
+              backdropFilter: 'blur(10px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(10px) saturate(180%)',
+              boxShadow: `
+                0 4px 12px rgba(0, 0, 0, 0.08),
+                0 1px 3px rgba(0, 0, 0, 0.12),
+                inset 0 1px 1px rgba(255, 255, 255, 0.8),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.04)
+              `,
+              border: '0.5px solid rgba(255, 255, 255, 0.3)'
+            }}
+          >
+            {/* Liquid Glass inner reflection */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/40 via-transparent to-transparent pointer-events-none" />
+          </div>
         </motion.div>
       </div>
       

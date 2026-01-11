@@ -31,11 +31,15 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       className={`flex flex-col items-center justify-center ${config.padding}`}
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
     >
       <div className="ios-glass rounded-2xl p-6 sm:p-8 flex flex-col items-center">
         {/* iOS-style spinner */}
         <div
           className={`${config.spinner} border-4 border-gray-200 dark:border-gray-700 border-t-ios-blue rounded-full animate-spin`}
+          aria-hidden="true"
         />
         <p className={`mt-4 text-gray-500 dark:text-gray-400 ${config.text}`}>
           {message}
@@ -74,6 +78,8 @@ export const LoadingSpinner: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({
   return (
     <div
       className={`${sizeClass[size]} border-gray-200 dark:border-gray-700 border-t-ios-blue rounded-full animate-spin`}
+      role="status"
+      aria-label="Loading"
     />
   );
 };

@@ -135,11 +135,11 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      className="bg-neutral-50 rounded-lg shadow-lg border border-gray-200 p-4 max-w-md"
+      className="bg-neutral-50 dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 max-w-md"
     >
       <div className="flex items-center space-x-2 mb-4">
         <HelpCircle className="w-5 h-5 text-blue-500" />
-        <h3 className="font-semibold text-gray-800">评分助手</h3>
+        <h3 className="font-semibold text-gray-800 dark:text-gray-200">评分助手</h3>
       </div>
 
       {loading ? (
@@ -153,7 +153,7 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-400"
+              className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border-l-4 border-blue-400"
             >
               <div className="flex items-center justify-between mb-2">
                 <h4 className="font-medium text-blue-900 capitalize">
@@ -166,19 +166,19 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
               
               <div className="grid grid-cols-3 gap-2 mb-3">
                 <div className="text-center">
-                  <div className="text-xs text-gray-600">最低</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">最低</div>
                   <div className={`font-bold ${getScoreColor(dimensionGuidance.typical_range.min)}`}>
                     {dimensionGuidance.typical_range.min}
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-xs text-gray-600">平均</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">平均</div>
                   <div className={`font-bold ${getScoreColor(dimensionGuidance.typical_range.average)}`}>
                     {Math.round(dimensionGuidance.typical_range.average)}
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-xs text-gray-600">最高</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">最高</div>
                   <div className={`font-bold ${getScoreColor(dimensionGuidance.typical_range.max)}`}>
                     {dimensionGuidance.typical_range.max}
                   </div>
@@ -210,7 +210,7 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
               >
                 <div className="flex items-center space-x-2">
                   <Target className="w-4 h-4 text-green-500" />
-                  <span className="font-medium text-gray-800">评分范围参考</span>
+                  <span className="font-medium text-gray-800 dark:text-gray-200">评分范围参考</span>
                 </div>
                 {expandedSections.ranges ? 
                   <ChevronUp className="w-4 h-4" /> : 
@@ -235,7 +235,7 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
                       >
                         <span className="text-sm text-gray-700 capitalize">{dimension}</span>
                         <div className="flex items-center space-x-2">
-                          <span className="text-xs text-gray-500">{range[0]}-{range[1]}分</span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400">{range[0]}-{range[1]}分</span>
                           <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
                             <div 
                               className="h-full bg-gradient-to-r from-yellow-400 to-green-500"
@@ -260,7 +260,7 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
               >
                 <div className="flex items-center space-x-2">
                   <BookOpen className="w-4 h-4 text-purple-500" />
-                  <span className="font-medium text-gray-800">评分提示</span>
+                  <span className="font-medium text-gray-800 dark:text-gray-200">评分提示</span>
                 </div>
                 {expandedSections.tips ? 
                   <ChevronUp className="w-4 h-4" /> : 
@@ -278,7 +278,7 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
                   >
                     <ul className="space-y-2">
                       {advice.evaluation_tips.slice(0, 3).map((tip, index) => (
-                        <li key={index} className="flex items-start text-sm text-gray-600">
+                        <li key={index} className="flex items-start text-sm text-gray-600 dark:text-gray-400">
                           <span className="w-1.5 h-1.5 bg-purple-400 rounded-full mt-2 mr-2 flex-shrink-0" />
                           {tip}
                         </li>
@@ -299,7 +299,7 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
               >
                 <div className="flex items-center space-x-2">
                   <TrendingUp className="w-4 h-4 text-orange-500" />
-                  <span className="font-medium text-gray-800">常见表现</span>
+                  <span className="font-medium text-gray-800 dark:text-gray-200">常见表现</span>
                 </div>
                 {expandedSections.patterns ? 
                   <ChevronUp className="w-4 h-4" /> : 

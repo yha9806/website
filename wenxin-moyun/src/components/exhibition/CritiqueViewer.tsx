@@ -116,7 +116,7 @@ export function CritiqueViewer({
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     {selectedPersona.period}
                   </p>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     {selectedPersona.bias}
                   </p>
                 </div>
@@ -173,7 +173,7 @@ export function CritiqueList({
 
   return (
     <div className="space-y-2">
-      <p className="text-xs text-gray-500 font-medium">RPAIT Critiques:</p>
+      <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">RPAIT Critiques:</p>
       <div className="flex flex-wrap gap-1.5">
         {critiques.map((critique) => {
           const persona = personas.find((p) => p.id === critique.personaId);

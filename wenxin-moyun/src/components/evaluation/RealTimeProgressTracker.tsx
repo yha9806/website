@@ -242,8 +242,8 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
               <h3 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 {modelName} 正在处理
               </h3>
-              <p className="text-sm text-gray-600">
-                任务类型: {taskType === 'poetry' ? '诗歌创作' : 
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                任务类型: {taskType === 'poetry' ? '诗歌创作' :
                           taskType === 'story' ? '故事创作' :
                           taskType === 'painting' ? '绘画创作' : '音乐创作'}
               </p>
@@ -251,10 +251,10 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
           </div>
 
           <div className="text-right">
-            <div className="text-2xl font-bold text-gray-800">
+            <div className="text-2xl font-bold text-gray-800 dark:text-gray-100">
               {Math.round(progress)}%
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-gray-500 dark:text-gray-400">
               {currentPhase}
             </div>
           </div>
@@ -262,7 +262,7 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
 
         {/* Main progress bar */}
         <div className="mb-6">
-          <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
+          <div className="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <motion.div
               className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
               initial={{ width: 0 }}
@@ -295,7 +295,7 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
                 className={`w-8 h-8 rounded-full flex items-center justify-center ${
                   index < currentPhaseIndex ? 'bg-green-500' :
                   index === currentPhaseIndex ? 'bg-blue-500' :
-                  'bg-gray-300'
+                  'bg-gray-300 dark:bg-gray-600'
                 }`}
                 animate={index === currentPhaseIndex ? { scale: [1, 1.2, 1] } : {}}
                 transition={{ duration: 1.5, repeat: Infinity }}
@@ -309,7 +309,7 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
                 )}
               </motion.div>
               <span className={`text-xs mt-1 ${
-                index <= currentPhaseIndex ? 'text-gray-800 font-medium' : 'text-gray-400'
+                index <= currentPhaseIndex ? 'text-gray-800 dark:text-gray-200 font-medium' : 'text-gray-400 dark:text-gray-500'
               }`}>
                 {phase}
               </span>
@@ -322,19 +322,19 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
           {metricsDisplay.map((metric, index) => (
             <motion.div
               key={metric.label}
-              className="bg-gray-50 rounded-lg p-3"
+              className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="text-xs text-gray-600 mb-1">{metric.label}</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">{metric.label}</div>
               <div className="flex items-baseline space-x-1">
-                <span className="text-lg font-bold text-gray-800">
+                <span className="text-lg font-bold text-gray-800 dark:text-gray-100">
                   {Math.round(metric.value)}
                 </span>
-                <span className="text-xs text-gray-500">{metric.unit}</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">{metric.unit}</span>
               </div>
-              <div className="mt-2 h-1 bg-gray-200 rounded-full overflow-hidden">
+              <div className="mt-2 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <motion.div
                   className={`h-full ${metric.color}`}
                   initial={{ width: 0 }}
@@ -349,15 +349,15 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
         {/* Streaming output preview */}
         {isStreaming && streamingText && (
           <motion.div
-            className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-4 mb-4"
+            className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg p-4 mb-4"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
           >
             <div className="flex items-center space-x-2 mb-2">
-              <Activity className="w-4 h-4 text-blue-600 animate-pulse" />
-              <span className="text-sm font-medium text-blue-600">实时输出</span>
+              <Activity className="w-4 h-4 text-blue-600 dark:text-blue-400 animate-pulse" />
+              <span className="text-sm font-medium text-blue-600 dark:text-blue-400">实时输出</span>
             </div>
-            <div className="text-gray-700 font-mono text-sm">
+            <div className="text-gray-700 dark:text-gray-300 font-mono text-sm">
               {streamingText}
               <span className="inline-block w-2 h-4 bg-blue-600 animate-pulse ml-1" />
             </div>
@@ -367,12 +367,12 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
         {/* Status message */}
         {progress >= 100 && (
           <motion.div
-            className="flex items-center justify-center space-x-2 p-4 bg-green-50 rounded-lg"
+            className="flex items-center justify-center space-x-2 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
           >
-            <CheckCircle2 className="w-5 h-5 text-green-600" />
-            <span className="text-green-800 font-medium">评测完成！正在生成报告...</span>
+            <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />
+            <span className="text-green-800 dark:text-green-300 font-medium">评测完成！正在生成报告...</span>
           </motion.div>
         )}
       </div>

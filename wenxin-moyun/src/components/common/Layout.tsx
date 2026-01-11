@@ -206,8 +206,15 @@ export default function Layout() {
       
       {/* Content layer */}
       <div className="relative z-10 flex flex-col min-h-screen">
+        {/* Skip to main content link for accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only skip-to-main"
+        >
+          Skip to main content
+        </a>
         <Header />
-        <main className="flex-grow">
+        <main id="main-content" className="flex-grow" tabIndex={-1}>
           <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
             <PageErrorBoundary pageName={getPageName(location.pathname)}>
               <Outlet />

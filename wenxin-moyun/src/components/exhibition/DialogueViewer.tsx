@@ -141,7 +141,7 @@ export function DialogueViewer({ dialogues, artworkTitle }: DialogueViewerProps)
                   {name}
                 </span>
                 {info?.era && (
-                  <span className="text-xs text-gray-400">({info.era})</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">({info.era})</span>
                 )}
               </div>
             );
@@ -161,7 +161,7 @@ export function DialogueViewer({ dialogues, artworkTitle }: DialogueViewerProps)
             ))}
           </AnimatePresence>
           {filteredTurns.length === 0 && (
-            <p className="text-center text-gray-500 py-4">
+            <p className="text-center text-gray-500 dark:text-gray-400 py-4">
               No messages in selected language
             </p>
           )}
@@ -169,7 +169,7 @@ export function DialogueViewer({ dialogues, artworkTitle }: DialogueViewerProps)
 
         {/* Meta Info */}
         <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
+          <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
             <span>Model: {currentDialogue.model_used}</span>
             <span>Turns: {currentDialogue.total_turns}</span>
             {currentDialogue.languages_used && (
@@ -192,7 +192,7 @@ export function DialogueViewer({ dialogues, artworkTitle }: DialogueViewerProps)
             >
               Previous
             </IOSButton>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-500 dark:text-gray-400">
               {currentDialogueIndex + 1} / {dialogues.length}
             </span>
             <IOSButton

@@ -34,6 +34,7 @@ import type {
 } from '../../types/vulca';
 import DimensionGroupView from './DimensionGroupView';
 import { DIMENSION_CATEGORIES, getDimensionCategory, getDimensionLabel, CULTURAL_PERSPECTIVES } from '../../utils/vulca-dimensions';
+import { useChartTheme } from '../../hooks/useChartTheme';
 
 // Enhanced helper function to format dimension names from any format
 const formatDimensionName = (text: string): string => {
@@ -86,7 +87,9 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
   culturalPerspective = 'eastern',
   viewLevel = 'overview',
 }) => {
-  const colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
+  // 使用统一的图表主题 hook (支持深色/浅色模式)
+  const { seriesColors, colors: themeColors, rechartsTheme, config: chartConfig } = useChartTheme();
+  const colors = seriesColors(5);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const [selectedCulturalPerspective, setSelectedCulturalPerspective] = useState<string>('eastern');
@@ -123,7 +126,8 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
       
       evaluations.forEach((evaluation, index) => {
         const scores = viewMode === '6d' ? evaluation.scores6D : evaluation.scores47D;
-        const modelKey = evaluation.modelName || `model_${index}`;
+        // Use modelName, fallback to a readable name instead of model_0
+        const modelKey = evaluation.modelName || (evaluation as any).name || `Model ${index + 1}`;
         dataPoint[modelKey] = scores ? (scores[dim.id as keyof typeof scores] || 0) : 0;
       });
       
@@ -399,14 +403,14 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
               const isHighPerformer = avgScore > 75;
               const isLowPerformer = avgScore < 40;
               
-              // Dynamic styling based on characteristics
-              let strokeColor = '#ccc';
+              // Dynamic styling based on characteristics - using theme colors
+              let strokeColor = themeColors.grid.line;
               let strokeWidth = 1.5;
               let strokeOpacity = 0.5;
               let dotSize = 3;
-              
+
               if (isHighVariance) {
-                strokeColor = isHighPerformer ? '#10B981' : isLowPerformer ? '#EF4444' : colors[index % colors.length];
+                strokeColor = isHighPerformer ? themeColors.semantic.success : isLowPerformer ? themeColors.semantic.error : colors[index % colors.length];
                 strokeWidth = 3.5;
                 strokeOpacity = 1;
                 dotSize = 6;
@@ -416,12 +420,12 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
                 strokeOpacity = 0.8;
                 dotSize = 4;
               } else if (isHighPerformer) {
-                strokeColor = '#10B981'; // Green for high performers
+                strokeColor = themeColors.semantic.success;
                 strokeWidth = 2;
                 strokeOpacity = 0.7;
                 dotSize = 4;
               } else if (isLowPerformer) {
-                strokeColor = '#F59E0B'; // Orange for low performers
+                strokeColor = themeColors.semantic.warning;
                 strokeWidth = 2;
                 strokeOpacity = 0.6;
                 dotSize = 3;
@@ -597,11 +601,11 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
             <Legend />
             
             {evaluations.map((evaluation, index) => {
-              const modelKey = evaluation.modelName || `model_${index}`;
+              const modelKey = evaluation.modelName || (evaluation as any).name || `Model ${index + 1}`;
               return (
                 <Radar
                   key={modelKey}
-                  name={evaluation.modelName}
+                  name={modelKey}
                   dataKey={modelKey}
                   stroke={colors[index % colors.length]}
                   fill={colors[index % colors.length]}
@@ -677,7 +681,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
                       y={y}
                       dy={4}
                       textAnchor="end"
-                      fill="#666"
+                      fill={themeColors.grid.text}
                       fontSize="10"
                       className="recharts-text recharts-cartesian-axis-tick-value"
                     >
@@ -733,11 +737,11 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
                 <Legend />
 
               {evaluations.map((evaluation, index) => {
-                const modelKey = evaluation.modelName || `model_${index}`;
+                const modelKey = evaluation.modelName || (evaluation as any).name || `Model ${index + 1}`;
                 return (
                   <Radar
                     key={modelKey}
-                    name={evaluation.modelName}
+                    name={modelKey}
                     dataKey={modelKey}
                     stroke={colors[index % colors.length]}
                     fill={colors[index % colors.length]}
@@ -825,7 +829,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
                 />
                 <Tooltip content={<HeatmapTooltip />} />
                 
-                <Scatter data={heatmapData} fill="#8884d8">
+                <Scatter data={heatmapData} fill={colors[0]}>
                   {heatmapData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
@@ -942,7 +946,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
             <XAxis type="number" domain={[0, 100]} />
             <YAxis dataKey="model" type="category" width={100} />
             <Tooltip />
-            <Bar dataKey="score" fill="#8B5CF6" />
+            <Bar dataKey="score" fill={colors[3]} />
           </BarChart>
         </ResponsiveContainer>
       </IOSCard>
@@ -952,7 +956,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
   if (!evaluations.length) {
     return (
       <div className="flex items-center justify-center h-96">
-        <div className="text-center text-gray-500">
+        <div className="text-center text-gray-500 dark:text-gray-400">
           <p className="text-lg">No evaluation data available</p>
           <p className="text-sm mt-2">Select models and run evaluation to see visualizations</p>
         </div>
@@ -1057,7 +1061,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
                 <h5 className="font-medium text-sm truncate">{evaluation.modelName}</h5>
               </div>
               <p className="text-xl sm:text-2xl font-bold mt-1">{avgScore.toFixed(1)}</p>
-              <p className="text-xs text-gray-500">Average Score</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Average Score</p>
             </IOSCard>
           );
         })}

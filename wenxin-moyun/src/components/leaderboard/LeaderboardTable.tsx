@@ -88,8 +88,8 @@ const VULCADataDisplay: React.FC<VULCADataDisplayProps> = ({
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="flex items-center gap-2 text-gray-500">
-          <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
+        <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+          <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin" />
           Loading VULCA Analysis...
         </div>
       </div>
@@ -175,6 +175,7 @@ export default function LeaderboardTable({
         <div className="px-1">
           <input
             type="checkbox"
+            aria-label="Select all rows"
             className="w-4 h-4 rounded border-gray-300 dark:border-gray-600"
             checked={table.getIsAllRowsSelected()}
             onChange={table.getToggleAllRowsSelectedHandler()}
@@ -185,6 +186,7 @@ export default function LeaderboardTable({
         <div className="px-1">
           <input
             type="checkbox"
+            aria-label={`Select ${row.original.model?.name || 'row'}`}
             className="w-4 h-4 rounded border-gray-300 dark:border-gray-600"
             checked={row.getIsSelected()}
             onChange={row.getToggleSelectedHandler()}
@@ -322,7 +324,7 @@ export default function LeaderboardTable({
       size: 80,
       cell: ({ getValue }) => {
         const change = getValue();
-        if (change === 0) return <Minus className="w-4 h-4 text-gray-400 mx-auto" />;
+        if (change === 0) return <Minus className="w-4 h-4 text-gray-400 dark:text-gray-500 mx-auto" />;
         if (change > 0) {
           return (
             <div className="flex items-center justify-center gap-1 text-green-600 dark:text-green-400">
@@ -408,13 +410,14 @@ export default function LeaderboardTable({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 ios-glass liquid-glass-container rounded-lg border border-gray-200 dark:border-[#30363D]">
         {/* 搜索框 */}
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-gray-400" />
+          <Filter className="w-4 h-4 text-gray-500 dark:text-gray-400" />
           <input
             type="text"
+            aria-label="Search models"
             placeholder="Search models..."
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            className="px-3 py-2 ios-glass backdrop-blur-sm border border-gray-200 dark:border-[#30363D] rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
+            className="px-3 py-2 ios-glass backdrop-blur-sm border border-gray-200 dark:border-[#30363D] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 dark:focus:border-blue-400"
           />
         </div>
 
@@ -444,20 +447,20 @@ export default function LeaderboardTable({
 
           {/* 导出按钮 */}
           <div className="relative group">
-            <button className="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-[#21262D] rounded-lg hover:bg-gray-200 dark:hover:bg-[#30363D] transition-colors">
+            <button className="flex items-center gap-2 px-3 py-2 min-h-[44px] bg-gray-100 dark:bg-[#21262D] rounded-lg hover:bg-gray-200 dark:hover:bg-[#30363D] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors">
               <Download className="w-4 h-4" />
               <span className="text-sm">Export</span>
             </button>
             <div className="absolute right-0 mt-2 w-32 ios-glass backdrop-blur-md border border-gray-200 dark:border-[#30363D] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
               <button
                 onClick={() => exportData(data, 'csv')}
-                className="w-full px-3 py-2 text-sm text-left hover:bg-gray-100/30 dark:hover:bg-[#262C36] transition-colors"
+                className="w-full px-3 py-2 min-h-[44px] text-sm text-left hover:bg-gray-100/30 dark:hover:bg-[#262C36] focus:outline-none focus:bg-gray-100/50 dark:focus:bg-[#262C36] transition-colors flex items-center"
               >
                 Export as CSV
               </button>
               <button
                 onClick={() => exportData(data, 'json')}
-                className="w-full px-3 py-2 text-sm text-left hover:bg-gray-100/30 dark:hover:bg-[#262C36] transition-colors"
+                className="w-full px-3 py-2 min-h-[44px] text-sm text-left hover:bg-gray-100/30 dark:hover:bg-[#262C36] focus:outline-none focus:bg-gray-100/50 dark:focus:bg-[#262C36] transition-colors flex items-center"
               >
                 Export as JSON
               </button>
@@ -469,12 +472,14 @@ export default function LeaderboardTable({
       {/* 表格 */}
       <div className="leaderboard-table overflow-x-auto ios-glass liquid-glass-container rounded-lg border border-gray-200 dark:border-[#30363D]">
         <table className="w-full">
+          <caption className="sr-only">AI Model Leaderboard Rankings with scores and metrics</caption>
           <thead className="ios-glass backdrop-blur-sm border-b border-gray-200 dark:border-[#30363D]">
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
-                  <th 
+                  <th
                     key={header.id}
+                    scope="col"
                     className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300"
                     style={{ width: header.getSize() }}
                   >
@@ -506,15 +511,15 @@ export default function LeaderboardTable({
             {loading ? (
               <tr>
                 <td colSpan={columns.length} className="text-center py-8">
-                  <div className="inline-flex items-center gap-2 text-gray-500">
-                    <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
+                  <div className="inline-flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                    <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin" />
                     Loading...
                   </div>
                 </td>
               </tr>
             ) : table.getRowModel().rows.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="text-center py-8 text-gray-500">
+                <td colSpan={columns.length} className="text-center py-8 text-gray-500 dark:text-gray-400">
                   No data
                 </td>
               </tr>
@@ -657,8 +662,8 @@ export default function LeaderboardTable({
                             <div className="p-6">
                               <Suspense fallback={
                                 <div className="flex items-center justify-center py-8">
-                                  <div className="flex items-center gap-2 text-gray-500">
-                                    <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
+                                  <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                                    <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin" />
                                     Loading VULCA Analysis...
                                   </div>
                                 </div>
@@ -695,14 +700,14 @@ export default function LeaderboardTable({
           <button
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#21262D] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-[#21262D] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronsLeft className="w-4 h-4" />
           </button>
           <button
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#21262D] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-[#21262D] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -714,14 +719,14 @@ export default function LeaderboardTable({
           <button
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#21262D] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-[#21262D] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
           <button
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#21262D] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-[#21262D] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronsRight className="w-4 h-4" />
           </button>

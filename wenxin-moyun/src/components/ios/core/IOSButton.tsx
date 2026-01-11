@@ -30,11 +30,11 @@ export const IOSButton = React.forwardRef<HTMLButtonElement, IOSButtonProps>(
     ...props 
   }, ref) => {
     
-    // Size classes
+    // Size classes - iOS HIG 44px minimum touch target
     const sizeClasses = {
-      sm: 'px-3 py-1.5 text-sm font-medium',
-      md: 'px-4 py-2 text-base font-semibold',
-      lg: 'px-6 py-3 text-lg font-semibold',
+      sm: 'px-4 py-2.5 text-sm font-medium min-h-[44px] min-w-[44px]',
+      md: 'px-5 py-3 text-base font-semibold min-h-[44px] min-w-[44px]',
+      lg: 'px-7 py-4 text-lg font-semibold min-h-[52px] min-w-[52px]',
     };
     
     // Base classes

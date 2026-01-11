@@ -114,7 +114,7 @@ export function RPAITRadar({
                 <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
                   <p className="font-medium text-gray-900 dark:text-white mb-2">
                     {payload[0]?.payload?.dimension}
-                    <span className="ml-1 text-gray-500">
+                    <span className="ml-1 text-gray-500 dark:text-gray-400">
                       ({payload[0]?.payload?.dimensionZh})
                     </span>
                   </p>

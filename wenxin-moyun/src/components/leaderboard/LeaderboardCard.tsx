@@ -21,7 +21,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
   const getTrendIcon = (change: number) => {
     if (change > 0) return <TrendingUp className="w-4 h-4 text-green-500" />;
     if (change < 0) return <TrendingDown className="w-4 h-4 text-red-500" />;
-    return <Minus className="w-4 h-4 text-gray-400" />;
+    return <Minus className="w-4 h-4 text-gray-400 dark:text-gray-500" />;
   };
 
 
@@ -42,7 +42,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
           <img src={entry.model.avatar} alt={entry.model.name} className="w-10 h-10 rounded-lg" />
           <div>
             <h4 className="font-semibold text-gray-800 dark:text-gray-200">{entry.model.name}</h4>
-            <p className="text-xs text-gray-500">{entry.model.organization}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{entry.model.organization}</p>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -151,7 +151,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
 
         {/* Win Rate Progress Bar */}
         <div className="mb-4">
-          <div className="flex justify-between text-xs text-gray-500 mb-1">
+          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
             <span>Win Rate Distribution</span>
             <span>{entry.winRate != null ? `${entry.winRate.toFixed(1)}%` : 'N/A'}</span>
           </div>

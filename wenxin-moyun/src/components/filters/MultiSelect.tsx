@@ -123,10 +123,11 @@ export default function MultiSelect({
             <div className="p-2 border-b border-gray-200 dark:border-[#30363D]">
               <input
                 type="text"
+                aria-label="Search options"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="搜索..."
-                className="w-full px-2 py-1 text-sm bg-gray-50 dark:bg-[#0D1117] border border-gray-200 dark:border-[#30363D] rounded focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
+                className="w-full px-2 py-1 text-sm bg-gray-50 dark:bg-[#0D1117] border border-gray-200 dark:border-[#30363D] rounded focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 dark:focus:border-blue-400"
                 onClick={(e) => e.stopPropagation()}
               />
             </div>

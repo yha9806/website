@@ -270,10 +270,11 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
                           />
                           <input
                             type="text"
+                            aria-label="Filter by model name"
                             value={values.search}
                             onChange={(e) => handleChange('search', e.target.value)}
                             placeholder="Enter model name..."
-                            className="w-full pl-10 pr-3 py-2.5 ios-glass border border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
+                            className="w-full pl-10 pr-3 py-2.5 ios-glass border border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
                           />
                         </div>
                       </div>
@@ -332,7 +333,7 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
                         <select
                           value={values.dateRange}
                           onChange={(e) => handleChange('dateRange', e.target.value)}
-                          className="w-full px-3 py-2.5 ios-glass border border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
+                          className="w-full px-3 py-2.5 ios-glass border border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
                         >
                           {config.dateOptions.map((option) => (
                             <option key={option.value} value={option.value}>

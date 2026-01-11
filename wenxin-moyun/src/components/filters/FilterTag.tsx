@@ -48,10 +48,10 @@ export default function FilterTag({
       <span className="font-normal">{formatValue()}</span>
       <button
         onClick={onRemove}
-        className="ml-1 p-0.5 hover:bg-black/10 dark:hover:bg-neutral-50/10 rounded-full transition-colors"
+        className="ml-1 min-h-[44px] min-w-[44px] -my-2 flex items-center justify-center hover:bg-black/10 dark:hover:bg-neutral-50/10 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-full transition-colors"
         aria-label={`移除${label}筛选`}
       >
-        <X className="w-3 h-3" />
+        <X className="w-4 h-4" />
       </button>
     </motion.div>
   );
@@ -94,7 +94,7 @@ export function FilterTagGroup({
       {tags.length > 1 && onClearAll && (
         <button
           onClick={onClearAll}
-          className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 underline transition-colors"
+          className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:rounded underline transition-colors"
         >
           清除全部
         </button>

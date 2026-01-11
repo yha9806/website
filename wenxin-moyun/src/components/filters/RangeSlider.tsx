@@ -72,10 +72,11 @@ export default function RangeSlider({
           {/* Numeric inputs */}
           <div className="flex items-center gap-3">
             <div className="flex-1">
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+              <label htmlFor="range-min" className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
                 Min Value
               </label>
               <input
+                id="range-min"
                 type="number"
                 min={min}
                 max={localValue[1]}
@@ -88,15 +89,16 @@ export default function RangeSlider({
                     handleSliderChange(newValue);
                   }
                 }}
-                className="w-full px-3 py-2 text-sm ios-glass border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
+                className="w-full px-3 py-2 text-sm ios-glass border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
               />
             </div>
             <div className="text-gray-400 text-sm font-medium pt-5">to</div>
             <div className="flex-1">
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+              <label htmlFor="range-max" className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
                 Max Value
               </label>
               <input
+                id="range-max"
                 type="number"
                 min={localValue[0]}
                 max={max}
@@ -109,7 +111,7 @@ export default function RangeSlider({
                     handleSliderChange(newValue);
                   }
                 }}
-                className="w-full px-3 py-2 text-sm ios-glass border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
+                className="w-full px-3 py-2 text-sm ios-glass border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
               />
             </div>
           </div>

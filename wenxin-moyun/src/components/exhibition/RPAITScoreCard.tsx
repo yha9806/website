@@ -56,7 +56,7 @@ export function RPAITScoreCard({
               <span className="font-medium text-gray-700 dark:text-gray-300">
                 {RPAIT_LABELS[dimension].en}
                 {showLabels && (
-                  <span className="ml-1 text-gray-400">
+                  <span className="ml-1 text-gray-500 dark:text-gray-400">
                     ({RPAIT_LABELS[dimension].zh})
                   </span>
                 )}

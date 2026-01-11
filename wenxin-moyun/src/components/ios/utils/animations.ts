@@ -138,6 +138,88 @@ export const iosAnimations = {
   },
 };
 
+// ============= 统一的 Stagger 延迟配置 =============
+
+export const iosStaggerDelays = {
+  // 列表项延迟
+  list: {
+    fast: 0.03,    // 快速列表 (如下拉菜单)
+    normal: 0.05,  // 标准列表
+    slow: 0.08,    // 慢速列表 (如大型卡片)
+  },
+  // 网格项延迟
+  grid: {
+    fast: 0.08,    // 快速网格
+    normal: 0.1,   // 标准网格
+    slow: 0.15,    // 慢速网格
+  },
+  // 页面级延迟
+  page: {
+    hero: 0.2,     // 首屏大元素
+    section: 0.15, // 区块
+    element: 0.1,  // 小元素
+  },
+};
+
+/**
+ * 获取 stagger 延迟时间
+ * @param index 元素索引
+ * @param type 类型: list | grid | page
+ * @param speed 速度: fast | normal | slow (list/grid) 或 hero | section | element (page)
+ */
+export const getStaggerDelay = (
+  index: number,
+  type: 'list' | 'grid' | 'page' = 'list',
+  speed: string = 'normal'
+): number => {
+  const delays = iosStaggerDelays[type];
+  // Get delay with proper fallbacks for each type
+  const defaultDelay = type === 'page' ? 0.1 : 0.05;
+  const delay = (delays as Record<string, number>)[speed] ?? defaultDelay;
+  return index * delay;
+};
+
+/**
+ * 生成 stagger children 动画配置
+ * @param type 类型
+ * @param speed 速度
+ */
+export const getStaggerContainer = (
+  type: 'list' | 'grid' | 'page' = 'list',
+  speed: string = 'normal'
+) => {
+  const delays = iosStaggerDelays[type];
+  // Get delay with proper fallbacks for each type
+  const defaultDelay = type === 'page' ? 0.1 : 0.05;
+  const delay = (delays as Record<string, number>)[speed] ?? defaultDelay;
+
+  return {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: delay,
+      },
+    },
+  };
+};
+
+/**
+ * stagger 子元素动画配置
+ */
+export const staggerItem = {
+  hidden: { opacity: 0, y: 20 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 400,
+      damping: 30,
+    },
+  },
+};
+
 // Haptic feedback simulation (visual feedback)
 export const hapticFeedback = {
   light: {

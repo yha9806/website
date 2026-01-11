@@ -40,30 +40,6 @@ const ModelDetailPage = lazy(() => {
   });
 });
 
-const BattlePage = lazy(() => {
-  perfMonitor.mark('BattlePage-start');
-  return import('../pages/BattlePage').then(module => {
-    perfMonitor.measure('BattlePage-load', 'BattlePage-start');
-    return module;
-  });
-});
-
-const ComparePage = lazy(() => {
-  perfMonitor.mark('ComparePage-start');
-  return import('../pages/ComparePage').then(module => {
-    perfMonitor.measure('ComparePage-load', 'ComparePage-start');
-    return module;
-  });
-});
-
-const DashboardPage = lazy(() => {
-  perfMonitor.mark('DashboardPage-start');
-  return import('../pages/DashboardPage').then(module => {
-    perfMonitor.measure('DashboardPage-load', 'DashboardPage-start');
-    return module;
-  });
-});
-
 const EvaluationsPage = lazy(() => {
   perfMonitor.mark('EvaluationsPage-start');
   return import('../pages/EvaluationsPage').then(module => {
@@ -76,14 +52,6 @@ const EvaluationDetailPage = lazy(() => {
   perfMonitor.mark('EvaluationDetailPage-start');
   return import('../pages/EvaluationDetailPage').then(module => {
     perfMonitor.measure('EvaluationDetailPage-load', 'EvaluationDetailPage-start');
-    return module;
-  });
-});
-
-const AboutPage = lazy(() => {
-  perfMonitor.mark('AboutPage-start');
-  return import('../pages/AboutPage').then(module => {
-    perfMonitor.measure('AboutPage-load', 'AboutPage-start');
     return module;
   });
 });
@@ -125,7 +93,7 @@ export function OptimizedRoutes() {
           </Suspense>
         }
       />
-      
+
       {/* 带布局的页面 */}
       <Route element={<Layout />}>
         <Route
@@ -161,30 +129,6 @@ export function OptimizedRoutes() {
           }
         />
         <Route
-          path="/battle"
-          element={
-            <Suspense fallback={<PageLoader />}>
-              <BattlePage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/compare"
-          element={
-            <Suspense fallback={<PageLoader />}>
-              <ComparePage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <Suspense fallback={<PageLoader />}>
-              <DashboardPage />
-            </Suspense>
-          }
-        />
-        <Route
           path="/evaluations"
           element={
             <Suspense fallback={<PageLoader />}>
@@ -200,14 +144,6 @@ export function OptimizedRoutes() {
             </Suspense>
           }
         />
-        <Route
-          path="/about"
-          element={
-            <Suspense fallback={<PageLoader />}>
-              <AboutPage />
-            </Suspense>
-          }
-        />
       </Route>
     </Routes>
   );
@@ -219,9 +155,8 @@ export function preloadCriticalRoutes() {
   const criticalRoutes = [
     () => import('../pages/LeaderboardPage'),
     () => import('../pages/EvaluationsPage'),
-    () => import('../pages/BattlePage')
   ];
-  
+
   // 在空闲时预加载
   if ('requestIdleCallback' in window) {
     requestIdleCallback(() => {

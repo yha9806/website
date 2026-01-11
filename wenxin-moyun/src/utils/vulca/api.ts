@@ -187,7 +187,32 @@ export const vulcaService = {
         model_ids: modelIds,
         include_details: includeDetails,
       });
-      return response.data;
+
+      // Transform snake_case to camelCase
+      const comparison = response.data;
+      if (comparison.models) {
+        comparison.models = comparison.models.map((model: any) => ({
+          modelId: model.model_id || model.modelId,
+          modelName: model.model_name || model.modelName,
+          scores6D: model.scores_6d || model.scores6D,
+          scores47D: model.scores_47d || model.scores47D,
+          culturalPerspectives: model.cultural_perspectives || model.culturalPerspectives,
+          evaluationDate: model.evaluation_date || model.evaluationDate || new Date().toISOString()
+        }));
+      }
+      if (comparison.summary) {
+        const summary = comparison.summary;
+        comparison.summary = {
+          mostSimilar: summary.most_similar || summary.mostSimilar,
+          mostDifferent: summary.most_different || summary.mostDifferent,
+          averageDifference: summary.average_difference || summary.averageDifference,
+          dimensionStatistics: summary.dimension_statistics || summary.dimensionStatistics,
+          culturalAnalysis: summary.cultural_analysis || summary.culturalAnalysis,
+        };
+      }
+      comparison.differenceMatrix = comparison.difference_matrix || comparison.differenceMatrix;
+
+      return comparison;
     } catch (error: any) {
       console.error('Error calling /compare API:', error);
       

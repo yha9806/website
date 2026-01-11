@@ -194,26 +194,28 @@ export const IOSCardFooter: React.FC<{
   );
 };
 
-// Card Grid Layout Helper
+// Card Grid Layout Helper - 增强响应式支持
 export const IOSCardGrid: React.FC<{
   children: React.ReactNode;
   columns?: 1 | 2 | 3 | 4;
   gap?: 'sm' | 'md' | 'lg';
   className?: string;
 }> = ({ children, columns = 3, gap = 'md', className = '' }) => {
+  // 响应式列数 - 添加 xs 断点支持 (475px)
   const columnClasses = {
     1: 'grid-cols-1',
-    2: 'grid-cols-1 md:grid-cols-2',
-    3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+    2: 'grid-cols-1 xs:grid-cols-2',
+    3: 'grid-cols-1 xs:grid-cols-2 lg:grid-cols-3',
+    4: 'grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4',
   };
-  
+
+  // 响应式间距 - 移动端更紧凑
   const gapClasses = {
-    sm: 'gap-3',
-    md: 'gap-4',
-    lg: 'gap-6',
+    sm: 'gap-2 xs:gap-3 md:gap-3',
+    md: 'gap-3 xs:gap-4 md:gap-5',
+    lg: 'gap-4 xs:gap-5 md:gap-6',
   };
-  
+
   return (
     <div className={`grid ${columnClasses[columns]} ${gapClasses[gap]} ${className}`}>
       {children}

@@ -42,15 +42,15 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
   const getStatusColor = () => {
     switch (evaluation.status) {
       case 'pending':
-        return 'text-yellow-500 bg-yellow-50';
+        return 'text-yellow-500 bg-yellow-50 dark:bg-yellow-900/20';
       case 'processing':
-        return 'text-blue-500 bg-blue-50';
+        return 'text-blue-500 bg-blue-50 dark:bg-blue-900/20';
       case 'completed':
-        return 'text-green-500 bg-green-50';
+        return 'text-green-500 bg-green-50 dark:bg-green-900/20';
       case 'failed':
-        return 'text-red-500 bg-red-50';
+        return 'text-red-500 bg-red-50 dark:bg-red-900/20';
       default:
-        return 'text-gray-500 bg-gray-50';
+        return 'text-gray-500 bg-gray-50 dark:bg-gray-800';
     }
   };
 
@@ -123,7 +123,7 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
             </div>
             <div>
               <h3 className="font-semibold text-lg">{evaluation.modelName || 'Unknown Model'}</h3>
-              <p className="text-sm text-gray-600">{getTaskTypeName()}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">{getTaskTypeName()}</p>
             </div>
           </div>
 
@@ -134,13 +134,13 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
         </div>
 
         <div className="mb-4">
-          <p className="text-gray-700 line-clamp-2">{evaluation.prompt}</p>
+          <p className="text-gray-700 dark:text-gray-300 line-clamp-2">{evaluation.prompt}</p>
         </div>
 
         {evaluation.result && (
           <div className="mb-4 p-3 ios-glass rounded-lg">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-600">AI Score</span>
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">AI Score</span>
               <span className="text-xl font-bold gradient-text">
                 {evaluation.result.score}/100
               </span>
@@ -148,7 +148,7 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
             
             {evaluation.humanScore && (
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-600">Human Score</span>
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Human Score</span>
                 <span className="text-xl font-bold text-purple-600">
                   {evaluation.humanScore}/100
                 </span>
@@ -157,23 +157,23 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
           </div>
         )}
 
-        <div className="flex items-center justify-between text-sm text-gray-500">
-          <span>{new Date(evaluation.createdAt).toLocaleString()}</span>
+        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+          <span>{new Date(evaluation.createdAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</span>
           
           <div className="flex gap-2">
             <button
               onClick={() => setShowDetail(true)}
-              className="p-2 hover:bg-gray-100/50 rounded-lg transition-colors backdrop-blur-sm"
-              title="View Details"
+              className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-colors backdrop-blur-sm"
+              aria-label="View Details"
             >
               <Eye className="w-4 h-4" />
             </button>
-            
+
             {evaluation.status === 'completed' && (
               <button
                 onClick={() => setShowRating(true)}
-                className="p-2 hover:bg-gray-100/50 rounded-lg transition-colors backdrop-blur-sm"
-                title="Human Rating"
+                className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-lg transition-colors backdrop-blur-sm"
+                aria-label="Human Rating"
               >
                 <Star className="w-4 h-4" />
               </button>
@@ -182,8 +182,8 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
             <button
               onClick={handleDelete}
               disabled={isDeleting}
-              className="p-2 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors"
-              title="Delete"
+              className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 rounded-lg transition-colors"
+              aria-label="Delete evaluation"
             >
               <Trash2 className="w-4 h-4" />
             </button>

@@ -137,7 +137,7 @@ const EvaluationDetailPage: React.FC = () => {
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <RefreshCw className="w-8 h-8 text-primary-500 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">加载评测详情...</p>
+          <p className="text-gray-600 dark:text-gray-400">加载评测详情...</p>
         </div>
       </div>
     );
@@ -147,7 +147,7 @@ const EvaluationDetailPage: React.FC = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
-          <p className="text-gray-600">评测任务不存在</p>
+          <p className="text-gray-600 dark:text-gray-400">评测任务不存在</p>
           <button
             onClick={() => navigate('/evaluations')}
             className="btn-primary mt-4"
@@ -168,11 +168,11 @@ const EvaluationDetailPage: React.FC = () => {
               onClick={() => navigate('/evaluations')}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">评测详情</h1>
-              <p className="text-gray-600">ID: {evaluation.id}</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">评测详情</h1>
+              <p className="text-gray-600 dark:text-gray-400">ID: {evaluation.id}</p>
             </div>
           </div>
 
@@ -214,11 +214,11 @@ const EvaluationDetailPage: React.FC = () => {
               <h2 className="text-lg font-semibold mb-4">任务信息</h2>
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">模型</span>
+                  <span className="text-gray-600 dark:text-gray-400">模型</span>
                   <span className="font-medium">{evaluation.modelName}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">任务类型</span>
+                  <span className="text-gray-600 dark:text-gray-400">任务类型</span>
                   <span className="font-medium">
                     {evaluation.taskType === 'poetry' ? '诗歌创作' :
                      evaluation.taskType === 'story' ? '故事创作' :
@@ -226,14 +226,14 @@ const EvaluationDetailPage: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">创建时间</span>
+                  <span className="text-gray-600 dark:text-gray-400">创建时间</span>
                   <span className="font-medium">
                     {new Date(evaluation.createdAt).toLocaleString('zh-CN')}
                   </span>
                 </div>
                 {evaluation.completedAt && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600">完成时间</span>
+                    <span className="text-gray-600 dark:text-gray-400">完成时间</span>
                     <span className="font-medium">
                       {new Date(evaluation.completedAt).toLocaleString('zh-CN')}
                     </span>
@@ -241,10 +241,10 @@ const EvaluationDetailPage: React.FC = () => {
                 )}
               </div>
 
-              <div className="mt-4 pt-4 border-t">
-                <h3 className="font-medium text-gray-700 mb-2">创作提示</h3>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-gray-800">{evaluation.prompt}</p>
+              <div className="mt-4 pt-4 border-t dark:border-gray-700">
+                <h3 className="font-medium text-gray-700 dark:text-gray-300 mb-2">创作提示</h3>
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
+                  <p className="text-gray-800 dark:text-gray-200">{evaluation.prompt}</p>
                 </div>
               </div>
             </div>
@@ -268,7 +268,7 @@ const EvaluationDetailPage: React.FC = () => {
                         className={`w-5 h-5 ${
                           i < Math.floor((evaluation.result?.overallScore || 0) / 20)
                             ? 'text-yellow-400 fill-current'
-                            : 'text-gray-300'
+                            : 'text-gray-300 dark:text-gray-600'
                         }`}
                       />
                     ))}
@@ -283,8 +283,8 @@ const EvaluationDetailPage: React.FC = () => {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <Clock className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">处理时间</span>
+                      <Clock className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">处理时间</span>
                     </div>
                     <span className="text-sm font-medium">
                       {evaluation.metrics.processingTime}秒
@@ -292,8 +292,8 @@ const EvaluationDetailPage: React.FC = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <FileText className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">生成令牌</span>
+                      <FileText className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">生成令牌</span>
                     </div>
                     <span className="text-sm font-medium">
                       {evaluation.metrics.tokensGenerated}
@@ -301,8 +301,8 @@ const EvaluationDetailPage: React.FC = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <TrendingUp className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">置信度</span>
+                      <TrendingUp className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">置信度</span>
                     </div>
                     <span className="text-sm font-medium">
                       {evaluation.metrics.confidence}%
@@ -342,7 +342,7 @@ const EvaluationDetailPage: React.FC = () => {
               {/* Generated Content */}
               <div className="card">
                 <h2 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-                  <Eye className="w-5 h-5 text-gray-600" />
+                  <Eye className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                   <span>生成内容</span>
                 </h2>
                 <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6">
@@ -401,7 +401,7 @@ const EvaluationDetailPage: React.FC = () => {
               {/* Evaluation Comments */}
               <div className="card">
                 <h3 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-                  <BarChart3 className="w-5 h-5 text-gray-600" />
+                  <BarChart3 className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                   <span>专业评价</span>
                 </h3>
                 <p className="text-gray-700 leading-relaxed mb-4">

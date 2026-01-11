@@ -59,7 +59,7 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
                     prev === 0 ? artwork.images.length - 1 : prev - 1
                   )
                 }
-                className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -71,7 +71,7 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
                     prev === artwork.images.length - 1 ? 0 : prev + 1
                   )
                 }
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -102,7 +102,7 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
                   }
                 `}
               >
-                <img src={getImageUrl(image)} alt="" className="w-full h-full object-cover" />
+                <img src={getImageUrl(image)} alt={`${artwork.title} - Image ${index + 1}`} className="w-full h-full object-cover" />
               </button>
             ))}
           </div>
@@ -116,10 +116,12 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
           target="_blank"
           rel="noopener noreferrer"
           className="block"
+          aria-label={`Watch Video (opens in new tab)`}
         >
           <IOSButton variant="secondary" className="w-full" glassMorphism>
             <EmojiIcon category="content" name="video" size="sm" />
             Watch Video
+            <span className="sr-only">(opens in new tab)</span>
           </IOSButton>
         </a>
       )}
@@ -157,20 +159,20 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
           {/* Metadata */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <p className="text-xs text-gray-400 uppercase tracking-wider">Medium</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Medium</p>
               <p className="text-sm text-gray-700 dark:text-gray-300 mt-0.5">
                 {artwork.medium}
               </p>
             </div>
             <div>
-              <p className="text-xs text-gray-400 uppercase tracking-wider">Material</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Material</p>
               <p className="text-sm text-gray-700 dark:text-gray-300 mt-0.5">
                 {artwork.material}
               </p>
             </div>
             {artwork.dimensions && (
               <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wider">Size</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Size</p>
                 <p className="text-sm text-gray-700 dark:text-gray-300 mt-0.5">
                   {artwork.dimensions}
                 </p>
@@ -178,7 +180,7 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
             )}
             {artwork.year && (
               <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wider">Year</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Year</p>
                 <p className="text-sm text-gray-700 dark:text-gray-300 mt-0.5">
                   {artwork.year}
                 </p>
@@ -189,7 +191,7 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
           {/* Description */}
           {artwork.description && (
             <div>
-              <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">About</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">About</p>
               <div className={`text-sm text-gray-700 dark:text-gray-300 ${!isExpanded ? 'line-clamp-4' : ''}`}>
                 {artwork.description.split('\n').map((paragraph, index) => (
                   <p key={index} className="mb-2">

@@ -28,7 +28,8 @@ export const IOSToggle: React.FC<IOSToggleProps> = ({
   leftIcon,
   rightIcon,
 }) => {
-  // Size configurations
+  // Size configurations - iOS HIG 44px minimum touch target
+  // Visual toggle stays compact, touch area expanded via wrapper
   const sizeConfig = {
     sm: {
       width: 'w-10',
@@ -36,6 +37,7 @@ export const IOSToggle: React.FC<IOSToggleProps> = ({
       thumbSize: 'w-5 h-5',
       padding: 'p-0.5',
       translateX: 16,
+      touchArea: 'min-h-[44px]', // Touch target expansion
     },
     md: {
       width: 'w-12',
@@ -43,6 +45,7 @@ export const IOSToggle: React.FC<IOSToggleProps> = ({
       thumbSize: 'w-6 h-6',
       padding: 'p-0.5',
       translateX: 20,
+      touchArea: 'min-h-[44px]', // Touch target expansion
     },
     lg: {
       width: 'w-14',
@@ -50,6 +53,7 @@ export const IOSToggle: React.FC<IOSToggleProps> = ({
       thumbSize: 'w-7 h-7',
       padding: 'p-0.5',
       translateX: 24,
+      touchArea: 'min-h-[44px]', // Touch target expansion
     },
   };
 
@@ -73,20 +77,27 @@ export const IOSToggle: React.FC<IOSToggleProps> = ({
   const toggleElement = (
     <motion.div
       className={`
-        relative inline-flex items-center
-        ${config.width} ${config.height}
-        ${config.padding}
-        rounded-full
+        ${config.touchArea}
+        inline-flex items-center justify-center
         cursor-pointer
-        transition-colors duration-200
         ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
-        ${bgColor}
         ${className}
       `}
       onClick={handleToggle}
       whileTap={disabled ? {} : { scale: 0.95 }}
       transition={iosAnimations.spring}
     >
+      {/* Visual toggle */}
+      <div
+        className={`
+          relative inline-flex items-center
+          ${config.width} ${config.height}
+          ${config.padding}
+          rounded-full
+          transition-colors duration-200
+          ${bgColor}
+        `}
+      >
       {/* Toggle Background Gradient Effect */}
       <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
       
@@ -125,7 +136,7 @@ export const IOSToggle: React.FC<IOSToggleProps> = ({
         {/* Thumb inner shadow */}
         <div className="absolute inset-0 rounded-full shadow-inner bg-gradient-to-br from-gray-50/50 to-transparent" />
       </motion.div>
-      
+      </div>
     </motion.div>
   );
 

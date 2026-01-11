@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import RouterLink from '../components/common/RouterLink';
-import { ArrowLeft, Calendar, Tag, Trophy, Zap, Loader2 } from 'lucide-react';
+import { Breadcrumb } from '../components/common/Breadcrumb';
+import { ArrowLeft, Calendar, Tag, Trophy, Zap, Loader2, Cpu } from 'lucide-react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { mockModels } from '../data/mockData';
 import { motion } from 'framer-motion';
@@ -45,10 +46,10 @@ export default function ModelDetailPage() {
           <div className="flex flex-col items-center gap-4">
             <EmojiIcon category="feedback" name="error" size="lg" />
             <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Model Not Found</h2>
-            <RouterLink to="/leaderboard">
+            <RouterLink to="/models">
               <IOSButton variant="primary">
                 <EmojiIcon category="actions" name="back" size="sm" />
-                Back to Rankings
+                Back to Models
               </IOSButton>
             </RouterLink>
           </div>
@@ -69,13 +70,15 @@ export default function ModelDetailPage() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      {/* Back Button */}
-      <RouterLink to="/leaderboard" className="inline-block mb-6">
-        <IOSButton variant="secondary" size="md">
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Rankings
-        </IOSButton>
-      </RouterLink>
+      {/* Breadcrumb Navigation */}
+      <div className="mb-6">
+        <Breadcrumb
+          items={[
+            { label: 'Models', href: '/models', icon: <Cpu className="w-4 h-4" /> },
+            { label: model.name }
+          ]}
+        />
+      </div>
 
       {/* Model Header */}
       <motion.div
@@ -172,7 +175,7 @@ export default function ModelDetailPage() {
                       fill: '#8E8E93',
                       fontSize: 10
                     }}
-                    className="text-gray-500"
+                    className="text-gray-500 dark:text-gray-400"
                   />
                   <Radar
                     name={model.name}

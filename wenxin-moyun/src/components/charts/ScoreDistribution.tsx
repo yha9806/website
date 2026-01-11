@@ -21,9 +21,9 @@ const ScoreDistribution: React.FC<ScoreDistributionProps> = ({
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div 
+        <div
           className="bg-neutral-900 text-white p-3 rounded-lg shadow-lg"
-          style={{ fontSize: chartConfig.tooltip.fontSize }}
+          style={{ fontSize: chartConfig.font.sizes.tooltip }}
         >
           <p className="font-medium mb-1">{label}</p>
           {payload.map((entry: any, index: number) => (

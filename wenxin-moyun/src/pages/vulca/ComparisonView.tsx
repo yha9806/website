@@ -39,7 +39,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
   // Early return if comparison data is invalid
   if (!comparison || !comparison.models || comparison.models.length === 0) {
     return (
-      <div className="text-center text-gray-500 p-8">
+      <div className="text-center text-gray-500 dark:text-gray-400 p-8">
         <p>No comparison data available</p>
       </div>
     );
@@ -59,7 +59,9 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
       
       comparison.models.forEach((model, index) => {
         const scores = viewMode === '6d' ? model.scores6D : model.scores47D;
-        dataPoint[`model_${index}`] = scores ? (scores[dim as keyof typeof scores] || 0) : 0;
+        // Use modelName as key for proper legend display
+        const modelKey = model.modelName || (model as any).name || `Model ${index + 1}`;
+        dataPoint[modelKey] = scores ? (scores[dim as keyof typeof scores] || 0) : 0;
       });
       
       return dataPoint;
@@ -84,7 +86,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
   // Calculate performance indicators
   const getPerformanceIndicator = (value: number, baseline: number) => {
     const diff = value - baseline;
-    if (Math.abs(diff) < 1) return <Minus className="w-4 h-4 text-gray-400" />;
+    if (Math.abs(diff) < 1) return <Minus className="w-4 h-4 text-gray-400 dark:text-gray-500" />;
     if (diff > 0) return <ArrowUp className="w-4 h-4 text-green-500" />;
     return <ArrowDown className="w-4 h-4 text-red-500" />;
   };
@@ -96,37 +98,37 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {comparison.summary.mostSimilar && (
             <IOSCard variant="elevated">
-              <h4 className="text-sm font-medium text-gray-600 mb-2">Most Similar Pair</h4>
+              <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Most Similar Pair</h4>
               <p className="text-lg font-semibold">
                 {comparison.summary.mostSimilar.models?.join(' & ') || 'N/A'}
               </p>
-              <span className="inline-block px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded mt-2">
+              <span className="inline-block px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded mt-2">
                 Difference: {comparison.summary.mostSimilar.difference?.toFixed(2) || 'N/A'}
               </span>
             </IOSCard>
           )}
-          
+
           {comparison.summary.mostDifferent && (
             <IOSCard variant="elevated">
-              <h4 className="text-sm font-medium text-gray-600 mb-2">Most Different Pair</h4>
+              <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Most Different Pair</h4>
               <p className="text-lg font-semibold">
                 {comparison.summary.mostDifferent.models?.join(' & ') || 'N/A'}
               </p>
-              <span className="inline-block px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded mt-2">
+              <span className="inline-block px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded mt-2">
                 Difference: {comparison.summary.mostDifferent.difference?.toFixed(2) || 'N/A'}
               </span>
             </IOSCard>
           )}
-          
+
           <IOSCard variant="elevated">
-            <h4 className="text-sm font-medium text-gray-600 mb-2">Average Difference</h4>
+            <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Average Difference</h4>
             <p className="text-2xl font-bold">
               {comparison.summary.averageDifference?.toFixed(2) || 'N/A'}
             </p>
             {comparison.summary.averageDifference != null && (
-              <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                <div 
-                  className="bg-blue-500 h-2 rounded-full" 
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+                <div
+                  className="bg-blue-500 h-2 rounded-full"
                   style={{ width: `${Math.min(comparison.summary.averageDifference, 100)}%` }}
                 ></div>
               </div>
@@ -149,19 +151,22 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
             <Tooltip />
             <Legend />
             
-            {comparison.models.map((model, index) => (
-              <Bar
-                key={`model_${index}`}
-                dataKey={`model_${index}`}
-                fill={colors[index % colors.length]}
-                name={model.modelName}
-              />
-            ))}
+            {comparison.models.map((model, index) => {
+              const modelKey = model.modelName || (model as any).name || `Model ${index + 1}`;
+              return (
+                <Bar
+                  key={modelKey}
+                  dataKey={modelKey}
+                  fill={colors[index % colors.length]}
+                  name={modelKey}
+                />
+              );
+            })}
           </BarChart>
         </ResponsiveContainer>
         
         {viewMode === '47d' && (
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
             Note: Showing first 10 dimensions of 47 for clarity. Export data to see all dimensions.
           </p>
         )}
@@ -184,11 +189,11 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
         </ResponsiveContainer>
         
         {comparison.summary?.culturalAnalysis && culturalPerspective && comparison.summary.culturalAnalysis[culturalPerspective] && (
-          <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-            <h4 className="font-medium mb-2">Cultural Analysis Insights</h4>
+          <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+            <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Cultural Analysis Insights</h4>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="text-gray-600">Best Model:</span>
+                <span className="text-gray-600 dark:text-gray-400">Best Model:</span>
                 <span className="ml-2 font-medium">
                   {comparison.summary?.culturalAnalysis && culturalPerspective 
                     ? comparison.summary.culturalAnalysis[culturalPerspective]?.bestModel 
@@ -196,7 +201,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
                 </span>
               </div>
               <div>
-                <span className="text-gray-600">Average Score:</span>
+                <span className="text-gray-600 dark:text-gray-400">Average Score:</span>
                 <span className="ml-2 font-medium">
                   {comparison.summary?.culturalAnalysis && culturalPerspective 
                     ? comparison.summary.culturalAnalysis[culturalPerspective]?.mean?.toFixed(2) 
@@ -231,7 +236,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
                   <tr key={model.modelId} className="border-b">
                     <td className="py-3 font-medium">{model.modelName}</td>
                     <td className="text-center py-3">
-                      <span className="px-2 py-1 border border-gray-300 rounded text-sm">
+                      <span className="px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-sm text-gray-700 dark:text-gray-300">
                         {model.scores6D ? (Object.values(model.scores6D).reduce((a, b) => a + b, 0) / 6).toFixed(1) : 'N/A'}
                       </span>
                     </td>
@@ -322,7 +327,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
             </table>
           </div>
           
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
             Lower values (lighter) indicate higher similarity
           </p>
         </IOSCard>

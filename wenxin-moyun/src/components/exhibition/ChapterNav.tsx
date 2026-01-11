@@ -61,7 +61,8 @@ export function ChapterPills({
       <button
         onClick={() => onSelectChapter(null)}
         className={`
-          px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all
+          px-4 py-2.5 min-h-[44px] rounded-full text-sm font-medium whitespace-nowrap transition-all
+          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
           ${
             selectedChapterId === null
               ? 'bg-blue-500 text-white'
@@ -76,7 +77,8 @@ export function ChapterPills({
           key={chapter.id}
           onClick={() => onSelectChapter(chapter.id)}
           className={`
-            px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all
+            px-4 py-2.5 min-h-[44px] rounded-full text-sm font-medium whitespace-nowrap transition-all
+            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
             ${
               selectedChapterId === chapter.id
                 ? 'bg-blue-500 text-white'

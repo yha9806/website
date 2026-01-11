@@ -2,21 +2,58 @@
  * ExhibitionsPage
  *
  * Main page displaying all exhibitions
+ * Includes four-state design: loading, error, empty, success
  *
- * @updated 2026-01-10 - Added multi-exhibition support
+ * @updated 2026-01-11 - Added four-state design per manual section 2.5
  */
 
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Image, RefreshCw, ArrowRight, Calendar, CheckCircle, Globe, MessageSquare, Award } from 'lucide-react';
 import { ALL_EXHIBITIONS } from '../../data/exhibitions';
 import { EmojiIcon } from '../../components/ios/core/EmojiIcon';
 import { IOSCard, IOSCardContent, IOSCardHeader, IOSCardFooter } from '../../components/ios/core/IOSCard';
 import { IOSButton } from '../../components/ios/core/IOSButton';
+import { StateHandler, EmptyState, ErrorState, LoadingState } from '../../components/common/StateHandlers';
 
 export function ExhibitionsPage() {
+  // Simulate loading state for better UX
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [exhibitions, setExhibitions] = useState(ALL_EXHIBITIONS);
+
+  // Simulate data loading
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        // Simulate network delay for realistic UX
+        await new Promise(resolve => setTimeout(resolve, 500));
+        setExhibitions(ALL_EXHIBITIONS);
+      } catch (err) {
+        setError('Failed to load exhibitions. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
+
+  // Retry handler
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    setTimeout(() => {
+      setExhibitions(ALL_EXHIBITIONS);
+      setLoading(false);
+    }, 500);
+  };
+
   // Calculate total stats
-  const totalArtworks = ALL_EXHIBITIONS.reduce((sum, e) => sum + e.artworks_count, 0);
-  const totalExhibitions = ALL_EXHIBITIONS.length;
+  const totalArtworks = exhibitions.reduce((sum, e) => sum + e.artworks_count, 0);
+  const totalExhibitions = exhibitions.length;
 
   return (
     <motion.div
@@ -25,8 +62,16 @@ export function ExhibitionsPage() {
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
     >
-      {/* Header */}
-      <div className="text-center mb-12">
+      {/* Header - Repositioned as Qualitative Evidence */}
+      <div className="text-center mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium mb-4"
+        >
+          <Award className="w-4 h-4" />
+          Qualitative Evidence Library
+        </motion.div>
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -36,17 +81,71 @@ export function ExhibitionsPage() {
           <EmojiIcon category="content" name="frame" size="xl" />
         </motion.div>
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">
-          Exhibitions
+          Cross-Cultural Interpretation Samples
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Discover contemporary art exhibitions featuring emerging artists from around the world.
-          Experience AI-powered art criticism and RPAIT scoring for each artwork.
+        <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-6">
+          Explore real-world examples of AI-powered art criticism across cultural perspectives.
+          See how VULCA evaluates cultural understanding through concrete interpretation samples.
         </p>
+        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex items-center gap-2">
+            <Globe className="w-4 h-4 text-blue-500" />
+            <span>8 Cultural Perspectives</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <MessageSquare className="w-4 h-4 text-purple-500" />
+            <span>Multi-Agent Dialogues</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Award className="w-4 h-4 text-orange-500" />
+            <span>RPAIT Scoring</span>
+          </div>
+        </div>
       </div>
 
-      {/* Exhibition Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {ALL_EXHIBITIONS.map((exhibition, index) => (
+      {/* Evidence Value Proposition */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15 }}
+        className="mb-8 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-2xl p-6 border border-purple-200 dark:border-purple-800"
+      >
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              Why Qualitative Evidence Matters
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xl">
+              Numbers tell part of the story. These exhibitions provide concrete examples of how AI models
+              interpret art across cultures — evidence you can show stakeholders and include in reports.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Link to="/solutions/museums">
+              <IOSButton variant="secondary" size="sm">
+                Museum Solutions
+                <ArrowRight className="w-4 h-4 ml-1" />
+              </IOSButton>
+            </Link>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* State Handler Wrapper */}
+      <StateHandler
+        loading={loading}
+        error={error}
+        isEmpty={!exhibitions || exhibitions.length < 1}
+        onRetry={handleRetry}
+        loadingMessage="Loading exhibitions..."
+        emptyIcon={<Image className="w-8 h-8 text-gray-400" />}
+        emptyTitle="No Exhibitions"
+        emptyDescription="There are no exhibitions available at the moment. Check back later for new shows."
+        emptyVariant="image"
+      >
+        {/* Exhibition Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {exhibitions.map((exhibition, index) => (
           <motion.div
             key={exhibition.id}
             initial={{ opacity: 0, y: 20 }}
@@ -138,10 +237,12 @@ export function ExhibitionsPage() {
               </IOSCard>
             </Link>
           </motion.div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </StateHandler>
 
-      {/* Stats Section */}
+      {/* Stats Section - Only show when not loading */}
+      {!loading && !error && exhibitions.length > 0 && (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -165,6 +266,55 @@ export function ExhibitionsPage() {
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">AI Critics</p>
         </div>
       </motion.div>
+      )}
+
+      {/* CTA Banner */}
+      {!loading && !error && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 text-white"
+        >
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="text-2xl font-bold mb-2">Need Cultural AI for Your Museum?</h3>
+              <p className="text-purple-100">
+                Deploy AI docents with validated cross-cultural interpretations. Our museum solutions
+                ensure accurate cultural representation for international visitors.
+              </p>
+              <div className="flex flex-wrap gap-4 mt-4">
+                <div className="flex items-center gap-2 text-sm text-purple-100">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>Multi-language Support</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-purple-100">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>Cultural Validation</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-purple-100">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>8 Perspective Analysis</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link to="/demo">
+                <IOSButton variant="glass" size="lg" className="bg-white/20 hover:bg-white/30 text-white border-white/30">
+                  <Calendar className="w-5 h-5 mr-2" />
+                  Book a Demo
+                </IOSButton>
+              </Link>
+              <Link to="/solutions/museums">
+                <IOSButton variant="secondary" size="lg" className="bg-white text-purple-600 hover:bg-purple-50">
+                  Museum Solutions
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </IOSButton>
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+      )}
     </motion.div>
   );
 }

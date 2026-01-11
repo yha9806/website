@@ -54,7 +54,7 @@ export function ArtworkCard({ artwork, exhibitionId }: ArtworkCardProps) {
           </p>
 
           {/* Medium */}
-          <p className="text-gray-400 dark:text-gray-500 text-xs mt-0.5 line-clamp-1">
+          <p className="text-gray-500 dark:text-gray-400 text-xs mt-0.5 line-clamp-1">
             {artwork.medium}
           </p>
         </IOSCardContent>

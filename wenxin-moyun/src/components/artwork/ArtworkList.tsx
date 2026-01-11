@@ -53,7 +53,7 @@ const ArtworkList: React.FC<ArtworkListProps> = ({
   if (error) {
     return (
       <div className="text-center py-12">
-        <p className="text-red-500">{error}</p>
+        <p className="text-red-500 dark:text-red-400">{error}</p>
       </div>
     );
   }
@@ -68,7 +68,7 @@ const ArtworkList: React.FC<ArtworkListProps> = ({
         {showFilters && artworks.length > 0 && (
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4 text-gray-500" />
+              <Filter className="w-4 h-4 text-gray-500 dark:text-gray-400" />
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}

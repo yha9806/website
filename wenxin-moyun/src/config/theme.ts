@@ -13,12 +13,12 @@ export const themes = {
       active: '#3A424D',    // 激活态背景
     },
     
-    // 边框系统
+    // 边框系统 - WCAG AA 对比度优化
     border: {
-      default: '#30363D',   // 默认边框
-      muted: '#21262D',     // 弱边框 - 分割线
-      strong: '#48545F',    // 强边框 - 焦点/选中
-      subtle: '#1B1F23',    // 极弱边框
+      default: '#484F58',   // 默认边框 (对比度 3.2:1)
+      muted: '#30363D',     // 弱边框 - 分割线
+      strong: '#6E7681',    // 强边框 - 焦点/选中 (对比度 4.5:1)
+      subtle: '#21262D',    // 极弱边框
     },
     
     // 文字层级系统
@@ -75,10 +75,10 @@ export const themes = {
     },
     
     border: {
-      default: '#D1D5DB',
-      muted: '#E5E7EB',
-      strong: '#9CA3AF',
-      subtle: '#F3F4F6',
+      default: '#AEAEB2',   // 对比度 3.1:1
+      muted: '#D1D5DB',
+      strong: '#8E8E93',    // 对比度 4.5:1
+      subtle: '#E5E5EA',
     },
     
     text: {

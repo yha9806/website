@@ -37,21 +37,24 @@ export const IOSRangeSlider: React.FC<IOSRangeSliderProps> = ({
   const [isDragging, setIsDragging] = useState<'min' | 'max' | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  // Size configurations
+  // Size configurations - iOS HIG 44px minimum touch target
   const sizeConfig = {
     sm: {
       height: 'h-1',
       thumbSize: 'w-5 h-5',
+      thumbTouchArea: 'min-w-[44px] min-h-[44px]', // Touch target expansion
       trackHeight: 4,
     },
     md: {
       height: 'h-2',
       thumbSize: 'w-6 h-6',
+      thumbTouchArea: 'min-w-[44px] min-h-[44px]', // Touch target expansion
       trackHeight: 8,
     },
     lg: {
       height: 'h-3',
       thumbSize: 'w-7 h-7',
+      thumbTouchArea: 'min-w-[48px] min-h-[48px]', // Larger touch target for lg
       trackHeight: 12,
     },
   };
@@ -178,60 +181,60 @@ export const IOSRangeSlider: React.FC<IOSRangeSliderProps> = ({
           }}
         />
         
-        {/* Min Thumb */}
+        {/* Min Thumb - with expanded touch area */}
         <motion.div
           className={`
             absolute top-1/2 transform -translate-y-1/2
-            ${config.thumbSize}
-            bg-white
-            rounded-full
-            shadow-lg
+            ${config.thumbTouchArea}
+            flex items-center justify-center
             cursor-grab
             z-10
             ${isDragging === 'min' ? 'cursor-grabbing' : ''}
             ${disabled ? 'cursor-not-allowed' : ''}
           `}
-          style={{ 
-            left: `calc(${minPercentage}% - ${parseInt(config.thumbSize.split(' ')[0].substring(2)) * 2}px)` 
+          style={{
+            left: `calc(${minPercentage}% - 22px)` // Center the 44px touch area
           }}
-          whileHover={disabled ? {} : { scale: 1.1 }}
+          whileHover={disabled ? {} : { scale: 1.05 }}
           whileTap={disabled ? {} : { scale: 0.95 }}
           onMouseDown={(e) => handleMouseDown(e, 'min')}
           transition={iosAnimations.spring}
         >
-          {/* Thumb inner highlight */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white to-gray-50 shadow-inner" />
-          
-          {/* Thumb border */}
-          <div className="absolute inset-0 rounded-full border border-gray-200/50" />
+          {/* Visual thumb */}
+          <div className={`${config.thumbSize} bg-white rounded-full shadow-lg relative`}>
+            {/* Thumb inner highlight */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white to-gray-50 shadow-inner" />
+            {/* Thumb border */}
+            <div className="absolute inset-0 rounded-full border border-gray-200/50" />
+          </div>
         </motion.div>
 
-        {/* Max Thumb */}
+        {/* Max Thumb - with expanded touch area */}
         <motion.div
           className={`
             absolute top-1/2 transform -translate-y-1/2
-            ${config.thumbSize}
-            bg-white
-            rounded-full
-            shadow-lg
+            ${config.thumbTouchArea}
+            flex items-center justify-center
             cursor-grab
             z-10
             ${isDragging === 'max' ? 'cursor-grabbing' : ''}
             ${disabled ? 'cursor-not-allowed' : ''}
           `}
-          style={{ 
-            left: `calc(${maxPercentage}% - ${parseInt(config.thumbSize.split(' ')[0].substring(2)) * 2}px)` 
+          style={{
+            left: `calc(${maxPercentage}% - 22px)` // Center the 44px touch area
           }}
-          whileHover={disabled ? {} : { scale: 1.1 }}
+          whileHover={disabled ? {} : { scale: 1.05 }}
           whileTap={disabled ? {} : { scale: 0.95 }}
           onMouseDown={(e) => handleMouseDown(e, 'max')}
           transition={iosAnimations.spring}
         >
-          {/* Thumb inner highlight */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white to-gray-50 shadow-inner" />
-          
-          {/* Thumb border */}
-          <div className="absolute inset-0 rounded-full border border-gray-200/50" />
+          {/* Visual thumb */}
+          <div className={`${config.thumbSize} bg-white rounded-full shadow-lg relative`}>
+            {/* Thumb inner highlight */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white to-gray-50 shadow-inner" />
+            {/* Thumb border */}
+            <div className="absolute inset-0 rounded-full border border-gray-200/50" />
+          </div>
         </motion.div>
       </div>
       

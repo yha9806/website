@@ -44,23 +44,23 @@ export const IOSSegmentedControl: React.FC<IOSSegmentedControlProps> = ({
     return segment;
   });
 
-  // Size configurations
+  // Size configurations - iOS HIG 44px minimum touch target
   const sizeConfig = {
     compact: {
-      height: 'h-7',
-      padding: 'px-2',
+      height: 'h-11',       // 44px (原 h-7 28px)
+      padding: 'px-3',
       text: 'text-xs',
       gap: 'gap-1'
     },
     regular: {
-      height: 'h-8',
-      padding: 'px-3',
+      height: 'h-11',       // 44px (原 h-8 32px)
+      padding: 'px-4',
       text: 'text-sm',
       gap: 'gap-2'
     },
     large: {
-      height: 'h-10',
-      padding: 'px-4',
+      height: 'h-12',       // 48px (原 h-10 40px)
+      padding: 'px-5',
       text: 'text-base',
       gap: 'gap-3'
     }

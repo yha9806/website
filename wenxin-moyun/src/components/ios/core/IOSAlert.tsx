@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IOSButton } from './IOSButton';
 import { StatusEmoji } from './EmojiIcon';
@@ -64,6 +64,62 @@ export const IOSAlert: React.FC<IOSAlertProps> = ({
   };
 
   const config = typeConfig[type];
+  const alertRef = useRef<HTMLDivElement>(null);
+  const previousActiveElement = useRef<HTMLElement | null>(null);
+
+  // Focus trap: keep focus within the alert
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onClose();
+      return;
+    }
+
+    if (e.key !== 'Tab') return;
+
+    const focusableElements = alertRef.current?.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+
+    if (!focusableElements || focusableElements.length === 0) return;
+
+    const firstElement = focusableElements[0] as HTMLElement;
+    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+    if (e.shiftKey) {
+      if (document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      }
+    } else {
+      if (document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
+    }
+  }, [onClose]);
+
+  // Manage focus when alert opens/closes
+  useEffect(() => {
+    if (visible) {
+      previousActiveElement.current = document.activeElement as HTMLElement;
+
+      // Focus first button after animation
+      const timer = setTimeout(() => {
+        const firstButton = alertRef.current?.querySelector('button');
+        firstButton?.focus();
+      }, 100);
+
+      document.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    } else {
+      // Restore focus when closing
+      previousActiveElement.current?.focus();
+    }
+  }, [visible, handleKeyDown]);
 
   // Action button variant mapping
   const getActionVariant = (style: IOSAlertAction['style']) => {
@@ -91,7 +147,13 @@ export const IOSAlert: React.FC<IOSAlertProps> = ({
           />
           
           {/* Alert Container */}
-          <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+          <div
+            ref={alertRef}
+            className="fixed inset-0 flex items-center justify-center z-50 p-4"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="ios-alert-title"
+          >
             <motion.div
               className={`
                 relative w-full max-w-sm mx-auto
@@ -126,7 +188,9 @@ export const IOSAlert: React.FC<IOSAlertProps> = ({
                 
                 {/* Title */}
                 {title && (
-                  <h3 className={`
+                  <h3
+                    id="ios-alert-title"
+                    className={`
                     text-lg font-semibold text-center mb-2
                     ${config.titleColor}
                   `}>
@@ -167,10 +231,11 @@ export const IOSAlert: React.FC<IOSAlertProps> = ({
               {/* Close Button */}
               {showCloseButton && (
                 <motion.button
-                  className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  className="absolute top-2 right-2 w-11 h-11 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                   onClick={onClose}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
+                  aria-label="Close"
                 >
                   ✕
                 </motion.button>
