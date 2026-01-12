@@ -28,6 +28,7 @@ import {
 import { IOSCard, IOSCardContent, IOSCardHeader } from '../components/ios/core/IOSCard';
 import { IOSButton } from '../components/ios/core/IOSButton';
 import { ProvenanceCard } from '../components/trustlayer';
+import { VULCA_VERSION } from '../config/version';
 
 const DatasetPage: React.FC = () => {
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
@@ -146,11 +147,11 @@ async function getStats() {
       <section className="mb-12">
         <ProvenanceCard
           source="VULCA-BENCH"
-          version="1.0.0"
-          lastUpdated="2025-10-15"
+          version={VULCA_VERSION.dataset}
+          lastUpdated={VULCA_VERSION.lastUpdated}
           license="CC BY-NC 4.0"
           doi="10.5281/zenodo.12345678"
-          algorithm="VULCA Annotation Pipeline v1.0"
+          algorithm={`VULCA Annotation Pipeline v${VULCA_VERSION.protocol}`}
           github="https://github.com/yha9806/EMNLP2025-VULCA"
         />
       </section>

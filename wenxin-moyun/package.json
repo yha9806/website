@@ -31,6 +31,7 @@
   "dependencies": {
     "@formkit/auto-animate": "^0.8.0",
     "@headlessui/react": "^2.0.0",
+    "@sentry/react": "^10.32.1",
     "@tanstack/react-table": "^8.21.3",
     "axios": "^1.11.0",
     "clsx": "^2.1.1",

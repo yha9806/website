@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VULCA Sample Evaluation Report - GPT-4V</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+      font-size: 11pt;
+      line-height: 1.5;
+      color: #1d1d1f;
+      background: white;
+      padding: 20mm;
+    }
+
+    @media print {
+      body { padding: 0; }
+    }
+
+    .cover {
+      page-break-after: always;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .cover h1 {
+      font-size: 32pt;
+      font-weight: 700;
+      margin-bottom: 8pt;
+      color: #007AFF;
+    }
+
+    .cover .subtitle {
+      font-size: 14pt;
+      color: #666;
+      margin-bottom: 40pt;
+    }
+
+    .cover .model-name {
+      font-size: 24pt;
+      font-weight: 600;
+      margin-bottom: 8pt;
+    }
+
+    .cover .meta {
+      font-size: 10pt;
+      color: #888;
+      margin-top: 40pt;
+    }
+
+    .cover .meta div {
+      margin: 4pt 0;
+    }
+
+    .section {
+      page-break-inside: avoid;
+      margin-bottom: 24pt;
+    }
+
+    h2 {
+      font-size: 16pt;
+      font-weight: 600;
+      color: #1d1d1f;
+      border-bottom: 2px solid #007AFF;
+      padding-bottom: 8pt;
+      margin-bottom: 16pt;
+    }
+
+    h3 {
+      font-size: 12pt;
+      font-weight: 600;
+      margin: 16pt 0 8pt;
+    }
+
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16pt;
+      margin-bottom: 24pt;
+    }
+
+    .snapshot-card {
+      background: #f5f5f7;
+      border-radius: 8pt;
+      padding: 16pt;
+      text-align: center;
+    }
+
+    .snapshot-card .value {
+      font-size: 28pt;
+      font-weight: 700;
+      color: #007AFF;
+    }
+
+    .snapshot-card .label {
+      font-size: 9pt;
+      color: #666;
+      margin-top: 4pt;
+    }
+
+    .score-bar {
+      display: flex;
+      align-items: center;
+      margin: 8pt 0;
+    }
+
+    .score-bar .label {
+      width: 150pt;
+      font-size: 10pt;
+    }
+
+    .score-bar .bar {
+      flex: 1;
+      height: 12pt;
+      background: #e5e5e7;
+      border-radius: 6pt;
+      overflow: hidden;
+    }
+
+    .score-bar .fill {
+      height: 100%;
+      background: linear-gradient(90deg, #007AFF, #5856D6);
+      border-radius: 6pt;
+    }
+
+    .score-bar .value {
+      width: 40pt;
+      text-align: right;
+      font-size: 10pt;
+      font-weight: 600;
+    }
+
+    .perspective-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8pt;
+      margin: 16pt 0;
+    }
+
+    .perspective-card {
+      background: #f5f5f7;
+      border-radius: 6pt;
+      padding: 12pt;
+      text-align: center;
+    }
+
+    .perspective-card .name {
+      font-size: 9pt;
+      font-weight: 600;
+      margin-bottom: 4pt;
+    }
+
+    .perspective-card .score {
+      font-size: 16pt;
+      font-weight: 700;
+      color: #007AFF;
+    }
+
+    .delta-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16pt 0;
+    }
+
+    .delta-table th,
+    .delta-table td {
+      padding: 8pt;
+      text-align: left;
+      border-bottom: 1px solid #e5e5e7;
+      font-size: 10pt;
+    }
+
+    .delta-table th {
+      background: #f5f5f7;
+      font-weight: 600;
+    }
+
+    .delta-positive { color: #34C759; }
+    .delta-negative { color: #FF3B30; }
+
+    .evidence-card {
+      background: #f5f5f7;
+      border-radius: 8pt;
+      padding: 16pt;
+      margin: 12pt 0;
+    }
+
+    .evidence-card .header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8pt;
+    }
+
+    .evidence-card .dimension {
+      font-weight: 600;
+      color: #007AFF;
+    }
+
+    .evidence-card .score {
+      font-weight: 600;
+    }
+
+    .evidence-card .content {
+      font-size: 10pt;
+      color: #444;
+    }
+
+    .footer {
+      margin-top: 40pt;
+      padding-top: 16pt;
+      border-top: 1px solid #e5e5e7;
+      font-size: 9pt;
+      color: #888;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16pt;
+    }
+
+    .appendix {
+      page-break-before: always;
+    }
+
+    .version-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16pt 0;
+    }
+
+    .version-table td {
+      padding: 8pt;
+      border-bottom: 1px solid #e5e5e7;
+      font-size: 10pt;
+    }
+
+    .version-table td:first-child {
+      font-weight: 600;
+      width: 200pt;
+    }
+
+    .print-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #007AFF;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .print-btn:hover {
+      background: #0056b3;
+    }
+
+    @media print {
+      .print-btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <button class="print-btn" onclick="window.print()">Download PDF</button>
+
+  <!-- Cover Page -->
+  <div class="cover">
+    <h1>VULCA</h1>
+    <div class="subtitle">Cultural AI Evaluation Report</div>
+    <div class="model-name">GPT-4V (Vision)</div>
+    <div style="color: #666;">OpenAI</div>
+
+    <div class="meta">
+      <div><strong>Report ID:</strong> VULCA-20250111-GPT4V-A7B3C</div>
+      <div><strong>Generated:</strong> January 11, 2025</div>
+      <div><strong>Framework Version:</strong> v1.2.0</div>
+      <div><strong>Dataset Version:</strong> 2025.01</div>
+    </div>
+  </div>
+
+  <!-- Executive Summary -->
+  <div class="section">
+    <h2>1. Executive Summary</h2>
+
+    <div class="snapshot-grid">
+      <div class="snapshot-card">
+        <div class="value">72.4</div>
+        <div class="label">Overall Score</div>
+      </div>
+      <div class="snapshot-card">
+        <div class="value">47</div>
+        <div class="label">Dimensions Evaluated</div>
+      </div>
+      <div class="snapshot-card">
+        <div class="value">8</div>
+        <div class="label">Cultural Perspectives</div>
+      </div>
+    </div>
+
+    <p>This report presents a comprehensive 47-dimensional cultural understanding evaluation of GPT-4V using the VULCA framework. The model demonstrates strong performance in visual perception (L1) and technical analysis (L2), but shows significant gaps in cultural symbolism (L3) and philosophical aesthetics (L5).</p>
+
+    <h3>Key Findings</h3>
+    <ul style="margin-left: 20pt; margin-top: 8pt;">
+      <li>Strong visual perception capabilities (95% accuracy on L1 tasks)</li>
+      <li>Consistent Western perspective bias in cultural interpretation</li>
+      <li>35% accuracy gap between symbol recognition and cultural meaning</li>
+      <li>Limited understanding of East Asian aesthetic concepts (qiyun, yijing)</li>
+    </ul>
+  </div>
+
+  <!-- 6D Overview -->
+  <div class="section">
+    <h2>2. Six-Dimensional Overview</h2>
+
+    <div class="score-bar">
+      <span class="label">Creativity</span>
+      <div class="bar"><div class="fill" style="width: 78%"></div></div>
+      <span class="value">78.2</span>
+    </div>
+    <div class="score-bar">
+      <span class="label">Technique</span>
+      <div class="bar"><div class="fill" style="width: 82%"></div></div>
+      <span class="value">82.1</span>
+    </div>
+    <div class="score-bar">
+      <span class="label">Emotion</span>
+      <div class="bar"><div class="fill" style="width: 71%"></div></div>
+      <span class="value">71.3</span>
+    </div>
+    <div class="score-bar">
+      <span class="label">Context</span>
+      <div class="bar"><div class="fill" style="width: 65%"></div></div>
+      <span class="value">65.4</span>
+    </div>
+    <div class="score-bar">
+      <span class="label">Innovation</span>
+      <div class="bar"><div class="fill" style="width: 74%"></div></div>
+      <span class="value">74.0</span>
+    </div>
+    <div class="score-bar">
+      <span class="label">Impact</span>
+      <div class="bar"><div class="fill" style="width: 68%"></div></div>
+      <span class="value">68.5</span>
+    </div>
+  </div>
+
+  <!-- Cultural Perspectives -->
+  <div class="section">
+    <h2>3. Cultural Perspective Analysis</h2>
+
+    <div class="perspective-grid">
+      <div class="perspective-card">
+        <div class="name">Western</div>
+        <div class="score">84.2</div>
+      </div>
+      <div class="perspective-card">
+        <div class="name">East Asian</div>
+        <div class="score">68.5</div>
+      </div>
+      <div class="perspective-card">
+        <div class="name">South Asian</div>
+        <div class="score">62.3</div>
+      </div>
+      <div class="perspective-card">
+        <div class="name">African</div>
+        <div class="score">58.7</div>
+      </div>
+      <div class="perspective-card">
+        <div class="name">Latin American</div>
+        <div class="score">64.1</div>
+      </div>
+      <div class="perspective-card">
+        <div class="name">Middle Eastern</div>
+        <div class="score">61.8</div>
+      </div>
+      <div class="perspective-card">
+        <div class="name">Indigenous</div>
+        <div class="score">55.2</div>
+      </div>
+      <div class="perspective-card">
+        <div class="name">Cross-cultural</div>
+        <div class="score">70.4</div>
+      </div>
+    </div>
+
+    <p>The model shows a 29-point gap between Western (84.2) and Indigenous (55.2) cultural perspectives, indicating significant bias toward Western art interpretation frameworks.</p>
+  </div>
+
+  <!-- Top Delta Dimensions -->
+  <div class="section">
+    <h2>4. Top-10 Dimension Gaps</h2>
+
+    <table class="delta-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Dimension</th>
+          <th>Score</th>
+          <th>vs. Baseline</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Cultural Symbolism (火/Fire)</td>
+          <td>42.3</td>
+          <td class="delta-negative">-35.2</td>
+          <td>L3</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Philosophical Aesthetics (气韵)</td>
+          <td>38.5</td>
+          <td class="delta-negative">-32.8</td>
+          <td>L5</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Historical Context (Indigenous)</td>
+          <td>45.2</td>
+          <td class="delta-negative">-28.4</td>
+          <td>L4</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Temporal Understanding</td>
+          <td>52.1</td>
+          <td class="delta-negative">-24.6</td>
+          <td>L4</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>African Visual Traditions</td>
+          <td>48.7</td>
+          <td class="delta-negative">-22.3</td>
+          <td>L3</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Composition Analysis</td>
+          <td>85.4</td>
+          <td class="delta-positive">+12.1</td>
+          <td>L2</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>Color Theory</td>
+          <td>88.2</td>
+          <td class="delta-positive">+10.8</td>
+          <td>L2</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>Visual Element Recognition</td>
+          <td>94.5</td>
+          <td class="delta-positive">+8.2</td>
+          <td>L1</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>Brushwork Analysis</td>
+          <td>78.3</td>
+          <td class="delta-positive">+5.6</td>
+          <td>L2</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>Western Art History</td>
+          <td>82.1</td>
+          <td class="delta-positive">+4.2</td>
+          <td>L4</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Evidence Samples -->
+  <div class="section">
+    <h2>5. Evidence Samples</h2>
+
+    <div class="evidence-card">
+      <div class="header">
+        <span class="dimension">Cultural Symbolism - Fire Imagery</span>
+        <span class="score">Score: 42.3/100</span>
+      </div>
+      <div class="content">
+        <p><strong>Prompt:</strong> Describe the cultural significance of fire in this Chinese Torch Festival (火把节) image.</p>
+        <p style="margin-top: 8pt;"><strong>Model Response:</strong> "The image shows people holding torches in a nighttime celebration. The fire represents warmth and light, similar to Western bonfire traditions..."</p>
+        <p style="margin-top: 8pt;"><strong>Expected:</strong> Recognition of Yi ethnic minority traditions, agricultural blessing rituals, ancestral connection, and specific cultural meanings of fire purification.</p>
+        <p style="margin-top: 8pt;"><strong>Gap Analysis:</strong> Model applied Western symbolic framework instead of understanding Yi cultural context. Missed the agricultural calendar significance and purification rituals.</p>
+      </div>
+    </div>
+
+    <div class="evidence-card">
+      <div class="header">
+        <span class="dimension">Philosophical Aesthetics - Qiyun (气韵)</span>
+        <span class="score">Score: 38.5/100</span>
+      </div>
+      <div class="content">
+        <p><strong>Prompt:</strong> Analyze the qi (spiritual resonance) in this Song Dynasty landscape painting.</p>
+        <p style="margin-top: 8pt;"><strong>Model Response:</strong> "The painting shows mountains and water with skilled brushwork. The composition creates a peaceful atmosphere..."</p>
+        <p style="margin-top: 8pt;"><strong>Expected:</strong> Analysis of qiyun shengdong (气韵生动), the vitality and spiritual energy flow, yijing (意境) concept, and relationship to Daoist philosophy.</p>
+        <p style="margin-top: 8pt;"><strong>Gap Analysis:</strong> Model described visual elements accurately but failed to engage with Chinese aesthetic philosophy concepts.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Appendix -->
+  <div class="section appendix">
+    <h2>Appendix: Version & Reproducibility</h2>
+
+    <table class="version-table">
+      <tr>
+        <td>Report ID</td>
+        <td>VULCA-20250111-GPT4V-A7B3C</td>
+      </tr>
+      <tr>
+        <td>Framework Version</td>
+        <td>1.2.0</td>
+      </tr>
+      <tr>
+        <td>Dataset Version</td>
+        <td>2025.01</td>
+      </tr>
+      <tr>
+        <td>Protocol Version</td>
+        <td>1.0</td>
+      </tr>
+      <tr>
+        <td>Evaluation Date</td>
+        <td>January 11, 2025</td>
+      </tr>
+      <tr>
+        <td>Model Evaluated</td>
+        <td>GPT-4V (gpt-4-vision-preview)</td>
+      </tr>
+      <tr>
+        <td>Model Provider</td>
+        <td>OpenAI</td>
+      </tr>
+      <tr>
+        <td>Sample Size</td>
+        <td>500 image-text pairs</td>
+      </tr>
+      <tr>
+        <td>Perspectives Evaluated</td>
+        <td>8 (all available)</td>
+      </tr>
+      <tr>
+        <td>Dimensions Evaluated</td>
+        <td>47 (full L1-L5)</td>
+      </tr>
+    </table>
+
+    <h3>Citation</h3>
+    <div style="background: #f5f5f7; padding: 12pt; border-radius: 6pt; font-family: monospace; font-size: 9pt; margin-top: 8pt;">
+@misc{vulca_gpt4v_2025,<br>
+&nbsp;&nbsp;title = {VULCA Evaluation Report: GPT-4V},<br>
+&nbsp;&nbsp;author = {VULCA Team},<br>
+&nbsp;&nbsp;year = {2025},<br>
+&nbsp;&nbsp;howpublished = {\url{https://vulca.ai/models/gpt-4-vision-preview}},<br>
+&nbsp;&nbsp;note = {Version v1.2.0, Report ID: VULCA-20250111-GPT4V-A7B3C}<br>
+}
+    </div>
+
+    <div class="footer">
+      <div class="footer-grid">
+        <div>
+          <strong>VULCA Framework</strong><br>
+          Cultural AI Evaluation Platform<br>
+          https://vulca.ai
+        </div>
+        <div>
+          <strong>License</strong><br>
+          CC BY-NC 4.0<br>
+          Academic use permitted
+        </div>
+        <div>
+          <strong>Contact</strong><br>
+          hello@vulca.ai<br>
+          GitHub: yha9806/EMNLP2025-VULCA
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

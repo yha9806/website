@@ -23,6 +23,7 @@ import {
   type Citation,
   type CitationFormat,
 } from '../../utils/trustedExport';
+import { VULCA_VERSION } from '../../config/version';
 
 type TabFormat = 'bibtex' | 'ris' | 'apa' | 'mla' | 'chicago' | 'harvard';
 
@@ -63,7 +64,7 @@ export function CitationBlock({
   citation,
   title = 'VULCA: Vision-Understanding and Language-based Cultural Adaptability',
   conference = 'EMNLP 2025 Findings',
-  year = '2025',
+  year = VULCA_VERSION.dataset.split('.')[0],
   links = {},
   showTabs = true,
   compact = false,

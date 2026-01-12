@@ -2164,7 +2164,13 @@
       "Bash(connectkit:*)",
       "Bash(web3modal:*)",
       "Bash(appkit:*)",
-      "Bash(reown:*)"
+      "Bash(reown:*)",
+      "Bash(DATABASE_URL=\"postgresql+asyncpg://postgres.rorpznpcwdjnncozlbrf:IcuTm28k36rGtwi3@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres\" python:*)",
+      "Bash(DATABASE_URL=\"postgresql+asyncpg://postgres.rorpznpcwdjnncozlbrf:IcuTm28k36rGtwi3@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres\" python3 init_db.py)",
+      "Bash(DATABASE_URL=\"postgresql+asyncpg://postgres.rorpznpcwdjnncozlbrf:IcuTm28k36rGtwi3@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres\" python3:*)",
+      "Bash(DATABASE_URL=\"postgresql+asyncpg://postgres.rorpznpcwdjnncozlbrf:IcuTm28k36rGtwi3@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres\" python3 -c \"\nimport asyncio\nfrom sqlalchemy.ext.asyncio import create_async_engine\nfrom sqlalchemy import text\n\nasync def reset_db\\(\\):\n    engine = create_async_engine\\(''postgresql+asyncpg://postgres.rorpznpcwdjnncozlbrf:IcuTm28k36rGtwi3@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres''\\)\n    async with engine.begin\\(\\) as conn:\n        # 删除所有表以重新开始\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS evaluation_results CASCADE''\\)\\)\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS evaluation_dimensions CASCADE''\\)\\)\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS evaluation_tasks CASCADE''\\)\\)\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS old_evaluation_tasks CASCADE''\\)\\)\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS works CASCADE''\\)\\)\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS ai_models CASCADE''\\)\\)\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS users CASCADE''\\)\\)\n        print\\(''所有表已删除''\\)\n    \n    await engine.dispose\\(\\)\n\nasyncio.run\\(reset_db\\(\\)\\)\n\")",
+      "Bash(DATABASE_URL=\"postgresql+asyncpg://postgres.rorpznpcwdjnncozlbrf:IcuTm28k36rGtwi3@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres\" python3 -c \"\nimport asyncio\nfrom sqlalchemy.ext.asyncio import create_async_engine\nfrom sqlalchemy import text\n\nasync def reset_db\\(\\):\n    engine = create_async_engine\\(''postgresql+asyncpg://postgres.rorpznpcwdjnncozlbrf:IcuTm28k36rGtwi3@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres''\\)\n    async with engine.begin\\(\\) as conn:\n        await conn.execute\\(text\\(''DROP SCHEMA public CASCADE''\\)\\)\n        await conn.execute\\(text\\(''CREATE SCHEMA public''\\)\\)\n        await conn.execute\\(text\\(''GRANT ALL ON SCHEMA public TO postgres''\\)\\)\n        await conn.execute\\(text\\(''GRANT ALL ON SCHEMA public TO public''\\)\\)\n        print\\(''数据库 schema 已重置''\\)\n    \n    await engine.dispose\\(\\)\n\nasyncio.run\\(reset_db\\(\\)\\)\n\")",
+      "Bash(gsutil ls:*)"
     ],
     "deny": []
   }

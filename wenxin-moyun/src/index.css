@@ -690,4 +690,66 @@
   @page :first {
     margin-top: 3cm;
   }
+
+  /* Report-specific print styles */
+  .report-scoreboard,
+  .report-delta-dimensions,
+  .report-perspective-matrix,
+  .report-evidence {
+    page-break-inside: avoid;
+    margin-bottom: 1cm;
+  }
+
+  /* Hide action buttons when printing */
+  .no-print,
+  button:not([data-print]),
+  .print-hidden {
+    display: none !important;
+  }
+
+  /* Show print-only elements */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Report header styling */
+  .report-header {
+    border-bottom: 2px solid #333;
+    padding-bottom: 0.5cm;
+    margin-bottom: 1cm;
+  }
+
+  /* Ensure charts render with borders */
+  .recharts-wrapper {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  /* Evidence samples styling */
+  .evidence-sample {
+    border: 1px solid #ccc;
+    padding: 12px;
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+  }
+
+  /* Footer with page numbers */
+  .report-footer {
+    position: fixed;
+    bottom: 1cm;
+    width: 100%;
+    text-align: center;
+    font-size: 10pt;
+    color: #666;
+  }
+}
+
+/* Print-only class (hidden by default) */
+.print-only {
+  display: none;
+}
+
+/* Ensure print button behavior */
+.printing-pdf .no-print {
+  display: none !important;
 }

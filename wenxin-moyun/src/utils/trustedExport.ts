@@ -9,6 +9,7 @@
  */
 
 import { dimensionsService, type ExportMetadata } from '../services/dimensions';
+import { VULCA_VERSION, getExportMetadata as getVersionMetadata } from '../config/version';
 
 // ============= Export Envelope Types =============
 
@@ -53,13 +54,22 @@ export async function createTrustedExport<T>(
   source: string
 ): Promise<ExportEnvelope<T>> {
   // Ensure dimensions are loaded for metadata
+  let metadata: ExportMetadata;
   try {
     await dimensionsService.load();
+    metadata = dimensionsService.getExportMetadata();
   } catch {
-    // Continue with default metadata if load fails
+    // Use central version config as fallback
+    const versionMeta = getVersionMetadata();
+    metadata = {
+      frameworkVersion: versionMeta.frameworkVersion,
+      frameworkName: 'VULCA',
+      paper: '',
+      doi: '',
+      exportedAt: versionMeta.exportedAt,
+      schemaUrl: `https://vulcaart.art/schemas/dimensions-v${VULCA_VERSION.framework}.json`,
+    };
   }
-
-  const metadata = dimensionsService.getExportMetadata();
 
   const envelope: ExportEnvelope<T> = {
     $schema: metadata.schemaUrl,

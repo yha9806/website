@@ -5,11 +5,11 @@
  * Demonstrates all report components working together.
  */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ArrowLeft, Download, Share2, FileText, Calendar, RefreshCw,
+  ArrowLeft, Download, Share2, FileText, Calendar,
   Printer, ExternalLink, Clock, CheckCircle
 } from 'lucide-react';
 import { IOSButton } from '../components/ios/core/IOSButton';
@@ -19,6 +19,12 @@ import { TopDeltaDimensions } from '../components/report/TopDeltaDimensions';
 import { PerspectiveMatrix } from '../components/report/PerspectiveMatrix';
 import { EvidenceCollection } from '../components/report/EvidenceSample';
 import Breadcrumb from '../components/common/Breadcrumb';
+import { exportToPDF, generatePDFFilename } from '../utils/pdfExport';
+import {
+  VULCA_VERSION,
+  VULCA_VERSION_STRING,
+  generateReportId,
+} from '../config/version';
 
 // Sample report data
 const SAMPLE_SCORE_DATA = {
@@ -35,8 +41,8 @@ const SAMPLE_SCORE_DATA = {
     { name: 'Innovation', score: 0.76, change: 0.01 },
     { name: 'Impact', score: 0.77, change: 0.02 },
   ],
-  evaluationDate: '2025-01-11',
-  version: 'VULCA v1.2.0',
+  evaluationDate: VULCA_VERSION.lastUpdated,
+  version: VULCA_VERSION_STRING,
 };
 
 const SAMPLE_DELTA_DIMENSIONS = [
@@ -209,19 +215,38 @@ const SAMPLE_EVIDENCE = [
 ];
 
 export default function ModelReportPage() {
-  const { modelId } = useParams();
+  const { id: modelId } = useParams();
   const navigate = useNavigate();
   const [selectedPerspective, setSelectedPerspective] = useState<string>('Western Classical');
-  const [isGenerating, setIsGenerating] = useState(false);
 
-  // Simulate report generation
+  // Handle PDF export using browser print
   const handleDownloadReport = () => {
-    setIsGenerating(true);
-    setTimeout(() => {
-      setIsGenerating(false);
-      // In production, this would trigger actual PDF generation
-      alert('Report PDF generation complete! (Demo mode)');
-    }, 2000);
+    const filename = generatePDFFilename(SAMPLE_SCORE_DATA.modelName, 'evaluation-report');
+    exportToPDF({
+      title: `VULCA Report - ${SAMPLE_SCORE_DATA.modelName}`,
+      filename,
+    });
+  };
+
+  // Handle share
+  const handleShare = async () => {
+    const shareData = {
+      title: `VULCA Evaluation Report - ${SAMPLE_SCORE_DATA.modelName}`,
+      text: `Check out the VULCA cultural AI evaluation report for ${SAMPLE_SCORE_DATA.modelName}`,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        // User cancelled or error
+        navigator.clipboard.writeText(window.location.href);
+      }
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Report link copied to clipboard!');
+    }
   };
 
   // Breadcrumb items
@@ -231,8 +256,24 @@ export default function ModelReportPage() {
     { label: 'Evaluation Report' },
   ];
 
+  const reportId = generateReportId(SAMPLE_SCORE_DATA.modelName);
+
   return (
     <div className="min-h-screen">
+      {/* Print-only header */}
+      <div className="print-only report-header mb-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold">VULCA Evaluation Report</h1>
+            <p className="text-gray-600">{SAMPLE_SCORE_DATA.modelName} - {SAMPLE_SCORE_DATA.organization}</p>
+          </div>
+          <div className="text-right text-sm text-gray-500">
+            <p>Report ID: {reportId}</p>
+            <p>Generated: {new Date().toLocaleDateString()}</p>
+            <p>Version: {SAMPLE_SCORE_DATA.version}</p>
+          </div>
+        </div>
+      </div>
       {/* Breadcrumb Navigation */}
       <Breadcrumb items={breadcrumbItems} />
 
@@ -260,7 +301,7 @@ export default function ModelReportPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 no-print">
             <IOSButton
               variant="secondary"
               size="sm"
@@ -272,10 +313,7 @@ export default function ModelReportPage() {
             <IOSButton
               variant="secondary"
               size="sm"
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                alert('Report link copied!');
-              }}
+              onClick={handleShare}
             >
               <Share2 className="w-4 h-4 mr-2" />
               Share
@@ -284,19 +322,9 @@ export default function ModelReportPage() {
               variant="primary"
               size="sm"
               onClick={handleDownloadReport}
-              disabled={isGenerating}
             >
-              {isGenerating ? (
-                <>
-                  <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <Download className="w-4 h-4 mr-2" />
-                  Download PDF
-                </>
-              )}
+              <Download className="w-4 h-4 mr-2" />
+              Download PDF
             </IOSButton>
           </div>
         </div>
@@ -423,7 +451,7 @@ export default function ModelReportPage() {
             </Link>
           </p>
           <p className="mt-2">
-            Report ID: VULCA-{SAMPLE_SCORE_DATA.modelName.toUpperCase()}-{Date.now().toString(36).toUpperCase()}
+            Report ID: {reportId}
           </p>
         </motion.section>
       </div>

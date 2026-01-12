@@ -21,6 +21,9 @@ const PricingPage = lazy(() => import('./pages/PricingPage'));
 const CustomersPage = lazy(() => import('./pages/CustomersPage'));
 const TrustPage = lazy(() => import('./pages/TrustPage'));
 const BookDemoPage = lazy(() => import('./pages/BookDemoPage'));
+const DemoConfirmationPage = lazy(() => import('./pages/DemoConfirmationPage'));
+const PilotPage = lazy(() => import('./pages/PilotPage'));
+const ChangelogPage = lazy(() => import('./pages/ChangelogPage'));
 
 // Solutions pages - lazy loaded
 const SolutionsPage = lazy(() => import('./pages/solutions/SolutionsPage'));
@@ -117,6 +120,21 @@ function App() {
               <Route path="/demo" element={
                 <Suspense fallback={<PageLoader text="Loading Demo Scheduler..." />}>
                   <BookDemoPage />
+                </Suspense>
+              } />
+              <Route path="/demo/confirmation" element={
+                <Suspense fallback={<PageLoader text="Loading..." />}>
+                  <DemoConfirmationPage />
+                </Suspense>
+              } />
+              <Route path="/pilot" element={
+                <Suspense fallback={<PageLoader text="Loading Pilot..." />}>
+                  <PilotPage />
+                </Suspense>
+              } />
+              <Route path="/changelog" element={
+                <Suspense fallback={<PageLoader text="Loading Changelog..." />}>
+                  <ChangelogPage />
                 </Suspense>
               } />
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Calendar,
   CheckCircle2,
@@ -9,7 +9,9 @@ import {
   Clock,
   Users,
   ArrowRight,
-  ExternalLink
+  Send,
+  Loader2,
+  AlertCircle
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import {
@@ -18,9 +20,7 @@ import {
   IOSCardHeader,
   IOSCardContent,
 } from '../components/ios';
-
-// Calendly embed URL - replace with actual URL
-const CALENDLY_URL = 'https://calendly.com/vulca-demo/30min';
+import { leadsApi, type LeadSubmitData } from '../services/api';
 
 const benefits = [
   {
@@ -40,20 +40,25 @@ const benefits = [
   },
 ];
 
-const useCases = [
+type UseCase = 'ai_labs' | 'research' | 'museums' | 'enterprise' | 'other';
+
+const useCases: { id: UseCase; icon: typeof Building2; title: string; desc: string; color: string }[] = [
   {
+    id: 'ai_labs',
     icon: Building2,
     title: 'AI Labs',
     desc: 'Pre-release cultural audits',
     color: 'blue',
   },
   {
+    id: 'research',
     icon: GraduationCap,
     title: 'Research',
     desc: 'Academic benchmarking',
     color: 'purple',
   },
   {
+    id: 'museums',
     icon: Palette,
     title: 'Museums',
     desc: 'Cultural AI validation',
@@ -61,8 +66,119 @@ const useCases = [
   },
 ];
 
+const timelineOptions = [
+  { value: 'immediate', label: 'Immediate (This month)' },
+  { value: '1-3_months', label: '1-3 months' },
+  { value: '3-6_months', label: '3-6 months' },
+  { value: 'exploring', label: 'Just exploring' },
+];
+
+interface FormData {
+  name: string;
+  email: string;
+  organization: string;
+  role: string;
+  use_case: UseCase;
+  timeline: string;
+  message: string;
+}
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+}
+
 export default function BookDemoPage() {
-  const [selectedUseCase, setSelectedUseCase] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    email: '',
+    organization: '',
+    role: '',
+    use_case: 'other',
+    timeline: '',
+    message: '',
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing
+    if (errors[name as keyof FormErrors]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  const handleUseCaseSelect = (useCase: UseCase) => {
+    setFormData((prev) => ({ ...prev, use_case: useCase }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitError(null);
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const submitData: LeadSubmitData = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        organization: formData.organization.trim() || undefined,
+        role: formData.role.trim() || undefined,
+        use_case: formData.use_case,
+        timeline: formData.timeline || undefined,
+        message: formData.message.trim() || undefined,
+        source_page: 'book_demo',
+      };
+
+      const response = await leadsApi.submitLead(submitData);
+
+      if (response.success) {
+        // Navigate to confirmation page with lead info
+        navigate('/demo/confirmation', {
+          state: {
+            leadId: response.lead_id,
+            name: formData.name,
+            email: formData.email,
+          },
+        });
+      }
+    } catch (error: any) {
+      console.error('Failed to submit lead:', error);
+      setSubmitError(
+        error.response?.data?.detail ||
+          'Failed to submit your request. Please try again or contact us directly.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="space-y-16">
@@ -113,9 +229,7 @@ export default function BookDemoPage() {
                     <h3 className="font-semibold text-gray-900 dark:text-white">
                       {benefit.title}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {benefit.desc}
-                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{benefit.desc}</p>
                   </div>
                 </div>
               ))}
@@ -134,24 +248,29 @@ export default function BookDemoPage() {
             <div className="space-y-3">
               {useCases.map((useCase) => (
                 <button
-                  key={useCase.title}
-                  onClick={() => setSelectedUseCase(useCase.title)}
+                  key={useCase.id}
+                  type="button"
+                  onClick={() => handleUseCaseSelect(useCase.id)}
                   className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
-                    selectedUseCase === useCase.title
+                    formData.use_case === useCase.id
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                       : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
-                  <useCase.icon className={`w-6 h-6 text-${useCase.color}-500`} />
+                  <useCase.icon
+                    className={`w-6 h-6 ${
+                      useCase.color === 'blue'
+                        ? 'text-blue-500'
+                        : useCase.color === 'purple'
+                          ? 'text-purple-500'
+                          : 'text-orange-500'
+                    }`}
+                  />
                   <div className="text-left">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">
-                      {useCase.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {useCase.desc}
-                    </p>
+                    <h3 className="font-semibold text-gray-900 dark:text-white">{useCase.title}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{useCase.desc}</p>
                   </div>
-                  {selectedUseCase === useCase.title && (
+                  {formData.use_case === useCase.id && (
                     <CheckCircle2 className="w-5 h-5 text-blue-500 ml-auto" />
                   )}
                 </button>
@@ -166,9 +285,7 @@ export default function BookDemoPage() {
             transition={{ delay: 0.4 }}
             className="pt-4"
           >
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-              Want to explore first?
-            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Want to explore first?</p>
             <div className="flex flex-wrap gap-3">
               <Link to="/vulca">
                 <IOSButton variant="secondary" size="sm" className="flex items-center gap-1">
@@ -185,7 +302,7 @@ export default function BookDemoPage() {
           </motion.div>
         </div>
 
-        {/* Right: Calendly Embed */}
+        {/* Right: Form */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -193,49 +310,196 @@ export default function BookDemoPage() {
         >
           <IOSCard variant="elevated" className="overflow-hidden">
             <IOSCardHeader
-              emoji={<Calendar className="w-6 h-6 text-blue-500" />}
-              title="Schedule Your Demo"
-              subtitle="Pick a time that works for you"
+              emoji={<Send className="w-6 h-6 text-blue-500" />}
+              title="Request a Demo"
+              subtitle="We'll respond within 24 hours"
             />
-            <IOSCardContent className="p-0">
-              {/* Calendly Embed Placeholder */}
-              <div className="bg-gray-50 dark:bg-gray-900/50 min-h-[500px] flex flex-col items-center justify-center p-8">
-                <Calendar className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  Calendly Integration
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-center mb-6 max-w-sm">
-                  In production, this area will display an embedded Calendly scheduler.
-                </p>
-                <a
-                  href={CALENDLY_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <IOSButton variant="primary" size="lg" className="flex items-center gap-2">
-                    Open Calendly
-                    <ExternalLink className="w-4 h-4" />
-                  </IOSButton>
-                </a>
-
-                {/* Calendly embed script would go here in production */}
-                {/*
-                  <div
-                    className="calendly-inline-widget"
-                    data-url={CALENDLY_URL}
-                    style={{ minWidth: '320px', height: '700px' }}
+            <IOSCardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Name */}
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 rounded-xl border ${
+                      errors.name
+                        ? 'border-red-500 focus:ring-red-500'
+                        : 'border-gray-200 dark:border-gray-700 focus:ring-blue-500'
+                    } bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2`}
+                    placeholder="Dr. Jane Smith"
                   />
-                  <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async />
-                */}
-              </div>
+                  {errors.name && (
+                    <p className="mt-1 text-sm text-red-500 flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.name}
+                    </p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Email <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 rounded-xl border ${
+                      errors.email
+                        ? 'border-red-500 focus:ring-red-500'
+                        : 'border-gray-200 dark:border-gray-700 focus:ring-blue-500'
+                    } bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2`}
+                    placeholder="jane.smith@university.edu"
+                  />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-500 flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+
+                {/* Organization */}
+                <div>
+                  <label
+                    htmlFor="organization"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Organization
+                  </label>
+                  <input
+                    type="text"
+                    id="organization"
+                    name="organization"
+                    value={formData.organization}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Stanford University"
+                  />
+                </div>
+
+                {/* Role */}
+                <div>
+                  <label
+                    htmlFor="role"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Role / Title
+                  </label>
+                  <input
+                    type="text"
+                    id="role"
+                    name="role"
+                    value={formData.role}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Research Scientist"
+                  />
+                </div>
+
+                {/* Timeline */}
+                <div>
+                  <label
+                    htmlFor="timeline"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    When do you need this?
+                  </label>
+                  <select
+                    id="timeline"
+                    name="timeline"
+                    value={formData.timeline}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select timeline...</option>
+                    {timelineOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Message */}
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Tell us more about your use case
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    placeholder="What specific challenges are you looking to address with VULCA?"
+                  />
+                </div>
+
+                {/* Submit Error */}
+                {submitError && (
+                  <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium text-red-800 dark:text-red-200">
+                        Submission Failed
+                      </p>
+                      <p className="text-sm text-red-600 dark:text-red-300">{submitError}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Submit Button */}
+                <IOSButton
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  className="w-full flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      Request Demo
+                    </>
+                  )}
+                </IOSButton>
+              </form>
             </IOSCardContent>
           </IOSCard>
 
-          {/* Alternative: Form fallback */}
+          {/* Alternative contact */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Prefer email? Contact us at{' '}
-              <a href="mailto:demo@vulca.ai" className="text-blue-600 dark:text-blue-400 hover:underline">
+              <a
+                href="mailto:demo@vulca.ai"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >
                 demo@vulca.ai
               </a>
             </p>
@@ -252,7 +516,7 @@ export default function BookDemoPage() {
           </div>
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4 text-blue-500" />
-            30-minute session
+            Response within 24 hours
           </div>
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4 text-purple-500" />

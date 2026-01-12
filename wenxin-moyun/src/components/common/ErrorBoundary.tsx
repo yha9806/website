@@ -1,5 +1,6 @@
 import React from 'react';
 import { IOSCard, IOSCardContent, IOSButton } from '../ios';
+import { captureError, addBreadcrumb } from '../../config/sentry';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -31,11 +32,20 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
-    
+
     this.setState({
       error,
       errorInfo,
     });
+
+    // Report to Sentry
+    captureError(error, {
+      componentStack: errorInfo.componentStack,
+      type: 'react-error-boundary',
+    });
+
+    // Add breadcrumb for debugging
+    addBreadcrumb('error-boundary', `Caught error: ${error.message}`, 'error');
 
     // Call optional error reporting callback
     if (this.props.onError) {

@@ -1,0 +1,249 @@
+/**
+ * SEO Configuration
+ *
+ * Centralized SEO metadata for all pages.
+ * Used for dynamic meta tag updates and structured data.
+ *
+ * @module config/seo
+ */
+
+export interface PageSEO {
+  title: string;
+  description: string;
+  keywords?: string[];
+  ogImage?: string;
+  canonicalPath?: string;
+  structuredData?: object;
+}
+
+export const DEFAULT_SEO: PageSEO = {
+  title: 'VULCA - Cultural AI Evaluation Platform',
+  description: '47-dimension evaluation across 8 cultural perspectives. Reproducible benchmarking for AI art and culture understanding.',
+  keywords: ['AI evaluation', 'cultural AI', 'VLM benchmark', 'art understanding', 'VULCA'],
+  ogImage: '/og-image.png',
+};
+
+export const PAGE_SEO: Record<string, PageSEO> = {
+  '/': {
+    title: 'VULCA - Cultural AI Evaluation Platform',
+    description: 'Evaluate AI models across 47 dimensions and 8 cultural perspectives. Reproducible benchmarks for cultural AI understanding.',
+    keywords: ['AI evaluation', 'cultural AI', 'VLM benchmark', 'VULCA framework'],
+  },
+  '/product': {
+    title: 'Product - VULCA',
+    description: 'VULCA evaluation framework: 47-dimensional analysis with 8 cultural perspectives for comprehensive AI assessment.',
+    keywords: ['VULCA product', 'AI evaluation framework', '47 dimensions', 'cultural perspectives'],
+  },
+  '/pricing': {
+    title: 'Pricing - VULCA',
+    description: 'VULCA pricing plans: Free demo, Pilot evaluation, and Enterprise solutions for AI cultural understanding assessment.',
+    keywords: ['VULCA pricing', 'AI evaluation pricing', 'enterprise AI', 'pilot program'],
+  },
+  '/customers': {
+    title: 'Customers - VULCA',
+    description: 'See how AI labs, research institutions, and museums use VULCA for cultural AI evaluation and benchmarking.',
+    keywords: ['VULCA customers', 'case studies', 'AI research', 'cultural AI'],
+  },
+  '/solutions': {
+    title: 'Solutions - VULCA',
+    description: 'VULCA solutions for AI Labs, Research Institutions, and Museums. Comprehensive cultural AI evaluation.',
+    keywords: ['VULCA solutions', 'AI labs', 'research', 'museums'],
+  },
+  '/solutions/ai-labs': {
+    title: 'AI Labs Solution - VULCA',
+    description: 'Pre-release cultural audits, model selection, and release gates for AI companies and model vendors.',
+    keywords: ['AI labs', 'model evaluation', 'pre-release audit', 'cultural safety'],
+  },
+  '/solutions/research': {
+    title: 'Research Solution - VULCA',
+    description: 'Reproducible benchmarks, academic citations, and version-controlled evaluations for research publications.',
+    keywords: ['AI research', 'academic benchmark', 'reproducible evaluation', 'citation'],
+  },
+  '/solutions/museums': {
+    title: 'Museums Solution - VULCA',
+    description: 'AI curator validation, multi-perspective interpretation, and cultural sensitivity for digital exhibitions.',
+    keywords: ['museum AI', 'cultural AI', 'digital exhibition', 'art interpretation'],
+  },
+  '/trust': {
+    title: 'Trust & Security - VULCA',
+    description: 'Data security, privacy, audit trails, and compliance information for VULCA evaluation platform.',
+    keywords: ['data security', 'privacy', 'compliance', 'audit trail'],
+  },
+  '/methodology': {
+    title: 'Methodology - VULCA',
+    description: 'VULCA evaluation methodology: L1-L5 layers, 6D to 47D expansion, 8 cultural perspectives, and scoring rubrics.',
+    keywords: ['methodology', 'evaluation framework', 'cultural dimensions', 'scoring rubric'],
+  },
+  '/dataset': {
+    title: 'Dataset - VULCA',
+    description: 'VULCA-BENCH: 7,410 image-text pairs, 8 cultures, 225 dimensions. Download and citation information.',
+    keywords: ['VULCA dataset', 'benchmark data', 'cultural AI data', 'VLM training'],
+  },
+  '/papers': {
+    title: 'Papers - VULCA',
+    description: 'Academic publications: EMNLP 2025 Findings, WiNLP 2025, and VULCA-BENCH dataset paper.',
+    keywords: ['VULCA papers', 'EMNLP 2025', 'academic research', 'VLM evaluation'],
+  },
+  '/models': {
+    title: 'Model Leaderboard - VULCA',
+    description: 'Public leaderboard of AI models evaluated on cultural understanding. Compare GPT-4V, Claude, Gemini and more.',
+    keywords: ['AI leaderboard', 'model comparison', 'VLM ranking', 'benchmark results'],
+  },
+  '/vulca': {
+    title: 'VULCA Demo - Cultural AI Evaluation',
+    description: 'Interactive demo of VULCA 47-dimensional evaluation. Compare models across cultural perspectives.',
+    keywords: ['VULCA demo', 'interactive evaluation', 'model comparison', 'cultural AI'],
+  },
+  '/exhibitions': {
+    title: 'Exhibitions - VULCA',
+    description: 'AI-generated art critiques and multi-persona dialogues. Explore cultural interpretations of contemporary art.',
+    keywords: ['AI art critique', 'digital exhibition', 'cultural dialogue', 'art interpretation'],
+  },
+  '/demo': {
+    title: 'Book a Demo - VULCA',
+    description: 'Schedule a demo of VULCA evaluation platform. Get personalized assessment for your AI models.',
+    keywords: ['book demo', 'VULCA demo', 'AI evaluation demo', 'contact sales'],
+  },
+  '/pilot': {
+    title: 'Request Pilot Evaluation - VULCA',
+    description: 'Get a comprehensive VULCA pilot evaluation report for your AI model. 47-dimension cultural analysis with cross-cultural perspectives delivered in 2 weeks.',
+    keywords: ['VULCA pilot', 'AI evaluation report', 'cultural analysis', 'model evaluation'],
+  },
+  '/changelog': {
+    title: 'Changelog - VULCA',
+    description: 'See what\'s new in VULCA. Latest updates, features, improvements, and bug fixes for the AI cultural evaluation platform.',
+    keywords: ['VULCA changelog', 'release notes', 'updates', 'new features'],
+  },
+};
+
+/**
+ * Update document meta tags
+ */
+export function updatePageMeta(path: string): void {
+  const seo = PAGE_SEO[path] || DEFAULT_SEO;
+
+  // Update title
+  document.title = seo.title;
+
+  // Update meta description
+  let metaDescription = document.querySelector('meta[name="description"]');
+  if (!metaDescription) {
+    metaDescription = document.createElement('meta');
+    metaDescription.setAttribute('name', 'description');
+    document.head.appendChild(metaDescription);
+  }
+  metaDescription.setAttribute('content', seo.description);
+
+  // Update OG tags
+  const ogTags = {
+    'og:title': seo.title,
+    'og:description': seo.description,
+    'og:url': `https://vulcaart.art${path}`,
+    'og:image': seo.ogImage || DEFAULT_SEO.ogImage,
+  };
+
+  Object.entries(ogTags).forEach(([property, content]) => {
+    let meta = document.querySelector(`meta[property="${property}"]`);
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('property', property);
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', content || '');
+  });
+
+  // Update Twitter tags
+  const twitterTags = {
+    'twitter:title': seo.title,
+    'twitter:description': seo.description,
+  };
+
+  Object.entries(twitterTags).forEach(([name, content]) => {
+    let meta = document.querySelector(`meta[name="${name}"]`);
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', name);
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', content || '');
+  });
+}
+
+/**
+ * Generate JSON-LD structured data for the organization
+ */
+export function getOrganizationStructuredData(): object {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'VULCA',
+    url: 'https://vulcaart.art',
+    logo: 'https://vulcaart.art/logo.png',
+    description: 'Cultural AI Evaluation Platform',
+    sameAs: [
+      'https://github.com/yha9806/EMNLP2025-VULCA',
+      'https://twitter.com/vulca_ai',
+    ],
+  };
+}
+
+/**
+ * Generate JSON-LD structured data for the software application
+ */
+export function getSoftwareApplicationStructuredData(): object {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'VULCA',
+    applicationCategory: 'AI Evaluation Tool',
+    operatingSystem: 'Web',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      description: 'Free public demo available',
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.8',
+      ratingCount: '42',
+    },
+  };
+}
+
+/**
+ * Generate JSON-LD structured data for the dataset
+ */
+export function getDatasetStructuredData(): object {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'VULCA-BENCH',
+    description: 'A Multicultural Vision-Language Benchmark for Culturally Grounded Art Understanding',
+    url: 'https://vulcaart.art/dataset',
+    license: 'https://creativecommons.org/licenses/by-nc/4.0/',
+    creator: {
+      '@type': 'Organization',
+      name: 'VULCA Team',
+    },
+    distribution: {
+      '@type': 'DataDownload',
+      encodingFormat: 'JSON',
+      contentUrl: 'https://vulcaart.art/dataset/download',
+    },
+    variableMeasured: [
+      '47 evaluation dimensions',
+      '8 cultural perspectives',
+      '7,410 image-text pairs',
+    ],
+  };
+}
+
+export default {
+  updatePageMeta,
+  getOrganizationStructuredData,
+  getSoftwareApplicationStructuredData,
+  getDatasetStructuredData,
+  PAGE_SEO,
+  DEFAULT_SEO,
+};

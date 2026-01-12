@@ -108,6 +108,25 @@ class Settings(BaseSettings):
     # Cost Control
     ENABLE_COST_CONTROL: bool = True
     DAILY_COST_LIMIT: float = 10.0
+
+    # Lead Notifications
+    # Webhook for internal notifications (Discord/Slack compatible)
+    LEAD_NOTIFICATION_WEBHOOK_URL: str = ""
+    # Team email for notifications (used with SMTP)
+    LEAD_NOTIFICATION_EMAIL: str = ""
+    # Enable/disable lead notifications
+    ENABLE_LEAD_NOTIFICATIONS: bool = True
+
+    # Email Configuration (SMTP)
+    # Works with SendGrid, SES, Mailgun, or any SMTP provider
+    SMTP_HOST: str = ""  # e.g., smtp.sendgrid.net
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""  # e.g., apikey (for SendGrid)
+    SMTP_PASSWORD: str = ""  # SMTP password or API key
+    SMTP_FROM_EMAIL: str = "noreply@vulca.ai"
+    SMTP_FROM_NAME: str = "VULCA Team"
+    SMTP_USE_TLS: bool = True
+    ENABLE_EMAIL_CONFIRMATION: bool = True
     
     # File Storage
     UPLOAD_DIR: str = "./uploads"

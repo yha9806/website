@@ -26,6 +26,7 @@ import { IOSCard, IOSCardContent, IOSCardHeader } from '../components/ios/core/I
 import { IOSButton } from '../components/ios/core/IOSButton';
 import { CiteModal, ProvenanceCard } from '../components/trustlayer';
 import type { Citation } from '../utils/trustedExport';
+import { VULCA_VERSION } from '../config/version';
 
 interface Paper {
   id: string;
@@ -181,8 +182,8 @@ const PapersPage: React.FC = () => {
       <section className="mb-12">
         <ProvenanceCard
           source="VULCA Research"
-          version="2025"
-          lastUpdated="2025-11-01"
+          version={VULCA_VERSION.framework}
+          lastUpdated={VULCA_VERSION.lastUpdated}
           license="Academic Use"
           doi="10.18653/v1/2025.findings-emnlp.103"
           github="https://github.com/yha9806/EMNLP2025-VULCA"

@@ -7,18 +7,22 @@ import CacheStats from './CacheStats';
 import { useTheme } from '../../contexts/ThemeContext';
 import { motion } from 'framer-motion';
 import { useState, useEffect, useMemo } from 'react';
-import { 
-  detectDevicePerformance, 
-  getPerformanceConfig, 
+import {
+  detectDevicePerformance,
+  getPerformanceConfig,
   getOptimizedAnimation,
   gpuAccelerationStyles,
-  type PerformanceLevel 
+  type PerformanceLevel
 } from '../../utils/performanceOptimizer';
+import { useSEO } from '../../hooks/useSEO';
 
 export default function Layout() {
   const { theme } = useTheme();
   const location = useLocation();
   const [performanceLevel, setPerformanceLevel] = useState<PerformanceLevel>('medium');
+
+  // Update SEO meta tags on route change
+  useSEO();
   
   // Get page name from route for error boundary
   const getPageName = (pathname: string) => {

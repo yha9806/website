@@ -544,24 +544,7 @@ async def init_models(session: AsyncSession):
             "tags": ["Image Generation", "Artistic Creation", "Stylization"],
             "avatar_url": "https://picsum.photos/seed/midjourney/200/200"
         },
-        {
-            "name": "DALL-E 3",
-            "organization": "OpenAI",
-            "version": "3.0",
-            "category": "image",
-            "description": "Pioneer model for text-to-image generation",
-            "overall_score": 88.9,
-            "metrics": {
-                "rhythm": 75,
-                "composition": 93,
-                "narrative": 82,
-                "emotion": 88,
-                "creativity": 94,
-                "cultural": 84
-            },
-            "tags": ["Image Generation", "Creative Design", "Precise Control"],
-            "avatar_url": "https://picsum.photos/seed/dalle/200/200"
-        },
+        # DALL-E 3 is already defined above, removed duplicate
         {
             "name": "LLaMA 2-70B",
             "organization": "Meta",

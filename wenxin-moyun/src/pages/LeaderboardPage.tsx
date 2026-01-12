@@ -27,10 +27,9 @@ import {
   TrendingUp, TrendingDown, Quote, Copy, Check, Calendar, ArrowRight, FileText, ExternalLink
 } from 'lucide-react';
 import { LoadingOverlay } from '../components/common/LoadingOverlay';
-
-// VULCA Framework version for citations
-const VULCA_VERSION = 'v1.2.0';
-const EVALUATION_DATE = '2025-01-11';
+import { CiteModal } from '../components/trustlayer';
+import type { Citation } from '../utils/trustedExport';
+import { VULCA_VERSION, VERSION_BADGE } from '../config/version';
 
 // Category icons mapping
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -442,14 +441,25 @@ function CitationSection({
   topModel?: LeaderboardEntry;
 }) {
   const [copied, setCopied] = useState(false);
+  const [showCiteModal, setShowCiteModal] = useState(false);
 
   const bibtexCitation = `@misc{vulca_leaderboard_${category}_2025,
   title={VULCA Leaderboard: ${category.charAt(0).toUpperCase() + category.slice(1)} Category},
   author={VULCA Team},
   year={2025},
   howpublished={\\url{https://vulca.ai/models}},
-  note={Version ${VULCA_VERSION}, ${modelCount} models evaluated, accessed ${EVALUATION_DATE}}
+  note={Version ${VERSION_BADGE.short}, ${modelCount} models evaluated, accessed ${VULCA_VERSION.lastUpdated}}
 }`;
+
+  const leaderboardCitation: Citation = {
+    key: `vulca_leaderboard_${category}_2025`,
+    title: `VULCA Leaderboard: ${category.charAt(0).toUpperCase() + category.slice(1)} Category Evaluation Results`,
+    authors: ['VULCA Team'],
+    booktitle: 'VULCA Cultural AI Evaluation Platform',
+    year: 2025,
+    doi: '10.18653/v1/2025.findings-emnlp.103',
+    url: `https://vulca.ai/models/${category}`,
+  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(bibtexCitation);
@@ -477,6 +487,14 @@ function CitationSection({
           </div>
           <div className="flex flex-wrap items-center gap-4 mt-4">
             <IOSButton
+              variant="primary"
+              size="sm"
+              onClick={() => setShowCiteModal(true)}
+            >
+              <Quote className="w-4 h-4 mr-1" />
+              All Citation Formats
+            </IOSButton>
+            <IOSButton
               variant="secondary"
               size="sm"
               onClick={handleCopy}
@@ -486,11 +504,11 @@ function CitationSection({
             </IOSButton>
             <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
               <FileText className="w-4 h-4" />
-              <span>Version: <span className="font-medium text-gray-700 dark:text-gray-300">{VULCA_VERSION}</span></span>
+              <span>Version: <span className="font-medium text-gray-700 dark:text-gray-300">{VERSION_BADGE.short}</span></span>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
               <Calendar className="w-4 h-4" />
-              <span>Evaluated: <span className="font-medium text-gray-700 dark:text-gray-300">{EVALUATION_DATE}</span></span>
+              <span>Evaluated: <span className="font-medium text-gray-700 dark:text-gray-300">{VULCA_VERSION.lastUpdated}</span></span>
             </div>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
@@ -500,6 +518,13 @@ function CitationSection({
           </p>
         </IOSCardContent>
       </IOSCard>
+
+      {/* Citation Modal */}
+      <CiteModal
+        citation={leaderboardCitation}
+        visible={showCiteModal}
+        onClose={() => setShowCiteModal(false)}
+      />
     </motion.div>
   );
 }

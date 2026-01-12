@@ -23,6 +23,8 @@ import {
 } from 'lucide-react';
 import { CitationBlock } from '../../components/vulca/CitationBlock';
 import { Link } from 'react-router-dom';
+import { VULCA_VERSION, VERSION_BADGE } from '../../config/version';
+import { downloadSampleReport } from '../../utils/pdfExport';
 
 // Preset scenarios for quick demos
 const PRESET_SCENARIOS = [
@@ -491,13 +493,11 @@ export const VULCADemoPage: React.FC = () => {
                   </span>
                 </div>
               )}
-              {systemInfo && (
-                <div className="pt-2 border-t dark:border-gray-700">
-                  <div className="text-xs text-gray-500 dark:text-gray-400">
-                    Version: {systemInfo.version || 'v1.0.0'}
-                  </div>
+              <div className="pt-2 border-t dark:border-gray-700">
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  {VERSION_BADGE.short} | Dataset {VULCA_VERSION.dataset}
                 </div>
-              )}
+              </div>
             </div>
           </IOSCard>
         </div>
@@ -990,7 +990,7 @@ export const VULCADemoPage: React.FC = () => {
                 </p>
               </div>
             </div>
-            <IOSButton variant="secondary" onClick={handleExport}>
+            <IOSButton variant="secondary" onClick={downloadSampleReport}>
               <Download className="w-4 h-4 mr-2" />
               Download Sample
             </IOSButton>

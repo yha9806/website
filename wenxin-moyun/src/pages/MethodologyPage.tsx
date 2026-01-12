@@ -25,6 +25,7 @@ import {
 import { IOSCard, IOSCardContent, IOSCardHeader } from '../components/ios/core/IOSCard';
 import { ProvenanceCard } from '../components/trustlayer';
 import { dimensionsService, type L1L5Level, type Persona } from '../services/dimensions';
+import { VULCA_VERSION } from '../config/version';
 
 const MethodologyPage: React.FC = () => {
   const [l1l5Levels, setL1L5Levels] = useState<Record<string, L1L5Level>>({});
@@ -83,11 +84,11 @@ const MethodologyPage: React.FC = () => {
       <section className="mb-12">
         <ProvenanceCard
           source="VULCA Framework"
-          version={dimensionsService.getVersion()}
-          lastUpdated="2026-01-11"
+          version={VULCA_VERSION.framework}
+          lastUpdated={VULCA_VERSION.lastUpdated}
           license="Apache 2.0"
           doi="10.18653/v1/2025.findings-emnlp.103"
-          algorithm="VULCA Core v1.0"
+          algorithm={`VULCA Core v${VULCA_VERSION.protocol}`}
           github="https://github.com/yha9806/EMNLP2025-VULCA"
         />
       </section>

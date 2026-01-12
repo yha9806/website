@@ -437,3 +437,29 @@ export const battlesApi = {
     return result;
   },
 };
+
+// Leads API for demo requests and sales inquiries
+export interface LeadSubmitData {
+  name: string;
+  email: string;
+  organization?: string;
+  role?: string;
+  use_case: 'ai_labs' | 'research' | 'museums' | 'enterprise' | 'other';
+  timeline?: string;
+  message?: string;
+  source_page: 'book_demo' | 'pricing' | 'product' | 'solutions' | 'contact' | 'other';
+}
+
+export interface LeadSubmitResponse {
+  success: boolean;
+  message: string;
+  lead_id: string;
+}
+
+export const leadsApi = {
+  // Submit a new lead (public endpoint, no auth required)
+  submitLead: async (data: LeadSubmitData): Promise<LeadSubmitResponse> => {
+    const response = await apiClient.post('/leads/', data);
+    return response.data;
+  },
+};

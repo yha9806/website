@@ -6,10 +6,11 @@ from .work import Work
 from .battle import Battle, BattleVote
 from .artwork import Artwork
 from .benchmark_suite import BenchmarkSuite, BenchmarkRun, BenchmarkStatus
+from .lead import Lead, LeadStatus, LeadSource, LeadUseCase
 
 __all__ = [
     "User",
-    "AIModel", 
+    "AIModel",
     "EvaluationTask",
     "EvaluationDimension",
     "EvaluationResult",
@@ -19,5 +20,9 @@ __all__ = [
     "Artwork",
     "BenchmarkSuite",
     "BenchmarkRun",
-    "BenchmarkStatus"
+    "BenchmarkStatus",
+    "Lead",
+    "LeadStatus",
+    "LeadSource",
+    "LeadUseCase"
 ]

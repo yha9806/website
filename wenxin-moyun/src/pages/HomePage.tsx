@@ -28,6 +28,7 @@ import {
   IOSCardFooter,
   IOSCardGrid,
 } from '../components/ios';
+import { downloadSampleReport } from '../utils/pdfExport';
 
 // Animation variants
 const fadeInUp = {
@@ -594,12 +595,15 @@ export default function HomePage() {
             </div>
 
             <div className="mt-8 text-center">
-              <Link to="/methodology">
-                <IOSButton variant="secondary" size="md" className="inline-flex items-center gap-2">
-                  <Download className="w-4 h-4" />
-                  Download Sample Report
-                </IOSButton>
-              </Link>
+              <IOSButton
+                variant="secondary"
+                size="md"
+                className="inline-flex items-center gap-2"
+                onClick={downloadSampleReport}
+              >
+                <Download className="w-4 h-4" />
+                Download Sample Report
+              </IOSButton>
             </div>
           </div>
         </motion.div>

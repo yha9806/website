@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import RouterLink from '../components/common/RouterLink';
 import { Breadcrumb } from '../components/common/Breadcrumb';
-import { ArrowLeft, Calendar, Tag, Trophy, Zap, Loader2, Cpu, FileText, Download, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Calendar, Tag, Trophy, Zap, Loader2, Cpu, FileText, Download, ExternalLink, Quote, Share2 } from 'lucide-react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { mockModels } from '../data/mockData';
 import { motion } from 'framer-motion';
@@ -20,11 +21,15 @@ import {
   RankEmoji,
   TypeEmoji
 } from '../components/ios';
+import { CiteModal } from '../components/trustlayer';
+import type { Citation } from '../utils/trustedExport';
+import { VULCA_VERSION, VERSION_BADGE } from '../config/version';
 
 export default function ModelDetailPage() {
   const { id } = useParams();
   const { model, artworks, loading, error } = useModelDetail(id);
   const { benchmarkData, loading: benchmarkLoading, error: benchmarkError } = useModelBenchmark(id);
+  const [showCiteModal, setShowCiteModal] = useState(false);
 
   if (loading) {
     return (
@@ -139,9 +144,28 @@ export default function ModelDetailPage() {
                     View Report
                   </IOSButton>
                 </RouterLink>
-                <IOSButton variant="secondary" size="sm" onClick={() => alert('Demo: PDF generation available in Enterprise plan')}>
-                  <Download className="w-4 h-4 mr-1.5" />
-                  PDF
+                <IOSButton variant="secondary" size="sm" onClick={() => setShowCiteModal(true)}>
+                  <Quote className="w-4 h-4 mr-1.5" />
+                  Cite
+                </IOSButton>
+                <IOSButton
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator.share({
+                        title: `VULCA Evaluation: ${model.name}`,
+                        text: `Check out ${model.name}'s VULCA cultural AI evaluation results`,
+                        url: window.location.href,
+                      });
+                    } else {
+                      navigator.clipboard.writeText(window.location.href);
+                      alert('Link copied to clipboard!');
+                    }
+                  }}
+                >
+                  <Share2 className="w-4 h-4 mr-1.5" />
+                  Share
                 </IOSButton>
               </div>
             </div>
@@ -490,13 +514,13 @@ export default function ModelDetailPage() {
                   const dimensionResponses = benchmarkData.detailed_scores.filter(
                     (r: any) => r.dimension === dimension
                   );
-                  
+
                   if (dimensionResponses.length === 0) return null;
-                  
+
                   return (
                     <div key={dimension} className="border-t pt-6 first:border-t-0 first:pt-0">
-                      <ResponseDisplay 
-                        responses={dimensionResponses} 
+                      <ResponseDisplay
+                        responses={dimensionResponses}
                         dimension={dimension}
                       />
                     </div>
@@ -507,6 +531,21 @@ export default function ModelDetailPage() {
           </IOSCard>
         </motion.div>
       )}
+
+      {/* Citation Modal */}
+      <CiteModal
+        citation={{
+          key: `vulca_${model.id}_${new Date().getFullYear()}`,
+          title: `VULCA Evaluation Report: ${model.name} Cultural AI Assessment`,
+          authors: ['VULCA Team'],
+          booktitle: 'VULCA Cultural AI Evaluation Platform',
+          year: 2025,
+          doi: '10.18653/v1/2025.findings-emnlp.103',
+          url: `https://vulca.ai/model/${model.id}`,
+        }}
+        visible={showCiteModal}
+        onClose={() => setShowCiteModal(false)}
+      />
     </div>
   );
 }
