@@ -71,7 +71,7 @@ jobs:
           python -m pytest tests/ -v --tb=short
         env:
           DATABASE_URL: sqlite+aiosqlite:///./test.db
-          SECRET_KEY: test-secret-key
+          SECRET_KEY: test-secret-key-for-ci-at-least-32-chars
           DEBUG: true
 
       - name: Install Playwright browsers
@@ -97,7 +97,7 @@ jobs:
           curl -f http://localhost:8001/health || exit 1
         env:
           DATABASE_URL: sqlite+aiosqlite:///./test.db
-          SECRET_KEY: test-secret-key
+          SECRET_KEY: test-secret-key-for-ci-at-least-32-chars
           ENVIRONMENT: test
 
       - name: Run E2E tests with proper servers
