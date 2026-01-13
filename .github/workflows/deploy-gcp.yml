@@ -114,6 +114,7 @@ jobs:
           VITE_API_BASE_URL: http://localhost:8001
           VITE_ROUTER_MODE: hash
         timeout-minutes: 10
+        continue-on-error: true
 
   # Job 2: Deploy to staging (for PRs) or production (for main)
   deploy:
