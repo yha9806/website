@@ -1,0 +1,22 @@
+# Minimal dependencies for database migrations only
+# Used in GitHub Actions CI/CD to avoid disk space issues
+
+# Database ORM and migrations
+sqlalchemy==2.0.43
+alembic==1.16.4
+asyncpg==0.30.0
+
+# Configuration
+pydantic==2.11.7
+pydantic-settings==2.10.1
+python-dotenv==1.0.0
+
+# Authentication (needed for init_db.py user creation)
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.5.0
+
+# Async support
+aiosqlite==0.19.0
+
+# Cryptography (needed by python-jose)
+cryptography==42.0.0

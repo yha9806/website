@@ -373,11 +373,12 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install backend dependencies for migration
+      - name: Install minimal dependencies for migration
         working-directory: wenxin-backend
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt -c constraints.txt
+          # Use minimal requirements to avoid disk space issues with large ML packages
+          pip install -r requirements-migrate.txt
 
       - name: Get Supabase DATABASE_URL from Secret Manager
         id: supabase-url
