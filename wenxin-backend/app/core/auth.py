@@ -141,5 +141,9 @@ async def get_optional_current_user(
             return user
     except Exception:
         pass
-    
+
     return None
+
+
+# Alias for backward compatibility
+get_current_superuser = get_current_admin_user
