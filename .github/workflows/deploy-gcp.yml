@@ -377,6 +377,13 @@ jobs:
 
       - name: Deploy backend to Cloud Run (Supabase)
         run: |
+          # 先清除可能存在的旧 DATABASE_URL 环境变量（之前指向 Cloud SQL）
+          gcloud run services update ${{ env.SERVICE_NAME }}-api \
+            --region=${{ env.REGION }} \
+            --remove-env-vars=DATABASE_URL \
+            --quiet || echo "Note: DATABASE_URL env var may not exist, continuing..."
+
+          # 部署新版本
           gcloud run deploy ${{ env.SERVICE_NAME }}-api \
             --image=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:${{ steps.vars.outputs.SHORT_SHA }} \
             --region=${{ env.REGION }} \
@@ -389,8 +396,8 @@ jobs:
             --concurrency=100 \
             --timeout=300 \
             --port=8080 \
-            --update-env-vars="SECRET_KEY=${{ steps.secret-key.outputs.key }},DEBUG=false,ENVIRONMENT=production" \
-            --update-secrets="DATABASE_URL=supabase-database-url:latest,OPENAI_API_KEY=openai-api-key:latest,ANTHROPIC_API_KEY=anthropic-api-key:latest,GEMINI_API_KEY=gemini-api-key:latest"
+            --set-env-vars="SECRET_KEY=${{ steps.secret-key.outputs.key }},DEBUG=false,ENVIRONMENT=production" \
+            --set-secrets="DATABASE_URL=supabase-database-url:latest,OPENAI_API_KEY=openai-api-key:latest,ANTHROPIC_API_KEY=anthropic-api-key:latest,GEMINI_API_KEY=gemini-api-key:latest"
 
       - name: Get backend URL
         id: backend-url
