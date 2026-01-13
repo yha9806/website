@@ -86,9 +86,10 @@ jobs:
         if: github.event_name != 'pull_request'
         working-directory: wenxin-backend
         run: |
-          python init_test_db.py
+          python init_db.py
         env:
           DATABASE_URL: sqlite+aiosqlite:///./test.db
+          SECRET_KEY: test-secret-key-for-ci-at-least-32-chars
 
       - name: Start backend test server
         if: github.event_name != 'pull_request'
