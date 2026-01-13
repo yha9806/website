@@ -10,6 +10,12 @@ on:
   pull_request:
     branches: [ main, master ]
     types: [ opened, synchronize, reopened ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: false
+        default: 'production'
 
 env:
   PROJECT_ID: wenxin-moyun-prod-new
