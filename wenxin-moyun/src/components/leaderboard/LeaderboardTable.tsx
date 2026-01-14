@@ -89,7 +89,7 @@ const VULCADataDisplay: React.FC<VULCADataDisplayProps> = ({
     return (
       <div className="flex items-center justify-center py-8">
         <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
-          <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin" />
+          <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 border-t-slate-700 dark:border-t-slate-500 rounded-full animate-spin" />
           Loading VULCA Analysis...
         </div>
       </div>
@@ -119,7 +119,7 @@ const VULCADataDisplay: React.FC<VULCADataDisplayProps> = ({
           </div>
           <div>
             <div className="text-sm text-gray-500 dark:text-gray-400">VULCA 47D Average</div>
-            <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+            <div className="text-2xl font-bold text-amber-700 dark:text-amber-500">
               {vulcaAverage != null ? vulcaAverage.toFixed(1) : 'N/A'}
             </div>
           </div>
@@ -228,7 +228,7 @@ export default function LeaderboardTable({
         return (
           <RouterLink 
             to={`/model/${model.id}`}
-            className="flex items-center gap-3 group hover:text-blue-600 dark:hover:text-blue-400"
+            className="flex items-center gap-3 group hover:text-slate-700 dark:hover:text-slate-500"
           >
             <img 
               src={model.avatar} 
@@ -297,7 +297,7 @@ export default function LeaderboardTable({
         const rate = getValue();
         const getColor = () => {
           if (rate >= 70) return 'text-green-600 dark:text-green-400';
-          if (rate >= 50) return 'text-blue-600 dark:text-blue-400';
+          if (rate >= 50) return 'text-slate-700 dark:text-slate-500';
           return 'text-gray-600 dark:text-gray-400';
         };
         
@@ -360,7 +360,7 @@ export default function LeaderboardTable({
                   e.stopPropagation();
                   onToggleVulca(modelId);
                 }}
-                className="px-2 py-1 text-sm bg-purple-600 dark:bg-purple-500 text-white rounded-lg hover:bg-purple-700 dark:hover:bg-purple-600 transition-colors flex items-center gap-1"
+                className="px-2 py-1 text-sm bg-amber-700 dark:bg-amber-600 text-white rounded-lg hover:bg-purple-700 dark:hover:bg-amber-700 transition-colors flex items-center gap-1"
                 title="View VULCA 47D Analysis"
               >
                 47D
@@ -369,7 +369,7 @@ export default function LeaderboardTable({
             )}
             <RouterLink
               to={`/model/${modelId}`}
-              className="px-3 py-1 text-sm bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
+              className="px-3 py-1 text-sm bg-slate-700 dark:bg-slate-600 text-white rounded-lg hover:bg-slate-700 dark:hover:bg-slate-700 transition-colors"
             >
               View
             </RouterLink>
@@ -417,7 +417,7 @@ export default function LeaderboardTable({
             placeholder="Search models..."
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            className="px-3 py-2 ios-glass backdrop-blur-sm border border-gray-200 dark:border-[#30363D] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 dark:focus:border-blue-400"
+            className="px-3 py-2 ios-glass backdrop-blur-sm border border-gray-200 dark:border-[#30363D] rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/40 focus:border-slate-600 dark:focus:border-slate-500"
           />
         </div>
 
@@ -427,9 +427,9 @@ export default function LeaderboardTable({
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 rounded-lg"
+              className="flex items-center gap-2 px-3 py-1 bg-slate-50 dark:bg-slate-900/20 rounded-lg"
             >
-              <span className="text-sm text-blue-600 dark:text-blue-400">
+              <span className="text-sm text-slate-700 dark:text-slate-500">
                 {selectedRows.length} items selected
               </span>
               <button
@@ -438,7 +438,7 @@ export default function LeaderboardTable({
                   // TODO: 实现对比功能
                   console.log('Compare:', selectedData);
                 }}
-                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                className="text-sm text-slate-700 dark:text-slate-500 hover:underline"
               >
                 Compare
               </button>
@@ -512,7 +512,7 @@ export default function LeaderboardTable({
               <tr>
                 <td colSpan={columns.length} className="text-center py-8">
                   <div className="inline-flex items-center gap-2 text-gray-500 dark:text-gray-400">
-                    <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 border-t-slate-700 dark:border-t-slate-500 rounded-full animate-spin" />
                     Loading...
                   </div>
                 </td>
@@ -663,7 +663,7 @@ export default function LeaderboardTable({
                               <Suspense fallback={
                                 <div className="flex items-center justify-center py-8">
                                   <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
-                                    <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin" />
+                                    <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 border-t-slate-700 dark:border-t-slate-500 rounded-full animate-spin" />
                                     Loading VULCA Analysis...
                                   </div>
                                 </div>

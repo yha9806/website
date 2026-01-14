@@ -70,7 +70,7 @@ const EvaluationsPage: React.FC = () => {
       case 'pending':
         return 'text-yellow-500';
       case 'processing':
-        return 'text-blue-500';
+        return 'text-slate-600';
       case 'completed':
         return 'text-green-500';
       case 'failed':
@@ -117,7 +117,7 @@ const EvaluationsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-pink-50">
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -145,7 +145,7 @@ const EvaluationsPage: React.FC = () => {
               
               <button
                 onClick={handleCreateButtonClick}
-                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+                className="px-6 py-2 bg-gradient-to-r from-amber-700 to-slate-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2"
               >
                 <Plus className="w-5 h-5" />
                 Create Task
@@ -167,7 +167,7 @@ const EvaluationsPage: React.FC = () => {
                 <select
                   value={selectedType}
                   onChange={(e) => setSelectedType(e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 ios-glass bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 ios-glass bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-600"
                 >
                   <option value="all">All Types</option>
                   <option value="poem">Poetry Creation</option>
@@ -179,7 +179,7 @@ const EvaluationsPage: React.FC = () => {
                 <select
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 ios-glass bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 ios-glass bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-600"
                 >
                   <option value="all">All Status</option>
                   <option value="pending">Pending</option>
@@ -205,7 +205,7 @@ const EvaluationsPage: React.FC = () => {
           {/* Evaluations List */}
           {loading ? (
             <div className="flex justify-center items-center h-64">
-              <RefreshCw className="w-8 h-8 animate-spin text-purple-600" />
+              <RefreshCw className="w-8 h-8 animate-spin text-amber-700" />
             </div>
           ) : error ? (
             <div className="glass-effect rounded-xl p-8 text-center">
@@ -218,7 +218,7 @@ const EvaluationsPage: React.FC = () => {
               <p className="text-gray-600 dark:text-gray-400">No evaluation tasks yet</p>
               <button
                 onClick={handleCreateButtonClick}
-                className="mt-4 px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg"
+                className="mt-4 px-6 py-2 bg-gradient-to-r from-amber-700 to-slate-700 text-white rounded-lg"
               >
                 Create your first evaluation task
                 {isGuest && (
@@ -248,7 +248,7 @@ const EvaluationsPage: React.FC = () => {
                   onClick={() => setPage(p)}
                   className={`px-4 py-2 rounded-lg ${
                     p === page
-                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                      ? 'bg-gradient-to-r from-amber-700 to-slate-700 text-white'
                       : 'bg-neutral-50 dark:bg-[#21262D] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >

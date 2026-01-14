@@ -101,8 +101,8 @@ export default function DemoConfirmationPage() {
       >
         <IOSCard variant="elevated">
           <IOSCardContent className="p-6">
-            <div className="flex items-center gap-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
-              <Mail className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            <div className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/20 rounded-xl">
+              <Mail className="w-6 h-6 text-slate-700 dark:text-slate-500" />
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   Confirmation sent to
@@ -141,7 +141,7 @@ export default function DemoConfirmationPage() {
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <step.icon className="w-4 h-4 text-blue-500" />
+                  <step.icon className="w-4 h-4 text-slate-600" />
                   <h3 className="font-semibold text-gray-900 dark:text-white">
                     {step.title}
                   </h3>
@@ -171,9 +171,9 @@ export default function DemoConfirmationPage() {
         <div className="grid md:grid-cols-3 gap-4">
           {exploreLinks.map((link) => (
             <Link key={link.href} to={link.href}>
-              <div className="h-full p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all group">
-                <link.icon className="w-8 h-8 text-gray-400 group-hover:text-blue-500 mb-3 transition-colors" />
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              <div className="h-full p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-slate-600 dark:hover:border-slate-600 transition-all group">
+                <link.icon className="w-8 h-8 text-gray-400 group-hover:text-slate-600 mb-3 transition-colors" />
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-1 group-hover:text-slate-700 dark:group-hover:text-slate-500 transition-colors">
                   {link.title}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -211,7 +211,7 @@ export default function DemoConfirmationPage() {
           Questions? Contact us at{' '}
           <a
             href="mailto:support@vulca.ai"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
+            className="text-slate-700 dark:text-slate-500 hover:underline"
           >
             support@vulca.ai
           </a>

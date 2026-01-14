@@ -86,7 +86,7 @@ export const ProvenanceCard: React.FC<ProvenanceCardProps> = ({
             href={link}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-blue-500 hover:underline flex items-center gap-1"
+            className="text-sm font-medium text-slate-600 hover:underline flex items-center gap-1"
           >
             {value}
             <ExternalLink className="w-3 h-3" />
@@ -110,7 +110,7 @@ export const ProvenanceCard: React.FC<ProvenanceCardProps> = ({
         <div className={compact ? 'p-3' : 'p-4'}>
           {/* Header */}
           <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
-            <Database className="w-5 h-5 text-blue-500" />
+            <Database className="w-5 h-5 text-slate-600" />
             <h3 className="font-semibold text-gray-900 dark:text-white">
               Data Provenance
             </h3>
@@ -166,7 +166,7 @@ export const ProvenanceCard: React.FC<ProvenanceCardProps> = ({
                   href={`https://doi.org/${doi}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-blue-500 hover:underline flex items-center gap-1"
+                  className="text-xs text-slate-600 hover:underline flex items-center gap-1"
                 >
                   <ExternalLink className="w-3 h-3" />
                   DOI: {doi}
@@ -177,7 +177,7 @@ export const ProvenanceCard: React.FC<ProvenanceCardProps> = ({
                   href={github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-blue-500 hover:underline flex items-center gap-1"
+                  className="text-xs text-slate-600 hover:underline flex items-center gap-1"
                 >
                   <ExternalLink className="w-3 h-3" />
                   GitHub
@@ -188,7 +188,7 @@ export const ProvenanceCard: React.FC<ProvenanceCardProps> = ({
                   href={paperUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-blue-500 hover:underline flex items-center gap-1"
+                  className="text-xs text-slate-600 hover:underline flex items-center gap-1"
                 >
                   <ExternalLink className="w-3 h-3" />
                   Paper

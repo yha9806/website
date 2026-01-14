@@ -51,25 +51,25 @@ export default function NotFoundPage() {
           <div className="flex flex-wrap justify-center gap-4 text-sm">
             <Link 
               to="/battle" 
-              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+              className="text-slate-700 hover:text-slate-800 dark:text-slate-500 dark:hover:text-slate-400"
             >
               Model Battle
             </Link>
             <Link 
               to="/evaluations" 
-              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+              className="text-slate-700 hover:text-slate-800 dark:text-slate-500 dark:hover:text-slate-400"
             >
               Evaluations
             </Link>
             <Link 
               to="/gallery" 
-              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+              className="text-slate-700 hover:text-slate-800 dark:text-slate-500 dark:hover:text-slate-400"
             >
               Gallery
             </Link>
             <Link 
               to="/about" 
-              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+              className="text-slate-700 hover:text-slate-800 dark:text-slate-500 dark:hover:text-slate-400"
             >
               About
             </Link>

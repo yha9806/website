@@ -59,7 +59,7 @@ export const CacheStats: React.FC<CacheStatsProps> = ({ show = false }) => {
             <div className="space-y-3 text-sm">
               {/* API Cache */}
               <div className="bg-white/50 dark:bg-black/20 rounded-lg p-3">
-                <h4 className="font-semibold text-blue-600 dark:text-blue-400 mb-2">
+                <h4 className="font-semibold text-slate-700 dark:text-slate-500 mb-2">
                   🔄 API Cache
                 </h4>
                 <div className="grid grid-cols-2 gap-2 text-xs">
@@ -84,7 +84,7 @@ export const CacheStats: React.FC<CacheStatsProps> = ({ show = false }) => {
 
               {/* Static Cache */}
               <div className="bg-white/50 dark:bg-black/20 rounded-lg p-3">
-                <h4 className="font-semibold text-purple-600 dark:text-purple-400 mb-2">
+                <h4 className="font-semibold text-amber-700 dark:text-amber-500 mb-2">
                   📚 Static Cache
                 </h4>
                 <div className="grid grid-cols-2 gap-2 text-xs">

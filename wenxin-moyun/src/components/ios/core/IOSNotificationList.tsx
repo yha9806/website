@@ -82,7 +82,7 @@ export const IOSNotificationList: React.FC<IOSNotificationListProps> = ({
       case 'success': return 'text-green-500 dark:text-green-400';
       case 'warning': return 'text-orange-500 dark:text-orange-400';
       case 'error': return 'text-red-500 dark:text-red-400';
-      default: return 'text-blue-500 dark:text-blue-400';
+      default: return 'text-slate-600 dark:text-slate-500';
     }
   };
 
@@ -137,7 +137,7 @@ export const IOSNotificationList: React.FC<IOSNotificationListProps> = ({
             className="absolute inset-y-0 right-0 flex items-center"
           >
             <motion.button
-              className="h-full px-6 bg-blue-500 flex items-center justify-center text-white"
+              className="h-full px-6 bg-slate-600 flex items-center justify-center text-white"
               onClick={() => handleSwipeAction(notification.id, 'read')}
               whileTap={{ scale: 0.9 }}
             >
@@ -165,7 +165,7 @@ export const IOSNotificationList: React.FC<IOSNotificationListProps> = ({
           ${liquidGlass.containers.card}
           rounded-2xl p-4
           cursor-pointer
-          ${!notification.read ? 'ring-1 ring-blue-500/20' : ''}
+          ${!notification.read ? 'ring-1 ring-slate-600/20' : ''}
           ${inGroup ? 'ml-4' : ''}
         `}
         style={{
@@ -225,7 +225,7 @@ export const IOSNotificationList: React.FC<IOSNotificationListProps> = ({
                   </span>
                 )}
                 {!notification.read && (
-                  <div className="w-2 h-2 bg-blue-500 rounded-full" />
+                  <div className="w-2 h-2 bg-slate-600 rounded-full" />
                 )}
               </div>
             </div>
@@ -240,7 +240,7 @@ export const IOSNotificationList: React.FC<IOSNotificationListProps> = ({
                       px-3 py-1.5 rounded-lg text-xs font-medium
                       ${action.destructive
                         ? 'bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20'
-                        : 'bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20'
+                        : 'bg-slate-600/10 text-slate-700 dark:text-slate-500 hover:bg-slate-600/20'
                       }
                       transition-colors duration-150
                     `}
@@ -279,7 +279,7 @@ export const IOSNotificationList: React.FC<IOSNotificationListProps> = ({
       {(allNotifications.length > 0 || groups.some(g => g.notifications.length > 0)) && onClearAll && (
         <div className="flex justify-end mb-4">
           <motion.button
-            className="text-sm text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors"
+            className="text-sm text-slate-600 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-400 transition-colors"
             onClick={onClearAll}
             whileTap={{ scale: 0.95 }}
           >

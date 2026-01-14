@@ -1,66 +1,85 @@
 /**
- * 统一图表主题配置
- * 基于 iOS Human Interface Guidelines 色彩系统
+ * Art Professional Chart Theme
+ * 温暖、专业、艺术品味的图表配色
  * 支持深色/浅色模式自动切换
  */
 
-// ============= iOS 系统标准色 =============
+// ============= Art Professional 色彩系统 =============
 
 export const iosSystemColors = {
-  blue: '#007AFF',
-  green: '#34C759',
-  orange: '#FF9500',
-  red: '#FF3B30',
-  purple: '#AF52DE',
-  teal: '#0097A7',      // Deepened for WCAG 3:1 contrast (原 #64D2FF 2.3:1)
-  indigo: '#5856D6',
-  pink: '#FF2D55',
-  yellow: '#B38F00',    // Deepened for WCAG 3:1 contrast (原 #FFCC00 1.9:1)
+  // 主色调 - 暖色系艺术风格
+  bronze: '#C87F4A',      // 暖铜棕 - 主色
+  terracotta: '#9B6B56',  // 陶土色 - 次要强调
+  sage: '#5F8A50',        // 鼠尾草绿
+  amber: '#B8923D',       // 琥珀黄
+  slate: '#64748B',       // 墨石灰
+  coral: '#B35A50',       // 珊瑚红
+  ochre: '#8F7860',       // 赭石色
+  olive: '#4A7A46',       // 橄榄绿
+  // 兼容旧代码
+  blue: '#64748B',        // 映射到墨石灰
+  green: '#5F8A50',
+  orange: '#C87F4A',
+  red: '#B35A50',
+  purple: '#9B6B56',
+  teal: '#4A7A46',
+  indigo: '#64748B',
+  pink: '#B35A50',
+  yellow: '#B8923D',
 };
 
-// iOS 深色模式系统色 (更鲜艳的版本)
+// 深色模式系统色 (更亮的暖色版本)
 export const iosDarkSystemColors = {
-  blue: '#0A84FF',
-  green: '#30D158',
-  orange: '#FF9F0A',
-  red: '#FF453A',
-  purple: '#BF5AF2',
-  teal: '#70D7FF',
-  indigo: '#5E5CE6',
-  pink: '#FF375F',
-  yellow: '#FFD60A',
+  bronze: '#DDA574',      // 暖铜棕亮
+  terracotta: '#C49976',  // 陶土色亮
+  sage: '#87A878',        // 鼠尾草绿亮
+  amber: '#D4A84B',       // 琥珀黄亮
+  slate: '#94A3B8',       // 墨石灰亮
+  coral: '#C97064',       // 珊瑚红亮
+  ochre: '#B8A089',       // 赭石色亮
+  olive: '#7A9B76',       // 橄榄绿亮
+  // 兼容旧代码
+  blue: '#94A3B8',
+  green: '#87A878',
+  orange: '#DDA574',
+  red: '#C97064',
+  purple: '#C49976',
+  teal: '#7A9B76',
+  indigo: '#94A3B8',
+  pink: '#C97064',
+  yellow: '#D4A84B',
 };
 
 // ============= 浅色模式图表配置 =============
 
 export const chartColorsLight = {
-  // 主要图表颜色序列 - iOS 系统色
+  // Art Professional 颜色序列
   primary: [
-    iosSystemColors.blue,     // #007AFF
-    iosSystemColors.green,    // #34C759
-    iosSystemColors.orange,   // #FF9500
-    iosSystemColors.purple,   // #AF52DE
-    iosSystemColors.red,      // #FF3B30
-    iosSystemColors.teal,     // #64D2FF
-    iosSystemColors.indigo,   // #5856D6
-    iosSystemColors.pink,     // #FF2D55
+    iosSystemColors.bronze,      // #C87F4A 暖铜棕
+    iosSystemColors.terracotta,  // #9B6B56 陶土色
+    iosSystemColors.sage,        // #5F8A50 鼠尾草绿
+    iosSystemColors.amber,       // #B8923D 琥珀黄
+    iosSystemColors.slate,       // #64748B 墨石灰
+    iosSystemColors.coral,       // #B35A50 珊瑚红
+    iosSystemColors.ochre,       // #8F7860 赭石色
+    iosSystemColors.olive,       // #4A7A46 橄榄绿
   ],
 
-  // 渐变色配置
+  // 渐变色配置 - 暖色调渐变
   gradients: {
-    primaryToSuccess: [iosSystemColors.blue, iosSystemColors.green],
-    primaryToAccent: [iosSystemColors.blue, iosSystemColors.orange],
-    successToWarning: [iosSystemColors.green, iosSystemColors.orange],
-    purpleToBlue: [iosSystemColors.purple, iosSystemColors.blue],
+    primaryToSuccess: [iosSystemColors.slate, iosSystemColors.sage],
+    primaryToAccent: [iosSystemColors.slate, iosSystemColors.bronze],
+    successToWarning: [iosSystemColors.sage, iosSystemColors.amber],
+    purpleToBlue: [iosSystemColors.terracotta, iosSystemColors.slate],
   },
 
-  // 语义色 - 修复对比度
+  // 语义色 - Art Professional 风格
   semantic: {
-    success: '#1A7F37',       // 深化绿色 (对比度 4.5:1)
-    warning: '#9A6700',       // 深化橙色 (对比度 4.5:1)
-    error: '#CF222E',         // 深化红色 (对比度 4.5:1)
-    info: iosSystemColors.blue,
-    neutral: '#8E8E93',
+    success: '#5F8A50',       // 鼠尾草绿
+    warning: '#B8923D',       // 琥珀黄
+    error: '#B35A50',         // 珊瑚红
+    info: '#64748B',          // 墨石灰
+    neutral: '#7A726A',       // 暖灰
   },
 
   // 网格和轴线颜色 - WCAG AA 对比度优化
@@ -90,33 +109,33 @@ export const chartColorsLight = {
 // ============= 深色模式图表配置 =============
 
 export const chartColorsDark = {
-  // 主要图表颜色序列 - iOS 深色模式系统色
+  // Art Professional 深色模式颜色序列
   primary: [
-    iosDarkSystemColors.blue,     // #0A84FF
-    iosDarkSystemColors.green,    // #30D158
-    iosDarkSystemColors.orange,   // #FF9F0A
-    iosDarkSystemColors.purple,   // #BF5AF2
-    iosDarkSystemColors.red,      // #FF453A
-    iosDarkSystemColors.teal,     // #70D7FF
-    iosDarkSystemColors.indigo,   // #5E5CE6
-    iosDarkSystemColors.pink,     // #FF375F
+    iosDarkSystemColors.bronze,      // #DDA574 暖铜棕亮
+    iosDarkSystemColors.terracotta,  // #C49976 陶土色亮
+    iosDarkSystemColors.sage,        // #87A878 鼠尾草绿亮
+    iosDarkSystemColors.amber,       // #D4A84B 琥珀黄亮
+    iosDarkSystemColors.slate,       // #94A3B8 墨石灰亮
+    iosDarkSystemColors.coral,       // #C97064 珊瑚红亮
+    iosDarkSystemColors.ochre,       // #B8A089 赭石色亮
+    iosDarkSystemColors.olive,       // #7A9B76 橄榄绿亮
   ],
 
-  // 渐变色配置
+  // 渐变色配置 - 暖色调渐变
   gradients: {
-    primaryToSuccess: [iosDarkSystemColors.blue, iosDarkSystemColors.green],
-    primaryToAccent: [iosDarkSystemColors.blue, iosDarkSystemColors.orange],
-    successToWarning: [iosDarkSystemColors.green, iosDarkSystemColors.orange],
-    purpleToBlue: [iosDarkSystemColors.purple, iosDarkSystemColors.blue],
+    primaryToSuccess: [iosDarkSystemColors.slate, iosDarkSystemColors.sage],
+    primaryToAccent: [iosDarkSystemColors.slate, iosDarkSystemColors.bronze],
+    successToWarning: [iosDarkSystemColors.sage, iosDarkSystemColors.amber],
+    purpleToBlue: [iosDarkSystemColors.terracotta, iosDarkSystemColors.slate],
   },
 
-  // 语义色
+  // 语义色 - Art Professional 深色模式
   semantic: {
-    success: iosDarkSystemColors.green,
-    warning: '#D29922',    // 深色模式橙色
-    error: iosDarkSystemColors.red,
-    info: iosDarkSystemColors.blue,
-    neutral: '#8E8E93',
+    success: iosDarkSystemColors.sage,
+    warning: iosDarkSystemColors.amber,
+    error: iosDarkSystemColors.coral,
+    info: iosDarkSystemColors.slate,
+    neutral: '#A89E94',
   },
 
   // 网格和轴线颜色 - WCAG AA 对比度优化
@@ -165,32 +184,32 @@ export const organizationColors: Record<string, string> = {
   'Midjourney': '#5865F2',
 };
 
-// ============= VULCA 维度类别色 =============
+// ============= VULCA 维度类别色 - Art Professional =============
 
 export const vulcaCategoryColors = {
   creativity: {
-    light: iosSystemColors.red,
-    dark: iosDarkSystemColors.red,
+    light: iosSystemColors.bronze,      // 暖铜棕 - 创造力
+    dark: iosDarkSystemColors.bronze,
   },
   technical: {
-    light: iosSystemColors.green,
-    dark: iosDarkSystemColors.green,
+    light: iosSystemColors.sage,        // 鼠尾草绿 - 技术
+    dark: iosDarkSystemColors.sage,
   },
   emotional: {
-    light: iosSystemColors.blue,
-    dark: iosDarkSystemColors.blue,
+    light: iosSystemColors.coral,       // 珊瑚红 - 情感
+    dark: iosDarkSystemColors.coral,
   },
   contextual: {
-    light: iosSystemColors.indigo,
-    dark: iosDarkSystemColors.indigo,
+    light: iosSystemColors.slate,       // 墨石灰 - 语境
+    dark: iosDarkSystemColors.slate,
   },
   innovation: {
-    light: iosSystemColors.orange,
-    dark: iosDarkSystemColors.orange,
+    light: iosSystemColors.amber,       // 琥珀黄 - 创新
+    dark: iosDarkSystemColors.amber,
   },
   impact: {
-    light: iosSystemColors.purple,
-    dark: iosDarkSystemColors.purple,
+    light: iosSystemColors.terracotta,  // 陶土色 - 影响
+    dark: iosDarkSystemColors.terracotta,
   },
 };
 

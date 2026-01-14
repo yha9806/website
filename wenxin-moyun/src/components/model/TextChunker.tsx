@@ -34,9 +34,9 @@ const ScoreTooltip: React.FC<{ score: number; highlight: string }> = ({ score, h
 );
 
 const getHighlightStyle = (score: number) => {
-  // Using iOS system colors: #34C759 (green), #007AFF (blue), #FF9500 (orange)
+  // Using iOS system colors: #34C759 (green), #64748B (blue), #FF9500 (orange)
   if (score >= 90) return 'from-emerald-100/90 to-green-200/90 border-emerald-300/60 dark:from-emerald-900/40 dark:to-green-800/40 dark:border-emerald-600/30'; // 优秀 - iOS Green
-  if (score >= 80) return 'from-blue-100/90 to-indigo-200/90 border-blue-300/60 dark:from-blue-900/40 dark:to-indigo-800/40 dark:border-blue-600/30'; // 良好 - iOS Blue  
+  if (score >= 80) return 'from-slate-100/90 to-indigo-200/90 border-slate-400/60 dark:from-slate-900/40 dark:to-indigo-800/40 dark:border-slate-700/30'; // 良好 - iOS Blue  
   if (score >= 70) return 'from-green-50/90 to-emerald-100/90 border-green-200/50 dark:from-green-900/30 dark:to-emerald-900/30 dark:border-green-700/30'; // 合格 - Light Green
   return 'from-orange-100/90 to-amber-200/90 border-orange-300/60 border-dashed dark:from-orange-900/40 dark:to-amber-800/40 dark:border-orange-600/30'; // 待改进 - iOS Orange
 };
@@ -156,9 +156,9 @@ const TextChunker: React.FC<TextChunkerProps> = ({
               relative p-4 rounded-xl cursor-pointer transition-all duration-200 ease-out
               ${chunk.isHighlighted 
                 ? `bg-gradient-to-r ${getHighlightStyle(chunk.score || 75)} backdrop-blur-sm shadow-sm hover:shadow-md`
-                : 'bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 hover:bg-blue-50/80 hover:border-blue-300/60 dark:hover:bg-blue-900/20'
+                : 'bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 hover:bg-slate-50/80 hover:border-slate-400/60 dark:hover:bg-slate-900/20'
               }
-              ${activeChunk === chunk.id ? 'ring-2 ring-blue-400/50 shadow-lg scale-[1.02]' : ''}
+              ${activeChunk === chunk.id ? 'ring-2 ring-slate-500/50 shadow-lg scale-[1.02]' : ''}
             `}
             onClick={() => {
               setActiveChunk(activeChunk === chunk.id ? null : chunk.id);
@@ -235,7 +235,7 @@ const TextChunker: React.FC<TextChunkerProps> = ({
             <div className="text-xs text-gray-600 dark:text-gray-400">Total Segments</div>
           </div>
           <div>
-            <div className="text-lg font-semibold text-blue-600 dark:text-blue-400">
+            <div className="text-lg font-semibold text-slate-700 dark:text-slate-500">
               {chunks.filter(c => c.isHighlighted).length}
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-400">Highlighted</div>

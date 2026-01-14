@@ -190,9 +190,9 @@ export default function BookDemoPage() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-3xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-full mb-6">
-            <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <span className="text-sm font-medium text-blue-700 dark:text-blue-400">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900/20 rounded-full mb-6">
+            <Calendar className="w-5 h-5 text-slate-700 dark:text-slate-500" />
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-500">
               Schedule a Demo
             </span>
           </div>
@@ -222,8 +222,8 @@ export default function BookDemoPage() {
             <div className="space-y-4">
               {benefits.map((benefit) => (
                 <div key={benefit.title} className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <benefit.icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <div className="w-10 h-10 bg-slate-100 dark:bg-slate-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <benefit.icon className="w-5 h-5 text-slate-700 dark:text-slate-500" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 dark:text-white">
@@ -253,16 +253,16 @@ export default function BookDemoPage() {
                   onClick={() => handleUseCaseSelect(useCase.id)}
                   className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
                     formData.use_case === useCase.id
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                      ? 'border-slate-600 bg-slate-50 dark:bg-slate-900/20'
                       : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
                   <useCase.icon
                     className={`w-6 h-6 ${
                       useCase.color === 'blue'
-                        ? 'text-blue-500'
+                        ? 'text-slate-600'
                         : useCase.color === 'purple'
-                          ? 'text-purple-500'
+                          ? 'text-amber-600'
                           : 'text-orange-500'
                     }`}
                   />
@@ -271,7 +271,7 @@ export default function BookDemoPage() {
                     <p className="text-sm text-gray-600 dark:text-gray-400">{useCase.desc}</p>
                   </div>
                   {formData.use_case === useCase.id && (
-                    <CheckCircle2 className="w-5 h-5 text-blue-500 ml-auto" />
+                    <CheckCircle2 className="w-5 h-5 text-slate-600 ml-auto" />
                   )}
                 </button>
               ))}
@@ -310,7 +310,7 @@ export default function BookDemoPage() {
         >
           <IOSCard variant="elevated" className="overflow-hidden">
             <IOSCardHeader
-              emoji={<Send className="w-6 h-6 text-blue-500" />}
+              emoji={<Send className="w-6 h-6 text-slate-600" />}
               title="Request a Demo"
               subtitle="We'll respond within 24 hours"
             />
@@ -333,7 +333,7 @@ export default function BookDemoPage() {
                     className={`w-full px-4 py-3 rounded-xl border ${
                       errors.name
                         ? 'border-red-500 focus:ring-red-500'
-                        : 'border-gray-200 dark:border-gray-700 focus:ring-blue-500'
+                        : 'border-gray-200 dark:border-gray-700 focus:ring-slate-600'
                     } bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2`}
                     placeholder="Dr. Jane Smith"
                   />
@@ -362,7 +362,7 @@ export default function BookDemoPage() {
                     className={`w-full px-4 py-3 rounded-xl border ${
                       errors.email
                         ? 'border-red-500 focus:ring-red-500'
-                        : 'border-gray-200 dark:border-gray-700 focus:ring-blue-500'
+                        : 'border-gray-200 dark:border-gray-700 focus:ring-slate-600'
                     } bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2`}
                     placeholder="jane.smith@university.edu"
                   />
@@ -388,7 +388,7 @@ export default function BookDemoPage() {
                     name="organization"
                     value={formData.organization}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-600"
                     placeholder="Stanford University"
                   />
                 </div>
@@ -407,7 +407,7 @@ export default function BookDemoPage() {
                     name="role"
                     value={formData.role}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-600"
                     placeholder="Research Scientist"
                   />
                 </div>
@@ -425,7 +425,7 @@ export default function BookDemoPage() {
                     name="timeline"
                     value={formData.timeline}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-600"
                   >
                     <option value="">Select timeline...</option>
                     {timelineOptions.map((opt) => (
@@ -450,7 +450,7 @@ export default function BookDemoPage() {
                     value={formData.message}
                     onChange={handleInputChange}
                     rows={4}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-600 resize-none"
                     placeholder="What specific challenges are you looking to address with VULCA?"
                   />
                 </div>
@@ -498,7 +498,7 @@ export default function BookDemoPage() {
               Prefer email? Contact us at{' '}
               <a
                 href="mailto:demo@vulca.ai"
-                className="text-blue-600 dark:text-blue-400 hover:underline"
+                className="text-slate-700 dark:text-slate-500 hover:underline"
               >
                 demo@vulca.ai
               </a>
@@ -515,11 +515,11 @@ export default function BookDemoPage() {
             No credit card required
           </div>
           <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-blue-500" />
+            <Clock className="w-4 h-4 text-slate-600" />
             Response within 24 hours
           </div>
           <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-purple-500" />
+            <Users className="w-4 h-4 text-amber-600" />
             Tailored to your use case
           </div>
         </div>

@@ -310,7 +310,7 @@ export default function FilterPanel({ onFilterChange, organizations, tags }: Fil
                     </span>
                   )}
                   {filters.organizations.map((org) => (
-                    <span key={org} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded-full">
+                    <span key={org} className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-400 text-xs rounded-full">
                       {org}
                       <button onClick={() => updateFilters({ 
                         organizations: filters.organizations.filter(o => o !== org) 

@@ -199,7 +199,7 @@ export default function SolutionsPage() {
           ].map((item) => (
             <IOSCard key={item.title} variant="flat">
               <IOSCardHeader
-                emoji={<item.icon className="w-6 h-6 text-blue-500" />}
+                emoji={<item.icon className="w-6 h-6 text-slate-600" />}
                 title={item.title}
               />
               <IOSCardContent>

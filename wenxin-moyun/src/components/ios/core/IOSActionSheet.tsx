@@ -129,7 +129,7 @@ export const IOSActionSheet: React.FC<IOSActionSheetProps> = ({
                       }
                       ${action.destructive
                         ? 'text-red-500 dark:text-red-400'
-                        : 'text-blue-500 dark:text-blue-400'
+                        : 'text-slate-600 dark:text-slate-500'
                       }
                       ${index === 0 && !title && !message ? 'rounded-t-2xl' : ''}
                       ${index === actions.length - 1 ? 'rounded-b-2xl' : ''}
@@ -168,7 +168,7 @@ export const IOSActionSheet: React.FC<IOSActionSheetProps> = ({
                   ${liquidGlass.containers.card}
                   rounded-2xl
                   text-base font-semibold
-                  text-blue-500 dark:text-blue-400
+                  text-slate-600 dark:text-slate-500
                   active:bg-gray-100/50 dark:active:bg-gray-800/50
                   transition-colors duration-150
                 `}

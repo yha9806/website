@@ -300,12 +300,12 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
     return (
       <div className="space-y-4">
         {/* Smart dimension selection based on filter */}
-        <div className="flex flex-wrap gap-2 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+        <div className="flex flex-wrap gap-2 p-4 bg-slate-50 dark:bg-slate-900/20 rounded-lg border border-blue-200 dark:border-slate-800">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-400">
               📊 Showing {topDims.length} dimensions
             </span>
-            <span className="text-xs text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/50 px-2 py-1 rounded">
+            <span className="text-xs text-slate-700 dark:text-slate-500 bg-slate-100 dark:bg-slate-900/50 px-2 py-1 rounded">
               {dimensionFilter === 'all' && 'All Available'}
               {dimensionFilter === 'high-variance' && 'High Variance'}
               {dimensionFilter === 'top-performance' && 'Top Performers'}
@@ -521,15 +521,15 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
             </div>
           </IOSCard>
           
-          <IOSCard variant="flat" className="border-l-4 border-blue-500">
+          <IOSCard variant="flat" className="border-l-4 border-slate-600">
             <div className="p-4">
-              <h5 className="text-sm font-medium text-blue-600 dark:text-blue-400 flex items-center">
+              <h5 className="text-sm font-medium text-slate-700 dark:text-slate-500 flex items-center">
                 📈 Overview
               </h5>
               <p className="text-lg font-semibold mt-1">
                 {dimensionVariances.length} dims
               </p>
-              <p className="text-sm text-blue-500 mt-1">
+              <p className="text-sm text-slate-600 mt-1">
                 Avg σ: {(dimensionVariances.reduce((sum, dv) => sum + dv.variance, 0) / dimensionVariances.length).toFixed(1)}
               </p>
             </div>
@@ -551,7 +551,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
               <span>High Variance + Low Score</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-0.5 bg-blue-500 opacity-80" style={{borderTop: '1px dashed'}}></div>
+              <div className="w-4 h-0.5 bg-slate-600 opacity-80" style={{borderTop: '1px dashed'}}></div>
               <span>Medium Variance</span>
             </div>
             <div className="flex items-center gap-2">
@@ -930,7 +930,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
           <select
             value={selectedCulturalPerspective}
             onChange={(e) => setSelectedCulturalPerspective(e.target.value)}
-            className="text-sm px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="text-sm px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-slate-600 focus:border-transparent"
           >
             {Object.entries(CULTURAL_PERSPECTIVES).map(([key, perspective]) => (
               <option key={key} value={key}>

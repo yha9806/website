@@ -215,7 +215,7 @@ export default function CustomersPage() {
                       </ul>
                     </div>
 
-                    <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-600 dark:text-gray-400">
+                    <blockquote className="border-l-4 border-slate-600 pl-4 italic text-gray-600 dark:text-gray-400">
                       "{study.quote}"
                     </blockquote>
                   </div>

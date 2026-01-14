@@ -69,11 +69,11 @@ export default function HomePage() {
               <CheckCircle2 className="w-3.5 h-3.5" />
               Reproducible
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 text-xs font-medium rounded-full">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 dark:bg-slate-800/30 text-slate-700 dark:text-slate-300 text-xs font-medium rounded-full">
               <BarChart3 className="w-3.5 h-3.5" />
               Decision-grade
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 text-xs font-medium rounded-full">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C87F4A]/10 dark:bg-[#C87F4A]/20 text-[#9B6B56] dark:text-[#DDA574] text-xs font-medium rounded-full">
               <Shield className="w-3.5 h-3.5" />
               Enterprise-ready
             </span>
@@ -87,7 +87,7 @@ export default function HomePage() {
             transition={{ delay: 0.3 }}
           >
             Evaluate AI Models for{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-[#C87F4A] dark:from-slate-400 dark:to-[#DDA574]">
               Cultural Understanding
             </span>
           </motion.h1>
@@ -158,7 +158,7 @@ export default function HomePage() {
           <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12">
             {/* Conference badges */}
             <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-              <FileText className="w-5 h-5 text-blue-600" />
+              <FileText className="w-5 h-5 text-slate-600" />
               <span className="font-semibold text-gray-900 dark:text-white">EMNLP 2025</span>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
@@ -166,7 +166,7 @@ export default function HomePage() {
               <span className="font-semibold text-gray-900 dark:text-white">ACL Findings</span>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-              <FileText className="w-5 h-5 text-purple-600" />
+              <FileText className="w-5 h-5 text-[#C87F4A]" />
               <span className="font-semibold text-gray-900 dark:text-white">GeBNLP 2025</span>
             </div>
           </div>
@@ -269,9 +269,9 @@ export default function HomePage() {
           <IOSCardGrid columns={3} gap="lg">
             {/* Pillar 1: Benchmark Library */}
             <motion.div variants={fadeInUp}>
-              <IOSCard variant="flat" className="h-full border-t-4 border-t-blue-500">
+              <IOSCard variant="flat" className="h-full border-t-4 border-t-slate-500">
                 <IOSCardHeader
-                  emoji={<Layers className="w-8 h-8 text-blue-500" />}
+                  emoji={<Layers className="w-8 h-8 text-slate-500" />}
                   title="Benchmark Library"
                   subtitle="L1-L5 Framework"
                 />
@@ -296,9 +296,9 @@ export default function HomePage() {
 
             {/* Pillar 2: Evaluation Engine */}
             <motion.div variants={fadeInUp}>
-              <IOSCard variant="flat" className="h-full border-t-4 border-t-purple-500">
+              <IOSCard variant="flat" className="h-full border-t-4 border-t-[#C87F4A]">
                 <IOSCardHeader
-                  emoji={<Zap className="w-8 h-8 text-purple-500" />}
+                  emoji={<Zap className="w-8 h-8 text-[#C87F4A]" />}
                   title="Evaluation Engine"
                   subtitle="Multi-perspective"
                 />
@@ -380,8 +380,8 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-8 relative z-10">
             {/* Step 1 */}
             <motion.div variants={fadeInUp} className="text-center">
-              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">1</span>
+              <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-slate-600 dark:text-slate-300">1</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Choose Benchmark
@@ -393,8 +393,8 @@ export default function HomePage() {
 
             {/* Step 2 */}
             <motion.div variants={fadeInUp} className="text-center">
-              <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-purple-600 dark:text-purple-400">2</span>
+              <div className="w-16 h-16 bg-[#C87F4A]/10 dark:bg-[#C87F4A]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-[#C87F4A] dark:text-[#DDA574]">2</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Run Evaluation
@@ -447,7 +447,7 @@ export default function HomePage() {
             <motion.div variants={fadeInUp}>
               <IOSCard variant="elevated" interactive className="h-full">
                 <IOSCardHeader
-                  emoji={<Building2 className="w-10 h-10 text-blue-500" />}
+                  emoji={<Building2 className="w-10 h-10 text-slate-500" />}
                   title="AI Labs & Companies"
                   subtitle="Model selection & release"
                 />
@@ -457,11 +457,11 @@ export default function HomePage() {
                   </p>
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                      <TrendingUp className="w-4 h-4 text-blue-500" />
+                      <TrendingUp className="w-4 h-4 text-slate-500" />
                       Pre-release cultural audits
                     </div>
                     <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                      <Target className="w-4 h-4 text-blue-500" />
+                      <Target className="w-4 h-4 text-slate-500" />
                       47D regression tracking
                     </div>
                   </div>
@@ -480,7 +480,7 @@ export default function HomePage() {
             <motion.div variants={fadeInUp}>
               <IOSCard variant="elevated" interactive className="h-full">
                 <IOSCardHeader
-                  emoji={<GraduationCap className="w-10 h-10 text-purple-500" />}
+                  emoji={<GraduationCap className="w-10 h-10 text-[#C87F4A]" />}
                   title="Research Institutions"
                   subtitle="Academic benchmarking"
                 />
@@ -490,11 +490,11 @@ export default function HomePage() {
                   </p>
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                      <FileText className="w-4 h-4 text-purple-500" />
+                      <FileText className="w-4 h-4 text-[#C87F4A]" />
                       Citation-ready reports
                     </div>
                     <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                      <CheckCircle2 className="w-4 h-4 text-purple-500" />
+                      <CheckCircle2 className="w-4 h-4 text-[#C87F4A]" />
                       Version-controlled reproducibility
                     </div>
                   </div>
@@ -566,16 +566,16 @@ export default function HomePage() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
         >
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-8">
+          <div className="bg-gradient-to-r from-slate-50 to-[#C87F4A]/10 dark:from-slate-800/30 dark:to-[#C87F4A]/20 rounded-2xl p-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                <div className="text-4xl md:text-5xl font-bold text-slate-600 dark:text-slate-300 mb-2">
                   {leaderboard.length || 42}
                 </div>
                 <div className="text-gray-600 dark:text-gray-400">Models Evaluated</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-purple-600 dark:text-purple-400 mb-2">
+                <div className="text-4xl md:text-5xl font-bold text-[#C87F4A] dark:text-[#DDA574] mb-2">
                   47
                 </div>
                 <div className="text-gray-600 dark:text-gray-400">Dimensions</div>

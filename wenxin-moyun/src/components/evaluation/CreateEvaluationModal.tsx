@@ -100,7 +100,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
                 id="model-select"
                 value={formData.modelId}
                 onChange={(e) => setFormData(prev => ({ ...prev, modelId: e.target.value }))}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-600"
                 required
               >
                 {models.map(model => (
@@ -129,15 +129,15 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
                     onClick={() => setFormData(prev => ({ ...prev, taskType: type.value as any }))}
                     className={`p-4 rounded-lg border-2 transition-all flex items-center gap-3 ${
                       formData.taskType === type.value
-                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                        ? 'border-amber-600 bg-amber-50 dark:bg-purple-900/20'
                         : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                     }`}
                   >
                     <Icon className={`w-5 h-5 ${
-                      formData.taskType === type.value ? 'text-purple-600 dark:text-purple-400' : 'text-gray-600 dark:text-gray-400'
+                      formData.taskType === type.value ? 'text-amber-700 dark:text-amber-500' : 'text-gray-600 dark:text-gray-400'
                     }`} />
                     <span className={`font-medium ${
-                      formData.taskType === type.value ? 'text-purple-900 dark:text-purple-300' : 'text-gray-700 dark:text-gray-300'
+                      formData.taskType === type.value ? 'text-purple-900 dark:text-amber-400' : 'text-gray-700 dark:text-gray-300'
                     }`}>
                       {type.label}
                     </span>
@@ -157,7 +157,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
               value={formData.prompt}
               onChange={(e) => setFormData(prev => ({ ...prev, prompt: e.target.value }))}
               placeholder={currentTaskType?.placeholder}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-600 resize-none"
               rows={4}
               required
             />
@@ -176,7 +176,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
                   value={formData.style}
                   onChange={(e) => setFormData(prev => ({ ...prev, style: e.target.value }))}
                   placeholder={formData.taskType === 'poem' ? 'e.g., classical, modern, romantic' : 'e.g., sci-fi, fantasy, realistic'}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-600"
                 />
               </div>
             )}
@@ -188,7 +188,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
                   id="length-select"
                   value={formData.length}
                   onChange={(e) => setFormData(prev => ({ ...prev, length: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-600"
                 >
                   <option value="short">Short (under 500 words)</option>
                   <option value="medium">Medium (around 1000 words)</option>
@@ -203,7 +203,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
                 id="language-select"
                 value={formData.language}
                 onChange={(e) => setFormData(prev => ({ ...prev, language: e.target.value }))}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-600"
               >
                 <option value="zh">Chinese</option>
                 <option value="en">English</option>
@@ -224,7 +224,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
             <button
               type="submit"
               disabled={isSubmitting || !formData.modelId || !formData.prompt.trim()}
-              className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 bg-gradient-to-r from-amber-700 to-slate-700 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Creating...' : 'Create Task'}
             </button>

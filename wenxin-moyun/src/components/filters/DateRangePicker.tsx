@@ -202,9 +202,9 @@ export default function DateRangePicker({
                         ${isDateDisabled(date) 
                           ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
                           : isDateInRange(date)
-                          ? 'bg-blue-500 text-white'
+                          ? 'bg-slate-600 text-white'
                           : date.toDateString() === value[0]?.toDateString() || date.toDateString() === value[1]?.toDateString()
-                          ? 'bg-blue-600 text-white'
+                          ? 'bg-slate-700 text-white'
                           : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#262C36]'
                         }
                       `}
@@ -227,7 +227,7 @@ export default function DateRangePicker({
                       lastWeek.setDate(today.getDate() - 7);
                       onChange([lastWeek, today]);
                     }}
-                    className="text-xs text-blue-600 dark:text-blue-400 hover:underline px-2 py-1"
+                    className="text-xs text-slate-700 dark:text-slate-500 hover:underline px-2 py-1"
                   >
                     最近7天
                   </button>
@@ -238,7 +238,7 @@ export default function DateRangePicker({
                       lastMonth.setMonth(today.getMonth() - 1);
                       onChange([lastMonth, today]);
                     }}
-                    className="text-xs text-blue-600 dark:text-blue-400 hover:underline px-2 py-1"
+                    className="text-xs text-slate-700 dark:text-slate-500 hover:underline px-2 py-1"
                   >
                     最近30天
                   </button>

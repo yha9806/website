@@ -139,7 +139,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
           </div>
           
           <div className="text-center p-3 ios-glass rounded-lg">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+            <div className="text-2xl font-bold text-slate-700 dark:text-slate-500">
               {entry.battles}
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1">

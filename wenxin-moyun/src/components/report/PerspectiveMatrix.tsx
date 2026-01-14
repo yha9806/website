@@ -38,14 +38,14 @@ export function PerspectiveMatrix({
 }: PerspectiveMatrixProps) {
   const getScoreColor = (score: number) => {
     if (score >= 0.8) return 'bg-green-500';
-    if (score >= 0.6) return 'bg-blue-500';
+    if (score >= 0.6) return 'bg-slate-600';
     if (score >= 0.4) return 'bg-yellow-500';
     return 'bg-red-500';
   };
 
   const getScoreTextColor = (score: number) => {
     if (score >= 0.8) return 'text-green-600 dark:text-green-400';
-    if (score >= 0.6) return 'text-blue-600 dark:text-blue-400';
+    if (score >= 0.6) return 'text-slate-700 dark:text-slate-500';
     if (score >= 0.4) return 'text-yellow-600 dark:text-yellow-400';
     return 'text-red-600 dark:text-red-400';
   };
@@ -55,9 +55,9 @@ export function PerspectiveMatrix({
       case 'Eastern':
         return 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300';
       case 'Western':
-        return 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300';
+        return 'bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-400';
       default:
-        return 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300';
+        return 'bg-amber-100 dark:bg-purple-900/30 text-purple-700 dark:text-amber-400';
     }
   };
 
@@ -90,15 +90,15 @@ export function PerspectiveMatrix({
               </p>
               <p className="text-xs text-gray-500 mt-1">{easternPerspectives.length} perspectives</p>
             </div>
-            <div className="text-center p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20">
-              <p className="text-sm text-blue-700 dark:text-blue-300 mb-1">Western</p>
+            <div className="text-center p-4 rounded-xl bg-slate-50 dark:bg-slate-900/20">
+              <p className="text-sm text-slate-700 dark:text-slate-400 mb-1">Western</p>
               <p className={`text-3xl font-bold ${getScoreTextColor(avgWestern)}`}>
                 {(avgWestern * 100).toFixed(0)}
               </p>
               <p className="text-xs text-gray-500 mt-1">{westernPerspectives.length} perspectives</p>
             </div>
-            <div className="text-center p-4 rounded-xl bg-purple-50 dark:bg-purple-900/20">
-              <p className="text-sm text-purple-700 dark:text-purple-300 mb-1">Gap</p>
+            <div className="text-center p-4 rounded-xl bg-amber-50 dark:bg-purple-900/20">
+              <p className="text-sm text-purple-700 dark:text-amber-400 mb-1">Gap</p>
               <p className={`text-3xl font-bold ${Math.abs(avgEastern - avgWestern) > 0.1 ? 'text-orange-600' : 'text-green-600'}`}>
                 {Math.abs((avgEastern - avgWestern) * 100).toFixed(0)}%
               </p>
@@ -118,7 +118,7 @@ export function PerspectiveMatrix({
                 className={`
                   p-4 rounded-xl border-2 text-left transition-all
                   ${selectedPerspective === perspective.perspective
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                    ? 'border-slate-600 bg-slate-50 dark:bg-slate-900/20'
                     : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600 bg-gray-50 dark:bg-gray-800/50'
                   }
                 `}
@@ -152,7 +152,7 @@ export function PerspectiveMatrix({
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="mt-6 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800"
+              className="mt-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/20 border border-blue-200 dark:border-slate-800"
             >
               {(() => {
                 const selected = perspectives.find(p => p.perspective === selectedPerspective);
@@ -160,7 +160,7 @@ export function PerspectiveMatrix({
                 return (
                   <>
                     <div className="flex items-center gap-2 mb-3">
-                      <Eye className="w-5 h-5 text-blue-500" />
+                      <Eye className="w-5 h-5 text-slate-600" />
                       <h4 className="font-semibold text-gray-900 dark:text-white">
                         {selected.perspective} Perspective
                       </h4>

@@ -77,7 +77,7 @@ export const IOSTabBar: React.FC<IOSTabBarProps> = ({
                 relative flex flex-col items-center justify-center
                 flex-1 h-full max-w-20
                 ${isDisabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}
-                focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:ring-offset-0
+                focus:outline-none focus:ring-2 focus:ring-slate-500/20 focus:ring-offset-0
                 rounded-lg
               `}
               onTap={() => !isDisabled && onTabPress(index, item)}
@@ -108,7 +108,7 @@ export const IOSTabBar: React.FC<IOSTabBarProps> = ({
                 className={`
                   flex items-center justify-center mb-1
                   transition-colors duration-200
-                  ${isSelected ? 'text-blue-500' : 'text-gray-500 dark:text-gray-400'}
+                  ${isSelected ? 'text-slate-600' : 'text-gray-500 dark:text-gray-400'}
                 `}
                 animate={isSelected ? { scale: 1.2, y: -2 } : { scale: 1, y: 0 }}
                 transition={iosAnimations.spring}
@@ -130,7 +130,7 @@ export const IOSTabBar: React.FC<IOSTabBarProps> = ({
                   className={`
                     text-xs font-medium leading-tight
                     transition-colors duration-200
-                    ${isSelected ? 'text-blue-500' : 'text-gray-500 dark:text-gray-400'}
+                    ${isSelected ? 'text-slate-600' : 'text-gray-500 dark:text-gray-400'}
                   `}
                   animate={isSelected ? { opacity: 1, y: -1 } : { opacity: 0.8, y: 0 }}
                   transition={iosAnimations.spring}
@@ -146,7 +146,7 @@ export const IOSTabBar: React.FC<IOSTabBarProps> = ({
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="absolute bottom-1 w-1 h-1 bg-blue-500 rounded-full"
+                    className="absolute bottom-1 w-1 h-1 bg-slate-600 rounded-full"
                     transition={iosAnimations.spring}
                   />
                 )}

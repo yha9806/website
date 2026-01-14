@@ -4,16 +4,17 @@
  */
 
 export const iosColors = {
-  // System Colors
-  blue: '#007AFF',
-  green: '#34C759',
-  indigo: '#5856D6',
-  orange: '#FF9500',
-  pink: '#FF2D55',
-  purple: '#AF52DE',
-  red: '#FF3B30',
-  teal: '#64D2FF',
-  yellow: '#FFCC00',
+  // Art Professional Color Palette
+  // Replacing iOS blue/purple with warm, artistic tones
+  blue: '#334155',       // 墨石灰 (slate) - replaces iOS blue
+  green: '#5F8A50',      // 鼠尾草绿 - softer green
+  indigo: '#4A433C',     // 暖灰 - muted indigo replacement
+  orange: '#B8923D',     // 琥珀金 - warm amber
+  pink: '#9B6B56',       // 陶土色 - terracotta replaces pink
+  purple: '#C87F4A',     // 暖铜棕 (bronze) - replaces iOS purple
+  red: '#C65D4D',        // 珊瑚红 - softer red
+  teal: '#6B8E7A',       // 青铜绿 - muted teal
+  yellow: '#D4A84B',     // 暖金 - warm gold
   
   // Gray Scale
   gray: {

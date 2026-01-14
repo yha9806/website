@@ -165,9 +165,9 @@ const PapersPage: React.FC = () => {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: 'spring' }}
-          className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/30 mb-4"
+          className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-900/30 mb-4"
         >
-          <FileText className="w-8 h-8 text-blue-500" />
+          <FileText className="w-8 h-8 text-slate-600" />
         </motion.div>
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
           Publications

@@ -81,19 +81,19 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800"
+      className="bg-gradient-to-br from-slate-50 to-indigo-50 dark:from-slate-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-200 dark:border-slate-800"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <div className="p-2 bg-neutral-50 dark:bg-[#21262D] rounded-lg shadow-sm">
-            <TrendingUp className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <TrendingUp className="w-5 h-5 text-slate-700 dark:text-slate-500" />
           </div>
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">AI 评分参考</h3>
         </div>
         <button
           onClick={() => setShowDetails(!showDetails)}
-          className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
+          className="text-sm text-slate-700 hover:text-slate-700 flex items-center gap-1"
         >
           <Info className="w-4 h-4" />
           {showDetails ? '收起' : '详情'}
@@ -114,7 +114,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
           <div className="relative h-full">
             {/* Score range bar */}
             <div 
-              className="absolute h-full bg-gradient-to-r from-blue-400 to-indigo-400 rounded-md opacity-30"
+              className="absolute h-full bg-gradient-to-r from-slate-500 to-indigo-400 rounded-md opacity-30"
               style={{
                 left: `${advice.score_range.min}%`,
                 width: `${advice.score_range.max - advice.score_range.min}%`
@@ -144,7 +144,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
       </div>
 
       {/* Suggestion */}
-      <div className="mt-8 p-3 bg-neutral-50 dark:bg-[#21262D] rounded-lg border border-blue-100 dark:border-blue-800">
+      <div className="mt-8 p-3 bg-neutral-50 dark:bg-[#21262D] rounded-lg border border-slate-100 dark:border-slate-800">
         <p className="text-sm text-gray-700 dark:text-gray-300">{advice.suggestion}</p>
       </div>
 
@@ -184,19 +184,19 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
           <div className="flex gap-2">
             <button
               onClick={() => onScoreChange?.(advice.score_range.min)}
-              className="flex-1 py-2 text-sm bg-neutral-50 dark:bg-[#21262D] text-blue-600 dark:text-blue-400 rounded-lg border border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+              className="flex-1 py-2 text-sm bg-neutral-50 dark:bg-[#21262D] text-slate-700 dark:text-slate-500 rounded-lg border border-blue-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/20 transition-colors"
             >
               使用最低分 ({advice.score_range.min})
             </button>
             <button
               onClick={() => onScoreChange?.(advice.reference_score)}
-              className="flex-1 py-2 text-sm bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
+              className="flex-1 py-2 text-sm bg-slate-700 dark:bg-slate-600 text-white rounded-lg hover:bg-slate-700 dark:hover:bg-slate-700 transition-colors"
             >
               使用参考分 ({advice.reference_score})
             </button>
             <button
               onClick={() => onScoreChange?.(advice.score_range.max)}
-              className="flex-1 py-2 text-sm bg-neutral-50 dark:bg-[#21262D] text-blue-600 dark:text-blue-400 rounded-lg border border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+              className="flex-1 py-2 text-sm bg-neutral-50 dark:bg-[#21262D] text-slate-700 dark:text-slate-500 rounded-lg border border-blue-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/20 transition-colors"
             >
               使用最高分 ({advice.score_range.max})
             </button>

@@ -150,10 +150,10 @@ export default function PricingPage() {
             >
               <IOSCard
                 variant="elevated"
-                className={`h-full relative ${plan.popular ? 'ring-2 ring-blue-500' : ''}`}
+                className={`h-full relative ${plan.popular ? 'ring-2 ring-slate-600' : ''}`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-blue-500 text-white text-xs font-semibold rounded-full">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-600 text-white text-xs font-semibold rounded-full">
                     Most Popular
                   </div>
                 )}
@@ -279,7 +279,7 @@ export default function PricingPage() {
                 className="w-full flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow"
               >
                 <span className="text-left font-medium text-gray-900 dark:text-white flex items-center gap-2">
-                  <HelpCircle className="w-5 h-5 text-blue-500" />
+                  <HelpCircle className="w-5 h-5 text-slate-600" />
                   {faq.q}
                 </span>
                 <ArrowRight className={`w-5 h-5 text-gray-400 transition-transform ${openFaq === index ? 'rotate-90' : ''}`} />

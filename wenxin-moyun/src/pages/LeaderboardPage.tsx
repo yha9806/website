@@ -182,7 +182,7 @@ export default function LeaderboardPage() {
                 px-4 py-2.5 rounded-xl font-medium transition-all flex items-center gap-2 min-h-[44px]
                 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
                 ${selectedCategory === cat.id
-                  ? 'bg-blue-600 text-white shadow-lg'
+                  ? 'bg-slate-700 text-white shadow-lg'
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                 }
               `}
@@ -324,12 +324,12 @@ export default function LeaderboardPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="mt-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white"
+        className="mt-12 bg-gradient-to-r from-slate-700 to-amber-700 rounded-2xl p-8 text-white"
       >
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <h3 className="text-2xl font-bold mb-2">Need Custom Model Evaluation?</h3>
-            <p className="text-blue-100">
+            <p className="text-slate-100">
               Get comprehensive 47-dimensional analysis with cultural perspective insights for your AI models.
             </p>
           </div>
@@ -341,7 +341,7 @@ export default function LeaderboardPage() {
               </IOSButton>
             </Link>
             <Link to="/pricing">
-              <IOSButton variant="secondary" size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
+              <IOSButton variant="secondary" size="lg" className="bg-white text-slate-700 hover:bg-slate-50">
                 View Pricing
                 <ArrowRight className="w-4 h-4 ml-2" />
               </IOSButton>
@@ -379,7 +379,7 @@ function TopDeltaSection({ topModels }: { topModels: LeaderboardEntry[] }) {
     >
       <IOSCard variant="elevated">
         <IOSCardHeader
-          emoji={<TrendingUp className="w-6 h-6 text-blue-500" />}
+          emoji={<TrendingUp className="w-6 h-6 text-slate-600" />}
           title="Top-Δ Dimensions"
           subtitle={`Largest performance gaps between ${model1.model.name} and ${model2.model.name}`}
         />
@@ -387,7 +387,7 @@ function TopDeltaSection({ topModels }: { topModels: LeaderboardEntry[] }) {
           <div className="space-y-4">
             {dimensionDeltas.map((dim, index) => (
               <div key={dim.name} className="flex items-center gap-4">
-                <span className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-400">
+                <span className="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-900/30 flex items-center justify-center text-xs font-bold text-slate-700 dark:text-slate-500">
                   {index + 1}
                 </span>
                 <div className="flex-1">
@@ -405,7 +405,7 @@ function TopDeltaSection({ topModels }: { topModels: LeaderboardEntry[] }) {
                   <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                     <div className="h-full flex">
                       <div
-                        className="bg-blue-500 transition-all duration-500"
+                        className="bg-slate-600 transition-all duration-500"
                         style={{ width: `${dim.model1Score * 100}%` }}
                       />
                     </div>
@@ -419,7 +419,7 @@ function TopDeltaSection({ topModels }: { topModels: LeaderboardEntry[] }) {
               These dimensions show the most significant performance differences. Use this data to identify
               specific areas where models excel or need improvement.
             </p>
-            <Link to="/vulca" className="inline-flex items-center gap-1 mt-2 text-sm text-blue-600 dark:text-blue-400 hover:underline">
+            <Link to="/vulca" className="inline-flex items-center gap-1 mt-2 text-sm text-slate-700 dark:text-slate-500 hover:underline">
               Explore full 47D analysis
               <ExternalLink className="w-3 h-3" />
             </Link>
@@ -477,7 +477,7 @@ function CitationSection({
     >
       <IOSCard variant="flat">
         <IOSCardHeader
-          emoji={<Quote className="w-6 h-6 text-purple-500" />}
+          emoji={<Quote className="w-6 h-6 text-amber-600" />}
           title="Cite This Result"
           subtitle="Use this citation for academic publications"
         />
@@ -514,7 +514,7 @@ function CitationSection({
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
             For reproducibility, please include the version number and evaluation date in your citations.
             Full methodology available in our{' '}
-            <Link to="/methodology" className="text-blue-600 dark:text-blue-400 hover:underline">documentation</Link>.
+            <Link to="/methodology" className="text-slate-700 dark:text-slate-500 hover:underline">documentation</Link>.
           </p>
         </IOSCardContent>
       </IOSCard>

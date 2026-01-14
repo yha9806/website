@@ -66,16 +66,16 @@ export const IOSSegmentedControl: React.FC<IOSSegmentedControlProps> = ({
     }
   };
 
-  // Style configurations
+  // Style configurations - Art Professional palette
   const styleConfig = {
     plain: {
       container: 'bg-transparent',
-      selected: 'bg-blue-500 text-white',
-      unselected: 'text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+      selected: 'bg-slate-700 text-white',
+      unselected: 'text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-900/20'
     },
     bordered: {
       container: `${liquidGlass.borders.regular} bg-transparent`,
-      selected: 'bg-blue-500 text-white',
+      selected: 'bg-slate-700 text-white',
       unselected: 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
     },
     filled: {
@@ -140,7 +140,7 @@ export const IOSSegmentedControl: React.FC<IOSSegmentedControlProps> = ({
               rounded-md
               font-medium ${config.text}
               transition-colors duration-200
-              focus:outline-none focus:ring-2 focus:ring-blue-500/20
+              focus:outline-none focus:ring-2 focus:ring-slate-500/20
               ${isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
               ${isSelected ? styleConf.selected : styleConf.unselected}
             `}

@@ -65,14 +65,14 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm transform group-hover:scale-105 transition-transform duration-200">
+            <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-[#C87F4A] rounded-xl flex items-center justify-center shadow-sm transform group-hover:scale-105 transition-transform duration-200">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div className="hidden sm:block">
               <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 VULCA
               </h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Cultural AI Evaluation</p>
+              <p className="text-xs text-gray-600 dark:text-gray-300">Cultural AI Evaluation</p>
             </div>
           </Link>
 
@@ -120,10 +120,10 @@ export default function Header() {
                       onClick={() => setIsSolutionsOpen(false)}
                       className="flex items-start gap-3 px-4 py-2 hover:bg-gray-100/50 dark:hover:bg-gray-800/50"
                     >
-                      <item.icon className="w-5 h-5 text-blue-500 mt-0.5" />
+                      <item.icon className="w-5 h-5 text-[#C87F4A] mt-0.5" />
                       <div>
                         <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.name}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">{item.desc}</div>
+                        <div className="text-xs text-gray-600 dark:text-gray-300">{item.desc}</div>
                       </div>
                     </Link>
                   ))}
@@ -165,7 +165,7 @@ export default function Header() {
 
               {isResourcesOpen && (
                 <div className="absolute top-full left-0 mt-2 w-56 ios-glass rounded-xl border border-gray-200/20 dark:border-gray-700/20 shadow-lg py-2 z-50">
-                  <div className="px-4 py-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <div className="px-4 py-1.5 text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                     Documentation
                   </div>
                   {resourcesItems.map((item) => (
@@ -175,12 +175,12 @@ export default function Header() {
                       onClick={() => setIsResourcesOpen(false)}
                       className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100/50 dark:hover:bg-gray-800/50"
                     >
-                      <item.icon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                      <item.icon className="w-4 h-4 text-gray-600 dark:text-gray-300" />
                       <span className="text-sm text-gray-700 dark:text-gray-300">{item.name}</span>
                     </Link>
                   ))}
                   <div className="border-t border-gray-200/20 dark:border-gray-700/20 my-2" />
-                  <div className="px-4 py-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <div className="px-4 py-1.5 text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                     Public Demo
                   </div>
                   {demoLinks.map((item) => (
@@ -190,7 +190,7 @@ export default function Header() {
                       onClick={() => setIsResourcesOpen(false)}
                       className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100/50 dark:hover:bg-gray-800/50"
                     >
-                      <item.icon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                      <item.icon className="w-4 h-4 text-gray-600 dark:text-gray-300" />
                       <span className="text-sm text-gray-700 dark:text-gray-300">{item.name}</span>
                     </Link>
                   ))}
@@ -223,7 +223,7 @@ export default function Header() {
             <HeaderControls />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors duration-200"
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -254,7 +254,7 @@ export default function Header() {
 
               {/* Solutions section */}
               <div className="pl-0">
-                <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 py-2">
+                <div className="text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider px-3 py-2">
                   Solutions
                 </div>
                 <Link to="/solutions" onClick={() => setIsMenuOpen(false)}>
@@ -287,7 +287,7 @@ export default function Header() {
 
             {/* Resources section */}
             <div className="border-t border-gray-200/20 dark:border-gray-700/20 pt-2 px-3">
-              <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 py-2">
+              <div className="text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider px-3 py-2">
                 Resources
               </div>
               {resourcesItems.map((item) => (
@@ -302,7 +302,7 @@ export default function Header() {
 
             {/* Demo section */}
             <div className="border-t border-gray-200/20 dark:border-gray-700/20 pt-2 px-3">
-              <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 py-2">
+              <div className="text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider px-3 py-2">
                 Public Demo
               </div>
               {demoLinks.map((item) => (

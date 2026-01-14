@@ -252,13 +252,13 @@ const EvaluationDetailPage: React.FC = () => {
 
           <div>
             {evaluation.status === 'completed' && evaluation.result && (
-              <div className="card bg-gradient-to-br from-blue-50 to-purple-50">
+              <div className="card bg-gradient-to-br from-slate-50 to-amber-50">
                 <div className="text-center">
                   <div className="inline-flex items-center justify-center w-16 h-16 ios-glass liquid-glass-container rounded-full shadow-lg mb-4">
                     <Award className="w-8 h-8 text-yellow-500" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">综合评分</h3>
-                  <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-slate-700 to-amber-700 bg-clip-text text-transparent">
                     {evaluation.result.overallScore}
                   </div>
                   <div className="flex justify-center mt-2">
@@ -414,7 +414,7 @@ const EvaluationDetailPage: React.FC = () => {
                     <ul className="space-y-2">
                       {evaluation.result.suggestions.map((suggestion, index) => (
                         <li key={index} className="flex items-start space-x-2">
-                          <CheckCircle className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                          <CheckCircle className="w-4 h-4 text-slate-600 mt-0.5 flex-shrink-0" />
                           <span className="text-gray-600 text-sm">{suggestion}</span>
                         </li>
                       ))}

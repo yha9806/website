@@ -117,7 +117,7 @@ export function CitationBlock({
   if (compact) {
     return (
       <div className="flex items-center gap-2 text-sm">
-        <BookOpen className="w-4 h-4 text-blue-500" />
+        <BookOpen className="w-4 h-4 text-slate-600" />
         <span className="text-gray-600 dark:text-gray-400">
           {citationObj.authors[0]} et al. ({citationObj.year})
         </span>
@@ -140,7 +140,7 @@ export function CitationBlock({
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-500" />
+          <BookOpen className="w-5 h-5 text-slate-600" />
           <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
             Cite This Work
           </h3>
@@ -211,7 +211,7 @@ export function CitationBlock({
             href={`https://doi.org/${citationObj.doi}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
+            className="text-slate-600 hover:underline"
           >
             {citationObj.doi}
           </a>

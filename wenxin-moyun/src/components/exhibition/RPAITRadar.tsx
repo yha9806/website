@@ -151,7 +151,7 @@ export function RPAITRadar({
  */
 export function SinglePersonaRadar({
   scores,
-  color = '#007AFF',
+  color = '#64748B',
   size = 'md',
 }: {
   scores: RPAITScores;

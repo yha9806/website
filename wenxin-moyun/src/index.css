@@ -17,61 +17,65 @@
   }
   
   ::-webkit-scrollbar-track {
-    @apply bg-gray-100 dark:bg-[#161B22];
+    @apply bg-gray-100 dark:bg-[#1A1614];
   }
-  
+
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-400 dark:bg-[#30363D] rounded;
+    @apply bg-gray-400 dark:bg-[#4A433C] rounded;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-500 dark:bg-[#48545F];
+    @apply bg-gray-500 dark:bg-[#6B6259];
   }
 }
 
-/* iOS Typography System with CSS Variables */
+/* Art Professional Typography System with CSS Variables */
 :root {
   --ios-font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
   --ios-font-text: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
-  --ios-color-primary: #1D1D1F;
-  --ios-color-secondary: #86868B;
-  --ios-color-primary-dark: #F5F5F7;
-  --ios-color-secondary-dark: #98989D;
+  --ios-color-primary: #1E1B18;   /* 暖黑 */
+  --ios-color-secondary: #524B44; /* 暖灰 */
+  --ios-color-primary-dark: #F5F0EB;   /* 奶油白 */
+  --ios-color-secondary-dark: #A89E94; /* 暖灰亮 */
 
-  /* 边框颜色 - WCAG AA 对比度 */
-  --border-subtle: #E5E5EA;
-  --border-default: #AEAEB2;
-  --border-strong: #8E8E93;
-  --border-focus: #007AFF;
+  /* 边框颜色 - Art Professional */
+  --border-subtle: #F0EBE3;
+  --border-default: #C9C2B8;
+  --border-strong: #9B9387;
+  --border-focus: #C87F4A;  /* 暖铜棕 */
 
-  /* 背景颜色 */
-  --bg-base: #FFFFFF;
-  --bg-surface: #F6F8FA;
+  /* 背景颜色 - 画廊风格 */
+  --bg-base: #FAF7F2;       /* 奶油白 */
+  --bg-surface: #FFFFFF;
   --bg-elevated: #FFFFFF;
-  --bg-hover: #F3F4F6;
+  --bg-hover: #F5F0E8;
 
-  /* 语义颜色 */
-  --color-success: #1A7F37;
-  --color-warning: #9A6700;
-  --color-error: #CF222E;
-  --color-info: #007AFF;
+  /* 语义颜色 - Art Professional */
+  --color-primary: #334155;  /* 墨石灰 */
+  --color-accent: #C87F4A;   /* 暖铜棕 */
+  --color-success: #5F8A50;  /* 鼠尾草绿 */
+  --color-warning: #B8923D;  /* 琥珀黄 */
+  --color-error: #B35A50;    /* 珊瑚红 */
+  --color-info: #64748B;     /* 墨石灰浅 */
 }
 
 .dark {
-  --border-subtle: #21262D;
-  --border-default: #484F58;
-  --border-strong: #6E7681;
-  --border-focus: #0A84FF;
+  --border-subtle: #251F1B;
+  --border-default: #4A433C;
+  --border-strong: #6B6259;
+  --border-focus: #DDA574;  /* 暖铜棕亮 */
 
-  --bg-base: #0D1117;
-  --bg-surface: #161B22;
-  --bg-elevated: #1C2128;
-  --bg-hover: #30363D;
+  --bg-base: #0F0D0B;       /* 暖黑 */
+  --bg-surface: #1A1614;
+  --bg-elevated: #211D1A;
+  --bg-hover: #342E28;
 
-  --color-success: #30D158;
-  --color-warning: #D29922;
-  --color-error: #FF453A;
-  --color-info: #0A84FF;
+  --color-primary: #94A3B8;  /* 墨石灰亮 */
+  --color-accent: #DDA574;   /* 暖铜棕亮 */
+  --color-success: #87A878;  /* 鼠尾草绿亮 */
+  --color-warning: #D4A84B;  /* 琥珀黄亮 */
+  --color-error: #C97064;    /* 珊瑚红亮 */
+  --color-info: #94A3B8;     /* 墨石灰亮 */
 }
 
 /* Base iOS font class */
@@ -196,7 +200,7 @@
   height: 100%;
   border-radius: 9999px;
   transition: all 400ms ease-in-out;
-  background: linear-gradient(90deg, #0052CC, #36B37E);
+  background: linear-gradient(90deg, #334155, #C87F4A);  /* 墨石灰→暖铜棕 */
 }
 
 /* 数据高亮动效 Data Highlight Animation */
@@ -208,7 +212,7 @@
 
 /* Loading 骨架屏效果 */
 .skeleton {
-  @apply bg-gray-200 dark:bg-[#21262D] rounded;
+  @apply bg-gray-200 dark:bg-[#251F1B] rounded;
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 0%,
@@ -219,9 +223,9 @@
   animation: shimmer 2s infinite;
 }
 
-/* 保留品牌渐变 */
+/* 品牌渐变 - Art Professional */
 .bg-gradient-brand {
-  background: linear-gradient(135deg, #58A6FF 0%, #A371F7 100%);
+  background: linear-gradient(135deg, #334155 0%, #C87F4A 100%);  /* 墨石灰→暖铜棕 */
 }
 
 @layer utilities {
@@ -230,7 +234,7 @@
   }
   
   .gradient-text {
-    background: linear-gradient(to right, #0052CC, #FF8B00);
+    background: linear-gradient(to right, #334155, #C87F4A);  /* 墨石灰→暖铜棕 */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -538,12 +542,12 @@
   overflow: visible !important;
   clip: auto !important;
   white-space: normal !important;
-  background-color: #2563eb !important;
+  background-color: #334155 !important;  /* 墨石灰 */
   color: white !important;
   border-radius: 0.5rem !important;
   font-weight: 600 !important;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
-  outline: 2px solid #1d4ed8 !important;
+  box-shadow: 0 4px 14px rgba(51, 65, 85, 0.4) !important;
+  outline: 2px solid #1E293B !important;
   outline-offset: 2px !important;
 }
 

@@ -9,11 +9,11 @@ interface ComparisonRadarProps {
 
 // iOS Color System
 const COLORS = [
-  '#007AFF', // iOS Blue
+  '#64748B', // iOS Blue
   '#FF3B30', // iOS Red
   '#34C759', // iOS Green
   '#FF9500', // iOS Orange
-  '#AF52DE', // iOS Purple
+  '#C87F4A', // iOS Purple
   '#5AC8FA'  // iOS Teal
 ];
 
@@ -79,7 +79,7 @@ export default function ComparisonRadar({ models, title = "Model Comparison" }: 
           <PolarAngleAxis 
             dataKey="dimension"
             tick={{ 
-              fill: '#007AFF', 
+              fill: '#64748B', 
               fontSize: 13,
               fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
             }}
@@ -158,11 +158,11 @@ export default function ComparisonRadar({ models, title = "Model Comparison" }: 
       </div>
 
       {/* 维度说明 */}
-      <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-        <h4 className="text-sm font-medium text-blue-900 dark:text-blue-300 mb-2">
+      <div className="mt-6 p-4 bg-slate-50 dark:bg-slate-900/20 rounded-lg">
+        <h4 className="text-sm font-medium text-slate-900 dark:text-slate-400 mb-2">
           Evaluation Dimensions
         </h4>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-blue-700 dark:text-blue-400">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-slate-700 dark:text-slate-500">
           <div>• Rhythm: Poetry & meter mastery</div>
           <div>• Composition: Visual art ability</div>
           <div>• Narrative: Story construction</div>

@@ -45,7 +45,7 @@ const ArtworkList: React.FC<ArtworkListProps> = ({
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader className="w-8 h-8 animate-spin text-blue-600" />
+        <Loader className="w-8 h-8 animate-spin text-slate-700" />
       </div>
     );
   }

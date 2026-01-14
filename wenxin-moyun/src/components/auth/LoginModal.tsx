@@ -27,7 +27,7 @@ const triggerConfigs = {
   },
   save_progress: {
     icon: Save,
-    iconColor: 'text-blue-500',
+    iconColor: 'text-slate-600',
     title: 'Save Your Evaluation Progress',
     subtitle: 'Create an account to permanently save your creations',
     urgency: 'medium',

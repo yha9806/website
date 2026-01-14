@@ -36,7 +36,7 @@ export default function ModelDetailPage() {
       <IOSCard variant="elevated" className="min-h-[400px] flex items-center justify-center">
         <IOSCardContent>
           <div className="flex flex-col items-center gap-4">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+            <Loader2 className="w-8 h-8 animate-spin text-slate-600" />
             <span className="text-gray-600 dark:text-gray-400">Loading model details...</span>
           </div>
         </IOSCardContent>
@@ -97,7 +97,7 @@ export default function ModelDetailPage() {
           emoji={<TypeEmoji type={model.category === 'text' ? 'poem' : model.category === 'visual' ? 'painting' : 'music'} size="lg" />}
           action={
             <div className="text-right">
-              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
+              <div className="text-4xl font-bold text-slate-700 dark:text-slate-500">
                 {model.overallScore}
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400">Overall Score</p>
@@ -122,11 +122,11 @@ export default function ModelDetailPage() {
           </div>
 
           {/* VULCA Report CTA */}
-          <div className="p-4 rounded-xl bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800">
+          <div className="p-4 rounded-xl bg-gradient-to-r from-slate-50 to-amber-50 dark:from-slate-900/20 dark:to-amber-900/20 border border-blue-200 dark:border-slate-800">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-800">
-                  <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <div className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800">
+                  <FileText className="w-5 h-5 text-slate-700 dark:text-slate-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900 dark:text-white">
@@ -205,8 +205,8 @@ export default function ModelDetailPage() {
                 <RadarChart data={radarData}>
                   <defs>
                     <linearGradient id="radarGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#007AFF" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#007AFF" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor="#64748B" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#64748B" stopOpacity={0.1}/>
                     </linearGradient>
                   </defs>
                   <PolarGrid 
@@ -235,12 +235,12 @@ export default function ModelDetailPage() {
                   <Radar
                     name={model.name}
                     dataKey="value"
-                    stroke="#007AFF"
+                    stroke="#64748B"
                     fill="url(#radarGradient)"
                     fillOpacity={0.4}
                     strokeWidth={3}
                     dot={{
-                      fill: '#007AFF',
+                      fill: '#64748B',
                       strokeWidth: 2,
                       r: 4
                     }}
@@ -267,7 +267,7 @@ export default function ModelDetailPage() {
                 {radarData.map((item, index) => {
                   const getScoreColor = (score: number) => {
                     if (score >= 90) return 'from-green-500 to-green-600';
-                    if (score >= 80) return 'from-blue-500 to-blue-600';
+                    if (score >= 80) return 'from-slate-600 to-slate-700';
                     if (score >= 70) return 'from-orange-500 to-orange-600';
                     return 'from-red-500 to-red-600';
                   };

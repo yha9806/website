@@ -48,7 +48,7 @@ export function CritiqueViewer({
                 onClick={() => setLanguage(lang)}
                 className={`px-2 py-1 text-xs rounded-md transition-colors ${
                   language === lang
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-slate-600 text-white'
                     : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                 }`}
               >

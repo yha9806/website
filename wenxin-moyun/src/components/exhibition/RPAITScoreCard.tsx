@@ -90,7 +90,7 @@ export function RPAITScoreCard({
             <span className="font-semibold text-gray-900 dark:text-white">
               Overall
             </span>
-            <span className="font-bold text-lg text-blue-500">
+            <span className="font-bold text-lg text-slate-600">
               {average.toFixed(1)}
             </span>
           </div>

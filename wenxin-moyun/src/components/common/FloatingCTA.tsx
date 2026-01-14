@@ -81,8 +81,8 @@ export function FloatingCTA({
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                 className="absolute bottom-20 right-0 w-72 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
               >
-                {/* Header */}
-                <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-3 text-white">
+                {/* Header - Art Professional Style */}
+                <div className="bg-gradient-to-r from-slate-700 to-[#C87F4A] px-4 py-3 text-white">
                   <div className="flex items-center justify-between">
                     <h4 className="font-semibold">Get Started</h4>
                     <button
@@ -92,7 +92,7 @@ export function FloatingCTA({
                       <X className="w-4 h-4" />
                     </button>
                   </div>
-                  <p className="text-sm text-blue-100 mt-1">
+                  <p className="text-sm text-white/80 mt-1">
                     Choose how you'd like to connect
                   </p>
                 </div>
@@ -101,8 +101,8 @@ export function FloatingCTA({
                 <div className="p-3 space-y-2">
                   <Link to="/demo" onClick={() => setIsExpanded(false)}>
                     <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                        <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                      <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center">
+                        <Calendar className="w-5 h-5 text-slate-600 dark:text-slate-300" />
                       </div>
                       <div className="flex-1">
                         <p className="font-medium text-gray-900 dark:text-white text-sm">
@@ -112,14 +112,14 @@ export function FloatingCTA({
                           30-min personalized walkthrough
                         </p>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
+                      <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-slate-600 transition-colors" />
                     </div>
                   </Link>
 
                   <Link to="/pricing" onClick={() => setIsExpanded(false)}>
                     <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
-                      <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                        <MessageSquare className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                      <div className="w-10 h-10 rounded-full bg-[#C87F4A]/10 dark:bg-[#C87F4A]/20 flex items-center justify-center">
+                        <MessageSquare className="w-5 h-5 text-[#C87F4A] dark:text-[#DDA574]" />
                       </div>
                       <div className="flex-1">
                         <p className="font-medium text-gray-900 dark:text-white text-sm">
@@ -129,7 +129,7 @@ export function FloatingCTA({
                           Free, Pilot, Enterprise
                         </p>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-purple-500 transition-colors" />
+                      <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#C87F4A] transition-colors" />
                     </div>
                   </Link>
                 </div>
@@ -147,20 +147,22 @@ export function FloatingCTA({
             )}
           </AnimatePresence>
 
-          {/* Main Button */}
+          {/* Main Button - Art Professional Style */}
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
           >
             <button
               onClick={() => setIsExpanded(!isExpanded)}
               className={`
-                flex items-center gap-2 px-5 py-3.5 rounded-full
-                bg-gradient-to-r from-blue-600 to-purple-600
-                text-white font-medium shadow-lg shadow-blue-500/30
-                hover:shadow-xl hover:shadow-blue-500/40
+                flex items-center gap-2 px-5 py-3.5 rounded-2xl
+                bg-slate-800 dark:bg-slate-700
+                text-white font-medium shadow-lg shadow-gray-900/20
+                hover:bg-slate-700 dark:hover:bg-slate-600
+                hover:shadow-xl hover:shadow-gray-900/30
                 transition-all duration-300
-                ${isExpanded ? 'ring-4 ring-blue-500/30' : ''}
+                border border-slate-700/50
+                ${isExpanded ? 'ring-2 ring-[#C87F4A]/40' : ''}
               `}
             >
               <Calendar className="w-5 h-5" />

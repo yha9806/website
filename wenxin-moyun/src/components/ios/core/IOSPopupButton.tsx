@@ -217,7 +217,7 @@ export const IOSPopupButton: React.FC<IOSPopupButtonProps> = ({
                       : 'text-gray-900 dark:text-white'
                     }
                     ${selectedId === item.id 
-                      ? 'bg-blue-500/10 dark:bg-blue-400/10 text-blue-600 dark:text-blue-400' 
+                      ? 'bg-slate-600/10 dark:bg-slate-500/10 text-slate-700 dark:text-slate-500' 
                       : ''
                     }
                   `}
@@ -250,7 +250,7 @@ export const IOSPopupButton: React.FC<IOSPopupButtonProps> = ({
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={iosAnimations.spring}
-                      className="text-blue-500 dark:text-blue-400"
+                      className="text-slate-600 dark:text-slate-500"
                     >
                       ✓
                     </motion.div>

@@ -183,7 +183,7 @@ async function getStats() {
       {/* Download Section */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-6">
-          <Download className="w-6 h-6 text-blue-500" />
+          <Download className="w-6 h-6 text-slate-600" />
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
             Download Dataset
           </h2>
@@ -315,7 +315,7 @@ async function getStats() {
       {/* Usage Examples */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-6">
-          <Code2 className="w-6 h-6 text-purple-500" />
+          <Code2 className="w-6 h-6 text-amber-600" />
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
             Usage Examples
           </h2>

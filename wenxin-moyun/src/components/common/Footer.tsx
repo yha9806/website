@@ -91,7 +91,7 @@ export default function Footer() {
           {/* Logo & Description */}
           <div className="col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-700 to-amber-700 flex items-center justify-center">
                 <span className="text-white font-bold text-lg">V</span>
               </div>
               <div>
@@ -120,7 +120,7 @@ export default function Footer() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="flex-1 px-3 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-3 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600"
                   />
                   <IOSButton variant="primary" size="sm" type="submit">
                     <ArrowRight className="w-4 h-4" />
@@ -140,7 +140,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-slate-700 dark:hover:text-slate-500 transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -159,7 +159,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-slate-700 dark:hover:text-slate-500 transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -178,7 +178,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-slate-700 dark:hover:text-slate-500 transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -200,7 +200,7 @@ export default function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-flex items-center gap-1"
+                      className="text-sm text-gray-600 dark:text-gray-400 hover:text-slate-700 dark:hover:text-slate-500 transition-colors inline-flex items-center gap-1"
                     >
                       {link.name}
                       <ExternalLink className="w-3 h-3" />
@@ -208,7 +208,7 @@ export default function Footer() {
                   ) : (
                     <Link
                       to={link.href}
-                      className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                      className="text-sm text-gray-600 dark:text-gray-400 hover:text-slate-700 dark:hover:text-slate-500 transition-colors"
                     >
                       {link.name}
                     </Link>
@@ -238,7 +238,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-slate-700 dark:hover:text-slate-500 transition-colors"
                   aria-label={social.name}
                 >
                   <social.icon className="w-4 h-4" />

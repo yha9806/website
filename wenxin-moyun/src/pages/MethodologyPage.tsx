@@ -67,9 +67,9 @@ const MethodologyPage: React.FC = () => {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: 'spring' }}
-          className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-purple-100 dark:bg-purple-900/30 mb-4"
+          className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-100 dark:bg-purple-900/30 mb-4"
         >
-          <FlaskConical className="w-8 h-8 text-purple-500" />
+          <FlaskConical className="w-8 h-8 text-amber-600" />
         </motion.div>
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
           VULCA Methodology
@@ -96,7 +96,7 @@ const MethodologyPage: React.FC = () => {
       {/* L1-L5 Framework */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-6">
-          <Layers className="w-6 h-6 text-blue-500" />
+          <Layers className="w-6 h-6 text-slate-600" />
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
             L1-L5 Five-Layer Framework
           </h2>
@@ -109,7 +109,7 @@ const MethodologyPage: React.FC = () => {
 
         {loading ? (
           <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-600" />
           </div>
         ) : (
           <div className="space-y-4">
@@ -222,7 +222,7 @@ const MethodologyPage: React.FC = () => {
                 </p>
                 <div className="flex items-center gap-4 text-sm">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-500">6</div>
+                    <div className="text-2xl font-bold text-slate-600">6</div>
                     <div className="text-gray-500">Core</div>
                   </div>
                   <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -232,7 +232,7 @@ const MethodologyPage: React.FC = () => {
                   </div>
                   <ChevronRight className="w-5 h-5 text-gray-400" />
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-purple-500">8</div>
+                    <div className="text-2xl font-bold text-amber-600">8</div>
                     <div className="text-gray-500">Perspectives</div>
                   </div>
                 </div>

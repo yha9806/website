@@ -40,7 +40,7 @@ export function Breadcrumb({ items, showHome = true, className = '' }: Breadcrum
                 {item.href && !isLast ? (
                   <Link
                     to={item.href}
-                    className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400 hover:text-slate-700 dark:hover:text-slate-500 transition-colors"
                   >
                     {item.icon}
                     <span>{item.label}</span>

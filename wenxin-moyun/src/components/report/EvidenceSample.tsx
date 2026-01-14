@@ -52,17 +52,17 @@ export function EvidenceSample({
   const getTypeIcon = (type: string) => {
     switch (type) {
       case 'image':
-        return <Image className="w-5 h-5 text-purple-500" />;
+        return <Image className="w-5 h-5 text-amber-600" />;
       case 'dialogue':
         return <MessageSquare className="w-5 h-5 text-green-500" />;
       default:
-        return <FileText className="w-5 h-5 text-blue-500" />;
+        return <FileText className="w-5 h-5 text-slate-600" />;
     }
   };
 
   const getScoreBadgeColor = (score: number) => {
     if (score >= 0.8) return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300';
-    if (score >= 0.6) return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300';
+    if (score >= 0.6) return 'bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400';
     if (score >= 0.4) return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300';
     return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300';
   };
@@ -138,7 +138,7 @@ export function EvidenceSample({
               {sample.response.length > 300 && (
                 <button
                   onClick={() => setExpanded(!expanded)}
-                  className="flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 mt-2 hover:underline"
+                  className="flex items-center gap-1 text-xs text-slate-700 dark:text-slate-500 mt-2 hover:underline"
                 >
                   {expanded ? (
                     <>
@@ -208,14 +208,14 @@ export function EvidenceSample({
 
           {/* Expert Comment */}
           {sample.expertComment && (
-            <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-900/20 border border-blue-200 dark:border-slate-800">
               <div className="flex items-center gap-2 mb-2">
-                <MessageSquare className="w-4 h-4 text-blue-600" />
-                <span className="text-xs font-medium text-blue-700 dark:text-blue-300">
+                <MessageSquare className="w-4 h-4 text-slate-700" />
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-400">
                   Expert Analysis
                 </span>
               </div>
-              <p className="text-xs text-blue-700 dark:text-blue-300 italic">
+              <p className="text-xs text-slate-700 dark:text-slate-400 italic">
                 "{sample.expertComment}"
               </p>
             </div>

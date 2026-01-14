@@ -407,7 +407,7 @@ export default function ModelReportPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <IOSCard variant="elevated" className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+          <IOSCard variant="elevated" className="bg-gradient-to-r from-slate-600 to-amber-600 text-white">
             <IOSCardContent>
               <div className="flex flex-col md:flex-row items-center justify-between gap-6 py-4">
                 <div>
@@ -421,7 +421,7 @@ export default function ModelReportPage() {
                 </div>
                 <div className="flex gap-3 flex-shrink-0">
                   <Link to="/pricing">
-                    <IOSButton variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100">
+                    <IOSButton variant="secondary" className="bg-white text-slate-700 hover:bg-gray-100">
                       View Pricing
                     </IOSButton>
                   </Link>
@@ -446,7 +446,7 @@ export default function ModelReportPage() {
         >
           <p>
             This report is generated using the VULCA 47-dimension evaluation framework.
-            <Link to="/methodology" className="text-blue-600 dark:text-blue-400 hover:underline ml-1">
+            <Link to="/methodology" className="text-slate-700 dark:text-slate-500 hover:underline ml-1">
               Learn more about our methodology
             </Link>
           </p>

@@ -39,9 +39,9 @@ export const IOSAlert: React.FC<IOSAlertProps> = ({
   const typeConfig = {
     info: {
       emoji: 'info',
-      titleColor: 'text-blue-900 dark:text-blue-100',
-      borderColor: 'border-blue-200 dark:border-blue-800',
-      bgColor: 'bg-blue-50/80 dark:bg-blue-900/20',
+      titleColor: 'text-slate-900 dark:text-slate-100',
+      borderColor: 'border-blue-200 dark:border-slate-800',
+      bgColor: 'bg-slate-50/80 dark:bg-slate-900/20',
     },
     success: {
       emoji: 'completed',

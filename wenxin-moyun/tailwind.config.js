@@ -1,15 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 
 /**
- * ⚠️ LOCKED: iOS Design System Configuration
+ * Art Professional Design System Configuration
  *
- * 此文件已锁定，不再接受修改。
- * 颜色、字体、间距等设计Token均已固定。
+ * 设计理念: 温暖、专业、艺术品味
+ * 参考: 博物馆、画廊、艺术期刊的视觉语言
  *
- * 如需扩展，请在 CSS 或组件中使用 CSS 变量。
- *
- * 锁定日期: 2026-01-09
- * 设计系统版本: iOS 26 Style Guide
+ * 更新日期: 2026-01-14
+ * 设计系统版本: Art Professional v1.0
  */
 
 export default {
@@ -21,20 +19,49 @@ export default {
   theme: {
     extend: {
       colors: {
-        // ⚠️ LOCKED: iOS System Colors - DO NOT MODIFY
-        // iOS System Colors - Static definitions for better performance
+        // Art Professional Color System
+        // 主色: 墨石灰 - 专业沉稳
+        slate: {
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          900: '#0F172A',
+          950: '#020617',
+          DEFAULT: '#334155',
+        },
+        // 强调色: 暖铜棕 - 艺术品味
+        bronze: {
+          50: '#FDF8F4',
+          100: '#FAEFE6',
+          200: '#F4DCC9',
+          300: '#EBC4A1',
+          400: '#DDA574',
+          500: '#C87F4A', // 主暖铜棕
+          600: '#B06B3A',
+          700: '#8F5530',
+          800: '#6D4127',
+          900: '#4A2C1A',
+          DEFAULT: '#C87F4A',
+        },
+        // 兼容色: 保留 blue 用于系统兼容
         blue: {
-          50: '#E5F1FF',
-          100: '#CCE4FF',
-          200: '#99C9FF',
-          300: '#66ADFF',
-          400: '#3392FF',
-          500: '#007AFF', // iOS Blue
-          600: '#0062CC',
-          700: '#004999',
-          800: '#003166',
-          900: '#001833',
-          DEFAULT: '#007AFF',
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B', // 替换为 slate
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          900: '#0F172A',
+          DEFAULT: '#334155',
         },
         green: {
           50: '#E6F7EC',
@@ -75,18 +102,19 @@ export default {
           900: '#330C09',
           DEFAULT: '#FF3B30',
         },
+        // 辅助暖色: 陶土色 - 用于次要强调
         purple: {
-          50: '#F5EBFB',
-          100: '#EBD6F7',
-          200: '#D7ADEF',
-          300: '#C385E7',
-          400: '#B05CDF',
-          500: '#AF52DE', // iOS Purple
-          600: '#8C42B2',
-          700: '#693185',
-          800: '#462159',
-          900: '#23102C',
-          DEFAULT: '#AF52DE',
+          50: '#FAF5F0',
+          100: '#F4EAE0',
+          200: '#E8D4C2',
+          300: '#D9B99A',
+          400: '#C49976',
+          500: '#9B6B56', // 陶土色 (替代紫色)
+          600: '#7D5645',
+          700: '#5F4235',
+          800: '#422E25',
+          900: '#251A15',
+          DEFAULT: '#9B6B56',
         },
         
         // iOS Gray Scale

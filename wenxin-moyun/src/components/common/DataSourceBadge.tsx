@@ -19,7 +19,7 @@ const dataSourceConfig = {
   },
   real: {
     label: 'Real Data', 
-    color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+    color: 'bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-blue-200',
     icon: '🔗',
     description: 'Live API data'
   },

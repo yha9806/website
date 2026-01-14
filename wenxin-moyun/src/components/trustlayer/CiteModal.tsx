@@ -104,7 +104,7 @@ export const CiteModal: React.FC<CiteModalProps> = ({
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
               <h2 className="text-lg font-semibold flex items-center gap-2">
-                <FileText className="w-5 h-5 text-blue-500" />
+                <FileText className="w-5 h-5 text-slate-600" />
                 Cite This Work
               </h2>
               <button
@@ -127,7 +127,7 @@ export const CiteModal: React.FC<CiteModalProps> = ({
                   href={`https://doi.org/${citation.doi}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-blue-500 hover:underline flex items-center gap-1 mt-1"
+                  className="text-xs text-slate-600 hover:underline flex items-center gap-1 mt-1"
                 >
                   <ExternalLink className="w-3 h-3" />
                   DOI: {citation.doi}
@@ -143,7 +143,7 @@ export const CiteModal: React.FC<CiteModalProps> = ({
                   onClick={() => setFormat(f.id)}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                     format === f.id
-                      ? 'bg-blue-500 text-white'
+                      ? 'bg-slate-600 text-white'
                       : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                   }`}
                   title={f.description}

@@ -202,8 +202,8 @@ export default function GalleryPage() {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'poem': return 'text-blue-600 dark:text-blue-400';
-      case 'painting': return 'text-purple-600 dark:text-purple-400';
+      case 'poem': return 'text-slate-700 dark:text-slate-500';
+      case 'painting': return 'text-amber-700 dark:text-amber-500';
       case 'story': return 'text-green-600 dark:text-green-400';
       case 'music': return 'text-orange-600 dark:text-orange-400';
       default: return 'text-gray-600 dark:text-gray-400';
@@ -221,7 +221,7 @@ export default function GalleryPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-slate-700 to-amber-700 
                          bg-clip-text text-transparent">
             🎨 Community Gallery
           </h1>
@@ -290,8 +290,8 @@ export default function GalleryPage() {
             animate={{ opacity: 1 }}
           >
             <div className="flex items-center justify-center space-x-2">
-              <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>
-              <div className="w-4 h-4 bg-purple-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+              <div className="w-4 h-4 bg-slate-600 rounded-full animate-bounce"></div>
+              <div className="w-4 h-4 bg-amber-600 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
               <div className="w-4 h-4 bg-pink-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
             </div>
             <p className="mt-2 text-gray-600 dark:text-gray-400">Loading amazing artworks...</p>
@@ -403,7 +403,7 @@ export default function GalleryPage() {
 
                   {/* Model Info */}
                   <div className="flex items-center gap-2 mb-3 text-sm text-gray-600 dark:text-gray-400">
-                    <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 
+                    <span className="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-blue-200 
                                    px-2 py-1 rounded-full text-xs font-medium">
                       {artwork.model_name}
                     </span>

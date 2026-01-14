@@ -34,10 +34,10 @@ export default function AILabSolutionPage() {
           className="max-w-4xl mx-auto"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
-              <Building2 className="w-6 h-6 text-blue-500" />
+            <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900/30 rounded-xl flex items-center justify-center">
+              <Building2 className="w-6 h-6 text-slate-600" />
             </div>
-            <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-500">
               Solution for AI Labs
             </span>
           </div>
@@ -105,7 +105,7 @@ export default function AILabSolutionPage() {
 
           <IOSCard variant="elevated">
             <IOSCardHeader
-              emoji={<GitBranch className="w-8 h-8 text-purple-500" />}
+              emoji={<GitBranch className="w-8 h-8 text-amber-600" />}
               title="Version Regressions"
             />
             <IOSCardContent>
@@ -178,8 +178,8 @@ export default function AILabSolutionPage() {
           ].map((item) => (
             <div key={item.title} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                  <item.icon className="w-5 h-5 text-blue-500" />
+                <div className="w-10 h-10 bg-slate-100 dark:bg-slate-900/30 rounded-lg flex items-center justify-center">
+                  <item.icon className="w-5 h-5 text-slate-600" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{item.title}</h3>
               </div>
@@ -224,7 +224,7 @@ export default function AILabSolutionPage() {
               viewport={{ once: true }}
               className="flex items-center gap-4 mb-6"
             >
-              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
+              <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
                 {item.step}
               </div>
               <div className="flex-1 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
@@ -240,7 +240,7 @@ export default function AILabSolutionPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-blue-50 dark:bg-blue-900/20 -mx-4 px-4 py-12 rounded-2xl text-center">
+      <section className="bg-slate-50 dark:bg-slate-900/20 -mx-4 px-4 py-12 rounded-2xl text-center">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
           Start with a Pilot Evaluation
         </h2>

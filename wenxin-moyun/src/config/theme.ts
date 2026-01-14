@@ -1,121 +1,123 @@
-// 深色科研主题系统配置
-// 参考 GitHub Dark + VSCode 风格，营造专业分析氛围
+// Art Professional Theme System
+// 温暖、专业、艺术品味的视觉风格
+// 参考: 博物馆、画廊、艺术期刊的视觉语言
 
 export const themes = {
   dark: {
-    // 背景层级系统 - 从深到浅
+    // 背景层级系统 - 暖色调深色
     bg: {
-      base: '#0D1117',      // 最深背景 - 页面底色
-      surface: '#161B22',   // 表面 - 卡片/面板背景
-      elevated: '#1C2128',  // 提升 - 悬浮层/模态框
-      overlay: '#262C36',   // 覆盖 - dropdown/tooltip
-      hover: '#30363D',     // 悬停态背景
-      active: '#3A424D',    // 激活态背景
+      base: '#0F0D0B',      // 暖黑 - 页面底色
+      surface: '#1A1614',   // 暖表面 - 卡片/面板背景
+      elevated: '#211D1A',  // 暖提升 - 悬浮层/模态框
+      overlay: '#2A2521',   // 暖覆盖 - dropdown/tooltip
+      hover: '#342E28',     // 暖悬停态背景
+      active: '#3E3731',    // 暖激活态背景
     },
-    
-    // 边框系统 - WCAG AA 对比度优化
+
+    // 边框系统 - 暖色调
     border: {
-      default: '#484F58',   // 默认边框 (对比度 3.2:1)
-      muted: '#30363D',     // 弱边框 - 分割线
-      strong: '#6E7681',    // 强边框 - 焦点/选中 (对比度 4.5:1)
-      subtle: '#21262D',    // 极弱边框
+      default: '#4A433C',   // 暖边框 (对比度 3.2:1)
+      muted: '#342E28',     // 弱边框 - 分割线
+      strong: '#6B6259',    // 强边框 - 焦点/选中
+      subtle: '#251F1B',    // 极弱边框
     },
-    
+
     // 文字层级系统
     text: {
-      primary: '#F0F6FC',   // 主要文字 - 标题/重要内容
-      secondary: '#8B949E', // 次要文字 - 正文
-      tertiary: '#6E7681',  // 辅助文字 - 说明/提示
-      muted: '#484F58',     // 禁用文字
-      inverse: '#0D1117',   // 反色文字 - 用于亮色按钮
+      primary: '#F5F0EB',   // 奶油白 - 标题/重要内容
+      secondary: '#A89E94', // 暖灰 - 正文
+      tertiary: '#7A726A',  // 辅助 - 说明/提示
+      muted: '#524B44',     // 禁用文字
+      inverse: '#0F0D0B',   // 反色文字
     },
-    
-    // 语义色彩系统
+
+    // 语义色彩系统 - Art Professional
     semantic: {
-      blue: '#58A6FF',      // 主色 - 链接/主按钮
-      green: '#3FB950',     // 成功 - 正向反馈
-      yellow: '#D29922',    // 警告 - 提醒
-      red: '#F85149',       // 错误 - 危险操作
-      purple: '#A371F7',    // 创新 - 特殊亮点
-      orange: '#FB8500',    // 强调 - 重要提示
-      cyan: '#79C0FF',      // 信息 - 一般信息
-      pink: '#FF7B9C',      // 装饰 - 徽章/标签
+      primary: '#94A3B8',   // 墨石灰 - 主色/主按钮
+      accent: '#DDA574',    // 暖铜棕亮 - 强调
+      green: '#87A878',     // 鼠尾草绿 - 成功
+      yellow: '#D4A84B',    // 琥珀黄 - 警告
+      red: '#C97064',       // 珊瑚红 - 错误
+      bronze: '#C87F4A',    // 暖铜棕 - 特殊亮点
+      terracotta: '#9B6B56',// 陶土色 - 次要强调
+      sage: '#87A878',      // 鼠尾草绿
     },
-    
-    // 图表专用色板
+
+    // 图表专用色板 - 暖色调
     chart: {
-      primary: '#58A6FF',
-      secondary: '#A371F7',
-      tertiary: '#3FB950',
-      quaternary: '#FB8500',
+      primary: '#C87F4A',   // 暖铜棕
+      secondary: '#9B6B56', // 陶土色
+      tertiary: '#87A878',  // 鼠尾草绿
+      quaternary: '#D4A84B',// 琥珀黄
       series: [
-        '#58A6FF', '#A371F7', '#3FB950', '#FB8500',
-        '#79C0FF', '#FF7B9C', '#D29922', '#F85149'
+        '#C87F4A', '#9B6B56', '#87A878', '#D4A84B',
+        '#94A3B8', '#C97064', '#B8A089', '#7A9B76'
       ]
     },
-    
+
     // 特殊用途
     special: {
-      gold: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',     // 金牌
-      silver: 'linear-gradient(135deg, #C0C0C0 0%, #808080 100%)',   // 银牌
-      bronze: 'linear-gradient(135deg, #CD7F32 0%, #8B4513 100%)',   // 铜牌
-      gradient: 'linear-gradient(135deg, #58A6FF 0%, #A371F7 100%)', // 品牌渐变
+      gold: 'linear-gradient(135deg, #D4A84B 0%, #C87F4A 100%)',     // 金牌
+      silver: 'linear-gradient(135deg, #94A3B8 0%, #64748B 100%)',   // 银牌
+      bronze: 'linear-gradient(135deg, #C87F4A 0%, #9B6B56 100%)',   // 铜牌
+      gradient: 'linear-gradient(135deg, #334155 0%, #C87F4A 100%)', // 品牌渐变 (墨石灰→暖铜棕)
     }
   },
-  
+
   light: {
-    // 保留现有浅色主题配置，后续迁移
+    // 浅色主题 - 画廊风格
     bg: {
-      base: '#FFFFFF',
-      surface: '#F6F8FA',
+      base: '#FAF7F2',      // 奶油白背景
+      surface: '#FFFFFF',   // 纯白表面
       elevated: '#FFFFFF',
       overlay: '#FFFFFF',
-      hover: '#F3F4F6',
-      active: '#E5E7EB',
+      hover: '#F5F0E8',
+      active: '#EDE6DB',
     },
-    
+
     border: {
-      default: '#AEAEB2',   // 对比度 3.1:1
-      muted: '#D1D5DB',
-      strong: '#8E8E93',    // 对比度 4.5:1
-      subtle: '#E5E5EA',
+      default: '#C9C2B8',   // 暖灰边框
+      muted: '#E5DFD5',
+      strong: '#9B9387',
+      subtle: '#F0EBE3',
     },
-    
+
     text: {
-      primary: '#24292F',
-      secondary: '#57606A',
-      tertiary: '#6E7781',
-      muted: '#8C959F',
-      inverse: '#FFFFFF',
+      primary: '#1E1B18',   // 暖黑
+      secondary: '#524B44', // 暖深灰
+      tertiary: '#7A726A',  // 暖中灰
+      muted: '#A89E94',     // 暖浅灰
+      inverse: '#FAF7F2',
     },
-    
+
+    // 语义色彩系统 - Art Professional Light
     semantic: {
-      blue: '#0969DA',
-      green: '#1A7F37',
-      yellow: '#9A6700',
-      red: '#CF222E',
-      purple: '#8250DF',
-      orange: '#FB8500',
-      cyan: '#1B7C83',
-      pink: '#BF3989',
+      primary: '#334155',   // 墨石灰 - 主色
+      accent: '#C87F4A',    // 暖铜棕 - 强调
+      green: '#5F8A50',     // 鼠尾草绿深
+      yellow: '#B8923D',    // 琥珀黄深
+      red: '#B35A50',       // 珊瑚红深
+      bronze: '#B06B3A',    // 暖铜棕深
+      terracotta: '#7D5645',// 陶土色深
+      sage: '#5F8A50',      // 鼠尾草绿深
     },
-    
+
     chart: {
-      primary: '#0969DA',
-      secondary: '#8250DF',
-      tertiary: '#1A7F37',
-      quaternary: '#FB8500',
+      primary: '#C87F4A',
+      secondary: '#9B6B56',
+      tertiary: '#5F8A50',
+      quaternary: '#B8923D',
       series: [
-        '#0969DA', '#8250DF', '#1A7F37', '#FB8500',
-        '#1B7C83', '#BF3989', '#9A6700', '#CF222E'
+        '#C87F4A', '#9B6B56', '#5F8A50', '#B8923D',
+        '#334155', '#B35A50', '#8F7860', '#4A7A46'
       ]
     },
-    
+
     special: {
-      gold: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-      silver: 'linear-gradient(135deg, #C0C0C0 0%, #808080 100%)',
-      bronze: 'linear-gradient(135deg, #CD7F32 0%, #8B4513 100%)',
-      gradient: 'linear-gradient(135deg, #0969DA 0%, #8250DF 100%)',
+      gold: 'linear-gradient(135deg, #D4A84B 0%, #C87F4A 100%)',
+      silver: 'linear-gradient(135deg, #94A3B8 0%, #64748B 100%)',
+      bronze: 'linear-gradient(135deg, #C87F4A 0%, #9B6B56 100%)',
+      gradient: 'linear-gradient(135deg, #334155 0%, #C87F4A 100%)',
     }
   }
 };

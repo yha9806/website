@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { iosAnimations } from '../utils/animations';
 
 export interface IOSButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'destructive' | 'glass' | 'text';
+  variant?: 'primary' | 'secondary' | 'destructive' | 'glass' | 'text' | 'artistic';
   size?: 'sm' | 'md' | 'lg';
   glassMorphism?: boolean;
   emoji?: string;
@@ -47,43 +47,48 @@ export const IOSButton = React.forwardRef<HTMLButtonElement, IOSButtonProps>(
       select-none
     `;
     
-    // Variant styles  
+    // Variant styles - Art Professional (无渐变，纯色)
     const variantStyles = {
       primary: `
-        bg-gradient-to-b from-blue-500 to-blue-600
-        hover:from-blue-600 hover:to-blue-700
-        text-white shadow-lg shadow-blue-500/25
-        focus:ring-blue-300
-        border border-blue-600/20
+        bg-slate-700 hover:bg-slate-600
+        dark:bg-slate-600 dark:hover:bg-slate-500
+        text-white shadow-md shadow-gray-900/15
+        focus:ring-slate-400
+        border border-slate-600/30
       `,
       secondary: `
-        bg-gradient-to-b from-gray-50 to-gray-100 
-        dark:from-gray-800 dark:to-gray-900
-        hover:from-gray-100 hover:to-gray-200
-        dark:hover:from-gray-700 dark:hover:to-gray-800
+        bg-gray-100 hover:bg-gray-200
+        dark:bg-gray-800 dark:hover:bg-gray-700
         text-gray-700 dark:text-gray-200
-        shadow-md border border-gray-200 dark:border-gray-700
+        shadow-sm border border-gray-200 dark:border-gray-700
         focus:ring-gray-300 dark:focus:ring-gray-600
       `,
       destructive: `
-        bg-gradient-to-b from-red-500 to-red-600
-        hover:from-red-600 hover:to-red-700
-        text-white shadow-lg shadow-red-500/25
+        bg-red-600 hover:bg-red-700
+        dark:bg-red-700 dark:hover:bg-red-600
+        text-white shadow-md shadow-red-500/15
         focus:ring-red-300
-        border border-red-600/20
+        border border-red-700/30
       `,
       glass: `
         bg-white/10 dark:bg-white/5
         hover:bg-white/20 dark:hover:bg-white/10
         backdrop-blur-xl backdrop-saturate-150
         text-gray-900 dark:text-white
-        shadow-lg border border-white/20
+        shadow-md border border-white/20
         focus:ring-white/30
       `,
       text: `
         bg-transparent hover:bg-gray-100/50 dark:hover:bg-gray-800/50
-        text-blue-600 dark:text-blue-400
-        focus:ring-blue-300 dark:focus:ring-blue-600
+        text-slate-700 dark:text-slate-300
+        focus:ring-slate-300 dark:focus:ring-slate-600
+      `,
+      artistic: `
+        bg-[#C87F4A] hover:bg-[#B06B3A]
+        dark:bg-[#C87F4A] dark:hover:bg-[#DDA574]
+        text-white shadow-md shadow-[#C87F4A]/20
+        focus:ring-[#C87F4A]/50
+        border border-[#B06B3A]/30
       `
     };
     

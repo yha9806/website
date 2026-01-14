@@ -44,7 +44,7 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
       case 'pending':
         return 'text-yellow-500 bg-yellow-50 dark:bg-yellow-900/20';
       case 'processing':
-        return 'text-blue-500 bg-blue-50 dark:bg-blue-900/20';
+        return 'text-slate-600 bg-slate-50 dark:bg-slate-900/20';
       case 'completed':
         return 'text-green-500 bg-green-50 dark:bg-green-900/20';
       case 'failed':
@@ -118,7 +118,7 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
       >
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-purple-100 to-blue-100">
+            <div className="p-2 rounded-lg bg-gradient-to-br from-amber-100 to-slate-100">
               {getTaskIcon()}
             </div>
             <div>
@@ -149,7 +149,7 @@ const EvaluationCard: React.FC<EvaluationCardProps> = ({
             {evaluation.humanScore && (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Human Score</span>
-                <span className="text-xl font-bold text-purple-600">
+                <span className="text-xl font-bold text-amber-700">
                   {evaluation.humanScore}/100
                 </span>
               </div>

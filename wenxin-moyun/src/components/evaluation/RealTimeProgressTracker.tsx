@@ -173,7 +173,7 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
       value: metrics.tokenSpeed,
       max: 200,
       unit: 'tok/s',
-      color: 'bg-blue-500'
+      color: 'bg-slate-600'
     },
     {
       label: '内存占用',
@@ -194,7 +194,7 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
       value: metrics.confidence,
       max: 100,
       unit: '%',
-      color: 'bg-purple-500'
+      color: 'bg-amber-600'
     },
     {
       label: '质量评分',
@@ -232,14 +232,14 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
             <motion.div
               className={`p-3 rounded-xl ${
                 progress >= 100 ? 'bg-gradient-to-br from-green-400 to-green-600' :
-                'bg-gradient-to-br from-blue-400 to-purple-600'
+                'bg-gradient-to-br from-slate-500 to-amber-700'
               }`}
               animate={pulseAnimation ? { scale: [1, 1.2, 1] } : {}}
             >
               <Brain className="w-6 h-6 text-white" />
             </motion.div>
             <div>
-              <h3 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <h3 className="text-lg font-bold bg-gradient-to-r from-slate-700 to-amber-700 bg-clip-text text-transparent">
                 {modelName} 正在处理
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -264,7 +264,7 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
         <div className="mb-6">
           <div className="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <motion.div
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+              className="absolute inset-y-0 left-0 bg-gradient-to-r from-slate-600 via-amber-600 to-pink-500"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.5, ease: "easeOut" }}
@@ -294,7 +294,7 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
               <motion.div
                 className={`w-8 h-8 rounded-full flex items-center justify-center ${
                   index < currentPhaseIndex ? 'bg-green-500' :
-                  index === currentPhaseIndex ? 'bg-blue-500' :
+                  index === currentPhaseIndex ? 'bg-slate-600' :
                   'bg-gray-300 dark:bg-gray-600'
                 }`}
                 animate={index === currentPhaseIndex ? { scale: [1, 1.2, 1] } : {}}
@@ -349,17 +349,17 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
         {/* Streaming output preview */}
         {isStreaming && streamingText && (
           <motion.div
-            className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg p-4 mb-4"
+            className="bg-gradient-to-br from-slate-50 to-amber-50 dark:from-slate-900/20 dark:to-amber-900/20 rounded-lg p-4 mb-4"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
           >
             <div className="flex items-center space-x-2 mb-2">
-              <Activity className="w-4 h-4 text-blue-600 dark:text-blue-400 animate-pulse" />
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-400">实时输出</span>
+              <Activity className="w-4 h-4 text-slate-700 dark:text-slate-500 animate-pulse" />
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-500">实时输出</span>
             </div>
             <div className="text-gray-700 dark:text-gray-300 font-mono text-sm">
               {streamingText}
-              <span className="inline-block w-2 h-4 bg-blue-600 animate-pulse ml-1" />
+              <span className="inline-block w-2 h-4 bg-slate-700 animate-pulse ml-1" />
             </div>
           </motion.div>
         )}

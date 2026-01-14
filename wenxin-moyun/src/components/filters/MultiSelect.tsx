@@ -87,7 +87,7 @@ export default function MultiSelect({
           {value.slice(0, 3).map(item => (
             <span
               key={item}
-              className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded text-xs"
+              className="inline-flex items-center gap-1 px-2 py-1 bg-slate-50 dark:bg-slate-900/20 text-slate-700 dark:text-slate-500 rounded text-xs"
             >
               {item}
               <button
@@ -95,7 +95,7 @@ export default function MultiSelect({
                   e.stopPropagation();
                   toggleOption(item);
                 }}
-                className="hover:text-blue-800 dark:hover:text-blue-300"
+                className="hover:text-slate-800 dark:hover:text-slate-400"
               >
                 <X className="w-3 h-3" />
               </button>
@@ -127,7 +127,7 @@ export default function MultiSelect({
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="搜索..."
-                className="w-full px-2 py-1 text-sm bg-gray-50 dark:bg-[#0D1117] border border-gray-200 dark:border-[#30363D] rounded focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 dark:focus:border-blue-400"
+                className="w-full px-2 py-1 text-sm bg-gray-50 dark:bg-[#0D1117] border border-gray-200 dark:border-[#30363D] rounded focus:outline-none focus:ring-2 focus:ring-slate-600/40 focus:border-slate-600 dark:focus:border-slate-500"
                 onClick={(e) => e.stopPropagation()}
               />
             </div>
@@ -136,7 +136,7 @@ export default function MultiSelect({
             <div className="flex items-center justify-between px-2 py-1 border-b border-gray-200 dark:border-[#30363D]">
               <button
                 onClick={selectAll}
-                className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+                className="text-xs text-slate-700 dark:text-slate-500 hover:underline"
               >
                 全选
               </button>
@@ -167,7 +167,7 @@ export default function MultiSelect({
                         {option}
                       </span>
                       {isSelected && (
-                        <Check className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                        <Check className="w-4 h-4 text-slate-700 dark:text-slate-500" />
                       )}
                     </button>
                   );

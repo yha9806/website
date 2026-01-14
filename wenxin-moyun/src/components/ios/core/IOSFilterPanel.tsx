@@ -232,7 +232,7 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
                       className={`
                         flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-all
                         ${activeTab === tab.id
-                          ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                          ? 'text-slate-700 dark:text-slate-500 border-b-2 border-slate-700 dark:border-slate-500'
                           : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300'
                         }
                       `}
@@ -274,7 +274,7 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
                             value={values.search}
                             onChange={(e) => handleChange('search', e.target.value)}
                             placeholder="Enter model name..."
-                            className="w-full pl-10 pr-3 py-2.5 ios-glass border border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
+                            className="w-full pl-10 pr-3 py-2.5 ios-glass border border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-slate-600/40 focus:border-slate-600 dark:focus:border-slate-500 transition-colors"
                           />
                         </div>
                       </div>
@@ -292,7 +292,7 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
                                 type="checkbox"
                                 checked={values.organizations.includes(org)}
                                 onChange={() => handleChange('organizations', toggleArrayValue(values.organizations, org))}
-                                className="w-4 h-4 text-blue-500 rounded border-gray-300 focus:ring-blue-500 focus:ring-2"
+                                className="w-4 h-4 text-slate-600 rounded border-gray-300 focus:ring-slate-600 focus:ring-2"
                               />
                               <span className="text-sm text-gray-700 dark:text-gray-300 truncate">
                                 {org}
@@ -333,7 +333,7 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
                         <select
                           value={values.dateRange}
                           onChange={(e) => handleChange('dateRange', e.target.value)}
-                          className="w-full px-3 py-2.5 ios-glass border border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
+                          className="w-full px-3 py-2.5 ios-glass border border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-slate-600/40 focus:border-slate-600 dark:focus:border-slate-500 transition-colors"
                         >
                           {config.dateOptions.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -510,7 +510,7 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
           className="absolute top-full left-0 mt-2 flex flex-wrap gap-2 max-w-md z-40"
         >
           {values.search && (
-            <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded-full">
+            <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-400 text-xs rounded-full">
               <EmojiIcon category="actions" name="search" size="xs" />
               {values.search}
               <button onClick={() => handleChange('search', '')}>
@@ -520,7 +520,7 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
           )}
           
           {values.organizations.slice(0, 3).map((org) => (
-            <span key={org} className="inline-flex items-center gap-1 px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded-full">
+            <span key={org} className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 dark:bg-purple-900/30 text-purple-700 dark:text-amber-400 text-xs rounded-full">
               <EmojiIcon category="content" name="organization" size="xs" />
               {org}
               <button onClick={() => handleChange('organizations', values.organizations.filter(o => o !== org))}>

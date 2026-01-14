@@ -23,11 +23,11 @@ const LiquidGlass: React.FC<LiquidGlassProps> = ({
   // Color configurations
   const colorConfig = {
     blue: {
-      light: 'from-blue-50/70 to-indigo-50/70',
-      dark: 'from-blue-900/20 to-indigo-900/20',
-      colored: 'from-blue-400/20 to-indigo-400/20',
-      border: 'border-blue-200/30 dark:border-blue-700/30',
-      glow: 'shadow-blue-500/10'
+      light: 'from-slate-50/70 to-indigo-50/70',
+      dark: 'from-slate-900/20 to-indigo-900/20',
+      colored: 'from-slate-500/20 to-indigo-400/20',
+      border: 'border-blue-200/30 dark:border-slate-700/30',
+      glow: 'shadow-slate-600/10'
     },
     green: {
       light: 'from-green-50/70 to-emerald-50/70',
@@ -44,11 +44,11 @@ const LiquidGlass: React.FC<LiquidGlassProps> = ({
       glow: 'shadow-orange-500/10'
     },
     purple: {
-      light: 'from-purple-50/70 to-pink-50/70',
-      dark: 'from-purple-900/20 to-pink-900/20',
-      colored: 'from-purple-400/20 to-pink-400/20',
+      light: 'from-amber-50/70 to-pink-50/70',
+      dark: 'from-amber-900/20 to-pink-900/20',
+      colored: 'from-amber-500/20 to-pink-400/20',
       border: 'border-purple-200/30 dark:border-purple-700/30',
-      glow: 'shadow-purple-500/10'
+      glow: 'shadow-amber-600/10'
     },
     pink: {
       light: 'from-pink-50/70 to-rose-50/70',

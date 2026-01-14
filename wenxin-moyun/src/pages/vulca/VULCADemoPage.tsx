@@ -221,7 +221,7 @@ export const VULCADemoPage: React.FC = () => {
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-700 to-amber-700 bg-clip-text text-transparent">
               VULCA Multi-Dimensional Evaluation
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
@@ -261,11 +261,11 @@ export const VULCADemoPage: React.FC = () => {
         </div>
         
         {/* Demo Library Banner */}
-        <div className="mb-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-4 border border-blue-200 dark:border-blue-800">
+        <div className="mb-6 bg-gradient-to-r from-slate-50 to-amber-50 dark:from-slate-900/20 dark:to-amber-900/20 rounded-2xl p-4 border border-blue-200 dark:border-slate-800">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-900/50 flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-slate-700 dark:text-slate-500" />
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-gray-100">Public Demo Library</h3>
@@ -510,14 +510,14 @@ export const VULCADemoPage: React.FC = () => {
               <IOSButton
                 variant={activeTab === 'visualization' ? 'primary' : 'secondary'}
                 onClick={() => setActiveTab('visualization')}
-                className="flex-1 rounded-none border-b-2 border-transparent data-[active]:border-blue-500"
+                className="flex-1 rounded-none border-b-2 border-transparent data-[active]:border-slate-600"
               >
                 Visualization
               </IOSButton>
               <IOSButton
                 variant={activeTab === 'comparison' ? 'primary' : 'secondary'}
                 onClick={() => setActiveTab('comparison')}
-                className="flex-1 rounded-none border-b-2 border-transparent data-[active]:border-blue-500"
+                className="flex-1 rounded-none border-b-2 border-transparent data-[active]:border-slate-600"
               >
                 Comparison
               </IOSButton>
@@ -606,8 +606,8 @@ export const VULCADemoPage: React.FC = () => {
             aria-controls="methodology-content"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                <FlaskConical className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-900/30 flex items-center justify-center">
+                <FlaskConical className="w-5 h-5 text-slate-700 dark:text-slate-500" />
               </div>
               <div className="text-left">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
@@ -640,7 +640,7 @@ export const VULCADemoPage: React.FC = () => {
               {/* 6D → 47D Expansion */}
               <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Layers className="w-5 h-5 text-purple-500" />
+                  <Layers className="w-5 h-5 text-amber-600" />
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     6D → 47D Dimension Expansion
                   </h3>
@@ -651,7 +651,7 @@ export const VULCADemoPage: React.FC = () => {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div className="bg-white dark:bg-gray-900/50 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-                    <h4 className="font-medium text-blue-600 dark:text-blue-400 mb-2">Creativity (8 sub-dimensions)</h4>
+                    <h4 className="font-medium text-slate-700 dark:text-slate-500 mb-2">Creativity (8 sub-dimensions)</h4>
                     <p className="text-xs text-gray-500 dark:text-gray-400">Originality, Innovation, Novelty, Unconventionality...</p>
                   </div>
                   <div className="bg-white dark:bg-gray-900/50 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
@@ -667,7 +667,7 @@ export const VULCADemoPage: React.FC = () => {
                     <p className="text-xs text-gray-500 dark:text-gray-400">Historical Awareness, Cultural Reference, Symbolism...</p>
                   </div>
                   <div className="bg-white dark:bg-gray-900/50 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-                    <h4 className="font-medium text-purple-600 dark:text-purple-400 mb-2">Innovation (8 sub-dimensions)</h4>
+                    <h4 className="font-medium text-amber-700 dark:text-amber-500 mb-2">Innovation (8 sub-dimensions)</h4>
                     <p className="text-xs text-gray-500 dark:text-gray-400">Boundary Pushing, Experimental, Paradigm Shifting...</p>
                   </div>
                   <div className="bg-white dark:bg-gray-900/50 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
@@ -714,26 +714,26 @@ export const VULCADemoPage: React.FC = () => {
               {/* Evaluation Methodology */}
               <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <BookOpen className="w-5 h-5 text-blue-500" />
+                  <BookOpen className="w-5 h-5 text-slate-600" />
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     Evaluation Methodology
                   </h3>
                 </div>
                 <div className="space-y-3 text-gray-600 dark:text-gray-400">
                   <div className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-xs font-medium text-blue-600 dark:text-blue-400 flex-shrink-0">1</span>
+                    <span className="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-900/30 flex items-center justify-center text-xs font-medium text-slate-700 dark:text-slate-500 flex-shrink-0">1</span>
                     <p><strong>Multi-Model Comparison:</strong> AI artworks are evaluated across multiple dimensions, allowing direct comparison of model capabilities.</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-xs font-medium text-blue-600 dark:text-blue-400 flex-shrink-0">2</span>
+                    <span className="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-900/30 flex items-center justify-center text-xs font-medium text-slate-700 dark:text-slate-500 flex-shrink-0">2</span>
                     <p><strong>Dimension Weighting:</strong> Each cultural perspective applies different weights to the 47 dimensions based on cultural values and artistic traditions.</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-xs font-medium text-blue-600 dark:text-blue-400 flex-shrink-0">3</span>
+                    <span className="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-900/30 flex items-center justify-center text-xs font-medium text-slate-700 dark:text-slate-500 flex-shrink-0">3</span>
                     <p><strong>Score Aggregation:</strong> Final scores combine dimension scores with cultural weights to produce perspective-specific and universal ratings.</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-xs font-medium text-blue-600 dark:text-blue-400 flex-shrink-0">4</span>
+                    <span className="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-900/30 flex items-center justify-center text-xs font-medium text-slate-700 dark:text-slate-500 flex-shrink-0">4</span>
                     <p><strong>Visualization:</strong> Results are presented through radar charts, bar graphs, and detailed breakdowns for comprehensive analysis.</p>
                   </div>
                 </div>
@@ -747,8 +747,8 @@ export const VULCADemoPage: React.FC = () => {
       <div className="mt-12">
         <IOSCard variant="elevated">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-              <Layers className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-purple-900/30 flex items-center justify-center">
+              <Layers className="w-5 h-5 text-amber-700 dark:text-amber-500" />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
@@ -838,7 +838,7 @@ export const VULCADemoPage: React.FC = () => {
                 <h4 className="font-semibold text-gray-900 dark:text-gray-100">
                   {persona.name}
                 </h4>
-                <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                <p className="text-xs text-slate-700 dark:text-slate-500 font-medium">
                   {persona.culture} • {persona.era}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
@@ -922,7 +922,7 @@ export const VULCADemoPage: React.FC = () => {
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-400 flex-shrink-0">i</span>
+                  <span className="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-900/30 flex items-center justify-center text-xs font-bold text-slate-700 dark:text-slate-500 flex-shrink-0">i</span>
                   <p className="text-sm text-gray-700 dark:text-gray-300">
                     <strong>Western Bias:</strong> 100% accuracy on Burning Man vs 0% on Huobajie
                   </p>
@@ -935,23 +935,23 @@ export const VULCADemoPage: React.FC = () => {
 
       {/* CTA Banner - Upgrade to Full Evaluation */}
       <div className="mt-12">
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white">
+        <div className="bg-gradient-to-r from-slate-700 to-amber-700 rounded-2xl p-8 text-white">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <h3 className="text-2xl font-bold mb-2">Ready for Full 47D Evaluation?</h3>
-              <p className="text-blue-100">
+              <p className="text-slate-100">
                 Get comprehensive cultural analysis, PDF reports, and enterprise-grade diagnostics for your AI models.
               </p>
               <div className="flex flex-wrap gap-4 mt-4">
-                <div className="flex items-center gap-2 text-sm text-blue-100">
+                <div className="flex items-center gap-2 text-sm text-slate-100">
                   <CheckCircle className="w-4 h-4" />
                   <span>Full 47D Diagnostics</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-blue-100">
+                <div className="flex items-center gap-2 text-sm text-slate-100">
                   <CheckCircle className="w-4 h-4" />
                   <span>8 Cultural Perspectives</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-blue-100">
+                <div className="flex items-center gap-2 text-sm text-slate-100">
                   <CheckCircle className="w-4 h-4" />
                   <span>PDF Reports</span>
                 </div>
@@ -965,7 +965,7 @@ export const VULCADemoPage: React.FC = () => {
                 </IOSButton>
               </Link>
               <Link to="/solutions">
-                <IOSButton variant="secondary" size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
+                <IOSButton variant="secondary" size="lg" className="bg-white text-slate-700 hover:bg-slate-50">
                   View Solutions
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </IOSButton>
@@ -1001,7 +1001,7 @@ export const VULCADemoPage: React.FC = () => {
       {/* Citation Block - Updated with Real Paper Information */}
       <div className="mt-8 space-y-4">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-500" />
+          <BookOpen className="w-5 h-5 text-slate-600" />
           Related Publications
         </h3>
 

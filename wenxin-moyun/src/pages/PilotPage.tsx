@@ -139,7 +139,7 @@ export default function PilotPage() {
       >
         {/* Hero Section */}
         <motion.div variants={itemVariants} className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-500 dark:text-blue-400 text-sm font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-600/10 text-slate-600 dark:text-slate-500 text-sm font-medium mb-6">
             <Clock className="w-4 h-4" />
             2-Week Delivery
           </div>
@@ -164,7 +164,7 @@ export default function PilotPage() {
             {pilotIncludes.map((item, index) => (
               <IOSCard key={index} variant="elevated" className="text-center">
                 <IOSCardContent className="pt-6">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/10 text-blue-500 mb-4">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-600/10 text-slate-600 mb-4">
                     {item.icon}
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -189,7 +189,7 @@ export default function PilotPage() {
             {processSteps.map((step, index) => (
               <div key={step.step} className="flex items-center gap-4">
                 <div className="flex flex-col items-center text-center max-w-xs">
-                  <div className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center text-xl font-bold mb-3">
+                  <div className="w-12 h-12 rounded-full bg-slate-600 text-white flex items-center justify-center text-xl font-bold mb-3">
                     {step.step}
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
@@ -248,7 +248,7 @@ export default function PilotPage() {
                         required
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-slate-600 focus:border-transparent transition-all"
                         placeholder="Your name"
                       />
                     </div>
@@ -264,7 +264,7 @@ export default function PilotPage() {
                         required
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-slate-600 focus:border-transparent transition-all"
                         placeholder="you@company.com"
                       />
                     </div>
@@ -281,7 +281,7 @@ export default function PilotPage() {
                         name="company"
                         value={formData.company}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-slate-600 focus:border-transparent transition-all"
                         placeholder="Your company"
                       />
                     </div>
@@ -295,7 +295,7 @@ export default function PilotPage() {
                         name="modelName"
                         value={formData.modelName}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-slate-600 focus:border-transparent transition-all"
                         placeholder="e.g., GPT-4, Claude, Custom Model"
                       />
                     </div>
@@ -310,7 +310,7 @@ export default function PilotPage() {
                       required
                       value={formData.useCase}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-slate-600 focus:border-transparent transition-all"
                     >
                       <option value="model_selection">Model Selection / Comparison</option>
                       <option value="pre_release">Pre-Release Evaluation</option>
@@ -330,7 +330,7 @@ export default function PilotPage() {
                       rows={4}
                       value={formData.message}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-slate-600 focus:border-transparent transition-all resize-none"
                       placeholder="Tell us more about your evaluation needs, timeline, or specific focus areas..."
                     />
                   </div>

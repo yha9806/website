@@ -59,12 +59,12 @@ export const IOSRangeSlider: React.FC<IOSRangeSliderProps> = ({
     },
   };
 
-  // Color configurations
+  // Color configurations - Art Professional palette
   const colorConfig = {
-    primary: 'bg-blue-500',
-    green: 'bg-green-500',
-    orange: 'bg-orange-500',
-    red: 'bg-red-500',
+    primary: 'bg-slate-600',
+    green: 'bg-emerald-600',
+    orange: 'bg-amber-600',
+    red: 'bg-rose-600',
   };
 
   const config = sizeConfig[size];

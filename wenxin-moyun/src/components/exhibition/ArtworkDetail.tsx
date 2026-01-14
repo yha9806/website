@@ -97,7 +97,7 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
                   flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all
                   ${
                     index === currentImageIndex
-                      ? 'border-blue-500 ring-2 ring-blue-500/30'
+                      ? 'border-slate-600 ring-2 ring-slate-600/30'
                       : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'
                   }
                 `}
@@ -135,13 +135,13 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
               {artwork.title}
             </h1>
             {artwork.chapter && (
-              <p className="text-sm text-blue-500 mt-1">{artwork.chapter.name}</p>
+              <p className="text-sm text-slate-600 mt-1">{artwork.chapter.name}</p>
             )}
           </div>
 
           {/* Artist */}
           <div className="flex items-center gap-3 py-3 border-t border-b border-gray-200 dark:border-gray-700">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-slate-500 to-amber-600 flex items-center justify-center text-white font-bold text-lg">
               {artistInitials}
             </div>
             <div>
@@ -202,7 +202,7 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
               {artwork.description.length > 300 && (
                 <button
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="text-blue-500 text-sm font-medium mt-2"
+                  className="text-slate-600 text-sm font-medium mt-2"
                 >
                   {isExpanded ? 'Show Less' : 'Read More'}
                 </button>

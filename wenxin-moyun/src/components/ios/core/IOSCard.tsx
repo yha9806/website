@@ -42,38 +42,39 @@ export const IOSCard: React.FC<IOSCardProps> = ({
     xl: 'rounded-2xl',
   };
   
-  // Variant-specific styles
+  // Variant-specific styles - Art Professional
   const getVariantClasses = () => {
     switch (variant) {
       case 'flat':
         return `
-          bg-white dark:bg-gray-800
-          ${interactive ? 'hover:bg-gray-50 dark:hover:bg-gray-750' : ''}
+          bg-white dark:bg-[#1A1614]
+          ${interactive ? 'hover:bg-gray-50 dark:hover:bg-[#211D1A]' : ''}
         `;
-      
+
       case 'elevated':
         return `
-          bg-white dark:bg-gray-800
-          shadow-md hover:shadow-lg
-          ${interactive ? 'hover:shadow-xl transform hover:-translate-y-0.5' : ''}
+          bg-white dark:bg-[#1A1614]
+          shadow-sm hover:shadow-md
+          border border-gray-100 dark:border-[#342E28]
+          ${interactive ? 'hover:shadow-lg transform hover:-translate-y-0.5' : ''}
         `;
-      
+
       case 'glass':
         return `
-          bg-white/70 dark:bg-gray-800/70
+          bg-white/80 dark:bg-[#1A1614]/80
           backdrop-blur-xl
-          border border-white/20 dark:border-gray-700/50
-          shadow-lg
-          ${interactive ? 'hover:bg-white/80 dark:hover:bg-gray-800/80' : ''}
+          border border-gray-200/50 dark:border-[#4A433C]/50
+          shadow-sm
+          ${interactive ? 'hover:bg-white/90 dark:hover:bg-[#1A1614]/90' : ''}
         `;
-      
+
       case 'bordered':
         return `
-          bg-white dark:bg-gray-900
-          border border-gray-200 dark:border-gray-700
-          ${interactive ? 'hover:border-gray-300 dark:hover:border-gray-600' : ''}
+          bg-white dark:bg-[#0F0D0B]
+          border border-gray-200 dark:border-[#4A433C]
+          ${interactive ? 'hover:border-gray-300 dark:hover:border-[#6B6259]' : ''}
         `;
-      
+
       default:
         return '';
     }

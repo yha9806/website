@@ -31,7 +31,7 @@ const itemVariants = {
 const changeTypeConfig: Record<string, { icon: React.ReactNode; color: string; label: string }> = {
   feature: {
     icon: <Sparkles className="w-4 h-4" />,
-    color: 'bg-blue-500/10 text-blue-500',
+    color: 'bg-slate-600/10 text-slate-600',
     label: 'New Feature'
   },
   improvement: {
@@ -51,7 +51,7 @@ const changeTypeConfig: Record<string, { icon: React.ReactNode; color: string; l
   },
   breaking: {
     icon: <Package className="w-4 h-4" />,
-    color: 'bg-purple-500/10 text-purple-500',
+    color: 'bg-amber-600/10 text-amber-600',
     label: 'Breaking Change'
   }
 };
@@ -192,7 +192,7 @@ export default function ChangelogPage() {
       >
         {/* Header */}
         <motion.div variants={itemVariants} className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-500 dark:text-blue-400 text-sm font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-600/10 text-slate-600 dark:text-slate-500 text-sm font-medium mb-6">
             <FileText className="w-4 h-4" />
             Current Version: {VERSION_BADGE.short}
           </div>
@@ -282,7 +282,7 @@ export default function ChangelogPage() {
               href="https://github.com/yha9806/website"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
+              className="text-slate-600 hover:underline"
             >
               GitHub repository
             </a>{' '}

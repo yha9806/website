@@ -80,7 +80,7 @@ export default function ProductPage() {
           {/* 6D Core */}
           <IOSCard variant="elevated">
             <IOSCardHeader
-              emoji={<Layers className="w-8 h-8 text-blue-500" />}
+              emoji={<Layers className="w-8 h-8 text-slate-600" />}
               title="6D Core Dimensions"
               subtitle="Foundation metrics"
             />
@@ -102,7 +102,7 @@ export default function ProductPage() {
           {/* 8 Perspectives */}
           <IOSCard variant="elevated">
             <IOSCardHeader
-              emoji={<Globe className="w-8 h-8 text-purple-500" />}
+              emoji={<Globe className="w-8 h-8 text-amber-600" />}
               title="8 Cultural Perspectives"
               subtitle="East & West viewpoints"
             />
@@ -156,8 +156,8 @@ export default function ProductPage() {
               viewport={{ once: true }}
               className="flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm"
             >
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
-                <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{item.level}</span>
+              <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+                <span className="text-lg font-bold text-slate-700 dark:text-slate-500">{item.level}</span>
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-white">{item.name}</h3>
@@ -179,7 +179,7 @@ export default function ProductPage() {
         <IOSCardGrid columns={3} gap="lg">
           <IOSCard variant="flat">
             <IOSCardHeader
-              emoji={<Cpu className="w-6 h-6 text-blue-500" />}
+              emoji={<Cpu className="w-6 h-6 text-slate-600" />}
               title="Automated Pipeline"
             />
             <IOSCardContent>
@@ -191,7 +191,7 @@ export default function ProductPage() {
 
           <IOSCard variant="flat">
             <IOSCardHeader
-              emoji={<BarChart3 className="w-6 h-6 text-purple-500" />}
+              emoji={<BarChart3 className="w-6 h-6 text-amber-600" />}
               title="47D Diagnostics"
             />
             <IOSCardContent>
@@ -265,7 +265,7 @@ export default function ProductPage() {
         <IOSCardGrid columns={2} gap="lg">
           <IOSCard variant="elevated">
             <IOSCardHeader
-              emoji={<Code className="w-8 h-8 text-blue-500" />}
+              emoji={<Code className="w-8 h-8 text-slate-600" />}
               title="REST API"
               subtitle="Programmatic access"
             />
@@ -293,7 +293,7 @@ export default function ProductPage() {
 
           <IOSCard variant="elevated">
             <IOSCardHeader
-              emoji={<FileJson className="w-8 h-8 text-purple-500" />}
+              emoji={<FileJson className="w-8 h-8 text-amber-600" />}
               title="Python SDK"
               subtitle="Native integration"
             />

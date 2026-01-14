@@ -27,8 +27,8 @@ interface ResponseDisplayProps {
 }
 
 const dimensionConfig: Record<string, { color: string; icon: React.ElementType; label: string }> = {
-  rhythm: { color: 'text-purple-600', icon: MessageSquare, label: 'Rhythm & Meter' },
-  composition: { color: 'text-blue-600', icon: Target, label: 'Composition' },
+  rhythm: { color: 'text-amber-700', icon: MessageSquare, label: 'Rhythm & Meter' },
+  composition: { color: 'text-slate-700', icon: Target, label: 'Composition' },
   narrative: { color: 'text-green-600', icon: MessageSquare, label: 'Narrative' },
   emotion: { color: 'text-red-600', icon: Star, label: 'Emotion' },
   creativity: { color: 'text-yellow-600', icon: Lightbulb, label: 'Creativity' },
@@ -38,7 +38,7 @@ const dimensionConfig: Record<string, { color: string; icon: React.ElementType; 
 const ScoreAnnotation: React.FC<{ score: number; text: string }> = ({ score, text }) => {
   const getScoreColor = (score: number) => {
     if (score >= 90) return 'bg-green-100 text-green-800 border-green-300';
-    if (score >= 80) return 'bg-blue-100 text-blue-800 border-blue-300';
+    if (score >= 80) return 'bg-slate-100 text-slate-800 border-slate-400';
     if (score >= 70) return 'bg-yellow-100 text-yellow-800 border-yellow-300';
     if (score >= 60) return 'bg-orange-100 text-orange-800 border-orange-300';
     return 'bg-red-100 text-red-800 border-red-300';
@@ -100,7 +100,7 @@ const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
                     ${score >= 90 
                       ? 'bg-gradient-to-r from-green-200/90 to-emerald-200/90 border border-green-300/50 hover:shadow-sm' 
                       : score >= 85 
-                      ? 'bg-gradient-to-r from-blue-200/90 to-indigo-200/90 border border-blue-300/50 hover:shadow-sm'
+                      ? 'bg-gradient-to-r from-slate-200/90 to-indigo-200/90 border border-slate-400/50 hover:shadow-sm'
                       : 'bg-gradient-to-r from-yellow-200/90 to-amber-200/90 border border-yellow-300/50 hover:shadow-sm'
                     }
                     dark:from-opacity-40 dark:to-opacity-40
@@ -138,7 +138,7 @@ const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
 
   const getScoreBadgeColor = (score: number) => {
     if (score >= 80) return 'bg-green-100 text-green-800';
-    if (score >= 60) return 'bg-blue-100 text-blue-800';
+    if (score >= 60) return 'bg-slate-100 text-slate-800';
     return 'bg-red-100 text-red-800';
   };
 
@@ -256,17 +256,17 @@ const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
 
             {/* Suggestions with iOS glass effect */}
             {detail.analysis.suggestions?.length > 0 && (
-              <div className="relative overflow-hidden rounded-xl p-4 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 dark:from-blue-900/20 dark:to-indigo-900/20 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50">
+              <div className="relative overflow-hidden rounded-xl p-4 bg-gradient-to-br from-slate-50/80 to-indigo-50/80 dark:from-slate-900/20 dark:to-indigo-900/20 backdrop-blur-sm border border-blue-200/50 dark:border-slate-700/50">
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"></div>
                 <div className="relative">
-                  <h5 className="text-xs font-semibold text-blue-700 dark:text-blue-400 mb-2 flex items-center">
+                  <h5 className="text-xs font-semibold text-slate-700 dark:text-slate-500 mb-2 flex items-center">
                     <span className="mr-1.5">💡</span>
                     Suggestions
                   </h5>
                   <ul className="space-y-1.5">
                     {detail.analysis.suggestions.map((suggestion, idx) => (
-                      <li key={idx} className="text-xs text-blue-600 dark:text-blue-300 flex items-start">
-                        <span className="mr-2 mt-0.5 text-blue-500">◆</span>
+                      <li key={idx} className="text-xs text-slate-700 dark:text-slate-400 flex items-start">
+                        <span className="mr-2 mt-0.5 text-slate-600">◆</span>
                         <span className="leading-relaxed">{suggestion}</span>
                       </li>
                     ))}

@@ -67,7 +67,7 @@ export function ExhibitionsPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium mb-4"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 dark:bg-purple-900/30 text-purple-700 dark:text-amber-400 rounded-full text-sm font-medium mb-4"
         >
           <Award className="w-4 h-4" />
           Qualitative Evidence Library
@@ -89,11 +89,11 @@ export function ExhibitionsPage() {
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
           <div className="flex items-center gap-2">
-            <Globe className="w-4 h-4 text-blue-500" />
+            <Globe className="w-4 h-4 text-slate-600" />
             <span>8 Cultural Perspectives</span>
           </div>
           <div className="flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-purple-500" />
+            <MessageSquare className="w-4 h-4 text-amber-600" />
             <span>Multi-Agent Dialogues</span>
           </div>
           <div className="flex items-center gap-2">
@@ -108,7 +108,7 @@ export function ExhibitionsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
-        className="mb-8 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-2xl p-6 border border-purple-200 dark:border-purple-800"
+        className="mb-8 bg-gradient-to-r from-amber-50 to-slate-50 dark:from-amber-900/20 dark:to-slate-900/20 rounded-2xl p-6 border border-purple-200 dark:border-purple-800"
       >
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
@@ -178,7 +178,7 @@ export function ExhibitionsPage() {
                         exhibition.status === 'live'
                           ? 'bg-green-500 text-white'
                           : exhibition.status === 'upcoming'
-                          ? 'bg-blue-500 text-white'
+                          ? 'bg-slate-600 text-white'
                           : 'bg-gray-500 text-white'
                       }`}
                     >
@@ -204,12 +204,12 @@ export function ExhibitionsPage() {
                   {/* Features */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     {exhibition.has_chapters && (
-                      <span className="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg">
+                      <span className="px-2 py-1 text-xs bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-500 rounded-lg">
                         Chapters
                       </span>
                     )}
                     {exhibition.has_dialogues && (
-                      <span className="px-2 py-1 text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg">
+                      <span className="px-2 py-1 text-xs bg-amber-100 dark:bg-purple-900/30 text-amber-700 dark:text-amber-500 rounded-lg">
                         AI Dialogues
                       </span>
                     )}
@@ -250,7 +250,7 @@ export function ExhibitionsPage() {
         className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
       >
         <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 text-center">
-          <p className="text-3xl font-bold text-blue-500">{totalArtworks}</p>
+          <p className="text-3xl font-bold text-slate-600">{totalArtworks}</p>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Total Artworks</p>
         </div>
         <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 text-center">
@@ -262,7 +262,7 @@ export function ExhibitionsPage() {
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Artists</p>
         </div>
         <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 text-center">
-          <p className="text-3xl font-bold text-purple-500">14</p>
+          <p className="text-3xl font-bold text-amber-600">14</p>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">AI Critics</p>
         </div>
       </motion.div>
@@ -274,25 +274,25 @@ export function ExhibitionsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="mt-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 text-white"
+          className="mt-12 bg-gradient-to-r from-amber-700 to-slate-700 rounded-2xl p-8 text-white"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <h3 className="text-2xl font-bold mb-2">Need Cultural AI for Your Museum?</h3>
-              <p className="text-purple-100">
+              <p className="text-amber-100">
                 Deploy AI docents with validated cross-cultural interpretations. Our museum solutions
                 ensure accurate cultural representation for international visitors.
               </p>
               <div className="flex flex-wrap gap-4 mt-4">
-                <div className="flex items-center gap-2 text-sm text-purple-100">
+                <div className="flex items-center gap-2 text-sm text-amber-100">
                   <CheckCircle className="w-4 h-4" />
                   <span>Multi-language Support</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-purple-100">
+                <div className="flex items-center gap-2 text-sm text-amber-100">
                   <CheckCircle className="w-4 h-4" />
                   <span>Cultural Validation</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-purple-100">
+                <div className="flex items-center gap-2 text-sm text-amber-100">
                   <CheckCircle className="w-4 h-4" />
                   <span>8 Perspective Analysis</span>
                 </div>
@@ -306,7 +306,7 @@ export function ExhibitionsPage() {
                 </IOSButton>
               </Link>
               <Link to="/solutions/museums">
-                <IOSButton variant="secondary" size="lg" className="bg-white text-purple-600 hover:bg-purple-50">
+                <IOSButton variant="secondary" size="lg" className="bg-white text-amber-700 hover:bg-amber-50">
                   Museum Solutions
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </IOSButton>

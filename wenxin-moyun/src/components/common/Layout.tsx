@@ -125,9 +125,9 @@ export default function Layout() {
       <div 
         className="fixed inset-0 pointer-events-none"
         style={{
-          background: theme === 'dark' 
-            ? 'radial-gradient(ellipse at top left, rgba(88, 166, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(175, 82, 222, 0.1) 0%, transparent 50%)'
-            : 'radial-gradient(ellipse at top left, rgba(0, 122, 255, 0.08) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(175, 82, 222, 0.06) 0%, transparent 50%)',
+          background: theme === 'dark'
+            ? 'radial-gradient(ellipse at top left, rgba(100, 116, 139, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(200, 127, 74, 0.1) 0%, transparent 50%)'
+            : 'radial-gradient(ellipse at top left, rgba(51, 65, 85, 0.08) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(200, 127, 74, 0.06) 0%, transparent 50%)',
           backdropFilter: getBlurIntensity(),
           WebkitBackdropFilter: getBlurIntensity(),
         }}

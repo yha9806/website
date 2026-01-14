@@ -33,7 +33,7 @@ const defaultGroups: DimensionGroup[] = [
     id: 'technical',
     name: 'Technical Skills',
     dimensions: ['dim_0', 'dim_1', 'dim_2', 'dim_3', 'dim_4', 'dim_5'],
-    color: '#007AFF',
+    color: '#64748B',
     icon: 'gear'
   },
   {
@@ -61,7 +61,7 @@ const defaultGroups: DimensionGroup[] = [
     id: 'innovation',
     name: 'Innovation & Originality',
     dimensions: ['dim_23', 'dim_24', 'dim_25', 'dim_26', 'dim_27', 'dim_28'],
-    color: '#AF52DE',
+    color: '#C87F4A',
     icon: 'lightbulb'
   },
   {

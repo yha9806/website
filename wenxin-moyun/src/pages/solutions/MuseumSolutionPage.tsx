@@ -93,7 +93,7 @@ export default function MuseumSolutionPage() {
 
           <IOSCard variant="elevated">
             <IOSCardHeader
-              emoji={<Image className="w-8 h-8 text-blue-500" />}
+              emoji={<Image className="w-8 h-8 text-slate-600" />}
               title="Artwork Description"
             />
             <IOSCardContent>
@@ -105,7 +105,7 @@ export default function MuseumSolutionPage() {
 
           <IOSCard variant="elevated">
             <IOSCardHeader
-              emoji={<Sparkles className="w-8 h-8 text-purple-500" />}
+              emoji={<Sparkles className="w-8 h-8 text-amber-600" />}
               title="Curatorial AI"
             />
             <IOSCardContent>
@@ -165,8 +165,8 @@ export default function MuseumSolutionPage() {
 
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Languages className="w-5 h-5 text-blue-500" />
+              <div className="w-10 h-10 bg-slate-100 dark:bg-slate-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Languages className="w-5 h-5 text-slate-600" />
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -181,8 +181,8 @@ export default function MuseumSolutionPage() {
 
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Eye className="w-5 h-5 text-purple-500" />
+              <div className="w-10 h-10 bg-amber-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Eye className="w-5 h-5 text-amber-600" />
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">

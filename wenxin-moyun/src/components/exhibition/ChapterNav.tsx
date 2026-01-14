@@ -62,10 +62,10 @@ export function ChapterPills({
         onClick={() => onSelectChapter(null)}
         className={`
           px-4 py-2.5 min-h-[44px] rounded-full text-sm font-medium whitespace-nowrap transition-all
-          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+          focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-offset-2
           ${
             selectedChapterId === null
-              ? 'bg-blue-500 text-white'
+              ? 'bg-slate-600 text-white'
               : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
           }
         `}
@@ -78,10 +78,10 @@ export function ChapterPills({
           onClick={() => onSelectChapter(chapter.id)}
           className={`
             px-4 py-2.5 min-h-[44px] rounded-full text-sm font-medium whitespace-nowrap transition-all
-            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+            focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-offset-2
             ${
               selectedChapterId === chapter.id
-                ? 'bg-blue-500 text-white'
+                ? 'bg-slate-600 text-white'
                 : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
             }
           `}

@@ -47,7 +47,7 @@ export function TopDeltaDimensions({
       case 'medium':
         return 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20';
       default:
-        return 'border-blue-500 bg-blue-50 dark:bg-blue-900/20';
+        return 'border-slate-600 bg-slate-50 dark:bg-slate-900/20';
     }
   };
 
@@ -58,7 +58,7 @@ export function TopDeltaDimensions({
       case 'medium':
         return <Info className="w-4 h-4 text-yellow-500" />;
       default:
-        return <CheckCircle className="w-4 h-4 text-blue-500" />;
+        return <CheckCircle className="w-4 h-4 text-slate-600" />;
     }
   };
 
@@ -155,7 +155,7 @@ export function TopDeltaDimensions({
                 {showRecommendations && dim.recommendation && (
                   <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
                     <p className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                      <span className="font-medium text-blue-600 dark:text-blue-400 flex-shrink-0">Insight:</span>
+                      <span className="font-medium text-slate-700 dark:text-slate-500 flex-shrink-0">Insight:</span>
                       {dim.recommendation}
                     </p>
                   </div>

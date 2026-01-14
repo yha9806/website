@@ -33,7 +33,7 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
 
   const getScoreColor = () => {
     if (score >= 90) return 'text-green-600';
-    if (score >= 70) return 'text-blue-600';
+    if (score >= 70) return 'text-slate-700';
     if (score >= 50) return 'text-yellow-600';
     return 'text-red-600';
   };
@@ -128,7 +128,7 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
                   onClick={() => setScore(quickScore)}
                   className={`px-3 py-1 rounded-lg text-sm transition-all ${
                     score === quickScore
-                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                      ? 'bg-gradient-to-r from-amber-700 to-slate-700 text-white'
                       : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
                   }`}
                 >
@@ -147,7 +147,7 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
               placeholder="请提供您的评价和建议..."
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-600 resize-none"
               rows={5}
             />
 
@@ -200,7 +200,7 @@ const HumanRatingModal: React.FC<HumanRatingModalProps> = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 bg-gradient-to-r from-amber-700 to-slate-700 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? '提交中...' : '提交评分'}
             </button>

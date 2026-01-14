@@ -42,8 +42,8 @@ export function DialogueViewer({ dialogues, artworkTitle }: DialogueViewerProps)
   // Get unique participant colors
   const participantColors: Record<string, string> = {};
   const colors = [
-    'from-blue-400 to-blue-600',
-    'from-purple-400 to-purple-600',
+    'from-slate-500 to-slate-700',
+    'from-amber-500 to-amber-700',
     'from-green-400 to-green-600',
     'from-orange-400 to-orange-600',
     'from-pink-400 to-pink-600',
@@ -83,7 +83,7 @@ export function DialogueViewer({ dialogues, artworkTitle }: DialogueViewerProps)
                 onClick={() => setLanguage(lang as typeof language)}
                 className={`px-2 py-1 text-xs rounded-md transition-colors ${
                   language === lang
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-slate-600 text-white'
                     : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                 }`}
               >
@@ -100,7 +100,7 @@ export function DialogueViewer({ dialogues, artworkTitle }: DialogueViewerProps)
           <div className="pb-4 border-b border-gray-200 dark:border-gray-700">
             <button
               onClick={() => setShowVisualAnalysis(!showVisualAnalysis)}
-              className="flex items-center gap-2 text-sm text-blue-500 hover:text-blue-600 transition-colors"
+              className="flex items-center gap-2 text-sm text-slate-600 hover:text-slate-700 transition-colors"
             >
               <EmojiIcon category="content" name="visual" size="sm" />
               {showVisualAnalysis ? 'Hide' : 'Show'} Visual Analysis
@@ -111,7 +111,7 @@ export function DialogueViewer({ dialogues, artworkTitle }: DialogueViewerProps)
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg"
+                  className="mt-3 p-3 bg-slate-50 dark:bg-slate-900/20 rounded-lg"
                 >
                   <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                     {currentDialogue.visual_analysis}

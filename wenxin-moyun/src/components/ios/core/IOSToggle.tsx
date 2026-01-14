@@ -57,12 +57,12 @@ export const IOSToggle: React.FC<IOSToggleProps> = ({
     },
   };
 
-  // Color configurations
+  // Color configurations - Art Professional palette
   const colorConfig = {
-    primary: checked ? 'bg-blue-500' : 'bg-gray-300',
-    green: checked ? 'bg-green-500' : 'bg-gray-300',
-    orange: checked ? 'bg-orange-500' : 'bg-gray-300',
-    red: checked ? 'bg-red-500' : 'bg-gray-300',
+    primary: checked ? 'bg-slate-600' : 'bg-gray-300',
+    green: checked ? 'bg-emerald-600' : 'bg-gray-300',
+    orange: checked ? 'bg-amber-600' : 'bg-gray-300',
+    red: checked ? 'bg-rose-600' : 'bg-gray-300',
   };
 
   const config = sizeConfig[size];

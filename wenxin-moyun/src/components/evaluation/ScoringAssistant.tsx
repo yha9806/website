@@ -123,7 +123,7 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
 
   const getScoreColor = (score: number) => {
     if (score >= 90) return 'text-green-600';
-    if (score >= 80) return 'text-blue-600';
+    if (score >= 80) return 'text-slate-700';
     if (score >= 70) return 'text-yellow-600';
     return 'text-red-600';
   };
@@ -138,13 +138,13 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
       className="bg-neutral-50 dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 max-w-md"
     >
       <div className="flex items-center space-x-2 mb-4">
-        <HelpCircle className="w-5 h-5 text-blue-500" />
+        <HelpCircle className="w-5 h-5 text-slate-600" />
         <h3 className="font-semibold text-gray-800 dark:text-gray-200">评分助手</h3>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-8">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500" />
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-slate-600" />
         </div>
       ) : (
         <div className="space-y-4">
@@ -153,13 +153,13 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border-l-4 border-blue-400"
+              className="bg-slate-50 dark:bg-slate-900/20 rounded-lg p-3 border-l-4 border-slate-500"
             >
               <div className="flex items-center justify-between mb-2">
-                <h4 className="font-medium text-blue-900 capitalize">
+                <h4 className="font-medium text-slate-900 capitalize">
                   {selectedDimension} 维度指导
                 </h4>
-                <span className="text-sm text-blue-600">
+                <span className="text-sm text-slate-700">
                   推荐: {dimensionGuidance.typical_range.min}-{dimensionGuidance.typical_range.max}分
                 </span>
               </div>
@@ -186,12 +186,12 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
               </div>
 
               {dimensionGuidance.scoring_guidelines.length > 0 && (
-                <div className="text-xs text-blue-800">
+                <div className="text-xs text-slate-800">
                   <div className="font-medium mb-1">评分参考：</div>
                   <ul className="space-y-1">
                     {dimensionGuidance.scoring_guidelines.slice(0, 2).map((guideline, index) => (
                       <li key={index} className="flex items-start">
-                        <span className="w-1 h-1 bg-blue-400 rounded-full mt-2 mr-2 flex-shrink-0" />
+                        <span className="w-1 h-1 bg-slate-500 rounded-full mt-2 mr-2 flex-shrink-0" />
                         <span>{guideline}</span>
                       </li>
                     ))}
@@ -230,7 +230,7 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
                       <div 
                         key={dimension}
                         className={`flex items-center justify-between p-2 rounded ${
-                          selectedDimension === dimension ? 'bg-blue-50 border border-blue-200' : 'bg-gray-50'
+                          selectedDimension === dimension ? 'bg-slate-50 border border-blue-200' : 'bg-gray-50'
                         }`}
                       >
                         <span className="text-sm text-gray-700 capitalize">{dimension}</span>
@@ -259,7 +259,7 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
                 className="flex items-center justify-between w-full text-left"
               >
                 <div className="flex items-center space-x-2">
-                  <BookOpen className="w-4 h-4 text-purple-500" />
+                  <BookOpen className="w-4 h-4 text-amber-600" />
                   <span className="font-medium text-gray-800 dark:text-gray-200">评分提示</span>
                 </div>
                 {expandedSections.tips ? 
@@ -279,7 +279,7 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
                     <ul className="space-y-2">
                       {advice.evaluation_tips.slice(0, 3).map((tip, index) => (
                         <li key={index} className="flex items-start text-sm text-gray-600 dark:text-gray-400">
-                          <span className="w-1.5 h-1.5 bg-purple-400 rounded-full mt-2 mr-2 flex-shrink-0" />
+                          <span className="w-1.5 h-1.5 bg-amber-500 rounded-full mt-2 mr-2 flex-shrink-0" />
                           {tip}
                         </li>
                       ))}

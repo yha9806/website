@@ -53,7 +53,7 @@ export function ArtworkPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto" />
+          <div className="animate-spin w-12 h-12 border-4 border-slate-600 border-t-transparent rounded-full mx-auto" />
           <p className="mt-4 text-gray-500 dark:text-gray-400">Loading artwork...</p>
         </div>
       </div>
@@ -123,7 +123,7 @@ export function ArtworkPage() {
         {prevArtwork ? (
           <Link
             to={`/exhibitions/${exhibitionId}/${prevArtwork.id}`}
-            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-500"
+            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-slate-600"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -140,7 +140,7 @@ export function ArtworkPage() {
         {nextArtwork ? (
           <Link
             to={`/exhibitions/${exhibitionId}/${nextArtwork.id}`}
-            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-500"
+            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-slate-600"
           >
             <div className="text-right">
               <p className="text-xs text-gray-400">Next</p>

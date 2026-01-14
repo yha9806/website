@@ -83,9 +83,9 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
         };
       case 'low':
         return {
-          iconColor: 'text-blue-500',
-          gradient: 'from-blue-500 to-purple-500',
-          buttonClass: 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
+          iconColor: 'text-slate-600',
+          gradient: 'from-slate-600 to-amber-600',
+          buttonClass: 'bg-gradient-to-r from-slate-700 to-amber-700 hover:from-slate-700 hover:to-amber-700'
         };
     }
   };

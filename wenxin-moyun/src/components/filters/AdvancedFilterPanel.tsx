@@ -134,7 +134,7 @@ export default function AdvancedFilterPanel({
         className={`
           flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all
           ${isOpen || activeFilterCount > 0
-            ? 'bg-blue-500 text-white shadow-lg'
+            ? 'bg-slate-600 text-white shadow-lg'
             : 'bg-neutral-50 dark:bg-[#161B22] text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-[#30363D] hover:border-gray-300 dark:hover:border-[#48545F]'
           }
         `}
@@ -196,7 +196,7 @@ export default function AdvancedFilterPanel({
                   className={`
                     flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium transition-all
                     ${activeTab === tab.id
-                      ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                      ? 'text-slate-700 dark:text-slate-500 border-b-2 border-slate-700 dark:border-slate-500'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300'
                     }
                   `}
@@ -315,7 +315,7 @@ export default function AdvancedFilterPanel({
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="px-4 py-1.5 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
+                  className="px-4 py-1.5 bg-slate-600 text-white text-sm font-medium rounded-lg hover:bg-slate-700 transition-colors"
                 >
                   Apply Filters
                 </button>

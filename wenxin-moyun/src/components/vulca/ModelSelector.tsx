@@ -39,7 +39,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
               checked={isSelected}
               disabled={isDisabled}
               onChange={() => onModelSelect(model.id)}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded"
+              className="h-4 w-4 text-slate-700 focus:ring-slate-600 border-gray-300 dark:border-gray-600 rounded"
             />
             <label
               htmlFor={`model-${model.id}`}

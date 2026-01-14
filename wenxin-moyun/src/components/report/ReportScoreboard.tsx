@@ -37,14 +37,14 @@ export function ReportScoreboard({
 }: ReportScoreboardProps) {
   const getScoreColor = (score: number) => {
     if (score >= 0.8) return 'text-green-600 dark:text-green-400';
-    if (score >= 0.6) return 'text-blue-600 dark:text-blue-400';
+    if (score >= 0.6) return 'text-slate-700 dark:text-slate-500';
     if (score >= 0.4) return 'text-yellow-600 dark:text-yellow-400';
     return 'text-red-600 dark:text-red-400';
   };
 
   const getScoreBgColor = (score: number) => {
     if (score >= 0.8) return 'bg-green-100 dark:bg-green-900/30';
-    if (score >= 0.6) return 'bg-blue-100 dark:bg-blue-900/30';
+    if (score >= 0.6) return 'bg-slate-100 dark:bg-slate-900/30';
     if (score >= 0.4) return 'bg-yellow-100 dark:bg-yellow-900/30';
     return 'bg-red-100 dark:bg-red-900/30';
   };
@@ -59,7 +59,7 @@ export function ReportScoreboard({
     if (rank === 1) return { color: 'bg-yellow-400', label: '1st' };
     if (rank === 2) return { color: 'bg-gray-300', label: '2nd' };
     if (rank === 3) return { color: 'bg-orange-400', label: '3rd' };
-    return { color: 'bg-blue-500', label: `#${rank}` };
+    return { color: 'bg-slate-600', label: `#${rank}` };
   };
 
   const rankBadge = getRankBadge(data.rank);
@@ -72,7 +72,7 @@ export function ReportScoreboard({
     >
       <IOSCard variant="elevated">
         <IOSCardHeader
-          emoji={<Award className="w-6 h-6 text-blue-500" />}
+          emoji={<Award className="w-6 h-6 text-slate-600" />}
           title="Evaluation Scoreboard"
           subtitle={`${data.modelName} • ${data.organization}`}
         />
@@ -105,7 +105,7 @@ export function ReportScoreboard({
             {/* Key Stats */}
             <div className="grid grid-cols-2 gap-4 text-center">
               <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50">
-                <div className="flex items-center justify-center gap-1 text-purple-600 dark:text-purple-400">
+                <div className="flex items-center justify-center gap-1 text-amber-700 dark:text-amber-500">
                   <Layers className="w-4 h-4" />
                   <span className="text-xl font-bold">47</span>
                 </div>
