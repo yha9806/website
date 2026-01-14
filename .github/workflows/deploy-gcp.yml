@@ -387,13 +387,13 @@ jobs:
           echo "::add-mask::$DATABASE_URL"
           echo "url=$DATABASE_URL" >> $GITHUB_OUTPUT
 
-      - name: Run Alembic migrations against Supabase
+      - name: Initialize Supabase database
         working-directory: wenxin-backend
         env:
           DATABASE_URL: ${{ steps.supabase-url.outputs.url }}
           SECRET_KEY: ${{ steps.secret-key.outputs.key }}
         run: |
-          echo "🔄 Running Alembic migrations against Supabase..."
+          echo "🔄 Initializing Supabase database..."
 
           # 检查数据库连接 (SQLAlchemy 2.0 需要使用 text() 包装 SQL 语句)
           python -c "
@@ -413,19 +413,12 @@ jobs:
           asyncio.run(check_connection())
           " || { echo "❌ Database connection failed"; exit 1; }
 
-          # 运行迁移
-          alembic upgrade head
-          echo "✅ Alembic migrations completed"
-
-      - name: Seed database with initial data
-        working-directory: wenxin-backend
-        env:
-          DATABASE_URL: ${{ steps.supabase-url.outputs.url }}
-          SECRET_KEY: ${{ steps.secret-key.outputs.key }}
-        run: |
-          echo "🌱 Seeding database with initial data..."
+          # 直接使用 init_db.py 创建表和数据
+          # init_db.py 会执行 Base.metadata.drop_all + create_all + seed
+          # 这对于全新的 Supabase 数据库更可靠
+          echo "🌱 Creating tables and seeding database..."
           python init_db.py
-          echo "✅ Database seeding completed"
+          echo "✅ Database initialization completed"
 
       - name: Deploy backend to Cloud Run (Supabase)
         run: |
