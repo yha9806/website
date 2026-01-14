@@ -599,7 +599,8 @@ async def init_models(session: AsyncSession):
     return created_models  # Return model objects for use in other init functions
 
 async def init_admin_user(session: AsyncSession):
-    """Create admin user"""
+    """Create admin and demo users"""
+    # Admin user
     admin = User(
         username="admin",
         email="admin@wenxinmoyun.ai",
@@ -609,8 +610,21 @@ async def init_admin_user(session: AsyncSession):
         is_superuser=True
     )
     session.add(admin)
+
+    # Demo user for public testing
+    demo = User(
+        username="demo",
+        email="demo@wenxinmoyun.ai",
+        full_name="Demo User",
+        hashed_password=get_password_hash("demo123"),
+        is_active=True,
+        is_superuser=False
+    )
+    session.add(demo)
+
     await session.commit()
     print("[OK] Created admin user (username: admin, password: admin123)")
+    print("[OK] Created demo user (username: demo, password: demo123)")
 
 async def init_battles(session: AsyncSession, models):
     """Initialize sample battles"""
