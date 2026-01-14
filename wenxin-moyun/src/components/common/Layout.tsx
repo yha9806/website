@@ -4,14 +4,12 @@ import Footer from './Footer';
 import FloatingCTA from './FloatingCTA';
 import PageErrorBoundary from './PageErrorBoundary';
 import CacheStats from './CacheStats';
+import GeometricBackground from './GeometricBackground';
 import { useTheme } from '../../contexts/ThemeContext';
 import { motion } from 'framer-motion';
 import { useState, useEffect, useMemo } from 'react';
 import {
   detectDevicePerformance,
-  getPerformanceConfig,
-  getOptimizedAnimation,
-  gpuAccelerationStyles,
   type PerformanceLevel
 } from '../../utils/performanceOptimizer';
 import { useSEO } from '../../hooks/useSEO';
@@ -52,12 +50,6 @@ export default function Layout() {
     console.log('Device performance level:', level);
   }, []);
   
-  // Get performance configuration
-  const perfConfig = useMemo(() => 
-    getPerformanceConfig(performanceLevel),
-    [performanceLevel]
-  );
-  
   // Liquid Glass Background System - iOS 26 Specification
   const liquidGlassBackground = theme === 'dark' 
     ? {
@@ -83,33 +75,19 @@ export default function Layout() {
     }
   };
   
-  // Optimized floating emojis configuration based on performance
-  const floatingEmojis = useMemo(() => [
-    { 
-      emoji: '🎨', 
-      size: perfConfig.emojiSizes[0],
-      position: 'top-[-200px] left-[-200px]',
-      animation: getOptimizedAnimation(perfConfig.animationComplexity, 0),
-      duration: perfConfig.durations[0]
-    },
-    { 
-      emoji: '✨', 
-      size: perfConfig.emojiSizes[1],
-      position: 'bottom-[-150px] right-[-150px]',
-      animation: getOptimizedAnimation(perfConfig.animationComplexity, 1),
-      duration: perfConfig.durations[1]
-    },
-    { 
-      emoji: '🚀', 
-      size: perfConfig.emojiSizes[2],
-      position: 'top-[30%] left-[40%]',
-      animation: getOptimizedAnimation(perfConfig.animationComplexity, 2),
-      duration: perfConfig.durations[2]
+  // Background variant based on performance
+  const backgroundVariant = useMemo(() => {
+    switch (performanceLevel) {
+      case 'high':
+        return 'default';
+      case 'medium':
+        return 'default';
+      case 'low':
+        return 'minimal';
+      default:
+        return 'default';
     }
-  ], [perfConfig]);
-  
-  // Dynamic opacity based on theme and performance
-  const emojiOpacity = theme === 'dark' ? perfConfig.darkOpacity : perfConfig.opacity;
+  }, [performanceLevel]);
   
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
@@ -155,34 +133,8 @@ export default function Layout() {
         }}
       />
       
-      {/* Layer 4: Floating Emojis with Glass interaction */}
-      <div className="fixed inset-0 pointer-events-none" style={{ contain: 'layout style paint' }}>
-        {floatingEmojis.map((item, index) => (
-          <motion.div
-            key={index}
-            className={`absolute ${item.position} ${item.size} select-none`}
-            animate={item.animation}
-            transition={{
-              duration: item.duration,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
-              type: "tween"
-            }}
-            style={{
-              ...gpuAccelerationStyles,
-              opacity: emojiOpacity,
-              filter: perfConfig.enableBlur 
-                ? (theme === 'dark' ? 'blur(1px) saturate(1)' : 'blur(0.5px) saturate(1.5)')
-                : 'none',
-              mixBlendMode: theme === 'dark' ? 'soft-light' : 'normal',
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            <span className="block" style={{ transform: 'translateZ(0)' }}>{item.emoji}</span>
-          </motion.div>
-        ))}
-      </div>
+      {/* Layer 4: Geometric Background - Scale AI inspired */}
+      <GeometricBackground variant={backgroundVariant as 'default' | 'minimal' | 'dense'} />
       
       {/* Performance indicator (development only) */}
       {process.env.NODE_ENV === 'development' && (

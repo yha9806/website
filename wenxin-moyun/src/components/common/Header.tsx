@@ -1,8 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Sparkles, Calendar, FileText, Database, BookOpen, FlaskConical, Trophy, Image, Building2, GraduationCap, Palette } from 'lucide-react';
+import { Menu, X, ChevronDown, Calendar, FileText, Database, FlaskConical, Trophy, Image, Building2, GraduationCap, Palette } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { IOSButton } from '../ios';
 import { HeaderControls } from './ThemeToggle';
+import VulcaLogo from './VulcaLogo';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -64,16 +65,8 @@ export default function Header() {
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-[#C87F4A] rounded-xl flex items-center justify-center shadow-sm transform group-hover:scale-105 transition-transform duration-200">
-              <Sparkles className="w-5 h-5 text-white" />
-            </div>
-            <div className="hidden sm:block">
-              <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                VULCA
-              </h1>
-              <p className="text-xs text-gray-600 dark:text-gray-300">Cultural AI Evaluation</p>
-            </div>
+          <Link to="/" className="group">
+            <VulcaLogo size="md" showText={true} animate={true} />
           </Link>
 
           {/* Desktop Navigation */}
