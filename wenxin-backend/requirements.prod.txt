@@ -26,6 +26,9 @@ httpx==0.28.1
 # Email
 aiosmtplib==3.0.2
 
+# Cache
+redis==5.0.1
+
 # AI Client Libraries (minimal, no ML frameworks)
 openai==1.99.9
 anthropic==0.64.0
