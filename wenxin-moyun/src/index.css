@@ -87,10 +87,28 @@
   font-family: var(--ios-font-text);
 }
 
-/* Typography classes with simplified inheritance */
+/* Typography classes - 匹配 Tailwind text-4xl/3xl/2xl 尺寸 */
+/* 桌面: text-h1=36px, text-h2=30px, text-h3=24px */
+/* 参考: text-4xl=36px, text-3xl=30px, text-2xl=24px, text-xl=20px */
+
+/* 页面标题 - 用于次级页面的主标题，介于 large-title 和 h1 之间 */
+/* 匹配 text-4xl md:text-5xl = 36px → 48px */
+.text-page-title {
+  font-family: var(--ios-font-display);
+  font-size: 48px;  /* 对应 text-5xl */
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  color: var(--ios-color-primary);
+}
+
+.dark .text-page-title {
+  color: var(--ios-color-primary-dark);
+}
+
 .text-h1 {
   font-family: var(--ios-font-display);
-  font-size: 34px;
+  font-size: 36px;  /* 对应 text-4xl */
   line-height: 1.2;
   font-weight: 700;
   letter-spacing: -0.4px;
@@ -103,7 +121,7 @@
 
 .text-h2 {
   font-family: var(--ios-font-display);
-  font-size: 28px;
+  font-size: 30px;  /* 对应 text-3xl */
   line-height: 1.25;
   font-weight: 600;
   letter-spacing: -0.3px;
@@ -116,7 +134,7 @@
 
 .text-h3 {
   font-family: var(--ios-font-display);
-  font-size: 22px;
+  font-size: 24px;  /* 对应 text-2xl */
   line-height: 1.3;
   font-weight: 600;
   letter-spacing: -0.2px;
@@ -157,13 +175,13 @@
   color: var(--ios-color-secondary-dark);
 }
 
-/* iOS Large Title */
+/* iOS Large Title - Hero 大标题，匹配 text-6xl=60px */
 .text-large-title {
   font-family: var(--ios-font-display);
-  font-size: 40px;
+  font-size: 60px;  /* 对应 text-6xl */
   line-height: 1.1;
   font-weight: 700;
-  letter-spacing: -0.6px;
+  letter-spacing: -0.8px;
   color: var(--ios-color-primary);
 }
 
@@ -552,45 +570,57 @@
 }
 
 /* ============= 响应式标题字体 ============= */
+/* 平板 (md): text-large-title=48px, page-title=42px, h1=30px, h2=24px, h3=20px */
 @media (max-width: 1023px) {
   .text-large-title {
-    font-size: 32px;
+    font-size: 48px;  /* 对应 text-5xl */
+    letter-spacing: -0.6px;
+  }
+
+  .text-page-title {
+    font-size: 42px;
     letter-spacing: -0.5px;
   }
 
   .text-h1 {
-    font-size: 28px;
+    font-size: 30px;  /* 对应 text-3xl */
     letter-spacing: -0.3px;
   }
 
   .text-h2 {
-    font-size: 24px;
+    font-size: 24px;  /* 对应 text-2xl */
     letter-spacing: -0.2px;
   }
 
   .text-h3 {
-    font-size: 20px;
+    font-size: 20px;  /* 对应 text-xl */
   }
 }
 
+/* 手机 (sm): text-large-title=36px, page-title=32px, h1=24px, h2=20px, h3=18px */
 @media (max-width: 639px) {
   .text-large-title {
-    font-size: 28px;
+    font-size: 36px;  /* 对应 text-4xl */
     letter-spacing: -0.4px;
   }
 
+  .text-page-title {
+    font-size: 32px;
+    letter-spacing: -0.3px;
+  }
+
   .text-h1 {
-    font-size: 24px;
+    font-size: 24px;  /* 对应 text-2xl */
     letter-spacing: -0.2px;
   }
 
   .text-h2 {
-    font-size: 20px;
+    font-size: 20px;  /* 对应 text-xl */
     letter-spacing: -0.1px;
   }
 
   .text-h3 {
-    font-size: 18px;
+    font-size: 18px;  /* 对应 text-lg */
   }
 }
 

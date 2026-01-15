@@ -197,7 +197,7 @@ export default function BookDemoPage() {
             </span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+          <h1 className="text-page-title mb-6">
             Book a Demo
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
@@ -497,10 +497,10 @@ export default function BookDemoPage() {
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Prefer email? Contact us at{' '}
               <a
-                href="mailto:demo@vulca.ai"
+                href="mailto:demo@vulcaart.art"
                 className="text-slate-700 dark:text-slate-500 hover:underline"
               >
-                demo@vulca.ai
+                demo@vulcaart.art
               </a>
             </p>
           </div>

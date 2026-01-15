@@ -84,11 +84,11 @@ export const IOSButton = React.forwardRef<HTMLButtonElement, IOSButtonProps>(
         focus:ring-slate-300 dark:focus:ring-slate-600
       `,
       artistic: `
-        bg-[#C87F4A] hover:bg-[#B06B3A]
-        dark:bg-[#C87F4A] dark:hover:bg-[#DDA574]
-        text-white shadow-md shadow-[#C87F4A]/20
-        focus:ring-[#C87F4A]/50
-        border border-[#B06B3A]/30
+        bg-bronze-500 hover:bg-bronze-600
+        dark:bg-bronze-500 dark:hover:bg-bronze-400
+        text-white shadow-md shadow-bronze-500/20
+        focus:ring-bronze-500/50
+        border border-bronze-600/30
       `
     };
     

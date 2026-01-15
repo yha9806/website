@@ -136,7 +136,7 @@ const EvaluationDetailPage: React.FC = () => {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <RefreshCw className="w-8 h-8 text-primary-500 animate-spin mx-auto mb-4" />
+          <RefreshCw className="w-8 h-8 text-slate-600 animate-spin mx-auto mb-4" />
           <p className="text-gray-600 dark:text-gray-400">加载评测详情...</p>
         </div>
       </div>

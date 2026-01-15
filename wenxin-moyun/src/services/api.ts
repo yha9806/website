@@ -7,6 +7,31 @@ import { createLogger } from '../utils/logger';
 
 const logger = createLogger('API');
 
+// Guest session structure validation
+interface GuestSessionSuggestions {
+  show_login_prompt?: boolean;
+  primary_scenario?: {
+    type: string;
+  };
+}
+
+interface GuestSessionData {
+  suggestions?: GuestSessionSuggestions;
+}
+
+// Validate parsed guest session structure
+const isValidGuestSession = (data: unknown): data is GuestSessionData => {
+  if (!data || typeof data !== 'object') {
+    return false;
+  }
+  const session = data as Record<string, unknown>;
+  // suggestions is optional, but if present must be an object
+  if (session.suggestions !== undefined && typeof session.suggestions !== 'object') {
+    return false;
+  }
+  return true;
+};
+
 // API base configuration
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
 const API_VERSION = import.meta.env.VITE_API_VERSION || 'v1';
@@ -58,17 +83,25 @@ apiClient.interceptors.response.use(
   (response) => {
     // Check for guest session info in response headers
     const guestSessionHeader = response.headers['x-guest-session'];
-    if (guestSessionHeader) {
+    if (guestSessionHeader && typeof guestSessionHeader === 'string') {
       try {
-        const guestSession = JSON.parse(guestSessionHeader);
-        
+        const parsed = JSON.parse(guestSessionHeader);
+
+        // Validate parsed structure before using
+        if (!isValidGuestSession(parsed)) {
+          logger.warn('Invalid guest session structure received');
+          return response;
+        }
+
+        const guestSession = parsed;
+
         // Store guest session info for tracking
         sessionStorage.setItem('guest_session', guestSessionHeader);
-        
+
         // Check trigger scenarios
         if (guestSession.suggestions?.show_login_prompt && loginModalCallback) {
           const primaryScenario = guestSession.suggestions.primary_scenario;
-          if (primaryScenario) {
+          if (primaryScenario && typeof primaryScenario.type === 'string') {
             // Delay slightly to not interrupt user flow
             const callback = loginModalCallback; // Capture reference
             setTimeout(() => {
@@ -77,7 +110,7 @@ apiClient.interceptors.response.use(
           }
         }
       } catch (error) {
-        console.error('Failed to parse guest session header:', error);
+        logger.warn('Failed to parse guest session header:', error);
       }
     }
     return response;
@@ -86,12 +119,17 @@ apiClient.interceptors.response.use(
     // Handle guest limit reached (429 Too Many Requests)
     if (error.response?.status === 429) {
       const guestSessionHeader = error.response.headers['x-guest-session'];
-      if (guestSessionHeader) {
+      if (guestSessionHeader && typeof guestSessionHeader === 'string') {
         try {
-          const guestSession = JSON.parse(guestSessionHeader);
-          sessionStorage.setItem('guest_session', guestSessionHeader);
+          const parsed = JSON.parse(guestSessionHeader);
+          // Validate structure before storing
+          if (isValidGuestSession(parsed)) {
+            sessionStorage.setItem('guest_session', guestSessionHeader);
+          } else {
+            logger.warn('Invalid guest session structure in 429 response');
+          }
         } catch (e) {
-          console.error('Failed to parse guest session from error:', e);
+          logger.warn('Failed to parse guest session from error:', e);
         }
       }
       
@@ -139,7 +177,10 @@ export const retryPendingRequests = () => {
 export default apiClient;
 
 // Cache version control for data updates
-const CACHE_VERSION = 'v2.1.0'; // Increment when 28-model data is deployed
+// Uses build time from vite.config.ts to auto-invalidate cache on new deploys
+declare const __APP_VERSION__: string;
+declare const __BUILD_TIME__: string;
+const CACHE_VERSION = `${__APP_VERSION__}-${__BUILD_TIME__?.slice(0, 10) || 'dev'}`;
 const VERSION_KEY = 'cache_version';
 const MODEL_COUNT_KEY = 'expected_model_count';
 const EXPECTED_MODEL_COUNT = 28; // Expected number of real models
@@ -242,14 +283,33 @@ export const cacheUtils = {
   },
 };
 
-// API error handler with network detection
+// Sensitive patterns that should not be exposed to users
+const SENSITIVE_PATTERNS = [
+  /sql/i,                    // SQL-related errors
+  /database/i,               // Database errors
+  /select|insert|update|delete|from|where/i,  // SQL keywords
+  /\/[a-z]+\/[a-z]+/i,       // File paths like /app/src
+  /traceback/i,              // Python tracebacks
+  /stack trace/i,            // Stack traces
+  /internal server/i,        // Internal server errors
+  /password|secret|key|token/i,  // Credential-related
+  /connection refused/i,     // Infrastructure errors
+  /postgres|mysql|sqlite/i,  // Database names
+];
+
+// Check if error message contains sensitive information
+const containsSensitiveInfo = (message: string): boolean => {
+  return SENSITIVE_PATTERNS.some(pattern => pattern.test(message));
+};
+
+// API error handler with network detection and security filtering
 export const handleApiError = (error: any): string => {
   if (axios.isAxiosError(error)) {
     // Network errors (no response)
     if (!error.response) {
       // Add network error flag for offline detection
       (error as any).code = 'NETWORK_ERROR';
-      
+
       if (error.code === 'ECONNABORTED') {
         return 'Request timeout - please check your connection';
       }
@@ -258,12 +318,33 @@ export const handleApiError = (error: any): string => {
       }
       return 'Unable to connect to server';
     }
-    
-    // Server response errors
-    if (error.response?.data?.detail) {
-      return error.response.data.detail;
+
+    const status = error.response?.status;
+
+    // 500+ server errors - hide details for security
+    if (status && status >= 500) {
+      logger.error('Server error:', error.response?.data);
+      return 'Server error - our team has been notified';
     }
+
+    // 4xx client errors - filter sensitive info
+    if (error.response?.data?.detail) {
+      const detail = String(error.response.data.detail);
+
+      // Filter out sensitive information
+      if (containsSensitiveInfo(detail)) {
+        logger.warn('Filtered sensitive error:', detail);
+        return 'An error occurred while processing your request';
+      }
+
+      return detail;
+    }
+
+    // Fallback to error message with filtering
     if (error.message) {
+      if (containsSensitiveInfo(error.message)) {
+        return 'An error occurred';
+      }
       return error.message;
     }
   }

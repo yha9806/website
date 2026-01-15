@@ -180,7 +180,7 @@ export default function LeaderboardPage() {
               onClick={() => setSelectedCategory(cat.id)}
               className={`
                 px-4 py-2.5 rounded-xl font-medium transition-all flex items-center gap-2 min-h-[44px]
-                focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+                focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2
                 ${selectedCategory === cat.id
                   ? 'bg-slate-700 text-white shadow-lg'
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
@@ -286,7 +286,7 @@ export default function LeaderboardPage() {
       {/* Stats Summary */}
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="ios-glass liquid-glass-container rounded-lg p-6 text-center">
-          <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">
+          <div className="text-3xl font-bold text-slate-700 dark:text-slate-300">
             {filteredData.length}
           </div>
           <p className="text-gray-600 dark:text-gray-400 mt-2">Evaluated Models</p>

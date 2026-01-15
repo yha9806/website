@@ -4,6 +4,8 @@
  * 支持深色/浅色模式自动切换
  */
 
+import { ORGANIZATION_COLORS, getOrganizationColor, DEFAULT_ORG_COLOR } from '../constants/organizationColors';
+
 // ============= Art Professional 色彩系统 =============
 
 export const iosSystemColors = {
@@ -163,26 +165,8 @@ export const chartColorsDark = {
 };
 
 // ============= 组织机构品牌色映射 =============
-
-export const organizationColors: Record<string, string> = {
-  'OpenAI': '#10b981',
-  'Anthropic': '#d97757',
-  'Google': '#4285F4',
-  'Alibaba': '#ff6900',
-  'Baidu': '#2932e1',
-  'Tencent': '#1ba3ff',
-  'ByteDance': '#fe2c55',
-  'Moonshot': '#6366f1',
-  'Zhipu': '#8b5cf6',
-  'Minimax': '#f59e0b',
-  'iFlytek': '#0891b2',
-  'DeepSeek': '#3B82F6',
-  'xAI': '#1D1D1F',
-  'Meta': '#0668E1',
-  'Mistral': '#FF6B35',
-  'Stability AI': '#7C3AED',
-  'Midjourney': '#5865F2',
-};
+// Re-export from centralized constants for backward compatibility
+export const organizationColors = ORGANIZATION_COLORS;
 
 // ============= VULCA 维度类别色 - Art Professional =============
 
@@ -292,9 +276,10 @@ export const getSeriesColors = (count: number, isDark: boolean = false): string[
 
 /**
  * 获取组织机构颜色
+ * Uses centralized organizationColors from constants
  */
 export const getOrgColor = (orgName: string): string => {
-  return organizationColors[orgName] || chartColorsLight.primary[0];
+  return getOrganizationColor(orgName);
 };
 
 /**

@@ -82,7 +82,7 @@ export function FloatingCTA({
                 className="absolute bottom-20 right-0 w-72 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
               >
                 {/* Header - Art Professional Style */}
-                <div className="bg-gradient-to-r from-slate-700 to-[#C87F4A] px-4 py-3 text-white">
+                <div className="bg-gradient-to-r from-slate-700 to-bronze-500 px-4 py-3 text-white">
                   <div className="flex items-center justify-between">
                     <h4 className="font-semibold">Get Started</h4>
                     <button
@@ -118,8 +118,8 @@ export function FloatingCTA({
 
                   <Link to="/pricing" onClick={() => setIsExpanded(false)}>
                     <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
-                      <div className="w-10 h-10 rounded-full bg-[#C87F4A]/10 dark:bg-[#C87F4A]/20 flex items-center justify-center">
-                        <MessageSquare className="w-5 h-5 text-[#C87F4A] dark:text-[#DDA574]" />
+                      <div className="w-10 h-10 rounded-full bg-bronze-500/10 dark:bg-bronze-500/20 flex items-center justify-center">
+                        <MessageSquare className="w-5 h-5 text-bronze-500 dark:text-bronze-400" />
                       </div>
                       <div className="flex-1">
                         <p className="font-medium text-gray-900 dark:text-white text-sm">
@@ -129,7 +129,7 @@ export function FloatingCTA({
                           Free, Pilot, Enterprise
                         </p>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#C87F4A] transition-colors" />
+                      <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-bronze-500 transition-colors" />
                     </div>
                   </Link>
                 </div>
@@ -162,7 +162,7 @@ export function FloatingCTA({
                 hover:shadow-xl hover:shadow-gray-900/30
                 transition-all duration-300
                 border border-slate-700/50
-                ${isExpanded ? 'ring-2 ring-[#C87F4A]/40' : ''}
+                ${isExpanded ? 'ring-2 ring-bronze-500/40' : ''}
               `}
             >
               <Calendar className="w-5 h-5" />

@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { IOSButton } from '../ios';
 import { useState } from 'react';
+import VulcaLogo from './VulcaLogo';
 
 const footerLinks = {
   product: {
@@ -67,7 +68,7 @@ const socialLinks = [
   { name: 'GitHub', icon: Github, href: 'https://github.com/yha9806/EMNLP2025-VULCA' },
   { name: 'Twitter', icon: Twitter, href: 'https://twitter.com/vulca_ai' },
   { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com/company/vulca-ai' },
-  { name: 'Email', icon: Mail, href: 'mailto:hello@vulca.ai' },
+  { name: 'Email', icon: Mail, href: 'mailto:hello@vulcaart.art' },
 ];
 
 export default function Footer() {
@@ -90,14 +91,8 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
           {/* Logo & Description */}
           <div className="col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-700 to-amber-700 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">V</span>
-              </div>
-              <div>
-                <span className="font-bold text-gray-900 dark:text-white">VULCA</span>
-                <span className="block text-xs text-gray-500 dark:text-gray-400">Cultural AI Evaluation</span>
-              </div>
+            <Link to="/" className="inline-block mb-4">
+              <VulcaLogo size="md" showSubtitle={true} variant="footer" />
             </Link>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 max-w-xs">
               Comprehensive 47-dimensional evaluation framework for AI cultural understanding.

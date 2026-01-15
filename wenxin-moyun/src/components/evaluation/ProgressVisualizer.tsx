@@ -220,7 +220,7 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
   const getStatusColor = () => {
     if (evaluation.status === 'completed') return 'text-success-500';
     if (evaluation.status === 'failed') return 'text-error-500';
-    if (evaluation.status === 'processing') return 'text-primary-500';
+    if (evaluation.status === 'processing') return 'text-slate-600';
     return 'text-warning-500';
   };
 
@@ -238,7 +238,7 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
           <div className={`p-2 rounded-full ${
             evaluation.status === 'completed' ? 'bg-success-100' :
             evaluation.status === 'failed' ? 'bg-error-100' : 
-            'bg-primary-100'
+            'bg-slate-100'
           }`}>
             {evaluation.status === 'completed' ? (
               <CheckCircle className="w-5 h-5 text-success-500" />
@@ -249,7 +249,7 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
               >
-                <RefreshCw className="w-5 h-5 text-primary-500" />
+                <RefreshCw className="w-5 h-5 text-slate-600" />
               </motion.div>
             )}
           </div>
@@ -310,13 +310,13 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
               className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                isActive ? 'bg-primary-50 border border-primary-200' :
+                isActive ? 'bg-slate-50 border border-slate-200' :
                 isCompleted ? 'bg-success-50' : 'bg-neutral-100'
               }`}
             >
               <div className={`flex-shrink-0 p-2 rounded-full ${
                 isCompleted ? 'bg-success-500 text-white' :
-                isActive ? 'bg-primary-500 text-white' :
+                isActive ? 'bg-slate-500 text-white' :
                 'bg-neutral-400 text-neutral-200'
               }`}>
                 <AnimatePresence mode="wait">
@@ -340,7 +340,7 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
               <div className="flex-grow">
                 <div className="flex items-center justify-between mb-1">
                   <h4 className={`font-medium ${
-                    isActive ? 'text-primary-800' :
+                    isActive ? 'text-slate-800' :
                     isCompleted ? 'text-success-700' :
                     'text-neutral-600'
                   }`}>
@@ -348,14 +348,14 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
                   </h4>
                   {(isActive || isCompleted) && (
                     <span className={`text-caption font-medium ${
-                      isCompleted ? 'text-success-600' : 'text-primary-600'
+                      isCompleted ? 'text-success-600' : 'text-slate-600'
                     }`}>
                       {isCompleted ? '完成' : `${Math.round(progress)}%`}
                     </span>
                   )}
                 </div>
                 <p className={`text-caption ${
-                  isActive ? 'text-primary-600' :
+                  isActive ? 'text-slate-600' :
                   isCompleted ? 'text-success-600' :
                   'text-neutral-500'
                 }`}>
@@ -365,9 +365,9 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
                 {/* Stage progress bar for active stage */}
                 {isActive && progress > 0 && (
                   <div className="mt-2">
-                    <div className="w-full bg-primary-200 rounded-full h-1">
+                    <div className="w-full bg-slate-200 rounded-full h-1">
                       <motion.div
-                        className="bg-primary-500 h-1 rounded-full"
+                        className="bg-slate-500 h-1 rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 0.3 }}

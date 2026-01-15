@@ -447,7 +447,7 @@ export default function LeaderboardTable({
 
           {/* 导出按钮 */}
           <div className="relative group">
-            <button className="flex items-center gap-2 px-3 py-2 min-h-[44px] bg-gray-100 dark:bg-[#21262D] rounded-lg hover:bg-gray-200 dark:hover:bg-[#30363D] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors">
+            <button className="flex items-center gap-2 px-3 py-2 min-h-[44px] bg-gray-100 dark:bg-[#21262D] rounded-lg hover:bg-gray-200 dark:hover:bg-[#30363D] focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors">
               <Download className="w-4 h-4" />
               <span className="text-sm">Export</span>
             </button>

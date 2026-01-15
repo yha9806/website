@@ -59,8 +59,8 @@ const ScoreAnnotation: React.FC<{ score: number; text: string }> = ({ score, tex
 const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [useChunkedView, setUseChunkedView] = useState(true);
-  const config = dimensionConfig[detail.dimension] || dimensionConfig.rhythm;
-  const Icon = config.icon;
+  const config = dimensionConfig[detail.dimension] ?? dimensionConfig.rhythm;
+  const IconComponent = config.icon as React.ComponentType<{ className?: string }>;
 
   // Enhanced highlight response with interactive tooltips
   const renderHighlightedResponse = () => {
@@ -147,7 +147,7 @@ const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
       <IOSCardHeader
         title={detail.test_id}
         subtitle={detail.prompt}
-        emoji={<Icon className={`w-5 h-5 ${config.color}`} />}
+        emoji={<IconComponent className={`w-5 h-5 ${config.color}`} />}
         action={
           <div className="flex items-center gap-2">
             <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getScoreBadgeColor(detail.score)}`}>

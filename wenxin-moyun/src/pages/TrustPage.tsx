@@ -117,7 +117,7 @@ export default function TrustPage() {
             </span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+          <h1 className="text-page-title mb-6">
             Security Built In, Not Bolted On
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
@@ -131,7 +131,7 @@ export default function TrustPage() {
                 Request Security Review
               </IOSButton>
             </Link>
-            <a href="mailto:security@vulca.ai">
+            <a href="mailto:security@vulcaart.art">
               <IOSButton variant="secondary" size="lg" className="flex items-center gap-2">
                 Contact Security Team
               </IOSButton>
@@ -371,7 +371,7 @@ export default function TrustPage() {
               Request Security Review
             </IOSButton>
           </Link>
-          <a href="mailto:security@vulca.ai">
+          <a href="mailto:security@vulcaart.art">
             <IOSButton variant="secondary" size="lg">
               Contact Security Team
             </IOSButton>

@@ -3,12 +3,13 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react(), tailwindcss()],
-  
+
   // Set base URL for production deployment to Cloud Storage
-  base: process.env.NODE_ENV === 'production' 
-    ? './' 
+  // Using 'command' parameter instead of process.env.NODE_ENV for Vite best practices
+  base: command === 'build'
+    ? './'
     : '/',
   
   // Vite cache optimization for Windows compatibility
@@ -103,4 +104,4 @@ export default defineConfig({
     // Clear module cache on file changes
     dedupe: ['react', 'react-dom']
   }
-})
+}))

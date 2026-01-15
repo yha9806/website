@@ -46,7 +46,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-lg font-bold text-primary-600">{entry.score != null ? entry.score.toFixed(3) : 'N/A'}</span>
+          <span className="text-lg font-bold text-slate-700">{entry.score != null ? entry.score.toFixed(3) : 'N/A'}</span>
           {getTrendIcon(entry.change)}
         </div>
       </motion.div>
@@ -119,7 +119,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
         {/* Score Display */}
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="text-center p-3 ios-glass rounded-lg">
-            <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+            <div className="text-2xl font-bold text-slate-700 dark:text-slate-300">
               {entry.score != null ? entry.score.toFixed(3) : 'N/A'}
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1">
@@ -200,7 +200,7 @@ export default function LeaderboardCard({ entry, index, viewMode, onHover }: Lea
         {/* Action Button */}
         <RouterLink
           to={`/model/${entry.model.id}`}
-          className="flex items-center justify-center gap-2 w-full py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all duration-200 transform hover:scale-[1.02]"
+          className="flex items-center justify-center gap-2 w-full py-2 bg-slate-700 hover:bg-slate-800 text-white rounded-lg transition-all duration-200 transform hover:scale-[1.02]"
         >
           <span className="text-sm font-medium">View Details</span>
           <ChevronRight className="w-4 h-4" />

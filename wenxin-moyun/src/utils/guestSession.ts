@@ -12,25 +12,42 @@ export interface GuestSession {
 const GUEST_SESSION_KEY = 'wenxin_guest_session';
 const DAILY_LIMIT = 3;
 
+// UUID v4 format validation regex
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+/**
+ * Validate UUID v4 format
+ */
+function isValidUUID(id: string): boolean {
+  return typeof id === 'string' && UUID_REGEX.test(id);
+}
+
 /**
  * Get or create guest session
  */
 export function getGuestSession(): GuestSession {
   const stored = getItem(GUEST_SESSION_KEY);
-  
+
   if (stored) {
     try {
       const session: GuestSession = JSON.parse(stored);
-      
-      // Check if we need to reset daily usage
-      const today = new Date().toDateString();
-      if (session.lastReset !== today) {
-        session.dailyUsage = 0;
-        session.lastReset = today;
-        setItem(GUEST_SESSION_KEY, JSON.stringify(session));
+
+      // Validate session structure and UUID format
+      if (!isValidUUID(session.id)) {
+        console.warn('Invalid guest session ID, creating new session');
+        removeItem(GUEST_SESSION_KEY);
+        // Fall through to create new session
+      } else {
+        // Check if we need to reset daily usage
+        const today = new Date().toDateString();
+        if (session.lastReset !== today) {
+          session.dailyUsage = 0;
+          session.lastReset = today;
+          setItem(GUEST_SESSION_KEY, JSON.stringify(session));
+        }
+
+        return session;
       }
-      
-      return session;
     } catch (e) {
       // Invalid stored session, create new one
     }

@@ -83,7 +83,12 @@ class ModelsService {
   }
 
   // Convert API response to frontend Model type
-  convertToFrontendModel(apiModel: AIModelWithStats): Model {
+  // Accepts both AIModelResponse and AIModelWithStats (extended type)
+  convertToFrontendModel(apiModel: AIModelResponse): Model {
+    // Type guard for extended stats fields
+    const withStats = apiModel as AIModelWithStats;
+    const hasStats = 'score_highlights' in apiModel;
+
     return {
       id: apiModel.id,
       name: apiModel.name,
@@ -104,11 +109,12 @@ class ModelsService {
       works: [],
       avatar: apiModel.avatar_url || `https://picsum.photos/seed/${apiModel.id}/200/200`,
       tags: apiModel.tags || [],
-      scoreHighlights: apiModel.score_highlights,
-      scoreWeaknesses: apiModel.score_weaknesses,
-      benchmarkResponses: apiModel.benchmark_responses,
-      benchmarkMetadata: apiModel.benchmark_metadata,
-      dataSource: apiModel.data_source,
+      // Extended stats fields (only available from getModelById)
+      scoreHighlights: hasStats ? withStats.score_highlights : undefined,
+      scoreWeaknesses: hasStats ? withStats.score_weaknesses : undefined,
+      benchmarkResponses: hasStats ? withStats.benchmark_responses : undefined,
+      benchmarkMetadata: hasStats ? withStats.benchmark_metadata : undefined,
+      dataSource: hasStats ? withStats.data_source : undefined,
       // VULCA integration fields
       vulca_scores_47d: apiModel.vulca_scores_47d,
       vulca_cultural_perspectives: apiModel.vulca_cultural_perspectives,

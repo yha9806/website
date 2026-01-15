@@ -210,10 +210,10 @@ export default function DemoConfirmationPage() {
         <p>
           Questions? Contact us at{' '}
           <a
-            href="mailto:support@vulca.ai"
+            href="mailto:support@vulcaart.art"
             className="text-slate-700 dark:text-slate-500 hover:underline"
           >
-            support@vulca.ai
+            support@vulcaart.art
           </a>
         </p>
       </motion.div>

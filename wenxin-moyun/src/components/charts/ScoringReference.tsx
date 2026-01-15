@@ -66,8 +66,8 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary-500/10 rounded-lg">
-            <Target className="w-5 h-5 text-primary-500" />
+          <div className="p-2 bg-slate-500/10 rounded-lg">
+            <Target className="w-5 h-5 text-slate-600" />
           </div>
           <div>
             <h3 className="text-lg font-semibold text-neutral-800">
@@ -89,7 +89,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
       {/* Main Score Display */}
       <div className="mb-6">
         <div className="flex items-baseline gap-2 mb-2">
-          <span className="text-3xl font-bold text-primary-500">
+          <span className="text-3xl font-bold text-slate-600">
             {data.reference_score}
           </span>
           <span className="text-sm text-neutral-500">分</span>
@@ -132,7 +132,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
                 </span>
                 <div className="flex-1 h-2 bg-neutral-100 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-gradient-to-r from-primary-500/50 to-primary-500"
+                    className="h-full bg-gradient-to-r from-slate-500/50 to-slate-500"
                     style={{
                       marginLeft: `${min}%`,
                       width: `${max - min}%`
@@ -149,9 +149,9 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
       )}
 
       {/* Suggestion */}
-      <div className="p-4 bg-primary-500/5 rounded-lg">
+      <div className="p-4 bg-slate-500/5 rounded-lg">
         <div className="flex items-start gap-3">
-          <TrendingUp className="w-5 h-5 text-primary-500 mt-0.5" />
+          <TrendingUp className="w-5 h-5 text-slate-600 mt-0.5" />
           <div>
             <p className="text-sm font-medium text-neutral-700 mb-1">
               评分建议

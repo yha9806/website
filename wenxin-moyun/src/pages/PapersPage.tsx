@@ -48,89 +48,54 @@ interface Paper {
 const papers: Paper[] = [
   {
     id: 'vulca-framework',
-    title: 'VULCA: A Multimodal Framework for Cross-Cultural Art Understanding Evaluation',
-    authors: ['Haonan Yang', 'Yu Cheng', 'Wenxin Team'],
+    title: 'A Structured Framework for Evaluating and Enhancing Interpretive Capabilities of Multimodal LLMs in Culturally Situated Tasks',
+    authors: ['Haorui Yu', 'Ramon Ruiz-Dolz', 'Qiufeng Yi'],
     venue: 'EMNLP 2025 Findings',
     year: 2025,
-    abstract: `We present VULCA (Visual Understanding of Language-Culture Art), a comprehensive framework
-for evaluating AI systems' ability to understand and interpret art across diverse cultural contexts.
-VULCA introduces a 47-dimensional evaluation space built upon a five-layer (L1-L5) hierarchy,
-spanning from basic visual perception to deep philosophical aesthetics. The framework evaluates
-understanding through 8 distinct cultural lenses including Western, Eastern, African, Latin American,
-Middle Eastern, South Asian, Oceanic, and Indigenous perspectives. Our evaluation of 42 state-of-the-art
-vision-language models reveals significant disparities in cross-cultural art understanding, with models
-showing strong performance on Western art but struggling with non-Western cultural contexts.
-We release VULCA-BENCH, a dataset of 7,410 image-text pairs with expert annotations, to facilitate
-future research in culturally-aware multimodal AI.`,
+    abstract: `We introduce VULCA—the Vision-Understanding and Language-based Cultural Adaptability Framework—a structured evaluation and enhancement framework for assessing VLMs in culturally situated tasks. VULCA combines three core components: (1) a multi-dimensional human expert benchmark (MHEB) constructed from 163 art commentaries annotated across five cultural capability dimensions; (2) a persona-guided recontextualization mechanism using eight interpretive personas and a domain-specific knowledge base; and (3) a joint evaluation pipeline integrating vector-space semantic alignment with rubric-based capability scoring. We demonstrate over 20% improvement in symbolic reasoning and over 30% improvement in argumentative coherence on Gemini 2.5 Pro using our proposed method.`,
     doi: '10.18653/v1/2025.findings-emnlp.103',
-    arxiv: '2501.00001',
+    arxiv: '2509.23208',
     github: 'https://github.com/yha9806/EMNLP2025-VULCA',
     demo: 'https://vulcaart.art/#/vulca',
-    bibtexKey: 'yang2025vulca',
-    tags: ['Multimodal', 'Cultural AI', 'Evaluation', 'Art Understanding'],
+    bibtexKey: 'yu2025vulca',
+    tags: ['Framework', 'Multimodal', 'Cultural AI', 'Evaluation'],
     featured: true,
   },
   {
     id: 'vulca-bench',
-    title: 'VULCA-BENCH: A Cross-Cultural Benchmark for AI Art Understanding',
-    authors: ['Haonan Yang', 'Yu Cheng', 'Wenxin Team'],
-    venue: 'ACL 2025 (Datasets Track)',
-    year: 2025,
-    abstract: `We introduce VULCA-BENCH, a large-scale benchmark dataset for evaluating AI systems'
-cross-cultural art understanding capabilities. The dataset comprises 7,410 image-text pairs
-spanning 8 cultural perspectives, annotated across 47 evaluation dimensions by 24 expert annotators.
-Each sample includes multi-level annotations covering visual perception (L1), compositional analysis (L2),
-contextual interpretation (L3), philosophical appreciation (L4), and transcultural synthesis (L5).
-Inter-annotator agreement (Krippendorff's alpha) exceeds 0.85 for core dimensions. We provide
-comprehensive baselines for 42 vision-language models and establish evaluation protocols for
-fair cross-cultural comparison. VULCA-BENCH enables systematic assessment of cultural biases
-in multimodal AI systems.`,
-    doi: '10.18653/v1/2025.acl-datasets.45',
-    arxiv: '2501.00002',
+    title: 'VULCA-Bench: A Multicultural Vision-Language Benchmark for Evaluating Cultural Understanding',
+    authors: ['Haorui Yu', 'Ramon Ruiz-Dolz', 'Diji Yang', 'Hang He', 'Fengrui Zhang', 'Qiufeng Yi'],
+    venue: 'arXiv Preprint',
+    year: 2026,
+    abstract: `We present VULCA-Bench, a multicultural art-critique benchmark containing 7,410 matched image-critique pairs spanning eight cultural traditions with Chinese-English bilingual coverage. The benchmark is operationalized through a five-layer framework (L1–L5) spanning 225 culture-specific dimensions that preserve Cultural Symmetry—equal methodological treatment across cultures regardless of sample size. We formalize the Cultural Symmetry Principle, which enforces schema and protocol parity across cultures. Pilot experiments show that VULCA-Bench exposes systematic failures in higher-layer cultural reasoning (L3–L5) not captured by standard VLM benchmarks. The complete dataset is available under CC BY 4.0 license.`,
+    arxiv: '2601.07986',
     github: 'https://github.com/yha9806/EMNLP2025-VULCA',
-    bibtexKey: 'yang2025vulcabench',
-    tags: ['Dataset', 'Benchmark', 'Annotation'],
+    bibtexKey: 'yu2026vulcabench',
+    tags: ['Dataset', 'Benchmark', 'Multilingual', 'Cultural Symmetry'],
     featured: true,
   },
   {
-    id: 'vulca-cultural-bias',
-    title: 'Cultural Bias in Vision-Language Models: A VULCA Analysis',
-    authors: ['Haonan Yang', 'Yu Cheng'],
-    venue: 'NAACL 2025',
-    year: 2025,
-    abstract: `Large vision-language models (VLMs) have demonstrated impressive capabilities in
-understanding and generating multimodal content. However, their performance on non-Western
-cultural contexts remains understudied. Using the VULCA framework, we conduct a comprehensive
-analysis of cultural bias in 42 state-of-the-art VLMs. Our findings reveal systematic biases:
-models achieve 23% higher accuracy on Western art compared to African art, and struggle with
-culturally-specific symbolism, religious iconography, and traditional aesthetics. We identify
-key factors contributing to these disparities, including training data imbalance, annotation
-bias, and architectural limitations. We propose VULCA-Debias, a fine-tuning approach that
-improves cross-cultural performance by 15% while maintaining overall accuracy.`,
-    arxiv: '2501.00003',
-    bibtexKey: 'yang2025cultural',
-    tags: ['Bias Analysis', 'VLM', 'Fairness'],
+    id: 'cross-cultural-critique',
+    title: 'Cross-Cultural Expert-Level Art Critique Evaluation with Vision-Language Models',
+    authors: ['Haorui Yu', 'Ramon Ruiz-Dolz', 'Xuehang Wen', 'Fengrui Zhang', 'Qiufeng Yi'],
+    venue: 'arXiv Preprint (submitted to ACL 2026)',
+    year: 2026,
+    abstract: `We present a tri-tier evaluation framework for cross-cultural art-critique assessment: Tier I computes automated coverage and risk indicators offline; Tier II applies rubric-based scoring using a single primary judge across five dimensions; and Tier III calibrates the aggregate score to human ratings via isotonic regression, yielding a 5.2% reduction in MAE on a 152-sample held-out set. We evaluate 15 VLMs on 294 expert anchors spanning six cultural traditions. Key findings: (i) automated metrics are unreliable proxies for cultural depth, (ii) Western samples score higher than non-Western samples under our sampling and rubric, and (iii) cross-judge scale mismatch makes naive score averaging unreliable.`,
+    arxiv: '2601.07984',
+    bibtexKey: 'yu2026crosscultural',
+    tags: ['Evaluation', 'VLM', 'Art Critique', 'Cross-Cultural'],
   },
   {
-    id: 'vulca-multiagent',
-    title: 'Multi-Agent Art Criticism: Simulating Cultural Dialogue with LLMs',
-    authors: ['Haonan Yang', 'Wenxin Team'],
-    venue: 'WINLP @ ACL 2025',
+    id: 'fire-imagery',
+    title: 'Seeing Symbols, Missing Cultures: Probing Vision-Language Models\' Reasoning on Fire Imagery and Cultural Meaning',
+    authors: ['Haorui Yu', 'Yang Zhao', 'Yijia Chu', 'Qiufeng Yi'],
+    venue: 'WiNLP @ ACL 2025',
     year: 2025,
-    abstract: `Traditional art criticism relies on the perspective of a single critic, potentially
-limiting the richness of interpretation. We present a multi-agent framework that simulates
-art criticism dialogue among historical critics with diverse cultural backgrounds. Using
-persona-based prompting, we instantiate 8 critic agents representing different aesthetic
-traditions: Su Shi (Chinese), John Ruskin (British), Okakura Kakuzo (Japanese), and others.
-Our system generates multi-turn dialogues that reveal cross-cultural perspectives on artworks.
-Evaluation on VULCA-BENCH shows that multi-agent critique achieves higher alignment with
-human expert judgments (+12%) compared to single-agent approaches, particularly for
-culturally complex artworks.`,
-    arxiv: '2501.00004',
+    abstract: `Vision-Language Models often appear culturally competent but rely on superficial pattern matching rather than genuine cultural understanding. We introduce a diagnostic framework to probe VLM reasoning on fire-themed cultural imagery through both classification and explanation analysis. Testing 11 models (including GPT-4o, Claude 3.5/3.7/4, Qwen2.5-VL, Aya Vision) on Western festivals, non-Western traditions, and emergency scenes reveals systematic biases: models correctly identify prominent Western festivals but struggle with underrepresented cultural events, frequently offering vague labels or dangerously misclassifying emergencies as celebrations.`,
+    arxiv: '2509.23311',
     github: 'https://github.com/yha9806/EMNLP2025-VULCA',
-    demo: 'https://vulcaart.art/#/exhibitions',
-    bibtexKey: 'yang2025multiagent',
-    tags: ['Multi-Agent', 'LLM', 'Art Criticism'],
+    bibtexKey: 'yu2025firesymbols',
+    tags: ['Bias Analysis', 'VLM', 'Cultural Reasoning', 'Diagnostics'],
   },
 ];
 

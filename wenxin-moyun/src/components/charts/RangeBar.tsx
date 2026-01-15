@@ -87,7 +87,7 @@ const RangeBar: React.FC<RangeBarProps> = ({
               initial={{ scaleY: 0 }}
               animate={{ scaleY: 1 }}
               transition={{ delay: 0.4 }}
-              className="absolute top-0 bottom-0 w-1 bg-primary-400 opacity-60"
+              className="absolute top-0 bottom-0 w-1 bg-slate-400 opacity-60"
               style={{ left: `${benchmarkPosition}%` }}
               title={`基准值: ${benchmark}`}
             />

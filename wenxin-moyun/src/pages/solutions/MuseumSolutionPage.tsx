@@ -42,7 +42,7 @@ export default function MuseumSolutionPage() {
             </span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+          <h1 className="text-page-title mb-6">
             Cultural AI for Museums & Galleries
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">

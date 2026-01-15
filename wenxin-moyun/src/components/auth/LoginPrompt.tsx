@@ -110,7 +110,7 @@ const LoginPrompt: React.FC<LoginPromptProps> = ({
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="bg-neutral-50 dark:bg-[#161B22] rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden relative"
+              className="bg-white dark:bg-[#1A1614] rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden relative"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close button */}

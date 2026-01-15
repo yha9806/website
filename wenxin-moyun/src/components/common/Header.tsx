@@ -66,7 +66,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="group">
-            <VulcaLogo size="md" showText={true} animate={true} />
+            <VulcaLogo size="lg" showSubtitle={false} variant="header" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -91,13 +91,20 @@ export default function Header() {
                 size="sm"
                 onClick={() => setIsSolutionsOpen(!isSolutionsOpen)}
                 className="flex items-center gap-1"
+                aria-haspopup="menu"
+                aria-expanded={isSolutionsOpen}
+                aria-controls="solutions-dropdown-menu"
               >
                 Solutions
                 <ChevronDown className={`w-4 h-4 transition-transform ${isSolutionsOpen ? 'rotate-180' : ''}`} />
               </IOSButton>
 
               {isSolutionsOpen && (
-                <div className="absolute top-full left-0 mt-2 w-64 ios-glass rounded-xl border border-gray-200/20 dark:border-gray-700/20 shadow-lg py-2 z-50">
+                <div
+                  id="solutions-dropdown-menu"
+                  role="menu"
+                  className="absolute top-full left-0 mt-2 w-64 ios-glass rounded-xl border border-gray-200/20 dark:border-gray-700/20 shadow-lg py-2 z-50"
+                >
                   <Link
                     to="/solutions"
                     onClick={() => setIsSolutionsOpen(false)}
@@ -113,7 +120,7 @@ export default function Header() {
                       onClick={() => setIsSolutionsOpen(false)}
                       className="flex items-start gap-3 px-4 py-2 hover:bg-gray-100/50 dark:hover:bg-gray-800/50"
                     >
-                      <item.icon className="w-5 h-5 text-[#C87F4A] mt-0.5" />
+                      <item.icon className="w-5 h-5 text-bronze-500 mt-0.5" />
                       <div>
                         <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.name}</div>
                         <div className="text-xs text-gray-600 dark:text-gray-300">{item.desc}</div>
@@ -151,13 +158,20 @@ export default function Header() {
                 size="sm"
                 onClick={() => setIsResourcesOpen(!isResourcesOpen)}
                 className="flex items-center gap-1"
+                aria-haspopup="menu"
+                aria-expanded={isResourcesOpen}
+                aria-controls="resources-dropdown-menu"
               >
                 Resources
                 <ChevronDown className={`w-4 h-4 transition-transform ${isResourcesOpen ? 'rotate-180' : ''}`} />
               </IOSButton>
 
               {isResourcesOpen && (
-                <div className="absolute top-full left-0 mt-2 w-56 ios-glass rounded-xl border border-gray-200/20 dark:border-gray-700/20 shadow-lg py-2 z-50">
+                <div
+                  id="resources-dropdown-menu"
+                  role="menu"
+                  className="absolute top-full left-0 mt-2 w-56 ios-glass rounded-xl border border-gray-200/20 dark:border-gray-700/20 shadow-lg py-2 z-50"
+                >
                   <div className="px-4 py-1.5 text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                     Documentation
                   </div>

@@ -87,7 +87,7 @@ export default function FilterPanel({ onFilterChange, organizations, tags }: Fil
         <Filter className="w-5 h-5" />
         <span>筛选</span>
         {activeFiltersCount > 0 && (
-          <span className="px-2 py-0.5 bg-primary-500 text-white text-xs rounded-full">
+          <span className="px-2 py-0.5 bg-slate-600 text-white text-xs rounded-full">
             {activeFiltersCount}
           </span>
         )}
@@ -141,7 +141,7 @@ export default function FilterPanel({ onFilterChange, organizations, tags }: Fil
                 value={filters.search}
                 onChange={(e) => updateFilters({ search: e.target.value })}
                 placeholder="输入模型名称..."
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-neutral-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-neutral-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-slate-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -170,7 +170,7 @@ export default function FilterPanel({ onFilterChange, organizations, tags }: Fil
                         });
                       }
                     }}
-                    className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                    className="rounded border-gray-300 text-slate-700 focus:ring-slate-500"
                   />
                   <span className="text-sm text-gray-700 dark:text-gray-300">{org}</span>
                 </label>
@@ -199,7 +199,7 @@ export default function FilterPanel({ onFilterChange, organizations, tags }: Fil
                   className={`
                     px-3 py-1.5 rounded-lg text-sm font-medium transition-all
                     ${filters.categories.includes(cat.id)
-                      ? 'bg-primary-500 text-white'
+                      ? 'bg-slate-600 text-white'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }
                   `}
@@ -250,7 +250,7 @@ export default function FilterPanel({ onFilterChange, organizations, tags }: Fil
             <select
               value={filters.dateRange}
               onChange={(e) => updateFilters({ dateRange: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-neutral-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-neutral-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-slate-500"
             >
               {dateOptions.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -280,7 +280,7 @@ export default function FilterPanel({ onFilterChange, organizations, tags }: Fil
                   className={`
                     px-2 py-1 rounded-full text-xs font-medium transition-all
                     ${filters.tags.includes(tag)
-                      ? 'bg-primary-500 text-white'
+                      ? 'bg-slate-600 text-white'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }
                   `}
@@ -302,7 +302,7 @@ export default function FilterPanel({ onFilterChange, organizations, tags }: Fil
               >
                 <div className="flex flex-wrap gap-2">
                   {filters.search && (
-                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-xs rounded-full">
+                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-300 text-xs rounded-full">
                       搜索: {filters.search}
                       <button onClick={() => updateFilters({ search: '' })}>
                         <X className="w-3 h-3" />

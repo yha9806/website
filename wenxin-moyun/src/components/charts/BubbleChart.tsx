@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { scaleLinear, scaleSqrt } from 'd3-scale';
 import type { LeaderboardEntry } from '../../types/types';
+import { getOrganizationColor } from '../../constants/organizationColors';
 
 interface BubbleChartProps {
   data: LeaderboardEntry[];
@@ -9,25 +10,11 @@ interface BubbleChartProps {
   onBubbleClick?: (entry: LeaderboardEntry) => void;
 }
 
-export default function BubbleChart({ 
-  data, 
+export default function BubbleChart({
+  data,
   title = "Model Performance Bubble Chart",
-  onBubbleClick 
+  onBubbleClick
 }: BubbleChartProps) {
-  
-  const getColorByOrg = (org: string) => {
-    const colors: Record<string, string> = {
-      'Alibaba': '#ff6900',
-      'Anthropic': '#6366f1',
-      'OpenAI': '#10b981',
-      'Google': '#4285f4',
-      'Meta': '#0084ff',
-      'Baidu': '#2932e1',
-      'ByteDance': '#fe2c55',
-      'Microsoft': '#00bcf2'
-    };
-    return colors[org] || '#6b7280';
-  };
   
   const chartData = useMemo(() => {
     // Filter out NULL values for calculations
@@ -67,7 +54,7 @@ export default function BubbleChart({
         x: xScale(creativity),
         y: yScale(cultural),
         r: radius,
-        color: getColorByOrg(entry.model.organization)
+        color: getOrganizationColor(entry.model.organization)
       };
     });
   }, [data]);
@@ -240,7 +227,7 @@ export default function BubbleChart({
             <text x="10" y="15" className="fill-gray-700 text-xs font-bold">Organization</text>
             {organizations.slice(0, 7).map((org, i) => (
               <g key={org} transform={`translate(10, ${25 + i * 18})`}>
-                <circle cx="0" cy="0" r="5" fill={getColorByOrg(org)} opacity="0.8" />
+                <circle cx="0" cy="0" r="5" fill={getOrganizationColor(org)} opacity="0.8" />
                 <text x="12" y="4" className="fill-gray-600 text-xs">
                   {org}
                 </text>

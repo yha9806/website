@@ -73,7 +73,7 @@ export default function HomePage() {
               <BarChart3 className="w-3.5 h-3.5" />
               Decision-grade
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C87F4A]/10 dark:bg-[#C87F4A]/20 text-[#9B6B56] dark:text-[#DDA574] text-xs font-medium rounded-full">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-bronze-500/10 dark:bg-bronze-500/20 text-purple-500 dark:text-bronze-400 text-xs font-medium rounded-full">
               <Shield className="w-3.5 h-3.5" />
               Enterprise-ready
             </span>
@@ -81,20 +81,20 @@ export default function HomePage() {
 
           {/* Main headline */}
           <motion.h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight"
+            className="text-large-title mb-6 leading-tight"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
             Evaluate AI Models for{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-[#C87F4A] dark:from-slate-400 dark:to-[#DDA574]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-bronze-500 dark:from-slate-400 dark:to-bronze-400">
               Cultural Understanding
             </span>
           </motion.h1>
 
           {/* Sub-headline */}
           <motion.p
-            className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-4 max-w-3xl mx-auto"
+            className="text-h2 text-gray-600 dark:text-gray-300 mb-4 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -163,11 +163,11 @@ export default function HomePage() {
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
               <FileText className="w-5 h-5 text-green-600" />
-              <span className="font-semibold text-gray-900 dark:text-white">ACL Findings</span>
+              <span className="font-semibold text-gray-900 dark:text-white">WiNLP 2025</span>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-              <FileText className="w-5 h-5 text-[#C87F4A]" />
-              <span className="font-semibold text-gray-900 dark:text-white">GeBNLP 2025</span>
+              <FileText className="w-5 h-5 text-bronze-500" />
+              <span className="font-semibold text-gray-900 dark:text-white">arXiv 2026</span>
             </div>
           </div>
         </motion.div>
@@ -181,10 +181,10 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-h1 mb-4">
             Why Cultural Evaluation Matters
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-body max-w-2xl mx-auto">
             As AI models grow more powerful, cultural risks become harder to detect
           </p>
         </motion.div>
@@ -252,10 +252,10 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-h1 mb-4">
             The VULCA Platform
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-body max-w-2xl mx-auto">
             Three pillars for comprehensive cultural AI evaluation
           </p>
         </motion.div>
@@ -279,7 +279,7 @@ export default function HomePage() {
                   <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                     <li className="flex items-start gap-2">
                       <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                      130 curated artworks across cultures
+                      130 artworks, 7,410+ annotations
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
@@ -296,9 +296,9 @@ export default function HomePage() {
 
             {/* Pillar 2: Evaluation Engine */}
             <motion.div variants={fadeInUp}>
-              <IOSCard variant="flat" className="h-full border-t-4 border-t-[#C87F4A]">
+              <IOSCard variant="flat" className="h-full border-t-4 border-t-bronze-500">
                 <IOSCardHeader
-                  emoji={<Zap className="w-8 h-8 text-[#C87F4A]" />}
+                  emoji={<Zap className="w-8 h-8 text-bronze-500" />}
                   title="Evaluation Engine"
                   subtitle="Multi-perspective"
                 />
@@ -359,10 +359,10 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-h1 mb-4">
             How It Works
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-body max-w-2xl mx-auto">
             From benchmark selection to actionable report in three steps
           </p>
         </motion.div>
@@ -383,7 +383,7 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-slate-600 dark:text-slate-300">1</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-h3 mb-2">
                 Choose Benchmark
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
@@ -393,10 +393,10 @@ export default function HomePage() {
 
             {/* Step 2 */}
             <motion.div variants={fadeInUp} className="text-center">
-              <div className="w-16 h-16 bg-[#C87F4A]/10 dark:bg-[#C87F4A]/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-[#C87F4A] dark:text-[#DDA574]">2</span>
+              <div className="w-16 h-16 bg-bronze-500/10 dark:bg-bronze-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-bronze-500 dark:text-bronze-400">2</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-h3 mb-2">
                 Run Evaluation
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
@@ -409,7 +409,7 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-green-600 dark:text-green-400">3</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-h3 mb-2">
                 Export & Monitor
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
@@ -428,10 +428,10 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-h1 mb-4">
             Solutions for Every Team
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-body max-w-2xl mx-auto">
             Whether you're building, researching, or curating AI — we have you covered
           </p>
         </motion.div>
@@ -480,7 +480,7 @@ export default function HomePage() {
             <motion.div variants={fadeInUp}>
               <IOSCard variant="elevated" interactive className="h-full">
                 <IOSCardHeader
-                  emoji={<GraduationCap className="w-10 h-10 text-[#C87F4A]" />}
+                  emoji={<GraduationCap className="w-10 h-10 text-bronze-500" />}
                   title="Research Institutions"
                   subtitle="Academic benchmarking"
                 />
@@ -490,11 +490,11 @@ export default function HomePage() {
                   </p>
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                      <FileText className="w-4 h-4 text-[#C87F4A]" />
+                      <FileText className="w-4 h-4 text-bronze-500" />
                       Citation-ready reports
                     </div>
                     <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                      <CheckCircle2 className="w-4 h-4 text-[#C87F4A]" />
+                      <CheckCircle2 className="w-4 h-4 text-bronze-500" />
                       Version-controlled reproducibility
                     </div>
                   </div>
@@ -553,10 +553,10 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-h1 mb-4">
             Built on Real Data
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-body max-w-2xl mx-auto">
             Comprehensive evaluation framework backed by rigorous research
           </p>
         </motion.div>
@@ -566,7 +566,7 @@ export default function HomePage() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
         >
-          <div className="bg-gradient-to-r from-slate-50 to-[#C87F4A]/10 dark:from-slate-800/30 dark:to-[#C87F4A]/20 rounded-2xl p-8">
+          <div className="bg-gradient-to-r from-slate-50 to-bronze-500/10 dark:from-slate-800/30 dark:to-bronze-500/20 rounded-2xl p-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
                 <div className="text-4xl md:text-5xl font-bold text-slate-600 dark:text-slate-300 mb-2">
@@ -575,7 +575,7 @@ export default function HomePage() {
                 <div className="text-gray-600 dark:text-gray-400">Models Evaluated</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-[#C87F4A] dark:text-[#DDA574] mb-2">
+                <div className="text-4xl md:text-5xl font-bold text-bronze-500 dark:text-bronze-400 mb-2">
                   47
                 </div>
                 <div className="text-gray-600 dark:text-gray-400">Dimensions</div>
@@ -591,6 +591,7 @@ export default function HomePage() {
                   130
                 </div>
                 <div className="text-gray-600 dark:text-gray-400">Artworks</div>
+                <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">7,410+ annotations</div>
               </div>
             </div>
 
@@ -622,7 +623,7 @@ export default function HomePage() {
               <Shield className="w-6 h-6 text-green-400" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold">Trust by Default</h3>
+              <h3 className="text-h3">Trust by Default</h3>
               <p className="text-gray-400">
                 Enterprise-grade security, version control, and audit trails
               </p>
@@ -645,10 +646,10 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="text-center max-w-3xl mx-auto"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-h1 mb-4">
             Make Cultural Evaluation Part of Your Model Release Workflow
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-body mb-8">
             Join teams using VULCA to build more culturally aware AI systems
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

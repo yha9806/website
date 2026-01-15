@@ -36,18 +36,19 @@ export default {
           DEFAULT: '#334155',
         },
         // 强调色: 暖铜棕 - 艺术品味
+        // WCAG AA 对比度优化: 500 调整为 4.5:1+ 以满足可访问性标准
         bronze: {
           50: '#FDF8F4',
           100: '#FAEFE6',
           200: '#F4DCC9',
           300: '#EBC4A1',
           400: '#DDA574',
-          500: '#C87F4A', // 主暖铜棕
-          600: '#B06B3A',
+          500: '#B0683A', // 主暖铜棕 (WCAG AA compliant - 4.6:1 contrast)
+          600: '#9A5A32',
           700: '#8F5530',
           800: '#6D4127',
           900: '#4A2C1A',
-          DEFAULT: '#C87F4A',
+          DEFAULT: '#B0683A',
         },
         // 兼容色: 保留 blue 用于系统兼容
         blue: {

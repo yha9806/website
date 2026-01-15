@@ -67,7 +67,7 @@ export const VULCA_BIBTEX = `@inproceedings{vulca2025,
   year      = {2025},
   version   = {${VULCA_VERSION.framework}},
   dataset   = {${VULCA_VERSION.dataset}},
-  url       = {https://vulca.ai}
+  url       = {https://vulcaart.art}
 }`;
 
 /**
