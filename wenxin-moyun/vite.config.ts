@@ -29,13 +29,12 @@ export default defineConfig(({ command }) => ({
         assetFileNames: `assets/[name].[hash].[ext]`,
         
         // Code splitting optimization
+        // 注意: 避免循环依赖，只对独立的大型库进行手动分块
         manualChunks: {
           vendor: ['react', 'react-dom'],
           router: ['react-router-dom'],
           ui: ['framer-motion', '@headlessui/react'],
-          charts: ['recharts', 'd3-array', 'd3-scale', 'd3-shape'],
-          utils: ['axios', 'clsx', 'zustand'],
-          // Three.js 3D 渲染包独立分块 - 解决 CI 构建问题
+          // Three.js 3D 渲染包独立分块
           'three-core': ['three'],
           'three-fiber': ['@react-three/fiber', '@react-three/drei'],
           // 大数据文件独立分块 (780KB)
