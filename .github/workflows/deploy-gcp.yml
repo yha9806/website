@@ -49,7 +49,7 @@ jobs:
       - name: Clean npm cache and dependencies
         working-directory: wenxin-moyun
         run: |
-          rm -rf node_modules package-lock.json
+          rm -rf node_modules
           npm cache clean --force
 
       - name: Install frontend dependencies
@@ -461,7 +461,7 @@ jobs:
       - name: Clean npm cache and dependencies (production)
         working-directory: wenxin-moyun
         run: |
-          rm -rf node_modules package-lock.json
+          rm -rf node_modules
           npm cache clean --force
 
       - name: Install frontend dependencies
