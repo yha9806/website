@@ -54,7 +54,7 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: wenxin-moyun
-        run: npm install --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
 
       - name: Install backend dependencies
         working-directory: wenxin-backend
@@ -466,7 +466,7 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: wenxin-moyun
-        run: npm install --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
 
       - name: TypeScript type checking (production)
         working-directory: wenxin-moyun

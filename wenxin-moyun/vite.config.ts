@@ -82,11 +82,15 @@ export default defineConfig(({ command }) => ({
   // Optimize dependencies with better cache handling
   optimizeDeps: {
     include: [
-      'react', 
-      'react-dom', 
+      'react',
+      'react-dom',
       'react-router-dom',
       'framer-motion',
-      '@headlessui/react'
+      '@headlessui/react',
+      // Three.js 3D rendering packages - explicit include for CI build compatibility
+      'three',
+      '@react-three/fiber',
+      '@react-three/drei'
     ],
     exclude: ['@vite/client', '@vite/env'],
     // 使用缓存提升启动速度 (移除force:true)
