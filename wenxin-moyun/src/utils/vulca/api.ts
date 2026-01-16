@@ -13,12 +13,12 @@ import type {
 } from '../../types/vulca';
 
 
-// Production fallback ensures correct URL even if env var is missing or stale
+// Always use hardcoded production URL in production - env var may contain stale value
 const PRODUCTION_API_URL = 'https://wenxin-moyun-api-229980166599.asia-east1.run.app';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ||
-  (typeof window !== 'undefined' && window.location.hostname !== 'localhost'
-    ? PRODUCTION_API_URL
-    : 'http://localhost:8001');
+const isProduction = typeof window !== 'undefined' && window.location.hostname !== 'localhost';
+const API_BASE_URL = isProduction
+  ? PRODUCTION_API_URL  // Always use correct production URL
+  : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001');
 const VULCA_API_PREFIX = '/api/v1/vulca';
 
 // Create axios instance with default config

@@ -54,12 +54,13 @@ const PRESET_SCENARIOS = [
   },
 ];
 
-// API base URL from environment with production fallback
+// API base URL - always use hardcoded production URL in production environment
+// This ensures correct URL even if env var contains stale/wrong value
 const PRODUCTION_API_URL = 'https://wenxin-moyun-api-229980166599.asia-east1.run.app';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ||
-  (typeof window !== 'undefined' && window.location.hostname !== 'localhost'
-    ? PRODUCTION_API_URL
-    : 'http://localhost:8001');
+const isProduction = typeof window !== 'undefined' && window.location.hostname !== 'localhost';
+const API_BASE_URL = isProduction
+  ? PRODUCTION_API_URL  // Always use correct production URL
+  : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001');
 
 // Models will be loaded dynamically from the API
 
