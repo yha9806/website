@@ -4,10 +4,8 @@ import Footer from './Footer';
 import FloatingCTA from './FloatingCTA';
 import PageErrorBoundary from './PageErrorBoundary';
 import CacheStats from './CacheStats';
-import { useState, useEffect, lazy, Suspense } from 'react';
-
-// 动态导入 3D 背景组件 - 解决 CI 环境中 @react-three 模块解析问题
-const Vulca3DBackground = lazy(() => import('./Vulca3DBackground'));
+import StaticBackground from './StaticBackground';
+import { useState, useEffect } from 'react';
 import {
   detectDevicePerformance,
   type PerformanceLevel
@@ -51,12 +49,8 @@ export default function Layout() {
   
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
-      {/* 3D Background - Scale AI inspired (React Three Fiber) */}
-      <Suspense fallback={
-        <div className="fixed inset-0 -z-10" style={{ background: 'var(--ios-background-primary, #fafafa)' }} />
-      }>
-        <Vulca3DBackground />
-      </Suspense>
+      {/* Static Background - 使用CSS渐变替代3D背景，确保CI构建成功 */}
+      <StaticBackground />
 
       {/* Performance indicator (development only) */}
       {process.env.NODE_ENV === 'development' && (
