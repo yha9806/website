@@ -61,9 +61,13 @@ export function useWebSocket(options: UseWebSocketOptions) {
   const connectionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const connectionHealthRef = useRef<boolean>(false);
   
-  // WebSocket URL - 使用环境变量中的后端URL
+  // WebSocket URL - 使用环境变量中的后端URL，带生产环境 fallback
+  const PRODUCTION_API_URL = 'https://wenxin-moyun-api-229980166599.asia-east1.run.app';
   const getWebSocketUrl = useCallback(() => {
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ||
+      (typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+        ? PRODUCTION_API_URL
+        : 'http://localhost:8001');
     const apiVersion = import.meta.env.VITE_API_VERSION || 'v1';
     
     // 将 http/https 转换为 ws/wss
@@ -330,7 +334,11 @@ export function useServerSentEvents(options: {
 
   const connect = useCallback(() => {
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
+      const PRODUCTION_API_URL = 'https://wenxin-moyun-api-229980166599.asia-east1.run.app';
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ||
+        (typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+          ? PRODUCTION_API_URL
+          : 'http://localhost:8001');
       const apiVersion = import.meta.env.VITE_API_VERSION || 'v1';
       const url = `${apiBaseUrl}/api/${apiVersion}/sse/${room}`;
       logger.log(`Connecting to SSE: ${url}`);
