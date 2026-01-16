@@ -40,9 +40,9 @@ const EvaluationDetailModal: React.FC<EvaluationDetailModalProps> = ({ evaluatio
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-neutral-50 dark:bg-gray-900 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white dark:bg-[#1A1614] rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
       >
-        <div className="sticky top-0 bg-neutral-50 dark:bg-gray-900 border-b dark:border-gray-700 p-6 flex items-center justify-between">
+        <div className="sticky top-0 bg-white dark:bg-[#1A1614] border-b dark:border-gray-700 p-6 flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold gradient-text">评测任务详情</h2>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{getTaskTypeName()}</p>

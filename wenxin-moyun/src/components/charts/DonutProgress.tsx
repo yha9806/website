@@ -97,8 +97,8 @@ const DonutProgress: React.FC<DonutProgressProps> = ({
             <Cell fill={chartColors.grid.line} />
           </Pie>
           
-          <Tooltip 
-            formatter={(value: number) => `${value}%`}
+          <Tooltip
+            formatter={(value) => `${value}%`}
             contentStyle={{
               backgroundColor: chartColors.background.card,
               border: `1px solid ${chartColors.grid.line}`,

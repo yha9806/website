@@ -67,7 +67,7 @@ export default function MultiSelect({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-3 py-2 bg-neutral-50 dark:bg-[#161B22] border border-gray-200 dark:border-[#30363D] rounded-lg flex items-center justify-between hover:border-gray-300 dark:hover:border-[#48545F] transition-colors"
+        className="w-full px-3 py-2 bg-white dark:bg-[#1A1614] border border-gray-200 dark:border-gray-700 rounded-lg flex items-center justify-between hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
       >
         <span className="text-sm truncate">
           {value.length === 0 ? (
@@ -117,23 +117,23 @@ export default function MultiSelect({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-50 w-full mt-2 bg-neutral-50 dark:bg-[#1C2128] border border-gray-200 dark:border-[#30363D] rounded-lg shadow-lg"
+            className="absolute z-50 w-full mt-2 bg-white dark:bg-[#1A1614] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg"
           >
             {/* 搜索框 */}
-            <div className="p-2 border-b border-gray-200 dark:border-[#30363D]">
+            <div className="p-2 border-b border-gray-200 dark:border-gray-700">
               <input
                 type="text"
                 aria-label="Search options"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="搜索..."
-                className="w-full px-2 py-1 text-sm bg-gray-50 dark:bg-[#0D1117] border border-gray-200 dark:border-[#30363D] rounded focus:outline-none focus:ring-2 focus:ring-slate-600/40 focus:border-slate-600 dark:focus:border-slate-500"
+                className="w-full px-2 py-1 text-sm bg-gray-50 dark:bg-[#0F0D0C] border border-gray-200 dark:border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-slate-600/40 focus:border-slate-600 dark:focus:border-slate-500"
                 onClick={(e) => e.stopPropagation()}
               />
             </div>
 
             {/* 快捷操作 */}
-            <div className="flex items-center justify-between px-2 py-1 border-b border-gray-200 dark:border-[#30363D]">
+            <div className="flex items-center justify-between px-2 py-1 border-b border-gray-200 dark:border-gray-700">
               <button
                 onClick={selectAll}
                 className="text-xs text-slate-700 dark:text-slate-500 hover:underline"
@@ -161,7 +161,7 @@ export default function MultiSelect({
                     <button
                       key={option}
                       onClick={() => toggleOption(option)}
-                      className="w-full px-3 py-2 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-[#262C36] transition-colors"
+                      className="w-full px-3 py-2 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                     >
                       <span className="text-sm text-gray-700 dark:text-gray-300">
                         {option}

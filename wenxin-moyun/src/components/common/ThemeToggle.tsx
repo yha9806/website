@@ -28,7 +28,7 @@ export function ThemeToggleWithLabel() {
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={toggleTheme}
-      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-[#21262D] border border-gray-200 dark:border-[#30363D] transition-all duration-200 hover:bg-gray-200 dark:hover:bg-[#30363D]"
+      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-[#1A1614] border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-800"
     >
       {theme === 'light' ? (
         <>

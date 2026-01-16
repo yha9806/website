@@ -135,7 +135,7 @@ export default function AdvancedFilterPanel({
           flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all
           ${isOpen || activeFilterCount > 0
             ? 'bg-slate-600 text-white shadow-lg'
-            : 'bg-neutral-50 dark:bg-[#161B22] text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-[#30363D] hover:border-gray-300 dark:hover:border-[#48545F]'
+            : 'bg-white dark:bg-[#1A1614] text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
           }
         `}
       >
@@ -172,10 +172,10 @@ export default function AdvancedFilterPanel({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full left-0 mt-2 w-96 bg-neutral-50 dark:bg-[#1C2128] border border-gray-200 dark:border-[#30363D] rounded-lg shadow-xl z-50"
+            className="absolute top-full left-0 mt-2 w-96 bg-white dark:bg-[#1A1614] border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50"
           >
             {/* 面板头部 */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-[#30363D]">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
               <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                 Advanced Filters
               </h3>
@@ -188,7 +188,7 @@ export default function AdvancedFilterPanel({
             </div>
 
             {/* 标签栏 */}
-            <div className="flex border-b border-gray-200 dark:border-[#30363D]">
+            <div className="flex border-b border-gray-200 dark:border-gray-700">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
@@ -299,7 +299,7 @@ export default function AdvancedFilterPanel({
             </div>
 
             {/* 面板底部 */}
-            <div className="flex items-center justify-between p-4 border-t border-gray-200 dark:border-[#30363D]">
+            <div className="flex items-center justify-between p-4 border-t border-gray-200 dark:border-gray-700">
               <button
                 onClick={resetFilters}
                 className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 transition-colors"

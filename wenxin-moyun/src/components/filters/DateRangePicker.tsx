@@ -128,7 +128,7 @@ export default function DateRangePicker({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-3 py-2 bg-neutral-50 dark:bg-[#161B22] border border-gray-200 dark:border-[#30363D] rounded-lg flex items-center justify-between hover:border-gray-300 dark:hover:border-[#48545F] transition-colors"
+        className="w-full px-3 py-2 bg-white dark:bg-[#1A1614] border border-gray-200 dark:border-gray-700 rounded-lg flex items-center justify-between hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
       >
         <span className="text-sm flex items-center gap-2">
           <Calendar className="w-4 h-4 text-gray-400" />
@@ -154,13 +154,13 @@ export default function DateRangePicker({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-50 w-80 mt-2 bg-neutral-50 dark:bg-[#1C2128] border border-gray-200 dark:border-[#30363D] rounded-lg shadow-lg"
+            className="absolute z-50 w-80 mt-2 bg-white dark:bg-[#1A1614] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg"
           >
             {/* 月份导航 */}
-            <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-[#30363D]">
+            <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
               <button
                 onClick={() => changeMonth(-1)}
-                className="p-1 hover:bg-gray-100 dark:hover:bg-[#262C36] rounded transition-colors"
+                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
               >
                 <ChevronLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" />
               </button>
@@ -169,7 +169,7 @@ export default function DateRangePicker({
               </h3>
               <button
                 onClick={() => changeMonth(1)}
-                className="p-1 hover:bg-gray-100 dark:hover:bg-[#262C36] rounded transition-colors"
+                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
               >
                 <ChevronRight className="w-4 h-4 text-gray-600 dark:text-gray-400" />
               </button>
@@ -205,7 +205,7 @@ export default function DateRangePicker({
                           ? 'bg-slate-600 text-white'
                           : date.toDateString() === value[0]?.toDateString() || date.toDateString() === value[1]?.toDateString()
                           ? 'bg-slate-700 text-white'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#262C36]'
+                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                         }
                       `}
                     >
@@ -217,7 +217,7 @@ export default function DateRangePicker({
             </div>
 
             {/* 快捷选项 */}
-            <div className="border-t border-gray-200 dark:border-[#30363D] p-2">
+            <div className="border-t border-gray-200 dark:border-gray-700 p-2">
               <div className="flex items-center justify-between">
                 <div className="flex gap-1">
                   <button

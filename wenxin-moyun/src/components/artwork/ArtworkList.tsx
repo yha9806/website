@@ -72,7 +72,7 @@ const ArtworkList: React.FC<ArtworkListProps> = ({
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-neutral-50 dark:bg-gray-800 text-sm"
+                className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#1A1614] text-sm"
               >
                 {types.map(type => (
                   <option key={type.value} value={type.value}>
@@ -85,7 +85,7 @@ const ArtworkList: React.FC<ArtworkListProps> = ({
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'score' | 'date')}
-              className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-neutral-50 dark:bg-gray-800 text-sm"
+              className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#1A1614] text-sm"
             >
               <option value="score">By Score</option>
               <option value="date">By Date</option>

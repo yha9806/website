@@ -249,7 +249,7 @@ const EvaluationsPage: React.FC = () => {
                   className={`px-4 py-2 rounded-lg ${
                     p === page
                       ? 'bg-gradient-to-r from-amber-700 to-slate-700 text-white'
-                      : 'bg-neutral-50 dark:bg-[#21262D] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                      : 'bg-white dark:bg-[#1A1614] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
                   {p}

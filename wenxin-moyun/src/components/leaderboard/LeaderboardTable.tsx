@@ -407,7 +407,7 @@ export default function LeaderboardTable({
   return (
     <div className="w-full space-y-4">
       {/* 工具栏 */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 ios-glass liquid-glass-container rounded-lg border border-gray-200 dark:border-[#30363D]">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 ios-glass liquid-glass-container rounded-lg border border-gray-200 dark:border-gray-700">
         {/* 搜索框 */}
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-gray-500 dark:text-gray-400" />
@@ -417,7 +417,7 @@ export default function LeaderboardTable({
             placeholder="Search models..."
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            className="px-3 py-2 ios-glass backdrop-blur-sm border border-gray-200 dark:border-[#30363D] rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/40 focus:border-slate-600 dark:focus:border-slate-500"
+            className="px-3 py-2 ios-glass backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/40 focus:border-slate-600 dark:focus:border-slate-500"
           />
         </div>
 
@@ -447,20 +447,20 @@ export default function LeaderboardTable({
 
           {/* 导出按钮 */}
           <div className="relative group">
-            <button className="flex items-center gap-2 px-3 py-2 min-h-[44px] bg-gray-100 dark:bg-[#21262D] rounded-lg hover:bg-gray-200 dark:hover:bg-[#30363D] focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors">
+            <button className="flex items-center gap-2 px-3 py-2 min-h-[44px] bg-gray-100 dark:bg-[#1A1614] rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors">
               <Download className="w-4 h-4" />
               <span className="text-sm">Export</span>
             </button>
-            <div className="absolute right-0 mt-2 w-32 ios-glass backdrop-blur-md border border-gray-200 dark:border-[#30363D] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+            <div className="absolute right-0 mt-2 w-32 ios-glass backdrop-blur-md border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
               <button
                 onClick={() => exportData(data, 'csv')}
-                className="w-full px-3 py-2 min-h-[44px] text-sm text-left hover:bg-gray-100/30 dark:hover:bg-[#262C36] focus:outline-none focus:bg-gray-100/50 dark:focus:bg-[#262C36] transition-colors flex items-center"
+                className="w-full px-3 py-2 min-h-[44px] text-sm text-left hover:bg-gray-100/30 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100/50 dark:focus:bg-gray-800 transition-colors flex items-center"
               >
                 Export as CSV
               </button>
               <button
                 onClick={() => exportData(data, 'json')}
-                className="w-full px-3 py-2 min-h-[44px] text-sm text-left hover:bg-gray-100/30 dark:hover:bg-[#262C36] focus:outline-none focus:bg-gray-100/50 dark:focus:bg-[#262C36] transition-colors flex items-center"
+                className="w-full px-3 py-2 min-h-[44px] text-sm text-left hover:bg-gray-100/30 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100/50 dark:focus:bg-gray-800 transition-colors flex items-center"
               >
                 Export as JSON
               </button>
@@ -470,10 +470,10 @@ export default function LeaderboardTable({
       </div>
 
       {/* 表格 */}
-      <div className="leaderboard-table overflow-x-auto ios-glass liquid-glass-container rounded-lg border border-gray-200 dark:border-[#30363D]">
+      <div className="leaderboard-table overflow-x-auto ios-glass liquid-glass-container rounded-lg border border-gray-200 dark:border-gray-700">
         <table className="w-full">
           <caption className="sr-only">AI Model Leaderboard Rankings with scores and metrics</caption>
-          <thead className="ios-glass backdrop-blur-sm border-b border-gray-200 dark:border-[#30363D]">
+          <thead className="ios-glass backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
@@ -507,7 +507,7 @@ export default function LeaderboardTable({
               </tr>
             ))}
           </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-[#30363D]">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {loading ? (
               <tr>
                 <td colSpan={columns.length} className="text-center py-8">
@@ -630,7 +630,7 @@ export default function LeaderboardTable({
                 return (
                   <React.Fragment key={row.id}>
                     <tr 
-                      className="hover:bg-gray-100/20 dark:hover:bg-[#1C2128] transition-colors cursor-pointer"
+                      className="hover:bg-gray-100/20 dark:hover:bg-gray-900 transition-colors cursor-pointer"
                       onClick={(e) => {
                         // 防止点击47D按钮时触发行点击
                         if (!(e.target as HTMLElement).closest('button')) {
@@ -657,7 +657,7 @@ export default function LeaderboardTable({
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="bg-gray-50 dark:bg-[#0d1117] border-t border-gray-200 dark:border-[#30363D]"
+                            className="bg-gray-50 dark:bg-[#0F0D0C] border-t border-gray-200 dark:border-gray-700"
                           >
                             <div className="p-6">
                               <Suspense fallback={
@@ -700,14 +700,14 @@ export default function LeaderboardTable({
           <button
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
-            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-[#21262D] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronsLeft className="w-4 h-4" />
           </button>
           <button
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-[#21262D] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -719,14 +719,14 @@ export default function LeaderboardTable({
           <button
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-[#21262D] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
           <button
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
-            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-[#21262D] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronsRight className="w-4 h-4" />
           </button>

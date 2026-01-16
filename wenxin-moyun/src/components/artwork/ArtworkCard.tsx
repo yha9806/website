@@ -70,7 +70,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, onClick }) => {
 
   return (
     <motion.div
-      className="bg-neutral-50 dark:bg-gray-800 rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-shadow"
+      className="bg-white dark:bg-[#1A1614] rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-shadow"
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}

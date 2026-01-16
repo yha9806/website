@@ -21,8 +21,8 @@ export const useModels = (category?: string) => {
           });
           
           if (apiModels.length > 0) {
-            const frontendModels = apiModels.map(model => 
-              modelsService.convertToFrontendModel(model as any)
+            const frontendModels = apiModels.map(model =>
+              modelsService.convertToFrontendModel(model)
             );
             setModels(frontendModels);
           } else {

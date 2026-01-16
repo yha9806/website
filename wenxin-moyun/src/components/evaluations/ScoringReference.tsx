@@ -86,7 +86,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="p-2 bg-neutral-50 dark:bg-[#21262D] rounded-lg shadow-sm">
+          <div className="p-2 bg-white dark:bg-[#1A1614] rounded-lg shadow-sm">
             <TrendingUp className="w-5 h-5 text-slate-700 dark:text-slate-500" />
           </div>
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">AI 评分参考</h3>
@@ -110,7 +110,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
           </span>
         </div>
         
-        <div className="relative h-12 bg-neutral-50 dark:bg-[#21262D] rounded-lg shadow-inner p-2">
+        <div className="relative h-12 bg-white dark:bg-[#1A1614] rounded-lg shadow-inner p-2">
           <div className="relative h-full">
             {/* Score range bar */}
             <div 
@@ -144,7 +144,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
       </div>
 
       {/* Suggestion */}
-      <div className="mt-8 p-3 bg-neutral-50 dark:bg-[#21262D] rounded-lg border border-slate-100 dark:border-slate-800">
+      <div className="mt-8 p-3 bg-white dark:bg-[#1A1614] rounded-lg border border-slate-100 dark:border-slate-800">
         <p className="text-sm text-gray-700 dark:text-gray-300">{advice.suggestion}</p>
       </div>
 
@@ -166,7 +166,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
 
           {/* Task-specific ranges */}
           {Object.keys(advice.task_specific_ranges).length > 0 && (
-            <div className="bg-neutral-50 dark:bg-[#21262D] rounded-lg p-3 space-y-2">
+            <div className="bg-white dark:bg-[#1A1614] rounded-lg p-3 space-y-2">
               <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                 <ChartBar className="w-4 h-4" />
                 <span>{getTaskTypeLabel(taskType)}细分指标参考</span>
@@ -184,7 +184,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
           <div className="flex gap-2">
             <button
               onClick={() => onScoreChange?.(advice.score_range.min)}
-              className="flex-1 py-2 text-sm bg-neutral-50 dark:bg-[#21262D] text-slate-700 dark:text-slate-500 rounded-lg border border-blue-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/20 transition-colors"
+              className="flex-1 py-2 text-sm bg-white dark:bg-[#1A1614] text-slate-700 dark:text-slate-500 rounded-lg border border-blue-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/20 transition-colors"
             >
               使用最低分 ({advice.score_range.min})
             </button>
@@ -196,7 +196,7 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
             </button>
             <button
               onClick={() => onScoreChange?.(advice.score_range.max)}
-              className="flex-1 py-2 text-sm bg-neutral-50 dark:bg-[#21262D] text-slate-700 dark:text-slate-500 rounded-lg border border-blue-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/20 transition-colors"
+              className="flex-1 py-2 text-sm bg-white dark:bg-[#1A1614] text-slate-700 dark:text-slate-500 rounded-lg border border-blue-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/20 transition-colors"
             >
               使用最高分 ({advice.score_range.max})
             </button>

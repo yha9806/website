@@ -251,8 +251,8 @@ const DimensionGroupView: React.FC<DimensionGroupViewProps> = ({
                                 fillOpacity={0.3}
                                 strokeWidth={2}
                               />
-                              <Tooltip 
-                                formatter={(value: number) => [`${value.toFixed(1)}`, 'Score']}
+                              <Tooltip
+                                formatter={(value) => [`${Number(value).toFixed(1)}`, 'Score']}
                                 labelFormatter={(label) => `Dimension: ${label}`}
                               />
                             </RadarChart>

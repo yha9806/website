@@ -27,7 +27,7 @@ function useMousePosition() {
   const mouseRef = useRef({ x: 0, y: 0 });
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const lastUpdateRef = useRef(0);
-  const frameIdRef = useRef<number>();
+  const frameIdRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const THROTTLE_MS = 50; // 50ms 节流 = 20fps 更新

@@ -148,7 +148,7 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
   };
 
   return (
-    <div className="bg-neutral-50 dark:bg-[#161B22] rounded-xl p-6 shadow-lg border border-neutral-200 dark:border-gray-700">
+    <div className="bg-white dark:bg-[#1A1614] rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
@@ -196,8 +196,8 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
               className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
                 isActive ? 'bg-primary/10 border-2 border-primary shadow-sm' :
                 isCompleted ? 'bg-success-500/10 border border-success-500' :
-                isPending ? 'bg-neutral-50 dark:bg-[#21262D] border border-neutral-200 dark:border-gray-700' :
-                'bg-neutral-50 dark:bg-[#21262D] border border-neutral-200 dark:border-gray-700'
+                isPending ? 'bg-gray-50 dark:bg-[#1A1614] border border-gray-200 dark:border-gray-700' :
+                'bg-gray-50 dark:bg-[#1A1614] border border-gray-200 dark:border-gray-700'
               }`}
             >
               {/* Stage Icon */}
