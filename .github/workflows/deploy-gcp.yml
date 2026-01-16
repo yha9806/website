@@ -472,6 +472,20 @@ jobs:
         working-directory: wenxin-moyun
         run: npx tsc --noEmit
 
+      - name: Verify Three.js packages installation
+        working-directory: wenxin-moyun
+        run: |
+          echo "🔍 Checking @react-three packages..."
+          ls -la node_modules/@react-three/ || echo "❌ @react-three directory not found"
+          ls -la node_modules/@react-three/fiber/dist/ || echo "❌ @react-three/fiber/dist not found"
+          ls -la node_modules/@react-three/drei/ || echo "❌ @react-three/drei not found"
+          ls -la node_modules/three/build/ || echo "❌ three/build not found"
+          echo "📦 Package versions:"
+          cat node_modules/@react-three/fiber/package.json | grep '"version"' || true
+          cat node_modules/@react-three/drei/package.json | grep '"version"' || true
+          cat node_modules/three/package.json | grep '"version"' || true
+          echo "✅ Verification complete"
+
       - name: Build frontend for production
         working-directory: wenxin-moyun
         run: npm run build:prod

@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
@@ -105,18 +104,13 @@ export default defineConfig(({ command }) => ({
   
   // Module resolution optimization - 关键配置解决 CI 构建问题
   resolve: {
-    // 显式别名配置 - 解决 Rollup 在 CI 环境中无法解析 @react-three 的问题
-    // 参考: https://discourse.threejs.org/t/using-three-js-based-library-in-vite-rollup-multiple-instances-of-three-js-being-imported/72913
-    alias: {
-      'three': path.resolve(__dirname, './node_modules/three'),
-      '@react-three/fiber': path.resolve(__dirname, './node_modules/@react-three/fiber'),
-      '@react-three/drei': path.resolve(__dirname, './node_modules/@react-three/drei'),
-    },
+    // 注意: 不使用 alias 直接指向目录，这会导致 Vite 尝试加载目录作为文件
+    // 让 Vite 自己解析模块入口点
     // Preserve symlinks for better module resolution
     preserveSymlinks: false,
     // Optimize extension resolution
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
-    // 去重配置 - 防止多个 Three.js 实例被导入
+    // 去重配置 - 防止多个 Three.js 实例被导入（关键！）
     dedupe: ['react', 'react-dom', 'three', '@react-three/fiber', '@react-three/drei']
   }
 }))
