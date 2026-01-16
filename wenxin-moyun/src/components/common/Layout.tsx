@@ -4,7 +4,7 @@ import Footer from './Footer';
 import FloatingCTA from './FloatingCTA';
 import PageErrorBoundary from './PageErrorBoundary';
 import CacheStats from './CacheStats';
-import StaticBackground from './StaticBackground';
+import Vulca3DBackground from './Vulca3DBackground';
 import { useState, useEffect } from 'react';
 import {
   detectDevicePerformance,
@@ -49,8 +49,8 @@ export default function Layout() {
   
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
-      {/* Static Background - 使用CSS渐变替代3D背景，确保CI构建成功 */}
-      <StaticBackground />
+      {/* 3D Background - Scale AI inspired (React Three Fiber) */}
+      <Vulca3DBackground />
 
       {/* Performance indicator (development only) */}
       {process.env.NODE_ENV === 'development' && (

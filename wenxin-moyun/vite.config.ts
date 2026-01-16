@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
@@ -35,6 +36,9 @@ export default defineConfig(({ command }) => ({
           ui: ['framer-motion', '@headlessui/react'],
           charts: ['recharts', 'd3-array', 'd3-scale', 'd3-shape'],
           utils: ['axios', 'clsx', 'zustand'],
+          // Three.js 3D 渲染包独立分块 - 解决 CI 构建问题
+          'three-core': ['three'],
+          'three-fiber': ['@react-three/fiber', '@react-three/drei'],
           // 大数据文件独立分块 (780KB)
           'exhibition-negative-space': ['./src/data/exhibitions/negative-space']
         }
@@ -99,13 +103,20 @@ export default defineConfig(({ command }) => ({
     entries: ['src/**/*.tsx', 'src/**/*.ts']
   },
   
-  // Module resolution optimization
+  // Module resolution optimization - 关键配置解决 CI 构建问题
   resolve: {
+    // 显式别名配置 - 解决 Rollup 在 CI 环境中无法解析 @react-three 的问题
+    // 参考: https://discourse.threejs.org/t/using-three-js-based-library-in-vite-rollup-multiple-instances-of-three-js-being-imported/72913
+    alias: {
+      'three': path.resolve(__dirname, './node_modules/three'),
+      '@react-three/fiber': path.resolve(__dirname, './node_modules/@react-three/fiber'),
+      '@react-three/drei': path.resolve(__dirname, './node_modules/@react-three/drei'),
+    },
     // Preserve symlinks for better module resolution
     preserveSymlinks: false,
     // Optimize extension resolution
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
-    // Clear module cache on file changes
-    dedupe: ['react', 'react-dom']
+    // 去重配置 - 防止多个 Three.js 实例被导入
+    dedupe: ['react', 'react-dom', 'three', '@react-three/fiber', '@react-three/drei']
   }
 }))
