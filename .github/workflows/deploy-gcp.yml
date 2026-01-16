@@ -464,9 +464,35 @@ jobs:
           rm -rf node_modules
           npm cache clean --force
 
+      - name: Debug package-lock.json
+        working-directory: wenxin-moyun
+        run: |
+          echo "📋 Node/npm versions:"
+          node --version
+          npm --version
+          echo ""
+          echo "📦 Checking package-lock.json for @react-three..."
+          grep -c '"@react-three' package-lock.json || echo "No @react-three found!"
+          echo ""
+          echo "🔍 @react-three entries in package-lock.json:"
+          grep '"node_modules/@react-three' package-lock.json | head -10 || echo "No node_modules/@react-three entries"
+          echo ""
+          echo "📊 package-lock.json stats:"
+          wc -l package-lock.json
+          grep -c '"resolved"' package-lock.json
+
       - name: Install frontend dependencies
         working-directory: wenxin-moyun
-        run: npm ci --legacy-peer-deps
+        run: npm ci --legacy-peer-deps --loglevel verbose 2>&1 | tee npm-install.log || true
+
+      - name: Check npm install results
+        working-directory: wenxin-moyun
+        run: |
+          echo "📊 npm install summary:"
+          tail -20 npm-install.log
+          echo ""
+          echo "🔍 Checking for @react-three in install log:"
+          grep -i "react-three" npm-install.log | head -20 || echo "No @react-three mentions in log"
 
       - name: TypeScript type checking (production)
         working-directory: wenxin-moyun
