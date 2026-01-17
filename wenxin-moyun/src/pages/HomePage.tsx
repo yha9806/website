@@ -111,7 +111,7 @@ export default function HomePage() {
             Reproducible evaluation + Explainable diagnostics + Deliverable reports
           </motion.p>
 
-          {/* CTAs */}
+          {/* CTAs - Three-button layout for better conversion */}
           <motion.div
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
             initial={{ opacity: 0, y: 20 }}
@@ -130,14 +130,25 @@ export default function HomePage() {
                 <ArrowRight className="w-5 h-5" />
               </IOSButton>
             </Link>
+            <IOSButton
+              variant="secondary"
+              size="lg"
+              className="flex items-center gap-2 min-w-[200px] justify-center"
+              onClick={downloadSampleReport}
+              data-testid="hero-download-report"
+            >
+              <Download className="w-5 h-5" />
+              Sample Report
+            </IOSButton>
             <Link to="/vulca">
               <IOSButton
-                variant="secondary"
+                variant="text"
                 size="lg"
-                className="flex items-center gap-2 min-w-[200px] justify-center"
+                className="flex items-center gap-2 min-w-[160px] justify-center text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300"
                 data-testid="hero-try-demo"
               >
                 Try Public Demo
+                <ArrowRight className="w-4 h-4" />
               </IOSButton>
             </Link>
           </motion.div>
@@ -629,12 +640,20 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          <Link to="/trust">
-            <IOSButton variant="secondary" size="md" className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border-white/20">
-              Learn About Security
-              <ArrowRight className="w-4 h-4" />
-            </IOSButton>
-          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link to="/trust">
+              <IOSButton variant="secondary" size="md" className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border-white/20">
+                Learn About Security
+                <ArrowRight className="w-4 h-4" />
+              </IOSButton>
+            </Link>
+            <Link to="/trust#data-handling">
+              <IOSButton variant="text" size="md" className="flex items-center gap-2 text-gray-300 hover:text-white">
+                Data & Ethics Policy
+                <ArrowRight className="w-4 h-4" />
+              </IOSButton>
+            </Link>
+          </div>
         </motion.div>
       </section>
 

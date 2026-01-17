@@ -19,11 +19,13 @@ import {
   Mail,
   Heart,
   ArrowRight,
-  ExternalLink
+  ExternalLink,
+  Loader2
 } from 'lucide-react';
 import { IOSButton } from '../ios';
 import { useState } from 'react';
 import VulcaLogo from './VulcaLogo';
+import { subscribeNewsletter } from '../../lib/supabase';
 
 const footerLinks = {
   product: {
@@ -74,13 +76,25 @@ const socialLinks = [
 export default function Footer() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (!email) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    const result = await subscribeNewsletter(email, 'footer');
+
+    setIsLoading(false);
+
+    if (result.success) {
       setSubscribed(true);
       setEmail('');
-      // In production, this would call an API
+    } else {
+      setError(result.error || 'Subscription failed');
     }
   };
 
@@ -109,17 +123,27 @@ export default function Footer() {
                   Thanks for subscribing!
                 </p>
               ) : (
-                <form onSubmit={handleSubscribe} className="flex gap-2">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    className="flex-1 px-3 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600"
-                  />
-                  <IOSButton variant="primary" size="sm" type="submit">
-                    <ArrowRight className="w-4 h-4" />
-                  </IOSButton>
+                <form onSubmit={handleSubscribe} className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      disabled={isLoading}
+                      className="flex-1 px-3 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 disabled:opacity-50"
+                    />
+                    <IOSButton variant="primary" size="sm" type="submit" disabled={isLoading || !email}>
+                      {isLoading ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <ArrowRight className="w-4 h-4" />
+                      )}
+                    </IOSButton>
+                  </div>
+                  {error && (
+                    <p className="text-xs text-red-500">{error}</p>
+                  )}
                 </form>
               )}
             </div>
@@ -243,12 +267,12 @@ export default function Footer() {
 
             {/* Legal Links */}
             <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-              <a href="#/terms" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+              <Link to="/terms" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 Terms
-              </a>
-              <a href="#/privacy" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+              </Link>
+              <Link to="/privacy" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 Privacy
-              </a>
+              </Link>
               <Link to="/trust" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 Security
               </Link>

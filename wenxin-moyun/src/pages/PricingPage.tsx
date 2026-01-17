@@ -37,6 +37,7 @@ const plans = [
     cta: 'Try Public Demo',
     ctaLink: '/vulca',
     ctaVariant: 'secondary' as const,
+    deliverables: ['Public demo access', '6D overview only'],
     features: [
       { name: 'Public leaderboard access', included: true },
       { name: 'Limited demo evaluations', included: true },
@@ -50,8 +51,8 @@ const plans = [
   },
   {
     name: 'Pilot',
-    price: 'Custom',
-    period: '1-2 weeks',
+    price: '$2,500',
+    period: 'one-time',
     description: 'For model selection and pre-release audits',
     icon: Zap,
     color: 'blue',
@@ -59,6 +60,7 @@ const plans = [
     ctaLink: '/demo',
     ctaVariant: 'primary' as const,
     popular: true,
+    deliverables: ['Full 47D report (PDF)', '8 cultural perspectives', '1-2 weeks delivery'],
     features: [
       { name: 'Everything in Free', included: true },
       { name: 'Full 47D evaluation report', included: true },
@@ -72,7 +74,7 @@ const plans = [
   },
   {
     name: 'Enterprise',
-    price: 'Custom',
+    price: 'From $15,000',
     period: 'annual',
     description: 'For continuous evaluation and private data',
     icon: Building2,
@@ -80,6 +82,7 @@ const plans = [
     cta: 'Talk to Sales',
     ctaLink: '/demo',
     ctaVariant: 'secondary' as const,
+    deliverables: ['Unlimited evaluations', 'Custom benchmarks', 'API access', 'Regression monitoring'],
     features: [
       { name: 'Everything in Pilot', included: true },
       { name: 'Unlimited evaluations', included: true },
@@ -97,6 +100,10 @@ const faqs = [
   {
     q: 'What is included in a Pilot evaluation?',
     a: 'A Pilot includes a comprehensive 47D evaluation across all 8 cultural perspectives, delivered as a PDF report with evidence samples, risk identification, and actionable recommendations. Typical turnaround is 1-2 weeks.',
+  },
+  {
+    q: 'What is your evaluation SOP?',
+    a: 'Our 5-step process: (1) Benchmark selection — choose from our curated library or upload custom data; (2) Model inference — run your model against selected benchmarks; (3) Multi-perspective scoring — 47D evaluation across 8 cultural perspectives; (4) QA review — human expert validation of flagged outputs; (5) Report generation — PDF deliverable with evidence samples and recommendations.',
   },
   {
     q: 'Can I evaluate custom models?',

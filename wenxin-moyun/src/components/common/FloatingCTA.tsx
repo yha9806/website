@@ -8,8 +8,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, X, MessageSquare, ArrowRight } from 'lucide-react';
+import { Calendar, X, MessageSquare, ArrowRight, FileText } from 'lucide-react';
 import { IOSButton } from '../ios/core/IOSButton';
+import { downloadSampleReport } from '../../utils/pdfExport';
 
 interface FloatingCTAProps {
   /** Scroll threshold in pixels before showing */
@@ -115,6 +116,29 @@ export function FloatingCTA({
                       <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-slate-600 transition-colors" />
                     </div>
                   </Link>
+
+                  <button
+                    onClick={() => {
+                      downloadSampleReport();
+                      setIsExpanded(false);
+                    }}
+                    className="w-full"
+                  >
+                    <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
+                      <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                        <FileText className="w-5 h-5 text-green-600 dark:text-green-400" />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <p className="font-medium text-gray-900 dark:text-white text-sm">
+                          Sample Report
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          Free 25-page PDF download
+                        </p>
+                      </div>
+                      <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-green-600 transition-colors" />
+                    </div>
+                  </button>
 
                   <Link to="/pricing" onClick={() => setIsExpanded(false)}>
                     <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
