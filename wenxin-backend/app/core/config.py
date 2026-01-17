@@ -62,7 +62,9 @@ class Settings(BaseSettings):
         *[f"http://localhost:{port}" for port in range(5173, 5182)],
         *[f"http://127.0.0.1:{port}" for port in range(5173, 5182)],
         "http://localhost:3000",
-        # Production URL
+        # Production URLs
+        "https://vulcaart.art",
+        "https://www.vulcaart.art",
         "https://storage.googleapis.com"
     ]
     
