@@ -344,14 +344,72 @@ export const vulcaService = {
         
         // Transform model data
         if (comparison.models) {
-          comparison.models = comparison.models.map((model: any) => ({
-            modelId: model.model_id || model.modelId,
-            modelName: model.model_name || model.modelName,
-            scores6D: model.scores_6d || model.scores6D,
-            scores47D: model.scores_47d || model.scores47D,
-            culturalPerspectives: model.cultural_perspectives || model.culturalPerspectives,
-            evaluationDate: model.evaluation_date || model.evaluationDate || new Date().toISOString()
-          }));
+          // 47D dimension names in order (matching backend dim_0 to dim_46)
+          const dim47Names = [
+            'originality', 'imagination', 'innovation_depth', 'artistic_vision',
+            'conceptual_novelty', 'creative_synthesis', 'ideation_fluency', 'divergent_thinking',
+            'skill_mastery', 'precision', 'craft_excellence', 'technical_proficiency',
+            'execution_quality', 'methodological_rigor', 'tool_expertise', 'procedural_knowledge',
+            'emotional_depth', 'sentiment_expression', 'affective_resonance', 'mood_conveyance',
+            'feeling_authenticity', 'empathy_evocation', 'psychological_insight', 'emotional_intelligence',
+            'cultural_awareness', 'historical_grounding', 'situational_relevance', 'environmental_sensitivity',
+            'social_consciousness', 'temporal_awareness', 'spatial_understanding', 'contextual_integration',
+            'breakthrough_thinking', 'paradigm_shifting', 'novel_approaches', 'experimental_courage',
+            'boundary_pushing', 'revolutionary_concepts', 'transformative_ideas', 'disruptive_creativity',
+            'audience_engagement', 'lasting_impression', 'influence_scope', 'transformative_power',
+            'memorable_quality', 'viral_potential', 'legacy_creation'
+          ];
+
+          comparison.models = comparison.models.map((model: any) => {
+            const rawScores47D = model.scores_47d || model.scores47D || {};
+
+            // Transform scores47D to use both dim_X keys and name keys for compatibility
+            const scores47D: Record<string, number> = {};
+            dim47Names.forEach((name, index) => {
+              const value = rawScores47D[name];
+              if (value != null) {
+                scores47D[`dim_${index}`] = value;  // For dim.id lookup
+                scores47D[name] = value;            // For name lookup
+              }
+            });
+
+            // Generate 6D scores by aggregating categories (indices 0-7, 8-15, etc.)
+            const avgRange = (start: number, end: number) => {
+              const values: number[] = [];
+              for (let i = start; i <= end; i++) {
+                const val = scores47D[`dim_${i}`];
+                if (val != null) values.push(val);
+              }
+              return values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : 0;
+            };
+
+            // scores6D uses only dim_X keys to match visualization component expectations
+            const scores6D: Record<string, number> = model.scores_6d || model.scores6D || {
+              dim_0: avgRange(0, 7),   // Creativity (dims 0-7)
+              dim_1: avgRange(8, 15),  // Technique (dims 8-15)
+              dim_2: avgRange(16, 23), // Emotion (dims 16-23)
+              dim_3: avgRange(24, 31), // Context (dims 24-31)
+              dim_4: avgRange(32, 39), // Innovation (dims 32-39)
+              dim_5: avgRange(40, 46)  // Impact (dims 40-46)
+            };
+
+            // Map cultural_scores to culturalPerspectives format
+            const culturalScores = model.cultural_scores || model.culturalScores || {};
+            const culturalPerspectives = model.cultural_perspectives || model.culturalPerspectives ||
+              Object.entries(culturalScores).reduce((acc, [key, value]) => {
+                acc[key] = { overall: value as number };
+                return acc;
+              }, {} as Record<string, { overall: number }>);
+
+            return {
+              modelId: String(model.model_id || model.modelId),
+              modelName: model.model_name || model.modelName,
+              scores6D,
+              scores47D,
+              culturalPerspectives,
+              evaluationDate: model.evaluation_date || model.evaluationDate || new Date().toISOString()
+            };
+          });
         }
         
         // Transform other fields if needed

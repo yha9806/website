@@ -64,7 +64,7 @@ export function generatePDFFilename(modelName: string, reportType: string = 'rep
  * PDF version is the pre-generated file (if available)
  */
 export const SAMPLE_REPORT_HTML_URL = '/sample-reports/sample-report.html';
-export const SAMPLE_REPORT_PDF_URL = '/sample-reports/vulca-sample-report-2025.pdf';
+export const SAMPLE_REPORT_PDF_URL = '/sample-report.pdf';
 
 /**
  * Open sample report in new tab (HTML version for printing)
