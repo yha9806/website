@@ -25,7 +25,7 @@ import {
 import { IOSButton } from '../ios';
 import { useState } from 'react';
 import VulcaLogo from './VulcaLogo';
-import { subscribeNewsletter } from '../../lib/supabase';
+import { subscribeNewsletter } from '../../utils/supabase';
 
 const footerLinks = {
   product: {
