@@ -18,6 +18,7 @@ import {
 import { IOSSheet } from '../ios/core/IOSSheet';
 import { IOSButton } from '../ios/core/IOSButton';
 import { downloadSampleReport, SAMPLE_REPORT_PDF_URL } from '../../utils/pdfExport';
+import { VULCA_VERSION } from '../../config/version';
 
 interface SampleReportSheetProps {
   visible: boolean;
@@ -223,7 +224,7 @@ export const SampleReportSheet: React.FC<SampleReportSheetProps> = ({
                 <div className="text-xs text-gray-500 dark:text-gray-400">Perspectives</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-slate-700 dark:text-slate-300">42</div>
+                <div className="text-2xl font-bold text-slate-700 dark:text-slate-300">{VULCA_VERSION.totalModels}</div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">Models</div>
               </div>
             </div>

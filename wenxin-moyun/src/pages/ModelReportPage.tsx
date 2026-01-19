@@ -32,7 +32,7 @@ const SAMPLE_SCORE_DATA = {
   organization: 'OpenAI',
   overallScore: 0.782,
   rank: 1,
-  totalModels: 42,
+  totalModels: VULCA_VERSION.totalModels,
   dimensions: [
     { name: 'Creativity', score: 0.85, change: 0.03 },
     { name: 'Technique', score: 0.78, change: 0.02 },

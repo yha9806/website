@@ -275,7 +275,7 @@ export const VULCADemoPage: React.FC = () => {
               </span>
               <span className="px-3 py-1.5 bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
                 <Layers className="w-3.5 h-3.5" />
-                42 Models
+                {VULCA_VERSION.totalModels} Models
               </span>
               <span className="hidden md:flex px-3 py-1.5 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-full text-sm font-medium text-green-700 dark:text-green-400 items-center gap-1.5">
                 <Globe className="w-3.5 h-3.5" />

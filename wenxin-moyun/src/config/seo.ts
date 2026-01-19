@@ -7,6 +7,8 @@
  * @module config/seo
  */
 
+import { VULCA_VERSION } from './version';
+
 export interface PageSEO {
   title: string;
   description: string;
@@ -206,7 +208,7 @@ export function getSoftwareApplicationStructuredData(): object {
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.8',
-      ratingCount: '42',
+      ratingCount: String(VULCA_VERSION.totalModels),
     },
   };
 }

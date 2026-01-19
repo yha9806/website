@@ -29,6 +29,7 @@ import {
   IOSCardGrid,
 } from '../components/ios';
 import { downloadSampleReport } from '../utils/pdfExport';
+import { VULCA_VERSION } from '../config/version';
 
 // Animation variants
 const fadeInUp = {
@@ -165,7 +166,7 @@ export default function HomePage() {
               <div>
                 <p className="font-medium text-gray-900 dark:text-white text-sm">For AI Companies</p>
                 <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                  Benchmark your models against 42 competitors across 47 dimensions before public release
+                  Benchmark your models against {VULCA_VERSION.totalModels} competitors across {VULCA_VERSION.totalDimensions} dimensions before public release
                 </p>
               </div>
             </div>
@@ -608,7 +609,7 @@ export default function HomePage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
                 <div className="text-4xl md:text-5xl font-bold text-slate-600 dark:text-slate-300 mb-2">
-                  {leaderboard.length || 42}
+                  {leaderboard.length || VULCA_VERSION.totalModels}
                 </div>
                 <div className="text-gray-600 dark:text-gray-400">Models Evaluated</div>
               </div>

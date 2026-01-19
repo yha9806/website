@@ -580,6 +580,268 @@ async def init_models(session: AsyncSession):
             },
             "tags": ["Open Source", "Image Generation", "Community Driven"],
             "avatar_url": "https://picsum.photos/seed/sdxl/200/200"
+        },
+
+        # Additional Models to reach 42 total
+
+        # Anthropic - Claude 3.5 Haiku
+        {
+            "name": "Claude 3.5 Haiku",
+            "organization": "Anthropic",
+            "version": "3.5",
+            "category": "text",
+            "description": "Fast and efficient Claude model optimized for speed while maintaining quality",
+            "overall_score": 87.9,
+            "metrics": {
+                "rhythm": 85,
+                "composition": 88,
+                "narrative": 89,
+                "emotion": 88,
+                "creativity": 88,
+                "cultural": 84
+            },
+            "tags": ["Fast", "Efficient", "Cost-effective"],
+            "avatar_url": "https://picsum.photos/seed/claude35haiku/200/200"
+        },
+
+        # Meta - LLaMA 3.1 70B
+        {
+            "name": "LLaMA 3.1 70B",
+            "organization": "Meta",
+            "version": "3.1",
+            "category": "text",
+            "description": "Meta's latest open-source LLM with improved multilingual capabilities",
+            "overall_score": 89.3,
+            "metrics": {
+                "rhythm": 86,
+                "composition": 89,
+                "narrative": 91,
+                "emotion": 88,
+                "creativity": 90,
+                "cultural": 85
+            },
+            "tags": ["Open Source", "Multilingual", "State-of-the-art"],
+            "avatar_url": "https://picsum.photos/seed/llama31/200/200"
+        },
+
+        # Meta - LLaMA 3.2 90B Vision
+        {
+            "name": "LLaMA 3.2 90B Vision",
+            "organization": "Meta",
+            "version": "3.2",
+            "category": "multimodal",
+            "description": "Multimodal LLaMA model with vision capabilities",
+            "overall_score": 90.1,
+            "metrics": {
+                "rhythm": 85,
+                "composition": 91,
+                "narrative": 92,
+                "emotion": 89,
+                "creativity": 91,
+                "cultural": 84
+            },
+            "tags": ["Multimodal", "Vision", "Open Source"],
+            "avatar_url": "https://picsum.photos/seed/llama32vision/200/200"
+        },
+
+        # Mistral AI - Mixtral 8x22B
+        {
+            "name": "Mixtral 8x22B",
+            "organization": "Mistral AI",
+            "version": "8x22B",
+            "category": "text",
+            "description": "Mixture of experts model with exceptional efficiency and performance",
+            "overall_score": 90.5,
+            "metrics": {
+                "rhythm": 87,
+                "composition": 91,
+                "narrative": 92,
+                "emotion": 89,
+                "creativity": 91,
+                "cultural": 86
+            },
+            "tags": ["MoE", "Efficient", "High Performance"],
+            "avatar_url": "https://picsum.photos/seed/mixtral8x22b/200/200"
+        },
+
+        # Mistral AI - Mistral Large
+        {
+            "name": "Mistral Large",
+            "organization": "Mistral AI",
+            "version": "2.0",
+            "category": "text",
+            "description": "Mistral's flagship model with top-tier reasoning capabilities",
+            "overall_score": 91.2,
+            "metrics": {
+                "rhythm": 88,
+                "composition": 92,
+                "narrative": 93,
+                "emotion": 90,
+                "creativity": 92,
+                "cultural": 87
+            },
+            "tags": ["Flagship", "Reasoning", "Enterprise"],
+            "avatar_url": "https://picsum.photos/seed/mistrallarge/200/200"
+        },
+
+        # xAI - Grok-2
+        {
+            "name": "Grok-2",
+            "organization": "xAI",
+            "version": "2.0",
+            "category": "text",
+            "description": "xAI's advanced model with real-time information access",
+            "overall_score": 89.8,
+            "metrics": {
+                "rhythm": 86,
+                "composition": 90,
+                "narrative": 91,
+                "emotion": 88,
+                "creativity": 92,
+                "cultural": 83
+            },
+            "tags": ["Real-time", "Conversational", "Advanced"],
+            "avatar_url": "https://picsum.photos/seed/grok2/200/200"
+        },
+
+        # Alibaba - Qwen2.5 72B
+        {
+            "name": "Qwen2.5 72B",
+            "organization": "Alibaba",
+            "version": "2.5",
+            "category": "text",
+            "description": "Latest Qwen model with enhanced reasoning and coding capabilities",
+            "overall_score": 93.1,
+            "metrics": {
+                "rhythm": 94,
+                "composition": 90,
+                "narrative": 95,
+                "emotion": 92,
+                "creativity": 91,
+                "cultural": 97
+            },
+            "tags": ["Chinese Excellence", "Coding", "Reasoning"],
+            "avatar_url": "https://picsum.photos/seed/qwen25/200/200"
+        },
+
+        # Google - Gemini 2.0 Flash
+        {
+            "name": "Gemini 2.0 Flash",
+            "organization": "Google",
+            "version": "2.0-flash",
+            "category": "multimodal",
+            "description": "Google's fastest multimodal model with agentic capabilities",
+            "overall_score": 89.6,
+            "metrics": {
+                "rhythm": 86,
+                "composition": 90,
+                "narrative": 91,
+                "emotion": 88,
+                "creativity": 91,
+                "cultural": 85
+            },
+            "tags": ["Fast", "Multimodal", "Agentic"],
+            "avatar_url": "https://picsum.photos/seed/gemini2flash/200/200"
+        },
+
+        # DeepSeek - DeepSeek V3
+        {
+            "name": "DeepSeek V3",
+            "organization": "DeepSeek",
+            "version": "3.0",
+            "category": "text",
+            "description": "DeepSeek's flagship model with exceptional Chinese and coding abilities",
+            "overall_score": 92.4,
+            "metrics": {
+                "rhythm": 93,
+                "composition": 89,
+                "narrative": 94,
+                "emotion": 91,
+                "creativity": 90,
+                "cultural": 96
+            },
+            "tags": ["Chinese Excellence", "Coding", "Cost-effective"],
+            "avatar_url": "https://picsum.photos/seed/deepseekv3/200/200"
+        },
+
+        # DeepSeek - DeepSeek R1
+        {
+            "name": "DeepSeek R1",
+            "organization": "DeepSeek",
+            "version": "1.0",
+            "category": "reasoning",
+            "description": "Reasoning-focused model with chain-of-thought capabilities",
+            "overall_score": 93.5,
+            "metrics": {
+                "rhythm": 84,
+                "composition": 88,
+                "narrative": 93,
+                "emotion": 86,
+                "creativity": 89,
+                "cultural": 85
+            },
+            "tags": ["Reasoning", "Chain-of-Thought", "Problem Solving"],
+            "avatar_url": "https://picsum.photos/seed/deepseekr1/200/200"
+        },
+
+        # 01.AI - Yi-Large
+        {
+            "name": "Yi-Large",
+            "organization": "01.AI",
+            "version": "1.0",
+            "category": "text",
+            "description": "Yi series flagship model with bilingual excellence",
+            "overall_score": 88.7,
+            "metrics": {
+                "rhythm": 89,
+                "composition": 86,
+                "narrative": 90,
+                "emotion": 88,
+                "creativity": 87,
+                "cultural": 92
+            },
+            "tags": ["Bilingual", "Open Source", "Versatile"],
+            "avatar_url": "https://picsum.photos/seed/yilarge/200/200"
+        },
+
+        # Cohere - Command R+
+        {
+            "name": "Command R+",
+            "organization": "Cohere",
+            "version": "1.0",
+            "category": "text",
+            "description": "Enterprise-focused model optimized for RAG and tool use",
+            "overall_score": 88.2,
+            "metrics": {
+                "rhythm": 84,
+                "composition": 88,
+                "narrative": 90,
+                "emotion": 86,
+                "creativity": 89,
+                "cultural": 82
+            },
+            "tags": ["Enterprise", "RAG", "Tool Use"],
+            "avatar_url": "https://picsum.photos/seed/commandrplus/200/200"
+        },
+
+        # Black Forest Labs - FLUX.1 Pro
+        {
+            "name": "FLUX.1 Pro",
+            "organization": "Black Forest Labs",
+            "version": "1.0",
+            "category": "image",
+            "description": "State-of-the-art text-to-image model with exceptional prompt following",
+            "overall_score": None,
+            "metrics": {
+                "rhythm": 0,
+                "composition": 97,
+                "narrative": 88,
+                "emotion": 93,
+                "creativity": 98,
+                "cultural": 89
+            },
+            "tags": ["Image Generation", "Prompt Adherence", "High Quality"],
+            "avatar_url": "https://picsum.photos/seed/flux1pro/200/200"
         }
     ]
     

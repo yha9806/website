@@ -23,6 +23,15 @@ export const VULCA_VERSION = {
 
   // Build/release identifier
   build: '20250111',
+
+  // Total number of benchmark models
+  totalModels: 42,
+
+  // Total evaluation dimensions
+  totalDimensions: 47,
+
+  // Total cultural perspectives
+  totalPerspectives: 8,
 } as const;
 
 /**

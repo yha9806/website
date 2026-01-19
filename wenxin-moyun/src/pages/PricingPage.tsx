@@ -19,6 +19,7 @@ import {
   IOSCardFooter,
   IOSCardGrid,
 } from '../components/ios';
+import { VULCA_VERSION } from '../config/version';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -239,9 +240,9 @@ export default function PricingPage() {
             <IOSCardContent>
               <ul className="space-y-3">
                 {[
-                  '47-dimension evaluation report (Pilot+)',
-                  '8 cultural perspective analysis',
-                  'Comparison with 42 benchmark models',
+                  `${VULCA_VERSION.totalDimensions}-dimension evaluation report (Pilot+)`,
+                  `${VULCA_VERSION.totalPerspectives} cultural perspective analysis`,
+                  `Comparison with ${VULCA_VERSION.totalModels} benchmark models`,
                   'PDF export with full methodology',
                   'Evidence samples for flagged outputs',
                   'BibTeX/RIS citation export',

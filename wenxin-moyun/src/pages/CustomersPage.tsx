@@ -18,6 +18,7 @@ import {
   IOSCardFooter,
   IOSCardGrid,
 } from '../components/ios';
+import { VULCA_VERSION } from '../config/version';
 
 // Research institutions and organizations using VULCA evaluation framework
 const customerLogos = [
@@ -36,7 +37,7 @@ const caseStudies = [
     category: 'Research',
     icon: GraduationCap,
     color: 'purple',
-    challenge: 'Needed a systematic framework to evaluate how 42 VLMs interpret cultural symbols and artistic contexts across 8 cultural perspectives (Western, East Asian, South Asian, Middle Eastern, African, Latin American, Indigenous, and Cross-cultural).',
+    challenge: `Needed a systematic framework to evaluate how ${VULCA_VERSION.totalModels} VLMs interpret cultural symbols and artistic contexts across ${VULCA_VERSION.totalPerspectives} cultural perspectives (Western, East Asian, South Asian, Middle Eastern, African, Latin American, Indigenous, and Cross-cultural).`,
     solution: 'Applied VULCA 47-dimension evaluation framework with 7,410 image-text pairs covering 225 fine-grained cultural dimensions. Used standardized prompts and multi-perspective scoring.',
     results: [
       'Published findings at EMNLP 2025',
