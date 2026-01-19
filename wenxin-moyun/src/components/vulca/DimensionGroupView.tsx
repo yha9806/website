@@ -149,9 +149,9 @@ const DimensionGroupView: React.FC<DimensionGroupViewProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
       <AnimatePresence>
-        {groups.map((group) => {
+        {groups.map((group, index) => {
           const isExpanded = expandedGroup === group.id;
           const avgScore = calculateGroupAverage(group);
           const groupData = prepareGroupData(group);
@@ -160,15 +160,22 @@ const DimensionGroupView: React.FC<DimensionGroupViewProps> = ({
             <motion.div
               key={group.id}
               layout
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ 
-                opacity: 1, 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{
+                opacity: 1,
                 scale: 1,
+                y: 0,
                 // Mobile: expanded cards take full width, Desktop: span 2 columns
                 gridColumn: isExpanded ? (window.innerWidth < 768 ? 'span 1' : 'span 2') : 'span 1'
               }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, scale: 0.9, y: -10 }}
+              transition={{
+                duration: 0.4,
+                delay: index * 0.05, // Staggered animation
+                type: 'spring',
+                stiffness: 300,
+                damping: 25
+              }}
               className={isExpanded ? 'sm:col-span-2 lg:col-span-2' : ''}
             >
               <IOSCard
@@ -195,25 +202,26 @@ const DimensionGroupView: React.FC<DimensionGroupViewProps> = ({
                 <IOSCardContent>
                   <AnimatePresence mode="wait">
                     {!isExpanded ? (
-                      // Collapsed view - mini bar chart
+                      // Collapsed view - mini bar chart (increased height for better visibility)
                       <motion.div
                         key="collapsed"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="h-32"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="h-36 md:h-40"
                       >
                         <ResponsiveContainer width="100%" height="100%">
                           <BarChart data={groupData} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-                            <Bar 
-                              dataKey="value" 
-                              fill={group.color} 
+                            <Bar
+                              dataKey="value"
+                              fill={group.color}
                               radius={[4, 4, 0, 0]}
                             />
                             <YAxis hide domain={[0, 100]} />
-                            <XAxis 
-                              dataKey="dimension" 
-                              tick={{ fontSize: 10 }} 
+                            <XAxis
+                              dataKey="dimension"
+                              tick={{ fontSize: 10 }}
                               interval={0}
                             />
                           </BarChart>
@@ -223,9 +231,15 @@ const DimensionGroupView: React.FC<DimensionGroupViewProps> = ({
                       // Expanded view - detailed radar chart
                       <motion.div
                         key="expanded"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
+                        initial={{ opacity: 0, height: 0, y: -10 }}
+                        animate={{ opacity: 1, height: 'auto', y: 0 }}
+                        exit={{ opacity: 0, height: 0, y: -10 }}
+                        transition={{
+                          duration: 0.4,
+                          type: 'spring',
+                          stiffness: 200,
+                          damping: 20
+                        }}
                         className="space-y-4"
                       >
                         <div className="h-64">

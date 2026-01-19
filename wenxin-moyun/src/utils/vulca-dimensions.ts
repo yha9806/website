@@ -62,44 +62,68 @@ export const VULCA_47_DIMENSIONS = {
   legacy_creation: 'Legacy Creation'             // 遗产创造
 };
 
-// 维度类别定义
+// 维度类别定义 - with dark mode color support
 export const DIMENSION_CATEGORIES = {
   creativity: {
     name: 'Creativity & Innovation',
     name_zh: '创造力与创新',
     range: [0, 7],
-    color: '#FF6B6B'
+    color: '#FF6B6B',
+    colorLight: '#FF6B6B',
+    colorDark: '#FF8A8A'  // Brighter for dark mode
   },
   technical: {
     name: 'Technical Excellence',
     name_zh: '技术卓越',
     range: [8, 15],
-    color: '#4ECDC4'
+    color: '#4ECDC4',
+    colorLight: '#4ECDC4',
+    colorDark: '#6EE7DF'  // Brighter for dark mode
   },
   emotional: {
     name: 'Emotional Expression',
     name_zh: '情感表达',
     range: [16, 23],
-    color: '#45B7D1'
+    color: '#45B7D1',
+    colorLight: '#45B7D1',
+    colorDark: '#67C9E0'  // Brighter for dark mode
   },
   contextual: {
     name: 'Contextual Awareness',
     name_zh: '情境感知',
     range: [24, 31],
-    color: '#96CEB4'
+    color: '#96CEB4',
+    colorLight: '#96CEB4',
+    colorDark: '#B2DECA'  // Brighter for dark mode
   },
   innovation: {
     name: 'Innovation & Breakthrough',
     name_zh: '创新突破',
     range: [32, 39],
-    color: '#FFEAA7'
+    color: '#FFEAA7',
+    colorLight: '#FFEAA7',
+    colorDark: '#FFF0C0'  // Brighter for dark mode
   },
   impact: {
     name: 'Impact & Influence',
     name_zh: '影响力',
     range: [40, 46],
-    color: '#DDA0DD'
+    color: '#DDA0DD',
+    colorLight: '#DDA0DD',
+    colorDark: '#E8B8E8'  // Brighter for dark mode
   }
+};
+
+/**
+ * Get the appropriate color for a dimension category based on theme
+ * @param categoryKey - The category key (creativity, technical, etc.)
+ * @param isDarkMode - Whether dark mode is active
+ * @returns The color string for the current theme
+ */
+export const getDimensionCategoryColor = (categoryKey: string, isDarkMode: boolean): string => {
+  const category = DIMENSION_CATEGORIES[categoryKey as keyof typeof DIMENSION_CATEGORIES];
+  if (!category) return isDarkMode ? '#A0AEC0' : '#718096';
+  return isDarkMode ? category.colorDark : category.colorLight;
 };
 
 // Helper function to convert camelCase to snake_case

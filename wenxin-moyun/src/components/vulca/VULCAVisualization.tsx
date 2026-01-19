@@ -3,7 +3,7 @@
  * Provides multiple visualization types for VULCA evaluation data
  */
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import {
   RadarChart,
   PolarGrid,
@@ -26,6 +26,7 @@ import {
 } from 'recharts';
 import { IOSCard } from '../ios/core/IOSCard';
 import { IOSButton } from '../ios/core/IOSButton';
+import { ZoomableChartWrapper } from './ZoomableChartWrapper';
 import type {
   ViewMode,
   VisualizationType,
@@ -35,6 +36,25 @@ import type {
 import DimensionGroupView from './DimensionGroupView';
 import { DIMENSION_CATEGORIES, getDimensionCategory, getDimensionLabel, CULTURAL_PERSPECTIVES } from '../../utils/vulca-dimensions';
 import { useChartTheme } from '../../hooks/useChartTheme';
+import { useAutoChartType } from '../../hooks/vulca/useAutoChartType';
+
+// Hook for detecting mobile viewport
+const useIsMobile = (breakpoint = 768) => {
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < breakpoint;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [breakpoint]);
+
+  return isMobile;
+};
 
 // Enhanced helper function to format dimension names from any format
 const formatDimensionName = (text: string): string => {
@@ -74,7 +94,7 @@ interface VULCAVisualizationProps {
   evaluations: VULCAEvaluation[];
   dimensions: { id: string; name: string; description: string }[];
   viewMode: ViewMode;
-  visualizationType: VisualizationType;
+  visualizationType?: VisualizationType; // Now optional - auto-selected if not provided
   culturalPerspective?: string;
   viewLevel?: ViewLevel;
 }
@@ -83,10 +103,13 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
   evaluations,
   dimensions,
   viewMode,
-  visualizationType,
+  visualizationType: manualVisualizationType,
   culturalPerspective = 'eastern',
   viewLevel = 'overview',
 }) => {
+  // Detect mobile viewport for touch gestures
+  const isMobile = useIsMobile();
+
   // 使用统一的图表主题 hook (支持深色/浅色模式)
   const { seriesColors, colors: themeColors, rechartsTheme, config: chartConfig } = useChartTheme();
   const colors = seriesColors(5);
@@ -95,6 +118,17 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
   const [selectedCulturalPerspective, setSelectedCulturalPerspective] = useState<string>('eastern');
   const [dimensionFilter, setDimensionFilter] = useState<'all' | 'high-variance' | 'top-performance' | 'custom'>('high-variance');
   const [customDimensionCount, setCustomDimensionCount] = useState<number>(15);
+
+  // Auto-select chart type based on data characteristics
+  const { chartType: autoChartType, isGroupedView } = useAutoChartType({
+    viewMode,
+    viewLevel,
+    modelCount: evaluations.length,
+    dimensionCount: dimensions.length,
+  });
+
+  // Use manual type if provided, otherwise use auto-selected type
+  const visualizationType = manualVisualizationType || autoChartType;
   
   // Filter dimensions by category for 47D mode
   const filteredDimensions = useMemo(() => {
@@ -591,7 +625,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
     // For overview mode or 6D, show simplified visualization
     if (viewMode === '6d') {
       // Use radar chart for 6D mode
-      return (
+      const chartContent = (
         <ResponsiveContainer width="100%" height={500}>
           <RadarChart data={radarData.slice(0, 6)}>
             <PolarGrid gridType="polygon" />
@@ -599,7 +633,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
             <PolarRadiusAxis angle={90} domain={[0, 100]} />
             <Tooltip />
             <Legend />
-            
+
             {evaluations.map((evaluation, index) => {
               const modelKey = evaluation.modelName || (evaluation as any).name || `Model ${index + 1}`;
               return (
@@ -617,16 +651,34 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
           </RadarChart>
         </ResponsiveContainer>
       );
+
+      // Wrap with ZoomableChartWrapper on mobile for pinch-to-zoom
+      return isMobile ? (
+        <ZoomableChartWrapper showControls={true}>
+          {chartContent}
+        </ZoomableChartWrapper>
+      ) : chartContent;
     }
     
     // For 47D mode with many dimensions, use bar chart for better readability
     if (viewMode === '47d' && filteredDimensions.length > 12) {
+      // Responsive margin and label settings
+      const yAxisWidth = isMobile ? 80 : 140;
+      const maxLabelLength = isMobile ? 15 : 28;
+      const barHeight = isMobile ? 20 : 25;
+
+      // Calculate chart height with max limit for scrollable container
+      const calculatedHeight = Math.max(400, filteredDimensions.length * barHeight);
+      const maxHeight = isMobile ? 500 : 700;
+      const chartHeight = Math.min(calculatedHeight, maxHeight);
+      const needsScroll = calculatedHeight > maxHeight;
+
       // Prepare bar data for 47D visualization
       const barData47D = filteredDimensions.map((dim, index) => {
         // Store the raw dimension name/id for the Y-axis
         // The tickFormatter will handle the formatting
         const rawName = dim.name || dim.id;
-        
+
         // Get the properly formatted name for tooltip display
         let properName = getDimensionLabel(dim.id);
         if (!properName || properName === dim.id) {
@@ -634,8 +686,8 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
         } else {
           properName = formatDimensionName(properName);
         }
-        
-        const dataPoint: any = { 
+
+        const dataPoint: any = {
           dimension: rawName,  // Raw name for Y-axis (tickFormatter will format it)
           fullName: properName,  // Formatted name for tooltip
           originalIndex: index,
@@ -648,73 +700,99 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
         return dataPoint;
       });
 
+      const chartContent47D = (
+        <ResponsiveContainer width="100%" height={needsScroll ? calculatedHeight : chartHeight}>
+          <BarChart
+            data={barData47D}
+            layout="horizontal"
+            margin={{ top: 5, right: isMobile ? 20 : 30, left: yAxisWidth - 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis type="number" domain={[0, 100]} />
+            <YAxis
+              dataKey="dimension"
+              type="category"
+              width={yAxisWidth}
+              tick={(props: { x: number; y: number; payload?: { value?: string } }) => {
+                const { x, y, payload } = props;
+                if (!payload?.value) {
+                  return <text x={x} y={y}></text>;
+                }
+
+                // Apply formatDimensionName to ensure proper spacing
+                const formatted = formatDimensionName(payload.value);
+                const truncateAt = maxLabelLength - 3;
+                const displayText = formatted.length > maxLabelLength
+                  ? formatted.substring(0, truncateAt) + '...'
+                  : formatted;
+
+                return (
+                  <text
+                    x={x}
+                    y={y}
+                    dy={4}
+                    textAnchor="end"
+                    fill={themeColors.grid.text}
+                    fontSize={isMobile ? 9 : 10}
+                    className="recharts-text recharts-cartesian-axis-tick-value"
+                  >
+                    {displayText}
+                  </text>
+                );
+              }}
+            />
+            <Tooltip content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div className="bg-white dark:bg-gray-800 p-2 border rounded shadow">
+                    <p className="text-sm font-medium">{payload[0].payload.fullName}</p>
+                    {payload.map((entry: any, index: number) => (
+                      <p key={index} className="text-xs" style={{ color: entry.color }}>
+                        {entry.name}: {entry.value?.toFixed(1)}
+                      </p>
+                    ))}
+                  </div>
+                );
+              }
+              return null;
+            }} />
+            <Legend />
+            {evaluations.map((evaluation, index) => (
+              <Bar
+                key={evaluation.modelName}
+                dataKey={evaluation.modelName}
+                fill={colors[index % colors.length]}
+              />
+            ))}
+          </BarChart>
+        </ResponsiveContainer>
+      );
+
+      // Wrap with scrollable container if needed
+      const scrollableChart = needsScroll ? (
+        <div
+          className="max-h-[500px] md:max-h-[700px] overflow-y-auto overflow-x-hidden rounded-lg"
+          style={{ scrollbarGutter: 'stable' }}
+        >
+          {chartContent47D}
+        </div>
+      ) : chartContent47D;
+
       return (
         <div className="space-y-4">
-          <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-            Showing {filteredDimensions.length} dimensions for {evaluations.map(e => e.modelName).join(', ')}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <span>Showing {filteredDimensions.length} dimensions for {evaluations.map(e => e.modelName).join(', ')}</span>
+            {needsScroll && (
+              <span className="text-xs text-gray-500 dark:text-gray-500 flex items-center gap-1">
+                <span>↕</span> Scroll to see all dimensions
+              </span>
+            )}
           </div>
-          <ResponsiveContainer width="100%" height={Math.max(600, filteredDimensions.length * 25)}>
-            <BarChart 
-              data={barData47D} 
-              layout="horizontal"
-              margin={{ top: 5, right: 30, left: 120, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" domain={[0, 100]} />
-              <YAxis
-                dataKey="dimension"
-                type="category"
-                width={140}
-                tick={(props: { x: number; y: number; payload?: { value?: string } }) => {
-                  const { x, y, payload } = props;
-                  if (!payload?.value) {
-                    return <text x={x} y={y}></text>;
-                  }
-
-                  // Apply formatDimensionName to ensure proper spacing
-                  const formatted = formatDimensionName(payload.value);
-                  const displayText = formatted.length > 28 ? formatted.substring(0, 25) + '...' : formatted;
-
-                  return (
-                    <text
-                      x={x}
-                      y={y}
-                      dy={4}
-                      textAnchor="end"
-                      fill={themeColors.grid.text}
-                      fontSize="10"
-                      className="recharts-text recharts-cartesian-axis-tick-value"
-                    >
-                      {displayText}
-                    </text>
-                  );
-                }}
-              />
-              <Tooltip content={({ active, payload }) => {
-                if (active && payload && payload.length) {
-                  return (
-                    <div className="bg-white dark:bg-gray-800 p-2 border rounded shadow">
-                      <p className="text-sm font-medium">{payload[0].payload.fullName}</p>
-                      {payload.map((entry: any, index: number) => (
-                        <p key={index} className="text-xs" style={{ color: entry.color }}>
-                          {entry.name}: {entry.value?.toFixed(1)}
-                        </p>
-                      ))}
-                    </div>
-                  );
-                }
-                return null;
-              }} />
-              <Legend />
-              {evaluations.map((evaluation, index) => (
-                <Bar
-                  key={evaluation.modelName}
-                  dataKey={evaluation.modelName}
-                  fill={colors[index % colors.length]}
-                />
-              ))}
-            </BarChart>
-          </ResponsiveContainer>
+          {isMobile ? (
+            <ZoomableChartWrapper showControls={true}>
+              {scrollableChart}
+            </ZoomableChartWrapper>
+          ) : scrollableChart}
         </div>
       );
     }
