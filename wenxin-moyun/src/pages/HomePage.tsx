@@ -152,6 +152,33 @@ export default function HomePage() {
               </IOSButton>
             </Link>
           </motion.div>
+
+          {/* Enterprise Value Propositions */}
+          <motion.div
+            className="mt-12 grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <div className="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-900/30 rounded-xl border border-slate-200 dark:border-slate-800">
+              <Building2 className="w-5 h-5 text-slate-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="font-medium text-gray-900 dark:text-white text-sm">For AI Companies</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                  Benchmark your models against 42 competitors across 47 dimensions before public release
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-900/30 rounded-xl border border-slate-200 dark:border-slate-800">
+              <GraduationCap className="w-5 h-5 text-bronze-500 mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="font-medium text-gray-900 dark:text-white text-sm">For Research Institutions</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                  Publish with peer-reviewed evaluation methodology accepted at top-tier venues
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
       </section>
 
@@ -160,11 +187,11 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="text-center"
         >
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-            Peer-reviewed and trusted by teams building generative AI
+            Peer-reviewed methodology featured in academic publications
           </p>
           <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12">
             {/* Conference badges */}
@@ -189,7 +216,7 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="text-center mb-12"
         >
           <h2 className="text-h1 mb-4">
@@ -204,7 +231,7 @@ export default function HomePage() {
           variants={staggerContainer}
           initial="initial"
           whileInView="animate"
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
         >
           <IOSCardGrid columns={3} gap="lg">
             {/* Problem 1 */}
@@ -260,7 +287,7 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="text-center mb-12"
         >
           <h2 className="text-h1 mb-4">
@@ -275,7 +302,7 @@ export default function HomePage() {
           variants={staggerContainer}
           initial="initial"
           whileInView="animate"
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
         >
           <IOSCardGrid columns={3} gap="lg">
             {/* Pillar 1: Benchmark Library */}
@@ -367,7 +394,7 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="text-center mb-12"
         >
           <h2 className="text-h1 mb-4">
@@ -382,7 +409,7 @@ export default function HomePage() {
           variants={staggerContainer}
           initial="initial"
           whileInView="animate"
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="relative"
         >
           {/* Connecting line */}
@@ -436,7 +463,7 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="text-center mb-12"
         >
           <h2 className="text-h1 mb-4">
@@ -451,7 +478,7 @@ export default function HomePage() {
           variants={staggerContainer}
           initial="initial"
           whileInView="animate"
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
         >
           <IOSCardGrid columns={3} gap="lg">
             {/* AI Labs */}
@@ -561,7 +588,7 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="text-center mb-12"
         >
           <h2 className="text-h1 mb-4">
@@ -575,7 +602,7 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
         >
           <div className="bg-gradient-to-r from-slate-50 to-bronze-500/10 dark:from-slate-800/30 dark:to-bronze-500/20 rounded-2xl p-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -621,12 +648,146 @@ export default function HomePage() {
         </motion.div>
       </section>
 
+      {/* ============= SAMPLE REPORT PREVIEW ============= */}
+      <section className="bg-gradient-to-r from-slate-50 to-bronze-500/5 dark:from-slate-900/50 dark:to-bronze-500/10 -mx-4 px-4 py-16 rounded-2xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-h1 mb-4">
+            What You Get: Sample Report Preview
+          </h2>
+          <p className="text-body max-w-2xl mx-auto">
+            See what a VULCA evaluation delivers — executive insights, dimensional analysis, and cultural bias identification
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.1 }}
+          className="max-w-5xl mx-auto"
+        >
+          <IOSCardGrid columns={3} gap="md">
+            {/* Preview 1: Executive Summary */}
+            <IOSCard variant="elevated" className="h-full">
+              <IOSCardHeader
+                emoji={<FileText className="w-6 h-6 text-slate-600" />}
+                title="Executive Summary"
+                subtitle="High-level findings"
+              />
+              <IOSCardContent>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 mb-4 min-h-[120px] flex items-center justify-center">
+                  <div className="text-center">
+                    <BarChart3 className="w-12 h-12 text-slate-400 mx-auto mb-2" />
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Overall score + key metrics</p>
+                  </div>
+                </div>
+                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    Model comparison ranking
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    Top 3 strengths & weaknesses
+                  </li>
+                </ul>
+              </IOSCardContent>
+            </IOSCard>
+
+            {/* Preview 2: 47D Radar Chart */}
+            <IOSCard variant="elevated" className="h-full">
+              <IOSCardHeader
+                emoji={<Target className="w-6 h-6 text-bronze-500" />}
+                title="47D Radar Analysis"
+                subtitle="Dimensional breakdown"
+              />
+              <IOSCardContent>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 mb-4 min-h-[120px] flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-16 h-16 border-4 border-dashed border-bronze-400 rounded-full mx-auto mb-2 flex items-center justify-center">
+                      <Layers className="w-8 h-8 text-bronze-400" />
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">47-dimension radar chart</p>
+                  </div>
+                </div>
+                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    6D core → 47D expanded view
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    Dimension group analysis
+                  </li>
+                </ul>
+              </IOSCardContent>
+            </IOSCard>
+
+            {/* Preview 3: Cultural Bias Analysis */}
+            <IOSCard variant="elevated" className="h-full">
+              <IOSCardHeader
+                emoji={<Globe className="w-6 h-6 text-orange-500" />}
+                title="Cultural Bias Analysis"
+                subtitle="8 perspective comparison"
+              />
+              <IOSCardContent>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 mb-4 min-h-[120px] flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="flex justify-center gap-1 mb-2">
+                      <div className="w-8 h-8 bg-red-200 dark:bg-red-900/30 rounded text-xs flex items-center justify-center">CN</div>
+                      <div className="w-8 h-8 bg-blue-200 dark:bg-blue-900/30 rounded text-xs flex items-center justify-center">US</div>
+                      <div className="w-8 h-8 bg-green-200 dark:bg-green-900/30 rounded text-xs flex items-center justify-center">EU</div>
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Cross-cultural variance</p>
+                  </div>
+                </div>
+                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    East vs West perspective gaps
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    Risk flagging with evidence
+                  </li>
+                </ul>
+              </IOSCardContent>
+            </IOSCard>
+          </IOSCardGrid>
+
+          {/* Download CTA */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            className="text-center mt-10"
+          >
+            <IOSButton
+              variant="primary"
+              size="lg"
+              className="inline-flex items-center gap-2"
+              onClick={downloadSampleReport}
+            >
+              <Download className="w-5 h-5" />
+              Download Sample Report (PDF)
+            </IOSButton>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
+              Full 47D evaluation report with evidence samples and recommendations
+            </p>
+          </motion.div>
+        </motion.div>
+      </section>
+
       {/* ============= TRUST TEASER ============= */}
       <section className="bg-gray-900 dark:bg-gray-800 text-white -mx-4 px-4 py-12 rounded-2xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="flex flex-col md:flex-row items-center justify-between gap-8"
         >
           <div className="flex items-center gap-4">
@@ -634,7 +795,7 @@ export default function HomePage() {
               <Shield className="w-6 h-6 text-green-400" />
             </div>
             <div>
-              <h3 className="text-h3">Trust by Default</h3>
+              <h3 className="text-h3 text-white">Trust by Default</h3>
               <p className="text-gray-400">
                 Enterprise-grade security, version control, and audit trails
               </p>
@@ -643,13 +804,19 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center gap-3">
             <Link to="/trust">
               <IOSButton variant="secondary" size="md" className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border-white/20">
-                Learn About Security
+                Security & Compliance
                 <ArrowRight className="w-4 h-4" />
               </IOSButton>
             </Link>
-            <Link to="/trust#data-handling">
+            <Link to="/data-ethics">
               <IOSButton variant="text" size="md" className="flex items-center gap-2 text-gray-300 hover:text-white">
-                Data & Ethics Policy
+                Data & Ethics
+                <ArrowRight className="w-4 h-4" />
+              </IOSButton>
+            </Link>
+            <Link to="/sop">
+              <IOSButton variant="text" size="md" className="flex items-center gap-2 text-gray-300 hover:text-white">
+                View Our SOP
                 <ArrowRight className="w-4 h-4" />
               </IOSButton>
             </Link>
@@ -662,7 +829,7 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="text-center max-w-3xl mx-auto"
         >
           <h2 className="text-h1 mb-4">
