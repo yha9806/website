@@ -8,6 +8,11 @@
     @apply antialiased transition-colors duration-300;
     /* 移除背景色，由 Layout 组件控制 */
     @apply text-gray-900 dark:text-[#F0F6FC];
+    /* 字体渲染优化 - 确保 dev/prod 一致性 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1;
   }
   
   /* 滚动条样式 - 深色主题优化 */

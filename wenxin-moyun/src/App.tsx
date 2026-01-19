@@ -42,8 +42,15 @@ const MethodologyPage = lazy(() => import('./pages/MethodologyPage'));
 const DatasetPage = lazy(() => import('./pages/DatasetPage'));
 const PapersPage = lazy(() => import('./pages/PapersPage'));
 
+// Trust & Ethics pages - lazy loaded
+const DataEthicsPage = lazy(() => import('./pages/DataEthicsPage'));
+const SOPPage = lazy(() => import('./pages/SOPPage'));
+
 // Report page - lazy loaded
 const ModelReportPage = lazy(() => import('./pages/ModelReportPage'));
+
+// Comparison page - lazy loaded
+const CompareModelsPage = lazy(() => import('./pages/CompareModelsPage'));
 
 // Reusable loading component
 function PageLoader({ text = 'Loading...' }: { text?: string }) {
@@ -173,6 +180,13 @@ function App() {
                 </Suspense>
               } />
 
+              {/* Model Comparison - SEO-friendly URLs */}
+              <Route path="/compare/:comparison" element={
+                <Suspense fallback={<PageLoader text="Loading Comparison..." />}>
+                  <CompareModelsPage />
+                </Suspense>
+              } />
+
               {/* VULCA Demo */}
               <Route path="/vulca" element={
                 <Suspense fallback={<PageLoader text="Loading VULCA Demo..." />}>
@@ -211,6 +225,18 @@ function App() {
               <Route path="/papers" element={
                 <Suspense fallback={<PageLoader text="Loading Papers..." />}>
                   <PapersPage />
+                </Suspense>
+              } />
+
+              {/* Trust & Ethics Routes */}
+              <Route path="/data-ethics" element={
+                <Suspense fallback={<PageLoader text="Loading Data & Ethics..." />}>
+                  <DataEthicsPage />
+                </Suspense>
+              } />
+              <Route path="/sop" element={
+                <Suspense fallback={<PageLoader text="Loading SOP..." />}>
+                  <SOPPage />
                 </Suspense>
               } />
 

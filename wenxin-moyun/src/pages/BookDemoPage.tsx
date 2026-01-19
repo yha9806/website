@@ -73,6 +73,18 @@ const timelineOptions = [
   { value: 'exploring', label: 'Just exploring' },
 ];
 
+const dataSensitivityOptions = [
+  { value: 'public', label: 'Public' },
+  { value: 'internal', label: 'Internal' },
+  { value: 'confidential', label: 'Confidential' },
+];
+
+const deploymentOptions = [
+  { value: 'public_demo', label: 'Public demo' },
+  { value: 'private_workspace', label: 'Private workspace' },
+  { value: 'on_prem', label: 'On-premise' },
+];
+
 interface FormData {
   name: string;
   email: string;
@@ -80,6 +92,8 @@ interface FormData {
   role: string;
   use_case: UseCase;
   timeline: string;
+  data_sensitivity: string;
+  deployment_preference: string;
   message: string;
 }
 
@@ -97,6 +111,8 @@ export default function BookDemoPage() {
     role: '',
     use_case: 'other',
     timeline: '',
+    data_sensitivity: '',
+    deployment_preference: '',
     message: '',
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -312,7 +328,7 @@ export default function BookDemoPage() {
             <IOSCardHeader
               emoji={<Send className="w-6 h-6 text-slate-600" />}
               title="Request a Demo"
-              subtitle="We'll respond within 24 hours"
+              subtitle="We'll respond within 24 hours • Or book directly via Calendly"
             />
             <IOSCardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -436,6 +452,54 @@ export default function BookDemoPage() {
                   </select>
                 </div>
 
+                {/* Data Sensitivity */}
+                <div>
+                  <label
+                    htmlFor="data_sensitivity"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Data Sensitivity Level
+                  </label>
+                  <select
+                    id="data_sensitivity"
+                    name="data_sensitivity"
+                    value={formData.data_sensitivity}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-600"
+                  >
+                    <option value="">Select data sensitivity...</option>
+                    {dataSensitivityOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Deployment Preference */}
+                <div>
+                  <label
+                    htmlFor="deployment_preference"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Preferred Deployment
+                  </label>
+                  <select
+                    id="deployment_preference"
+                    name="deployment_preference"
+                    value={formData.deployment_preference}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-600"
+                  >
+                    <option value="">Select deployment preference...</option>
+                    {deploymentOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 {/* Message */}
                 <div>
                   <label
@@ -488,6 +552,28 @@ export default function BookDemoPage() {
                     </>
                   )}
                 </IOSButton>
+
+                {/* Calendly Direct Booking */}
+                <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    Prefer to book directly?
+                  </p>
+                  <a
+                    href="https://calendly.com/vulcaart/demo"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <IOSButton
+                      type="button"
+                      variant="secondary"
+                      size="md"
+                      className="w-full flex items-center justify-center gap-2"
+                    >
+                      <Calendar className="w-5 h-5" />
+                      Schedule via Calendly
+                    </IOSButton>
+                  </a>
+                </div>
               </form>
             </IOSCardContent>
           </IOSCard>

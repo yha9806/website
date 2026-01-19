@@ -52,7 +52,8 @@ const plans = [
   {
     name: 'Pilot',
     price: '$2,500',
-    period: 'one-time',
+    period: 'per engagement',
+    billingNote: '1 model, 1 benchmark dataset',
     description: 'For model selection and pre-release audits',
     icon: Zap,
     color: 'blue',
@@ -60,7 +61,7 @@ const plans = [
     ctaLink: '/demo',
     ctaVariant: 'primary' as const,
     popular: true,
-    deliverables: ['Full 47D report (PDF)', '8 cultural perspectives', '1-2 weeks delivery'],
+    deliverables: ['Full 47D report (PDF)', '8 cultural perspectives', 'Delivery: 48-72 hours'],
     features: [
       { name: 'Everything in Free', included: true },
       { name: 'Full 47D evaluation report', included: true },
@@ -99,7 +100,7 @@ const plans = [
 const faqs = [
   {
     q: 'What is included in a Pilot evaluation?',
-    a: 'A Pilot includes a comprehensive 47D evaluation across all 8 cultural perspectives, delivered as a PDF report with evidence samples, risk identification, and actionable recommendations. Typical turnaround is 1-2 weeks.',
+    a: 'A Pilot includes a comprehensive 47D evaluation across all 8 cultural perspectives, delivered as a PDF report with evidence samples, risk identification, and actionable recommendations. Standard delivery is 48-72 hours.',
   },
   {
     q: 'What is your evaluation SOP?',
@@ -177,6 +178,11 @@ export default function PricingPage() {
                     <span className="text-gray-500 dark:text-gray-400 ml-2">
                       / {plan.period}
                     </span>
+                    {'billingNote' in plan && plan.billingNote && (
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        {plan.billingNote}
+                      </p>
+                    )}
                   </div>
 
                   <ul className="space-y-3">
@@ -212,6 +218,153 @@ export default function PricingPage() {
         </IOSCardGrid>
       </section>
 
+      {/* Scope & Deliverables Section */}
+      <section className="py-16">
+        <motion.div {...fadeInUp} className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            What's Included
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Transparent deliverables for every engagement level
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {/* Included */}
+          <IOSCard variant="elevated">
+            <IOSCardHeader
+              emoji={<CheckCircle2 className="w-8 h-8 text-green-500" />}
+              title="Included in All Plans"
+            />
+            <IOSCardContent>
+              <ul className="space-y-3">
+                {[
+                  '47-dimension evaluation report (Pilot+)',
+                  '8 cultural perspective analysis',
+                  'Comparison with 42 benchmark models',
+                  'PDF export with full methodology',
+                  'Evidence samples for flagged outputs',
+                  'BibTeX/RIS citation export',
+                  'Risk identification & recommendations',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </IOSCardContent>
+          </IOSCard>
+
+          {/* Not Included */}
+          <IOSCard variant="elevated">
+            <IOSCardHeader
+              emoji={<X className="w-8 h-8 text-gray-400" />}
+              title="Enterprise Only / Custom"
+            />
+            <IOSCardContent>
+              <ul className="space-y-3">
+                {[
+                  'Custom dimension development',
+                  'On-premise deployment',
+                  'White-label licensing',
+                  'Real-time API access',
+                  'Custom benchmark upload',
+                  'Private workspace & RBAC',
+                  'SLA & priority support',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <X className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-500 dark:text-gray-400 text-sm">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 p-3 bg-slate-50 dark:bg-slate-900/30 rounded-lg">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Need custom features? <Link to="/demo" className="text-slate-600 dark:text-slate-400 font-medium hover:underline">Talk to our team</Link> about Enterprise plans.
+                </p>
+              </div>
+            </IOSCardContent>
+          </IOSCard>
+        </div>
+      </section>
+
+      {/* How It Works - Process Flow */}
+      <section className="py-16">
+        <motion.div {...fadeInUp} className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            How It Works
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            From booking to report delivery — a streamlined evaluation process
+          </p>
+        </motion.div>
+
+        <div className="max-w-4xl mx-auto">
+          {/* Process Steps */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+            {/* Connecting line for desktop */}
+            <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-slate-300 via-slate-400 to-slate-300 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700" />
+
+            {[
+              { step: 1, title: 'Book Demo', duration: '15 min', icon: Calendar, color: 'slate' },
+              { step: 2, title: 'Pilot Kickoff', duration: '30 min setup', icon: Zap, color: 'blue' },
+              { step: 3, title: 'Model Submission', duration: 'API / Upload', icon: ArrowRight, color: 'purple' },
+              { step: 4, title: 'Report Delivery', duration: '48-72 hours', icon: CheckCircle2, color: 'green' },
+            ].map((item, index) => (
+              <motion.div
+                key={item.step}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="relative flex flex-col items-center text-center"
+              >
+                {/* Step circle */}
+                <div className={`w-16 h-16 rounded-full bg-${item.color}-100 dark:bg-${item.color}-900/30 flex items-center justify-center mb-4 relative z-10 border-4 border-white dark:border-gray-900`}>
+                  <item.icon className={`w-6 h-6 text-${item.color}-600 dark:text-${item.color}-400`} />
+                </div>
+
+                {/* Step number badge */}
+                <span className="absolute -top-1 -right-1 w-6 h-6 bg-slate-600 text-white text-xs font-bold rounded-full flex items-center justify-center z-20">
+                  {item.step}
+                </span>
+
+                {/* Step content */}
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                  {item.title}
+                </h4>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {item.duration}
+                </p>
+
+                {/* Mobile arrow (between steps) */}
+                {index < 3 && (
+                  <div className="md:hidden mt-4 mb-2">
+                    <ArrowRight className="w-5 h-5 text-gray-300 dark:text-gray-600 rotate-90" />
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* CTA after flow */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mt-12"
+          >
+            <Link to="/demo">
+              <IOSButton variant="primary" size="md" className="inline-flex items-center gap-2">
+                <Calendar className="w-5 h-5" />
+                Start with Step 1: Book a Demo
+              </IOSButton>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Feature Comparison Table */}
       <section className="bg-gray-50 dark:bg-gray-900/50 -mx-4 px-4 py-16 rounded-2xl">
         <motion.div {...fadeInUp} className="text-center mb-12">
@@ -234,6 +387,8 @@ export default function PricingPage() {
               {[
                 ['Public leaderboard', true, true, true],
                 ['Demo evaluations', '5/month', 'Unlimited', 'Unlimited'],
+                ['Models per engagement', 'N/A', '1', '1-3+'],
+                ['Benchmark datasets', 'Pre-curated', 'Pre-curated', 'Custom upload'],
                 ['47D diagnostics', false, true, true],
                 ['8 cultural perspectives', false, true, true],
                 ['PDF reports', false, true, true],

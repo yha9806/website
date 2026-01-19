@@ -110,15 +110,15 @@ export default function CustomersPage() {
           className="text-center max-w-4xl mx-auto"
         >
           <h1 className="text-page-title mb-6">
-            Trusted by Teams Building Culturally-Aware AI
+            Research-Backed Evaluation Framework
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-            From AI labs to museums, organizations rely on VULCA for cultural AI evaluation
+            Peer-reviewed methodology featured in leading AI conferences and journals
           </p>
         </motion.div>
       </section>
 
-      {/* Logo Cloud (Placeholder) */}
+      {/* Publication Venues */}
       <section className="bg-gray-50 dark:bg-gray-900/50 -mx-4 px-4 py-12 rounded-2xl">
         <motion.div
           initial={{ opacity: 0 }}
@@ -127,7 +127,7 @@ export default function CustomersPage() {
           className="text-center"
         >
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
-            Organizations using VULCA
+            Featured in leading venues and research groups
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
             {customerLogos.map((logo, index) => (
@@ -148,7 +148,7 @@ export default function CustomersPage() {
         </motion.div>
       </section>
 
-      {/* Case Studies */}
+      {/* Research Applications */}
       <section>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -157,10 +157,10 @@ export default function CustomersPage() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Case Studies
+            Research Applications
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400">
-            See how organizations use VULCA for cultural AI evaluation
+            How VULCA methodology has been applied in peer-reviewed research
           </p>
         </motion.div>
 
@@ -226,7 +226,7 @@ export default function CustomersPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Researcher Feedback */}
       <section className="bg-gray-50 dark:bg-gray-900/50 -mx-4 px-4 py-16 rounded-2xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -235,7 +235,7 @@ export default function CustomersPage() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            What Our Users Say
+            Researcher Feedback
           </h2>
         </motion.div>
 
@@ -277,10 +277,10 @@ export default function CustomersPage() {
       {/* CTA */}
       <section className="py-12 text-center">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-          Join These Organizations
+          Apply VULCA to Your Research
         </h2>
         <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-          Start evaluating your AI models for cultural understanding
+          Use peer-reviewed methodology for your cultural AI evaluation needs
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link to="/demo">

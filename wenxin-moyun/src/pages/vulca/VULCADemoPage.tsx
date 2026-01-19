@@ -1,30 +1,30 @@
 /**
  * VULCA Demo Page
  * Main page for VULCA 47-dimensional evaluation demonstration
+ * Redesigned with horizontal controls and full-width visualization
  */
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ComparisonView } from './ComparisonView';
-import { DimensionToggle } from '../../components/vulca/DimensionToggle';
-import { ModelSelector } from '../../components/vulca/ModelSelector';
-import { CulturalPerspectiveSelector } from '../../components/vulca/CulturalPerspectiveSelector';
 import { VULCAVisualization } from '../../components/vulca/VULCAVisualization';
-import { ExportButton } from '../../components/vulca/ExportButton';
+import { StickyControlsBar } from '../../components/vulca/StickyControlsBar';
+import { QuickInsights } from '../../components/vulca/QuickInsights';
+import { Feature47DGate } from '../../components/vulca/FeatureGateOverlay';
+import { SampleReportSheet } from '../../components/vulca/SampleReportSheet';
 import { useVULCAData } from '../../hooks/vulca/useVULCAData';
-import type { ViewMode, VisualizationType, ViewLevel } from '../../types/vulca';
-import { IOSAlert } from '../../components/ios/core/IOSAlert';
+import type { ViewMode, ViewLevel } from '../../types/vulca';
 import { IOSCard } from '../../components/ios/core/IOSCard';
 import { IOSButton } from '../../components/ios/core/IOSButton';
 import {
-  Loader2, BarChart3, Radar, Grid3x3, Download,
-  RefreshCw, AlertCircle, WifiOff, CheckCircle, Clock,
+  Loader2, BarChart3, Radar, Download,
+  AlertCircle, CheckCircle,
   ChevronDown, ChevronUp, ChevronRight, BookOpen, Layers, Globe, FlaskConical,
   Flame, History, Palette, Calendar, ArrowRight, FileText, Sparkles
 } from 'lucide-react';
 import { CitationBlock } from '../../components/vulca/CitationBlock';
 import { Link } from 'react-router-dom';
 import { VULCA_VERSION, VERSION_BADGE } from '../../config/version';
-import { downloadSampleReport } from '../../utils/pdfExport';
+// downloadSampleReport now handled by SampleReportSheet
 
 // Preset scenarios for quick demos
 const PRESET_SCENARIOS = [
@@ -69,8 +69,11 @@ export const VULCADemoPage: React.FC = () => {
   const [selectedModels, setSelectedModels] = useState<string[]>([]); // Will be set after models load
   const [viewMode, setViewMode] = useState<ViewMode>('6d');
   const [viewLevel, setViewLevel] = useState<ViewLevel>('overview');
-  const [visualizationType, setVisualizationType] = useState<VisualizationType>('radar');
+  // Note: visualizationType is now auto-selected by VULCAVisualization based on viewMode/viewLevel
   const [culturalPerspective, setCulturalPerspective] = useState<string>('eastern');
+  const [showFeatureGate, setShowFeatureGate] = useState<boolean>(false);
+  const [featureGateDismissed, setFeatureGateDismissed] = useState<boolean>(false);
+  const [showSampleReportSheet, setShowSampleReportSheet] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'visualization' | 'comparison'>('visualization');
   const [methodologyExpanded, setMethodologyExpanded] = useState(false);
   
@@ -121,12 +124,15 @@ export const VULCADemoPage: React.FC = () => {
         }
       } catch (error) {
         console.error('Failed to load models:', error);
-        // Fallback to some default models that exist in database
-        setAvailableModels([
-          { id: '9a410997-12fe-400a-b3ed-95098ffd007a', name: 'GPT-4o', organization: 'OpenAI' },
-          { id: '95c5586d-dcad-4648-bee5-a42b209fd26d', name: 'Claude 3.5 Sonnet', organization: 'Anthropic' },
-        ]);
-        setSelectedModels(['9a410997-12fe-400a-b3ed-95098ffd007a', '95c5586d-dcad-4648-bee5-a42b209fd26d']);
+        // Fallback to well-known models for better demo experience
+        const fallbackModels = [
+          { id: 'gpt-4o-2024-11-20', name: 'GPT-4o', organization: 'OpenAI' },
+          { id: 'claude-3-5-sonnet-20241022', name: 'Claude 3.5 Sonnet', organization: 'Anthropic' },
+          { id: 'gemini-1.5-pro-002', name: 'Gemini 1.5 Pro', organization: 'Google' },
+        ];
+        setAvailableModels(fallbackModels);
+        // Pre-select first 2 models for immediate visualization
+        setSelectedModels([fallbackModels[0].id, fallbackModels[1].id]);
       }
     };
     loadModels();
@@ -175,6 +181,21 @@ export const VULCADemoPage: React.FC = () => {
     });
   }, [evaluations, availableModels]);
 
+  // Handle view mode change - show feature gate for 47D mode
+  const handleViewModeChange = useCallback((newMode: ViewMode) => {
+    setViewMode(newMode);
+    // Show feature gate when switching to 47D mode (first time only)
+    if (newMode === '47d' && !featureGateDismissed) {
+      setShowFeatureGate(true);
+    }
+  }, [featureGateDismissed]);
+
+  // Dismiss feature gate
+  const dismissFeatureGate = useCallback(() => {
+    setShowFeatureGate(false);
+    setFeatureGateDismissed(true);
+  }, []);
+
   // Export functionality
   const handleExport = useCallback(() => {
     const exportData = {
@@ -201,12 +222,20 @@ export const VULCADemoPage: React.FC = () => {
     URL.revokeObjectURL(url);
   }, [evaluations, comparison, dimensions, viewMode, culturalPerspective, selectedModels]);
   
-  // Initialize with demo data if not connected
+  // Initialize with demo data if not connected OR if connected but no data available
   useEffect(() => {
-    if (!isConnected && !initializing && !error) {
+    // Load demo data if:
+    // 1. Not connected (offline mode)
+    // 2. Connected but no models selected and no evaluations available after init
+    const shouldLoadDemo = !initializing && !error && (
+      !isConnected ||
+      (isConnected && evaluations.length === 0 && selectedModels.length === 0)
+    );
+
+    if (shouldLoadDemo) {
       loadDemoData();
     }
-  }, [isConnected, initializing, error, loadDemoData]);
+  }, [isConnected, initializing, error, loadDemoData, evaluations.length, selectedModels.length]);
   
   if (initializing) {
     return (
@@ -221,382 +250,302 @@ export const VULCADemoPage: React.FC = () => {
   }
   
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-700 to-amber-700 bg-clip-text text-transparent">
-              VULCA Multi-Dimensional Evaluation
+    <div className="container mx-auto px-4 py-6 max-w-7xl">
+      {/* Compact Hero Section - Optimized for Conversion */}
+      <div className="mb-6">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          {/* Left: Title & Value Proposition */}
+          <div className="flex-1">
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-slate-700 to-amber-700 bg-clip-text text-transparent">
+              Cultural AI Evaluation at Scale
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Advanced AI Model Assessment: From 6 to 47 Dimensions with 8 Cultural Perspectives
+            <p className="text-gray-600 dark:text-gray-400 mt-2 max-w-xl">
+              The first research-backed framework for evaluating AI cultural understanding.
+              <span className="hidden sm:inline"> Identify blind spots before they become production issues.</span>
             </p>
           </div>
-          <div className="flex items-center gap-4">
-            {/* Connection Status */}
+
+          {/* Right: Trust Badges + CTAs */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            {/* Trust Badges */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="px-3 py-1.5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-full text-sm font-medium text-amber-700 dark:text-amber-300 flex items-center gap-1.5">
+                <BookOpen className="w-3.5 h-3.5" />
+                EMNLP 2025
+              </span>
+              <span className="px-3 py-1.5 bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5" />
+                42 Models
+              </span>
+              <span className="hidden md:flex px-3 py-1.5 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-full text-sm font-medium text-green-700 dark:text-green-400 items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5" />
+                8 Cultures
+              </span>
+            </div>
+
+            {/* Dual CTAs */}
             <div className="flex items-center gap-2">
-              {isConnected ? (
-                <>
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Connected</span>
-                </>
-              ) : (
-                <>
-                  <WifiOff className="w-5 h-5 text-orange-500" />
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Offline Mode</span>
-                </>
-              )}
-            </div>
-            
-            {/* Refresh Button */}
-            <IOSButton
-              variant="secondary"
-              size="sm"
-              onClick={refreshAll}
-              disabled={loading}
-            >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            </IOSButton>
-            
-            <span className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-gray-700 dark:text-gray-300">
-              EMNLP 2025 Findings
-            </span>
-          </div>
-        </div>
-        
-        {/* Demo Library Banner */}
-        <div className="mb-6 bg-gradient-to-r from-slate-50 to-amber-50 dark:from-slate-900/20 dark:to-amber-900/20 rounded-2xl p-4 border border-blue-200 dark:border-slate-800">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-900/50 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-slate-700 dark:text-slate-500" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-gray-100">Public Demo Library</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Explore VULCA evaluation with pre-configured scenarios
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Link to="/pricing">
-                <IOSButton variant="secondary" size="sm">
-                  Upgrade for Full Access
-                  <ArrowRight className="w-4 h-4 ml-1" />
+              <button
+                onClick={() => document.getElementById('demo-section')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
+              >
+                Try Demo ↓
+              </button>
+              <Link to="/demo">
+                <IOSButton variant="primary" size="sm">
+                  <Calendar className="w-4 h-4 mr-1.5" />
+                  Book Full Evaluation
                 </IOSButton>
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Preset Scenario Buttons */}
-        <div className="mb-6">
-          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Quick Start Scenarios</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {PRESET_SCENARIOS.map((scenario) => (
-              <button
-                key={scenario.id}
-                onClick={() => {
-                  setViewMode(scenario.settings.viewMode);
-                  setCulturalPerspective(scenario.settings.perspective);
-                  setViewLevel(scenario.settings.viewLevel);
-                }}
-                className={`p-4 rounded-xl border-2 transition-all text-left hover:shadow-md
-                  ${viewMode === scenario.settings.viewMode && culturalPerspective === scenario.settings.perspective
-                    ? `border-${scenario.color}-500 bg-${scenario.color}-50 dark:bg-${scenario.color}-900/20`
-                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <scenario.icon className={`w-5 h-5 text-${scenario.color}-500`} />
-                  <span className="font-medium text-gray-900 dark:text-gray-100">{scenario.name}</span>
-                </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{scenario.description}</p>
-              </button>
-            ))}
-          </div>
+        {/* Quick Stats Bar - Mobile Optimized */}
+        <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 dark:text-gray-400">
+          <span className="flex items-center gap-1.5">
+            <FlaskConical className="w-4 h-4 text-slate-500" />
+            47 Evaluation Dimensions
+          </span>
+          <span className="flex items-center gap-1.5">
+            <Sparkles className="w-4 h-4 text-amber-500" />
+            7,410+ Annotated Pairs
+          </span>
+          <button
+            onClick={() => setShowSampleReportSheet(true)}
+            className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+          >
+            <FileText className="w-4 h-4" />
+            See Sample Report
+          </button>
         </div>
-
-        {error && (
-          <div role="alert" aria-live="polite" className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-            <div className="flex items-start">
-              <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 mr-3 flex-shrink-0" aria-hidden="true" />
-              <div className="flex-1">
-                <h3 className="text-sm font-medium text-red-800 dark:text-red-200">
-                  {isConnected ? 'Error' : 'Connection Issue'}
-                </h3>
-                <p className="text-sm text-red-700 dark:text-red-300 mt-1">{error}</p>
-                {errorDetails && (
-                  <details className="mt-2">
-                    <summary className="text-xs text-red-600 dark:text-red-400 cursor-pointer">
-                      Technical Details
-                    </summary>
-                    <pre className="text-xs text-red-600 dark:text-red-400 mt-1 p-2 bg-red-100 dark:bg-red-900/30 rounded overflow-x-auto">
-                      {JSON.stringify(errorDetails, null, 2)}
-                    </pre>
-                  </details>
-                )}
-                <div className="mt-3 flex gap-2">
-                  {!isConnected && (
-                    <IOSButton
-                      variant="primary"
-                      size="sm"
-                      onClick={retryConnection}
-                    >
-                      Retry Connection
-                    </IOSButton>
-                  )}
-                  <IOSButton
-                    variant="secondary"
-                    size="sm"
-                    onClick={clearError}
-                  >
-                    Dismiss
-                  </IOSButton>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Control Panel */}
-        <div className="lg:col-span-1 space-y-4">
-          <IOSCard variant="elevated">
-            <h2 className="text-xl font-semibold mb-4">Controls</h2>
-            
-            <div className="space-y-6">
-              {/* Model Selection */}
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Select Models (2-5)
-                </label>
-                <ModelSelector
-                  models={availableModels}
-                  selectedModels={selectedModels}
-                  onModelSelect={handleModelSelect}
-                />
-              </div>
-              
-              {/* Dimension Toggle */}
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Evaluation Dimensions
-                </label>
-                <DimensionToggle
-                  mode={viewMode}
-                  onModeChange={setViewMode}
-                />
-              </div>
-              
-              {/* View Level Selector - Only show for 47D mode */}
-              {viewMode === '47d' && (
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    View Level
-                  </label>
-                  <div className="grid grid-cols-1 gap-2">
-                    <IOSButton
-                      variant={viewLevel === 'overview' ? 'primary' : 'secondary'}
-                      size="sm"
-                      onClick={() => setViewLevel('overview')}
-                    >
-                      Overview (6D)
-                    </IOSButton>
-                    <IOSButton
-                      variant={viewLevel === 'grouped' ? 'primary' : 'secondary'}
-                      size="sm"
-                      onClick={() => setViewLevel('grouped')}
-                    >
-                      Grouped (8 Categories)
-                    </IOSButton>
-                    <IOSButton
-                      variant={viewLevel === 'detailed' ? 'primary' : 'secondary'}
-                      size="sm"
-                      onClick={() => setViewLevel('detailed')}
-                    >
-                      Detailed (All 47D)
-                    </IOSButton>
-                  </div>
-                </div>
+
+      {/* Sticky Controls Bar - Horizontal Layout */}
+      <StickyControlsBar
+        availableModels={availableModels}
+        selectedModels={selectedModels}
+        onModelSelect={handleModelSelect}
+        viewMode={viewMode}
+        onViewModeChange={handleViewModeChange}
+        viewLevel={viewLevel}
+        onViewLevelChange={setViewLevel}
+        perspectives={perspectives.map(p => p.name)}
+        culturalPerspective={culturalPerspective}
+        onPerspectiveChange={setCulturalPerspective}
+        onExport={handleExport}
+        onRefresh={refreshAll}
+        isConnected={isConnected}
+        loading={loading}
+      />
+
+      {/* Error Banner */}
+      {error && (
+        <div role="alert" aria-live="polite" className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <div className="flex items-start">
+            <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 mr-3 flex-shrink-0" aria-hidden="true" />
+            <div className="flex-1">
+              <h3 className="text-sm font-medium text-red-800 dark:text-red-200">
+                {isConnected ? 'Error' : 'Connection Issue'}
+              </h3>
+              <p className="text-sm text-red-700 dark:text-red-300 mt-1">{error}</p>
+              {errorDetails && (
+                <details className="mt-2">
+                  <summary className="text-xs text-red-600 dark:text-red-400 cursor-pointer">
+                    Technical Details
+                  </summary>
+                  <pre className="text-xs text-red-600 dark:text-red-400 mt-1 p-2 bg-red-100 dark:bg-red-900/30 rounded overflow-x-auto">
+                    {JSON.stringify(errorDetails, null, 2)}
+                  </pre>
+                </details>
               )}
-              
-              {/* Visualization Type - Simplified */}
-              {viewMode === '6d' && (
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    Visualization
-                  </label>
+              <div className="mt-3 flex gap-2">
+                {!isConnected && (
                   <IOSButton
                     variant="primary"
                     size="sm"
-                    className="w-full"
-                    disabled
+                    onClick={retryConnection}
                   >
-                    <Radar className="w-4 h-4 mr-1" />
-                    Radar Chart
+                    Retry Connection
                   </IOSButton>
-                </div>
-              )}
-              
-              {/* Cultural Perspective */}
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Cultural Perspective
-                </label>
-                <CulturalPerspectiveSelector
-                  perspectives={perspectives}
-                  selected={culturalPerspective}
-                  onSelect={setCulturalPerspective}
-                />
-              </div>
-              
-              {/* Export */}
-              <ExportButton onClick={handleExport}>
-                <Download className="w-4 h-4 mr-2" />
-                Export Data
-              </ExportButton>
-            </div>
-          </IOSCard>
-          
-          {/* Statistics Card */}
-          <IOSCard variant="elevated">
-            <h3 className="text-lg font-semibold mb-3">Statistics</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Models Selected:</span>
-                <span className="font-medium">{selectedModels.length}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Dimensions:</span>
-                <span className="font-medium">{viewMode === '6d' ? '6' : '47'}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Expansion Rate:</span>
-                <span className="font-medium">683%</span>
-              </div>
-              {comparison && (
-                <>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Avg Difference:</span>
-                    <span className="font-medium">
-                      {comparison.summary?.averageDifference?.toFixed(2) || 'N/A'}
-                    </span>
-                  </div>
-                </>
-              )}
-              {lastSync && (
-                <div className="flex justify-between pt-2 border-t">
-                  <span className="text-gray-600 flex items-center">
-                    <Clock className="w-3 h-3 mr-1" />
-                    Last Sync:
-                  </span>
-                  <span className="font-medium text-xs">
-                    {new Date(lastSync).toLocaleTimeString(undefined, { timeStyle: 'short' })}
-                  </span>
-                </div>
-              )}
-              <div className="pt-2 border-t dark:border-gray-700">
-                <div className="text-xs text-gray-500 dark:text-gray-400">
-                  {VERSION_BADGE.short} | Dataset {VULCA_VERSION.dataset}
-                </div>
+                )}
+                <IOSButton
+                  variant="secondary"
+                  size="sm"
+                  onClick={clearError}
+                >
+                  Dismiss
+                </IOSButton>
               </div>
             </div>
-          </IOSCard>
+          </div>
         </div>
-        
-        {/* Main Visualization Area */}
-        <div className="lg:col-span-3 space-y-6">
-          {/* Custom Tab Interface */}
-          <div className="w-full">
-            <div className="flex w-full border-b">
-              <IOSButton
-                variant={activeTab === 'visualization' ? 'primary' : 'secondary'}
-                onClick={() => setActiveTab('visualization')}
-                className="flex-1 rounded-none border-b-2 border-transparent data-[active]:border-slate-600"
-              >
-                Visualization
-              </IOSButton>
-              <IOSButton
-                variant={activeTab === 'comparison' ? 'primary' : 'secondary'}
-                onClick={() => setActiveTab('comparison')}
-                className="flex-1 rounded-none border-b-2 border-transparent data-[active]:border-slate-600"
-              >
-                Comparison
-              </IOSButton>
-            </div>
-            
-            {activeTab === 'visualization' && (
-              <div className="mt-6">
-                <IOSCard variant="elevated">
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-semibold">
-                      {viewMode === '6d' ? '6-Dimensional' : '47-Dimensional'} Analysis
-                    </h2>
-                    {comparing && (
-                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                        Analyzing...
-                      </div>
-                    )}
-                  </div>
-                  
-                  {loading ? (
-                    <div className="flex items-center justify-center h-96">
-                      <div className="text-center">
-                        <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary mb-2" />
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Loading visualization...</p>
-                      </div>
+      )}
+
+      {/* Main Visualization Area - Full Width */}
+      <div id="demo-section" className="space-y-6 scroll-mt-20">
+        {/* Tab Interface */}
+        <div className="w-full">
+          <div className="flex w-full border-b border-gray-200 dark:border-gray-700">
+            <button
+              onClick={() => setActiveTab('visualization')}
+              className={`flex-1 py-3 text-sm font-medium transition-colors border-b-2 ${
+                activeTab === 'visualization'
+                  ? 'border-slate-600 text-slate-700 dark:text-slate-400'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+              }`}
+            >
+              Visualization
+            </button>
+            <button
+              onClick={() => setActiveTab('comparison')}
+              className={`flex-1 py-3 text-sm font-medium transition-colors border-b-2 ${
+                activeTab === 'comparison'
+                  ? 'border-slate-600 text-slate-700 dark:text-slate-400'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+              }`}
+            >
+              Comparison
+            </button>
+          </div>
+
+          {activeTab === 'visualization' && (
+            <div className="mt-6">
+              {/* Feature Gate Banner for 47D Mode */}
+              {showFeatureGate && viewMode === '47d' && (
+                <div className="mb-4">
+                  <Feature47DGate
+                    isVisible={true}
+                    onClose={dismissFeatureGate}
+                    variant="banner"
+                  />
+                </div>
+              )}
+
+              <IOSCard variant="elevated">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-semibold">
+                    {viewMode === '6d' ? '6-Dimensional' : '47-Dimensional'} Analysis
+                    {viewMode === '47d' && <span className="ml-2 text-xs font-normal text-amber-600 dark:text-amber-400">(Demo Preview)</span>}
+                  </h2>
+                  {comparing && (
+                    <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                      Analyzing...
                     </div>
-                  ) : enhancedEvaluations.length > 0 ? (
+                  )}
+                </div>
+
+                {loading ? (
+                  <div className="flex items-center justify-center h-96">
+                    <div className="text-center">
+                      <Loader2 className="w-8 h-8 animate-spin mx-auto text-slate-600 mb-2" />
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Loading visualization...</p>
+                    </div>
+                  </div>
+                ) : enhancedEvaluations.length > 0 ? (
+                  <>
                     <VULCAVisualization
                       evaluations={enhancedEvaluations}
                       dimensions={viewMode === '6d' ? dimensions.slice(0, 6) : dimensions}
                       viewMode={viewMode}
                       viewLevel={viewLevel}
-                      visualizationType={visualizationType}
                       culturalPerspective={culturalPerspective}
                     />
-                  ) : (
-                    <div className="flex items-center justify-center h-96">
-                      <div className="text-center">
-                        <Radar className="w-12 h-12 mx-auto text-gray-400 dark:text-gray-500 mb-4" />
-                        <p className="text-gray-500 dark:text-gray-400">No evaluation data available</p>
-                        <IOSButton
-                          variant="primary"
-                          size="sm"
-                          onClick={loadDemoData}
-                          className="mt-4"
-                        >
-                          Load Demo Data
-                        </IOSButton>
-                      </div>
-                    </div>
-                  )}
-                </IOSCard>
-              </div>
-            )}
-            
-            {activeTab === 'comparison' && (
-              <div className="mt-6">
-                {selectedModels.length >= 2 && comparison && comparison.summary ? (
-                  <ComparisonView
-                    comparison={comparison}
-                    viewMode={viewMode}
-                    culturalPerspective={culturalPerspective}
-                  />
+                    {/* Quick Insights */}
+                    <QuickInsights
+                      evaluations={enhancedEvaluations}
+                      viewMode={viewMode}
+                    />
+                  </>
                 ) : (
-                  <IOSCard variant="elevated">
-                    <div className="text-center text-gray-500 dark:text-gray-400 p-12">
-                      <BarChart3 className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                      <p>Select at least 2 models to see comparison</p>
+                  <div className="flex items-center justify-center h-96">
+                    <div className="text-center">
+                      <Radar className="w-12 h-12 mx-auto text-gray-400 dark:text-gray-500 mb-4" />
+                      <p className="text-gray-500 dark:text-gray-400">No evaluation data available</p>
+                      <IOSButton
+                        variant="primary"
+                        size="sm"
+                        onClick={loadDemoData}
+                        className="mt-4"
+                      >
+                        Load Demo Data
+                      </IOSButton>
                     </div>
-                  </IOSCard>
+                  </div>
                 )}
+              </IOSCard>
+            </div>
+          )}
+
+          {activeTab === 'comparison' && (
+            <div className="mt-6">
+              {selectedModels.length >= 2 && comparison && comparison.summary ? (
+                <ComparisonView
+                  comparison={comparison}
+                  viewMode={viewMode}
+                  culturalPerspective={culturalPerspective}
+                />
+              ) : (
+                <IOSCard variant="elevated">
+                  <div className="text-center text-gray-500 dark:text-gray-400 p-12">
+                    <BarChart3 className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                    <p>Select at least 2 models to see comparison</p>
+                  </div>
+                </IOSCard>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Upgrade CTA Banner - Inline */}
+        <div className="bg-gradient-to-r from-slate-100 to-amber-50 dark:from-slate-900/50 dark:to-amber-900/20 rounded-xl p-4 border border-slate-200 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Sparkles className="w-5 h-5 text-amber-600" />
+              <div>
+                <span className="font-medium text-gray-900 dark:text-gray-100">
+                  Full 47D diagnostics + PDF reports
+                </span>
+                <span className="text-gray-500 dark:text-gray-400 ml-2 text-sm">
+                  Comprehensive cultural analysis for your AI models
+                </span>
               </div>
-            )}
+            </div>
+            <Link to="/pricing">
+              <IOSButton variant="primary" size="sm">
+                Get Started
+                <ArrowRight className="w-4 h-4 ml-1" />
+              </IOSButton>
+            </Link>
+          </div>
+        </div>
+
+        {/* Quick Start Scenarios */}
+        <div className="mt-8">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Quick Start Scenarios</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {PRESET_SCENARIOS.map((scenario) => (
+              <button
+                key={scenario.id}
+                onClick={() => {
+                  handleViewModeChange(scenario.settings.viewMode);
+                  setCulturalPerspective(scenario.settings.perspective);
+                  setViewLevel(scenario.settings.viewLevel);
+                }}
+                className={`p-4 rounded-xl border-2 transition-all text-left hover:shadow-md
+                  ${viewMode === scenario.settings.viewMode && culturalPerspective === scenario.settings.perspective
+                    ? 'border-slate-500 bg-slate-50 dark:bg-slate-900/20'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                  }`}
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <scenario.icon className="w-5 h-5 text-slate-600" />
+                  <span className="font-medium text-gray-900 dark:text-gray-100">{scenario.name}</span>
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{scenario.description}</p>
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -995,7 +944,7 @@ export const VULCADemoPage: React.FC = () => {
                 </p>
               </div>
             </div>
-            <IOSButton variant="secondary" onClick={downloadSampleReport}>
+            <IOSButton variant="secondary" onClick={() => setShowSampleReportSheet(true)}>
               <Download className="w-4 h-4 mr-2" />
               Download Sample
             </IOSButton>
@@ -1055,6 +1004,38 @@ export const VULCADemoPage: React.FC = () => {
           }}
         />
       </div>
+
+      {/* Sample Report Sheet */}
+      <SampleReportSheet
+        visible={showSampleReportSheet}
+        onClose={() => setShowSampleReportSheet(false)}
+      />
+
+      {/* Mobile Sticky CTA - Bottom Fixed */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-t border-gray-200 dark:border-gray-700 p-4 z-50 safe-area-bottom">
+        <div className="flex items-center gap-3">
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+              {selectedModels.length > 0
+                ? `${selectedModels.length} model${selectedModels.length > 1 ? 's' : ''} selected`
+                : 'Select models to compare'
+              }
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {viewMode === '6d' ? '6D Overview' : '47D Analysis'} • {culturalPerspective}
+            </p>
+          </div>
+          <Link to="/demo">
+            <IOSButton variant="primary" size="sm" className="whitespace-nowrap">
+              <Calendar className="w-4 h-4 mr-1.5" />
+              Book Full Eval
+            </IOSButton>
+          </Link>
+        </div>
+      </div>
+
+      {/* Spacer for mobile sticky CTA */}
+      <div className="md:hidden h-20" />
     </div>
   );
 };

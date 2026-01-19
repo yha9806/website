@@ -93,10 +93,10 @@ const securityFeatures = [
 ];
 
 const complianceItems = [
-  { name: 'GDPR', status: 'Compliant', desc: 'EU data protection regulation' },
-  { name: 'SOC 2 Type II', status: 'In Progress', desc: 'Service organization controls' },
+  { name: 'GDPR', status: 'Ready', desc: 'DPA available on request' },
+  { name: 'SOC 2 Type II', status: 'In Progress', desc: 'Controls documentation available' },
   { name: 'ISO 27001', status: 'Planned', desc: 'Information security management' },
-  { name: 'CCPA', status: 'Compliant', desc: 'California privacy act' },
+  { name: 'CCPA', status: 'Aligned', desc: 'Privacy controls aligned with CCPA principles' },
 ];
 
 export default function TrustPage() {
@@ -275,13 +275,13 @@ export default function TrustPage() {
                     </td>
                     <td className="px-6 py-4">
                       <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
-                        item.status === 'Compliant'
+                        item.status === 'Ready' || item.status === 'Aligned'
                           ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                           : item.status === 'In Progress'
                           ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
                           : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
                       }`}>
-                        {item.status === 'Compliant' && <CheckCircle2 className="w-3 h-3" />}
+                        {(item.status === 'Ready' || item.status === 'Aligned') && <CheckCircle2 className="w-3 h-3" />}
                         {item.status === 'In Progress' && <AlertCircle className="w-3 h-3" />}
                         {item.status}
                       </span>
@@ -371,12 +371,16 @@ export default function TrustPage() {
               Request Security Review
             </IOSButton>
           </Link>
-          <a href="mailto:security@vulcaart.art">
-            <IOSButton variant="secondary" size="lg">
-              Contact Security Team
+          <a href="mailto:security@vulcaart.art?subject=Security%20Documentation%20Request">
+            <IOSButton variant="secondary" size="lg" className="flex items-center gap-2">
+              <FileText className="w-5 h-5" />
+              Request Security Documentation
             </IOSButton>
           </a>
         </div>
+        <p className="mt-6 text-sm text-gray-500 dark:text-gray-400">
+          Available documentation: DPA, RoPA, Sub-processor list, Security whitepaper
+        </p>
       </section>
     </div>
   );

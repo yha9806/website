@@ -98,28 +98,28 @@ export const useTheme = () => {
   return context;
 };
 
-// Export theme-related Tailwind class helpers
+// Export theme-related Tailwind class helpers (Art Professional palette)
 export const tw = {
-  // Background
-  bgBase: 'bg-neutral-50 dark:bg-[#0D1117]',
-  bgSurface: 'bg-gray-50 dark:bg-[#161B22]',
-  bgElevated: 'bg-neutral-50 dark:bg-[#1C2128]',
-  bgOverlay: 'bg-neutral-50 dark:bg-[#262C36]',
-  
-  // Text
-  textPrimary: 'text-gray-900 dark:text-[#F0F6FC]',
-  textSecondary: 'text-gray-600 dark:text-[#8B949E]',
-  textTertiary: 'text-gray-500 dark:text-[#6E7681]',
-  textMuted: 'text-gray-400 dark:text-[#484F58]',
-  
-  // Border
-  borderDefault: 'border-gray-200 dark:border-[#30363D]',
-  borderMuted: 'border-gray-100 dark:border-[#21262D]',
-  borderStrong: 'border-gray-300 dark:border-[#48545F]',
-  
+  // Background - Art Professional warm tones
+  bgBase: 'bg-white dark:bg-[#0F0D0C]',
+  bgSurface: 'bg-gray-50 dark:bg-[#1A1614]',
+  bgElevated: 'bg-white dark:bg-[#252220]',
+  bgOverlay: 'bg-white dark:bg-[#302D2B]',
+
+  // Text - Warm gray tones
+  textPrimary: 'text-gray-900 dark:text-gray-100',
+  textSecondary: 'text-gray-600 dark:text-gray-400',
+  textTertiary: 'text-gray-500 dark:text-gray-500',
+  textMuted: 'text-gray-400 dark:text-gray-600',
+
+  // Border - Warm brown tones
+  borderDefault: 'border-gray-200 dark:border-gray-700',
+  borderMuted: 'border-gray-100 dark:border-gray-800',
+  borderStrong: 'border-gray-300 dark:border-gray-600',
+
   // Common combinations
-  card: 'bg-neutral-50 dark:bg-[#161B22] border border-gray-200 dark:border-[#30363D]',
-  cardHover: 'hover:bg-gray-50 dark:hover:bg-[#1C2128]',
-  button: 'bg-[#0969DA] dark:bg-[#58A6FF] text-white hover:opacity-90',
-  buttonSecondary: 'bg-gray-100 dark:bg-[#21262D] text-gray-700 dark:text-[#F0F6FC]',
+  card: 'bg-white dark:bg-[#1A1614] border border-gray-200 dark:border-gray-700',
+  cardHover: 'hover:bg-gray-50 dark:hover:bg-[#252220]',
+  button: 'bg-slate-700 dark:bg-slate-600 text-white hover:opacity-90',
+  buttonSecondary: 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100',
 };

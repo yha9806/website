@@ -541,7 +541,7 @@ export default function ModelDetailPage() {
           booktitle: 'VULCA Cultural AI Evaluation Platform',
           year: 2025,
           doi: '10.18653/v1/2025.findings-emnlp.103',
-          url: `https://vulca.ai/model/${model.id}`,
+          url: `https://vulcaart.art/model/${model.id}`,
         }}
         visible={showCiteModal}
         onClose={() => setShowCiteModal(false)}

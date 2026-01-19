@@ -131,13 +131,13 @@ export default function Header() {
               )}
             </div>
 
-            {/* Customers */}
+            {/* Evidence (Research & Publications) */}
             <Link to="/customers">
               <IOSButton
                 variant={isActive('/customers') ? "primary" : "text"}
                 size="sm"
               >
-                Customers
+                Evidence
               </IOSButton>
             </Link>
 
@@ -281,7 +281,7 @@ export default function Header() {
 
               <Link to="/customers" onClick={() => setIsMenuOpen(false)}>
                 <IOSButton variant={isActive('/customers') ? "primary" : "text"} size="md" className="w-full justify-start">
-                  Customers
+                  Evidence
                 </IOSButton>
               </Link>
 

@@ -447,7 +447,7 @@ function CitationSection({
   title={VULCA Leaderboard: ${category.charAt(0).toUpperCase() + category.slice(1)} Category},
   author={VULCA Team},
   year={2025},
-  howpublished={\\url{https://vulca.ai/models}},
+  howpublished={\\url{https://vulcaart.art/models}},
   note={Version ${VERSION_BADGE.short}, ${modelCount} models evaluated, accessed ${VULCA_VERSION.lastUpdated}}
 }`;
 
@@ -458,7 +458,7 @@ function CitationSection({
     booktitle: 'VULCA Cultural AI Evaluation Platform',
     year: 2025,
     doi: '10.18653/v1/2025.findings-emnlp.103',
-    url: `https://vulca.ai/models/${category}`,
+    url: `https://vulcaart.art/models/${category}`,
   };
 
   const handleCopy = () => {
