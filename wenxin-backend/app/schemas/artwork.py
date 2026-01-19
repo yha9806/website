@@ -40,6 +40,8 @@ class ArtworkResponse(BaseModel):
     image_url: Optional[str] = None
     prompt: Optional[str] = None
     score: float
+    likes: int = 0
+    views: int = 0
     extra_metadata: Optional[Dict[str, Any]] = None
     created_at: datetime
     
