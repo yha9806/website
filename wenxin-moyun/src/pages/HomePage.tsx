@@ -795,7 +795,7 @@ export default function HomePage() {
               <Shield className="w-6 h-6 text-green-400" />
             </div>
             <div>
-              <h3 className="text-h3 text-white">Trust by Default</h3>
+              <h3 className="text-h3 !text-white">Trust by Default</h3>
               <p className="text-gray-400">
                 Enterprise-grade security, version control, and audit trails
               </p>
