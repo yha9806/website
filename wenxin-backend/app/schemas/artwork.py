@@ -1,7 +1,8 @@
-from pydantic import BaseModel, Field, ConfigDict
-from typing import Optional, Dict, Any
+from pydantic import BaseModel, Field, ConfigDict, field_serializer
+from typing import Optional, Dict, Any, Union
 from datetime import datetime
 from enum import Enum
+from uuid import UUID
 
 
 class ArtworkType(str, Enum):
@@ -32,8 +33,8 @@ class ArtworkUpdate(BaseModel):
 
 
 class ArtworkResponse(BaseModel):
-    id: str
-    model_id: str
+    id: Union[str, UUID]
+    model_id: Union[str, UUID]
     type: ArtworkType
     title: str
     content: Optional[str] = None
@@ -44,8 +45,15 @@ class ArtworkResponse(BaseModel):
     views: int = 0
     extra_metadata: Optional[Dict[str, Any]] = None
     created_at: datetime
-    
+
     model_config = ConfigDict(from_attributes=True)
+
+    @field_serializer('id', 'model_id')
+    def serialize_uuid(self, value):
+        """Convert UUID to string for JSON serialization"""
+        if isinstance(value, UUID):
+            return str(value)
+        return value
 
 
 class ArtworkListResponse(BaseModel):
