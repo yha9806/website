@@ -46,6 +46,10 @@ const PapersPage = lazy(() => import('./pages/PapersPage'));
 const DataEthicsPage = lazy(() => import('./pages/DataEthicsPage'));
 const SOPPage = lazy(() => import('./pages/SOPPage'));
 
+// Legal pages - lazy loaded
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
+const TermsPage = lazy(() => import('./pages/TermsPage'));
+
 // Report page - lazy loaded
 const ModelReportPage = lazy(() => import('./pages/ModelReportPage'));
 
@@ -237,6 +241,18 @@ function App() {
               <Route path="/sop" element={
                 <Suspense fallback={<PageLoader text="Loading SOP..." />}>
                   <SOPPage />
+                </Suspense>
+              } />
+
+              {/* Legal Pages */}
+              <Route path="/privacy" element={
+                <Suspense fallback={<PageLoader text="Loading Privacy Policy..." />}>
+                  <PrivacyPage />
+                </Suspense>
+              } />
+              <Route path="/terms" element={
+                <Suspense fallback={<PageLoader text="Loading Terms of Service..." />}>
+                  <TermsPage />
                 </Suspense>
               } />
 
