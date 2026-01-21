@@ -37,7 +37,7 @@
 | 11 | 唐杰 | Professor/Co-founder | 清华大学/智谱 | - | - | [AMiner](https://www.aminer.cn) | 清华教授，智谱学术顾问，AMiner 创始人，学术+产业双重影响力 | Sample Report | High | 待联系 |
 | 12 | 杨植麟 | CEO | 月之暗面 | - | - | [Kimi K2](https://www.qbitai.com/2025/07/308332.html) | Kimi 创始人，清华系 AI 创业明星，K2 万亿参数模型发布，2025 融资 5 亿美元 | Demo | High | 待联系 |
 | 13 | 吴永辉 | Seed 团队一号位 | 字节跳动 | - | - | [豆包大模型](https://www.volcengine.com) | 前 Google DeepMind VP/Google Fellow，2025年10月晋升 Seed 一号位，负责 AI 基础研究与 AGI 探索，直接向梁汝波汇报 | Demo + Pilot | High | 待联系 |
-| 14 | 朱文佳 | Model Application Lead | 字节跳动 Seed | - | - | [火山引擎](https://www.volcengine.com) | 豆包大模型开发负责人，Seed 模型应用能力核心人物 | Demo | Medium | 待联系 |
+| 14 | 朱文佳 | 模型应用负责人（向吴永辉汇报） | 字节跳动 Seed | - | - | [火山引擎](https://www.volcengine.com) | 2025年10月起向吴永辉汇报，主抓模型应用方向，豆包 App 月活超1.57亿 | Demo | Medium | 待联系 |
 | 15 | David Holz | CEO | Midjourney | - | [LinkedIn](https://www.linkedin.com/in/davidholz/) | [Midjourney](https://www.midjourney.com) | Midjourney 创始人，Leap Motion 联合创始人，图像生成领域领导者 | Demo | Medium | 待联系 |
 | 16 | Cristóbal Valenzuela | CEO | Runway | - | [LinkedIn](https://www.linkedin.com/in/cvalenzuelab/) | [Runway Gen-4](https://runwayml.com/research/introducing-runway-gen-4/) | Runway 联合创始人，视频生成 AI 领域领军，Gen-4 模型发布者 | Demo | Medium | 待联系 |
 | 17 | Pradeep Natarajan | Senior Principal Scientist | Amazon AGI | - | - | [Amazon Science](https://www.amazon.science) | Amazon AGI Foundation 多模态 LLM 负责人，post-training 配方专家 | Demo | Medium | 待联系 |
