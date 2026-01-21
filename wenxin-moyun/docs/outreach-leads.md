@@ -110,7 +110,7 @@
 
 | # | 姓名 | 职务 | 机构 | 邮箱 | LinkedIn | 相关工作链接 | 为什么是他 | 建议CTA | 优先级 | 状态 |
 |---|------|------|------|------|----------|--------------|------------|---------|--------|------|
-| 14 | 杨浩 | 执行主任 | 北大数字人文中心 | - | - | [北大数字人文](https://pkudh.org) | 北大 AI 研究院副研究员，数字人文与文明演化研究中心执行主任 | Sample Report + Collab | High | 待联系 |
+| 14 | 杨浩 | 副研究员 | 北大 AI 研究院 | - | - | [北大 AI 研究院](https://www.ai.pku.edu.cn/info/1386/2373.htm) | 北大 AI 研究院副研究员，数字人文与古籍智能研究专家，ChatGPT 古文处理研究 | Sample Report + Collab | High | 待联系 |
 | 15 | 梁一韬 | 助理教授 | 北大 AI 研究院 | - | - | [北大 AI 研究院](https://www.ai.pku.edu.cn) | 北大数字人文研究核心成员，AI+人文跨学科研究 | Sample Report | Medium | 待联系 |
 | 16 | 史睿 | 副研究员 | 北大古代史研究中心 | - | - | [北大数字人文](https://pkudh.org) | 数字人文古籍研究专家，AI 文化遗产保护方向 | Sample Report | Medium | 待联系 |
 | 17 | Lucy Stagg | Coordinator | UCL Centre for Digital Humanities | lucy.stagg@ucl.ac.uk | - | [UCLDH](https://www.ucl.ac.uk/digital-humanities/contact-us) | UCLDH 桥接人文+技术，VULCA 与数字遗产+AI 可解释性契合，适合合作+背书 | Sample Report | Medium | 待联系 |
@@ -139,7 +139,7 @@
 | 30 | Chen Gao 高晨 | Associate Professor | 清华大学 | - | - | [清华 FI](https://fi.ee.tsinghua.edu.cn/~gaochen/) | 清华大学副教授，推荐系统与多模态 AI 研究 | Sample Report | Medium | 待联系 |
 | 31 | Mahammed Kamruzzaman | PhD Researcher | - | - | - | [EMNLP 2025](https://2025.emnlp.org) | EMNLP 2025 多模态情绪偏见论文第一作者 | Sample Report | Medium | 待联系 |
 | 32 | Amanda Cercas Curry | Researcher | - | - | - | [EMNLP 2025](https://2025.emnlp.org) | EMNLP 2025 VLM 情绪偏见研究合著者 | Sample Report | Medium | 待联系 |
-| 33 | Paul Pu Liang | PhD/Postdoc | CMU | - | - | [awesome-multimodal-ml](https://github.com/pliang279/awesome-multimodal-ml) | 维护 awesome-multimodal-ml 资源库，多模态 ML 社区影响力 | Sample Report | Medium | 待联系 |
+| 33 | Paul Pu Liang | Assistant Professor | MIT Media Lab & EECS | - | - | [MIT Paul Liang](https://pliang279.github.io/) | MIT 助理教授，多模态机器学习权威，维护 awesome-multimodal-ml，引用超19000次 | Sample Report + Collab | High | 待联系 |
 | 34 | Yixin R. Fung | Researcher | - | - | - | [CultureAtlas](https://arxiv.org/abs/2406.15300) | CultureAtlas 跨文化 VLM 数据集作者 | Sample Report + Collab | High | 待联系 |
 | 35 | Haorui Yu | Researcher | - | - | - | [EMNLP 2025](https://2025.emnlp.org) | EMNLP 2025 多模态 LLM 文化任务解释性评估论文作者 | Sample Report | Medium | 待联系 |
 
