@@ -26,12 +26,12 @@
 |---|------|------|------|------|----------|--------------|------------|---------|--------|------|
 | 1 | Logan Graham | Frontier Red Team Lead | Anthropic | - | - | [Anthropic Red Team](https://www.anthropic.com/transparency/model-report) | 负责 Claude 模型安全评测，Frontier Red Team 专注多模态模型风险评估，与 VULCA 文化偏见检测高度相关 | Demo + Pilot | High | 待联系 |
 | 2 | Mrinank Sharma | Safeguards Research Lead | Anthropic | - | - | [Safeguards Team](https://alignment.anthropic.com/2025/introducing-safeguards-research-team/) | 领导 Claude 安全研究团队，负责图像 jailbreak 研究，VULCA 可提供文化安全评测视角 | Demo + Pilot | High | 待联系 |
-| 3 | Jack Clark | Policy Co-founder | Anthropic | - | [LinkedIn](https://www.linkedin.com/in/jack-clark-ai/) | [Anthropic](https://www.anthropic.com) | Anthropic 联合创始人，Red Team 报告给他，可作为高层决策者推动 VULCA 合作 | 10min Call | High | 待联系 |
-| 4 | Sandhini Agarwal | Research Scientist | OpenAI | - | - | [GPT-4V System Card](https://cdn.openai.com/papers/GPTV_System_Card.pdf) | GPT-4V 评测团队成员，负责多模态模型安全性评估 | Demo | High | 待联系 |
-| 5 | Lilian Weng | Research Lead | OpenAI | - | [LinkedIn](https://www.linkedin.com/in/lilianweng/) | [lilianweng.github.io](https://lilianweng.github.io) | OpenAI 研究负责人，GPT-4V 评测参与者，博客影响力大 | Sample Report | High | 待联系 |
+| 3 | Jack Clark | Co-Founder & Head of Policy | Anthropic | - | [LinkedIn](https://www.linkedin.com/in/jack-clark-ai/) | [Anthropic](https://www.anthropic.com) | Anthropic 联合创始人兼政策负责人，Import AI 作者，可作为高层决策者推动 VULCA 合作 | 10min Call | High | 待联系 |
+| 4 | Sandhini Agarwal | Trustworthy AI Team Lead | OpenAI | - | - | [GPT-4V System Card](https://cdn.openai.com/papers/GPTV_System_Card.pdf) | GPT-4V Launch Safety Lead，领导 Trustworthy AI 团队，负责多模态模型安全性评估 | Demo | High | 待联系 |
+| 5 | ~~Lilian Weng~~ | ~~Research Lead~~ | ~~OpenAI~~ | - | - | - | **已离职（2024年11月）**，现为 Thinking Machines 联合创始人，建议移除或替换 | - | - | 已离职 |
 | 6 | Rowan Zellers | Research Scientist | OpenAI | - | - | [GPT-4V Contributors](https://openai.com/contributions/gpt-4v/) | GPT-4V 评测数据团队，专注多模态理解评估 | Demo | Medium | 待联系 |
-| 7 | Sissie Hsiao | VP & GM, Gemini | Google DeepMind | - | [LinkedIn](https://www.linkedin.com/in/sissie-hsiao/) | [Gemini](https://deepmind.google/technologies/gemini/) | Gemini 产品负责人，直接汇报给 Demis Hassabis，可推动 Gemini 评测合作 | Demo + Pilot | High | 待联系 |
-| 8 | Rob Fergus | Director of AI Research | Meta AI (FAIR) | - | - | [Meta AI Research](https://ai.meta.com/research/) | 领导 Meta 基础 AI 研究，Llama 4 多模态能力开发 | Demo | High | 待联系 |
+| 7 | Josh Woodward | VP & GM, Gemini App | Google DeepMind | - | - | [Gemini](https://deepmind.google/technologies/gemini/) | Gemini App 新负责人（2025年4月接任），Google Labs 负责人，NotebookLM 发布者 | Demo + Pilot | High | 待联系 |
+| 8 | Rob Fergus | Director of AI Research & Head of FAIR | Meta AI | - | - | [Meta AI Research](https://ai.meta.com/research/) | 2025年5月新任 FAIR 负责人（从 Google DeepMind 回归），领导 Meta 长期 AI 研究 | Demo | High | 待联系 |
 | 9 | Jinze Bai 白金泽 | Research Scientist | Alibaba Qwen Team | - | - | [Qwen-VL Paper](https://arxiv.org/abs/2308.12966) | Qwen-VL 系列论文第一作者，直接参与阿里通义千问多模态模型开发 | Sample Report | High | 待联系 |
 | 10 | 张鹏 | CEO | 智谱 AI | - | - | [智谱官网](https://www.zhipuai.cn) | 智谱 CEO，清华计算机系背景，GLM-4V 多模态模型领导者 | Demo + Pilot | High | 待联系 |
 | 11 | 唐杰 | Professor/Co-founder | 清华大学/智谱 | - | - | [AMiner](https://www.aminer.cn) | 清华教授，智谱学术顾问，AMiner 创始人，学术+产业双重影响力 | Sample Report | High | 待联系 |
@@ -49,7 +49,7 @@
 | 18 | Anastasios Angelopoulos | CEO | LMArena | - | [LinkedIn](https://www.linkedin.com/in/anastasios-angelopoulos/) | [LMArena](https://lmarena.ai) | LMSYS Chatbot Arena 创始团队，350 万+人类偏好数据，VULCA 可补充文化维度 | Demo + Partnership | High | 待联系 |
 | 19 | Wei-Lin Chiang | CTO | LMArena | - | - | [LMArena](https://lmarena.ai) | LMArena CTO，UC Berkeley 背景，技术决策者 | Demo | High | 待联系 |
 | 20 | Ion Stoica | Co-founder/Advisor | LMArena | - | [LinkedIn](https://www.linkedin.com/in/ion-stoica-b4605a3/) | [Berkeley](https://people.eecs.berkeley.edu/~istoica/) | UC Berkeley 教授，Databricks 创始人，LMArena 顾问，学术+产业影响力 | 10min Call | High | 待联系 |
-| 21 | clefourrier (Clémentine Fourrier) | Leaderboard Lead | Hugging Face | - | [HuggingFace](https://huggingface.co/clefourrier) | [Open LLM Leaderboard](https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard) | 维护 HuggingFace Open LLM Leaderboard，VULCA 可作为文化评测 benchmark 合作 | Partnership | High | 待联系 |
+| 21 | clefourrier (Clémentine Fourrier) | Leaderboard Lead (休假至2026年12月) | Hugging Face | - | [HuggingFace](https://huggingface.co/clefourrier) | [Open LLM Leaderboard](https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard) | ⚠️ **休假中至2026年12月**，维护 HuggingFace Open LLM Leaderboard，建议联系 Hugging Face 评测团队其他成员 | Partnership | Medium | 暂缓联系 |
 
 ### A3: AI 安全/治理/评测公司
 
@@ -92,7 +92,7 @@
 
 | # | 姓名 | 职务 | 机构 | 邮箱 | LinkedIn | 相关工作链接 | 为什么是他 | 建议CTA | 优先级 | 状态 |
 |---|------|------|------|------|----------|--------------|------------|---------|--------|------|
-| 1 | Fei-Fei Li 李飞飞 | Co-Director | Stanford HAI | - | - | [Stanford HAI](https://hai.stanford.edu) | Stanford HAI 联合主任，ImageNet 创始人，TIME 2025 年度人物，计算机视觉教母 | Sample Report + Collab | High | 待联系 |
+| 1 | Fei-Fei Li 李飞飞 | Co-Director (On Leave) / CEO, World Labs | Stanford HAI / World Labs | - | - | [Stanford HAI](https://hai.stanford.edu) | Stanford HAI 联合主任（休假中），World Labs CEO，ImageNet 创始人，TIME 2025 年度人物，2025 Queen Elizabeth Prize 获得者 | Sample Report + Collab | High | 待联系 |
 | 2 | James Landay | Co-Director | Stanford HAI | - | - | [Stanford HAI](https://hai.stanford.edu) | Stanford HAI 联合主任，HCI 领域专家，可推动人机交互视角的 VULCA 合作 | Sample Report | Medium | 待联系 |
 | 3 | Russell Wald | Executive Director | Stanford HAI | - | - | [Stanford HAI People](https://hai.stanford.edu/about/people) | Stanford HAI 执行主任，运营决策者，可推动实际合作落地 | 10min Call | Medium | 待联系 |
 | 4 | Ahmad A. Rushdi | Director, HAI Industry Programs | Stanford HAI | rushdi@stanford.edu | - | [HAI Industry Programs](https://hai.stanford.edu/industry) | Stanford HAI 产业合作项目负责人，直接决策者 | 10min Call | High | 待联系 |
