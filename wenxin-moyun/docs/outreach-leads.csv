@@ -16,8 +16,8 @@ A,朱文佳,模型应用负责人（向吴永辉汇报）,字节跳动 Seed,,,"h
 A,David Holz,CEO,Midjourney,,"https://www.linkedin.com/in/davidholz/","https://www.midjourney.com","Midjourney 创始人，Leap Motion 联合创始人，图像生成领域领导者",Demo,Medium,待联系
 A,Cristóbal Valenzuela,CEO,Runway,,"https://www.linkedin.com/in/cvalenzuelab/","https://runwayml.com/research/introducing-runway-gen-4/","Runway 联合创始人，视频生成 AI 领域领军，Gen-4 模型发布者",Demo,Medium,待联系
 A,Pradeep Natarajan,Senior Principal Scientist,Amazon AGI,,,"https://www.amazon.science","Amazon AGI Foundation 多模态 LLM 负责人，post-training 配方专家",Demo,Medium,待联系
-A,Anastasios Angelopoulos,CEO,LMArena,,"https://www.linkedin.com/in/anastasios-angelopoulos/","https://lmarena.ai","LMSYS Chatbot Arena 创始团队，350 万+人类偏好数据，VULCA 可补充文化维度",Demo + Partnership,High,待联系
-A,Wei-Lin Chiang,CTO,LMArena,,,"https://lmarena.ai","LMArena CTO，UC Berkeley 背景，技术决策者",Demo,High,待联系
+A,Anastasios Angelopoulos,CEO,LMArena,,"https://www.linkedin.com/in/anastasios-angelopoulos/","https://lmarena.ai","LMSYS Chatbot Arena 创始团队，2026年1月 $150M Series A（估值$1.7B），5M+ MAU，60M+ 月对话量",Demo + Partnership,High,待联系
+A,Wei-Lin Chiang,CTO,LMArena,,,"https://lmarena.ai","LMArena CTO，UC Berkeley PhD 2025，2026年1月 $150M Series A（估值$1.7B），技术决策者",Demo,High,待联系
 A,Ion Stoica,Co-founder/Advisor,LMArena,,"https://www.linkedin.com/in/ion-stoica-b4605a3/","https://people.eecs.berkeley.edu/~istoica/","UC Berkeley 教授，Databricks 创始人，LMArena 顾问，学术+产业影响力",10min Call,High,待联系
 A,clefourrier (Clémentine Fourrier),Leaderboard Lead (休假至2026年12月),Hugging Face,,"https://huggingface.co/clefourrier","https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard","⚠️ 休假中至2026年12月，维护 HuggingFace Open LLM Leaderboard，建议联系 Hugging Face 评测团队其他成员",Partnership,Medium,暂缓联系
 A,Sales/Partnerships Team,AI Observability & LLM Eval Platform,Fiddler AI,help@fiddler.ai,,"https://docs.fiddler.ai/observability/platform/alerts-platform","销售 eval/monitoring/guardrails，VULCA 可定位为专业文化评测模块或合作伙伴案例",Book Demo,Medium,待联系
@@ -71,7 +71,7 @@ B,Bayes Reception,Data Science & AI Hub,Bayes Centre (Edinburgh),bayes.reception
 B,Han Zhang,Dean School of Business,HKBU,,,"https://bus.hkbu.edu.hk/","2025年1月起任 HKBU 商学院院长，2025 INFORMS ISS Distinguished Fellow，AI x Business 跨学科研究",Sample Report + Collab,High,待联系
 B,Pascale Fung 冯雁,Chair Professor / Meta Senior Director AI Research,HKUST / Meta,,,"https://arxiv.org/abs/2410.02677","HKUST 讲座教授兼 CAiRE 主任，同时担任 Meta AI Research 高级总监，CulturalBench 作者，LLM 文化理解评测先驱",Sample Report + Collab,High,待联系
 B,Chen Gao 高晨,Postdoctoral Researcher,清华大学 FIB-Lab,,,"https://fi.ee.tsinghua.edu.cn/~gaochen/","清华大学博士后，推荐系统与多模态 AI 研究，50+ CCF-A 论文，SIGIR 2020 Best Paper Honorable Mention",Sample Report,Medium,待联系
-B,Mahammed Kamruzzaman,PhD Researcher,,,,"https://2025.emnlp.org","EMNLP 2025 多模态情绪偏见论文第一作者",Sample Report,Medium,待联系
+B,Mahammed Kamruzzaman,PhD Student,University of South Florida,,,"https://aclanthology.org/2025.findings-emnlp.386/","EMNLP 2025 Seeing Race Feeling Bias 第一作者，研究 LLM 偏见缓解",Sample Report,Medium,待联系
 B,Amanda Cercas Curry,Researcher,,,,"https://2025.emnlp.org","EMNLP 2025 VLM 情绪偏见研究合著者",Sample Report,Medium,待联系
 B,Paul Pu Liang,Assistant Professor,MIT Media Lab & EECS,,,"https://pliang279.github.io/","MIT 助理教授，多模态机器学习权威，维护 awesome-multimodal-ml，引用超19000次",Sample Report + Collab,High,待联系
 B,Yixin R. Fung,Researcher,,,,"https://arxiv.org/abs/2406.15300","CultureAtlas 跨文化 VLM 数据集作者",Sample Report + Collab,High,待联系

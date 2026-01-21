@@ -47,8 +47,8 @@
 
 | # | 姓名 | 职务 | 机构 | 邮箱 | LinkedIn | 相关工作链接 | 为什么是他 | 建议CTA | 优先级 | 状态 |
 |---|------|------|------|------|----------|--------------|------------|---------|--------|------|
-| 18 | Anastasios Angelopoulos | CEO | LMArena | - | [LinkedIn](https://www.linkedin.com/in/anastasios-angelopoulos/) | [LMArena](https://lmarena.ai) | LMSYS Chatbot Arena 创始团队，350 万+人类偏好数据，VULCA 可补充文化维度 | Demo + Partnership | High | 待联系 |
-| 19 | Wei-Lin Chiang | CTO | LMArena | - | - | [LMArena](https://lmarena.ai) | LMArena CTO，UC Berkeley 背景，技术决策者 | Demo | High | 待联系 |
+| 18 | Anastasios Angelopoulos | CEO | LMArena | - | [LinkedIn](https://www.linkedin.com/in/anastasios-angelopoulos/) | [LMArena](https://lmarena.ai) | LMSYS Chatbot Arena 创始团队，**2026年1月 $150M Series A（估值$1.7B）**，5M+ MAU，60M+ 月对话量 | Demo + Partnership | High | 待联系 |
+| 19 | Wei-Lin Chiang | CTO | LMArena | - | - | [LMArena](https://lmarena.ai) | LMArena CTO，UC Berkeley PhD 2025，**2026年1月 $150M Series A（估值$1.7B）**，技术决策者 | Demo | High | 待联系 |
 | 20 | Ion Stoica | Co-founder/Advisor | LMArena | - | [LinkedIn](https://www.linkedin.com/in/ion-stoica-b4605a3/) | [Berkeley](https://people.eecs.berkeley.edu/~istoica/) | UC Berkeley 教授，Databricks 创始人，LMArena 顾问，学术+产业影响力 | 10min Call | High | 待联系 |
 | 21 | clefourrier (Clémentine Fourrier) | Leaderboard Lead (休假至2026年12月) | Hugging Face | - | [HuggingFace](https://huggingface.co/clefourrier) | [Open LLM Leaderboard](https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard) | ⚠️ **休假中至2026年12月**，维护 HuggingFace Open LLM Leaderboard，建议联系 Hugging Face 评测团队其他成员 | Partnership | Medium | 暂缓联系 |
 
@@ -138,7 +138,7 @@
 | 28 | Han Zhang | Dean, School of Business | HKBU | - | - | [HKBU Business](https://bus.hkbu.edu.hk/) | 2025年1月起任 HKBU 商学院院长，2025 INFORMS ISS Distinguished Fellow，AI x Business 跨学科研究 | Sample Report + Collab | High | 待联系 |
 | 29 | Pascale Fung 冯雁 | Chair Professor / Meta Senior Director AI Research | HKUST / Meta | - | - | [CulturalBench](https://arxiv.org/abs/2410.02677) | HKUST 讲座教授兼 CAiRE 主任，同时担任 Meta AI Research 高级总监，CulturalBench 作者，LLM 文化理解评测先驱 | Sample Report + Collab | High | 待联系 |
 | 30 | Chen Gao 高晨 | Postdoctoral Researcher | 清华大学 FIB-Lab | - | - | [清华 FI](https://fi.ee.tsinghua.edu.cn/~gaochen/) | 清华大学博士后，推荐系统与多模态 AI 研究，50+ CCF-A 论文，SIGIR 2020 Best Paper Honorable Mention | Sample Report | Medium | 待联系 |
-| 31 | Mahammed Kamruzzaman | PhD Researcher | - | - | - | [EMNLP 2025](https://2025.emnlp.org) | EMNLP 2025 多模态情绪偏见论文第一作者 | Sample Report | Medium | 待联系 |
+| 31 | Mahammed Kamruzzaman | PhD Student | University of South Florida | - | - | [EMNLP 2025 Paper](https://aclanthology.org/2025.findings-emnlp.386/) | EMNLP 2025 "Seeing Race, Feeling Bias" 第一作者，研究 LLM 偏见缓解 | Sample Report | Medium | 待联系 |
 | 32 | Amanda Cercas Curry | Researcher | - | - | - | [EMNLP 2025](https://2025.emnlp.org) | EMNLP 2025 VLM 情绪偏见研究合著者 | Sample Report | Medium | 待联系 |
 | 33 | Paul Pu Liang | Assistant Professor | MIT Media Lab & EECS | - | - | [MIT Paul Liang](https://pliang279.github.io/) | MIT 助理教授，多模态机器学习权威，维护 awesome-multimodal-ml，引用超19000次 | Sample Report + Collab | High | 待联系 |
 | 34 | Yixin R. Fung | Researcher | - | - | - | [CultureAtlas](https://arxiv.org/abs/2406.15300) | CultureAtlas 跨文化 VLM 数据集作者 | Sample Report + Collab | High | 待联系 |
