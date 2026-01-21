@@ -134,9 +134,9 @@
 
 | # | 姓名 | 职务 | 机构 | 邮箱 | LinkedIn | 相关工作链接 | 为什么是他 | 建议CTA | 优先级 | 状态 |
 |---|------|------|------|------|----------|--------------|------------|---------|--------|------|
-| 28 | Han Zhang | Chair Professor | HKBU/Georgia Tech | - | - | [HKBU](https://www.hkbu.edu.hk) | 信息系统讲座教授，AI 公平性与人机交互研究 | Sample Report | Medium | 待联系 |
+| 28 | Han Zhang | Dean, School of Business | HKBU | - | - | [HKBU Business](https://bus.hkbu.edu.hk/) | 2025年1月起任 HKBU 商学院院长，2025 INFORMS ISS Distinguished Fellow，AI x Business 跨学科研究 | Sample Report + Collab | High | 待联系 |
 | 29 | Pascale Fung 冯雁 | Professor | HKUST | - | - | [CulturalBench](https://arxiv.org/abs/2410.02677) | HKUST 教授，CulturalBench 作者，LLM 文化理解评测先驱 | Sample Report + Collab | High | 待联系 |
-| 30 | Chen Gao 高晨 | Associate Professor | 清华大学 | - | - | [清华 FI](https://fi.ee.tsinghua.edu.cn/~gaochen/) | 清华大学副教授，推荐系统与多模态 AI 研究 | Sample Report | Medium | 待联系 |
+| 30 | Chen Gao 高晨 | Postdoctoral Researcher | 清华大学 FIB-Lab | - | - | [清华 FI](https://fi.ee.tsinghua.edu.cn/~gaochen/) | 清华大学博士后，推荐系统与多模态 AI 研究，50+ CCF-A 论文，SIGIR 2020 Best Paper Honorable Mention | Sample Report | Medium | 待联系 |
 | 31 | Mahammed Kamruzzaman | PhD Researcher | - | - | - | [EMNLP 2025](https://2025.emnlp.org) | EMNLP 2025 多模态情绪偏见论文第一作者 | Sample Report | Medium | 待联系 |
 | 32 | Amanda Cercas Curry | Researcher | - | - | - | [EMNLP 2025](https://2025.emnlp.org) | EMNLP 2025 VLM 情绪偏见研究合著者 | Sample Report | Medium | 待联系 |
 | 33 | Paul Pu Liang | Assistant Professor | MIT Media Lab & EECS | - | - | [MIT Paul Liang](https://pliang279.github.io/) | MIT 助理教授，多模态机器学习权威，维护 awesome-multimodal-ml，引用超19000次 | Sample Report + Collab | High | 待联系 |
