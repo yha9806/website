@@ -28,11 +28,11 @@ A,Enterprise Sales,AI Security / Red Teaming,Promptfoo,inquiries@promptfoo.dev,,
 A,Sales/Partnerships,AI Security Platform,Enkrypt AI,hello@enkryptai.com,,"https://www.enkryptai.com/contact-us","销售安全/护栏，文化误解可定位为多模态应用的安全+声誉风险角度",10min Call,Medium,待联系
 A,Support/Partnerships,GenAI Security,Lakera,support@lakera.ai,,"https://docs.lakera.ai/docs/support","专注 GenAI 安全，VULCA 可定位为文化敏感创意工作流的鲁棒性测试",10min Call,Medium,待联系
 A,Sales Team,AI Security Platform,Protect AI,,"https://protectai.com/contact-sales","https://protectai.com/contact-sales","测试/保护 AI 系统，VULCA 提供消费者应用多模态模型的文化偏见/鲁棒性基准",10min Call,Medium,待联系
-A,Partner Team,AI Security (Adversarial AI),HiddenLayer,partners@hiddenlayer.com,,"https://hiddenlayer.com/tech-alliance/","运营合作伙伴计划，VULCA 可作为文化鲁棒性和视觉+文本幻觉风险的合作伙伴内容/测试包",10min Call,Medium,待联系
+A,Partner Team,AI Security (Adversarial AI),HiddenLayer,,,"https://hiddenlayer.com/tech-alliance/","运营合作伙伴计划，VULCA 可作为文化鲁棒性和视觉+文本幻觉风险的合作伙伴内容/测试包（通过官网联系表单）",10min Call,Medium,待联系
 A,General Inquiries,Model Testing / Robustness,Robust Intelligence (RIME),contact@robustintelligence.com,,"https://www.linkedin.com/posts/yaron-singer-76ab6317_extracting-training-data-from-chatbots-activity-7243304080469598208-k_Gp","专注模型测试与压力测试，VULCA 可定位为 VLM 特定领域评测（文化理解）",10min Call,Medium,待联系
 A,Support/Partnerships,AI Observability & Governance,Holistic AI,,"https://www.holisticai.com/","https://www.holisticai.com/","专注 AI 治理，VULCA 报告可作为视觉语言应用文化公平性和可解释性的可衡量证据",Sample Report,Medium,待联系
 A,Customer Success,AI Evaluation Program,Salesforce (LLM Benchmark),,"https://www.salesforce.com/company/contact-us/","https://www.salesforce.com/blog/llm-benchmark-crm/","发布 LLM 基准工作，可提案跨领域附加组件：多模态 CRM/媒体助手的文化理解评测",10min Call,Medium,待联系
-A,Events Team,LLM Evaluation Community,Arize AI,observe@arize.com,,"https://arize.com/observe-2024/faq/","以 LLM 评测闻名，VULCA 提供垂直方向：文化批评+博物馆/遗产用例",Book Demo,Medium,待联系
+A,Events Team,LLM Evaluation Community,Arize AI,,,"https://arize.com/observe-2024/faq/","以 LLM 评测闻名，VULCA 提供垂直方向：文化批评+博物馆/遗产用例（通过官网联系表单）",Book Demo,Medium,待联系
 A,General Inquiries,AI Governance & Incident Reporting,Fairly AI,info@fairly.ai,,"https://www.fairly.ai/discovery","专注 AI 管理系统/治理，VULCA 可为 GenAI 风险管理提供专业评测材料",Sample Report,Medium,待联系
 A,Sales Team,AI Security Platform,CalypsoAI,,"https://calypsoai.com/contact-us/","https://calypsoai.com/contact-us/","销售 GenAI 安全/合规，文化幻觉和偏见是合规+品牌风险角度",10min Call,Medium,待联系
 A,Institute Team,AI Safety Research,DLR Institute for AI Safety & Security,,"https://www.dlr.de/en/ki","https://www.dlr.de/en/ki","公共部门安全机构，可作为评测方法论和面向公众部署的试点/验证合作伙伴",10min Call,Medium,待联系
@@ -65,7 +65,7 @@ B,Turing Partnerships,Industry Collaboration,The Alan Turing Institute,partnersh
 B,LCFI Enquiries,AI Ethics & Impact,Leverhulme Centre (Cambridge),enquiries@lcfi.cam.ac.uk,,"https://www.ith.cam.ac.uk/contact-us","AI 伦理+跨学科工作，VULCA 为文化情境任务提供可衡量评测",10min Call,Medium,待联系
 B,CSER Enquiries,AI Futures & Responsibility,CSER (Cambridge),enquiries@cser.cam.ac.uk,,"https://www.ith.cam.ac.uk/contact-us","安全聚焦研究所，文化误解可定位为面向公众多模态系统的下游风险",10min Call,Medium,待联系
 B,CHIA Contact,Human-Inspired AI,CHIA (Cambridge),contact@chia.cam.ac.uk,,"https://www.ith.cam.ac.uk/contact-us","研究中心明确关注人类启发 AI，可作为评测设计方法论盟友",10min Call,Medium,待联系
-B,OxTEC Team,Technology & Ethics,OxTEC (Oxford),oxtec@oii.ox.ac.uk,,"https://oxtec.oii.ox.ac.uk/contact/","技术伦理组，文化评测是伦理讨论的有力具体材料",Sample Report,Medium,待联系
+B,OxTEC Team,Technology & Elections,OxTEC (Oxford),oxtec@oii.ox.ac.uk,,"https://oxtec.oii.ox.ac.uk/contact/","Oxford Technology and Elections Commission，关注技术对民主选举的影响，文化评测可作为 AI 影响研究案例",Sample Report,Medium,待联系
 B,Helen Sandison,Knowledge Exchange Officer,U of Glasgow Data Science & AI,Helen.Sandison@glasgow.ac.uk,,"https://www.gla.ac.uk/research/az/datascience/contact/","明确知识交流角色+AI 中心，最易进入合作/试点路径",10min Call,Medium,待联系
 B,Bayes Reception,Data Science & AI Hub,Bayes Centre (Edinburgh),bayes.reception@ed.ac.uk,,"https://bayes-centre.ed.ac.uk/about/contact-us","数据/AI+产业中心，可连接构建需要评测的多模态产品的初创企业",10min Call,Medium,待联系
 B,Han Zhang,Chair Professor,HKBU/Georgia Tech,,,"https://www.hkbu.edu.hk","信息系统讲座教授，AI 公平性与人机交互研究",Sample Report,Medium,待联系
