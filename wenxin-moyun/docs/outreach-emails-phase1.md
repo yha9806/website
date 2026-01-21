@@ -15,18 +15,19 @@ VULCA Team
 AI Art Evaluation Platform
 https://vulcaart.art
 
+🔗 Learn more: https://vulcaart.art
 📅 Book a demo: https://cal.com/vulcaart/demo
 ```
 
 ---
 
-## 邮件 1: Rushdi Shams - Stanford HAI
+## 邮件 1: Ahmad Rushdi - Stanford HAI
 
 **To**: rushdi@stanford.edu
 **Subject**: Cultural VLM benchmark - collaboration with Stanford HAI?
 
 ```
-Hi Rushdi,
+Hi Ahmad,
 
 I came across Stanford HAI's industry collaboration program and thought VULCA might be a good fit for discussion.
 
@@ -47,6 +48,7 @@ VULCA Team
 AI Art Evaluation Platform
 https://vulcaart.art
 
+🔗 Learn more: https://vulcaart.art
 📅 Book a demo: https://cal.com/vulcaart/demo
 ```
 
@@ -83,6 +85,7 @@ VULCA Team
 AI Art Evaluation Platform
 https://vulcaart.art
 
+🔗 Learn more: https://vulcaart.art
 📅 Book a demo: https://cal.com/vulcaart/demo
 ```
 
@@ -117,36 +120,27 @@ VULCA Team
 AI Art Evaluation Platform
 https://vulcaart.art
 
+🔗 Learn more: https://vulcaart.art
 📅 Book a demo: https://cal.com/vulcaart/demo
 ```
 
 ---
 
-## 邮件 4: Sarah Clayton - Oxford VGG
+## 邮件 4: Sarah Clayton - Oxford Engineering Science
 
 **To**: sarah.clayton@eng.ox.ac.uk
-**Subject**: VLM cultural evaluation benchmark - methodology collaboration?
+**Subject**: Introduction inquiry - VLM cultural evaluation research at Oxford
 
 ```
 Dear Sarah,
 
-I'm reaching out from the VULCA team regarding a potential collaboration with the Visual Geometry Group.
+I'm reaching out from the VULCA team. I understand you're the Programme Manager for Engineering Science, and I was hoping you might be able to point me in the right direction.
 
-We've built a benchmark for evaluating cultural understanding in Vision-Language Models - specifically how well they interpret artistic symbolism, cultural context, and aesthetic meaning across different traditions.
+We've developed a cultural understanding benchmark for Vision-Language Models that may be of interest to researchers in the Visual Geometry Group or related multimodal AI research areas at Oxford.
 
-Given VGG's foundational work in visual recognition and benchmark methodology, we'd value your perspective on:
+VULCA evaluates how well AI models interpret artistic symbolism, cultural context, and aesthetic meaning - spanning 47 evaluation dimensions across 8 cultural traditions, with 7,410 expert-annotated image-critique pairs.
 
-• Our 47-dimension evaluation framework
-• Cross-cultural visual understanding metrics
-• Benchmark validation protocols
-
-Quick overview:
-- 7,410 expert-annotated image-critique pairs
-- 8 cultural traditions covered
-- Bilingual (EN/ZH) with expert critiques
-- Tested on 42+ models including GPT-4V, Gemini, Claude
-
-Would you have time for a 15-minute call to explore collaboration opportunities?
+Could you suggest the most appropriate contact for discussing potential research collaboration or benchmark adoption? Alternatively, if there's a better channel for academic partnership inquiries, I'd appreciate any guidance.
 
 Best regards,
 
@@ -154,6 +148,7 @@ VULCA Team
 AI Art Evaluation Platform
 https://vulcaart.art
 
+🔗 Learn more: https://vulcaart.art
 📅 Book a demo: https://cal.com/vulcaart/demo
 ```
 
@@ -192,6 +187,7 @@ VULCA Team
 AI Art Evaluation Platform
 https://vulcaart.art
 
+🔗 Learn more: https://vulcaart.art
 📅 Book a demo: https://cal.com/vulcaart/demo
 ```
 
@@ -228,6 +224,7 @@ VULCA Team
 AI Art Evaluation Platform
 https://vulcaart.art
 
+🔗 Learn more: https://vulcaart.art
 📅 Book a demo: https://cal.com/vulcaart/demo
 ```
 
@@ -269,6 +266,7 @@ VULCA Team
 AI Art Evaluation Platform
 https://vulcaart.art
 
+🔗 Learn more: https://vulcaart.art
 📅 Book a demo: https://cal.com/vulcaart/demo
 ```
 
@@ -306,18 +304,19 @@ VULCA Team
 AI Art Evaluation Platform
 https://vulcaart.art
 
+🔗 Learn more: https://vulcaart.art
 📅 Book a demo: https://cal.com/vulcaart/demo
 ```
 
 ---
 
-## 邮件 9: G. Mallin - British Museum Knowledge Exchange
+## 邮件 9: Georgia Mallin - British Museum Knowledge Exchange
 
 **To**: gmallin@britishmuseum.org
 **Subject**: AI cultural understanding evaluation - knowledge exchange opportunity
 
 ```
-Dear G. Mallin,
+Dear Georgia,
 
 I'm reaching out through the British Museum's Knowledge Exchange program regarding AI and cultural heritage interpretation.
 
@@ -343,6 +342,7 @@ VULCA Team
 AI Art Evaluation Platform
 https://vulcaart.art
 
+🔗 Learn more: https://vulcaart.art
 📅 Book a demo: https://cal.com/vulcaart/demo
 ```
 
@@ -382,6 +382,7 @@ VULCA Team
 AI Art Evaluation Platform
 https://vulcaart.art
 
+🔗 Learn more: https://vulcaart.art
 📅 Book a demo: https://cal.com/vulcaart/demo
 ```
 
@@ -391,7 +392,7 @@ https://vulcaart.art
 
 | # | 收件人 | 邮箱 | 发送日期 | 状态 | 回复日期 | 备注 |
 |---|--------|------|----------|------|----------|------|
-| 1 | Rushdi Shams | rushdi@stanford.edu | | 待发送 | | |
+| 1 | Ahmad Rushdi | rushdi@stanford.edu | | 待发送 | | |
 | 2 | CSAIL Alliances | alliances@csail.mit.edu | | 待发送 | | |
 | 3 | Danqi Chen | danqic@cs.princeton.edu | | 待发送 | | |
 | 4 | Sarah Clayton | sarah.clayton@eng.ox.ac.uk | | 待发送 | | |
@@ -399,7 +400,7 @@ https://vulcaart.art
 | 6 | BKC Harvard | hello@cyber.harvard.edu | | 待发送 | | |
 | 7 | Turing Institute | partnerships@turing.ac.uk | | 待发送 | | |
 | 8 | Met Museum | openaccess@metmuseum.org | | 待发送 | | |
-| 9 | G. Mallin | gmallin@britishmuseum.org | | 待发送 | | |
+| 9 | Georgia Mallin | gmallin@britishmuseum.org | | 待发送 | | |
 | 10 | ai-evaluation.org | info@ai-evaluation.org | | 待发送 | | |
 
 ---

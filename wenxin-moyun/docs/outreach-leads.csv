@@ -7,7 +7,7 @@ A,Lilian Weng,Research Lead,OpenAI,,"https://www.linkedin.com/in/lilianweng/","h
 A,Rowan Zellers,Research Scientist,OpenAI,,,"https://openai.com/contributions/gpt-4v/","GPT-4V 评测数据团队，专注多模态理解评估",Demo,Medium,待联系
 A,Sissie Hsiao,VP & GM Gemini,Google DeepMind,,"https://www.linkedin.com/in/sissie-hsiao/","https://deepmind.google/technologies/gemini/","Gemini 产品负责人，直接汇报给 Demis Hassabis，可推动 Gemini 评测合作",Demo + Pilot,High,待联系
 A,Rob Fergus,Director of AI Research,Meta AI FAIR,,,"https://ai.meta.com/research/","领导 Meta 基础 AI 研究，Llama 4 多模态能力开发",Demo,High,待联系
-A,Bai Jinze 白金泽,Research Scientist,Alibaba Qwen,,,"https://arxiv.org/abs/2502.13923","Qwen2.5-VL 论文第一作者，直接参与阿里多模态模型开发",Sample Report,High,待联系
+A,Jinze Bai 白金泽,Research Scientist,Alibaba Qwen Team,,,"https://arxiv.org/abs/2308.12966","Qwen-VL系列论文第一作者，直接参与阿里通义千问多模态模型开发",Sample Report,High,待联系
 A,张鹏,CEO,智谱 AI,,,"https://www.zhipuai.cn","智谱 CEO，清华计算机系背景，GLM-4V 多模态模型领导者",Demo + Pilot,High,待联系
 A,唐杰,Professor/Co-founder,清华大学/智谱,,,"https://www.aminer.cn","清华教授，智谱学术顾问，AMiner 创始人，学术+产业双重影响力",Sample Report,High,待联系
 A,杨植麟,CEO,月之暗面,,,"https://www.qbitai.com/2025/07/308332.html","Kimi 创始人，清华系 AI 创业明星，K2 万亿参数模型发布，2025 融资 5 亿美元",Demo,High,待联系
@@ -40,11 +40,11 @@ A,Programme Team,AI Evaluation Programme,Advance AI Safety Today,info@ai-evaluat
 A,Whitepaper Team,Multimodal Red Teaming,Appen,,"https://www.appen.com/contact-us/","https://www.appen.com/whitepapers/red-teaming-multimodal-language-models","发布多模态红队测试白皮书，VULCA 可提案为可转售的专业文化数据集/评测服务",10min Call,Medium,待联系
 A,Info Desk,AI Assurance Services,TÜVIT (AI services),,"https://www.tuvit.de/en/topics/ai-safety/ai-services/","https://www.tuvit.de/en/topics/ai-safety/ai-services/","提供保证服务，VULCA 报告格式可与文化偏见和可解释性的审计/保证交付物对齐",Sample Report,Medium,待联系
 A,Quentin Rider,CTO,Artnet,,,"https://news.artnet.com","Artnet CTO，正在开发基于 Google Gemini 的 AI 艺术助手，艺术市场 AI 先驱",Demo + Partnership,High,待联系
-A,Andrew Wolff,CEO,Artnet/Artsy,,,"https://news.artnet.com","Beowolff Capital 创始人，2025 年收购 Artnet+Artsy，推动 AI 艺术市场整合",Partnership,High,待联系
+A,Andrew Wolff,CEO Beowolff Capital / Interim CEO Artnet,Artnet/Artsy,,,"https://news.artnet.com","Beowolff Capital 创始人兼CEO，2025年收购Artnet(98.93%)并任临时CEO，推动AI艺术市场整合",Partnership,High,待联系
 B,Fei-Fei Li 李飞飞,Co-Director,Stanford HAI,,,"https://hai.stanford.edu","Stanford HAI 联合主任，ImageNet 创始人，TIME 2025 年度人物，计算机视觉教母",Sample Report + Collab,High,待联系
 B,James Landay,Co-Director,Stanford HAI,,,"https://hai.stanford.edu","Stanford HAI 联合主任，HCI 领域专家，可推动人机交互视角的 VULCA 合作",Sample Report,Medium,待联系
 B,Russell Wald,Executive Director,Stanford HAI,,,"https://hai.stanford.edu/about/people","Stanford HAI 执行主任，运营决策者，可推动实际合作落地",10min Call,Medium,待联系
-B,Rushdi Shams,Industry Contact,Stanford HAI,rushdi@stanford.edu,,"https://hai.stanford.edu/contact-us","Stanford HAI 产业联络人，直接产业合作渠道",10min Call,High,待联系
+B,Ahmad A. Rushdi,Director HAI Industry Programs,Stanford HAI,rushdi@stanford.edu,,"https://hai.stanford.edu/industry","Stanford HAI 产业合作项目负责人，直接决策者",10min Call,High,待联系
 B,Daniela Rus,Director,MIT CSAIL,,,"https://www.csail.mit.edu","MIT CSAIL 主任，2025 IEEE Edison Medal，机器人与 AI 领域顶级学者",Sample Report,High,待联系
 B,Sarah Schwettmann,Research Scientist,MIT CSAIL,,,"https://news.mit.edu/2024/mit-researchers-advance-automated-interpretability-ai-models-maia-0723","MAIA 多模态可解释性研究联合负责人，与 VULCA 文化理解研究高度相关",Sample Report + Collab,High,待联系
 B,Justin Solomon,Associate Professor,MIT CSAIL,,,"https://www.csail.mit.edu","MIT 几何数据处理专家，2025 Schmidt Polymath，跨学科 AI 研究",Sample Report,Medium,待联系
@@ -53,7 +53,7 @@ B,Trevor Darrell,Professor,UC Berkeley BAIR,,,"https://bair.berkeley.edu","BAIR 
 B,Louis-Philippe Morency,Associate Professor,CMU LTI,,,"http://multicomp.cs.cmu.edu","CMU MultiComp Lab 负责人，多模态机器学习领域开创者",Sample Report + Collab,High,待联系
 B,Alexander Hauptmann,Research Professor,CMU LTI,,,"https://www.lti.cs.cmu.edu/people/faculty/hauptmann-alexander.html","CMU 多媒体分析专家，视频/图像理解研究 30 年经验",Sample Report,Medium,待联系
 B,Danqi Chen 陈丹琦,Associate Professor,Princeton NLP,danqic@cs.princeton.edu,,"https://www.cs.princeton.edu/~danqic/","Princeton NLP 联合负责人，LLM 研究专家，CharXiv 多模态论文作者",Sample Report + Collab,High,待联系
-B,Sarah Clayton,Programme Manager VGG,Oxford VGG,sarah.clayton@eng.ox.ac.uk,,"https://www.robots.ox.ac.uk/~vgg/","顶级视觉实验室，可合作基准方法论和 VLM 评测协议",10min Call,High,待联系
+B,Sarah Clayton,Programme Manager Engineering Science,Oxford Engineering,sarah.clayton@eng.ox.ac.uk,"https://www.linkedin.com/in/sarah-clayton-641a9195/","https://www.robots.ox.ac.uk/~vgg/","工程学系项目经理（VGG隶属该系），可协助联系VGG研究人员",10min Call,Medium,待联系
 B,杨浩,执行主任,北大数字人文中心,,,"https://pkudh.org","北大 AI 研究院副研究员，数字人文与文明演化研究中心执行主任",Sample Report + Collab,High,待联系
 B,梁一韬,助理教授,北大 AI 研究院,,,"https://www.ai.pku.edu.cn","北大数字人文研究核心成员，AI+人文跨学科研究",Sample Report,Medium,待联系
 B,史睿,副研究员,北大古代史研究中心,,,"https://pkudh.org","数字人文古籍研究专家，AI 文化遗产保护方向",Sample Report,Medium,待联系
@@ -76,7 +76,7 @@ B,Amanda Cercas Curry,Researcher,,,,"https://2025.emnlp.org","EMNLP 2025 VLM 情
 B,Paul Pu Liang,PhD/Postdoc,CMU,,,"https://github.com/pliang279/awesome-multimodal-ml","维护 awesome-multimodal-ml 资源库，多模态 ML 社区影响力",Sample Report,Medium,待联系
 B,Yixin R. Fung,Researcher,,,,"https://arxiv.org/abs/2406.15300","CultureAtlas 跨文化 VLM 数据集作者",Sample Report + Collab,High,待联系
 B,Haorui Yu,Researcher,,,,"https://2025.emnlp.org","EMNLP 2025 多模态 LLM 文化任务解释性评估论文作者",Sample Report,Medium,待联系
-C,Fiona Romeo,Director of Digital Content & Strategy,MoMA,,,"https://www.moma.org","MoMA 首位数字内容战略总监，领导博物馆数字化创新",Case Study + Call,High,待联系
+C,MoMA Digital Team,Digital Products,MoMA,,,"https://www.moma.org/about/senior-staff/","MoMA 数字产品团队，需通过官网联系或LinkedIn寻找当前负责人",Case Study + Call,Medium,待联系
 C,General Info,Museum Contact,MoMA,info@moma.org,,"https://www.moma.org/about/contact","主要现代艺术机构，可试点评估 AI 生成标签/解释和无障碍输出",10min Call,Medium,待联系
 C,Open Access Team,Open Access / Collection Data,The Metropolitan Museum,openaccess@metmuseum.org,,"https://www.metmuseum.org/policies/image-resources","Met 开放获取规模巨大，VULCA 合作可验证 OA 数据上的文化解释管道",10min Call,High,待联系
 C,Image Licensing,Rights & Permissions,The Metropolitan Museum,image.licensing@metmuseum.org,,"https://www.metmuseum.org/policies/image-resources","如需权限敏感合作或更高质量资产访问，此渠道很重要",10min Call,Medium,待联系
@@ -86,10 +86,10 @@ C,Digitization Partnerships,Digitization Collaboration,Smithsonian DPO,SI-Digiti
 C,Digital Services,Museum Digital Product/Services,Smithsonian Digital Museum,digitalservices@si.edu,,"https://digitalstudio.si.edu/about/","为史密森尼单位提供数字服务，VULCA 契合作为多模态解释功能的评测",10min Call,Medium,待联系
 C,Getty Digital Art History Team,Team,Getty Research Institute,,,"https://www.getty.edu/research/scholars/digital_art_history/","Getty 数字艺术史团队，机器学习艺术市场研究先驱",Sample Report + Collab,Medium,待联系
 C,Matías Sauter Morera,AI Artist,Getty Collection,,,"https://www.smithsonianmag.com/smart-news/the-getty-museum-acquires-its-first-ai-generated-artwork-180986081/","Getty 首位被收藏的 AI 艺术家，AI 生成摄影先驱",Sample Report,Low,待联系
-C,Maria Balshaw,Director,Tate,,,"https://www.tate.org.uk","Tate 总监，领导全球最具影响力现代艺术博物馆，数字创新战略决策者",Case Study + Call,High,待联系
+C,Maria Balshaw,Director (至2026年春),Tate,,,"https://www.tate.org.uk","Tate 总监（2026年春离任），领导全球最具影响力现代艺术博物馆",Case Study + Call,Medium,待联系
 C,General Enquiries,Museum Contact,Tate,hello@tate.org.uk,,"https://www.tate.org.uk/about-us/contact-us","大型当代艺术机构，良好品牌背书，可提案 AI 驱动解释+无障碍内容评测",10min Call,Medium,待联系
 C,Corporate Support,Partnerships,The British Museum,corporatesupport@britishmuseum.org,,"https://www.britishmuseum.org/support-us/corporate-support","合作伙伴渠道+强品牌，可提案面向博物馆 AI 工具的文化理解试点评测",10min Call,High,待联系
-C,G. Mallin,Knowledge Exchange Contact,The British Museum,gmallin@britishmuseum.org,,"https://www.britishmuseum.org/our-work/national/skills-sharing-and-expertise/knowledge-exchange","知识交流命名联系人，合作 MoU 和试点的最佳路径",10min Call,High,待联系
+C,Georgia Mallin,Knowledge Share Programme Manager,The British Museum,gmallin@britishmuseum.org,,"https://www.britishmuseum.org/our-work/national/skills-sharing-and-expertise/knowledge-exchange","知识交流项目经理，合作MoU和试点的最佳路径",10min Call,High,待联系
 C,General Enquiries,Visitor & Collections,The British Museum,info@britishmuseum.org,,"https://www.britishmuseum.org/about-us/governance","如合作邮箱未回复的备用，用于请求正确的数字/藏品联系人",10min Call,Low,待联系
 C,General Enquiries,Museum Contact,V&A,hello@vam.ac.uk,,"https://www.vam.ac.uk/info/contact-us","设计/遗产强馆，数字参与聚焦，可提案藏品 VLM 解释试点评测",10min Call,Medium,待联系
 C,General Enquiries,Museum Contact,The National Gallery (London),hello@nationalgallery.org.uk,,"https://www.nationalgallery.org.uk/about-us/contact-us","经典艺术机构，适合背书和艺术批评评测案例研究",Sample Report,Medium,待联系
