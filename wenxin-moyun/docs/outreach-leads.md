@@ -1,7 +1,8 @@
 # VULCA 外联名单
 
 **生成日期**: 2026-01-21
-**总计**: 105 leads
+**最后更新**: 2026-01-21 (增量验证+新增)
+**总计**: 109 leads (+4 新增)
 **用途**: VULCA 平台潜在客户外联
 
 ---
@@ -11,8 +12,8 @@
 | 类别 | 描述 | 数量 |
 |------|------|------|
 | A | AI 公司/评测团队 | 42 |
-| B | 高校实验室/项目 | 35 |
-| C | 博物馆/文化机构 | 28 |
+| B | 高校实验室/项目 | **37** (+2 CultureVLM 团队) |
+| C | 博物馆/文化机构 | **30** (+2 Tate AI 策展人) |
 
 ---
 
@@ -33,7 +34,7 @@
 | 7 | Josh Woodward | VP & GM, Gemini App | Google DeepMind | - | - | [Gemini](https://deepmind.google/technologies/gemini/) | Gemini App 新负责人（2025年4月接任），Google Labs 负责人，NotebookLM 发布者 | Demo + Pilot | High | 待联系 |
 | 8 | Rob Fergus | Director of AI Research & Head of FAIR | Meta AI | - | - | [Meta AI Research](https://ai.meta.com/research/) | 2025年5月新任 FAIR 负责人（从 Google DeepMind 回归），领导 Meta 长期 AI 研究 | Demo | High | 待联系 |
 | 9 | Jinze Bai 白金泽 | Research Scientist | Alibaba Qwen Team | - | - | [Qwen-VL Paper](https://arxiv.org/abs/2308.12966) | Qwen-VL 系列论文第一作者，直接参与阿里通义千问多模态模型开发 | Sample Report | High | 待联系 |
-| 10 | 张鹏 | CEO | 智谱 AI | - | - | [智谱官网](https://www.zhipuai.cn) | 智谱 CEO，清华计算机系背景，GLM-4V 多模态模型领导者 | Demo + Pilot | High | 待联系 |
+| 10 | 张鹏 | CEO | 智谱 AI (02513.HK) | - | - | [智谱官网](https://www.zhipuai.cn) | 智谱 CEO，清华计算机系背景，**2026年1月8日港交所上市**（市值578亿港元），全球首家 AGI 基座模型上市公司 | Demo + Pilot | High | 待联系 |
 | 11 | 唐杰 | Professor/Co-founder | 清华大学/智谱 | - | - | [AMiner](https://www.aminer.cn) | 清华教授，智谱学术顾问，AMiner 创始人，学术+产业双重影响力 | Sample Report | High | 待联系 |
 | 12 | 杨植麟 | CEO | 月之暗面 | - | - | [Kimi K2](https://www.qbitai.com/2025/07/308332.html) | Kimi 创始人，清华系 AI 创业明星，K2 万亿参数模型发布，2025 融资 5 亿美元 | Demo | High | 待联系 |
 | 13 | 吴永辉 | Seed 团队一号位 | 字节跳动 | - | - | [豆包大模型](https://www.volcengine.com) | 前 Google DeepMind VP/Google Fellow，2025年10月晋升 Seed 一号位，负责 AI 基础研究与 AGI 探索，直接向梁汝波汇报 | Demo + Pilot | High | 待联系 |
@@ -99,7 +100,7 @@
 | 5 | Daniela Rus | Director | MIT CSAIL | - | - | [MIT CSAIL](https://www.csail.mit.edu) | MIT CSAIL 主任，2025 IEEE Edison Medal，机器人与 AI 领域顶级学者 | Sample Report | High | 待联系 |
 | 6 | Sarah Schwettmann | Research Scientist & Co-Founder, Transluce | MIT CSAIL / Transluce | - | - | [MAIA Paper](https://news.mit.edu/2024/mit-researchers-advance-automated-interpretability-ai-models-maia-0723) | MAIA 多模态可解释性研究负责人，2025年共同创办 Transluce 非营利 AI 研究实验室，专注 AI 系统可解释性 | Sample Report + Collab | High | 待联系 |
 | 7 | Justin Solomon | Associate Professor | MIT CSAIL | - | - | [MIT CSAIL](https://www.csail.mit.edu) | MIT 几何数据处理专家，2025 Schmidt Polymath，跨学科 AI 研究 | Sample Report | Medium | 待联系 |
-| 8 | Lori Glover | Managing Director, Global Strategic Alliances | MIT CSAIL | loriglover@csail.mit.edu | - | [CSAIL Alliances](https://cap.csail.mit.edu/about-us/meet-our-team) | CSAIL 产业合作负责人，FinTech@CSAIL 执行主任，可提案联合基准研究或赞助试点 | 10min Call | High | 待联系 |
+| 8 | ~~Lori Glover~~ → **Glenn Wong** | Interim Managing Director, Global Strategic Alliances | MIT CSAIL | glennw@mit.edu | - | [CSAIL Alliances](https://cap.csail.mit.edu/about-us/meet-our-team) | ⚠️ Lori Glover 于 2026/01 离职加入 Columbia DSI，Glenn Wong 接任临时负责人，可提案联合基准研究或赞助试点 | 10min Call | High | 待联系 |
 | 9 | Trevor Darrell | Professor | UC Berkeley BAIR | - | - | [BAIR](https://bair.berkeley.edu) | BAIR 联合创始人，Berkeley DeepDrive 负责人，多模态视觉 AI 顶级专家 | Sample Report + Collab | High | 待联系 |
 | 10 | Louis-Philippe Morency | Associate Professor | CMU LTI | - | - | [MultiComp Lab](http://multicomp.cs.cmu.edu) | CMU MultiComp Lab 负责人，多模态机器学习领域开创者 | Sample Report + Collab | High | 待联系 |
 | 11 | Alexander Hauptmann | Research Professor | CMU LTI | - | - | [CMU LTI](https://www.lti.cs.cmu.edu/people/faculty/hauptmann-alexander.html) | CMU 多媒体分析专家，视频/图像理解研究 30 年经验 | Sample Report | Medium | 待联系 |
@@ -135,17 +136,19 @@
 | # | 姓名 | 职务 | 机构 | 邮箱 | LinkedIn | 相关工作链接 | 为什么是他 | 建议CTA | 优先级 | 状态 |
 |---|------|------|------|------|----------|--------------|------------|---------|--------|------|
 | 28 | Han Zhang | Dean, School of Business | HKBU | - | - | [HKBU Business](https://bus.hkbu.edu.hk/) | 2025年1月起任 HKBU 商学院院长，2025 INFORMS ISS Distinguished Fellow，AI x Business 跨学科研究 | Sample Report + Collab | High | 待联系 |
-| 29 | Pascale Fung 冯雁 | Professor | HKUST | - | - | [CulturalBench](https://arxiv.org/abs/2410.02677) | HKUST 教授，CulturalBench 作者，LLM 文化理解评测先驱 | Sample Report + Collab | High | 待联系 |
+| 29 | Pascale Fung 冯雁 | Chair Professor / Meta Senior Director AI Research | HKUST / Meta | - | - | [CulturalBench](https://arxiv.org/abs/2410.02677) | HKUST 讲座教授兼 CAiRE 主任，同时担任 Meta AI Research 高级总监，CulturalBench 作者，LLM 文化理解评测先驱 | Sample Report + Collab | High | 待联系 |
 | 30 | Chen Gao 高晨 | Postdoctoral Researcher | 清华大学 FIB-Lab | - | - | [清华 FI](https://fi.ee.tsinghua.edu.cn/~gaochen/) | 清华大学博士后，推荐系统与多模态 AI 研究，50+ CCF-A 论文，SIGIR 2020 Best Paper Honorable Mention | Sample Report | Medium | 待联系 |
 | 31 | Mahammed Kamruzzaman | PhD Researcher | - | - | - | [EMNLP 2025](https://2025.emnlp.org) | EMNLP 2025 多模态情绪偏见论文第一作者 | Sample Report | Medium | 待联系 |
 | 32 | Amanda Cercas Curry | Researcher | - | - | - | [EMNLP 2025](https://2025.emnlp.org) | EMNLP 2025 VLM 情绪偏见研究合著者 | Sample Report | Medium | 待联系 |
 | 33 | Paul Pu Liang | Assistant Professor | MIT Media Lab & EECS | - | - | [MIT Paul Liang](https://pliang279.github.io/) | MIT 助理教授，多模态机器学习权威，维护 awesome-multimodal-ml，引用超19000次 | Sample Report + Collab | High | 待联系 |
 | 34 | Yixin R. Fung | Researcher | - | - | - | [CultureAtlas](https://arxiv.org/abs/2406.15300) | CultureAtlas 跨文化 VLM 数据集作者 | Sample Report + Collab | High | 待联系 |
 | 35 | Haorui Yu | Researcher | - | - | - | [EMNLP 2025](https://2025.emnlp.org) | EMNLP 2025 多模态 LLM 文化任务解释性评估论文作者 | Sample Report | Medium | 待联系 |
+| 36 | **Jindong Wang 王晋东** | Assistant Professor | William & Mary (原 MSRA) | jindong.wang@microsoft.com | - | [CultureVLM](https://arxiv.org/abs/2501.01282) | 🆕 CultureVLM/CultureVerse 论文通讯作者（ICLR 2026），2024年从 MSRA 转任 William & Mary 数据科学系助理教授，VLM 文化理解研究先驱 | Sample Report + Collab | **High** | 待联系 |
+| 37 | **Shudong Liu** | Researcher | - | - | - | [CultureVLM](https://arxiv.org/abs/2501.01282) | 🆕 CultureVLM 第一作者，19,682 文化概念跨 188 国家基准数据集 | Sample Report + Collab | High | 待联系 |
 
 ---
 
-## C 类: 博物馆/文化机构 (28 leads)
+## C 类: 博物馆/文化机构 (28 leads → 31 leads)
 
 这类客户周期较长但品牌背书强，可为 VULCA 提供权威性认可。
 
@@ -170,6 +173,8 @@
 |---|------|------|------|------|----------|--------------|------------|---------|--------|------|
 | 11 | Maria Balshaw | Director (至2026年春) | Tate | - | - | [Tate](https://www.tate.org.uk) | Tate 总监（2026年春离任），领导全球最具影响力现代艺术博物馆 | Case Study + Call | Medium | 待联系 |
 | 12 | General Enquiries | Museum Contact | Tate | hello@tate.org.uk | - | [Tate Contact](https://www.tate.org.uk/about-us/contact-us) | 大型当代艺术机构，良好品牌背书，可提案 AI 驱动解释+无障碍内容评测 | 10min Call | Medium | 待联系 |
+| 12a | **Val Ravaglia** | Curator, International Art | Tate Modern | - | - | [Electric Dreams](https://www.tate.org.uk/whats-on/tate-modern/electric-dreams) | 🆕 Electric Dreams 展览策展人（Anthropic 赞助），AI 艺术项目决策者 | Demo + Case Study | **High** | 待联系 |
+| 12b | **Annie Bicknell** | Curator of Public Practice | Tate | - | - | [Tech Tea Exchange](https://www.tate.org.uk/whats-on/tate-modern/electric-dreams/tech-tea--exchange) | 🆕 Tech, Tea + Exchange AI 项目策展人，与 Anthropic 合作 | Demo + Case Study | **High** | 待联系 |
 | 13 | Corporate Support | Partnerships | The British Museum | corporatesupport@britishmuseum.org | - | [BM Corporate](https://www.britishmuseum.org/support-us/corporate-support) | 合作伙伴渠道+强品牌，可提案面向博物馆 AI 工具的文化理解试点评测 | 10min Call | High | 待联系 |
 | 14 | Georgia Mallin | Knowledge Share Programme Manager | The British Museum | gmallin@britishmuseum.org | - | [BM Knowledge Exchange](https://www.britishmuseum.org/our-work/national/skills-sharing-and-expertise/knowledge-exchange) | 知识交流项目经理，合作 MoU 和试点的最佳路径 | 10min Call | High | 待联系 |
 | 15 | General Enquiries | Visitor & Collections | The British Museum | info@britishmuseum.org | - | [BM Governance](https://www.britishmuseum.org/about-us/governance) | 如合作邮箱未回复的备用，用于请求正确的数字/藏品联系人 | 10min Call | Low | 待联系 |
@@ -189,7 +194,7 @@
 | # | 姓名 | 职务 | 机构 | 邮箱 | LinkedIn | 相关工作链接 | 为什么是他 | 建议CTA | 优先级 | 状态 |
 |---|------|------|------|------|----------|--------------|------------|---------|--------|------|
 | 21 | 朱鸿文 | 副院长 | 故宫博物院 | - | - | [故宫数字化](https://www.dpm.org.cn) | 故宫副院长，负责数字故宫建设，195 万件文物数字化领导者 | Case Study + Call | High | 待联系 |
-| 22 | 苏怡 | 数字与信息部主任 | 故宫博物院 | - | - | [故宫数字孪生](https://www.dpm.org.cn) | 故宫数字孪生示范项目负责人，国家重点研发计划牵头人 | Demo + Call | High | 待联系 |
+| 22 | ⚠️ 苏怡 | 数字与信息部主任（待核实） | 故宫博物院 | - | - | [故宫数字孪生](https://www.dpm.org.cn) | ⚠️ **职务待核实**：搜索未能验证此人为数字与信息部主任，建议通过官方渠道确认后再联系 | Demo + Call | Medium | 待核实 |
 | 23 | 黄墨樵 | 数字与信息部副主任 | 故宫博物院 | - | - | [故宫博物院](https://www.dpm.org.cn) | 故宫文化遗产数字化监测专家，虚拟修复交互体验负责人 | Demo | Medium | 待联系 |
 | 24 | 上海博物馆数字化团队 | Team | 上海博物馆 | - | - | [上海博物馆](https://www.shanghaimuseum.net) | 中国首个全面数据化管理平台，百视通数字孪生博物馆合作方 | Case Study | Medium | 待联系 |
 | 25 | 中国丝绸博物馆团队 | Team | 中国丝绸博物馆 | - | - | [丝绸之路数字博物馆](https://cn.wicinternet.org) | 丝绸之路数字博物馆项目申报方，联合大英博物馆、敦煌研究院 | Case Study | Medium | 待联系 |
