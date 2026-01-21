@@ -29,14 +29,14 @@
 | 3 | Jack Clark | Co-Founder & Head of Policy | Anthropic | - | [LinkedIn](https://www.linkedin.com/in/jack-clark-ai/) | [Anthropic](https://www.anthropic.com) | Anthropic 联合创始人兼政策负责人，Import AI 作者，可作为高层决策者推动 VULCA 合作 | 10min Call | High | 待联系 |
 | 4 | Sandhini Agarwal | Trustworthy AI Team Lead | OpenAI | - | - | [GPT-4V System Card](https://cdn.openai.com/papers/GPTV_System_Card.pdf) | GPT-4V Launch Safety Lead，领导 Trustworthy AI 团队，负责多模态模型安全性评估 | Demo | High | 待联系 |
 | 5 | ~~Lilian Weng~~ | ~~Research Lead~~ | ~~OpenAI~~ | - | - | - | **已离职（2024年11月）**，现为 Thinking Machines 联合创始人，建议移除或替换 | - | - | 已离职 |
-| 6 | Rowan Zellers | Research Scientist | OpenAI | - | - | [GPT-4V Contributors](https://openai.com/contributions/gpt-4v/) | GPT-4V 评测数据团队，专注多模态理解评估 | Demo | Medium | 待联系 |
+| 6 | ~~Rowan Zellers~~ | ~~Research Scientist~~ | ~~OpenAI~~ | - | - | - | **已离职（2025年2月）**，与 Lilian Weng 一同加入 Thinking Machines，建议移除或替换 | - | - | 已离职 |
 | 7 | Josh Woodward | VP & GM, Gemini App | Google DeepMind | - | - | [Gemini](https://deepmind.google/technologies/gemini/) | Gemini App 新负责人（2025年4月接任），Google Labs 负责人，NotebookLM 发布者 | Demo + Pilot | High | 待联系 |
 | 8 | Rob Fergus | Director of AI Research & Head of FAIR | Meta AI | - | - | [Meta AI Research](https://ai.meta.com/research/) | 2025年5月新任 FAIR 负责人（从 Google DeepMind 回归），领导 Meta 长期 AI 研究 | Demo | High | 待联系 |
 | 9 | Jinze Bai 白金泽 | Research Scientist | Alibaba Qwen Team | - | - | [Qwen-VL Paper](https://arxiv.org/abs/2308.12966) | Qwen-VL 系列论文第一作者，直接参与阿里通义千问多模态模型开发 | Sample Report | High | 待联系 |
 | 10 | 张鹏 | CEO | 智谱 AI | - | - | [智谱官网](https://www.zhipuai.cn) | 智谱 CEO，清华计算机系背景，GLM-4V 多模态模型领导者 | Demo + Pilot | High | 待联系 |
 | 11 | 唐杰 | Professor/Co-founder | 清华大学/智谱 | - | - | [AMiner](https://www.aminer.cn) | 清华教授，智谱学术顾问，AMiner 创始人，学术+产业双重影响力 | Sample Report | High | 待联系 |
 | 12 | 杨植麟 | CEO | 月之暗面 | - | - | [Kimi K2](https://www.qbitai.com/2025/07/308332.html) | Kimi 创始人，清华系 AI 创业明星，K2 万亿参数模型发布，2025 融资 5 亿美元 | Demo | High | 待联系 |
-| 13 | 吴永辉 | Head of Seed | 字节跳动 | - | - | [豆包大模型](https://www.volcengine.com) | 前 Google DeepMind VP，2025 年接管字节 Seed 团队，负责豆包全线多模态研发 | Demo + Pilot | High | 待联系 |
+| 13 | 吴永辉 | Seed 团队一号位 | 字节跳动 | - | - | [豆包大模型](https://www.volcengine.com) | 前 Google DeepMind VP/Google Fellow，2025年10月晋升 Seed 一号位，负责 AI 基础研究与 AGI 探索，直接向梁汝波汇报 | Demo + Pilot | High | 待联系 |
 | 14 | 朱文佳 | Model Application Lead | 字节跳动 Seed | - | - | [火山引擎](https://www.volcengine.com) | 豆包大模型开发负责人，Seed 模型应用能力核心人物 | Demo | Medium | 待联系 |
 | 15 | David Holz | CEO | Midjourney | - | [LinkedIn](https://www.linkedin.com/in/davidholz/) | [Midjourney](https://www.midjourney.com) | Midjourney 创始人，Leap Motion 联合创始人，图像生成领域领导者 | Demo | Medium | 待联系 |
 | 16 | Cristóbal Valenzuela | CEO | Runway | - | [LinkedIn](https://www.linkedin.com/in/cvalenzuelab/) | [Runway Gen-4](https://runwayml.com/research/introducing-runway-gen-4/) | Runway 联合创始人，视频生成 AI 领域领军，Gen-4 模型发布者 | Demo | Medium | 待联系 |
@@ -97,7 +97,7 @@
 | 3 | Russell Wald | Executive Director | Stanford HAI | - | - | [Stanford HAI People](https://hai.stanford.edu/about/people) | Stanford HAI 执行主任，运营决策者，可推动实际合作落地 | 10min Call | Medium | 待联系 |
 | 4 | Ahmad A. Rushdi | Director, HAI Industry Programs | Stanford HAI | rushdi@stanford.edu | - | [HAI Industry Programs](https://hai.stanford.edu/industry) | Stanford HAI 产业合作项目负责人，直接决策者 | 10min Call | High | 待联系 |
 | 5 | Daniela Rus | Director | MIT CSAIL | - | - | [MIT CSAIL](https://www.csail.mit.edu) | MIT CSAIL 主任，2025 IEEE Edison Medal，机器人与 AI 领域顶级学者 | Sample Report | High | 待联系 |
-| 6 | Sarah Schwettmann | Research Scientist | MIT CSAIL | - | - | [MAIA Paper](https://news.mit.edu/2024/mit-researchers-advance-automated-interpretability-ai-models-maia-0723) | MAIA 多模态可解释性研究联合负责人，与 VULCA 文化理解研究高度相关 | Sample Report + Collab | High | 待联系 |
+| 6 | Sarah Schwettmann | Research Scientist & Co-Founder, Transluce | MIT CSAIL / Transluce | - | - | [MAIA Paper](https://news.mit.edu/2024/mit-researchers-advance-automated-interpretability-ai-models-maia-0723) | MAIA 多模态可解释性研究负责人，2025年共同创办 Transluce 非营利 AI 研究实验室，专注 AI 系统可解释性 | Sample Report + Collab | High | 待联系 |
 | 7 | Justin Solomon | Associate Professor | MIT CSAIL | - | - | [MIT CSAIL](https://www.csail.mit.edu) | MIT 几何数据处理专家，2025 Schmidt Polymath，跨学科 AI 研究 | Sample Report | Medium | 待联系 |
 | 8 | Lori Glover | Managing Director, Global Strategic Alliances | MIT CSAIL | loriglover@csail.mit.edu | - | [CSAIL Alliances](https://cap.csail.mit.edu/about-us/meet-our-team) | CSAIL 产业合作负责人，FinTech@CSAIL 执行主任，可提案联合基准研究或赞助试点 | 10min Call | High | 待联系 |
 | 9 | Trevor Darrell | Professor | UC Berkeley BAIR | - | - | [BAIR](https://bair.berkeley.edu) | BAIR 联合创始人，Berkeley DeepDrive 负责人，多模态视觉 AI 顶级专家 | Sample Report + Collab | High | 待联系 |
