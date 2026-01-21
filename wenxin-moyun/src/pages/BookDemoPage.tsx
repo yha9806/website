@@ -328,7 +328,7 @@ export default function BookDemoPage() {
             <IOSCardHeader
               emoji={<Send className="w-6 h-6 text-slate-600" />}
               title="Request a Demo"
-              subtitle="We'll respond within 24 hours • Or book directly via Calendly"
+              subtitle="We'll respond within 24 hours • Or book directly via Cal.com"
             />
             <IOSCardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -553,13 +553,13 @@ export default function BookDemoPage() {
                   )}
                 </IOSButton>
 
-                {/* Calendly Direct Booking */}
+                {/* Cal.com Direct Booking */}
                 <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-700">
                   <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
                     Prefer to book directly?
                   </p>
                   <a
-                    href="https://calendly.com/vulcaart/demo"
+                    href="https://cal.com/vulcaart/demo"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -570,7 +570,7 @@ export default function BookDemoPage() {
                       className="w-full flex items-center justify-center gap-2"
                     >
                       <Calendar className="w-5 h-5" />
-                      Schedule via Calendly
+                      Schedule via Cal.com
                     </IOSButton>
                   </a>
                 </div>
