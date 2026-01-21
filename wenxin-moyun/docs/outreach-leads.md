@@ -99,7 +99,7 @@
 | 5 | Daniela Rus | Director | MIT CSAIL | - | - | [MIT CSAIL](https://www.csail.mit.edu) | MIT CSAIL 主任，2025 IEEE Edison Medal，机器人与 AI 领域顶级学者 | Sample Report | High | 待联系 |
 | 6 | Sarah Schwettmann | Research Scientist | MIT CSAIL | - | - | [MAIA Paper](https://news.mit.edu/2024/mit-researchers-advance-automated-interpretability-ai-models-maia-0723) | MAIA 多模态可解释性研究联合负责人，与 VULCA 文化理解研究高度相关 | Sample Report + Collab | High | 待联系 |
 | 7 | Justin Solomon | Associate Professor | MIT CSAIL | - | - | [MIT CSAIL](https://www.csail.mit.edu) | MIT 几何数据处理专家，2025 Schmidt Polymath，跨学科 AI 研究 | Sample Report | Medium | 待联系 |
-| 8 | CSAIL Alliances Team | Industry Partnerships | MIT CSAIL | alliances@csail.mit.edu | - | [CSAIL Alliances](https://cap.csail.mit.edu/contact-us) | 专门产业合作渠道，可提案联合基准研究或赞助试点 | 10min Call | High | 待联系 |
+| 8 | Lori Glover | Managing Director, Global Strategic Alliances | MIT CSAIL | loriglover@csail.mit.edu | - | [CSAIL Alliances](https://cap.csail.mit.edu/about-us/meet-our-team) | CSAIL 产业合作负责人，FinTech@CSAIL 执行主任，可提案联合基准研究或赞助试点 | 10min Call | High | 待联系 |
 | 9 | Trevor Darrell | Professor | UC Berkeley BAIR | - | - | [BAIR](https://bair.berkeley.edu) | BAIR 联合创始人，Berkeley DeepDrive 负责人，多模态视觉 AI 顶级专家 | Sample Report + Collab | High | 待联系 |
 | 10 | Louis-Philippe Morency | Associate Professor | CMU LTI | - | - | [MultiComp Lab](http://multicomp.cs.cmu.edu) | CMU MultiComp Lab 负责人，多模态机器学习领域开创者 | Sample Report + Collab | High | 待联系 |
 | 11 | Alexander Hauptmann | Research Professor | CMU LTI | - | - | [CMU LTI](https://www.lti.cs.cmu.edu/people/faculty/hauptmann-alexander.html) | CMU 多媒体分析专家，视频/图像理解研究 30 年经验 | Sample Report | Medium | 待联系 |
@@ -122,7 +122,7 @@
 |---|------|------|------|------|----------|--------------|------------|---------|--------|------|
 | 19 | BKC Front Desk | Internet & Society Research | Berkman Klein Center (Harvard) | hello@cyber.harvard.edu | - | [BKC](https://cyber.harvard.edu/contact) | 强政策/伦理平台，VULCA 契合公平性+社会影响，可连接需要评测材料的实验室 | Sample Report | High | 待联系 |
 | 20 | OII Enquiries | Digital Society Research | Oxford Internet Institute | enquiries@oii.ox.ac.uk | - | [OII](https://www.oii.ox.ac.uk/about/find-us/) | 跨学科，可能参与偏见/公平性+数字遗产讨论，良好合作前景 | 10min Call | Medium | 待联系 |
-| 21 | Turing Partnerships | Industry Collaboration | The Alan Turing Institute | partnerships@turing.ac.uk | - | [Turing Partnerships](https://www.turing.ac.uk/partnering-turing/industry) | 英国旗舰研究所，合作伙伴管道，可将 VULCA 定位为文化 AI 评测案例 | 10min Call | High | 待联系 |
+| 21 | Turing Partnerships | Industry Collaboration | The Alan Turing Institute | partnerships-and-engagement@turing.ac.uk | - | [Turing Partnerships](https://www.turing.ac.uk/partnering-turing/industry) | 英国旗舰研究所，合作伙伴管道，可将 VULCA 定位为文化 AI 评测案例 | 10min Call | High | 待联系 |
 | 22 | LCFI Enquiries | AI Ethics & Impact | Leverhulme Centre (Cambridge) | enquiries@lcfi.cam.ac.uk | - | [Cambridge ITH](https://www.ith.cam.ac.uk/contact-us) | AI 伦理+跨学科工作，VULCA 为文化情境任务提供可衡量评测 | 10min Call | Medium | 待联系 |
 | 23 | CSER Enquiries | AI Futures & Responsibility | CSER (Cambridge) | enquiries@cser.cam.ac.uk | - | [Cambridge ITH](https://www.ith.cam.ac.uk/contact-us) | 安全聚焦研究所，文化误解可定位为面向公众多模态系统的下游风险 | 10min Call | Medium | 待联系 |
 | 24 | CHIA Contact | Human-Inspired AI | CHIA (Cambridge) | contact@chia.cam.ac.uk | - | [Cambridge ITH](https://www.ith.cam.ac.uk/contact-us) | 研究中心明确关注人类启发 AI，可作为评测设计方法论盟友 | 10min Call | Medium | 待联系 |
