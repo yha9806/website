@@ -4,11 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-WenXin MoYun - AI model benchmarking platform testing 42 models from 15 organizations. Features React 19 frontend with iOS design system, FastAPI backend with async SQLAlchemy, VULCA 47-dimension evaluation framework, and production GCP deployment.
+VULCA (Visual Understanding and Linguistic Cultural Assessment) - AI model benchmarking platform testing 42 models from 15 organizations across 47 evaluation dimensions and 8 cultural perspectives. Features React 19 frontend with iOS design system, FastAPI backend with async SQLAlchemy, and production GCP deployment.
 
 **Production URLs:**
-- Frontend: https://storage.googleapis.com/wenxin-moyun-prod-new-static/index.html#/
-- Backend API: https://wenxin-moyun-api-229980166599.asia-east1.run.app
+- Frontend: https://vulcaart.art (Firebase Hosting)
+- Backend API: https://wenxin-moyun-api-229980166599.asia-east1.run.app (Cloud Run)
+- Database: Supabase PostgreSQL (free tier)
+- Demo Booking: https://cal.com/vulcaart/demo (Cal.com)
 
 ## Essential Commands
 
@@ -92,6 +94,11 @@ const withRoute = (path: string): string => {
 - **Zustand**: For global UI state and preferences
 - **Custom Hooks**: Business logic abstraction (useVULCAData, useAuth, etc.)
 - **React State**: Component-level state management
+
+#### 3D Visualization (VULCA Page)
+- **React Three Fiber**: 3D rendering with @react-three/fiber + @react-three/drei
+- **Three.js**: WebGL-based 3D graphics for interactive background
+- Key file: `src/components/vulca/VULCAVisualization.tsx`
 
 ### Backend Architecture
 
@@ -185,11 +192,36 @@ Run proper alembic upgrade, not manual schema changes
 - Demo: `demo` / `demo123`
 - Admin: `admin` / `admin123`
 
+## External Services
+
+### Cal.com (Demo Booking)
+- Account: `vulcaart` (yuhaorui48@gmail.com)
+- Public Link: https://cal.com/vulcaart/demo
+- Used in: `src/pages/BookDemoPage.tsx`
+- Duration: 30 minutes, Cal Video conferencing
+
 ## GCP Configuration
 - Project ID: `wenxin-moyun-prod-new`
 - Region: `asia-east1`
-- Services: Cloud Run, Cloud Storage, Cloud SQL, Secret Manager
+- Services: Cloud Run, Firebase Hosting, Secret Manager
 - Artifact Registry: `asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images`
+- Database: Supabase PostgreSQL (replaced Cloud SQL for cost savings)
+- Domain: vulcaart.art (Firebase Hosting custom domain)
+
+## Critical Dependency Issues
+
+### bcrypt Version Compatibility
+```python
+# requirements.txt - MUST use bcrypt 4.0.x
+bcrypt==4.0.1  # 4.1+ breaks passlib compatibility
+```
+The passlib library is incompatible with bcrypt 4.1+. Always pin to 4.0.x.
+
+### Hash Router SEO Implications
+The frontend uses HashRouter (`#/pricing`, `#/product`) required for static hosting. This affects:
+- Google cannot directly crawl hash URLs
+- Must manually request indexing via Google Search Console
+- Sitemap includes hash URLs but crawling is limited
 
 ## Exhibition Module (Didot Exhibition)
 
@@ -244,4 +276,34 @@ tasks/
 ```
 
 When working on complex tasks, document in markdown format with sections for requirements, constraints, implementation plan, and progress tracking.
-- 记住最终效果需要以能够真实的数据为准。
+
+## Database Initialization
+
+The `init_db.py` script creates both admin and demo users:
+```bash
+cd wenxin-backend
+python init_db.py  # Creates admin/admin123 and demo/demo123
+```
+
+For production (Supabase), the CI/CD pipeline runs this automatically via GitHub Actions.
+
+## Deployment Pipeline
+
+### GitHub Actions Workflow (.github/workflows/deploy-gcp.yml)
+1. **Test Phase**: Frontend build, backend tests, Playwright E2E (64 tests)
+2. **Database Init**: Runs `init_db.py` against Supabase
+3. **Backend Deploy**: Docker build → Artifact Registry → Cloud Run
+4. **Frontend Deploy**: Vite build → Firebase Hosting
+
+### Firebase Hosting Commands
+```bash
+cd wenxin-moyun
+npm run build
+firebase deploy --only hosting
+```
+
+### Environment Variables (Cloud Run)
+Secrets are injected from GCP Secret Manager:
+- `DATABASE_URL`: Supabase connection string
+- `SECRET_KEY`: JWT signing key
+- `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`: AI provider keys
