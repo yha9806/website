@@ -25,6 +25,7 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
     return image?.url || '';
   };
 
+  const hasImages = artwork.images && artwork.images.length > 0;
   const hasMultipleImages = artwork.images && artwork.images.length > 1;
   const hasVideo = !!artwork.video_url;
 
@@ -37,6 +38,7 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
       <div className="relative">
         {/* Main Image */}
         <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800">
+          {hasImages ? (
           <AnimatePresence mode="wait">
             <motion.img
               key={currentImageIndex}
@@ -49,6 +51,16 @@ export function ArtworkDetail({ artwork }: ArtworkDetailProps) {
               transition={{ duration: 0.3 }}
             />
           </AnimatePresence>
+          ) : (
+          <div className="w-full h-full bg-gradient-to-br from-slate-700 to-slate-900 flex flex-col items-center justify-center text-center p-8">
+            <svg className="w-16 h-16 text-white/20 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+            </svg>
+            <p className="text-white/70 text-lg font-medium">{artwork.title}</p>
+            <p className="text-white/40 text-sm mt-2">Image not yet available</p>
+            {hasVideo && <p className="text-white/50 text-sm mt-1">Video available below</p>}
+          </div>
+          )}
 
           {/* Image Navigation */}
           {hasMultipleImages && (

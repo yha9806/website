@@ -15,13 +15,17 @@ import type { Exhibition, Artwork, Chapter, ExhibitionFilters, Dialogue } from '
 import {
   buildExhibition,
   buildNegativeSpaceExhibition,
+  buildNortheastAsiaExhibition,
   EXHIBITION_IDS,
   type RawArtwork,
+  type NortheastAsiaRawArtwork,
 } from '../../data/exhibitions';
 
 // Data URLs
 const ECHOES_DATA_URL = '/data/echoes-and-returns.json';
 const DIALOGUES_URL = '/data/dialogues.json';
+const NORTHEAST_ASIA_DATA_URL = '/data/northeast-asia.json';
+const NORTHEAST_ASIA_DIALOGUES_URL = '/data/northeast-dialogues.json';
 
 interface UseExhibitionsReturn {
   exhibition: Exhibition | null;
@@ -61,6 +65,43 @@ export function useExhibitions(exhibitionIdProp?: string): UseExhibitionsReturn 
           const exhibitionData = buildNegativeSpaceExhibition();
           setExhibition(exhibitionData);
           setDialogues(new Map()); // No dialogues for this exhibition
+        } else if (exhibitionId === EXHIBITION_IDS.NORTHEAST_ASIA) {
+          // Load Northeast Asia Memory exhibition (from JSON)
+          const [artworksResponse, dialoguesResponse] = await Promise.all([
+            fetch(NORTHEAST_ASIA_DATA_URL),
+            fetch(NORTHEAST_ASIA_DIALOGUES_URL),
+          ]);
+
+          if (!artworksResponse.ok) {
+            throw new Error(`Failed to fetch Northeast Asia data: ${artworksResponse.statusText}`);
+          }
+
+          const rawData: NortheastAsiaRawArtwork[] = await artworksResponse.json();
+          const exhibitionData = buildNortheastAsiaExhibition(rawData);
+
+          // Process dialogues if available
+          if (dialoguesResponse.ok) {
+            const dialoguesData: Dialogue[] = await dialoguesResponse.json();
+            const dialogueMap = new Map<number | string, Dialogue>();
+
+            dialoguesData.forEach((dialogue) => {
+              dialogueMap.set(dialogue.artwork_id, dialogue);
+            });
+
+            // Associate dialogues with artworks
+            exhibitionData.chapters?.forEach((chapter) => {
+              chapter.artworks.forEach((artwork) => {
+                const dialogue = dialogueMap.get(artwork.id);
+                if (dialogue) {
+                  artwork.dialogues = [dialogue];
+                }
+              });
+            });
+
+            setDialogues(dialogueMap);
+          }
+
+          setExhibition(exhibitionData);
         } else {
           // Load Echoes and Returns exhibition (from JSON)
           const [artworksResponse, dialoguesResponse] = await Promise.all([

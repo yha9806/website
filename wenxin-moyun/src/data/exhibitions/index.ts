@@ -5,8 +5,9 @@
  * Supports multiple exhibitions:
  * - Echoes and Returns (回响与归来)
  * - Negative Space of the Tide (潮汐的负形)
+ * - Northeast Asia Memory (东北亚记忆)
  *
- * @updated 2026-01-10 - Added multi-exhibition support
+ * @updated 2026-02-05 - Added Northeast Asia Memory exhibition
  */
 
 // Echoes and Returns exports
@@ -31,6 +32,16 @@ export {
   ARTWORKS as NEGATIVE_SPACE_ARTWORKS,
   buildNegativeSpaceExhibition,
 } from './negative-space';
+
+// Northeast Asia Memory exports
+export {
+  NORTHEAST_ASIA_ID,
+  NORTHEAST_ASIA_INFO,
+  NORTHEAST_ASIA_CHAPTERS,
+  buildNortheastAsiaExhibition,
+} from './northeast-asia';
+
+export type { NortheastAsiaRawArtwork } from './northeast-asia';
 
 // Re-export types for convenience
 export type {
@@ -58,11 +69,14 @@ export { RPAIT_LABELS, RPAIT_COLORS } from '../../types/exhibition';
 
 // Static JSON data paths
 export const ECHOES_DATA_URL = '/data/echoes-and-returns.json';
+export const NORTHEAST_ASIA_DATA_URL = '/data/northeast-asia.json';
+export const NORTHEAST_ASIA_DIALOGUES_URL = '/data/northeast-dialogues.json';
 
 // Exhibition IDs
 export const EXHIBITION_IDS = {
   ECHOES_AND_RETURNS: 'echoes-and-returns',
   NEGATIVE_SPACE: 'negative-space-of-the-tide',
+  NORTHEAST_ASIA: 'northeast-asia-memory',
 } as const;
 
 // All exhibitions metadata for listing
@@ -97,6 +111,19 @@ export const ALL_EXHIBITIONS = [
       accentColor: '#D4A574',
     },
   },
+  {
+    id: 'northeast-asia-memory',
+    name: 'Northeast Asia Memory',
+    name_zh: '东北亚记忆',
+    description: 'An exhibition exploring memory, identity, displacement, and sensory experience across Northeast Asia through 18 artworks by artists from China, Japan, Korea, and the UK.',
+    description_zh: '一场跨越东北亚的展览，通过来自中国、日本、韩国与英国的18位艺术家作品，探索记忆、身份、流动与感官体验。',
+    cover_image: '/data/exhibitions/northeast-asia/image_01.png',
+    artworks_count: 18,
+    status: 'live' as const,
+    has_chapters: true,
+    has_dialogues: true,
+    has_rpait: false,
+  },
 ] as const;
 
 export type ExhibitionId = typeof EXHIBITION_IDS[keyof typeof EXHIBITION_IDS];
@@ -128,5 +155,19 @@ export async function getExhibitionById(id: string): Promise<Exhibition | null> 
     return buildNegativeSpaceExhibition();
   }
 
+  if (id === EXHIBITION_IDS.NORTHEAST_ASIA) {
+    return fetchNortheastAsiaData();
+  }
+
   return null;
+}
+
+// Fetch Northeast Asia Memory exhibition data
+export async function fetchNortheastAsiaData(): Promise<Exhibition> {
+  const { buildNortheastAsiaExhibition } = await import('./northeast-asia');
+
+  const response = await fetch(NORTHEAST_ASIA_DATA_URL);
+  const rawData = await response.json();
+
+  return buildNortheastAsiaExhibition(rawData);
 }
