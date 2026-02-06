@@ -65,7 +65,9 @@ class Settings(BaseSettings):
         # Production URLs
         "https://vulcaart.art",
         "https://www.vulcaart.art",
-        "https://storage.googleapis.com"
+        "https://storage.googleapis.com",
+        # Render deployment
+        "https://vulca-api.onrender.com"
     ]
     
     # Rate Limiting

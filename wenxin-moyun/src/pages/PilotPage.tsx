@@ -15,6 +15,7 @@ import {
   Globe2, Shield, Send, Building2, Mail, User, MessageSquare
 } from 'lucide-react';
 import { usePageSEO } from '../hooks/useSEO';
+import { API_BASE_URL } from '../config/api';
 
 // Animation variants
 const containerVariants = {
@@ -100,7 +101,7 @@ export default function PilotPage() {
     setIsSubmitting(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://wenxin-moyun-api-229980166599.asia-east1.run.app';
+      const apiUrl = API_BASE_URL;
       const response = await fetch(`${apiUrl}/api/v1/leads/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

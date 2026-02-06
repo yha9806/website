@@ -3,6 +3,7 @@
  */
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { createLogger } from '../utils/logger';
+import { getWebSocketBaseUrl, API_BASE_URL } from '../config/api';
 
 const logger = createLogger('WebSocket');
 
@@ -61,20 +62,10 @@ export function useWebSocket(options: UseWebSocketOptions) {
   const connectionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const connectionHealthRef = useRef<boolean>(false);
   
-  // WebSocket URL - 生产环境强制使用正确URL，环境变量可能包含旧值
-  const PRODUCTION_API_URL = 'https://wenxin-moyun-api-229980166599.asia-east1.run.app';
+  // WebSocket URL - uses unified config
   const getWebSocketUrl = useCallback(() => {
-    const isProduction = typeof window !== 'undefined' && window.location.hostname !== 'localhost';
-    const apiBaseUrl = isProduction
-      ? PRODUCTION_API_URL  // Always use correct production URL
-      : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001');
     const apiVersion = import.meta.env.VITE_API_VERSION || 'v1';
-    
-    // 将 http/https 转换为 ws/wss
-    const wsUrl = apiBaseUrl
-      .replace('https://', 'wss://')
-      .replace('http://', 'ws://');
-    
+    const wsUrl = getWebSocketBaseUrl();
     return `${wsUrl}/api/${apiVersion}/ws/${room}`;
   }, [room]);
 
@@ -334,14 +325,8 @@ export function useServerSentEvents(options: {
 
   const connect = useCallback(() => {
     try {
-      // 生产环境强制使用正确URL，环境变量可能包含旧值
-      const PRODUCTION_API_URL = 'https://wenxin-moyun-api-229980166599.asia-east1.run.app';
-      const isProduction = typeof window !== 'undefined' && window.location.hostname !== 'localhost';
-      const apiBaseUrl = isProduction
-        ? PRODUCTION_API_URL  // Always use correct production URL
-        : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001');
       const apiVersion = import.meta.env.VITE_API_VERSION || 'v1';
-      const url = `${apiBaseUrl}/api/${apiVersion}/sse/${room}`;
+      const url = `${API_BASE_URL}/api/${apiVersion}/sse/${room}`;
       logger.log(`Connecting to SSE: ${url}`);
       
       eventSourceRef.current = new EventSource(url);

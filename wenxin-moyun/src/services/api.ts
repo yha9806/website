@@ -32,15 +32,9 @@ const isValidGuestSession = (data: unknown): data is GuestSessionData => {
   return true;
 };
 
-// API base configuration
-// Always use hardcoded production URL in production - env var may contain stale value
-const PRODUCTION_API_URL = 'https://wenxin-moyun-api-229980166599.asia-east1.run.app';
-const isProduction = typeof window !== 'undefined' && window.location.hostname !== 'localhost';
-const API_BASE_URL = isProduction
-  ? PRODUCTION_API_URL  // Always use correct production URL
-  : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001');
-const API_VERSION = import.meta.env.VITE_API_VERSION || 'v1';
-const API_TIMEOUT = import.meta.env.VITE_API_TIMEOUT || 30000;
+// API base configuration - uses unified config
+import { API_BASE_URL, API_VERSION } from '../config/api';
+const API_TIMEOUT = import.meta.env.VITE_API_TIMEOUT || 60000; // 60s for Render cold starts
 
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({
@@ -181,6 +175,26 @@ export const retryPendingRequests = () => {
 
 export default apiClient;
 
+// Cold-start wake-up for Render free tier (sleeps after 15min inactivity)
+let wakeUpPromise: Promise<void> | null = null;
+
+export const wakeUpBackend = (): Promise<void> => {
+  if (wakeUpPromise) return wakeUpPromise;
+  wakeUpPromise = (async () => {
+    try {
+      // Fire a lightweight health check to trigger cold start
+      await axios.get(`${API_BASE_URL}/health`, { timeout: 60000 });
+      logger.log('Backend is awake');
+    } catch {
+      logger.warn('Backend wake-up ping failed (may still be starting)');
+    } finally {
+      // Allow retry after 30s
+      setTimeout(() => { wakeUpPromise = null; }, 30000);
+    }
+  })();
+  return wakeUpPromise;
+};
+
 // Cache version control for data updates
 // Uses build time from vite.config.ts to auto-invalidate cache on new deploys
 declare const __APP_VERSION__: string;
@@ -264,9 +278,12 @@ export const cacheUtils = {
   // Warm up essential caches with version check
   warmUp: async () => {
     try {
+      // Wake up backend first (Render cold start)
+      await wakeUpBackend();
+
       // Check version first
       cacheUtils.checkVersion();
-      
+
       // Preload commonly accessed data
       const results = await Promise.allSettled([
         modelsApi.getModels(true), // Force refresh for models

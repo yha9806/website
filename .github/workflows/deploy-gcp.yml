@@ -1,6 +1,6 @@
-# WenXin MoYun - GitHub Actions CI/CD Pipeline
-# Frontend: Firebase Hosting | Backend: Cloud Run + Supabase
-# Auto-deploys on push to main/master branch
+# VULCA Platform CI/CD Pipeline
+# Frontend: Firebase Hosting | Backend: Render (auto-deploys from GitHub)
+# Auto-deploys frontend on push to main/master branch
 
 name: Deploy VULCA Platform
 
@@ -19,9 +19,6 @@ on:
 
 env:
   PROJECT_ID: wenxin-moyun-prod-new
-  REGION: asia-east1
-  SERVICE_NAME: wenxin-moyun
-  REPO_NAME: wenxin-images
   FIREBASE_PROJECT: wenxin-moyun-prod-new
 
 jobs:
@@ -29,7 +26,7 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -60,12 +57,7 @@ jobs:
         working-directory: wenxin-backend
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt -c constraints.txt
-
-      # Temporarily disabled to complete deployment
-      # - name: Run frontend linting
-      #   working-directory: wenxin-moyun
-      #   run: npm run lint
+          pip install -r requirements.render.txt
 
       - name: TypeScript type checking
         working-directory: wenxin-moyun
@@ -74,7 +66,6 @@ jobs:
       - name: Run backend tests
         working-directory: wenxin-backend
         run: |
-          # Only run basic health tests in CI (skip tests requiring full DB setup)
           python -m pytest tests/test_health.py -v --tb=short || echo "Health tests skipped or failed"
         env:
           DATABASE_URL: sqlite+aiosqlite:///./test.db
@@ -113,7 +104,6 @@ jobs:
         if: github.event_name != 'pull_request'
         working-directory: wenxin-moyun
         run: |
-          # Use the updated auth test with HashRouter support
           npx playwright test tests/e2e/specs/auth-fixed.spec.ts tests/e2e/specs/homepage.spec.ts tests/e2e/specs/ai-models.spec.ts --config=tests/e2e/playwright.config.ts
         env:
           CI: true
@@ -122,13 +112,14 @@ jobs:
         timeout-minutes: 10
         continue-on-error: true
 
-  # Job 2: Deploy to staging (for PRs) or production (for main)
+  # Job 2: Deploy frontend to Firebase Hosting
+  # Backend is deployed automatically by Render on push
   deploy:
-    name: Deploy to GCP
+    name: Deploy Frontend to Firebase
     runs-on: ubuntu-latest
     needs: test
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-    
+
     permissions:
       contents: read
       id-token: write
@@ -144,311 +135,6 @@ jobs:
           project_id: ${{ env.PROJECT_ID }}
           cleanup_credentials: false
         timeout-minutes: 5
-
-      - name: Setup Google Cloud CLI
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ env.PROJECT_ID }}
-
-      - name: Comprehensive Authentication Diagnostics
-        run: |
-          echo "🔍 === AUTHENTICATION DIAGNOSTICS ==="
-          
-          # 1. 环境变量检查
-          echo "📝 Environment Variables:"
-          echo "GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS:-UNSET}"
-          echo "GOOGLE_GHA_CREDS_PATH: ${GOOGLE_GHA_CREDS_PATH:-UNSET}"
-          echo "PROJECT_ID: ${PROJECT_ID:-UNSET}"
-          
-          # 2. 认证文件检查
-          echo "📄 Credential File Analysis:"
-          if [ -f "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
-            echo "✅ Credential file exists"
-            echo "📊 File size: $(stat -c%s $GOOGLE_APPLICATION_CREDENTIALS) bytes"
-            echo "🔑 JSON structure check:"
-            jq 'keys' "$GOOGLE_APPLICATION_CREDENTIALS" 2>/dev/null || echo "❌ Invalid JSON format"
-            echo "📧 Service account email:"
-            jq -r '.client_email' "$GOOGLE_APPLICATION_CREDENTIALS" 2>/dev/null || echo "❌ No client_email field"
-            echo "🆔 Project ID from key:"
-            jq -r '.project_id' "$GOOGLE_APPLICATION_CREDENTIALS" 2>/dev/null || echo "❌ No project_id field"
-          else
-            echo "❌ Credential file not found"
-          fi
-          
-          # 3. gcloud认证状态
-          echo "🔐 gcloud Authentication Status:"
-          gcloud auth list --format="table(account,status)" || echo "❌ gcloud auth list failed"
-          gcloud config list --format="table(section,property,value)" || echo "❌ gcloud config failed"
-          
-          # 4. 网络连接测试
-          echo "🌐 Network Connectivity:"
-          curl -s -o /dev/null -w "OAuth API: %{http_code}\n" https://oauth2.googleapis.com/token
-          curl -s -o /dev/null -w "Artifact Registry: %{http_code}\n" https://asia-east1-docker.pkg.dev
-          
-          echo "🔍 === DIAGNOSTICS COMPLETE ==="
-
-      - name: Verify Service Account Permissions
-        run: |
-          echo "🔐 Testing service account permissions..."
-          
-          # 检查认证状态
-          ACCOUNT=$(gcloud config get-value account)
-          PROJECT=$(gcloud config get-value project)
-          
-          echo "📧 Service Account: ${ACCOUNT:-UNSET}"
-          echo "🏗️ Project: ${PROJECT:-UNSET}"
-          
-          if [ -z "$ACCOUNT" ]; then
-            echo "❌ CRITICAL: No authenticated account found"
-            echo "🔧 This indicates GitHub Secrets GCP_SA_KEY is invalid or malformed"
-            exit 1
-          fi
-          
-          # 测试项目访问
-          echo "🔍 Testing project access..."
-          if gcloud projects describe ${{ env.PROJECT_ID }} --quiet >/dev/null 2>&1; then
-            echo "✅ Project access verified"
-          else
-            echo "❌ No project access - check service account key and permissions"
-            exit 1
-          fi
-          
-          # 测试Artifact Registry访问
-          echo "🔍 Testing Artifact Registry access..."
-          if gcloud artifacts repositories list --location=${{ env.REGION }} --quiet >/dev/null 2>&1; then
-            echo "✅ Artifact Registry access verified"
-          else
-            echo "❌ No Artifact Registry access - need Artifact Registry Admin role"
-            exit 1
-          fi
-          
-          # 测试Secret Manager访问
-          echo "🔍 Testing Secret Manager access..."
-          if gcloud secrets list --limit=1 --quiet >/dev/null 2>&1; then
-            echo "✅ Secret Manager access verified"
-          else
-            echo "❌ No Secret Manager access - need Secret Manager Secret Accessor role"
-            exit 1
-          fi
-          
-          echo "🎉 All permission checks passed"
-
-      - name: Configure Docker Authentication
-        run: |
-          echo "🐳 Setting up Docker authentication..."
-          
-          # 配置Docker认证
-          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
-          
-          # 获取并验证access token
-          echo "🔑 Obtaining access token..."
-          ACCESS_TOKEN=$(gcloud auth print-access-token)
-          if [ -z "$ACCESS_TOKEN" ]; then
-            echo "❌ Failed to obtain access token"
-            exit 1
-          fi
-          echo "✅ Access token obtained (length: ${#ACCESS_TOKEN})"
-          
-          # 使用access token进行Docker登录
-          echo "🔐 Logging into Docker registry..."
-          echo $ACCESS_TOKEN | docker login -u oauth2accesstoken --password-stdin https://${{ env.REGION }}-docker.pkg.dev
-          
-          # 验证Docker配置
-          echo "🔍 Verifying Docker configuration..."
-          if docker info | grep -q "Registry Config"; then
-            echo "✅ Docker registry config found"
-          else
-            echo "⚠️ Docker registry config not found in docker info"
-          fi
-          
-          # 验证Docker配置文件
-          if [ -f ~/.docker/config.json ]; then
-            if cat ~/.docker/config.json | grep -q "${{ env.REGION }}-docker.pkg.dev"; then
-              echo "✅ Docker config file contains registry configuration"
-            else
-              echo "⚠️ Registry configuration not found in ~/.docker/config.json"
-            fi
-          else
-            echo "⚠️ ~/.docker/config.json not found"
-          fi
-          
-          echo "🎉 Docker authentication setup complete"
-
-      - name: Create Artifact Registry repository if not exists
-        run: |
-          echo "Checking Artifact Registry repository: ${{ env.REPO_NAME }}"
-          echo "Service Account: $(gcloud config get-value account)"
-          echo "Project: $(gcloud config get-value project)"
-          
-          # Try to describe repository, handle permission errors gracefully
-          if gcloud artifacts repositories describe ${{ env.REPO_NAME }} --location=${{ env.REGION }} --quiet 2>/dev/null; then
-            echo "✅ Artifact Registry repository already exists"
-          else
-            echo "📝 Repository check failed - attempting to create..."
-            if gcloud artifacts repositories create ${{ env.REPO_NAME }} \
-              --repository-format=docker \
-              --location=${{ env.REGION }} \
-              --description="WenXin MoYun Docker images repository" 2>/dev/null; then
-              echo "✅ Successfully created Artifact Registry repository"
-            else
-              echo "❌ Failed to create repository - insufficient permissions"
-              echo ""
-              echo "🔧 REQUIRED MANUAL SETUP:"
-              echo "1. Go to Google Cloud Console -> IAM & Admin -> IAM"
-              echo "2. Find service account: github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com"
-              echo "3. Add these roles:"
-              echo "   - Artifact Registry Administrator"
-              echo "   - Cloud Run Admin"
-              echo "   - Cloud SQL Admin"
-              echo "   - Secret Manager Secret Accessor"
-              echo "   - Storage Admin"
-              echo ""
-              echo "OR manually create the Artifact Registry repository:"
-              echo "   gcloud artifacts repositories create ${{ env.REPO_NAME }} \\"
-              echo "     --repository-format=docker \\"
-              echo "     --location=${{ env.REGION }}"
-              echo ""
-              echo "Continuing deployment anyway - Docker push will fail if repository doesn't exist..."
-            fi
-          fi
-
-      - name: Get commit SHA
-        id: vars
-        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      # Backend deployment
-      - name: Build backend image
-        run: |
-          docker build -f wenxin-backend/Dockerfile.cloud \
-            -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:${{ steps.vars.outputs.SHORT_SHA }} \
-            -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:latest \
-            wenxin-backend/
-
-      - name: Push backend image with retry
-        run: |
-          echo "🚀 Pushing Docker images..."
-          
-          # 推送SHA标签，带重试机制
-          for attempt in 1 2 3; do
-            echo "Attempt $attempt: Pushing SHA tag..."
-            if docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:${{ steps.vars.outputs.SHORT_SHA }}; then
-              echo "✅ SHA tag pushed successfully"
-              break
-            else
-              echo "❌ SHA tag push failed, attempt $attempt"
-              if [ $attempt -eq 3 ]; then
-                echo "💥 All retry attempts failed for SHA tag"
-                exit 1
-              fi
-              sleep 10
-            fi
-          done
-          
-          # 推送latest标签，带重试机制
-          for attempt in 1 2 3; do
-            echo "Attempt $attempt: Pushing latest tag..."
-            if docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:latest; then
-              echo "✅ Latest tag pushed successfully"
-              break
-            else
-              echo "❌ Latest tag push failed, attempt $attempt"
-              if [ $attempt -eq 3 ]; then
-                echo "💥 All retry attempts failed for latest tag"
-                exit 1
-              fi
-              sleep 10
-            fi
-          done
-
-      - name: Get secret key from Secret Manager
-        id: secret-key
-        run: |
-          SECRET_KEY=$(gcloud secrets versions access latest --secret="secret-key" --project=${{ env.PROJECT_ID }})
-          echo "::add-mask::$SECRET_KEY"
-          echo "key=$SECRET_KEY" >> $GITHUB_OUTPUT
-
-      # Database migration using Supabase
-      - name: Setup Python for migrations
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install minimal dependencies for migration
-        working-directory: wenxin-backend
-        run: |
-          pip install --upgrade pip
-          # Use minimal requirements to avoid disk space issues with large ML packages
-          pip install -r requirements-migrate.txt
-
-      - name: Get Supabase DATABASE_URL from Secret Manager
-        id: supabase-url
-        run: |
-          DATABASE_URL=$(gcloud secrets versions access latest --secret="supabase-database-url" --project=${{ env.PROJECT_ID }})
-          echo "::add-mask::$DATABASE_URL"
-          echo "url=$DATABASE_URL" >> $GITHUB_OUTPUT
-
-      - name: Initialize Supabase database
-        working-directory: wenxin-backend
-        env:
-          DATABASE_URL: ${{ steps.supabase-url.outputs.url }}
-          SECRET_KEY: ${{ steps.secret-key.outputs.key }}
-        run: |
-          echo "🔄 Initializing Supabase database..."
-
-          # 检查数据库连接 (SQLAlchemy 2.0 需要使用 text() 包装 SQL 语句)
-          python -c "
-          import asyncio
-          from sqlalchemy.ext.asyncio import create_async_engine
-          from sqlalchemy import text
-          import os
-
-          async def check_connection():
-              url = os.environ['DATABASE_URL']
-              engine = create_async_engine(url, echo=False)
-              async with engine.connect() as conn:
-                  result = await conn.execute(text('SELECT 1'))
-                  print('✅ Database connection successful')
-              await engine.dispose()
-
-          asyncio.run(check_connection())
-          " || { echo "❌ Database connection failed"; exit 1; }
-
-          # 直接使用 init_db.py 创建表和数据
-          # init_db.py 会执行 Base.metadata.drop_all + create_all + seed
-          # 这对于全新的 Supabase 数据库更可靠
-          echo "🌱 Creating tables and seeding database..."
-          python init_db.py
-          echo "✅ Database initialization completed"
-
-      - name: Deploy backend to Cloud Run (Supabase)
-        run: |
-          # 先清除可能存在的旧 DATABASE_URL 环境变量（之前指向 Cloud SQL）
-          gcloud run services update ${{ env.SERVICE_NAME }}-api \
-            --region=${{ env.REGION }} \
-            --remove-env-vars=DATABASE_URL \
-            --quiet || echo "Note: DATABASE_URL env var may not exist, continuing..."
-
-          # 部署新版本
-          gcloud run deploy ${{ env.SERVICE_NAME }}-api \
-            --image=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/wenxin-backend:${{ steps.vars.outputs.SHORT_SHA }} \
-            --region=${{ env.REGION }} \
-            --platform=managed \
-            --allow-unauthenticated \
-            --memory=2Gi \
-            --cpu=1 \
-            --min-instances=0 \
-            --max-instances=10 \
-            --concurrency=100 \
-            --timeout=300 \
-            --port=8080 \
-            --set-env-vars="SECRET_KEY=${{ steps.secret-key.outputs.key }},DEBUG=false,ENVIRONMENT=production" \
-            --set-secrets="DATABASE_URL=supabase-database-url:latest,OPENAI_API_KEY=openai-api-key:latest,ANTHROPIC_API_KEY=anthropic-api-key:latest,GEMINI_API_KEY=gemini-api-key:latest"
-
-      - name: Get backend URL
-        id: backend-url
-        run: |
-          BACKEND_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }}-api --region=${{ env.REGION }} --format="value(status.url)")
-          echo "url=$BACKEND_URL" >> $GITHUB_OUTPUT
 
       # Frontend deployment
       - name: Setup Node.js for frontend build
@@ -476,9 +162,8 @@ jobs:
         working-directory: wenxin-moyun
         run: npm run build:prod
         env:
-          VITE_API_BASE_URL: ${{ steps.backend-url.outputs.url }}
           VITE_API_VERSION: v1
-          VITE_API_TIMEOUT: 30000
+          VITE_API_TIMEOUT: 60000
           VITE_ENVIRONMENT: production
           VITE_SUPABASE_URL: https://rorpznpcwdjnncozlbrf.supabase.co
           VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvcnB6bnBjd2Rqbm5jb3psYnJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgyMzcyMjUsImV4cCI6MjA4MzgxMzIyNX0.XkhXTJpDz3xw7_jcwdX4vbSMf4jBozGq9x-QXAM5mVg
@@ -487,17 +172,9 @@ jobs:
         working-directory: wenxin-moyun
         run: |
           npm install -g firebase-tools
-          # Use GCP service account authentication (already authenticated via google-github-actions/auth)
           firebase deploy --only hosting --project ${{ env.FIREBASE_PROJECT }}
 
       # Health checks
-      - name: Wait for services to be ready
-        run: sleep 30
-
-      - name: Health check backend
-        run: |
-          curl -f "${{ steps.backend-url.outputs.url }}/health" || exit 1
-
       - name: Health check frontend (Firebase)
         run: |
           curl -f "https://vulcaart.art" || curl -f "https://${{ env.FIREBASE_PROJECT }}.web.app" || exit 1
@@ -506,48 +183,12 @@ jobs:
       - name: Notify deployment success
         if: success()
         run: |
-          echo "✅ Deployment successful!"
+          echo "Deployment successful!"
           echo "Frontend: https://vulcaart.art"
-          echo "Firebase: https://${{ env.FIREBASE_PROJECT }}.web.app"
-          echo "Backend: ${{ steps.backend-url.outputs.url }}"
-          echo "API Docs: ${{ steps.backend-url.outputs.url }}/docs"
+          echo "Backend: https://vulca-api.onrender.com (auto-deployed by Render)"
 
       - name: Notify deployment failure
         if: failure()
         run: |
-          echo "❌ Deployment failed!"
+          echo "Deployment failed!"
           echo "Please check the logs and try again."
-
-  # Job 3: Create release notes (optional)
-  release:
-    name: Create Release Notes
-    runs-on: ubuntu-latest
-    needs: deploy
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Generate release notes
-        run: |
-          echo "# VULCA Platform Deployment - $(date)" > RELEASE_NOTES.md
-          echo "" >> RELEASE_NOTES.md
-          echo "## 🚀 Deployed Services" >> RELEASE_NOTES.md
-          echo "- **Frontend**: https://vulcaart.art (Firebase Hosting)" >> RELEASE_NOTES.md
-          echo "- **Backend API**: Deployed to Cloud Run" >> RELEASE_NOTES.md
-          echo "- **Database**: Supabase PostgreSQL" >> RELEASE_NOTES.md
-          echo "" >> RELEASE_NOTES.md
-          echo "## 📝 Recent Commits" >> RELEASE_NOTES.md
-          git log --oneline -10 >> RELEASE_NOTES.md
-
-          cat RELEASE_NOTES.md
-
-      - name: Upload release notes
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-notes
-          path: RELEASE_NOTES.md
-          retention-days: 30
