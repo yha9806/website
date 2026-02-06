@@ -1,21 +1,30 @@
 """Redis cache service for VULCA and Rankings data"""
 
 import json
-import redis
 from typing import Optional, Any, Dict
 from datetime import timedelta
 import logging
 from app.core.config import settings
 
+try:
+    import redis
+    HAS_REDIS = True
+except ImportError:
+    HAS_REDIS = False
+
 logger = logging.getLogger(__name__)
 
 class CacheService:
     """统一的缓存服务管理"""
-    
+
     def __init__(self):
         """初始化Redis连接"""
+        if not HAS_REDIS:
+            logger.info("Redis package not installed, using memory cache")
+            self.use_redis = False
+            self.memory_cache: Dict[str, Any] = {}
+            return
         try:
-            # 尝试连接Redis，如果失败则使用内存缓存
             self.redis_client = redis.Redis(
                 host=getattr(settings, 'REDIS_HOST', 'localhost'),
                 port=getattr(settings, 'REDIS_PORT', 6379),
@@ -24,7 +33,6 @@ class CacheService:
                 socket_connect_timeout=2,
                 socket_timeout=2
             )
-            # 测试连接
             self.redis_client.ping()
             self.use_redis = True
             logger.info("Redis cache connected successfully")
