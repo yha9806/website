@@ -14,11 +14,6 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar,
   LineChart,
   Line,
 } from 'recharts';
@@ -36,49 +31,53 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
   viewMode,
   culturalPerspective = 'eastern',
 }) => {
+  const models = useMemo(() => comparison?.models ?? [], [comparison]);
+  const hasModels = models.length > 0;
+
+  // Prepare data for bar chart
+  const barChartData = useMemo(() => {
+    if (!hasModels) return [];
+    
+    const dimensions = viewMode === '6d'
+      ? ['creativity', 'technique', 'emotion', 'context', 'innovation', 'impact']
+      : models[0]?.scores47D 
+        ? Object.keys(models[0].scores47D).slice(0, 10)
+        : []; // Show first 10 for 47D, empty array if no scores47D
+    
+    return dimensions.map(dim => {
+      const dataPoint: Record<string, string | number> = { dimension: dim };
+      
+      models.forEach((model, index) => {
+        const scores = viewMode === '6d' ? model.scores6D : model.scores47D;
+        // Use modelName as key for proper legend display
+        const modelKey = model.modelName || `Model ${index + 1}`;
+        dataPoint[modelKey] = scores ? (scores[dim as keyof typeof scores] || 0) : 0;
+      });
+      
+      return dataPoint;
+    });
+  }, [hasModels, models, viewMode]);
+  
+  // Prepare cultural perspective data
+  const culturalData = useMemo(() => {
+    if (!hasModels) return [];
+    
+    return models.map(model => ({
+      model: model.modelName,
+      score: model.culturalPerspectives && culturalPerspective 
+        ? (model.culturalPerspectives[culturalPerspective as keyof typeof model.culturalPerspectives] || 0)
+        : 0,
+    }));
+  }, [hasModels, models, culturalPerspective]);
+
   // Early return if comparison data is invalid
-  if (!comparison || !comparison.models || comparison.models.length === 0) {
+  if (!hasModels) {
     return (
       <div className="text-center text-gray-500 dark:text-gray-400 p-8">
         <p>No comparison data available</p>
       </div>
     );
   }
-  // Prepare data for bar chart
-  const barChartData = useMemo(() => {
-    if (!comparison.models || comparison.models.length === 0) return [];
-    
-    const dimensions = viewMode === '6d'
-      ? ['creativity', 'technique', 'emotion', 'context', 'innovation', 'impact']
-      : comparison.models[0]?.scores47D 
-        ? Object.keys(comparison.models[0].scores47D).slice(0, 10)
-        : []; // Show first 10 for 47D, empty array if no scores47D
-    
-    return dimensions.map(dim => {
-      const dataPoint: any = { dimension: dim };
-      
-      comparison.models.forEach((model, index) => {
-        const scores = viewMode === '6d' ? model.scores6D : model.scores47D;
-        // Use modelName as key for proper legend display
-        const modelKey = model.modelName || (model as any).name || `Model ${index + 1}`;
-        dataPoint[modelKey] = scores ? (scores[dim as keyof typeof scores] || 0) : 0;
-      });
-      
-      return dataPoint;
-    });
-  }, [comparison, viewMode]);
-  
-  // Prepare cultural perspective data
-  const culturalData = useMemo(() => {
-    if (!comparison.models) return [];
-    
-    return comparison.models.map(model => ({
-      model: model.modelName,
-      score: model.culturalPerspectives && culturalPerspective 
-        ? (model.culturalPerspectives[culturalPerspective as keyof typeof model.culturalPerspectives] || 0)
-        : 0,
-    }));
-  }, [comparison, culturalPerspective]);
   
   // Chart colors
   const colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
@@ -151,8 +150,8 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
             <Tooltip />
             <Legend />
             
-            {comparison.models.map((model, index) => {
-              const modelKey = model.modelName || (model as any).name || `Model ${index + 1}`;
+            {models.map((model, index) => {
+              const modelKey = model.modelName || `Model ${index + 1}`;
               return (
                 <Bar
                   key={modelKey}
@@ -230,8 +229,8 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
               </tr>
             </thead>
             <tbody>
-              {comparison.models.map((model, index) => {
-                const baseline = comparison.models[0]?.scores6D?.creativity || 0;
+              {models.map((model, index) => {
+                const baseline = models[0]?.scores6D?.creativity || 0;
                 return (
                   <tr key={model.modelId} className="border-b">
                     <td className="py-3 font-medium">{model.modelName}</td>

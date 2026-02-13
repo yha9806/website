@@ -8,7 +8,7 @@
 import { motion } from 'framer-motion';
 import { IOSCard, IOSCardContent } from '../components/ios/core/IOSCard';
 import {
-  Sparkles, Bug, Zap, Package, Shield, Globe2, BarChart3, FileText
+  Sparkles, Bug, Zap, Package, Shield, FileText
 } from 'lucide-react';
 import { usePageSEO } from '../hooks/useSEO';
 import { VERSION_BADGE } from '../config/version';

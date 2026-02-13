@@ -3,13 +3,13 @@ import { test, expect } from '@playwright/test';
 test.describe('VULCA Simple Tests', () => {
   test('should navigate to VULCA page', async ({ page }) => {
     // Simply navigate to the page (use relative path for baseURL)
-    await page.goto('/#/vulca');
+    await page.goto('/vulca');
     
     // Wait a bit for page to load
     await page.waitForTimeout(3000);
     
     // Check that we're on the right page (URL contains vulca)
-    expect(page.url()).toContain('#/vulca');
+    expect(page.url()).toContain('/vulca');
     
     // Check that page has some content (not blank)
     const bodyText = await page.textContent('body');
@@ -18,7 +18,7 @@ test.describe('VULCA Simple Tests', () => {
   });
 
   test('should show loading or content', async ({ page }) => {
-    await page.goto('/#/vulca');
+    await page.goto('/vulca');
     await page.waitForTimeout(3000);
     
     // Check if either initialization message or main content is visible
@@ -31,7 +31,7 @@ test.describe('VULCA Simple Tests', () => {
   });
 
   test('should eventually show main content', async ({ page }) => {
-    await page.goto('/#/vulca');
+    await page.goto('/vulca');
     
     // Wait up to 30 seconds for main content
     const mainContent = await page.waitForSelector('text=/VULCA|Controls|Visualization|Dimensions/i', {

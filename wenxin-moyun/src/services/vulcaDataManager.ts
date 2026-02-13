@@ -4,7 +4,7 @@
  */
 
 import { vulcaService } from '../utils/vulca/api';
-import { VULCA_47_DIMENSIONS, getDimensionLabel } from '../utils/vulca-dimensions';
+import { VULCA_47_DIMENSIONS } from '../utils/vulca-dimensions';
 import type {
   VULCAEvaluation,
   VULCAScore6D,
@@ -12,17 +12,8 @@ import type {
   CulturalPerspective
 } from '../types/vulca';
 
-interface ModelVULCAData {
-  modelId: string;
-  modelName: string;
-  scores6D: VULCAScore6D;
-  scores47D: Record<string, number>;
-  culturalPerspectives?: Record<string, any>;
-  evaluationDate?: string;
-}
-
 class VULCADataManager {
-  private cache: Map<string, { data: any; timestamp: number }> = new Map();
+  private cache: Map<string, { data: VULCAEvaluation; timestamp: number }> = new Map();
   private cacheTTL = 5 * 60 * 1000; // 5分钟缓存
 
   /**
@@ -218,7 +209,7 @@ class VULCADataManager {
   /**
    * 缓存管理
    */
-  private getFromCache(key: string): any | null {
+  private getFromCache(key: string): VULCAEvaluation | null {
     const cached = this.cache.get(key);
     if (!cached) return null;
     
@@ -230,7 +221,7 @@ class VULCADataManager {
     return cached.data;
   }
 
-  private setCache(key: string, data: any): void {
+  private setCache(key: string, data: VULCAEvaluation): void {
     this.cache.set(key, {
       data,
       timestamp: Date.now()

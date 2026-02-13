@@ -1,6 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { iosColors, iosRadius, iosTransitions, liquidGlass } from '../utils/iosTheme';
 import { iosAnimations } from '../utils/animations';
 
 export interface IOSSliderProps {

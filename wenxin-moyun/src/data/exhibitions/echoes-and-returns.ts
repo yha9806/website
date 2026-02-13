@@ -11,8 +11,6 @@ import type {
   Exhibition,
   Chapter,
   Artwork,
-  Artist,
-  CHAPTER_NAMES
 } from '../../types/exhibition';
 
 // Raw data will be loaded from static JSON

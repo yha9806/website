@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { liquidGlass } from '../utils/iosTheme';
@@ -88,13 +88,20 @@ export const IOSContextMenu: React.FC<IOSContextMenuProps> = ({
   };
 
   // Handle long press cancel
-  const handleLongPressCancel = () => {
+  const handleLongPressCancel = useCallback(() => {
     if (longPressRef.current) {
       clearTimeout(longPressRef.current);
       longPressRef.current = null;
     }
     setIsPreviewActive(false);
-  };
+  }, []);
+
+  // Close menu
+  const closeMenu = useCallback(() => {
+    setIsVisible(false);
+    setActiveSubmenu(null);
+    handleLongPressCancel();
+  }, [handleLongPressCancel]);
 
   // Handle menu item press
   const handleMenuItemPress = (item: ContextMenuItem) => {
@@ -106,13 +113,6 @@ export const IOSContextMenu: React.FC<IOSContextMenuProps> = ({
       item.onPress();
       closeMenu();
     }
-  };
-
-  // Close menu
-  const closeMenu = () => {
-    setIsVisible(false);
-    setActiveSubmenu(null);
-    handleLongPressCancel();
   };
 
   // Handle outside click
@@ -127,7 +127,7 @@ export const IOSContextMenu: React.FC<IOSContextMenuProps> = ({
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }
-  }, [isVisible]);
+  }, [isVisible, closeMenu]);
 
   // Prevent body scroll when menu is visible
   useEffect(() => {
@@ -209,7 +209,7 @@ export const IOSContextMenu: React.FC<IOSContextMenuProps> = ({
                       {item.emoji && (
                         <EmojiIcon 
                           category="actions" 
-                          name={item.emoji as any} 
+                          name={item.emoji}
                           size="sm" 
                         />
                       )}
@@ -284,7 +284,7 @@ export const IOSContextMenu: React.FC<IOSContextMenuProps> = ({
                             {subItem.emoji && (
                               <EmojiIcon 
                                 category="actions" 
-                                name={subItem.emoji as any} 
+                                name={subItem.emoji}
                                 size="xs" 
                               />
                             )}

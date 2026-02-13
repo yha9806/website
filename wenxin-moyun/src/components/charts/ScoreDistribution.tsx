@@ -13,12 +13,24 @@ interface ScoreDistributionProps {
   showBenchmark?: boolean;
 }
 
+interface TooltipEntry {
+  color?: string;
+  name?: string;
+  value?: number | string;
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: TooltipEntry[];
+  label?: string;
+}
+
 const ScoreDistribution: React.FC<ScoreDistributionProps> = ({
   data,
   title = '评分分布',
   showBenchmark = false
 }) => {
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     if (active && payload && payload.length) {
       return (
         <div
@@ -26,7 +38,7 @@ const ScoreDistribution: React.FC<ScoreDistributionProps> = ({
           style={{ fontSize: chartConfig.font.sizes.tooltip }}
         >
           <p className="font-medium mb-1">{label}</p>
-          {payload.map((entry: any, index: number) => (
+          {payload.map((entry, index) => (
             <p key={index} className="text-sm">
               <span style={{ color: entry.color }}>●</span> {entry.name}: {entry.value}分
             </p>

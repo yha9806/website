@@ -17,12 +17,11 @@ import {
   Globe,
   FlaskConical,
   ChevronRight,
-  BookOpen,
   GitBranch,
   Users,
   Target,
 } from 'lucide-react';
-import { IOSCard, IOSCardContent, IOSCardHeader } from '../components/ios/core/IOSCard';
+import { IOSCard, IOSCardContent } from '../components/ios/core/IOSCard';
 import { ProvenanceCard } from '../components/trustlayer';
 import { dimensionsService, type L1L5Level, type Persona } from '../services/dimensions';
 import { VULCA_VERSION } from '../config/version';

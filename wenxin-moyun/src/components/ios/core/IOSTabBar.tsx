@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { liquidGlass, iosColors, iosShadows } from '../utils/iosTheme';
+import { liquidGlass } from '../utils/iosTheme';
 import { iosAnimations } from '../utils/animations';
 import { EmojiIcon } from './EmojiIcon';
-import { cn } from '../../../utils/cn';
 
 export interface TabBarItem {
   id: string;
@@ -116,7 +115,7 @@ export const IOSTabBar: React.FC<IOSTabBarProps> = ({
                 {item.emoji ? (
                   <EmojiIcon 
                     category="navigation" 
-                    name={item.emoji as any} 
+                    name={item.emoji}
                     size={iconSizes[variant]} 
                   />
                 ) : (

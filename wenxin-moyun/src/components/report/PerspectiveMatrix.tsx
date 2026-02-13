@@ -63,7 +63,6 @@ export function PerspectiveMatrix({
 
   const easternPerspectives = perspectives.filter(p => p.region === 'Eastern');
   const westernPerspectives = perspectives.filter(p => p.region === 'Western');
-  const universalPerspectives = perspectives.filter(p => p.region === 'Universal');
 
   const avgEastern = easternPerspectives.reduce((sum, p) => sum + p.score, 0) / easternPerspectives.length;
   const avgWestern = westernPerspectives.reduce((sum, p) => sum + p.score, 0) / westernPerspectives.length;

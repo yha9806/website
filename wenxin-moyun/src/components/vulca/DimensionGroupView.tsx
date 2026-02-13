@@ -11,13 +11,10 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
+  Tooltip
 } from 'recharts';
 import type { VULCAScore47D, DimensionGroup } from '../../types/vulca';
 import { IOSCard, IOSCardHeader, IOSCardContent } from '../ios';
-import { EmojiIcon } from '../ios/core/EmojiIcon';
 
 interface DimensionGroupViewProps {
   scores47D: VULCAScore47D;

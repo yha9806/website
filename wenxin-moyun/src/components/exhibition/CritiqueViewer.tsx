@@ -8,7 +8,6 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Critique, Persona } from '../../types/exhibition';
 import { IOSCard, IOSCardContent, IOSCardHeader } from '../ios/core/IOSCard';
-import { IOSButton } from '../ios/core/IOSButton';
 import { RPAITScoreCard, RPAITBadge } from './RPAITScoreCard';
 import { SinglePersonaRadar } from './RPAITRadar';
 

@@ -9,7 +9,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, X, MessageSquare, ArrowRight, FileText } from 'lucide-react';
-import { IOSButton } from '../ios/core/IOSButton';
 import { downloadSampleReport } from '../../utils/pdfExport';
 
 interface FloatingCTAProps {

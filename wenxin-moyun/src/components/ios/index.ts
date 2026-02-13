@@ -38,8 +38,10 @@ export type {
   IOSFilterValues 
 } from './core/IOSFilterPanel';
 
-export { IOSAlert, showIOSAlert } from './core/IOSAlert';
+export { IOSAlert } from './core/IOSAlert';
+export { showIOSAlert } from './core/showIOSAlert';
 export type { IOSAlertProps, IOSAlertAction } from './core/IOSAlert';
+export type { ShowAlertOptions } from './core/showIOSAlert';
 
 export { IOSTabBar } from './core/IOSTabBar';
 export type { IOSTabBarProps, TabBarItem } from './core/IOSTabBar';
@@ -47,10 +49,12 @@ export type { IOSTabBarProps, TabBarItem } from './core/IOSTabBar';
 export { IOSSegmentedControl } from './core/IOSSegmentedControl';
 export type { IOSSegmentedControlProps, SegmentItem } from './core/IOSSegmentedControl';
 
-export { IOSSheet, useIOSSheet } from './core/IOSSheet';
+export { IOSSheet } from './core/IOSSheet';
+export { useIOSSheet } from './core/useIOSSheet';
 export type { IOSSheetProps } from './core/IOSSheet';
 
-export { IOSActionSheet, useIOSActionSheet } from './core/IOSActionSheet';
+export { IOSActionSheet } from './core/IOSActionSheet';
+export { useIOSActionSheet } from './core/useIOSActionSheet';
 export type { IOSActionSheetProps, ActionSheetItem } from './core/IOSActionSheet';
 
 export { IOSContextMenu } from './core/IOSContextMenu';

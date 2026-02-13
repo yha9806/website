@@ -8,13 +8,13 @@ import type { LeaderboardEntry } from '../types/types';
 /**
  * 将数据转换为 CSV 格式
  */
-export function convertToCSV(data: any[], columns?: { key: string; label: string }[]): string {
+export function convertToCSV<T extends object>(data: T[], columns?: { key: string; label: string }[]): string {
   if (data.length === 0) return '';
   
   // 如果没有指定列，则使用数据的所有键
   const headers = columns 
     ? columns.map(col => col.label)
-    : Object.keys(data[0]);
+    : Object.keys(data[0] as Record<string, unknown>);
   
   const rows = data.map(row => {
     const values = columns
@@ -22,7 +22,7 @@ export function convertToCSV(data: any[], columns?: { key: string; label: string
           const value = getNestedValue(row, col.key);
           return formatCSVValue(value);
         })
-      : Object.values(row).map(value => formatCSVValue(value));
+      : Object.values(row as Record<string, unknown>).map(value => formatCSVValue(value));
     return values.join(',');
   });
   
@@ -32,7 +32,7 @@ export function convertToCSV(data: any[], columns?: { key: string; label: string
 /**
  * 格式化 CSV 值，处理特殊字符
  */
-function formatCSVValue(value: any): string {
+function formatCSVValue(value: unknown): string {
   if (value === null || value === undefined) return '';
   
   const stringValue = String(value);
@@ -49,8 +49,13 @@ function formatCSVValue(value: any): string {
  * 获取嵌套对象的值
  * 例如: getNestedValue(obj, 'model.name') 获取 obj.model.name
  */
-function getNestedValue(obj: any, path: string): any {
-  return path.split('.').reduce((current, key) => current?.[key], obj);
+function getNestedValue(obj: unknown, path: string): unknown {
+  return path.split('.').reduce<unknown>((current, key) => {
+    if (typeof current === 'object' && current !== null && key in current) {
+      return (current as Record<string, unknown>)[key];
+    }
+    return undefined;
+  }, obj);
 }
 
 /**
@@ -126,7 +131,7 @@ export function downloadFile(content: string, filename: string, type: string = '
  * 导出数据的统一接口
  */
 export function exportData(
-  data: any[],
+  data: LeaderboardEntry[],
   format: 'csv' | 'json',
   filename?: string
 ): void {

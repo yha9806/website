@@ -8,7 +8,7 @@ interface EvaluationTaskResponse {
   model_organization?: string;
   task_type: string;
   prompt: string;
-  parameters?: Record<string, any>;
+  parameters?: Record<string, unknown>;
   status: string;
   result?: {
     title?: string;
@@ -37,18 +37,11 @@ interface EvaluationTaskResponse {
   human_feedback?: string;
 }
 
-interface EvaluationListResponse {
-  evaluations: EvaluationTaskResponse[];
-  total: number;
-  page: number;
-  page_size: number;
-}
-
 interface CreateEvaluationRequest {
   model_id: string;
   task_type: 'poem' | 'story' | 'painting' | 'music';
   prompt: string;
-  parameters?: Record<string, any>;
+  parameters?: Record<string, unknown>;
 }
 
 interface UpdateEvaluationRequest {
@@ -104,7 +97,10 @@ class EvaluationsService {
     pageSize: number;
   }> {
     try {
-      const params: any = { skip: (page - 1) * pageSize, limit: pageSize };
+      const params: Record<string, string | number> = {
+        skip: (page - 1) * pageSize,
+        limit: pageSize,
+      };
       if (modelId) params.model_id = modelId;
       if (taskType) params.task_type = taskType;
       
@@ -169,7 +165,7 @@ class EvaluationsService {
     modelId: string;
     taskType: 'poem' | 'story' | 'painting' | 'music';
     prompt: string;
-    parameters?: Record<string, any>;
+    parameters?: Record<string, unknown>;
   }): Promise<EvaluationTask> {
     try {
       const request: CreateEvaluationRequest = {

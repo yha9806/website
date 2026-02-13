@@ -3,15 +3,26 @@
  * Shared between frontend and E2E tests
  */
 
-// Handle both browser and Node.js environments
-declare const process: any;
+type EnvMap = Record<string, string | undefined>;
+
+interface ProcessLike {
+  env?: EnvMap;
+}
+
+type WindowWithImportMeta = Window & {
+  import?: {
+    meta?: {
+      env?: EnvMap;
+    };
+  };
+};
 
 export const ROUTER_MODE = 
-  typeof process !== 'undefined' && process.env?.VITE_ROUTER_MODE 
-    ? process.env.VITE_ROUTER_MODE
-    : (typeof window !== 'undefined' && (window as any).import?.meta?.env?.VITE_ROUTER_MODE) 
-      ? (window as any).import.meta.env.VITE_ROUTER_MODE 
-      : 'hash'; // Default to hash router
+  typeof globalThis !== 'undefined' && (globalThis as { process?: ProcessLike }).process?.env?.VITE_ROUTER_MODE
+    ? (globalThis as { process?: ProcessLike }).process?.env?.VITE_ROUTER_MODE
+    : (typeof window !== 'undefined' && (window as WindowWithImportMeta).import?.meta?.env?.VITE_ROUTER_MODE)
+      ? (window as WindowWithImportMeta).import?.meta?.env?.VITE_ROUTER_MODE
+      : 'browser'; // Default to BrowserRouter
 
 /**
  * Convert a path to the correct format based on router mode

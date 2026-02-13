@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { liquidGlass, iosColors } from '../utils/iosTheme';
+import { liquidGlass } from '../utils/iosTheme';
 import { iosAnimations } from '../utils/animations';
 import { EmojiIcon } from './EmojiIcon';
 
@@ -154,7 +154,7 @@ export const IOSSegmentedControl: React.FC<IOSSegmentedControlProps> = ({
               {segment.emoji && (
                 <EmojiIcon 
                   category="navigation" 
-                  name={segment.emoji as any} 
+                  name={segment.emoji}
                   size={size === 'compact' ? 'xs' : 'sm'} 
                 />
               )}

@@ -4,16 +4,17 @@ import Layout from './components/common/Layout';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import { cacheUtils } from './services/api';
 import { useEffect, Suspense, lazy } from 'react';
+import { loadModelsPage, loadVulcaDemoPage, setupCriticalRoutePreload } from './routes/preloadCriticalRoutes';
 
 // Core pages - eagerly loaded
 import HomePage from './pages/HomePage';
-import ModelsPage from './pages/LeaderboardPage';
-import ModelDetailPage from './pages/ModelDetailPage';
-import EvaluationsPage from './pages/EvaluationsPage';
-import EvaluationDetailPage from './pages/EvaluationDetailPage';
-import GalleryPage from './pages/GalleryPage';
-import LoginPage from './pages/LoginPage';
-import NotFoundPage from './pages/NotFoundPage';
+const ModelsPage = lazy(loadModelsPage);
+const ModelDetailPage = lazy(() => import('./pages/ModelDetailPage'));
+const EvaluationsPage = lazy(() => import('./pages/EvaluationsPage'));
+const EvaluationDetailPage = lazy(() => import('./pages/EvaluationDetailPage'));
+const GalleryPage = lazy(() => import('./pages/GalleryPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Marketing pages - lazy loaded (Scale.com style)
 const ProductPage = lazy(() => import('./pages/ProductPage'));
@@ -32,7 +33,7 @@ const ResearchSolutionPage = lazy(() => import('./pages/solutions/ResearchSoluti
 const MuseumSolutionPage = lazy(() => import('./pages/solutions/MuseumSolutionPage'));
 
 // VULCA and Exhibitions - lazy loaded
-const VULCADemoPage = lazy(() => import('./pages/vulca/VULCADemoPage'));
+const VULCADemoPage = lazy(loadVulcaDemoPage);
 const ExhibitionsPage = lazy(() => import('./pages/exhibitions/ExhibitionsPage'));
 const ExhibitionDetailPage = lazy(() => import('./pages/exhibitions/ExhibitionDetailPage'));
 const ArtworkPage = lazy(() => import('./pages/exhibitions/ArtworkPage'));
@@ -55,6 +56,9 @@ const ModelReportPage = lazy(() => import('./pages/ModelReportPage'));
 
 // Comparison page - lazy loaded
 const CompareModelsPage = lazy(() => import('./pages/CompareModelsPage'));
+
+// Prototype pipeline - lazy loaded
+const PrototypePage = lazy(() => import('./pages/prototype/PrototypePage'));
 
 // Reusable loading component
 function PageLoader({ text = 'Loading...' }: { text?: string }) {
@@ -83,6 +87,10 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    return setupCriticalRoutePreload();
+  }, []);
+
   const handleError = (error: Error, errorInfo: React.ErrorInfo) => {
     console.error('App Error Boundary caught an error:', {
       error: error.message,
@@ -102,7 +110,11 @@ function App() {
         <Router>
           <Routes>
             {/* Login page without Layout */}
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/login" element={
+              <Suspense fallback={<PageLoader text="Loading Login..." />}>
+                <LoginPage />
+              </Suspense>
+            } />
 
             {/* All other pages with Layout */}
             <Route element={<Layout />}>
@@ -172,12 +184,32 @@ function App() {
               } />
 
               {/* Public Demo / Models */}
-              <Route path="/models" element={<ModelsPage />} />
-              <Route path="/models/:category" element={<ModelsPage />} />
+              <Route path="/models" element={
+                <Suspense fallback={<PageLoader text="Loading Models..." />}>
+                  <ModelsPage />
+                </Suspense>
+              } />
+              <Route path="/models/:category" element={
+                <Suspense fallback={<PageLoader text="Loading Models..." />}>
+                  <ModelsPage />
+                </Suspense>
+              } />
               {/* Legacy route redirects */}
-              <Route path="/leaderboard" element={<ModelsPage />} />
-              <Route path="/leaderboard/:category" element={<ModelsPage />} />
-              <Route path="/model/:id" element={<ModelDetailPage />} />
+              <Route path="/leaderboard" element={
+                <Suspense fallback={<PageLoader text="Loading Models..." />}>
+                  <ModelsPage />
+                </Suspense>
+              } />
+              <Route path="/leaderboard/:category" element={
+                <Suspense fallback={<PageLoader text="Loading Models..." />}>
+                  <ModelsPage />
+                </Suspense>
+              } />
+              <Route path="/model/:id" element={
+                <Suspense fallback={<PageLoader text="Loading Model..." />}>
+                  <ModelDetailPage />
+                </Suspense>
+              } />
               <Route path="/model/:id/report" element={
                 <Suspense fallback={<PageLoader text="Loading Report..." />}>
                   <ModelReportPage />
@@ -195,6 +227,13 @@ function App() {
               <Route path="/vulca" element={
                 <Suspense fallback={<PageLoader text="Loading VULCA Demo..." />}>
                   <VULCADemoPage />
+                </Suspense>
+              } />
+
+              {/* Prototype Pipeline */}
+              <Route path="/prototype" element={
+                <Suspense fallback={<PageLoader text="Loading Prototype..." />}>
+                  <PrototypePage />
                 </Suspense>
               } />
 
@@ -257,12 +296,28 @@ function App() {
               } />
 
               {/* User Evaluations */}
-              <Route path="/evaluations" element={<EvaluationsPage />} />
-              <Route path="/evaluations/:id" element={<EvaluationDetailPage />} />
-              <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/evaluations" element={
+                <Suspense fallback={<PageLoader text="Loading Evaluations..." />}>
+                  <EvaluationsPage />
+                </Suspense>
+              } />
+              <Route path="/evaluations/:id" element={
+                <Suspense fallback={<PageLoader text="Loading Evaluation..." />}>
+                  <EvaluationDetailPage />
+                </Suspense>
+              } />
+              <Route path="/gallery" element={
+                <Suspense fallback={<PageLoader text="Loading Gallery..." />}>
+                  <GalleryPage />
+                </Suspense>
+              } />
 
               {/* 404 catch-all route */}
-              <Route path="*" element={<NotFoundPage />} />
+              <Route path="*" element={
+                <Suspense fallback={<PageLoader text="Loading..." />}>
+                  <NotFoundPage />
+                </Suspense>
+              } />
             </Route>
           </Routes>
         </Router>

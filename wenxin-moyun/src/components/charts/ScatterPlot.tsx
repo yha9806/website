@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo } from 'react';
+import { useRef, useMemo } from 'react';
 import { scaleLinear } from 'd3-scale';
 import { motion } from 'framer-motion';
 import type { LeaderboardEntry } from '../../types/types';

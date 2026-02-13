@@ -34,7 +34,7 @@ export function useEvaluations(modelId?: string, taskType?: string) {
     modelId: string;
     taskType: 'poem' | 'story' | 'painting' | 'music';
     prompt: string;
-    parameters?: Record<string, any>;
+    parameters?: Record<string, unknown>;
   }) => {
     try {
       const newEvaluation = await evaluationsService.createEvaluation(data);

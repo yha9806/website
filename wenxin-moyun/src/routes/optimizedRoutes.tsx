@@ -64,22 +64,6 @@ const LoginPage = lazy(() => {
   });
 });
 
-// 错误边界组件
-const ErrorFallback = ({ error }: { error: Error }) => (
-  <div className="min-h-screen flex items-center justify-center">
-    <div className="text-center">
-      <h2 className="text-xl font-semibold text-red-600 mb-2">Page Failed to Load</h2>
-      <p className="text-gray-600 mb-4">{error.message}</p>
-      <button
-        onClick={() => window.location.reload()}
-        className="btn-primary"
-      >
-        Reload
-      </button>
-    </div>
-  </div>
-);
-
 // 优化的路由配置
 export function OptimizedRoutes() {
   return (
@@ -147,25 +131,4 @@ export function OptimizedRoutes() {
       </Route>
     </Routes>
   );
-}
-
-// 预加载关键路由
-export function preloadCriticalRoutes() {
-  // 预加载可能会访问的页面
-  const criticalRoutes = [
-    () => import('../pages/LeaderboardPage'),
-    () => import('../pages/EvaluationsPage'),
-  ];
-
-  // 在空闲时预加载
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(() => {
-      criticalRoutes.forEach(load => load());
-    });
-  } else {
-    // 降级方案：延迟加载
-    setTimeout(() => {
-      criticalRoutes.forEach(load => load());
-    }, 5000);
-  }
 }

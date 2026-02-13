@@ -7,7 +7,6 @@ import {
   Globe,
   Eye,
   MessageSquare,
-  Users,
   Image,
   Shield,
   Sparkles,

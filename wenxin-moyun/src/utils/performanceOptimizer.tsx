@@ -5,12 +5,12 @@
 
 /* eslint-disable react-refresh/only-export-components */
 
-import { lazy, Suspense, type ComponentType, useEffect, useRef } from 'react';
+import { lazy, Suspense, type ComponentType, useEffect } from 'react';
 
 // Global type extensions
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
+    gtag?: (...args: unknown[]) => void;
   }
 }
 
@@ -228,17 +228,19 @@ export const gpuAccelerationStyles: React.CSSProperties = {
 /**
  * Lazy load component wrapper
  */
-export function lazyLoadComponent<T extends ComponentType<any>>(
-  importFunc: () => Promise<{ default: T }>,
+export function lazyLoadComponent(
+  importFunc: () => Promise<{ default: ComponentType<Record<string, unknown>> }>,
   fallback?: React.ReactNode
 ) {
   const LazyComponent = lazy(importFunc);
   
-  return (props: any) => (
+  const WrappedComponent = (props: Record<string, unknown>) => (
     <Suspense fallback={fallback || <LoadingSpinner />}>
       <LazyComponent {...props} />
     </Suspense>
   );
+
+  return WrappedComponent;
 }
 
 /**
@@ -273,13 +275,13 @@ export function lazyLoadImage(src: string, alt: string, className?: string) {
 /**
  * Debounce function
  */
-export function debounce<T extends (...args: any[]) => any>(
-  func: T,
+export function debounce<TArgs extends unknown[], TResult>(
+  func: (...args: TArgs) => TResult,
   wait: number
-): (...args: Parameters<T>) => void {
+): (...args: TArgs) => void {
   let timeout: NodeJS.Timeout;
   
-  return function executedFunction(...args: Parameters<T>) {
+  return function executedFunction(...args: TArgs) {
     const later = () => {
       clearTimeout(timeout);
       func(...args);
@@ -293,13 +295,13 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Throttle function
  */
-export function throttle<T extends (...args: any[]) => any>(
-  func: T,
+export function throttle<TArgs extends unknown[], TResult>(
+  func: (...args: TArgs) => TResult,
   limit: number
-): (...args: Parameters<T>) => void {
+): (...args: TArgs) => void {
   let inThrottle: boolean;
   
-  return function executedFunction(...args: Parameters<T>) {
+  return function executedFunction(...args: TArgs) {
     if (!inThrottle) {
       func(...args);
       inThrottle = true;
@@ -404,7 +406,7 @@ export class PerformanceMonitor {
     const paint = performance.getEntriesByType('paint');
     
     const fcp = paint.find(entry => entry.name === 'first-contentful-paint');
-    const lcp = performance.getEntriesByType('largest-contentful-paint')[0] as any;
+    const lcp = performance.getEntriesByType('largest-contentful-paint')[0];
     
     return {
       // First Contentful Paint
@@ -469,7 +471,7 @@ export class MemoryCache<T> {
  * Request deduplication
  */
 export class RequestDeduplicator {
-  private pending: Map<string, Promise<any>> = new Map();
+  private pending: Map<string, Promise<unknown>> = new Map();
   
   async deduplicate<T>(
     key: string,
@@ -477,7 +479,7 @@ export class RequestDeduplicator {
   ): Promise<T> {
     // If the same request is in progress, return the same Promise
     if (this.pending.has(key)) {
-      return this.pending.get(key)!;
+      return this.pending.get(key)! as Promise<T>;
     }
     
     // Create new request
@@ -494,7 +496,7 @@ export class RequestDeduplicator {
  * Batch request optimization
  */
 export class BatchRequestOptimizer<T, R> {
-  private queue: Array<{ item: T; resolve: (value: R) => void; reject: (error: any) => void }> = [];
+  private queue: Array<{ item: T; resolve: (value: R) => void; reject: (error: unknown) => void }> = [];
   private timer: NodeJS.Timeout | null = null;
   private batchSize: number;
   private delay: number;

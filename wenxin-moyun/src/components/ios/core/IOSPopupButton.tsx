@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { IOSButton } from './IOSButton';
@@ -58,7 +58,7 @@ export const IOSPopupButton: React.FC<IOSPopupButtonProps> = ({
   const selectedItem = selectedId ? items.find(item => item.id === selectedId) : null;
 
   // Calculate menu position
-  const calculateMenuPosition = () => {
+  const calculateMenuPosition = useCallback(() => {
     if (!buttonRef.current) return;
     
     const buttonRect = buttonRef.current.getBoundingClientRect();
@@ -83,7 +83,7 @@ export const IOSPopupButton: React.FC<IOSPopupButtonProps> = ({
     }
 
     setMenuPosition({ x, y, width: typeof width === 'number' ? width : buttonRect.width });
-  };
+  }, [items.length, maxHeight, menuWidth]);
 
   // Toggle menu
   const toggleMenu = () => {
@@ -138,7 +138,7 @@ export const IOSPopupButton: React.FC<IOSPopupButtonProps> = ({
         window.removeEventListener('resize', handleReposition);
       };
     }
-  }, [isOpen]);
+  }, [isOpen, calculateMenuPosition]);
 
   // Render button content
   const renderButtonContent = () => {
@@ -152,7 +152,7 @@ export const IOSPopupButton: React.FC<IOSPopupButtonProps> = ({
           {selectedItem.emoji && (
             <EmojiIcon 
               category="actions" 
-              name={selectedItem.emoji as any} 
+              name={selectedItem.emoji}
               size="sm" 
             />
           )}
@@ -201,7 +201,7 @@ export const IOSPopupButton: React.FC<IOSPopupButtonProps> = ({
             }}
           >
             <div className="py-1 max-h-full overflow-y-auto">
-              {items.map((item, index) => (
+              {items.map((item) => (
                 <motion.button
                   key={item.id}
                   disabled={item.disabled}
@@ -229,7 +229,7 @@ export const IOSPopupButton: React.FC<IOSPopupButtonProps> = ({
                   {item.emoji && (
                     <EmojiIcon 
                       category="actions" 
-                      name={item.emoji as any} 
+                      name={item.emoji}
                       size="sm" 
                     />
                   )}
@@ -269,6 +269,7 @@ export const IOSPopupButton: React.FC<IOSPopupButtonProps> = ({
       {/* Popup Button */}
       <IOSButton
         ref={buttonRef}
+        aria-label={label}
         variant={variant}
         size={size}
         disabled={disabled}

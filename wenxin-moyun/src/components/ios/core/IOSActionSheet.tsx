@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import { liquidGlass, iosColors } from '../utils/iosTheme';
+import { liquidGlass } from '../utils/iosTheme';
 import { iosAnimations } from '../utils/animations';
 import { EmojiIcon } from './EmojiIcon';
 
@@ -143,7 +143,7 @@ export const IOSActionSheet: React.FC<IOSActionSheetProps> = ({
                     {action.emoji && (
                       <EmojiIcon 
                         category="actions" 
-                        name={action.emoji as any} 
+                        name={action.emoji}
                         size="sm" 
                       />
                     )}
@@ -193,22 +193,6 @@ export const IOSActionSheet: React.FC<IOSActionSheetProps> = ({
 
   // Render in portal to ensure proper z-index stacking
   return createPortal(actionSheetContent, document.body);
-};
-
-// Higher-order component for easier action sheet management
-export const useIOSActionSheet = () => {
-  const [visible, setVisible] = React.useState(false);
-
-  const showActionSheet = () => setVisible(true);
-  const hideActionSheet = () => setVisible(false);
-  const toggleActionSheet = () => setVisible(!visible);
-
-  return {
-    visible,
-    showActionSheet,
-    hideActionSheet,
-    toggleActionSheet,
-  };
 };
 
 export default IOSActionSheet;

@@ -5,6 +5,14 @@ import { LogIn, User, Lock, ArrowLeft } from 'lucide-react';
 import apiClient from '../services/api';
 import { setItem } from '../utils/storageUtils';
 
+interface LoginErrorShape {
+  response?: {
+    data?: {
+      detail?: string;
+    };
+  };
+}
+
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -39,9 +47,10 @@ const LoginPage: React.FC = () => {
         const from = new URLSearchParams(window.location.search).get('from') || '/';
         navigate(from);
       }
-    } catch (err: any) {
+    } catch (err) {
+      const loginError = err as LoginErrorShape;
       console.error('Login failed:', err);
-      setError(err.response?.data?.detail || 'Login failed, please check username and password');
+      setError(loginError.response?.data?.detail || 'Login failed, please check username and password');
     } finally {
       setIsLoading(false);
     }

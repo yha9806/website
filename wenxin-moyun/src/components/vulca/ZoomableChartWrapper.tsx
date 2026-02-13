@@ -36,7 +36,6 @@ export const ZoomableChartWrapper: React.FC<ZoomableChartWrapperProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const lastTouchDistance = useRef<number>(0);
-  const lastPosition = useRef({ x: 0, y: 0 });
   const dragStart = useRef({ x: 0, y: 0 });
 
   // Handle pinch zoom

@@ -1,15 +1,49 @@
-# WenXin MoYun - AI Art Evaluation Platform
+# VULCA AI Art Evaluation Platform
 # https://vulcaart.art
 
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://storage.googleapis.com/wenxin-moyun-prod-new-static/sitemap.xml
+# Core Marketing Pages - Priority Crawling
+Allow: /product
+Allow: /pricing
+Allow: /demo
+Allow: /customers
+Allow: /trust
+Allow: /pilot
+Allow: /changelog
 
-# Crawl-delay for polite crawling
-Crawl-delay: 1
+# Solutions Pages
+Allow: /solutions
+Allow: /solutions/ai-labs
+Allow: /solutions/research
+Allow: /solutions/museums
 
-# Disallow API endpoints
+# Academic Resources
+Allow: /methodology
+Allow: /dataset
+Allow: /papers
+
+# Public Demo
+Allow: /vulca
+Allow: /models
+Allow: /exhibitions
+
+# Trust & Ethics
+Allow: /data-ethics
+Allow: /sop
+
+# Disallow internal/protected paths
 Disallow: /api/
-Disallow: /admin/
+Disallow: /login
+Disallow: /evaluations
+Disallow: /demo/confirmation
+Disallow: /model/*/report
+
+# Disallow static assets crawling
+Disallow: /assets/
+Disallow: /*.js$
+Disallow: /*.css$
+
+# Sitemap location
+Sitemap: https://vulcaart.art/sitemap.xml

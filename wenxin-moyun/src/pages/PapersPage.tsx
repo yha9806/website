@@ -22,7 +22,7 @@ import {
   Award,
   BookOpen,
 } from 'lucide-react';
-import { IOSCard, IOSCardContent, IOSCardHeader } from '../components/ios/core/IOSCard';
+import { IOSCard, IOSCardContent } from '../components/ios/core/IOSCard';
 import { IOSButton } from '../components/ios/core/IOSButton';
 import { CiteModal, ProvenanceCard } from '../components/trustlayer';
 import type { Citation } from '../utils/trustedExport';

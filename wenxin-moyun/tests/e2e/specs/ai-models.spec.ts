@@ -23,9 +23,10 @@ test.describe('AI Models Leaderboard', () => {
     await page.waitForLoadState('networkidle');
 
     // 检查是否有N/A显示（用于图像模型的NULL分数）
-    const naScores = page.getByText('N/A');
-    if (await naScores.count() > 0) {
-      await expect(naScores.first()).toBeVisible();
+    const naScore = page.getByText('N/A').first();
+    const hasVisibleNA = await naScore.isVisible({ timeout: 2000 }).catch(() => false);
+    if (hasVisibleNA) {
+      await expect(naScore).toBeVisible();
     }
 
     // 检查分数格式化（应该显示为小数）

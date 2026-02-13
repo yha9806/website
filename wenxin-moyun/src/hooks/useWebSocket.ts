@@ -9,7 +9,7 @@ const logger = createLogger('WebSocket');
 
 export interface WebSocketMessage {
   type: 'welcome' | 'battle_update' | 'evaluation_progress' | 'chat' | 'heartbeat' | 'pong';
-  data?: any;
+  data?: unknown;
   message?: string;
   timestamp?: string;
 }
@@ -225,7 +225,7 @@ export function useWebSocket(options: UseWebSocketOptions) {
       logger.error('Error creating WebSocket connection:', error);
       setConnectionError(error instanceof Error ? error.message : 'Unknown connection error');
     }
-  }, [room, getWebSocketUrl, onMessage, onBattleUpdate, onEvaluationProgress, reconnectAttempts, maxReconnectAttempts, reconnectInterval, sendHeartbeat, connectionDisabled]);
+  }, [room, getWebSocketUrl, onMessage, onBattleUpdate, onEvaluationProgress, reconnectAttempts, maxReconnectAttempts, reconnectInterval, sendHeartbeat, connectionDisabled, lastConnectionAttempt]);
 
   // 断开连接
   const disconnect = useCallback(() => {
@@ -257,7 +257,7 @@ export function useWebSocket(options: UseWebSocketOptions) {
   }, []);
 
   // 发送消息
-  const sendMessage = useCallback((message: any) => {
+  const sendMessage = useCallback((message: unknown) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify(message));
       return true;

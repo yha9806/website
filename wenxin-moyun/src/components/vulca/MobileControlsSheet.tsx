@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   Settings2,
   ChevronDown,
@@ -123,10 +123,6 @@ export const MobileControlsSheet: React.FC<MobileControlsSheetProps> = ({
   onRefresh,
   loading,
 }) => {
-  const currentViewOption = viewModeOptions.find(
-    opt => opt.mode === viewMode && (viewMode === '6d' || opt.level === viewLevel)
-  );
-
   const handleViewModeSelect = (mode: ViewMode, level: ViewLevel) => {
     onViewModeChange(mode);
     onViewLevelChange(level);

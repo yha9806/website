@@ -4,6 +4,7 @@
  */
 
 import { renderToString } from 'react-dom/server';
+import { PrerenderPage } from './prerender/PrerenderPage';
 
 // Page-specific SEO data
 const pagesSEO: Record<string, { title: string; description: string; keywords: string }> = {
@@ -104,35 +105,12 @@ const pagesSEO: Record<string, { title: string; description: string; keywords: s
   },
 };
 
-// Simple component for prerendering
-function PrerenderPage({ url }: { url: string }) {
-  const seo = pagesSEO[url] || pagesSEO['/'];
-  
-  return (
-    <div id="root">
-      <noscript>
-        <div style={{ padding: '2rem', textAlign: 'center' }}>
-          <h1>{seo.title}</h1>
-          <p>{seo.description}</p>
-          <p>Please enable JavaScript to use the full VULCA platform.</p>
-          <a href="https://vulcaart.art">Visit VULCA</a>
-        </div>
-      </noscript>
-      <div className="prerender-placeholder" style={{ display: 'none' }}>
-        {/* SEO content for crawlers */}
-        <h1>{seo.title}</h1>
-        <p>{seo.description}</p>
-      </div>
-    </div>
-  );
-}
-
 // Prerender function called by vite-prerender-plugin
 export async function prerender(data: { url: string }) {
   const url = data.url || '/';
   const seo = pagesSEO[url] || pagesSEO['/'];
 
-  const html = renderToString(<PrerenderPage url={url} />);
+  const html = renderToString(<PrerenderPage seo={seo} />);
 
   // Return all marketing routes to prerender
   const links = new Set(Object.keys(pagesSEO));

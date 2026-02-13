@@ -10,12 +10,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Image, RefreshCw, ArrowRight, Calendar, CheckCircle, Globe, MessageSquare, Award } from 'lucide-react';
+import { Image, ArrowRight, Calendar, CheckCircle, Globe, MessageSquare, Award } from 'lucide-react';
 import { ALL_EXHIBITIONS } from '../../data/exhibitions';
 import { EmojiIcon } from '../../components/ios/core/EmojiIcon';
-import { IOSCard, IOSCardContent, IOSCardHeader, IOSCardFooter } from '../../components/ios/core/IOSCard';
+import { IOSCard, IOSCardContent, IOSCardFooter } from '../../components/ios/core/IOSCard';
 import { IOSButton } from '../../components/ios/core/IOSButton';
-import { StateHandler, EmptyState, ErrorState, LoadingState } from '../../components/common/StateHandlers';
+import { StateHandler } from '../../components/common/StateHandlers';
 
 export function ExhibitionsPage() {
   // Simulate loading state for better UX
@@ -32,7 +32,7 @@ export function ExhibitionsPage() {
         // Simulate network delay for realistic UX
         await new Promise(resolve => setTimeout(resolve, 500));
         setExhibitions(ALL_EXHIBITIONS);
-      } catch (err) {
+      } catch {
         setError('Failed to load exhibitions. Please try again.');
       } finally {
         setLoading(false);

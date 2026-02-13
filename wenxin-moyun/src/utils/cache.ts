@@ -21,8 +21,23 @@ export interface CacheEntry<T> {
   refreshPromise?: Promise<T>;
 }
 
+type QueryParamValue = string | number | boolean | null | undefined;
+type QueryParams = Record<string, QueryParamValue>;
+
+const toQueryString = (params?: QueryParams): string => {
+  if (!params) return '';
+
+  const searchParams = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== null) {
+      searchParams.append(key, String(value));
+    }
+  }
+  return searchParams.toString();
+};
+
 export class APICache {
-  private cache: Map<string, CacheEntry<any>> = new Map();
+  private cache: Map<string, CacheEntry<unknown>> = new Map();
   private config: CacheConfig;
 
   constructor(config: Partial<CacheConfig> = {}) {
@@ -61,7 +76,7 @@ export class APICache {
         entry.refreshPromise = this.backgroundRefresh(key, fetchFunction, ttl);
       }
 
-      return entry.data;
+      return entry.data as T;
     }
 
     // Cache hit - stale data but stale-while-revalidate enabled
@@ -69,7 +84,7 @@ export class APICache {
       entry.refreshPromise = this.backgroundRefresh(key, fetchFunction, ttl);
       entry.accessCount++;
       entry.lastAccess = now;
-      return entry.data;
+      return entry.data as T;
     }
 
     // Cache miss or data expired - fetch fresh
@@ -165,7 +180,7 @@ export class APICache {
       const staleEntry = this.cache.get(key);
       if (staleEntry) {
         console.warn(`Cache: Fetch failed for ${key}, returning stale data`);
-        return staleEntry.data;
+        return staleEntry.data as T;
       }
       throw error;
     }
@@ -278,15 +293,15 @@ export const userCache = new APICache(cacheConfigs.user);
  * Cache key generators
  */
 export const cacheKeys = {
-  artworks: (params?: any) => {
-    const query = params ? new URLSearchParams(params).toString() : '';
+  artworks: (params?: QueryParams) => {
+    const query = toQueryString(params);
     return `artworks${query ? `?${query}` : ''}`;
   },
   
   artwork: (id: string) => `artwork:${id}`,
   
-  models: (params?: any) => {
-    const query = params ? new URLSearchParams(params).toString() : '';
+  models: (params?: QueryParams) => {
+    const query = toQueryString(params);
     return `models${query ? `?${query}` : ''}`;
   },
   
@@ -294,13 +309,13 @@ export const cacheKeys = {
   
   leaderboard: (category?: string) => `leaderboard${category ? `:${category}` : ''}`,
   
-  battles: (params?: any) => {
-    const query = params ? new URLSearchParams(params).toString() : '';
+  battles: (params?: QueryParams) => {
+    const query = toQueryString(params);
     return `battles${query ? `?${query}` : ''}`;
   },
   
-  evaluations: (params?: any) => {
-    const query = params ? new URLSearchParams(params).toString() : '';
+  evaluations: (params?: QueryParams) => {
+    const query = toQueryString(params);
     return `evaluations${query ? `?${query}` : ''}`;
   },
   
@@ -347,28 +362,6 @@ export const cacheInvalidation = {
   // Invalidate user data
   user: (id: string) => {
     userCache.invalidate(cacheKeys.user(id));
-  },
-};
-
-/**
- * Cache warming - preload commonly accessed data
- */
-export const warmCache = {
-  essential: async () => {
-    // Preload essential data that users are likely to access
-    try {
-      const { galleryApi } = await import('../services/api');
-      
-      // Warm up artworks list
-      await apiCache.get(
-        cacheKeys.artworks(), 
-        () => galleryApi.getArtworks().then(res => res.data)
-      );
-      
-      console.log('Cache: Essential data warmed up');
-    } catch (error) {
-      console.warn('Cache: Failed to warm up essential data:', error);
-    }
   },
 };
 

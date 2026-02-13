@@ -33,7 +33,7 @@ export const useModels = (category?: string) => {
               : mockModels;
             setModels(filtered);
           }
-        } catch (apiError) {
+        } catch {
           // Fallback to mock data if API fails
           console.log('API unavailable, using mock data');
           const { mockModels } = await import('../data/mockData');
@@ -70,7 +70,7 @@ export const useModelById = (id: string) => {
         try {
           const apiModel = await modelsService.getModelById(id);
           setModel(modelsService.convertToFrontendModel(apiModel));
-        } catch (apiError) {
+        } catch {
           // Fallback to mock data
           console.log('API unavailable, using mock data');
           const { mockModels } = await import('../data/mockData');

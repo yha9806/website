@@ -4,7 +4,6 @@
  * Displays a single exhibition in a card format using iOS design system
  */
 
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import type { Exhibition } from '../../types/exhibition';
 import { IOSCard, IOSCardHeader, IOSCardContent, IOSCardFooter } from '../ios/core/IOSCard';

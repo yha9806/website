@@ -25,7 +25,7 @@ test.describe('Homepage', () => {
   test('应该显示主要内容区域', async ({ page }) => {
     // 检查主要标题使用特定选择器
     await expect(homePage.heroTitle).toBeVisible();
-    await expect(homePage.heroTitle).toContainText('VULCA');
+    await expect(homePage.heroTitle).toContainText(/Evaluate AI Models|Cultural Understanding/);
 
     // 检查iOS组件按钮
     await expect(homePage.exploreRankingsButton).toBeVisible();
@@ -54,21 +54,21 @@ test.describe('Homepage', () => {
   test('导航链接应该正确跳转', async ({ page }) => {
     // 测试通过按钮跳转到排行榜
     await homePage.clickExploreRankings();
-    await expect(page).toHaveURL(/leaderboard/);
+    await expect(page).toHaveURL(/\/(models|leaderboard)/);
 
     // 返回首页
     await homePage.navigate('/');
 
-    // 测试通过按钮跳转到对战页面
+    // 测试通过按钮跳转到 VULCA 页面
     await homePage.clickModelBattle();
-    await expect(page).toHaveURL(/battle/);
+    await expect(page).toHaveURL(/\/vulca/);
 
     // 返回首页
     await homePage.navigate('/');
 
     // 测试导航链接
     await homePage.leaderboardLink.click();
-    await expect(page).toHaveURL(/leaderboard/);
+    await expect(page).toHaveURL(/\/(models|leaderboard)/);
   });
 
   test('页面加载性能测试', async ({ page }) => {

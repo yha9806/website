@@ -1,11 +1,10 @@
 /**
  * Route utilities for E2E tests
- * Handles HashRouter URL formatting
+ * Handles BrowserRouter/HashRouter URL formatting
  */
 
-// For E2E tests, we always use hash router in production
-// Can be overridden via environment variable
-const ROUTER_MODE = process.env.VITE_ROUTER_MODE || 'hash';
+// BrowserRouter is current default in app; can be overridden when needed.
+const ROUTER_MODE = process.env.VITE_ROUTER_MODE || 'browser';
 
 /**
  * Convert a path to the correct format based on router mode

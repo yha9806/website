@@ -13,8 +13,7 @@ export interface LoginPromptProps {
 const LoginPrompt: React.FC<LoginPromptProps> = ({ 
   isOpen, 
   onClose, 
-  trigger, 
-  remainingUsage = 0 
+  trigger
 }) => {
   const navigate = useNavigate();
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import RouterLink from '../components/common/RouterLink';
 import { Breadcrumb } from '../components/common/Breadcrumb';
-import { ArrowLeft, Calendar, Tag, Trophy, Zap, Loader2, Cpu, FileText, Download, ExternalLink, Quote, Share2 } from 'lucide-react';
+import { Loader2, Cpu, FileText, ExternalLink, Quote, Share2 } from 'lucide-react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { mockModels } from '../data/mockData';
 import { motion } from 'framer-motion';
@@ -22,13 +22,11 @@ import {
   TypeEmoji
 } from '../components/ios';
 import { CiteModal } from '../components/trustlayer';
-import type { Citation } from '../utils/trustedExport';
-import { VULCA_VERSION, VERSION_BADGE } from '../config/version';
 
 export default function ModelDetailPage() {
   const { id } = useParams();
   const { model, artworks, loading, error } = useModelDetail(id);
-  const { benchmarkData, loading: benchmarkLoading, error: benchmarkError } = useModelBenchmark(id);
+  const { benchmarkData } = useModelBenchmark(id);
   const [showCiteModal, setShowCiteModal] = useState(false);
 
   if (loading) {
@@ -512,7 +510,7 @@ export default function ModelDetailPage() {
               <div className="space-y-8">
                 {['rhythm', 'composition', 'narrative', 'emotion', 'creativity', 'cultural'].map((dimension) => {
                   const dimensionResponses = benchmarkData.detailed_scores.filter(
-                    (r: any) => r.dimension === dimension
+                    (r) => r.dimension === dimension
                   );
 
                   if (dimensionResponses.length === 0) return null;

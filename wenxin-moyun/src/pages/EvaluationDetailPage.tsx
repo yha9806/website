@@ -48,6 +48,10 @@ interface EvaluationDetail {
   };
 }
 
+interface ProgressResult {
+  score?: number;
+}
+
 const EvaluationDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -76,7 +80,7 @@ const EvaluationDetailPage: React.FC = () => {
     fetchEvaluation();
   }, [id]);
 
-  const handleProgressComplete = (result: any) => {
+  const handleProgressComplete = (result: ProgressResult) => {
     if (!evaluation) return;
 
     const completedEvaluation: EvaluationDetail = {

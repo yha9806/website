@@ -35,27 +35,6 @@ const dimensionConfig: Record<string, { color: string; icon: React.ElementType; 
   cultural: { color: 'text-indigo-600', icon: Star, label: 'Cultural' },
 };
 
-const ScoreAnnotation: React.FC<{ score: number; text: string }> = ({ score, text }) => {
-  const getScoreColor = (score: number) => {
-    if (score >= 90) return 'bg-green-100 text-green-800 border-green-300';
-    if (score >= 80) return 'bg-slate-100 text-slate-800 border-slate-400';
-    if (score >= 70) return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-    if (score >= 60) return 'bg-orange-100 text-orange-800 border-orange-300';
-    return 'bg-red-100 text-red-800 border-red-300';
-  };
-
-  return (
-    <span className="relative group inline-block">
-      <span className={`underline decoration-dotted decoration-2 ${getScoreColor(score).split(' ')[1]} cursor-help`}>
-        {text}
-      </span>
-      <span className={`absolute -top-8 left-0 px-2 py-1 text-xs rounded border ${getScoreColor(score)} opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10`}>
-        得分: {score}
-      </span>
-    </span>
-  );
-};
-
 const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [useChunkedView, setUseChunkedView] = useState(true);

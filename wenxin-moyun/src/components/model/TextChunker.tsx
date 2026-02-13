@@ -103,7 +103,7 @@ const TextChunker: React.FC<TextChunkerProps> = ({
         const regex = new RegExp(`(${highlight})`, 'gi');
         const parts = content.split(regex);
         
-        content = parts.map((part, index) => {
+        content = parts.map((part) => {
           if (part.toLowerCase() === highlight.toLowerCase()) {
             return `<highlight data-score="${chunk.score}">${part}</highlight>`;
           }

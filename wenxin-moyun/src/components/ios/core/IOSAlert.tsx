@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IOSButton } from './IOSButton';
 import { StatusEmoji } from './EmojiIcon';
-import { iosColors, iosRadius, iosShadows } from '../utils/iosTheme';
 import { iosAnimations } from '../utils/animations';
 
 export interface IOSAlertAction {
@@ -35,10 +34,17 @@ export const IOSAlert: React.FC<IOSAlertProps> = ({
   customIcon,
   className = '',
 }) => {
+  type AlertStatus = React.ComponentProps<typeof StatusEmoji>['status'];
+
   // Type-based configurations
-  const typeConfig = {
+  const typeConfig: Record<NonNullable<IOSAlertProps['type']>, {
+    emoji: AlertStatus;
+    titleColor: string;
+    borderColor: string;
+    bgColor: string;
+  }> = {
     info: {
-      emoji: 'info',
+      emoji: 'pending',
       titleColor: 'text-slate-900 dark:text-slate-100',
       borderColor: 'border-blue-200 dark:border-slate-800',
       bgColor: 'bg-slate-50/80 dark:bg-slate-900/20',
@@ -179,7 +185,7 @@ export const IOSAlert: React.FC<IOSAlertProps> = ({
                 <div className="flex justify-center mb-4">
                   {customIcon || (
                     <StatusEmoji 
-                      status={config.emoji as any} 
+                      status={config.emoji}
                       size="lg" 
                       animated 
                     />
@@ -246,58 +252,4 @@ export const IOSAlert: React.FC<IOSAlertProps> = ({
       )}
     </AnimatePresence>
   );
-};
-
-// Utility function for programmatic alerts
-interface ShowAlertOptions extends Omit<IOSAlertProps, 'visible' | 'onClose'> {
-  onConfirm?: () => void;
-  onCancel?: () => void;
-  confirmText?: string;
-  cancelText?: string;
-}
-
-export const showIOSAlert = (options: ShowAlertOptions): Promise<boolean> => {
-  return new Promise((resolve) => {
-    const alertContainer = document.createElement('div');
-    document.body.appendChild(alertContainer);
-    
-    const cleanup = () => {
-      document.body.removeChild(alertContainer);
-    };
-    
-    const handleConfirm = () => {
-      options.onConfirm?.();
-      cleanup();
-      resolve(true);
-    };
-    
-    const handleCancel = () => {
-      options.onCancel?.();
-      cleanup();
-      resolve(false);
-    };
-    
-    const actions: IOSAlertAction[] = [];
-    
-    if (options.cancelText) {
-      actions.push({
-        label: options.cancelText,
-        onPress: handleCancel,
-        style: 'cancel',
-      });
-    }
-    
-    actions.push({
-      label: options.confirmText || '确定',
-      onPress: handleConfirm,
-      style: 'default',
-    });
-    
-    // Use React.createElement and render to create the alert
-    // This would require additional setup with ReactDOM in a real implementation
-    console.warn('showIOSAlert utility requires ReactDOM integration for programmatic usage');
-    
-    // For now, return a resolved promise
-    resolve(true);
-  });
 };

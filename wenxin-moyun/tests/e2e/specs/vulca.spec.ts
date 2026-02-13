@@ -7,7 +7,7 @@ test.describe('VULCA Integration Tests', () => {
 
   test.beforeEach(async ({ page }) => {
     // Navigate to VULCA page (use relative path, playwright.config.ts sets baseURL)
-    await page.goto('/#/vulca');
+    await page.goto('/vulca');
     
     // Wait for the page to stabilize
     await page.waitForLoadState('domcontentloaded');
@@ -310,7 +310,7 @@ test.describe('VULCA Performance Tests', () => {
 
   test('should load page within 5 seconds', async ({ page }) => {
     const startTime = Date.now();
-    await page.goto('/#/vulca');
+    await page.goto('/vulca');
     await page.waitForLoadState('networkidle');
     const loadTime = Date.now() - startTime;
 
@@ -319,7 +319,7 @@ test.describe('VULCA Performance Tests', () => {
   });
 
   test('should render charts smoothly', async ({ page }) => {
-    await page.goto('/#/vulca');
+    await page.goto('/vulca');
     // Wait for either recharts or any chart container
     await page.waitForSelector('.recharts-surface, [class*="chart"], canvas', { timeout: 10000 });
     

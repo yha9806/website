@@ -25,7 +25,7 @@ export function useLoginPrompt() {
     if (stored) {
       try {
         return JSON.parse(stored);
-      } catch (e) {
+      } catch {
         // Invalid stored state
       }
     }

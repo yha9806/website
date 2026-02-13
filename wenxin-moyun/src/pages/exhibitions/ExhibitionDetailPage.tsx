@@ -4,7 +4,7 @@
  * Displays exhibition details with artwork grid and chapter navigation
  */
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useExhibitions } from '../../hooks/exhibitions';

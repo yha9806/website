@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Basic Navigation', () => {
   test('Homepage loads successfully', async ({ page }) => {
     // Navigate to homepage (use relative path for baseURL)
-    await page.goto('/#/');
+    await page.goto('/');
 
     // Wait for page to load
     await page.waitForLoadState('domcontentloaded');
@@ -22,7 +22,7 @@ test.describe('Basic Navigation', () => {
 
   test('Can navigate to leaderboard', async ({ page }) => {
     // Navigate to homepage
-    await page.goto('/#/');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
 
     // Click any link that goes to leaderboard
@@ -32,17 +32,17 @@ test.describe('Basic Navigation', () => {
       await page.waitForURL('**/leaderboard', { timeout: 10000 });
     } else {
       // Direct navigation
-      await page.goto('/#/leaderboard');
+      await page.goto('/leaderboard');
     }
 
     // Verify on leaderboard page
     const url = page.url();
-    expect(url).toContain('#/leaderboard');
+    expect(url).toContain('/leaderboard');
   });
 
   test('Can navigate to login page directly', async ({ page }) => {
     // Navigate directly to login page
-    await page.goto('/#/login');
+    await page.goto('/login');
     await page.waitForLoadState('networkidle');
 
     // Check if login form elements are present
@@ -61,4 +61,3 @@ test.describe('Basic Navigation', () => {
     expect(data.status).toBe('healthy');
   });
 });
-

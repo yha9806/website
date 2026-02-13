@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { MoreHorizontal, Heart, Share2, Eye } from 'lucide-react';
-import { IOSButton, IOSCard, IOSCardHeader, IOSCardContent, IOSSegmentedControl } from '../components/ios';
+import { IOSButton, IOSCard, IOSCardContent, IOSSegmentedControl } from '../components/ios';
 import { galleryApi, handleApiError, isNetworkError } from '../services/api';
 
 interface Artwork {
@@ -17,7 +17,7 @@ interface Artwork {
   created_at: string;
   prompt: string;
   score?: number;
-  extra_metadata?: any;
+  extra_metadata?: Record<string, unknown>;
 }
 
 interface ArtworkResponse {
@@ -35,18 +35,22 @@ export default function GalleryPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [isOffline, setIsOffline] = useState<boolean>(false);
-  const [cachedArtworks, setCachedArtworks] = useState<Artwork[]>([]);
+  const cachedArtworksRef = useRef<Artwork[]>([]);
 
   const filterOptions = ['All', 'Poetry', 'Painting', 'Story', 'Music'];
   const filterValues = ['all', 'poem', 'painting', 'story', 'music'];
 
+  type GalleryQueryParams = {
+    type?: string;
+  };
+
   // Fetch artworks from API
-  const fetchArtworks = async (type?: string) => {
+  const fetchArtworks = useCallback(async (type?: string) => {
     try {
       setLoading(true);
       setError('');
       
-      const params: any = {};
+      const params: GalleryQueryParams = {};
       if (type && type !== 'all') {
         params.type = type;
       }
@@ -55,7 +59,7 @@ export default function GalleryPage() {
       const data: ArtworkResponse = response.data;
       
       setArtworks(data.artworks || []);
-      setCachedArtworks(data.artworks || []);
+      cachedArtworksRef.current = data.artworks || [];
       setIsOffline(false);
     } catch (err) {
       const errorMessage = handleApiError(err);
@@ -65,20 +69,20 @@ export default function GalleryPage() {
       // Check if this is a network error and we have cached data
       if (isNetworkError(err)) {
         setIsOffline(true);
-        if (cachedArtworks.length > 0) {
-          setArtworks(cachedArtworks);
+        if (cachedArtworksRef.current.length > 0) {
+          setArtworks(cachedArtworksRef.current);
           setError(''); // Clear error when showing cached data
         }
       }
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // Load artworks on component mount and when filter changes
   useEffect(() => {
     fetchArtworks(filter);
-  }, [filter]);
+  }, [fetchArtworks, filter]);
 
   const filteredArtworks = artworks; // No need for client-side filtering as API handles it
 

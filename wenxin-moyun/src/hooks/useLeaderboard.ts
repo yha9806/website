@@ -49,7 +49,7 @@ export const useLeaderboard = (category?: string) => {
               : mockLeaderboard;
             setEntries(filtered);
           }
-        } catch (apiError) {
+        } catch {
           // Fallback to mock data if API fails
           console.log('API unavailable, using mock data');
           const { mockLeaderboard } = await import('../data/mockData');

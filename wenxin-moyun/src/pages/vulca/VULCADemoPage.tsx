@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { CitationBlock } from '../../components/vulca/CitationBlock';
 import { Link } from 'react-router-dom';
-import { VULCA_VERSION, VERSION_BADGE } from '../../config/version';
+import { VULCA_VERSION } from '../../config/version';
 // downloadSampleReport now handled by SampleReportSheet
 
 // Preset scenarios for quick demos
@@ -57,6 +57,12 @@ const PRESET_SCENARIOS = [
 import { API_BASE_URL } from '../../config/api';
 
 // Models will be loaded dynamically from the API
+interface ModelApiItem {
+  id: string;
+  name: string;
+  organization: string;
+  vulca_scores_47d?: Record<string, number> | null;
+}
 
 export const VULCADemoPage: React.FC = () => {
   const [availableModels, setAvailableModels] = useState<Array<{id: string, name: string, organization: string}>>([]);
@@ -76,20 +82,19 @@ export const VULCADemoPage: React.FC = () => {
     comparison,
     dimensions,
     perspectives,
-    systemInfo,
     loading,
     initializing,
     comparing,
     error,
     errorDetails,
     isConnected,
-    lastSync,
     compareModels,
     loadDemoData,
     refreshAll,
     clearError,
     retryConnection,
   } = useVULCAData(selectedModels);
+  const selectedModelsKey = useMemo(() => selectedModels.join(','), [selectedModels]);
   
   // Load available models from API
   useEffect(() => {
@@ -98,11 +103,19 @@ export const VULCADemoPage: React.FC = () => {
         // Use the main models API with VULCA data
         const response = await fetch(`${API_BASE_URL}/api/v1/models/?include_vulca=true&limit=50`);
         if (response.ok) {
-          const data = await response.json();
-          if (data && data.length > 0) {
+          const data: unknown = await response.json();
+          if (Array.isArray(data) && data.length > 0) {
             // Filter models that have VULCA data
-            const modelsWithVulca = data.filter((m: any) => m.vulca_scores_47d != null);
-            const models = modelsWithVulca.map((m: any) => ({
+            const modelsWithVulca = data.filter((m): m is ModelApiItem =>
+              typeof m === 'object' &&
+              m !== null &&
+              'id' in m &&
+              'name' in m &&
+              'organization' in m &&
+              'vulca_scores_47d' in m &&
+              (m as ModelApiItem).vulca_scores_47d != null
+            );
+            const models = modelsWithVulca.map((m) => ({
               id: m.id,
               name: m.name,
               organization: m.organization
@@ -149,10 +162,13 @@ export const VULCADemoPage: React.FC = () => {
   
   // Trigger comparison when models change
   useEffect(() => {
-    if (selectedModels.length >= 2 && availableModels.length > 0) {
-      compareModels(selectedModels);
+    if (availableModels.length > 0 && selectedModelsKey) {
+      const modelIds = selectedModelsKey.split(',').filter(Boolean);
+      if (modelIds.length >= 2) {
+        compareModels(modelIds);
+      }
     }
-  }, [selectedModels.join(','), availableModels.length, compareModels]);
+  }, [selectedModelsKey, availableModels.length, compareModels]);
 
   // Enhance evaluations with correct model names from availableModels
   const enhancedEvaluations = useMemo(() => {
@@ -343,7 +359,7 @@ export const VULCADemoPage: React.FC = () => {
                 {isConnected ? 'Error' : 'Connection Issue'}
               </h3>
               <p className="text-sm text-red-700 dark:text-red-300 mt-1">{error}</p>
-              {errorDetails && (
+              {errorDetails != null && (
                 <details className="mt-2">
                   <summary className="text-xs text-red-600 dark:text-red-400 cursor-pointer">
                     Technical Details

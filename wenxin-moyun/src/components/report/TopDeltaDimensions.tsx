@@ -6,7 +6,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown, AlertTriangle, CheckCircle, Info } from 'lucide-react';
+import { TrendingUp, AlertTriangle, CheckCircle, Info } from 'lucide-react';
 import { IOSCard, IOSCardHeader, IOSCardContent } from '../ios/core/IOSCard';
 
 interface DimensionDelta {

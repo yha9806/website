@@ -27,14 +27,6 @@ const DonutProgress: React.FC<DonutProgressProps> = ({
     { name: '剩余', value: 100 - percentage }
   ];
 
-  // 渐变色从主色到成功色
-  const getGradientColor = (percent: number) => {
-    if (percent < 50) return chartColors.primary[0];
-    if (percent < 80) return chartColors.primary[1];
-    return chartColors.gradients.primaryToSuccess[1];
-  };
-
-  const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
     cx, cy
   }: { cx: number; cy: number }) => {

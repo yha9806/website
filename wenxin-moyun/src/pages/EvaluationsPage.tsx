@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Filter, RefreshCw, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Plus, RefreshCw, XCircle, AlertCircle } from 'lucide-react';
 import { useEvaluations } from '../hooks/useEvaluations';
 import { useLoginPrompt } from '../hooks/useLoginPrompt';
-import type { EvaluationTask } from '../types/types';
 import CreateEvaluationModal from '../components/evaluation/CreateEvaluationModal';
 import EvaluationCard from '../components/evaluation/EvaluationCard';
 import LoginPrompt from '../components/auth/LoginPrompt';
-import { hasReachedDailyLimit, getRemainingUsage, addEvaluationToGuest, isGuestMode } from '../utils/guestSession';
-import { IOSButton, IOSCard, StatusEmoji } from '../components/ios';
+import { hasReachedDailyLimit, addEvaluationToGuest } from '../utils/guestSession';
+import { IOSCard } from '../components/ios';
+
+interface CreateEvaluationData {
+  modelId: string;
+  taskType: 'poem' | 'story' | 'painting' | 'music';
+  prompt: string;
+  parameters?: Record<string, string>;
+}
 
 const EvaluationsPage: React.FC = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -50,37 +56,7 @@ const EvaluationsPage: React.FC = () => {
     return true;
   });
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return <Clock className="w-4 h-4" />;
-      case 'processing':
-        return <RefreshCw className="w-4 h-4 animate-spin" />;
-      case 'completed':
-        return <CheckCircle className="w-4 h-4" />;
-      case 'failed':
-        return <XCircle className="w-4 h-4" />;
-      default:
-        return <AlertCircle className="w-4 h-4" />;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return 'text-yellow-500';
-      case 'processing':
-        return 'text-slate-600';
-      case 'completed':
-        return 'text-green-500';
-      case 'failed':
-        return 'text-red-500';
-      default:
-        return 'text-gray-500 dark:text-gray-400';
-    }
-  };
-
-  const handleCreateEvaluation = async (data: any) => {
+  const handleCreateEvaluation = async (data: CreateEvaluationData) => {
     try {
       // Check if guest user has reached limit
       if (isGuest && hasReachedDailyLimit()) {

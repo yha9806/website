@@ -1,7 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { iosColors, iosRadius, iosShadows } from '../utils/iosTheme';
-import { iosAnimations } from '../utils/animations';
 
 interface IOSCardProps {
   children: React.ReactNode;

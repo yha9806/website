@@ -1,10 +1,10 @@
 import api from './api';
-import type { Battle } from '../types/types';
+import type { Model } from '../types/types';
 
 export interface BattleResponse {
   id: string;
-  model_a: any;
-  model_b: any;
+  model_a: Model;
+  model_b: Model;
   task_type: 'poem' | 'painting' | 'story';
   task_prompt: string;
   task_category: string;

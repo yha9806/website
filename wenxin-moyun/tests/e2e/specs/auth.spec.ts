@@ -101,7 +101,7 @@ test.describe('Authentication Flow', () => {
     });
     
     await clearLocalStorage(page);
-    await page.goto('/#/');
+    await page.goto('/');
   });
 
   test.afterEach(async ({ page }) => {
@@ -123,9 +123,9 @@ test.describe('Authentication Flow', () => {
     console.log('Test: Filling login form');
     await loginPage.login(TEST_USERS.valid.username, TEST_USERS.valid.password);
     
-    // Wait for redirect after successful login (HashRouter format)
+    // Wait for redirect after successful login
     console.log('Test: Waiting for redirect to home page');
-    await page.waitForURL(/\/#\/$/, { timeout: 10000 });
+    await page.waitForURL(/\/$/, { timeout: 10000 });
 
     // Verify auth token is stored
     console.log('Test: Checking auth token storage');
@@ -135,7 +135,7 @@ test.describe('Authentication Flow', () => {
 
     // Verify user is logged in by checking URL is home page
     console.log('Test: Verifying successful redirect to home page');
-    await expect(page).toHaveURL(/\/#\/$/, { timeout: 5000 });
+    await expect(page).toHaveURL(/\/$/, { timeout: 5000 });
     console.log('Test: Login test completed successfully');
   });
 
@@ -165,9 +165,9 @@ test.describe('Authentication Flow', () => {
     expect(session).toHaveProperty('dailyUsage');
     expect(session.dailyUsage).toBe(0);
     
-    // Verify can access evaluation page as guest (HashRouter format)
-    await page.goto('/#/evaluations');
-    await expect(page).toHaveURL(/\/#\/evaluations/);
+    // Verify can access evaluation page as guest
+    await page.goto('/evaluations');
+    await expect(page).toHaveURL(/\/evaluations/);
   });
 
   test('Login fails with invalid credentials', async ({ page }) => {
@@ -184,8 +184,8 @@ test.describe('Authentication Flow', () => {
     const errorText = await loginPage.getErrorMessage();
     expect(errorText).toMatch(/(用户名或密码错误|Invalid username|Invalid password|Login failed|Authentication failed)/i);
     
-    // Verify still on login page (HashRouter format)
-    await expect(page).toHaveURL(/\/#\/login/);
+    // Verify still on login page
+    await expect(page).toHaveURL(/\/login/);
 
     // Verify no auth token stored
     const token = await getAuthToken(page);
@@ -196,7 +196,7 @@ test.describe('Authentication Flow', () => {
     // Login first
     await homePage.navigateToLogin();
     await loginPage.login(TEST_USERS.valid.username, TEST_USERS.valid.password);
-    await page.waitForURL(/\/#\/$/);
+    await page.waitForURL(/\/$/);
     
     // Wait for any async login processes to complete
     await page.waitForTimeout(1000);
@@ -249,7 +249,7 @@ test.describe('Authentication Flow', () => {
     // Login first
     await homePage.navigateToLogin();
     await loginPage.login(TEST_USERS.valid.username, TEST_USERS.valid.password);
-    await page.waitForURL(/\/#\/$/);
+    await page.waitForURL(/\/$/);
     
     // Verify logged in
     const token = await getAuthToken(page);
@@ -305,13 +305,13 @@ test.describe('Authentication Flow', () => {
     console.log('Token after logout:', tokenAfterLogout ? 'STILL EXISTS' : 'CLEARED');
     expect(tokenAfterLogout).toBeFalsy();
     
-    // Verify redirected to home or login page (HashRouter format)
-    await expect(page).toHaveURL(/\/#\/(login)?$/);
+    // Verify redirected to home or login page
+    await expect(page).toHaveURL(/\/(login)?$/);
 
     // The main goal is achieved: token is cleared
     // For UI verification, we'll check if we can access the login page
-    await page.goto('/#/login');
-    await expect(page).toHaveURL(/\/#\/login/);
+    await page.goto('/login');
+    await expect(page).toHaveURL(/\/login/);
 
     // This confirms the authentication state is properly cleared
     console.log('✅ Logout functionality verified: token cleared and can access login page');
@@ -321,14 +321,14 @@ test.describe('Authentication Flow', () => {
     // Login as admin
     await homePage.navigateToLogin();
     await loginPage.login(TEST_USERS.admin.username, TEST_USERS.admin.password);
-    await page.waitForURL(/\/#\/$/);
+    await page.waitForURL(/\/$/);
 
     // Verify admin user logged in successfully with token
     const adminToken = await getAuthToken(page);
     expect(adminToken).toBeTruthy();
 
     // Verify admin is on home page (admin UI may not be visible without specific navigation)
-    await expect(page).toHaveURL(/\/#\/$/);
+    await expect(page).toHaveURL(/\/$/);
   });
 
   test('Guest session respects daily usage limits', async ({ page }) => {

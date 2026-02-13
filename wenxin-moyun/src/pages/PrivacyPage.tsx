@@ -6,7 +6,6 @@ import {
   Database,
   UserCheck,
   Globe,
-  Trash2,
   Mail,
   Calendar,
   FileText,

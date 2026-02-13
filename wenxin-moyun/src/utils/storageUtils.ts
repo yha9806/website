@@ -10,22 +10,30 @@ interface StorageInterface {
   clear(): void;
 }
 
+type TestStorageWindow = Window & {
+  __TEST_STORAGE__?: Record<string, string>;
+  [key: `__TEST_${string}__`]: string | Record<string, string> | undefined;
+};
+
 class SafeStorage implements StorageInterface {
   private fallbackStorage: { [key: string]: string } = {};
   private useLocalStorage: boolean = true;
+  private readonly testWindow: TestStorageWindow;
 
   constructor() {
+    this.testWindow = window as unknown as TestStorageWindow;
+
     // Test localStorage availability
     try {
       const testKey = '__storage_test__';
       localStorage.setItem(testKey, 'test');
       localStorage.removeItem(testKey);
       this.useLocalStorage = true;
-    } catch (error) {
+    } catch {
       console.warn('localStorage not available, using fallback storage');
       this.useLocalStorage = false;
       // Try to read from window properties if they exist (for tests)
-      this.fallbackStorage = (window as any).__TEST_STORAGE__ || {};
+      this.fallbackStorage = this.testWindow.__TEST_STORAGE__ || {};
     }
   }
 
@@ -40,8 +48,10 @@ class SafeStorage implements StorageInterface {
     }
     
     // Fallback: check both fallback storage and window properties
+    const testKey = `__TEST_${key.toUpperCase()}__` as const;
+    const testValue = this.testWindow[testKey];
     const value = this.fallbackStorage[key] || 
-                  (window as any)[`__TEST_${key.toUpperCase()}__`] ||
+                  (typeof testValue === 'string' ? testValue : undefined) ||
                   null;
     
     return value;
@@ -60,13 +70,14 @@ class SafeStorage implements StorageInterface {
     
     // Fallback: store in both fallback storage and window properties
     this.fallbackStorage[key] = value;
-    (window as any)[`__TEST_${key.toUpperCase()}__`] = value;
+    const testKey = `__TEST_${key.toUpperCase()}__` as const;
+    this.testWindow[testKey] = value;
     
     // Also update the main test storage object
-    if (!(window as any).__TEST_STORAGE__) {
-      (window as any).__TEST_STORAGE__ = {};
+    if (!this.testWindow.__TEST_STORAGE__) {
+      this.testWindow.__TEST_STORAGE__ = {};
     }
-    (window as any).__TEST_STORAGE__[key] = value;
+    this.testWindow.__TEST_STORAGE__[key] = value;
   }
 
   removeItem(key: string): void {
@@ -82,10 +93,11 @@ class SafeStorage implements StorageInterface {
     
     // Fallback: remove from both fallback storage and window properties
     delete this.fallbackStorage[key];
-    delete (window as any)[`__TEST_${key.toUpperCase()}__`];
+    const testKey = `__TEST_${key.toUpperCase()}__` as const;
+    delete this.testWindow[testKey];
     
-    if ((window as any).__TEST_STORAGE__) {
-      delete (window as any).__TEST_STORAGE__[key];
+    if (this.testWindow.__TEST_STORAGE__) {
+      delete this.testWindow.__TEST_STORAGE__[key];
     }
   }
 
@@ -102,7 +114,7 @@ class SafeStorage implements StorageInterface {
     
     // Fallback: clear fallback storage
     this.fallbackStorage = {};
-    (window as any).__TEST_STORAGE__ = {};
+    this.testWindow.__TEST_STORAGE__ = {};
   }
 }
 

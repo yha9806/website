@@ -1,4 +1,4 @@
-import React, { useMemo, useState, Suspense, lazy } from 'react';
+import React, { useMemo, useState, Suspense, lazy, useCallback } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -23,19 +23,17 @@ import {
   TrendingUp,
   TrendingDown,
   Minus,
-  Eye,
-  EyeOff,
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import type { LeaderboardEntry } from '../../types/types';
+import type { LeaderboardEntry, Model, VULCAScore47D } from '../../types/types';
 import type { VULCAEvaluation, VULCAScore6D } from '../../types/vulca';
 import { exportData } from '../../utils/dataExport';
 import RouterLink from '../common/RouterLink';
-import { VULCA_47_DIMENSIONS, getDimensionLabel } from '../../utils/vulca-dimensions';
+import { getDimensionLabel } from '../../utils/vulca-dimensions';
 import { vulcaDataManager } from '../../services/vulcaDataManager';
 
 // 懒加载VULCA可视化组件
@@ -47,11 +45,11 @@ const VULCAVisualization = lazy(() =>
 
 // VULCA数据显示组件
 interface VULCADataDisplayProps {
-  model: any;
+  model: Model;
   score: number | null;
-  convertToEvaluation: (model: any) => Promise<VULCAEvaluation>;
-  getDefaultDimensions: (scores: any) => any[];
-  calculate47DAverage: (scores: any) => number | null;
+  convertToEvaluation: (model: Model) => Promise<VULCAEvaluation>;
+  getDefaultDimensions: (scores: VULCAScore47D) => Array<{ id: string; name: string; description: string }>;
+  calculate47DAverage: (scores: VULCAScore47D) => number | null;
 }
 
 const VULCADataDisplay: React.FC<VULCADataDisplayProps> = ({
@@ -62,7 +60,7 @@ const VULCADataDisplay: React.FC<VULCADataDisplayProps> = ({
   calculate47DAverage
 }) => {
   const [evaluation, setEvaluation] = useState<VULCAEvaluation | null>(null);
-  const [dimensions, setDimensions] = useState<any[]>([]);
+  const [dimensions, setDimensions] = useState<Array<{ id: string; name: string; description: string }>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -83,7 +81,7 @@ const VULCADataDisplay: React.FC<VULCADataDisplayProps> = ({
     };
     
     loadVulcaData();
-  }, [model.id]);
+  }, [model, convertToEvaluation, getDefaultDimensions]);
   
   if (loading) {
     return (
@@ -164,6 +162,97 @@ export default function LeaderboardTable({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
+
+  const parseJsonField = useCallback((value: unknown) => {
+    if (!value) return null;
+    if (typeof value === 'string') {
+      try {
+        return JSON.parse(value);
+      } catch {
+        return null;
+      }
+    }
+    return value;
+  }, []);
+
+  const extractScores6D = useCallback((scores47D: VULCAScore47D | null | undefined): VULCAScore6D => {
+    const defaultScores: VULCAScore6D = {
+      creativity: 0,
+      technique: 0,
+      emotion: 0,
+      context: 0,
+      innovation: 0,
+      impact: 0
+    };
+    if (!scores47D) return defaultScores;
+    return {
+      creativity: scores47D.creativity || scores47D.originality || scores47D.imagination || 0,
+      technique: scores47D.technique || scores47D.precision || scores47D.skill_level || 0,
+      emotion: scores47D.emotion || scores47D.emotional_depth || scores47D.emotional_resonance || 0,
+      context: scores47D.context || scores47D.relevance || scores47D.contextual_awareness || 0,
+      innovation: scores47D.innovation || scores47D.uniqueness || scores47D.novelty || 0,
+      impact: scores47D.impact || scores47D.influence || scores47D.significance || 0
+    };
+  }, []);
+
+  const convertToEvaluation = useCallback(async (model: Model): Promise<VULCAEvaluation> => {
+    const evaluation = await vulcaDataManager.getModelVULCAData(
+      model.id.toString(),
+      model.name || 'Unknown Model'
+    );
+
+    const rawScores = parseJsonField(model.vulca_scores_47d);
+    if (rawScores && typeof rawScores === 'object' && Object.keys(rawScores).length > 0) {
+      const numericScores = Object.fromEntries(
+        Object.entries(rawScores as Record<string, unknown>).filter(([, value]) => typeof value === 'number')
+      ) as VULCAScore47D;
+      if (Object.keys(numericScores).length > 0) {
+        evaluation.scores47D = numericScores;
+        evaluation.scores6D = extractScores6D(numericScores);
+      }
+    }
+
+    const culturalPerspectives = parseJsonField(model.vulca_cultural_perspectives);
+    if (culturalPerspectives && typeof culturalPerspectives === 'object' && Object.keys(culturalPerspectives).length > 0) {
+      const perspectives = culturalPerspectives as Record<string, unknown>;
+      evaluation.culturalPerspectives = {
+        western: typeof perspectives.western === 'number' ? perspectives.western : 0,
+        eastern: typeof perspectives.eastern === 'number' ? perspectives.eastern : 0,
+        african: typeof perspectives.african === 'number' ? perspectives.african : 0,
+        latin_american: typeof perspectives.latin_american === 'number' ? perspectives.latin_american : 0,
+        middle_eastern: typeof perspectives.middle_eastern === 'number' ? perspectives.middle_eastern : 0,
+        south_asian: typeof perspectives.south_asian === 'number' ? perspectives.south_asian : 0,
+        oceanic: typeof perspectives.oceanic === 'number' ? perspectives.oceanic : 0,
+        indigenous: typeof perspectives.indigenous === 'number' ? perspectives.indigenous : 0,
+      };
+    }
+
+    return evaluation;
+  }, [extractScores6D, parseJsonField]);
+
+  const getDefaultDimensions = useCallback((scores: VULCAScore47D | null | undefined) => {
+    if (!scores || typeof scores !== 'object') return [];
+
+    return Object.keys(scores).map(key => {
+      const labelResult = getDimensionLabel(key);
+      const properName = labelResult === key
+        ? key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^[a-z]/, c => c.toUpperCase())
+        : labelResult;
+
+      return {
+        id: key,
+        name: properName,
+        description: `${properName} dimension`
+      };
+    });
+  }, []);
+
+  const calculate47DAverage = useCallback((scores: VULCAScore47D | null | undefined) => {
+    if (!scores || typeof scores !== 'object') return null;
+    const values = Object.values(scores).filter(v => typeof v === 'number');
+    if (values.length === 0) return null;
+    return values.reduce((sum, val) => sum + val, 0) / values.length;
+  }, []);
 
   // 定义表格列
   const columns = useMemo(() => [
@@ -528,104 +617,6 @@ export default function LeaderboardTable({
                 const modelId = row.original.model.id;
                 const isExpanded = expandedVulcaModels?.has(modelId);
                 const hasVulcaData = row.original.model.vulca_scores_47d != null;
-                
-                // 解析VULCA数据
-                const parseVulcaData = (vulcaScores: any) => {
-                  if (!vulcaScores) return null;
-                  if (typeof vulcaScores === 'string') {
-                    try {
-                      return JSON.parse(vulcaScores);
-                    } catch {
-                      return null;
-                    }
-                  }
-                  return vulcaScores;
-                };
-                
-                const parseCulturalPerspectives = (perspectives: any) => {
-                  if (!perspectives) return null;
-                  if (typeof perspectives === 'string') {
-                    try {
-                      return JSON.parse(perspectives);
-                    } catch {
-                      return null;
-                    }
-                  }
-                  return perspectives;
-                };
-                
-                // 从47维中提取6个核心维度
-                const extractScores6D = (scores47D: any): VULCAScore6D => {
-                  const defaultScores: VULCAScore6D = {
-                    creativity: 0,
-                    technique: 0,
-                    emotion: 0,
-                    context: 0,
-                    innovation: 0,
-                    impact: 0
-                  };
-                  if (!scores47D) return defaultScores;
-                  return {
-                    creativity: scores47D.creativity || scores47D.originality || scores47D.imagination || 0,
-                    technique: scores47D.technique || scores47D.precision || scores47D.skill_level || 0,
-                    emotion: scores47D.emotion || scores47D.emotional_depth || scores47D.emotional_resonance || 0,
-                    context: scores47D.context || scores47D.relevance || scores47D.contextual_awareness || 0,
-                    innovation: scores47D.innovation || scores47D.uniqueness || scores47D.novelty || 0,
-                    impact: scores47D.impact || scores47D.influence || scores47D.significance || 0
-                  };
-                };
-                
-                // 转换单个模型数据为VULCAEvaluation格式
-                const convertToEvaluation = async (model: any): Promise<VULCAEvaluation> => {
-                  // 使用VULCADataManager获取完整的VULCA数据
-                  const evaluation = await vulcaDataManager.getModelVULCAData(
-                    model.id.toString(),
-                    model.name || 'Unknown Model'
-                  );
-                  
-                  // 如果后端有实际数据，合并使用
-                  const rawScores = parseVulcaData(model.vulca_scores_47d);
-                  if (rawScores && Object.keys(rawScores).length > 0) {
-                    evaluation.scores47D = rawScores;
-                    evaluation.scores6D = extractScores6D(rawScores);
-                  }
-                  
-                  const culturalPerspectives = parseCulturalPerspectives(model.vulca_cultural_perspectives);
-                  if (culturalPerspectives && Object.keys(culturalPerspectives).length > 0) {
-                    evaluation.culturalPerspectives = culturalPerspectives;
-                  }
-                  
-                  return evaluation;
-                };
-                
-                // 从VULCA分数生成维度定义，使用真实的47维度名称
-                const getDefaultDimensions = (scores: any) => {
-                  if (!scores || typeof scores !== 'object') return [];
-                  
-                  return Object.keys(scores).map(key => {
-                    // 确保使用getDimensionLabel获取正确的显示名称（带空格）
-                    const labelResult = getDimensionLabel(key);
-                    // 如果getDimensionLabel返回的还是没有空格的格式，则尝试其他方法
-                    const properName = labelResult === key ? 
-                      // 将camelCase转换为带空格的格式作为后备方案
-                      key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^[a-z]/, c => c.toUpperCase()) 
-                      : labelResult;
-                    
-                    return {
-                      id: key,
-                      name: properName,
-                      description: `${properName} dimension`
-                    };
-                  });
-                };
-                
-                // 计算47D平均分
-                const calculate47DAverage = (scores: any) => {
-                  if (!scores || typeof scores !== 'object') return null;
-                  const values = Object.values(scores).filter(v => typeof v === 'number');
-                  if (values.length === 0) return null;
-                  return values.reduce((sum: number, val: any) => sum + val, 0) / values.length;
-                };
                 
                 return (
                   <React.Fragment key={row.id}>

@@ -23,7 +23,6 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
   const [currentStage, setCurrentStage] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [estimatedTimeRemaining, setEstimatedTimeRemaining] = useState(0);
-  const [isCompleted, setIsCompleted] = useState(false);
 
   // Define progress stages based on task type
   const getProgressStages = (taskType: string): ProgressStage[] => {
@@ -159,7 +158,6 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
   // Progress simulation
   useEffect(() => {
     if (evaluation.status === 'completed' || evaluation.status === 'failed') {
-      setIsCompleted(true);
       if (evaluation.status === 'completed' && onProgressComplete) {
         onProgressComplete();
       }
@@ -190,7 +188,6 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
         
         // Auto-complete simulation (for demo purposes)
         if (newElapsed >= totalDuration) {
-          setIsCompleted(true);
           if (onProgressComplete) {
             setTimeout(onProgressComplete, 500);
           }
@@ -215,13 +212,6 @@ const ProgressVisualizer: React.FC<ProgressVisualizerProps> = ({
     const currentStageDuration = stages[stageIndex].duration;
     
     return Math.min(100, Math.max(0, (timeIntoCurrentStage / currentStageDuration) * 100));
-  };
-
-  const getStatusColor = () => {
-    if (evaluation.status === 'completed') return 'text-success-500';
-    if (evaluation.status === 'failed') return 'text-error-500';
-    if (evaluation.status === 'processing') return 'text-slate-600';
-    return 'text-warning-500';
   };
 
   const formatTime = (seconds: number) => {

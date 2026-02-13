@@ -17,8 +17,6 @@ import {
   Minus,
   Trophy,
   BarChart3,
-  Globe,
-  Download,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import {
@@ -243,7 +241,6 @@ export default function CompareModelsPage() {
             const scoreA = dataA.dimensions[dimension];
             const scoreB = dataB.dimensions[dimension];
             const verdict = getVerdict(scoreA, scoreB);
-            const maxScore = Math.max(scoreA, scoreB);
 
             return (
               <motion.div

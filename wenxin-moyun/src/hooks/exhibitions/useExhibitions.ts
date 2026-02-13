@@ -255,7 +255,7 @@ export function useExhibitions(exhibitionIdProp?: string): UseExhibitionsReturn 
 
 // Hook for single artwork
 export function useArtwork(artworkId: number | string) {
-  const { artworks, loading, error, getArtworkById, getDialogueByArtworkId } = useExhibitions();
+  const { loading, error, getArtworkById, getDialogueByArtworkId } = useExhibitions();
 
   const id = typeof artworkId === 'string' ? parseInt(artworkId, 10) : artworkId;
 

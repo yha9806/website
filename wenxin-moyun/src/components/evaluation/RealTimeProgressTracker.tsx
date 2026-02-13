@@ -41,8 +41,7 @@ const RealTimeProgressTracker: React.FC<RealTimeProgressTrackerProps> = ({
   evaluationId,
   taskType,
   modelName,
-  onComplete,
-  onError
+  onComplete
 }) => {
   const [progress, setProgress] = useState(0);
   const [currentPhase, setCurrentPhase] = useState('initializing');

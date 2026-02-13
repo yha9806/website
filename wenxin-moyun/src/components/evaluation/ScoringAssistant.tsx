@@ -36,7 +36,6 @@ interface ScoringAssistantProps {
 const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
   evaluationTask,
   selectedDimension,
-  onScoreChange,
   isVisible
 }) => {
   const [advice, setAdvice] = useState<ScoringAdvice | null>(null);
@@ -113,12 +112,6 @@ const ScoringAssistant: React.FC<ScoringAssistantProps> = ({
       ...prev,
       [section]: !prev[section]
     }));
-  };
-
-  const getDimensionRange = (dimension: string) => {
-    if (!advice?.typical_score_ranges) return null;
-    const range = advice.typical_score_ranges[dimension];
-    return range ? { min: range[0], max: range[1] } : null;
   };
 
   const getScoreColor = (score: number) => {

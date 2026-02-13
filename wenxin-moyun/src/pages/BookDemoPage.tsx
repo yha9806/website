@@ -102,6 +102,14 @@ interface FormErrors {
   email?: string;
 }
 
+interface LeadErrorShape {
+  response?: {
+    data?: {
+      detail?: string;
+    };
+  };
+}
+
 export default function BookDemoPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
@@ -185,10 +193,11 @@ export default function BookDemoPage() {
           },
         });
       }
-    } catch (error: any) {
+    } catch (error) {
+      const leadError = error as LeadErrorShape;
       console.error('Failed to submit lead:', error);
       setSubmitError(
-        error.response?.data?.detail ||
+        leadError.response?.data?.detail ||
           'Failed to submit your request. Please try again or contact us directly.'
       );
     } finally {

@@ -24,8 +24,22 @@ interface CacheEntry<T> {
   ttl: number;
 }
 
+type RetryableRequestConfig = {
+  _retry?: boolean;
+  _retryCount?: number;
+} & Record<string, unknown>;
+
+interface FallbackModelItem {
+  id: string;
+  name: string;
+  vulca_scores_6d?: Record<string, number>;
+  vulca_scores_47d?: Record<string, number>;
+  vulca_cultural_perspectives?: Record<string, number>;
+  vulca_evaluation_date?: string;
+}
+
 class APICache {
-  private cache = new Map<string, CacheEntry<any>>();
+  private cache = new Map<string, CacheEntry<unknown>>();
   
   set<T>(key: string, data: T, ttl = 300000): void { // 5 minutes default
     this.cache.set(key, {
@@ -44,13 +58,52 @@ class APICache {
       return null;
     }
     
-    return entry.data;
+    return entry.data as T;
   }
   
   clear(): void {
     this.cache.clear();
   }
 }
+
+const toVULCAScore6D = (raw: Record<string, number> | undefined): VULCAScore6D => ({
+  creativity: raw?.creativity ?? raw?.dim_0 ?? 0,
+  technique: raw?.technique ?? raw?.dim_1 ?? 0,
+  emotion: raw?.emotion ?? raw?.dim_2 ?? 0,
+  context: raw?.context ?? raw?.dim_3 ?? 0,
+  innovation: raw?.innovation ?? raw?.dim_4 ?? 0,
+  impact: raw?.impact ?? raw?.dim_5 ?? 0,
+});
+
+const getPerspectiveValue = (source: Record<string, unknown>, key: string): number => {
+  const value = source[key];
+  if (typeof value === 'number') return value;
+  if (
+    typeof value === 'object' &&
+    value !== null &&
+    'overall' in value &&
+    typeof (value as { overall?: unknown }).overall === 'number'
+  ) {
+    return (value as { overall: number }).overall;
+  }
+  return 0;
+};
+
+const toCulturalPerspective = (
+  raw: Record<string, unknown> | undefined
+): VULCAEvaluation['culturalPerspectives'] => {
+  const source = raw ?? {};
+  return {
+    western: getPerspectiveValue(source, 'western'),
+    eastern: getPerspectiveValue(source, 'eastern'),
+    african: getPerspectiveValue(source, 'african'),
+    latin_american: getPerspectiveValue(source, 'latin_american'),
+    middle_eastern: getPerspectiveValue(source, 'middle_eastern'),
+    south_asian: getPerspectiveValue(source, 'south_asian'),
+    oceanic: getPerspectiveValue(source, 'oceanic'),
+    indigenous: getPerspectiveValue(source, 'indigenous'),
+  };
+};
 
 const apiCache = new APICache();
 
@@ -83,7 +136,12 @@ vulcaApi.interceptors.request.use(
 vulcaApi.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    const originalRequest = error.config as any;
+    const originalRequest = error.config;
+    if (!originalRequest) {
+      return Promise.reject(error);
+    }
+    const retryState = originalRequest as unknown as RetryableRequestConfig;
+    const retryCount = retryState._retryCount ?? 0;
     
     // Handle 401 Unauthorized
     if (error.response?.status === 401) {
@@ -96,17 +154,17 @@ vulcaApi.interceptors.response.use(
     
     // Implement retry logic for network errors or 5xx errors
     if (
-      !originalRequest._retry &&
-      originalRequest._retryCount < MAX_RETRIES &&
+      !retryState._retry &&
+      retryCount < MAX_RETRIES &&
       (error.code === 'ECONNABORTED' || 
        error.code === 'ERR_NETWORK' ||
        (error.response && error.response.status >= 500))
     ) {
-      originalRequest._retry = true;
-      originalRequest._retryCount = (originalRequest._retryCount || 0) + 1;
+      retryState._retry = true;
+      retryState._retryCount = retryCount + 1;
       
       // Exponential backoff
-      const delay = RETRY_DELAY * Math.pow(2, originalRequest._retryCount - 1);
+      const delay = RETRY_DELAY * Math.pow(2, retryState._retryCount - 1);
       await new Promise(resolve => setTimeout(resolve, delay));
       
       return vulcaApi(originalRequest);
@@ -191,13 +249,15 @@ export const vulcaService = {
       // Transform snake_case to camelCase
       const comparison = response.data;
       if (comparison.models) {
-        comparison.models = comparison.models.map((model: any) => ({
-          modelId: model.model_id || model.modelId,
-          modelName: model.model_name || model.modelName,
-          scores6D: model.scores_6d || model.scores6D,
-          scores47D: model.scores_47d || model.scores47D,
-          culturalPerspectives: model.cultural_perspectives || model.culturalPerspectives,
-          evaluationDate: model.evaluation_date || model.evaluationDate || new Date().toISOString()
+        comparison.models = comparison.models.map((model: Record<string, unknown>) => ({
+          modelId: String(model.model_id || model.modelId || ''),
+          modelName: String(model.model_name || model.modelName || ''),
+          scores6D: toVULCAScore6D((model.scores_6d || model.scores6D) as Record<string, number> | undefined),
+          scores47D: ((model.scores_47d || model.scores47D || {}) as Record<string, number>),
+          culturalPerspectives: toCulturalPerspective(
+            (model.cultural_perspectives || model.culturalPerspectives) as Record<string, unknown> | undefined
+          ),
+          evaluationDate: String(model.evaluation_date || model.evaluationDate || new Date().toISOString())
         }));
       }
       if (comparison.summary) {
@@ -213,21 +273,32 @@ export const vulcaService = {
       comparison.differenceMatrix = comparison.difference_matrix || comparison.differenceMatrix;
 
       return comparison;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error calling /compare API:', error);
+      const errorStatus = typeof error === 'object' && error !== null && 'status' in error
+        ? (error as { status?: number }).status
+        : undefined;
       
       // Fallback: Try to get individual models and create comparison
-      if (error.status === 400 || error.status === 404) {
+      if (errorStatus === 400 || errorStatus === 404) {
         try {
           // Get models data from the main models API
           const modelsResponse = await axios.get(`${API_BASE_URL}/api/v1/models/`, {
             params: { include_vulca: true }
           });
           
-          const allModels = modelsResponse.data;
-          const selectedModels = allModels.filter((m: any) => 
-            modelIds.includes(m.id)
-          );
+          const allModels: unknown = modelsResponse.data;
+          const selectedModels = Array.isArray(allModels)
+            ? allModels.filter((m): m is FallbackModelItem =>
+                typeof m === 'object' &&
+                m !== null &&
+                'id' in m &&
+                typeof (m as FallbackModelItem).id === 'string' &&
+                'name' in m &&
+                typeof (m as FallbackModelItem).name === 'string' &&
+                modelIds.includes((m as FallbackModelItem).id)
+              )
+            : [];
           
           if (selectedModels.length < 2) {
             throw new Error('Not enough models found for comparison');
@@ -235,12 +306,12 @@ export const vulcaService = {
           
           // Create a mock comparison response
           const mockComparison: VULCAComparison = {
-            models: selectedModels.map((m: any) => ({
+            models: selectedModels.map((m) => ({
               modelId: m.id,
               modelName: m.name,
-              scores6D: m.vulca_scores_6d || {},
+              scores6D: toVULCAScore6D(m.vulca_scores_6d),
               scores47D: m.vulca_scores_47d || {},
-              culturalPerspectives: m.vulca_cultural_perspectives || {},
+              culturalPerspectives: toCulturalPerspective(m.vulca_cultural_perspectives),
               evaluationDate: m.vulca_evaluation_date || new Date().toISOString()
             })),
             differenceMatrix: [],
@@ -355,8 +426,8 @@ export const vulcaService = {
             'memorable_quality', 'viral_potential', 'legacy_creation'
           ];
 
-          comparison.models = comparison.models.map((model: any) => {
-            const rawScores47D = model.scores_47d || model.scores47D || {};
+          comparison.models = comparison.models.map((model: Record<string, unknown>) => {
+            const rawScores47D = (model.scores_47d || model.scores47D || {}) as Record<string, number>;
 
             // Transform scores47D to use both dim_X keys and name keys for compatibility
             const scores47D: Record<string, number> = {};
@@ -379,29 +450,31 @@ export const vulcaService = {
             };
 
             // scores6D uses only dim_X keys to match visualization component expectations
-            const scores6D: Record<string, number> = model.scores_6d || model.scores6D || {
+            const scores6DSource = (model.scores_6d || model.scores6D || {
               dim_0: avgRange(0, 7),   // Creativity (dims 0-7)
               dim_1: avgRange(8, 15),  // Technique (dims 8-15)
               dim_2: avgRange(16, 23), // Emotion (dims 16-23)
               dim_3: avgRange(24, 31), // Context (dims 24-31)
               dim_4: avgRange(32, 39), // Innovation (dims 32-39)
               dim_5: avgRange(40, 46)  // Impact (dims 40-46)
-            };
+            }) as Record<string, number>;
+            const scores6D = toVULCAScore6D(scores6DSource);
 
             // Map cultural_scores to culturalPerspectives format
-            const culturalScores = model.cultural_scores || model.culturalScores || {};
-            const culturalPerspectives = model.cultural_perspectives || model.culturalPerspectives ||
-              Object.entries(culturalScores).reduce((acc, [key, value]) => {
-                acc[key] = { overall: value as number };
-                return acc;
-              }, {} as Record<string, { overall: number }>);
+            const culturalScores = (model.cultural_scores || model.culturalScores || {}) as Record<string, number>;
+            const culturalPerspectives = toCulturalPerspective(
+              (model.cultural_perspectives || model.culturalPerspectives) as Record<string, unknown> | undefined
+            );
+            const fallbackCulturalPerspectives = toCulturalPerspective(culturalScores);
 
             return {
               modelId: String(model.model_id || model.modelId),
               modelName: model.model_name || model.modelName,
               scores6D,
               scores47D,
-              culturalPerspectives,
+              culturalPerspectives: Object.values(culturalPerspectives).some(value => value !== 0)
+                ? culturalPerspectives
+                : fallbackCulturalPerspectives,
               evaluationDate: model.evaluation_date || model.evaluationDate || new Date().toISOString()
             };
           });

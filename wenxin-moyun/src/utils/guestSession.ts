@@ -48,7 +48,7 @@ export function getGuestSession(): GuestSession {
 
         return session;
       }
-    } catch (e) {
+    } catch {
       // Invalid stored session, create new one
     }
   }

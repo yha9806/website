@@ -8,7 +8,7 @@ test.describe('Navigation System', () => {
 
   test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
-    // navigate() already converts to hash format via withHash()
+    // navigate() handles router mode via route helper
     await homePage.navigate('/');
   });
 
@@ -17,12 +17,11 @@ test.describe('Navigation System', () => {
   });
 
   test('Main navigation menu functionality', async ({ page }) => {
-    // Check main navigation links - support both English and Chinese
-    // Use HashRouter format: /#/path
+    // Check main navigation links
     const navLinks = [
-      { patterns: ['排行榜', 'Leaderboard', 'Rankings'], url: '/#/leaderboard' },
-      { patterns: ['对战', 'Battle', 'VS'], url: '/#/battle' },
-      { patterns: ['评测', 'Evaluation', 'Evaluations', 'Test'], url: '/#/evaluations' }
+      { patterns: ['Product'], url: '/product' },
+      { patterns: ['Evidence', 'Customers'], url: '/customers' },
+      { patterns: ['Pricing'], url: '/pricing' }
     ];
 
     for (const link of navLinks) {
@@ -38,22 +37,22 @@ test.describe('Navigation System', () => {
       if (navLink && await navLink.isVisible({ timeout: 2000 }).catch(() => false)) {
         await navLink.click();
 
-        // Verify navigation (HashRouter format)
+        // Verify navigation
         await expect(page).toHaveURL(new RegExp(link.url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 
         // Go back to home for next test
-        await page.goto('/#/');
+        await page.goto('/');
       }
     }
   });
 
   test('Route switching and page transitions', async ({ page }) => {
-    // Test smooth transitions between pages (HashRouter format)
+    // Test smooth transitions between pages
     const routes = [
-      { path: '/#/leaderboard', check: 'leaderboard' },
-      { path: '/#/battle', check: 'battle' },
-      { path: '/#/evaluations', check: 'evaluations' },
-      { path: '/#/', check: 'home' }
+      { path: '/leaderboard', check: 'leaderboard' },
+      { path: '/vulca', check: 'vulca' },
+      { path: '/evaluations', check: 'evaluations' },
+      { path: '/', check: 'home' }
     ];
 
     for (const route of routes) {
@@ -70,10 +69,9 @@ test.describe('Navigation System', () => {
         // Check for any heading or table that indicates leaderboard
         const leaderboardElement = page.locator('h1, h2, table, [data-testid="leaderboard"]').first();
         await expect(leaderboardElement).toBeVisible({ timeout: 10000 });
-      } else if (route.check === 'battle') {
-        // Check for battle page elements - use CSS selector list
-        const battleElements = page.locator('.battle-container, .model-comparison, [data-testid*="battle"], [data-testid*="model"], h1, h2').first();
-        await expect(battleElements).toBeVisible({ timeout: 15000 });
+      } else if (route.check === 'vulca') {
+        const vulcaElements = page.locator('h1:has-text("Cultural AI Evaluation at Scale"), [id="demo-section"], [data-testid*="vulca"]').first();
+        await expect(vulcaElements).toBeVisible({ timeout: 15000 });
       } else if (route.check === 'evaluations') {
         // Check for evaluation page elements
         const evalElements = page.locator('h1, h2, [data-testid="evaluation"]').first();
@@ -85,14 +83,13 @@ test.describe('Navigation System', () => {
   });
 
   test('404 page handling for invalid routes', async ({ page }) => {
-    // Navigate to non-existent route (HashRouter format)
-    await page.goto('/#/non-existent-route-12345');
+    // Navigate to non-existent route
+    await page.goto('/non-existent-route-12345');
 
     // Wait for page to load
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
-    // For HashRouter, invalid routes typically redirect to home or show 404
     // Check if we got a 404 page, redirected to home, or have any page content
     const is404 = await page.locator('text=/404|not found|page.*not.*exist/i').isVisible({ timeout: 3000 }).catch(() => false);
     const hasHeading = await page.locator('h1').count() > 0;
@@ -113,7 +110,7 @@ test.describe('Navigation System', () => {
     await page.setViewportSize({ width: 375, height: 667 });
 
     // Reload to ensure mobile layout is applied
-    await page.goto('/#/');
+    await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
 
     // Check for mobile menu button - use CSS selector list
@@ -130,19 +127,22 @@ test.describe('Navigation System', () => {
       const mobileMenu = page.locator('.mobile-menu, nav[aria-label="mobile"], [data-testid="mobile-nav"], .nav-mobile, nav').first();
 
       if (await mobileMenu.isVisible({ timeout: 2000 }).catch(() => false)) {
-        // Click a link in mobile menu - support English interface
-        const mobileLink = mobileMenu.locator('a:has-text("Leaderboard"), a:has-text("Rankings"), a:has-text("排行榜")').first();
+        // Click a deterministic link in mobile menu
+        const mobileLink = mobileMenu.locator('a[href="/product"]').first();
         if (await mobileLink.isVisible({ timeout: 2000 }).catch(() => false)) {
           await mobileLink.click();
-          await expect(page).toHaveURL(/\/#\/leaderboard/);
+          await expect(page).toHaveURL(/\/product/);
+        } else {
+          // Menu opened but target link was not present; keep this as non-blocking.
+          await expect(mobileMenu).toBeVisible();
         }
       }
     } else {
       // If no mobile menu button, check if nav links are directly visible
-      const navLink = page.locator('nav a:has-text("Leaderboard"), nav a:has-text("Rankings")').first();
+      const navLink = page.locator('nav a:has-text("Product"), nav a:has-text("Pricing"), nav a:has-text("Evidence")').first();
       if (await navLink.isVisible({ timeout: 2000 }).catch(() => false)) {
         await navLink.click();
-        await expect(page).toHaveURL(/\/#\/leaderboard/);
+        await expect(page).toHaveURL(/\/(product|pricing|customers)/);
       }
     }
   });

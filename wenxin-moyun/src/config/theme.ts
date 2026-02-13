@@ -135,11 +135,11 @@ export const getTheme = (mode: ThemeMode): Theme => {
 export const generateCSSVariables = (theme: Theme): string => {
   const cssVars: string[] = [];
   
-  const processObject = (obj: any, prefix: string = '') => {
+  const processObject = (obj: Record<string, unknown>, prefix: string = '') => {
     Object.entries(obj).forEach(([key, value]) => {
       const varName = prefix ? `${prefix}-${key}` : key;
-      if (typeof value === 'object' && !Array.isArray(value)) {
-        processObject(value, varName);
+      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        processObject(value as Record<string, unknown>, varName);
       } else if (!Array.isArray(value)) {
         cssVars.push(`--${varName}: ${value};`);
       }

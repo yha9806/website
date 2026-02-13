@@ -1,16 +1,16 @@
-<testsuites id="" name="" tests="71" failures="0" skipped="17" errors="0" time="443.50297900000004">
-<testsuite name="ai-models.spec.ts" timestamp="2026-01-10T20:07:21.364Z" hostname="chromium" tests="8" failures="0" skipped="0" time="65.745" errors="0">
-<testcase name="AI Models Leaderboard › 应该显示AI模型排行榜" classname="ai-models.spec.ts" time="25.991">
+<testsuites id="" name="" tests="71" failures="0" skipped="19" errors="0" time="286.443701">
+<testsuite name="ai-models.spec.ts" timestamp="2026-02-07T22:32:13.508Z" hostname="chromium" tests="8" failures="0" skipped="0" time="38.763" errors="0">
+<testcase name="AI Models Leaderboard › 应该显示AI模型排行榜" classname="ai-models.spec.ts" time="9.126">
 </testcase>
-<testcase name="AI Models Leaderboard › 应该正确处理NULL分数显示" classname="ai-models.spec.ts" time="5.345">
+<testcase name="AI Models Leaderboard › 应该正确处理NULL分数显示" classname="ai-models.spec.ts" time="4.104">
 </testcase>
-<testcase name="AI Models Leaderboard › 应该支持模型类型筛选" classname="ai-models.spec.ts" time="4.878">
+<testcase name="AI Models Leaderboard › 应该支持模型类型筛选" classname="ai-models.spec.ts" time="3.134">
 </testcase>
-<testcase name="AI Models Leaderboard › 应该支持排序功能" classname="ai-models.spec.ts" time="4.975">
+<testcase name="AI Models Leaderboard › 应该支持排序功能" classname="ai-models.spec.ts" time="3.225">
 </testcase>
-<testcase name="AI Models Leaderboard › 模型详情页面跳转" classname="ai-models.spec.ts" time="5.348">
+<testcase name="AI Models Leaderboard › 模型详情页面跳转" classname="ai-models.spec.ts" time="4.033">
 </testcase>
-<testcase name="AI Models Leaderboard › 响应式设计测试" classname="ai-models.spec.ts" time="7.692">
+<testcase name="AI Models Leaderboard › 响应式设计测试" classname="ai-models.spec.ts" time="9.048">
 <system-out>
 <![CDATA[开始响应式设计测试
 测试桌面端布局 (1920x1080)
@@ -21,18 +21,28 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="AI Models Leaderboard › 搜索功能测试" classname="ai-models.spec.ts" time="6.144">
+<testcase name="AI Models Leaderboard › 搜索功能测试" classname="ai-models.spec.ts" time="2.962">
 </testcase>
-<testcase name="AI Models Leaderboard › 数据加载状态测试" classname="ai-models.spec.ts" time="5.372">
+<testcase name="AI Models Leaderboard › 数据加载状态测试" classname="ai-models.spec.ts" time="3.131">
 </testcase>
 </testsuite>
-<testsuite name="auth.spec.ts" timestamp="2026-01-10T20:07:21.364Z" hostname="chromium" tests="7" failures="0" skipped="0" time="40.708" errors="0">
-<testcase name="Authentication Flow › User can successfully login with valid credentials" classname="auth.spec.ts" time="6.805">
+<testsuite name="auth.spec.ts" timestamp="2026-02-07T22:32:13.508Z" hostname="chromium" tests="7" failures="0" skipped="0" time="44.184" errors="0">
+<testcase name="Authentication Flow › User can successfully login with valid credentials" classname="auth.spec.ts" time="5.597">
 <system-out>
-<![CDATA[Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+<![CDATA[Auth API response: http://127.0.0.1:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
 Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
 Test: Starting login test with credentials: demo
 Test: Navigating to login page
+Auth API response: http://localhost:5173/login [33m200[39m
+Response body: <!doctype html>
+<html lang="en">
+  <head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$Refr
+Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
 Test: Login form is visible
 Test: Filling login form
 Mock: Intercepting login request to: http://localhost:8001/api/v1/auth/login
@@ -40,26 +50,38 @@ Login request data: username=demo&password=demo123
 Login credentials: demo [REDACTED]
 Mock: Sending successful login response
 Auth API response: http://localhost:8001/api/v1/auth/login [33m200[39m
+Response body: {"access_token":"mock-jwt-token-1770503596458","token_type":"bearer"}
 Test: Waiting for redirect to home page
 Test: Checking auth token storage
-Response body: {"access_token":"mock-jwt-token-1768075744313","token_type":"bearer"}
 Test: Auth token retrieved: YES
 Test: Verifying successful redirect to home page
 Test: Login test completed successfully
 ]]>
 </system-out>
 </testcase>
-<testcase name="Authentication Flow › Guest mode allows access without authentication" classname="auth.spec.ts" time="5.11">
+<testcase name="Authentication Flow › Guest mode allows access without authentication" classname="auth.spec.ts" time="5.427">
 <system-out>
-<![CDATA[Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+<![CDATA[Auth API response: http://127.0.0.1:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
 Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
 Start experience button not found, setting guest mode via JavaScript
+Auth API response: http://127.0.0.1:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
 ]]>
 </system-out>
 </testcase>
-<testcase name="Authentication Flow › Login fails with invalid credentials" classname="auth.spec.ts" time="4.526">
+<testcase name="Authentication Flow › Login fails with invalid credentials" classname="auth.spec.ts" time="5.218">
 <system-out>
-<![CDATA[Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+<![CDATA[Auth API response: http://127.0.0.1:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
+Auth API response: http://localhost:5173/login [33m200[39m
+Response body: <!doctype html>
+<html lang="en">
+  <head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$Refr
+Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
 Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
 Mock: Intercepting login request to: http://localhost:8001/api/v1/auth/login
 Login request data: username=invalid_user&password=wrong_password
@@ -70,67 +92,107 @@ Response body: {"detail":"Invalid username or password"}
 ]]>
 </system-out>
 </testcase>
-<testcase name="Authentication Flow › JWT token persists across page refreshes" classname="auth.spec.ts" time="10.102">
+<testcase name="Authentication Flow › JWT token persists across page refreshes" classname="auth.spec.ts" time="10.94">
 <system-out>
-<![CDATA[Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+<![CDATA[Auth API response: http://127.0.0.1:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
+Auth API response: http://localhost:5173/login [33m200[39m
+Response body: <!doctype html>
+<html lang="en">
+  <head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$Refr
+Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
 Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
 Mock: Intercepting login request to: http://localhost:8001/api/v1/auth/login
 Login request data: username=demo&password=demo123
 Login credentials: demo [REDACTED]
 Mock: Sending successful login response
 Auth API response: http://localhost:8001/api/v1/auth/login [33m200[39m
-Response body: {"access_token":"mock-jwt-token-1768075760740","token_type":"bearer"}
-Initial token set: mock-jwt-token-1768075760740
+Response body: {"access_token":"mock-jwt-token-1770503612872","token_type":"bearer"}
+Initial token set: mock-jwt-token-1770503612872
 Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
 Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
-Token after refresh: mock-jwt-token-1768075760740
+Token after refresh: mock-jwt-token-1770503612872
 Application can access token: [33mtrue[39m
 ]]>
 </system-out>
 </testcase>
-<testcase name="Authentication Flow › Logout functionality clears authentication" classname="auth.spec.ts" time="5.185">
+<testcase name="Authentication Flow › Logout functionality clears authentication" classname="auth.spec.ts" time="8.232">
 <system-out>
-<![CDATA[Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+<![CDATA[Auth API response: http://127.0.0.1:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
+Auth API response: http://localhost:5173/login [33m200[39m
+Response body: <!doctype html>
+<html lang="en">
+  <head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$Refr
+Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
 Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
 Mock: Intercepting login request to: http://localhost:8001/api/v1/auth/login
 Login request data: username=demo&password=demo123
 Login credentials: demo [REDACTED]
 Mock: Sending successful login response
 Auth API response: http://localhost:8001/api/v1/auth/login [33m200[39m
-Response body: {"access_token":"mock-jwt-token-1768075770412","token_type":"bearer"}
+Response body: {"access_token":"mock-jwt-token-1770503626021","token_type":"bearer"}
 Token after logout: CLEARED
+Auth API response: http://127.0.0.1:5173/login [33m200[39m
+Response body: <!doctype html>
+<html lang="en">
+  <head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$Refr
+Auth API response: http://127.0.0.1:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
 ✅ Logout functionality verified: token cleared and can access login page
 ]]>
 </system-out>
 </testcase>
-<testcase name="Authentication Flow › Admin user has access to admin features" classname="auth.spec.ts" time="3.823">
+<testcase name="Authentication Flow › Admin user has access to admin features" classname="auth.spec.ts" time="5.438">
 <system-out>
-<![CDATA[Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+<![CDATA[Auth API response: http://127.0.0.1:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
+Auth API response: http://localhost:5173/login [33m200[39m
+Response body: <!doctype html>
+<html lang="en">
+  <head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$Refr
+Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
 Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
 Mock: Intercepting login request to: http://localhost:8001/api/v1/auth/login
 Login request data: username=admin&password=admin123
 Login credentials: admin [REDACTED]
 Mock: Sending successful login response
 Auth API response: http://localhost:8001/api/v1/auth/login [33m200[39m
-Response body: {"access_token":"mock-jwt-token-1768075775314","token_type":"bearer"}
+Response body: {"access_token":"mock-jwt-token-1770503634141","token_type":"bearer"}
 ]]>
 </system-out>
 </testcase>
-<testcase name="Authentication Flow › Guest session respects daily usage limits" classname="auth.spec.ts" time="5.157">
+<testcase name="Authentication Flow › Guest session respects daily usage limits" classname="auth.spec.ts" time="3.332">
 <system-out>
-<![CDATA[Auth API response: http://localhost:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
+<![CDATA[Auth API response: http://127.0.0.1:5173/src/components/auth/LoginPrompt.tsx [33m200[39m
 Response body: import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/auth/LoginPrompt.tsx");import __vite__cjsImport0_react_jsxDevRu
 ✅ Guest session functionality verified: data storage works correctly
 ]]>
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="basic-navigation.spec.ts" timestamp="2026-01-10T20:07:21.364Z" hostname="chromium" tests="4" failures="0" skipped="1" time="14.875" errors="0">
-<testcase name="Basic Navigation › Homepage loads successfully" classname="basic-navigation.spec.ts" time="5.712">
+<testsuite name="basic-navigation.spec.ts" timestamp="2026-02-07T22:32:13.508Z" hostname="chromium" tests="4" failures="0" skipped="1" time="12.011" errors="0">
+<testcase name="Basic Navigation › Homepage loads successfully" classname="basic-navigation.spec.ts" time="5.085">
 </testcase>
-<testcase name="Basic Navigation › Can navigate to leaderboard" classname="basic-navigation.spec.ts" time="6.988">
+<testcase name="Basic Navigation › Can navigate to leaderboard" classname="basic-navigation.spec.ts" time="4.565">
 </testcase>
-<testcase name="Basic Navigation › Can navigate to login page directly" classname="basic-navigation.spec.ts" time="2.175">
+<testcase name="Basic Navigation › Can navigate to login page directly" classname="basic-navigation.spec.ts" time="2.361">
 </testcase>
 <testcase name="Basic Navigation › Backend health check works" classname="basic-navigation.spec.ts" time="0">
 <properties>
@@ -141,259 +203,190 @@ Response body: import { createHotContext as __vite__createHotContext } from "/@v
 </skipped>
 </testcase>
 </testsuite>
-<testsuite name="battle.spec.ts" timestamp="2026-01-10T20:07:21.364Z" hostname="chromium" tests="4" failures="0" skipped="0" time="35.802" errors="0">
-<testcase name="Battle System › Random model matchup generation" classname="battle.spec.ts" time="7.742">
+<testsuite name="battle.spec.ts" timestamp="2026-02-07T22:32:13.508Z" hostname="chromium" tests="4" failures="0" skipped="2" time="16.316" errors="0">
+<testcase name="Battle System › Random model matchup generation" classname="battle.spec.ts" time="6.77">
 <system-out>
 <![CDATA[Starting battle matchup test...
-API Request: GET http://localhost:8001/api/v1/battles/?page=1&page_size=20
-Mock: Intercepting battles list request: http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Request: GET http://localhost:8001/api/v1/battles/?page=1&page_size=20
-Mock: Intercepting battles list request: http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Request: GET http://localhost:8001/api/v1/battles/random
-Mock: Intercepting battle random request
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/random
 API Request: GET http://localhost:8001/api/v1/models/
 API Request: GET http://localhost:8001/api/v1/artworks/
 API Response: [33m200[39m http://localhost:8001/api/v1/models/
 ✅ Battle page navigation and basic content verified
-Vote buttons present: true
-✅ Battle interface elements loaded correctly
+Vote buttons present: false
 ✅ Battle test completed successfully
 ]]>
 </system-out>
 </testcase>
-<testcase name="Battle System › Vote submission and result update" classname="battle.spec.ts" time="10.071">
-<system-out>
-<![CDATA[Starting vote submission test...
-Waiting for battle page content to load...
-API Request: GET http://localhost:8001/api/v1/battles/?page=1&page_size=20
-Mock: Intercepting battles list request: http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Request: GET http://localhost:8001/api/v1/battles/?page=1&page_size=20
-Mock: Intercepting battles list request: http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Request: GET http://localhost:8001/api/v1/battles/random
-Mock: Intercepting battle random request
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/random
-✅ Battle content loaded successfully
-Battle container visible: [33mtrue[39m
-Model containers visible: [33mtrue[39m [33mtrue[39m
-Model names retrieved: "Model A" vs "Model B"
-Initial models: Model A vs Model B
-Voting for Model A...
-API Request: GET http://localhost:8001/api/v1/models/
-API Request: GET http://localhost:8001/api/v1/artworks/
-API Response: [33m200[39m http://localhost:8001/api/v1/models/
-API Request: POST http://localhost:8001/api/v1/battles/battle-1768075805661/vote
-Mock: Intercepting battle vote request
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/battle-1768075805661/vote
-Has voted after vote: [33mtrue[39m
-Post-vote model names: "GPT-4" vs "Claude-3"
-Post-vote models: GPT-4 vs Claude-3
-✅ Vote submission test completed successfully
-]]>
-</system-out>
+<testcase name="Battle System › Vote submission and result update" classname="battle.spec.ts" time="3.258">
+<properties>
+<property name="skip" value="Battle voting UI not available in current frontend build">
+</property>
+</properties>
+<skipped>
+</skipped>
 </testcase>
-<testcase name="Battle System › Battle statistics tracking" classname="battle.spec.ts" time="9.269">
-<system-out>
-<![CDATA[API Request: GET http://localhost:8001/api/v1/battles/?page=1&page_size=20
-Mock: Intercepting battles list request: http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Request: GET http://localhost:8001/api/v1/battles/?page=1&page_size=20
-Mock: Intercepting battles list request: http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Request: GET http://localhost:8001/api/v1/battles/random
-Mock: Intercepting battle random request
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/random
-API Request: POST http://localhost:8001/api/v1/battles/battle-1768075815689/vote
-Mock: Intercepting battle vote request
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/battle-1768075815689/vote
-API Request: GET http://localhost:8001/api/v1/models/
-API Request: GET http://localhost:8001/api/v1/artworks/
-API Response: [33m200[39m http://localhost:8001/api/v1/models/
-]]>
-</system-out>
+<testcase name="Battle System › Battle statistics tracking" classname="battle.spec.ts" time="3.205">
+<properties>
+<property name="skip" value="Battle voting UI not available in current frontend build">
+</property>
+</properties>
+<skipped>
+</skipped>
 </testcase>
-<testcase name="Battle System › Skip battle functionality" classname="battle.spec.ts" time="8.72">
+<testcase name="Battle System › Skip battle functionality" classname="battle.spec.ts" time="3.083">
 <system-out>
-<![CDATA[API Request: GET http://localhost:8001/api/v1/battles/?page=1&page_size=20
-Mock: Intercepting battles list request: http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Request: GET http://localhost:8001/api/v1/battles/?page=1&page_size=20
-Mock: Intercepting battles list request: http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/?page=1&page_size=20
-API Request: GET http://localhost:8001/api/v1/battles/random
-Mock: Intercepting battle random request
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/random
-Model names retrieved: "Model A" vs "Model B"
-API Request: GET http://localhost:8001/api/v1/battles/random
-Mock: Intercepting battle random request
-API Response: [33m200[39m http://localhost:8001/api/v1/battles/random
-API Request: GET http://localhost:8001/api/v1/models/
-API Request: GET http://localhost:8001/api/v1/artworks/
-API Response: [33m200[39m http://localhost:8001/api/v1/models/
-Model names retrieved: "Model A" vs "Model B"
+<![CDATA[Skip/Refresh button not found - feature may not be implemented
 ]]>
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="evaluation.spec.ts" timestamp="2026-01-10T20:07:21.364Z" hostname="chromium" tests="7" failures="0" skipped="0" time="37.671" errors="0">
-<testcase name="Evaluation System › Create new evaluation task successfully" classname="evaluation.spec.ts" time="9.971">
+<testsuite name="evaluation.spec.ts" timestamp="2026-02-07T22:32:13.508Z" hostname="chromium" tests="7" failures="0" skipped="0" time="38.064" errors="0">
+<testcase name="Evaluation System › Create new evaluation task successfully" classname="evaluation.spec.ts" time="11.034">
 <system-out>
-<![CDATA[API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/
-API Request: GET http://localhost:8001/api/v1/artworks/
-API Response: [33m200[39m http://localhost:8001/api/v1/models/
+<![CDATA[API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/models/?is_active=true
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Request: GET https://vulca-api.onrender.com/api/v1/models/?is_active=true
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Request: GET https://vulca-api.onrender.com/api/v1/models/
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/
+API Request: GET https://vulca-api.onrender.com/api/v1/artworks/
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/artworks/
 Found 3 model options
-API Request: POST http://localhost:8001/api/v1/evaluations/
+API Request: POST https://vulca-api.onrender.com/api/v1/evaluations/
 ]]>
 </system-out>
 </testcase>
-<testcase name="Evaluation System › Real-time progress update visualization" classname="evaluation.spec.ts" time="4.428">
+<testcase name="Evaluation System › Real-time progress update visualization" classname="evaluation.spec.ts" time="4.216">
 <system-out>
-<![CDATA[API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/
-API Request: GET http://localhost:8001/api/v1/artworks/
+<![CDATA[API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/models/?is_active=true
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Request: GET https://vulca-api.onrender.com/api/v1/models/?is_active=true
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/?is_active=true
 ]]>
 </system-out>
 </testcase>
-<testcase name="Evaluation System › Display evaluation results with scoring" classname="evaluation.spec.ts" time="4.323">
+<testcase name="Evaluation System › Display evaluation results with scoring" classname="evaluation.spec.ts" time="4.161">
 <system-out>
-<![CDATA[API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/
-API Request: GET http://localhost:8001/api/v1/artworks/
-API Response: [33m200[39m http://localhost:8001/api/v1/models/
+<![CDATA[API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/models/?is_active=true
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Request: GET https://vulca-api.onrender.com/api/v1/models/?is_active=true
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/?is_active=true
 ]]>
 </system-out>
 </testcase>
-<testcase name="Evaluation System › Guest evaluation daily limit enforcement" classname="evaluation.spec.ts" time="4.79">
+<testcase name="Evaluation System › Guest evaluation daily limit enforcement" classname="evaluation.spec.ts" time="4.428">
 <system-out>
-<![CDATA[API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/
-API Request: GET http://localhost:8001/api/v1/artworks/
-API Response: [33m200[39m http://localhost:8001/api/v1/models/
+<![CDATA[API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/models/?is_active=true
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Request: GET https://vulca-api.onrender.com/api/v1/models/?is_active=true
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Request: GET https://vulca-api.onrender.com/api/v1/models/
+API Request: GET https://vulca-api.onrender.com/api/v1/artworks/
 ]]>
 </system-out>
 </testcase>
-<testcase name="Evaluation System › View evaluation history" classname="evaluation.spec.ts" time="4.726">
+<testcase name="Evaluation System › View evaluation history" classname="evaluation.spec.ts" time="6.418">
 <system-out>
-<![CDATA[API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/models/
-API Request: GET http://localhost:8001/api/v1/artworks/
+<![CDATA[API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/models/
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/
+API Request: GET https://vulca-api.onrender.com/api/v1/artworks/
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/
 ]]>
 </system-out>
 </testcase>
-<testcase name="Evaluation System › Evaluation task error handling" classname="evaluation.spec.ts" time="4.5">
+<testcase name="Evaluation System › Evaluation task error handling" classname="evaluation.spec.ts" time="4.208">
 <system-out>
-<![CDATA[API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/
-API Request: GET http://localhost:8001/api/v1/artworks/
+<![CDATA[API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/models/?is_active=true
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Request: GET https://vulca-api.onrender.com/api/v1/models/?is_active=true
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Request: GET https://vulca-api.onrender.com/api/v1/models/
+API Request: GET https://vulca-api.onrender.com/api/v1/artworks/
 ]]>
 </system-out>
 </testcase>
-<testcase name="Evaluation System › Cancel ongoing evaluation" classname="evaluation.spec.ts" time="4.933">
+<testcase name="Evaluation System › Cancel ongoing evaluation" classname="evaluation.spec.ts" time="3.599">
 <system-out>
-<![CDATA[API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/evaluations/?skip=0&limit=10
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/?is_active=true
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Response: [33m200[39m http://localhost:8001/api/v1/models/?is_active=true
-API Request: GET http://localhost:8001/api/v1/models/
-Mock: Intercepting models request: http://localhost:8001/api/v1/models/
-API Request: GET http://localhost:8001/api/v1/artworks/
-API Response: [33m200[39m http://localhost:8001/api/v1/models/
+<![CDATA[API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/evaluations/?skip=0&limit=10
+API Request: GET https://vulca-api.onrender.com/api/v1/models/?is_active=true
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Request: GET https://vulca-api.onrender.com/api/v1/models/?is_active=true
+Mock: Intercepting models request: https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/?is_active=true
+API Response: [33m200[39m https://vulca-api.onrender.com/api/v1/models/?is_active=true
 ]]>
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="homepage.spec.ts" timestamp="2026-01-10T20:07:21.364Z" hostname="chromium" tests="5" failures="0" skipped="0" time="45.602" errors="0">
-<testcase name="Homepage › 应该正确显示页面标题和主要导航" classname="homepage.spec.ts" time="6.595">
+<testsuite name="homepage.spec.ts" timestamp="2026-02-07T22:32:13.508Z" hostname="chromium" tests="5" failures="0" skipped="0" time="23.04" errors="0">
+<testcase name="Homepage › 应该正确显示页面标题和主要导航" classname="homepage.spec.ts" time="2.902">
 </testcase>
-<testcase name="Homepage › 应该显示主要内容区域" classname="homepage.spec.ts" time="15.753">
+<testcase name="Homepage › 应该显示主要内容区域" classname="homepage.spec.ts" time="3.094">
 </testcase>
-<testcase name="Homepage › 应该响应式适配移动端" classname="homepage.spec.ts" time="5.013">
+<testcase name="Homepage › 应该响应式适配移动端" classname="homepage.spec.ts" time="2.647">
 </testcase>
-<testcase name="Homepage › 导航链接应该正确跳转" classname="homepage.spec.ts" time="11.135">
+<testcase name="Homepage › 导航链接应该正确跳转" classname="homepage.spec.ts" time="9.565">
 </testcase>
-<testcase name="Homepage › 页面加载性能测试" classname="homepage.spec.ts" time="7.106">
+<testcase name="Homepage › 页面加载性能测试" classname="homepage.spec.ts" time="4.832">
 </testcase>
 </testsuite>
-<testsuite name="ios-components.spec.ts" timestamp="2026-01-10T20:07:21.364Z" hostname="chromium" tests="10" failures="0" skipped="0" time="68.63" errors="0">
-<testcase name="iOS Components › iOS button components should render and interact correctly" classname="ios-components.spec.ts" time="9.561">
+<testsuite name="ios-components.spec.ts" timestamp="2026-02-07T22:32:13.508Z" hostname="chromium" tests="10" failures="0" skipped="0" time="31.989" errors="0">
+<testcase name="iOS Components › iOS button components should render and interact correctly" classname="ios-components.spec.ts" time="2.751">
 </testcase>
-<testcase name="iOS Components › iOS card components should display correctly" classname="ios-components.spec.ts" time="5.587">
+<testcase name="iOS Components › iOS card components should display correctly" classname="ios-components.spec.ts" time="2.825">
 </testcase>
-<testcase name="iOS Components › iOS-style glass morphism effects" classname="ios-components.spec.ts" time="6.942">
+<testcase name="iOS Components › iOS-style glass morphism effects" classname="ios-components.spec.ts" time="2.917">
 </testcase>
-<testcase name="iOS Components › iOS color system application" classname="ios-components.spec.ts" time="5.616">
+<testcase name="iOS Components › iOS color system application" classname="ios-components.spec.ts" time="3.057">
 </testcase>
-<testcase name="iOS Components › iOS typography system application" classname="ios-components.spec.ts" time="6.841">
+<testcase name="iOS Components › iOS typography system application" classname="ios-components.spec.ts" time="3.257">
 </testcase>
-<testcase name="iOS Components › iOS toggle switch components" classname="ios-components.spec.ts" time="6.385">
+<testcase name="iOS Components › iOS toggle switch components" classname="ios-components.spec.ts" time="2.74">
 </testcase>
-<testcase name="iOS Components › iOS slider components" classname="ios-components.spec.ts" time="5.988">
+<testcase name="iOS Components › iOS slider components" classname="ios-components.spec.ts" time="2.916">
 </testcase>
-<testcase name="iOS Components › iOS alerts and modal dialogs" classname="ios-components.spec.ts" time="5.86">
+<testcase name="iOS Components › iOS alerts and modal dialogs" classname="ios-components.spec.ts" time="2.701">
 </testcase>
-<testcase name="iOS Components › Responsive iOS component adaptation" classname="ios-components.spec.ts" time="9.497">
+<testcase name="iOS Components › Responsive iOS component adaptation" classname="ios-components.spec.ts" time="6.068">
 </testcase>
-<testcase name="iOS Components › iOS component animations and transition effects" classname="ios-components.spec.ts" time="6.353">
+<testcase name="iOS Components › iOS component animations and transition effects" classname="ios-components.spec.ts" time="2.757">
 <system-out>
 <![CDATA[No iOS buttons found for animation test
 ]]>
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="navigation.spec.ts" timestamp="2026-01-10T20:07:21.364Z" hostname="chromium" tests="5" failures="0" skipped="1" time="30.414" errors="0">
-<testcase name="Navigation System › Main navigation menu functionality" classname="navigation.spec.ts" time="11.84">
+<testsuite name="navigation.spec.ts" timestamp="2026-02-07T22:32:13.508Z" hostname="chromium" tests="5" failures="0" skipped="1" time="38.47" errors="0">
+<testcase name="Navigation System › Main navigation menu functionality" classname="navigation.spec.ts" time="11.852">
 </testcase>
-<testcase name="Navigation System › Route switching and page transitions" classname="navigation.spec.ts" time="8.051">
+<testcase name="Navigation System › Route switching and page transitions" classname="navigation.spec.ts" time="13.429">
 </testcase>
-<testcase name="Navigation System › 404 page handling for invalid routes" classname="navigation.spec.ts" time="6.648">
+<testcase name="Navigation System › 404 page handling for invalid routes" classname="navigation.spec.ts" time="6.983">
 </testcase>
 <testcase name="Navigation System › Breadcrumb navigation functionality" classname="navigation.spec.ts" time="0">
 <properties>
@@ -403,11 +396,11 @@ API Response: [33m200[39m http://localhost:8001/api/v1/models/
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Navigation System › Mobile navigation menu (responsive)" classname="navigation.spec.ts" time="3.875">
+<testcase name="Navigation System › Mobile navigation menu (responsive)" classname="navigation.spec.ts" time="6.206">
 </testcase>
 </testsuite>
-<testsuite name="vulca-47d-issue.spec.ts" timestamp="2026-01-10T20:07:21.364Z" hostname="chromium" tests="3" failures="0" skipped="0" time="16.026" errors="0">
-<testcase name="VULCA 47D Display Issues › 检查47D按钮和数据显示问题" classname="vulca-47d-issue.spec.ts" time="5.149">
+<testsuite name="vulca-47d-issue.spec.ts" timestamp="2026-02-07T22:32:13.508Z" hostname="chromium" tests="3" failures="0" skipped="0" time="8.986" errors="0">
+<testcase name="VULCA 47D Display Issues › 检查47D按钮和数据显示问题" classname="vulca-47d-issue.spec.ts" time="3.032">
 <system-out>
 <![CDATA[开始检查47D显示问题...
 47D按钮存在: false
@@ -415,25 +408,25 @@ API Response: [33m200[39m http://localhost:8001/api/v1/models/
 ]]>
 </system-out>
 </testcase>
-<testcase name="VULCA 47D Display Issues › 检查47D数据完整性" classname="vulca-47d-issue.spec.ts" time="5.056">
+<testcase name="VULCA 47D Display Issues › 检查47D数据完整性" classname="vulca-47d-issue.spec.ts" time="2.782">
 <system-out>
 <![CDATA[47D按钮未找到，跳过数据完整性检查
 ]]>
 </system-out>
 </testcase>
-<testcase name="VULCA 47D Display Issues › 检查47D视图切换功能" classname="vulca-47d-issue.spec.ts" time="5.821">
+<testcase name="VULCA 47D Display Issues › 检查47D视图切换功能" classname="vulca-47d-issue.spec.ts" time="3.172">
 <system-out>
 <![CDATA[47D按钮未找到，跳过视图切换功能检查
 ]]>
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="vulca-simple.spec.ts" timestamp="2026-01-10T20:07:21.364Z" hostname="chromium" tests="6" failures="0" skipped="3" time="19.388" errors="0">
-<testcase name="VULCA Simple Tests › should navigate to VULCA page" classname="vulca-simple.spec.ts" time="6.959">
+<testsuite name="vulca-simple.spec.ts" timestamp="2026-02-07T22:32:13.508Z" hostname="chromium" tests="6" failures="0" skipped="3" time="14.866" errors="0">
+<testcase name="VULCA Simple Tests › should navigate to VULCA page" classname="vulca-simple.spec.ts" time="5.703">
 </testcase>
-<testcase name="VULCA Simple Tests › should show loading or content" classname="vulca-simple.spec.ts" time="7.581">
+<testcase name="VULCA Simple Tests › should show loading or content" classname="vulca-simple.spec.ts" time="6.163">
 </testcase>
-<testcase name="VULCA Simple Tests › should eventually show main content" classname="vulca-simple.spec.ts" time="4.848">
+<testcase name="VULCA Simple Tests › should eventually show main content" classname="vulca-simple.spec.ts" time="3">
 </testcase>
 <testcase name="VULCA API Tests › should have working VULCA API" classname="vulca-simple.spec.ts" time="0">
 <properties>
@@ -460,7 +453,7 @@ API Response: [33m200[39m http://localhost:8001/api/v1/models/
 </skipped>
 </testcase>
 </testsuite>
-<testsuite name="vulca.spec.ts" timestamp="2026-01-10T20:07:21.364Z" hostname="chromium" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testsuite name="vulca.spec.ts" timestamp="2026-02-07T22:32:13.508Z" hostname="chromium" tests="12" failures="0" skipped="12" time="0" errors="0">
 <testcase name="VULCA Integration Tests › should load VULCA page successfully" classname="vulca.spec.ts" time="0">
 <properties>
 <property name="skip" value="VULCA integration tests require running backend with VULCA API">

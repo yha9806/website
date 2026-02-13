@@ -16,7 +16,7 @@ import {
   Tooltip,
 } from 'recharts';
 import type { RPAITScores, Critique, Persona } from '../../types/exhibition';
-import { RPAIT_LABELS, RPAIT_COLORS } from '../../types/exhibition';
+import { RPAIT_LABELS } from '../../types/exhibition';
 
 interface RPAITRadarProps {
   critiques: Critique[];

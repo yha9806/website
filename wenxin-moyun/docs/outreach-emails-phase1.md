@@ -2,7 +2,7 @@
 
 **生成日期**: 2026-01-21
 **总计**: 10 封邮件
-**状态**: 待发送
+**状态**: ✅ 已全部发送 (2026-01-23)
 
 ---
 
@@ -54,15 +54,15 @@ https://vulcaart.art
 
 ---
 
-## 邮件 2: Lori Glover - MIT CSAIL
+## 邮件 2: Glenn Wong - MIT CSAIL (替换 Lori Glover，已离职)
 
-**To**: loriglover@csail.mit.edu
+**To**: glennw@mit.edu
 **Subject**: Multimodal cultural evaluation benchmark - industry collaboration inquiry
 
 ```
-Dear Lori,
+Dear Glenn,
 
-I came across your work leading CSAIL's global strategic alliances and thought VULCA might align well with your industry collaboration initiatives.
+I'm reaching out to the CSAIL Alliances team regarding potential industry collaboration. I understand you're leading the global strategic alliances program, and thought VULCA might align well with CSAIL's industry collaboration initiatives.
 
 We've developed VULCA, a benchmark that evaluates how well Vision-Language Models understand cultural context in visual art - an area that complements CSAIL's work on multimodal interpretability (like the recent MAIA project).
 
@@ -392,16 +392,16 @@ https://vulcaart.art
 
 | # | 收件人 | 邮箱 | 发送日期 | 状态 | 回复日期 | 备注 |
 |---|--------|------|----------|------|----------|------|
-| 1 | Ahmad Rushdi | rushdi@stanford.edu | | 待发送 | | |
-| 2 | Lori Glover | loriglover@csail.mit.edu | | 待发送 | | |
-| 3 | Danqi Chen | danqic@cs.princeton.edu | | 待发送 | | |
-| 4 | Sarah Clayton | sarah.clayton@eng.ox.ac.uk | | 待发送 | | |
-| 5 | Promptfoo | inquiries@promptfoo.dev | | 待发送 | | |
-| 6 | BKC Harvard | hello@cyber.harvard.edu | | 待发送 | | |
-| 7 | Turing Institute | partnerships-and-engagement@turing.ac.uk | | 待发送 | | |
-| 8 | Met Museum | openaccess@metmuseum.org | | 待发送 | | |
-| 9 | Georgia Mallin | gmallin@britishmuseum.org | | 待发送 | | |
-| 10 | ai-evaluation.org | info@ai-evaluation.org | | 待发送 | | |
+| 1 | Ahmad Rushdi | rushdi@stanford.edu | 2026-01-23 | ✅ 已发送 | ✅ 已回复 | Stanford HAI 产业合作 |
+| 2 | Glenn Wong (替换 Lori Glover) | glennw@mit.edu | 2026-01-23 | ✅ 已发送 | | ⚠️ Lori 已离职 |
+| 3 | Danqi Chen | danqic@cs.princeton.edu | 2026-01-23 | ✅ 已发送 | | Princeton NLP |
+| 4 | Sarah Clayton | sarah.clayton@eng.ox.ac.uk | 2026-01-23 | ✅ 已发送 | | 产假中，2026年3月回 |
+| 5 | Promptfoo | inquiries@promptfoo.dev | 2026-01-23 | ✅ 已发送 | | AI Security |
+| 6 | BKC Harvard | hello@cyber.harvard.edu | 2026-01-23 | ✅ 已发送 | 自动回复 | Berkman Klein Center |
+| 7 | Turing Institute | partnerships-and-engagement@turing.ac.uk | 2026-01-23 | ✅ 已发送 | 自动回复 | Alan Turing Institute |
+| 8 | Met Museum | openaccess@metmuseum.org | 2026-01-23 | ✅ 已发送 | | Open Access Team |
+| 9 | Georgia Mallin | gmallin@britishmuseum.org | 2026-01-23 | ✅ 已发送 | | British Museum |
+| 10 | ai-evaluation.org | info@ai-evaluation.org | 2026-01-23 | ✅ 已发送 | ✅ 已回复 | Advance AI Safety Today |
 
 ---
 

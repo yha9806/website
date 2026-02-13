@@ -87,8 +87,27 @@ const formatDimensionName = (text: string): string => {
   return result.replace(/\s+/g, ' ').trim();
 };
 
-// Keep the old function for compatibility
-const camelCaseToWords = formatDimensionName;
+type ChartDataPoint = Record<string, string | number>;
+
+interface HeatmapPoint {
+  x: number;
+  y: number;
+  value: number;
+  model: string;
+  dimension: string;
+}
+
+interface HeatmapTooltipProps {
+  active?: boolean;
+  payload?: Array<{ payload: HeatmapPoint }>;
+}
+
+interface BarChartTooltipEntry {
+  name?: string | number;
+  value?: number | string;
+  color?: string;
+  payload?: { fullName?: string };
+}
 
 interface VULCAVisualizationProps {
   evaluations: VULCAEvaluation[];
@@ -111,16 +130,16 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
   const isMobile = useIsMobile();
 
   // 使用统一的图表主题 hook (支持深色/浅色模式)
-  const { seriesColors, colors: themeColors, rechartsTheme, config: chartConfig } = useChartTheme();
-  const colors = seriesColors(5);
+  const { seriesColors, colors: themeColors } = useChartTheme();
+  const colors = useMemo(() => seriesColors(5), [seriesColors]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
-  const [selectedCulturalPerspective, setSelectedCulturalPerspective] = useState<string>('eastern');
+  const [selectedCulturalPerspective, setSelectedCulturalPerspective] = useState<string>(culturalPerspective);
   const [dimensionFilter, setDimensionFilter] = useState<'all' | 'high-variance' | 'top-performance' | 'custom'>('high-variance');
-  const [customDimensionCount, setCustomDimensionCount] = useState<number>(15);
+  const [customDimensionCount] = useState<number>(15);
 
   // Auto-select chart type based on data characteristics
-  const { chartType: autoChartType, isGroupedView } = useAutoChartType({
+  const { chartType: autoChartType } = useAutoChartType({
     viewMode,
     viewLevel,
     modelCount: evaluations.length,
@@ -156,12 +175,12 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
       filteredDimensions.length);
     
     return radarDimensions.map(dim => {
-      const dataPoint: any = { dimension: dim.name };
+      const dataPoint: ChartDataPoint = { dimension: dim.name };
       
       evaluations.forEach((evaluation, index) => {
         const scores = viewMode === '6d' ? evaluation.scores6D : evaluation.scores47D;
         // Use modelName, fallback to a readable name instead of model_0
-        const modelKey = evaluation.modelName || (evaluation as any).name || `Model ${index + 1}`;
+        const modelKey = evaluation.modelName || `Model ${index + 1}`;
         dataPoint[modelKey] = scores ? (scores[dim.id as keyof typeof scores] || 0) : 0;
       });
       
@@ -185,12 +204,12 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
         color: colors[index % colors.length],
       };
     });
-  }, [evaluations, viewMode]);
+  }, [evaluations, viewMode, colors]);
   
   const heatmapData = useMemo(() => {
     if (!evaluations.length || !filteredDimensions.length) return [];
     
-    const data: any[] = [];
+    const data: HeatmapPoint[] = [];
     const dimSlice = filteredDimensions.slice(0, viewMode === '6d' ? 6 : 
       filteredDimensions.length);
     
@@ -219,7 +238,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
     
     return evaluations.map((evaluation, index) => {
       const scores = viewMode === '6d' ? evaluation.scores6D : evaluation.scores47D;
-      const dataPoint: any = {
+      const dataPoint: ChartDataPoint = {
         model: evaluation.modelName,
         color: colors[index % colors.length],
       };
@@ -230,10 +249,10 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
       
       return dataPoint;
     });
-  }, [evaluations, filteredDimensions, viewMode]);
+  }, [evaluations, filteredDimensions, viewMode, colors]);
   
   // Custom tooltip for heatmap
-  const HeatmapTooltip = ({ active, payload }: any) => {
+  const HeatmapTooltip = ({ active, payload }: HeatmapTooltipProps) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
@@ -264,7 +283,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
     // Prepare data with difference highlighting
     const enhancedData = evaluations.map((evaluation, evalIndex) => {
       const scores = viewMode === '6d' ? evaluation.scores6D : evaluation.scores47D;
-      const dataPoint: any = {
+      const dataPoint: ChartDataPoint = {
         model: evaluation.modelName,
         modelIndex: evalIndex,
       };
@@ -313,7 +332,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
       case 'high-variance':
         topDims = dimensionVariances.slice(0, 15).map(dv => dv.dim);
         break;
-      case 'top-performance':
+      case 'top-performance': {
         // Find dimensions with highest average scores across models
         const performanceDims = detailedDims.map(dim => {
           const avgScore = evaluations.reduce((sum, e) => {
@@ -324,6 +343,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
         }).sort((a, b) => b.avgScore - a.avgScore);
         topDims = performanceDims.slice(0, 10).map(pd => pd.dim);
         break;
+      }
       case 'custom':
         topDims = detailedDims.slice(0, customDimensionCount);
         break;
@@ -635,7 +655,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
             <Legend />
 
             {evaluations.map((evaluation, index) => {
-              const modelKey = evaluation.modelName || (evaluation as any).name || `Model ${index + 1}`;
+              const modelKey = evaluation.modelName || `Model ${index + 1}`;
               return (
                 <Radar
                   key={modelKey}
@@ -687,7 +707,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
           properName = formatDimensionName(properName);
         }
 
-        const dataPoint: any = {
+        const dataPoint: ChartDataPoint = {
           dimension: rawName,  // Raw name for Y-axis (tickFormatter will format it)
           fullName: properName,  // Formatted name for tooltip
           originalIndex: index,
@@ -746,9 +766,9 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
                 return (
                   <div className="bg-white dark:bg-gray-800 p-2 border rounded shadow">
                     <p className="text-sm font-medium">{payload[0].payload.fullName}</p>
-                    {payload.map((entry: any, index: number) => (
+                    {payload.map((entry: BarChartTooltipEntry, index: number) => (
                       <p key={index} className="text-xs" style={{ color: entry.color }}>
-                        {entry.name}: {entry.value?.toFixed(1)}
+                        {entry.name}: {typeof entry.value === 'number' ? entry.value.toFixed(1) : entry.value ?? 'N/A'}
                       </p>
                     ))}
                   </div>
@@ -815,7 +835,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
                 <Legend />
 
               {evaluations.map((evaluation, index) => {
-                const modelKey = evaluation.modelName || (evaluation as any).name || `Model ${index + 1}`;
+                const modelKey = evaluation.modelName || `Model ${index + 1}`;
                 return (
                   <Radar
                     key={modelKey}
@@ -876,7 +896,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
           </ResponsiveContainer>
         );
       
-      case 'heatmap':
+      case 'heatmap': {
         const heatmapDimSlice = filteredDimensions.slice(0, currentViewMode === '6d' ? 6 :
           filteredDimensions.length);
         
@@ -938,8 +958,9 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
             </div>
           </div>
         );
+      }
       
-      case 'parallel':
+      case 'parallel': {
         // For detailed view, show enhanced parallel coordinates
         if (viewLevel === 'detailed' && currentViewMode === '47d') {
           return renderDetailedParallelView();
@@ -984,6 +1005,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
             </p>
           </div>
         );
+      }
       
       default:
         return <p>Unknown visualization type</p>;

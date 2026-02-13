@@ -3,6 +3,15 @@ import type { Model, Artwork } from '../types/types';
 import { modelsService } from '../services/models.service';
 import { artworksService } from '../services/artworks.service';
 
+interface ApiErrorShape {
+  response?: {
+    data?: {
+      detail?: string;
+    };
+  };
+  message?: string;
+}
+
 export function useModelDetail(modelId: string | undefined) {
   const [model, setModel] = useState<Model | null>(null);
   const [artworks, setArtworks] = useState<Artwork[]>([]);
@@ -36,13 +45,14 @@ export function useModelDetail(modelId: string | undefined) {
           // Don't fail if artworks fetch fails
           setArtworks([]);
         }
-      } catch (err: any) {
+      } catch (err) {
+        const apiError = err as ApiErrorShape;
         console.error('[useModelDetail] Error fetching model detail:', err);
-        console.error('[useModelDetail] Error response:', err.response);
+        console.error('[useModelDetail] Error response:', apiError.response);
         
         // Set proper error message instead of falling back to mock data
-        const errorMessage = err.response?.data?.detail || 
-                           err.message || 
+        const errorMessage = apiError.response?.data?.detail || 
+                           apiError.message || 
                            'Failed to load model details';
         setError(errorMessage);
         

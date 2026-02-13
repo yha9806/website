@@ -4,7 +4,6 @@
 
 import React from 'react';
 import { IOSButton } from '../ios/core/IOSButton';
-import { Download } from 'lucide-react';
 
 interface ExportButtonProps {
   onClick: () => void;

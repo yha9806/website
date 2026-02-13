@@ -13,9 +13,7 @@ import { motion } from 'framer-motion';
 import {
   IOSButton,
   IOSCard,
-  IOSCardHeader,
   IOSCardContent,
-  IOSCardFooter,
   IOSCardGrid,
 } from '../components/ios';
 import { VULCA_VERSION } from '../config/version';

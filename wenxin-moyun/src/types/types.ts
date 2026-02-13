@@ -123,7 +123,7 @@ export interface EvaluationTask {
   modelName?: string;
   taskType: 'poem' | 'story' | 'painting' | 'music';
   prompt: string;
-  parameters?: Record<string, any>;
+  parameters?: Record<string, unknown>;
   status: 'pending' | 'processing' | 'completed' | 'failed';
   result?: EvaluationResult;
   createdAt: string;

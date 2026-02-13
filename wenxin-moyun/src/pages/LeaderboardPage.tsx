@@ -12,19 +12,12 @@ import ViewModeToggle from '../components/leaderboard/ViewModeToggle';
 import { useUIStore } from '../store/uiStore';
 import { useFilterStore } from '../store/filterStore';
 import type { LeaderboardEntry } from '../types/types';
-import { lazy, Suspense } from 'react';
-
-// 懒加载VULCA组件以优化性能
-const VULCAVisualization = lazy(() =>
-  import('../components/vulca/VULCAVisualization').then(module => ({
-    default: module.VULCAVisualization
-  }))
-);
+import type { FilterState } from '../store/filterStore';
 import { IOSButton } from '../components/ios/core/IOSButton';
 import { IOSCard, IOSCardHeader, IOSCardContent } from '../components/ios/core/IOSCard';
 import {
-  ChevronDown, ChevronUp, Trophy, ScrollText, Palette, BookOpen, Music, RefreshCw, Search,
-  TrendingUp, TrendingDown, Quote, Copy, Check, Calendar, ArrowRight, FileText, ExternalLink
+  Trophy, ScrollText, Palette, BookOpen, Music, RefreshCw, Search,
+  TrendingUp, Quote, Copy, Check, Calendar, ArrowRight, FileText, ExternalLink
 } from 'lucide-react';
 import { LoadingOverlay } from '../components/common/LoadingOverlay';
 import { CiteModal } from '../components/trustlayer';
@@ -41,12 +34,14 @@ const categoryIcons: Record<string, React.ReactNode> = {
   multimodal: <RefreshCw className="w-5 h-5" />,
 };
 
+type FilterPanelValues = Omit<FilterState, 'search'>;
+
 export default function LeaderboardPage() {
   const { category = 'overall' } = useParams();
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState(category);
   const { entries, loading, error } = useLeaderboard(selectedCategory === 'overall' ? undefined : selectedCategory);
-  const [hoveredEntry, setHoveredEntry] = useState<LeaderboardEntry | null>(null);
+  const [, setHoveredEntry] = useState<LeaderboardEntry | null>(null);
   const [expandedVulcaModels, setExpandedVulcaModels] = useState<Set<string>>(new Set());
   const [listRef] = useAutoAnimate();
   
@@ -61,7 +56,6 @@ export default function LeaderboardPage() {
     winRateRange,
     dateRange,
     weights,
-    setWeights,
     clearFilters
   } = useFilterStore();
 
@@ -95,7 +89,7 @@ export default function LeaderboardPage() {
     }
   }, [error]);
 
-  const handleFilterChange = (values: any) => {
+  const handleFilterChange = (values: FilterPanelValues) => {
     setFilters({
       organizations: values.organizations,
       tags: values.tags,
@@ -316,7 +310,6 @@ export default function LeaderboardPage() {
       <CitationSection
         category={selectedCategory}
         modelCount={filteredData.length}
-        topModel={filteredData[0]}
       />
 
       {/* CTA Banner */}
@@ -433,12 +426,10 @@ function TopDeltaSection({ topModels }: { topModels: LeaderboardEntry[] }) {
 // Citation Section Component
 function CitationSection({
   category,
-  modelCount,
-  topModel
+  modelCount
 }: {
   category: string;
   modelCount: number;
-  topModel?: LeaderboardEntry;
 }) {
   const [copied, setCopied] = useState(false);
   const [showCiteModal, setShowCiteModal] = useState(false);

@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { iosColors, iosRadius, iosTransitions } from '../utils/iosTheme';
 import { iosAnimations } from '../utils/animations';
 
 export interface IOSToggleProps {

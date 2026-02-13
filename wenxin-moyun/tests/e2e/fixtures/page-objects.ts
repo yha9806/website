@@ -1,4 +1,5 @@
 import { Page, Locator } from '@playwright/test';
+import { withRoute, urlMatcher } from '../utils/route-helper';
 
 export class BasePage {
   readonly page: Page;
@@ -7,24 +8,10 @@ export class BasePage {
     this.page = page;
   }
 
-  /**
-   * Convert path to HashRouter format
-   * /login -> /#/login
-   * /#/login -> /#/login (no change)
-   */
-  protected withHash(path: string): string {
-    if (path.startsWith('/#')) return path;
-    if (path.startsWith('#')) return `/${path}`;
-    if (path.startsWith('/')) return `/#${path}`;
-    return `/#/${path}`;
-  }
-
   async navigate(path: string) {
     // Support dynamic port detection for MCP integration
     const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:5173';
-    // Convert to hash route format for HashRouter
-    const hashPath = this.withHash(path);
-    const fullURL = path.startsWith('http') ? path : `${baseURL}${hashPath}`;
+    const fullURL = path.startsWith('http') ? path : `${baseURL}${withRoute(path)}`;
     await this.page.goto(fullURL);
   }
 
@@ -32,8 +19,7 @@ export class BasePage {
    * Wait for URL to match (supports both hash and non-hash patterns)
    */
   async expectURL(path: string) {
-    const hashPath = this.withHash(path);
-    await this.page.waitForURL(new RegExp(hashPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    await this.page.waitForURL(urlMatcher(path));
   }
 
   async waitForLoadComplete() {
@@ -61,10 +47,10 @@ export class HomePage extends BasePage {
     super(page);
     // Updated selectors for iOS design system
     this.heroTitle = page.locator('main h1.text-large-title').first();
-    this.exploreRankingsButton = page.locator('[data-testid="explore-rankings-button"], button:has-text("Explore Rankings"), button:has-text("排行榜")');
-    this.modelBattleButton = page.locator('[data-testid="model-battle-button"], button:has-text("Model Battle"), button:has-text("模型对战")');
-    this.leaderboardLink = page.locator('[data-testid="nav-rankings"]').first();
-    this.battleLink = page.locator('[data-testid="nav-battles"]').first();
+    this.exploreRankingsButton = page.locator('[data-testid="explore-rankings-button"], a[href="/models"], a[href="/leaderboard"], button:has-text("Explore Rankings"), button:has-text("排行榜")').first();
+    this.modelBattleButton = page.locator('[data-testid="hero-try-demo"], a[href="/vulca"], button:has-text("Try Public Demo"), button:has-text("Model Battle"), button:has-text("模型对战")').first();
+    this.leaderboardLink = page.locator('a[href="/models"], a[href="/leaderboard"], nav a:has-text("Models"), nav a:has-text("Leaderboard"), nav a:has-text("Rankings")').first();
+    this.battleLink = page.locator('a[href="/vulca"], nav a:has-text("VULCA")').first();
     this.navMenu = page.locator('nav');
     this.homeLink = page.locator('[data-testid="nav-home"], a[href="/"], nav a:has-text("首页")');
     this.loginButton = page.locator('button:has-text("Login"), button:has-text("登录"), a[href*="login"]');
@@ -73,11 +59,19 @@ export class HomePage extends BasePage {
   }
 
   async clickExploreRankings() {
-    await this.exploreRankingsButton.click();
+    if (await this.exploreRankingsButton.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await this.exploreRankingsButton.click();
+      return;
+    }
+    await this.navigate('/models');
   }
 
   async clickModelBattle() {
-    await this.modelBattleButton.click();
+    if (await this.modelBattleButton.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await this.modelBattleButton.click();
+      return;
+    }
+    await this.navigate('/vulca');
   }
 
   async navigateToLogin() {
@@ -85,11 +79,11 @@ export class HomePage extends BasePage {
     if (await this.loginButton.isVisible({ timeout: 2000 })) {
       await this.loginButton.click();
     } else {
-      // Fallback: navigate directly to login page (withHash will convert to /#/login)
+      // Fallback: navigate directly to login page
       await this.navigate('/login');
     }
     // Wait for login page to load
-    await this.page.waitForURL(/\/#\/login/);
+    await this.page.waitForURL(urlMatcher('/login'));
   }
 
   async clickStartExperience() {

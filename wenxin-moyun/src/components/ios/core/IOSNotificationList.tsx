@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence, useDragControls } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { PanInfo } from 'framer-motion';
 import { liquidGlass } from '../utils/iosTheme';
 import { iosAnimations } from '../utils/animations';
 import { EmojiIcon } from './EmojiIcon';
-import { X, Eye, Archive } from 'lucide-react';
+import { X, Eye } from 'lucide-react';
 
 export interface NotificationItem {
   id: string;
@@ -97,7 +97,10 @@ export const IOSNotificationList: React.FC<IOSNotificationListProps> = ({
   };
 
   // Handle drag end for swipe actions
-  const handleDragEnd = (notificationId: string) => (_: any, info: PanInfo) => {
+  const handleDragEnd = (notificationId: string) => (
+    _event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
     const { offset, velocity } = info;
     
     if (Math.abs(offset.x) > 100 || Math.abs(velocity.x) > 500) {
@@ -190,7 +193,7 @@ export const IOSNotificationList: React.FC<IOSNotificationListProps> = ({
             ) : notification.emoji ? (
               <EmojiIcon 
                 category="content" 
-                name={notification.emoji as any} 
+                name={notification.emoji}
                 size="md" 
               />
             ) : notification.icon ? (
@@ -253,7 +256,7 @@ export const IOSNotificationList: React.FC<IOSNotificationListProps> = ({
                     {action.emoji && (
                       <EmojiIcon 
                         category="actions" 
-                        name={action.emoji as any} 
+                        name={action.emoji}
                         size="xs" 
                         className="mr-1" 
                       />
@@ -296,7 +299,7 @@ export const IOSNotificationList: React.FC<IOSNotificationListProps> = ({
       </AnimatePresence>
 
       {/* Grouped Notifications */}
-      {hasGroups && groups.map((group, groupIndex) => (
+      {hasGroups && groups.map((group) => (
         <div key={group.id} className="space-y-2">
           {/* Group Header */}
           {showGroupHeaders && (

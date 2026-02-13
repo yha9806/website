@@ -2,12 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IOSCard, IOSCardHeader, IOSCardContent, IOSCardFooter } from './IOSCard';
 import { IOSButton } from './IOSButton';
-import { IOSToggle } from './IOSToggle';
 import { IOSSlider } from './IOSSlider';
 import { IOSRangeSlider } from './IOSRangeSlider';
 import { EmojiIcon } from './EmojiIcon';
 import { iosAnimations } from '../utils/animations';
-import { iosColors } from '../utils/iosTheme';
 
 // Core filter interfaces
 export interface IOSFilterConfig {
@@ -237,7 +235,7 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
                         }
                       `}
                     >
-                      <EmojiIcon category="actions" name={tab.emoji as any} size="sm" />
+                      <EmojiIcon category="actions" name={tab.emoji} size="sm" />
                       {tab.label}
                     </button>
                   ))}
@@ -421,13 +419,15 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
                         Adjust the importance of different evaluation criteria
                       </div>
                       
-                      {values.weights.map((weight, index) => (
+                      {values.weights.map((weight) => (
                         <IOSSlider
                           key={weight.key}
                           value={weight.value}
                           onChange={(value) => {
                             const newWeights = [...values.weights!];
-                            newWeights[index] = { ...weight, value };
+                            const weightIndex = newWeights.findIndex((w) => w.key === weight.key);
+                            if (weightIndex === -1) return;
+                            newWeights[weightIndex] = { ...weight, value };
                             handleChange('weights', newWeights);
                           }}
                           min={0}

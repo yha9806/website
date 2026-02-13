@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { X, Clock, Calendar, User, Hash, Sparkles } from 'lucide-react';
+import { X, Clock, Calendar, Hash, Sparkles } from 'lucide-react';
 import type { EvaluationTask } from '../../types/types';
 
 interface EvaluationDetailModalProps {

@@ -4,7 +4,7 @@
  * 支持深色/浅色模式自动切换
  */
 
-import { ORGANIZATION_COLORS, getOrganizationColor, DEFAULT_ORG_COLOR } from '../constants/organizationColors';
+import { ORGANIZATION_COLORS, getOrganizationColor } from '../constants/organizationColors';
 
 // ============= Art Professional 色彩系统 =============
 

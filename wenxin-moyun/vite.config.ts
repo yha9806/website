@@ -1,10 +1,41 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { vitePrerenderPlugin } from 'vite-prerender-plugin'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    // Prerender marketing pages for SEO
+    command === 'build' && vitePrerenderPlugin({
+      renderTarget: '#root',
+      prerenderScript: path.resolve(__dirname, 'src/prerender.tsx'),
+      additionalPrerenderRoutes: [
+        '/',
+        '/product',
+        '/pricing',
+        '/demo',
+        '/trust',
+        '/data-ethics',
+        '/sop',
+        '/methodology',
+        '/dataset',
+        '/papers',
+        '/vulca',
+        '/models',
+        '/solutions',
+        '/solutions/ai-labs',
+        '/solutions/research',
+        '/solutions/museums',
+        '/customers',
+        '/pilot',
+        '/exhibitions',
+      ],
+    }),
+  ].filter(Boolean),
 
   // Set base URL for production deployment to Cloud Storage
   // Using 'command' parameter instead of process.env.NODE_ENV for Vite best practices
@@ -34,6 +65,8 @@ export default defineConfig(({ command }) => ({
           vendor: ['react', 'react-dom'],
           router: ['react-router-dom'],
           ui: ['framer-motion', '@headlessui/react'],
+          charts: ['recharts'],
+          icons: ['lucide-react'],
           // Three.js 3D 渲染包独立分块
           'three-core': ['three'],
           'three-fiber': ['@react-three/fiber', '@react-three/drei'],

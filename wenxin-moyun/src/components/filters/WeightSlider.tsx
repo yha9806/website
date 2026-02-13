@@ -179,7 +179,7 @@ export default function WeightSlider({
           <div className="flex items-center justify-center">
             <div className="relative w-32 h-32">
               <svg viewBox="0 0 100 100" className="transform -rotate-90">
-                {localWeights.reduce((acc, weight, index) => {
+                {localWeights.reduce((acc, weight) => {
                   const startAngle = acc.angle;
                   const angle = (weight.value / 100) * 360;
                   const endAngle = startAngle + angle;

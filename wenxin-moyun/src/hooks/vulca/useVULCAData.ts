@@ -3,7 +3,7 @@
  * Custom hook for managing VULCA evaluation data
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { vulcaService } from '../../utils/vulca/api';
 import { getDimensionLabel } from '../../utils/vulca-dimensions';
 import { createLogger } from '../../utils/logger';
@@ -31,7 +31,7 @@ interface UseVULCADataReturn {
   comparison: VULCAComparison | null;
   dimensions: VULCADimensionInfo[];
   perspectives: VULCACulturalPerspectiveInfo[];
-  systemInfo: any | null;
+  systemInfo: Record<string, unknown> | null;
   
   // Loading states
   loading: boolean;
@@ -41,7 +41,7 @@ interface UseVULCADataReturn {
   
   // Error state
   error: string | null;
-  errorDetails: any | null;
+  errorDetails: unknown | null;
   
   // Connection status
   isConnected: boolean;
@@ -61,10 +61,47 @@ interface UseVULCADataReturn {
 // SessionStorage helper functions
 const SESSION_STORAGE_KEY = 'vulca_data_cache';
 
-function saveToSessionStorage(key: string, data: any): void {
+type SessionCacheEntry = { data: unknown; timestamp: number };
+type SessionCacheStore = Record<string, SessionCacheEntry>;
+
+function getErrorMessage(error: unknown, fallback: string): string {
+  if (typeof error === 'object' && error !== null && 'message' in error) {
+    const message = (error as { message?: unknown }).message;
+    if (typeof message === 'string' && message.trim()) {
+      return message;
+    }
+  }
+  return fallback;
+}
+
+function isDimensionInfoArray(value: unknown): value is VULCADimensionInfo[] {
+  return Array.isArray(value) && value.every((item) => {
+    if (typeof item !== 'object' || item === null) return false;
+    const candidate = item as Partial<VULCADimensionInfo>;
+    return (
+      typeof candidate.id === 'string' &&
+      typeof candidate.name === 'string' &&
+      typeof candidate.description === 'string'
+    );
+  });
+}
+
+function isPerspectiveInfoArray(value: unknown): value is VULCACulturalPerspectiveInfo[] {
+  return Array.isArray(value) && value.every((item) => {
+    if (typeof item !== 'object' || item === null) return false;
+    const candidate = item as Partial<VULCACulturalPerspectiveInfo>;
+    return (
+      typeof candidate.id === 'string' &&
+      typeof candidate.name === 'string' &&
+      typeof candidate.description === 'string'
+    );
+  });
+}
+
+function saveToSessionStorage(key: string, data: unknown): void {
   try {
     const existing = sessionStorage.getItem(SESSION_STORAGE_KEY);
-    const cache = existing ? JSON.parse(existing) : {};
+    const cache = existing ? (JSON.parse(existing) as SessionCacheStore) : {};
     cache[key] = {
       data,
       timestamp: Date.now()
@@ -75,12 +112,12 @@ function saveToSessionStorage(key: string, data: any): void {
   }
 }
 
-function loadFromSessionStorage(key: string, maxAge = 1800000): any | null {
+function loadFromSessionStorage(key: string, maxAge = 1800000): unknown | null {
   try {
     const existing = sessionStorage.getItem(SESSION_STORAGE_KEY);
     if (!existing) return null;
     
-    const cache = JSON.parse(existing);
+    const cache = JSON.parse(existing) as SessionCacheStore;
     const entry = cache[key];
     if (!entry) return null;
     
@@ -103,18 +140,22 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
   const [comparison, setComparison] = useState<VULCAComparison | null>(null);
   const [dimensions, setDimensions] = useState<VULCADimensionInfo[]>([]);
   const [perspectives, setPerspectives] = useState<VULCACulturalPerspectiveInfo[]>([]);
-  const [systemInfo, setSystemInfo] = useState<any | null>(null);
+  const [systemInfo, setSystemInfo] = useState<Record<string, unknown> | null>(null);
   
   const [loading, setLoading] = useState(false);
   const [initializing, setInitializing] = useState(true);
   const [evaluating, setEvaluating] = useState(false);
   const [comparing, setComparing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [errorDetails, setErrorDetails] = useState<any | null>(null);
+  const [errorDetails, setErrorDetails] = useState<unknown | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [lastSync, setLastSync] = useState<Date | null>(null);
   
   const isMounted = useRef(false);
+  const initialModelIdsKey = useMemo(
+    () => (initialModelIds && initialModelIds.length >= 2 ? initialModelIds.join(',') : ''),
+    [initialModelIds]
+  );
   
   // Initialize data on mount
   useEffect(() => {
@@ -139,8 +180,8 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
           const cachedDims = loadFromSessionStorage('dimensions');
           const cachedPersp = loadFromSessionStorage('perspectives');
           
-          if (cachedDims) setDimensions(transformDimensions(cachedDims));
-          if (cachedPersp) setPerspectives(cachedPersp);
+          if (isDimensionInfoArray(cachedDims)) setDimensions(transformDimensions(cachedDims));
+          if (isPerspectiveInfoArray(cachedPersp)) setPerspectives(cachedPersp);
           
           setError('Unable to connect to VULCA API. Using cached data.');
           setInitializing(false);
@@ -169,18 +210,18 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
           logger.log(' Data saved to state and session storage');
         }
         
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('[VULCA] Error initializing VULCA data:', err);
         
         // Try to load from session storage as fallback
         const cachedDims = loadFromSessionStorage('dimensions');
         const cachedPersp = loadFromSessionStorage('perspectives');
         
-        if (cachedDims) setDimensions(transformDimensions(cachedDims));
-        if (cachedPersp) setPerspectives(cachedPersp);
+        if (isDimensionInfoArray(cachedDims)) setDimensions(transformDimensions(cachedDims));
+        if (isPerspectiveInfoArray(cachedPersp)) setPerspectives(cachedPersp);
         
         if (isMounted.current) {
-          setError(err.message || 'Failed to initialize VULCA data');
+          setError(getErrorMessage(err, 'Failed to initialize VULCA data'));
           setErrorDetails(err);
         }
       } finally {
@@ -213,7 +254,7 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
         saveToSessionStorage('dimensions', dims);
         setLastSync(new Date());
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (isMounted.current) {
         setError('Failed to load dimensions');
         setErrorDetails(err);
@@ -235,7 +276,7 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
         saveToSessionStorage('perspectives', persp);
         setLastSync(new Date());
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (isMounted.current) {
         setError('Failed to load cultural perspectives');
         setErrorDetails(err);
@@ -271,8 +312,8 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
         return [...prev, evaluation];
       });
       
-    } catch (err: any) {
-      const message = err.message || 'Failed to evaluate model';
+    } catch (err: unknown) {
+      const message = getErrorMessage(err, 'Failed to evaluate model');
       if (isMounted.current) {
         setError(message);
         setErrorDetails(err);
@@ -303,8 +344,8 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
         setEvaluations(comparisonResult.models);
       }
       
-    } catch (err: any) {
-      const message = err.message || 'Failed to compare models';
+    } catch (err: unknown) {
+      const message = getErrorMessage(err, 'Failed to compare models');
       if (isMounted.current) {
         setError(message);
         setErrorDetails(err);
@@ -319,10 +360,10 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
 
   // Load initial comparison if model IDs provided
   useEffect(() => {
-    if (initialModelIds && initialModelIds.length >= 2 && isConnected) {
-      compareModels(initialModelIds);
+    if (initialModelIdsKey && isConnected) {
+      compareModels(initialModelIdsKey.split(','));
     }
-  }, [initialModelIds?.join(','), isConnected, compareModels]);
+  }, [initialModelIdsKey, isConnected, compareModels]);
 
   const loadDemoData = useCallback(async () => {
     try {
@@ -336,7 +377,7 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
           setEvaluations(demoComparison.models);
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (isMounted.current) {
         setError('Failed to load demo data');
         setErrorDetails(err);
@@ -375,9 +416,9 @@ export function useVULCAData(initialModelIds?: string[]): UseVULCADataReturn {
         saveToSessionStorage('dimensions', dims);
         saveToSessionStorage('perspectives', persp);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[VULCA] Error refreshing data:', err);
-      setError(err.message || 'Failed to refresh VULCA data');
+      setError(getErrorMessage(err, 'Failed to refresh VULCA data'));
       setErrorDetails(err);
     } finally {
       setInitializing(false);

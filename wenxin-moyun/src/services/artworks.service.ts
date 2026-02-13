@@ -10,7 +10,7 @@ export interface ArtworkResponse {
   image_url?: string;
   prompt?: string;
   score: number;
-  extra_metadata?: Record<string, any>;
+  extra_metadata?: Record<string, unknown>;
   created_at: string;
 }
 
@@ -58,7 +58,7 @@ class ArtworksService {
     image_url?: string;
     prompt?: string;
     score?: number;
-    extra_metadata?: Record<string, any>;
+    extra_metadata?: Record<string, unknown>;
   }): Promise<ArtworkResponse> {
     const response = await api.post<ArtworkResponse>('/artworks', artworkData);
     return response.data;
@@ -72,7 +72,7 @@ class ArtworksService {
       image_url: string;
       prompt: string;
       score: number;
-      extra_metadata: Record<string, any>;
+      extra_metadata: Record<string, unknown>;
     }>
   ): Promise<ArtworkResponse> {
     const response = await api.put<ArtworkResponse>(`/artworks/${id}`, artworkData);

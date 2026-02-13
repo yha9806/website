@@ -3,13 +3,15 @@ import { motion } from 'framer-motion';
 import { X, Sparkles, Palette, BookOpen, Music } from 'lucide-react';
 import { useModels } from '../../hooks/useModels';
 
+type EvaluationTaskType = 'poem' | 'story' | 'painting' | 'music';
+
 interface CreateEvaluationModalProps {
   onClose: () => void;
   onCreate: (data: {
     modelId: string;
-    taskType: 'poem' | 'story' | 'painting' | 'music';
+    taskType: EvaluationTaskType;
     prompt: string;
-    parameters?: Record<string, any>;
+    parameters?: Record<string, string>;
   }) => Promise<void>;
 }
 
@@ -17,7 +19,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
   const { models, loading } = useModels();
   const [formData, setFormData] = useState({
     modelId: '',
-    taskType: 'poem' as 'poem' | 'story' | 'painting' | 'music',
+    taskType: 'poem' as EvaluationTaskType,
     prompt: '',
     style: '',
     length: 'medium',
@@ -31,7 +33,12 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
     }
   }, [models, formData.modelId]);
 
-  const taskTypes = [
+  const taskTypes: Array<{
+    value: EvaluationTaskType;
+    label: string;
+    icon: typeof BookOpen;
+    placeholder: string;
+  }> = [
     { value: 'poem', label: 'Poetry Creation', icon: BookOpen, 
       placeholder: 'Enter poetry theme, e.g., spring, nostalgia, love' },
     { value: 'story', label: 'Story Creation', icon: Sparkles,
@@ -50,7 +57,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
 
     setIsSubmitting(true);
     try {
-      const parameters: Record<string, any> = {};
+      const parameters: Record<string, string> = {};
       if (formData.style) parameters.style = formData.style;
       if (formData.length) parameters.length = formData.length;
       if (formData.language) parameters.language = formData.language;
@@ -126,7 +133,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
                     type="button"
                     role="radio"
                     aria-checked={formData.taskType === type.value}
-                    onClick={() => setFormData(prev => ({ ...prev, taskType: type.value as any }))}
+                    onClick={() => setFormData(prev => ({ ...prev, taskType: type.value }))}
                     className={`p-4 rounded-lg border-2 transition-all flex items-center gap-3 ${
                       formData.taskType === type.value
                         ? 'border-amber-600 bg-amber-50 dark:bg-purple-900/20'

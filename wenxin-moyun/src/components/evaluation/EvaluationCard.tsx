@@ -2,16 +2,21 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Clock, CheckCircle, XCircle, AlertCircle, 
-  Star, MessageSquare, Trash2, Eye, 
+  Star, Trash2, Eye, 
   Sparkles, Palette, BookOpen, Music 
 } from 'lucide-react';
 import type { EvaluationTask } from '../../types/types';
 import EvaluationDetailModal from './EvaluationDetailModal';
 import HumanRatingModal from './HumanRatingModal';
 
+type EvaluationUpdatePayload = {
+  humanScore?: number;
+  humanFeedback?: string;
+};
+
 interface EvaluationCardProps {
   evaluation: EvaluationTask;
-  onUpdate: (id: string, data: any) => Promise<any>;
+  onUpdate: (id: string, data: EvaluationUpdatePayload) => Promise<unknown>;
   onDelete: (id: string) => Promise<void>;
 }
 

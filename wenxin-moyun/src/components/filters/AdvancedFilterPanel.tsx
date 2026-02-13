@@ -58,7 +58,7 @@ export default function AdvancedFilterPanel({
     }
   }, [isOpen]);
 
-  const handleChange = (key: keyof FilterValues, value: any) => {
+  const handleChange = <K extends keyof FilterValues>(key: K, value: FilterValues[K]) => {
     onChange({
       ...values,
       [key]: value
@@ -124,7 +124,7 @@ export default function AdvancedFilterPanel({
     { id: 'basic', label: 'Basic Filters', icon: Filter },
     { id: 'advanced', label: 'Advanced Filters', icon: SlidersHorizontal },
     { id: 'weights', label: 'Weight Adjustment', icon: SlidersHorizontal }
-  ];
+  ] as const;
 
   return (
     <div className="relative" ref={panelRef}>
@@ -192,7 +192,7 @@ export default function AdvancedFilterPanel({
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
+                  onClick={() => setActiveTab(tab.id)}
                   className={`
                     flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium transition-all
                     ${activeTab === tab.id

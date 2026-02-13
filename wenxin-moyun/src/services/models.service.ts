@@ -1,5 +1,5 @@
 import apiClient from './api';
-import type { Model } from '../types/types';
+import type { Model, VULCACulturalScores, VULCAScore47D } from '../types/types';
 
 export interface ModelMetrics {
   rhythm: number;
@@ -26,8 +26,8 @@ export interface AIModelResponse {
   tags: string[];
   avatar_url?: string;
   // VULCA integration fields
-  vulca_scores_47d?: any;
-  vulca_cultural_perspectives?: any;
+  vulca_scores_47d?: VULCAScore47D;
+  vulca_cultural_perspectives?: VULCACulturalScores;
   vulca_evaluation_date?: string;
   vulca_sync_status?: string;
 }
@@ -36,11 +36,11 @@ export interface AIModelWithStats extends AIModelResponse {
   total_evaluations: number;
   total_battles: number;
   win_rate: number;
-  recent_works: any[];
+  recent_works: unknown[];
   score_highlights?: string[];
   score_weaknesses?: string[];
-  benchmark_responses?: any;
-  benchmark_metadata?: any;
+  benchmark_responses?: unknown;
+  benchmark_metadata?: unknown;
   data_source?: string;
 }
 

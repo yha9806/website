@@ -10,8 +10,7 @@ import {
   BarChart3,
   AlertTriangle,
   FileText,
-  GitBranch,
-  Zap
+  GitBranch
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import {

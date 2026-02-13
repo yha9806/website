@@ -11,7 +11,6 @@ import type {
   Exhibition,
   ArtworkFlat,
   Persona,
-  Critique,
 } from '../../types/exhibition';
 
 export const NEGATIVE_SPACE_ID = 'negative-space-of-the-tide';

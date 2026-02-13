@@ -18,7 +18,6 @@ import {
   IOSCard,
   IOSCardHeader,
   IOSCardContent,
-  IOSCardFooter,
   IOSCardGrid,
 } from '../../components/ios';
 

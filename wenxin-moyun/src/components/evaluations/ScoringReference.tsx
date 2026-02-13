@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, Info, ChartBar, Users } from 'lucide-react';
 import apiClient from '../../services/api';
@@ -24,17 +24,13 @@ interface ScoringReferenceProps {
 export const ScoringReference: React.FC<ScoringReferenceProps> = ({
   taskId,
   taskType,
-  onScoreChange
+  onScoreChange,
 }) => {
   const [advice, setAdvice] = useState<ScoringAdvice | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showDetails, setShowDetails] = useState(false);
 
-  useEffect(() => {
-    fetchScoringAdvice();
-  }, [taskId]);
-
-  const fetchScoringAdvice = async () => {
+  const fetchScoringAdvice = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await apiClient.get<ScoringAdvice>(`/evaluations/${taskId}/scoring-advice/`);
@@ -44,7 +40,11 @@ export const ScoringReference: React.FC<ScoringReferenceProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [taskId]);
+
+  useEffect(() => {
+    fetchScoringAdvice();
+  }, [fetchScoringAdvice]);
 
   const getConfidenceColor = (confidence: string) => {
     switch (confidence) {

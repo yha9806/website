@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, CheckCircle, AlertCircle, Clock } from 'lucide-react';
 import apiClient from '../../services/api';
@@ -53,35 +53,7 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
   const stages = progressStages[taskType] || progressStages.poem;
   const durations = stageDurations[taskType] || stageDurations.poem;
 
-  useEffect(() => {
-    if (isPolling) {
-      pollCountRef.current = 0; // Reset poll count on new task
-      const interval = setInterval(() => {
-        // Stop polling if max count reached
-        if (pollCountRef.current >= MAX_POLL_COUNT) {
-          logger.warn('Max poll count reached, stopping polling');
-          setIsPolling(false);
-          clearInterval(interval);
-          return;
-        }
-        pollCountRef.current++;
-        fetchProgress();
-      }, POLL_INTERVAL);
-      fetchProgress(); // Initial fetch
-      return () => clearInterval(interval);
-    }
-  }, [taskId, isPolling]);
-
-  useEffect(() => {
-    if (progressData?.current_stage) {
-      const index = stages.findIndex(stage => stage === progressData.current_stage);
-      if (index !== -1) {
-        setCurrentStageIndex(index);
-      }
-    }
-  }, [progressData?.current_stage, stages]);
-
-  const fetchProgress = async () => {
+  const fetchProgress = useCallback(async () => {
     try {
       const response = await apiClient.get<ProgressData>(`/evaluations/${taskId}/progress/`);
       setProgressData(response.data);
@@ -100,7 +72,35 @@ export const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
         setIsPolling(false);
       }
     }
-  };
+  }, [taskId, onComplete]);
+
+  useEffect(() => {
+    if (isPolling) {
+      pollCountRef.current = 0; // Reset poll count on new task
+      const interval = setInterval(() => {
+        // Stop polling if max count reached
+        if (pollCountRef.current >= MAX_POLL_COUNT) {
+          logger.warn('Max poll count reached, stopping polling');
+          setIsPolling(false);
+          clearInterval(interval);
+          return;
+        }
+        pollCountRef.current++;
+        fetchProgress();
+      }, POLL_INTERVAL);
+      fetchProgress(); // Initial fetch
+      return () => clearInterval(interval);
+    }
+  }, [isPolling, fetchProgress]);
+
+  useEffect(() => {
+    if (progressData?.current_stage) {
+      const index = stages.findIndex(stage => stage === progressData.current_stage);
+      if (index !== -1) {
+        setCurrentStageIndex(index);
+      }
+    }
+  }, [progressData?.current_stage, stages]);
 
   const getStatusIcon = () => {
     if (!progressData) return <Loader2 className="w-5 h-5 animate-spin" />;

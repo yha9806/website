@@ -4,7 +4,7 @@
  * Displays single artwork details with image gallery and AI dialogue
  */
 
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useExhibitions } from '../../hooks/exhibitions';
 import { ArtworkDetail, DialogueViewer, ArtworkCard, CritiqueViewer } from '../../components/exhibition';
@@ -13,7 +13,6 @@ import { EmojiIcon } from '../../components/ios/core/EmojiIcon';
 
 export function ArtworkPage() {
   const { id: exhibitionId, artworkId } = useParams<{ id: string; artworkId: string }>();
-  const navigate = useNavigate();
   const {
     artworks,
     getArtworkById,

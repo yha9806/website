@@ -3,7 +3,6 @@ import { motion, AnimatePresence, useDragControls } from 'framer-motion';
 import type { PanInfo } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { liquidGlass } from '../utils/iosTheme';
-import { iosAnimations } from '../utils/animations';
 
 export interface IOSSheetProps {
   visible: boolean;
@@ -40,9 +39,8 @@ export const IOSSheet: React.FC<IOSSheetProps> = ({
   const finalSnapPoints = snapPoints || [sheetHeight, 25, 0]; // Default snap points
 
   // Handle drag end to determine snap position
-  const handleDragEnd = (_: any, info: PanInfo) => {
+  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const { offset, velocity } = info;
-    const currentHeight = finalSnapPoints[currentSnapPoint];
     
     // Determine next snap point based on drag velocity and distance
     if (velocity.y > 500 || offset.y > 100) {
@@ -164,22 +162,6 @@ export const IOSSheet: React.FC<IOSSheetProps> = ({
 
   // Render in portal to ensure proper z-index stacking
   return createPortal(sheetContent, document.body);
-};
-
-// Higher-order component for easier sheet management
-export const useIOSSheet = () => {
-  const [visible, setVisible] = useState(false);
-
-  const showSheet = () => setVisible(true);
-  const hideSheet = () => setVisible(false);
-  const toggleSheet = () => setVisible(!visible);
-
-  return {
-    visible,
-    showSheet,
-    hideSheet,
-    toggleSheet,
-  };
 };
 
 export default IOSSheet;

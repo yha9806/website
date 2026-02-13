@@ -201,8 +201,13 @@ declare const __APP_VERSION__: string;
 declare const __BUILD_TIME__: string;
 const CACHE_VERSION = `${__APP_VERSION__}-${__BUILD_TIME__?.slice(0, 10) || 'dev'}`;
 const VERSION_KEY = 'cache_version';
-const MODEL_COUNT_KEY = 'expected_model_count';
 const EXPECTED_MODEL_COUNT = 28; // Expected number of real models
+
+type ApiQueryParams = Record<string, string | number | boolean | null | undefined>;
+
+interface AxiosErrorWithCode extends AxiosError {
+  code?: string;
+}
 
 // Cache management utilities
 export const cacheUtils = {
@@ -245,7 +250,7 @@ export const cacheUtils = {
   },
   
   // Validate model data integrity
-  validateModelData: (models: any[]) => {
+  validateModelData: (models: Array<Record<string, unknown>>) => {
     if (!Array.isArray(models)) {
       logger.warn('Cache: Invalid model data format');
       return false;
@@ -260,8 +265,8 @@ export const cacheUtils = {
     
     // Check for real data indicators
     const realModels = models.filter(model => 
-      model.score_highlights || 
-      model.benchmark_responses || 
+      model.score_highlights ||
+      model.benchmark_responses ||
       model.data_source === 'real'
     );
     
@@ -325,17 +330,18 @@ const containsSensitiveInfo = (message: string): boolean => {
 };
 
 // API error handler with network detection and security filtering
-export const handleApiError = (error: any): string => {
+export const handleApiError = (error: unknown): string => {
   if (axios.isAxiosError(error)) {
     // Network errors (no response)
     if (!error.response) {
       // Add network error flag for offline detection
-      (error as any).code = 'NETWORK_ERROR';
+      const networkError = error as AxiosErrorWithCode;
+      networkError.code = 'NETWORK_ERROR';
 
-      if (error.code === 'ECONNABORTED') {
+      if (networkError.code === 'ECONNABORTED') {
         return 'Request timeout - please check your connection';
       }
-      if (error.message?.includes('Network Error') || error.code === 'ERR_NETWORK') {
+      if (error.message?.includes('Network Error') || networkError.code === 'ERR_NETWORK') {
         return 'Network error - please check your internet connection';
       }
       return 'Unable to connect to server';
@@ -374,7 +380,7 @@ export const handleApiError = (error: any): string => {
 };
 
 // Check if error is a network/offline error
-export const isNetworkError = (error: any): boolean => {
+export const isNetworkError = (error: unknown): boolean => {
   if (axios.isAxiosError(error)) {
     return !error.response || 
            error.code === 'ECONNABORTED' ||
@@ -436,7 +442,7 @@ export const galleryApi = {
 // Models API with caching and force refresh
 export const modelsApi = {
   // Get all models (static cache - changes infrequently)
-  getModels: async (forceRefresh = false, params?: any) => {
+  getModels: async (forceRefresh = false, params?: ApiQueryParams) => {
     const cacheKey = cacheKeys.models(params);
     
     if (forceRefresh) {
@@ -492,7 +498,7 @@ export const leaderboardApi = {
 // Evaluations API with caching
 export const evaluationsApi = {
   // Get evaluations list (cached)
-  getEvaluations: async (params?: any) => {
+  getEvaluations: async (params?: ApiQueryParams) => {
     const cacheKey = cacheKeys.evaluations(params);
     return apiCache.get(
       cacheKey,
@@ -510,7 +516,7 @@ export const evaluationsApi = {
   },
 
   // Create evaluation (invalidates cache)
-  createEvaluation: async (data: any) => {
+  createEvaluation: async (data: Record<string, unknown>) => {
     const result = await apiClient.post('/evaluations/', data);
     // Invalidate evaluations list cache
     apiCache.invalidatePattern(/^evaluations/);
@@ -521,7 +527,7 @@ export const evaluationsApi = {
 // Battles API with real-time caching
 export const battlesApi = {
   // Get battles (short cache due to real-time nature)
-  getBattles: async (params?: any) => {
+  getBattles: async (params?: ApiQueryParams) => {
     const cacheKey = cacheKeys.battles(params);
     return apiCache.get(
       cacheKey,

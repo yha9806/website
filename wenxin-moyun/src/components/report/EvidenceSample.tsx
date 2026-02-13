@@ -6,12 +6,12 @@
  */
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   FileText, Image, MessageSquare, ChevronDown, ChevronUp,
   ThumbsUp, ThumbsDown, AlertCircle, CheckCircle, Bookmark
 } from 'lucide-react';
-import { IOSCard, IOSCardHeader, IOSCardContent } from '../ios/core/IOSCard';
+import { IOSCard, IOSCardContent } from '../ios/core/IOSCard';
 import { IOSButton } from '../ios/core/IOSButton';
 
 interface Annotation {

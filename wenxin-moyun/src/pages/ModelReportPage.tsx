@@ -239,7 +239,7 @@ export default function ModelReportPage() {
     if (navigator.share) {
       try {
         await navigator.share(shareData);
-      } catch (err) {
+      } catch {
         // User cancelled or error
         navigator.clipboard.writeText(window.location.href);
       }

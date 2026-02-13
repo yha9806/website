@@ -29,6 +29,13 @@ export const IOSButton = React.forwardRef<HTMLButtonElement, IOSButtonProps>(
     onAnimationIteration,
     ...props 
   }, ref) => {
+    // Strip HTML drag/animation handlers to avoid type conflicts with framer-motion gesture props.
+    void onDrag;
+    void onDragStart;
+    void onDragEnd;
+    void onAnimationStart;
+    void onAnimationEnd;
+    void onAnimationIteration;
     
     // Size classes - iOS HIG 44px minimum touch target
     const sizeClasses = {
