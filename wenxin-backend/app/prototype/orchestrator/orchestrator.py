@@ -86,6 +86,7 @@ class PipelineOrchestrator:
         enable_agent_critic: bool = False,
         enable_evidence_loop: bool = True,
         enable_fix_it_plan: bool = True,
+        enable_llm_queen: bool = False,
     ) -> None:
         self.d_cfg = draft_config or DraftConfig(provider="mock", n_candidates=4, seed_base=42)
         self.cr_cfg = critic_config or CriticConfig()
@@ -95,10 +96,23 @@ class PipelineOrchestrator:
         self.enable_agent_critic = enable_agent_critic
         self.enable_evidence_loop = enable_evidence_loop
         self.enable_fix_it_plan = enable_fix_it_plan
+        self.enable_llm_queen = enable_llm_queen
 
         # Lazy import to avoid circular dependency
         from app.prototype.observability.langfuse_observer import LangfuseObserver
         self._langfuse = LangfuseObserver()
+
+        # Layer 3: LLM Queen with trajectory RAG
+        self._queen_llm = None
+        if enable_llm_queen:
+            try:
+                from app.prototype.agents.queen_llm import QueenLLMAgent
+                self._queen_llm = QueenLLMAgent(config=self.q_cfg)
+                self._queen_llm.build_trajectory_index()
+            except Exception as exc:
+                import logging
+                logging.getLogger(__name__).warning("LLM Queen init failed, using rules: %s", exc)
+                self._queen_llm = None
 
         # Active runs (task_id -> RunState) for HITL
         self._runs: dict[str, RunState] = {}
@@ -473,7 +487,11 @@ class PipelineOrchestrator:
                 run_state.current_stage = "queen"
 
                 st = time.monotonic()
-                queen_output = queen.decide(critique_dict, plan_state)
+                # Layer 3: Use LLM Queen when enabled, fall back to rule-based
+                if self._queen_llm is not None:
+                    queen_output = self._queen_llm.decide(critique_dict, plan_state)
+                else:
+                    queen_output = queen.decide(critique_dict, plan_state)
                 queen_ms = int((time.monotonic() - st) * 1000)
 
                 save_pipeline_stage(task_id, "queen", queen_output.to_dict())
