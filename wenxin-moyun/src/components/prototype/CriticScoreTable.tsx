@@ -11,10 +11,29 @@
 
 import { useState } from 'react';
 import type { ScoredCandidate } from '../../hooks/usePrototypePipeline';
+import CriticDetailModal from './CriticDetailModal';
+
+interface CrossLayerSignal {
+  source_layer: string;
+  target_layer: string;
+  signal_type: string;
+  message: string;
+  strength: number;
+}
+
+interface AgentMetrics {
+  escalation_rate: number;
+  tool_calls: number;
+  re_plan_rate: number;
+  total_escalations: number;
+  total_dims_evaluated: number;
+}
 
 interface Props {
   scoredCandidates: ScoredCandidate[];
   bestCandidateId: string | null;
+  agentMetrics?: AgentMetrics | null;
+  crossLayerSignals?: CrossLayerSignal[];
 }
 
 const DIMENSION_LABELS: Record<string, { short: string; full: string; layer: string }> = {
@@ -105,9 +124,10 @@ function RationalePanel({ rationale, dimension }: { rationale: string; dimension
   );
 }
 
-export default function CriticScoreTable({ scoredCandidates, bestCandidateId }: Props) {
+export default function CriticScoreTable({ scoredCandidates, bestCandidateId, agentMetrics, crossLayerSignals }: Props) {
   const [expandedCells, setExpandedCells] = useState<Set<string>>(new Set());
   const [expandedRisks, setExpandedRisks] = useState<Set<string>>(new Set());
+  const [detailCandidate, setDetailCandidate] = useState<ScoredCandidate | null>(null);
 
   if (scoredCandidates.length === 0) {
     return (
@@ -172,6 +192,9 @@ export default function CriticScoreTable({ scoredCandidates, bestCandidateId }: 
                       <div className="flex items-center gap-1">
                         #{shortId}
                         {isBest && <span className="text-yellow-500">★</span>}
+                        {sc.dimension_scores.some(d => d.agent_metadata) && (
+                          <span className="text-[10px] text-purple-500" title="Agent-enhanced">🤖</span>
+                        )}
                         {hasRisks && (
                           <button
                             onClick={() => toggleRisks(sc.candidate_id)}
@@ -181,6 +204,13 @@ export default function CriticScoreTable({ scoredCandidates, bestCandidateId }: 
                             ⚠ {sc.risk_tags.length}
                           </button>
                         )}
+                        <button
+                          onClick={() => setDetailCandidate(sc)}
+                          className="ml-1 text-[10px] text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                          title="View critic details"
+                        >
+                          🔍
+                        </button>
                       </div>
                     </td>
                     <td className="py-2 px-1">
@@ -276,6 +306,16 @@ export default function CriticScoreTable({ scoredCandidates, bestCandidateId }: 
             Collapse All
           </button>
         </div>
+      )}
+
+      {/* Critic Detail Modal */}
+      {detailCandidate && (
+        <CriticDetailModal
+          candidate={detailCandidate}
+          onClose={() => setDetailCandidate(null)}
+          agentMetrics={agentMetrics}
+          crossLayerSignals={crossLayerSignals}
+        />
       )}
     </div>
   );

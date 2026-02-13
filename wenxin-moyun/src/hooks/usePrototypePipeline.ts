@@ -25,10 +25,24 @@ export interface DraftCandidate {
   model_ref: string;
 }
 
+export interface AgentMetadata {
+  mode: string;
+  rule_score: number;
+  agent_score: number;
+  confidence: number;
+  model_used: string;
+  tool_calls_made: number;
+  llm_calls_made: number;
+  cost_usd: number;
+  latency_ms: number;
+  fallback_used: boolean;
+}
+
 export interface DimensionScore {
   dimension: string;
   score: number;
   rationale: string;
+  agent_metadata?: AgentMetadata;
 }
 
 export interface ScoredCandidate {

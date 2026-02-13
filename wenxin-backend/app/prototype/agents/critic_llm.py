@@ -235,6 +235,8 @@ class CriticLLM:
             latency_ms=elapsed_ms,
             success=True,
             error=None,
+            agent_metrics=self.get_agent_metrics(),
+            cross_layer_signals=[s.to_dict() for s in self.cross_layer_signals],
         )
 
         # Layer 1b: Generate FixItPlan from low-scoring dimensions
@@ -590,6 +592,18 @@ class CriticLLM:
                 dimension=dim_id,
                 score=max(0.0, min(1.0, merged_score)),
                 rationale=merged_rationale,
+                agent_metadata={
+                    "mode": "agent",
+                    "rule_score": round(rule_score, 4),
+                    "agent_score": round(agent_result.score, 4),
+                    "confidence": round(agent_result.confidence, 4),
+                    "model_used": agent_result.model_used,
+                    "tool_calls_made": agent_result.tool_calls_made,
+                    "llm_calls_made": agent_result.llm_calls_made,
+                    "cost_usd": round(agent_result.cost_usd, 6),
+                    "latency_ms": agent_result.latency_ms,
+                    "fallback_used": False,
+                },
             )
 
             self._total_escalations += 1
@@ -715,6 +729,18 @@ class CriticLLM:
                     dimension=dim_id,
                     score=max(0.0, min(1.0, merged_score)),
                     rationale=merged_rationale,
+                    agent_metadata={
+                        "mode": "agent_progressive",
+                        "rule_score": round(rule_score, 4),
+                        "agent_score": round(agent_result.score, 4),
+                        "confidence": round(agent_result.confidence, 4),
+                        "model_used": agent_result.model_used,
+                        "tool_calls_made": agent_result.tool_calls_made,
+                        "llm_calls_made": agent_result.llm_calls_made,
+                        "cost_usd": round(agent_result.cost_usd, 6),
+                        "latency_ms": agent_result.latency_ms,
+                        "fallback_used": False,
+                    },
                 )
                 self._total_escalations += 1
                 self._total_tool_calls += agent_result.tool_calls_made

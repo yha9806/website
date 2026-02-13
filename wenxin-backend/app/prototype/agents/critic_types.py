@@ -32,13 +32,17 @@ class DimensionScore:
     dimension: str    # "visual_perception" | ... | "philosophical_aesthetic"
     score: float      # [0.0, 1.0]
     rationale: str    # scoring rationale
+    agent_metadata: dict | None = None  # AgentResult details when escalated
 
     def to_dict(self) -> dict:
-        return {
+        d = {
             "dimension": self.dimension,
             "score": round(self.score, 4),
             "rationale": self.rationale,
         }
+        if self.agent_metadata:
+            d["agent_metadata"] = self.agent_metadata
+        return d
 
 
 @dataclass
@@ -75,9 +79,11 @@ class CritiqueOutput:
     latency_ms: int = 0
     success: bool = True
     error: str | None = None
+    agent_metrics: dict | None = None  # CriticLLM.get_agent_metrics()
+    cross_layer_signals: list[dict] = field(default_factory=list)
 
     def to_dict(self) -> dict:
-        return {
+        d = {
             "task_id": self.task_id,
             "scored_candidates": [s.to_dict() for s in self.scored_candidates],
             "best_candidate_id": self.best_candidate_id,
@@ -87,3 +93,8 @@ class CritiqueOutput:
             "success": self.success,
             "error": self.error,
         }
+        if self.agent_metrics:
+            d["agent_metrics"] = self.agent_metrics
+        if self.cross_layer_signals:
+            d["cross_layer_signals"] = self.cross_layer_signals
+        return d
