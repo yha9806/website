@@ -14,7 +14,6 @@ import { useParams } from 'react-router-dom';
 import type { Exhibition, Artwork, Chapter, ExhibitionFilters, Dialogue } from '../../types/exhibition';
 import {
   buildExhibition,
-  buildNegativeSpaceExhibition,
   buildNortheastAsiaExhibition,
   EXHIBITION_IDS,
   type RawArtwork,
@@ -61,7 +60,8 @@ export function useExhibitions(exhibitionIdProp?: string): UseExhibitionsReturn 
         setError(null);
 
         if (exhibitionId === EXHIBITION_IDS.NEGATIVE_SPACE) {
-          // Load Negative Space of the Tide exhibition (static data)
+          // Load Negative Space of the Tide exhibition (dynamic import to avoid 740KB in main bundle)
+          const { buildNegativeSpaceExhibition } = await import('../../data/exhibitions/negative-space');
           const exhibitionData = buildNegativeSpaceExhibition();
           setExhibition(exhibitionData);
           setDialogues(new Map()); // No dialogues for this exhibition

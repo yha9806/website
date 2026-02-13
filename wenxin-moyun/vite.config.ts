@@ -70,8 +70,7 @@ export default defineConfig(({ command }) => ({
           // Three.js 3D 渲染包独立分块
           'three-core': ['three'],
           'three-fiber': ['@react-three/fiber', '@react-three/drei'],
-          // 大数据文件独立分块 (780KB)
-          'exhibition-negative-space': ['./src/data/exhibitions/negative-space']
+          // negative-space (740KB) now loaded via dynamic import — no manual chunk needed
         }
       }
     },

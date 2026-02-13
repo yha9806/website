@@ -22,15 +22,11 @@ export {
 
 export type { RawArtwork } from './echoes-and-returns';
 
-// Negative Space of the Tide exports
+// Negative Space of the Tide — lightweight metadata only (heavy data loaded on-demand)
 export {
   NEGATIVE_SPACE_ID,
   NEGATIVE_SPACE_INFO,
   NEGATIVE_SPACE_THEME,
-  NEGATIVE_SPACE_FEATURES,
-  PERSONAS,
-  ARTWORKS as NEGATIVE_SPACE_ARTWORKS,
-  buildNegativeSpaceExhibition,
 } from './negative-space';
 
 // Northeast Asia Memory exports
