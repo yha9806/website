@@ -1,0 +1,146 @@
+{
+  "version": "1.0",
+  "description": "VULCA Cultural Taboo Rules v1",
+  "rules": [
+    {
+      "rule_id": "taboo-universal-001",
+      "cultural_tradition": "*",
+      "description": "Do not conflate core concepts from distinct cultural traditions without explicit justification",
+      "severity": "high",
+      "trigger_patterns": ["same as", "equivalent to", "no different from", "identical to"],
+      "explanation": "Each cultural tradition has unique conceptual frameworks; equating concepts across traditions (e.g., treating qi as identical to 'energy') erases critical distinctions.",
+      "l_levels": ["L3", "L4", "L5"],
+      "source": "VULCA evaluation guidelines"
+    },
+    {
+      "rule_id": "taboo-universal-002",
+      "cultural_tradition": "*",
+      "description": "Do not use outdated, pejorative, or colonialist terminology to describe non-Western art",
+      "severity": "critical",
+      "trigger_patterns": ["primitive art", "tribal art", "naive art", "uncivilized", "savage", "exotic", "oriental"],
+      "explanation": "Terms like 'primitive' or 'tribal' carry colonial value judgments that position Western art as normative and other traditions as inferior.",
+      "l_levels": ["L3", "L4", "L5"],
+      "source": "VULCA evaluation guidelines; post-colonial art criticism"
+    },
+    {
+      "rule_id": "taboo-chinese_xieyi-001",
+      "cultural_tradition": "chinese_xieyi",
+      "description": "Do not misidentify deliberate xieyi brushwork as technical deficiency or lack of skill",
+      "severity": "high",
+      "trigger_patterns": ["sloppy brushwork", "lacks precision", "careless strokes", "poor technique", "unfinished"],
+      "explanation": "Xieyi (freehand) painting prioritizes expressive spontaneity and spiritual resonance over formal accuracy; its intentionally loose brushwork is a deliberate aesthetic choice, not a deficiency.",
+      "l_levels": ["L2", "L4"],
+      "source": "VULCA-Bench cultural annotation guidelines"
+    },
+    {
+      "rule_id": "taboo-chinese_xieyi-002",
+      "cultural_tradition": "chinese_xieyi",
+      "description": "Do not apply anachronistic standards when evaluating works from different historical periods",
+      "severity": "medium",
+      "trigger_patterns": ["should have used", "failed to follow", "does not meet the standard of"],
+      "explanation": "Evaluating Five Dynasties works by Northern Song standards, or Yuan literati painting by court painting criteria, ignores legitimate historical evolution of style and values.",
+      "l_levels": ["L3", "L4"],
+      "source": "VULCA-Bench cultural annotation guidelines"
+    },
+    {
+      "rule_id": "taboo-chinese_gongbi-001",
+      "cultural_tradition": "chinese_gongbi",
+      "description": "Do not equate gongbi meticulous precision with lack of creativity or artistic expression",
+      "severity": "medium",
+      "trigger_patterns": ["merely decorative", "lacks creativity", "mechanical", "mere craft", "just illustration"],
+      "explanation": "Gongbi painting's technical refinement is a vehicle for subtle emotional expression and philosophical meaning, not an indication of creative limitation.",
+      "l_levels": ["L4", "L5"],
+      "source": "VULCA-Bench cultural annotation guidelines"
+    },
+    {
+      "rule_id": "taboo-western_academic-001",
+      "cultural_tradition": "western_academic",
+      "description": "Do not apply Eastern aesthetic criteria to dismiss Western perspectival conventions",
+      "severity": "medium",
+      "trigger_patterns": ["lacks spiritual depth", "merely realistic", "too literal", "surface-level realism"],
+      "explanation": "Western academic painting's emphasis on optical realism, anatomical accuracy, and linear perspective represents a different but equally valid epistemic framework, not a deficiency in spiritual depth.",
+      "l_levels": ["L3", "L4", "L5"],
+      "source": "VULCA evaluation guidelines"
+    },
+    {
+      "rule_id": "taboo-western_academic-002",
+      "cultural_tradition": "western_academic",
+      "description": "Avoid Orientalist bias when comparing Western and non-Western art traditions",
+      "severity": "high",
+      "trigger_patterns": ["the West discovered", "Western superiority", "more advanced than", "less developed"],
+      "explanation": "Orientalism (Said, 1978) perpetuates power asymmetries by positioning Western art as progressive and non-Western art as static or derivative.",
+      "l_levels": ["L3", "L4", "L5"],
+      "source": "Edward Said, Orientalism; VULCA evaluation guidelines"
+    },
+    {
+      "rule_id": "taboo-islamic_geometric-001",
+      "cultural_tradition": "islamic_geometric",
+      "description": "Do not characterize geometric abstraction as lacking expressiveness or emotional content",
+      "severity": "medium",
+      "trigger_patterns": ["lacks expression", "emotionless", "cold and mathematical", "merely decorative pattern"],
+      "explanation": "Islamic geometric art encodes profound theological concepts — divine unity (tawhid), infinity, and cosmic order — through mathematical precision. Its expressiveness operates through spiritual and intellectual channels.",
+      "l_levels": ["L4", "L5"],
+      "source": "VULCA-Bench cultural annotation guidelines"
+    },
+    {
+      "rule_id": "taboo-watercolor-001",
+      "cultural_tradition": "watercolor",
+      "description": "Do not treat deliberate watercolor effects (blooms, backruns, reserved whites) as mistakes",
+      "severity": "medium",
+      "trigger_patterns": ["accidental stain", "paint ran", "lost control", "muddy wash", "uncontrolled bleeding"],
+      "explanation": "Watercolor painting embraces controlled unpredictability; blooms, backruns, and granulation are valued effects that artists deliberately invite and manage.",
+      "l_levels": ["L2"],
+      "source": "Watercolor painting evaluation guidelines"
+    },
+    {
+      "rule_id": "taboo-african_traditional-001",
+      "cultural_tradition": "african_traditional",
+      "description": "Do not use colonialist terminology such as 'primitive art' or 'tribal art' when discussing African artistic traditions",
+      "severity": "critical",
+      "trigger_patterns": ["primitive", "tribal", "fetish", "idol", "artifact"],
+      "explanation": "These terms originate from colonial ethnographic classification that denied African works the status of 'art' and relegated them to anthropological curiosities. Use 'African traditional art' or specific cultural identifiers.",
+      "l_levels": ["L3", "L4", "L5"],
+      "source": "Post-colonial art criticism; VULCA evaluation guidelines"
+    },
+    {
+      "rule_id": "taboo-south_asian-001",
+      "cultural_tradition": "south_asian",
+      "description": "Do not interpret religious imagery outside its theological and devotional context",
+      "severity": "high",
+      "trigger_patterns": ["just mythology", "superstitious", "purely decorative gods", "fictional characters"],
+      "explanation": "Hindu, Buddhist, and Jain religious images function within active devotional traditions; interpreting deities as fictional characters or dismissing iconographic programs as mere decoration misses their primary function and meaning.",
+      "l_levels": ["L3", "L4", "L5"],
+      "source": "South Asian art history scholarship; VULCA evaluation guidelines"
+    },
+    {
+      "rule_id": "taboo-default-001",
+      "cultural_tradition": "default",
+      "description": "Do not assert authorial intent without supporting evidence from documented sources",
+      "severity": "medium",
+      "trigger_patterns": ["the artist intended", "the artist meant to", "the artist wanted to express", "clearly the artist"],
+      "explanation": "Attributing specific intentions to artists without documentary evidence (letters, interviews, treatises) is speculative. Use hedged language ('may suggest', 'could indicate') unless evidence supports stronger claims.",
+      "l_levels": ["L4", "L5"],
+      "source": "VULCA evaluation guidelines; art critical methodology"
+    },
+    {
+      "rule_id": "taboo-default-002",
+      "cultural_tradition": "default",
+      "description": "Do not project contemporary moral frameworks onto historical works without acknowledging anachronism",
+      "severity": "medium",
+      "trigger_patterns": ["problematic", "should not have depicted", "offensive content"],
+      "explanation": "Historical artworks must be understood within their period context first. Applying contemporary moral standards retroactively without historical framing constitutes anachronistic judgment.",
+      "l_levels": ["L3", "L4"],
+      "source": "Art historical methodology"
+    },
+    {
+      "rule_id": "taboo-universal-003",
+      "cultural_tradition": "*",
+      "description": "Do not assume Western art historical periodization applies universally to all cultural traditions",
+      "severity": "medium",
+      "trigger_patterns": ["medieval period", "renaissance equivalent", "pre-modern", "classical period"],
+      "explanation": "Terms like 'Renaissance', 'Baroque', or 'Modern' carry Western-specific historical meanings that do not map neatly onto non-Western art histories. Each tradition has its own periodization frameworks.",
+      "l_levels": ["L3"],
+      "source": "Comparative art history methodology"
+    }
+  ]
+}

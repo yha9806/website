@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "task_id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+  "created_at": "2026-02-08T10:00:00Z",
+  "updated_at": "2026-02-08T10:15:30Z",
+  "locale": "zh-Hans-CN",
+  "cultural_tradition": "chinese_xieyi",
+  "subject": "春山远黛 — 以董源笔法解读江南早春",
+  "dimensions": {
+    "visual_perception": {
+      "goal": "识别画面中的主要视觉元素：山峦轮廓、水面倒影、树木疏密、留白布局",
+      "constraints": ["不得将写意笔触误判为技法缺陷", "需识别皴法类型"],
+      "evidence_refs": ["vulca-bench:L1-042", "vulca-bench:L1-043"],
+      "status": "generated",
+      "locked": false,
+      "content": {
+        "description": "画面以平远构图展开，远山如黛，近水如镜，树木以点苔法布置。",
+        "key_elements": ["披麻皴", "点苔法", "平远构图", "留白"]
+      },
+      "model_used": "claude-sonnet-4-5-20250929",
+      "prompt_hash": "a3f2b1c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2",
+      "confidence": 0.87,
+      "score": 78.5
+    },
+    "technical_analysis": {
+      "goal": "分析董源笔法中的披麻皴技法运用及其与江南地貌的关系",
+      "constraints": ["必须区分董源与巨然笔法差异", "需参照五代画论"],
+      "evidence_refs": ["vulca-bench:L2-017"],
+      "status": "generated",
+      "locked": false,
+      "content": {
+        "technique_analysis": "披麻皴以柔和长线模拟江南土山质感，配合水墨晕染营造湿润氛围。"
+      },
+      "model_used": "claude-sonnet-4-5-20250929",
+      "prompt_hash": "b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3",
+      "confidence": 0.82,
+      "score": 75.0
+    },
+    "cultural_context": {
+      "goal": "将董源山水置于五代南唐文化语境中，分析其与宫廷审美的关系",
+      "constraints": ["避免以北宋标准倒推五代审美", "需考虑南北画派差异"],
+      "evidence_refs": ["vulca-bench:L3-008", "vulca-bench:L3-012"],
+      "status": "generated",
+      "locked": false,
+      "content": {
+        "cultural_analysis": "董源作为南唐画院代表，其风格反映了江南文人对自然的诗意感知。"
+      },
+      "model_used": "claude-sonnet-4-5-20250929",
+      "prompt_hash": "c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4",
+      "confidence": 0.79,
+      "score": 72.0
+    },
+    "critical_interpretation": {
+      "goal": "探讨'春山远黛'意象在中国美学传统中的象征意义",
+      "constraints": ["需引用相关诗词文献支撑", "避免过度西方化阐释"],
+      "evidence_refs": ["vulca-bench:L4-003"],
+      "status": "generated",
+      "locked": false,
+      "content": {
+        "interpretation": "远黛意象承载了中国文人对理想山水的审美投射，呼应'可行可望可游可居'的四可之境。"
+      },
+      "model_used": "claude-sonnet-4-5-20250929",
+      "prompt_hash": "d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5",
+      "confidence": 0.74,
+      "score": 68.5
+    },
+    "philosophical_aesthetic": {
+      "goal": "从气韵生动与道家自然观角度审视董源山水的美学价值",
+      "constraints": ["需明确区分六法论中的具体条目", "避免将道家与禅宗混淆"],
+      "evidence_refs": ["vulca-bench:L5-001", "vulca-bench:L5-002"],
+      "status": "generated",
+      "locked": false,
+      "content": {
+        "philosophical_analysis": "董源山水体现了谢赫六法中'气韵生动'的最高追求，其笔墨间蕴含道家'道法自然'的哲学内核。"
+      },
+      "model_used": "claude-sonnet-4-5-20250929",
+      "prompt_hash": "e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6",
+      "confidence": 0.71,
+      "score": 65.0
+    }
+  },
+  "checkpoint": {
+    "checkpoint_id": "f8a9b0c1-d2e3-4f5a-6b7c-8d9e0f1a2b3c",
+    "parent_id": null,
+    "round": 1,
+    "created_at": "2026-02-08T10:15:30Z"
+  },
+  "locked_sections": [],
+  "rerun_targets": [],
+  "workflow_stage": "critique",
+  "evidence": {
+    "sample_matches": [
+      {
+        "sample_id": "vulca-bench-0042",
+        "similarity": 0.89,
+        "source": "VULCA-Bench-v1"
+      },
+      {
+        "sample_id": "vulca-bench-0317",
+        "similarity": 0.76,
+        "source": "VULCA-Bench-v1"
+      }
+    ],
+    "terminology_hits": [
+      {
+        "term": "披麻皴",
+        "matched": true,
+        "confidence": 0.95,
+        "dictionary_ref": "chinese_painting_techniques_v1"
+      },
+      {
+        "term": "气韵生动",
+        "matched": true,
+        "confidence": 0.98,
+        "dictionary_ref": "six_principles_xie_he_v1"
+      },
+      {
+        "term": "平远构图",
+        "matched": true,
+        "confidence": 0.92,
+        "dictionary_ref": "chinese_composition_methods_v1"
+      }
+    ],
+    "taboo_violations": [],
+    "rubric_scores": {
+      "l4_score": 68.5,
+      "l5_score": 65.0,
+      "rubric_version": "vulca-rubric-v1.0"
+    }
+  },
+  "metadata": {
+    "total_cost_usd": 0.032,
+    "latency_ms": 4520,
+    "models_used": ["claude-sonnet-4-5-20250929"],
+    "algorithm_version": "prototype-v0.1"
+  }
+}

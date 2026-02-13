@@ -1,0 +1,504 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vulcaart.art/schemas/intent_card/v1.0",
+  "title": "Cultural Intent Card",
+  "description": "VULCA Prototype Cultural Intent Card schema — defines the data contract for multi-agent cultural evaluation pipeline (D2).",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_id",
+    "created_at",
+    "updated_at",
+    "locale",
+    "cultural_tradition",
+    "subject",
+    "dimensions",
+    "checkpoint",
+    "locked_sections",
+    "rerun_targets",
+    "workflow_stage"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0",
+      "description": "Schema version, fixed to 1.0 for this release"
+    },
+    "task_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique task identifier (UUID v4)"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 creation timestamp"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 last-update timestamp"
+    },
+    "locale": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2})?$",
+      "description": "BCP 47 language tag (e.g. zh-Hans-CN, en-US, ja-JP)"
+    },
+    "cultural_tradition": {
+      "type": "string",
+      "enum": [
+        "chinese_xieyi",
+        "chinese_gongbi",
+        "western_academic",
+        "islamic_geometric",
+        "watercolor",
+        "african_traditional",
+        "south_asian",
+        "default"
+      ],
+      "description": "One of 8 cultural traditions that drives routing and weighting"
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "description": "User-provided evaluation subject / prompt"
+    },
+    "dimensions": {
+      "$ref": "#/$defs/Dimensions",
+      "description": "L1-L5 evaluation layers"
+    },
+    "checkpoint": {
+      "$ref": "#/$defs/Checkpoint",
+      "description": "Round-based rollback checkpoint"
+    },
+    "locked_sections": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "visual_perception",
+          "technical_analysis",
+          "cultural_context",
+          "critical_interpretation",
+          "philosophical_aesthetic"
+        ]
+      },
+      "uniqueItems": true,
+      "description": "Dimension IDs that the user has locked (confirmed)"
+    },
+    "rerun_targets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "visual_perception",
+          "technical_analysis",
+          "cultural_context",
+          "critical_interpretation",
+          "philosophical_aesthetic"
+        ]
+      },
+      "uniqueItems": true,
+      "description": "Dimension IDs scheduled for re-generation"
+    },
+    "workflow_stage": {
+      "type": "string",
+      "enum": [
+        "intent",
+        "reference",
+        "anchor",
+        "sketch",
+        "critique",
+        "refine",
+        "verify",
+        "archive"
+      ],
+      "description": "Current stage in the 8-stage pipeline"
+    },
+    "evidence": {
+      "$ref": "#/$defs/Evidence",
+      "description": "Critic Gate anchoring outputs (optional until anchor stage)"
+    },
+    "metadata": {
+      "$ref": "#/$defs/Metadata",
+      "description": "Execution metadata: cost, latency, models"
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "locked_sections": { "contains": { "const": "visual_perception" } } } },
+      "then": {
+        "properties": {
+          "dimensions": { "properties": { "visual_perception": { "properties": { "locked": { "const": true } } } } },
+          "rerun_targets": { "not": { "contains": { "const": "visual_perception" } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "dimensions": { "properties": { "visual_perception": { "properties": { "locked": { "const": true } } } } } } },
+      "then": { "properties": { "locked_sections": { "contains": { "const": "visual_perception" } } } }
+    },
+    {
+      "if": { "properties": { "rerun_targets": { "contains": { "const": "visual_perception" } } } },
+      "then": { "properties": { "dimensions": { "properties": { "visual_perception": { "properties": { "locked": { "const": false } } } } } } }
+    },
+    {
+      "if": { "properties": { "locked_sections": { "contains": { "const": "technical_analysis" } } } },
+      "then": {
+        "properties": {
+          "dimensions": { "properties": { "technical_analysis": { "properties": { "locked": { "const": true } } } } },
+          "rerun_targets": { "not": { "contains": { "const": "technical_analysis" } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "dimensions": { "properties": { "technical_analysis": { "properties": { "locked": { "const": true } } } } } } },
+      "then": { "properties": { "locked_sections": { "contains": { "const": "technical_analysis" } } } }
+    },
+    {
+      "if": { "properties": { "rerun_targets": { "contains": { "const": "technical_analysis" } } } },
+      "then": { "properties": { "dimensions": { "properties": { "technical_analysis": { "properties": { "locked": { "const": false } } } } } } }
+    },
+    {
+      "if": { "properties": { "locked_sections": { "contains": { "const": "cultural_context" } } } },
+      "then": {
+        "properties": {
+          "dimensions": { "properties": { "cultural_context": { "properties": { "locked": { "const": true } } } } },
+          "rerun_targets": { "not": { "contains": { "const": "cultural_context" } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "dimensions": { "properties": { "cultural_context": { "properties": { "locked": { "const": true } } } } } } },
+      "then": { "properties": { "locked_sections": { "contains": { "const": "cultural_context" } } } }
+    },
+    {
+      "if": { "properties": { "rerun_targets": { "contains": { "const": "cultural_context" } } } },
+      "then": { "properties": { "dimensions": { "properties": { "cultural_context": { "properties": { "locked": { "const": false } } } } } } }
+    },
+    {
+      "if": { "properties": { "locked_sections": { "contains": { "const": "critical_interpretation" } } } },
+      "then": {
+        "properties": {
+          "dimensions": { "properties": { "critical_interpretation": { "properties": { "locked": { "const": true } } } } },
+          "rerun_targets": { "not": { "contains": { "const": "critical_interpretation" } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "dimensions": { "properties": { "critical_interpretation": { "properties": { "locked": { "const": true } } } } } } },
+      "then": { "properties": { "locked_sections": { "contains": { "const": "critical_interpretation" } } } }
+    },
+    {
+      "if": { "properties": { "rerun_targets": { "contains": { "const": "critical_interpretation" } } } },
+      "then": { "properties": { "dimensions": { "properties": { "critical_interpretation": { "properties": { "locked": { "const": false } } } } } } }
+    },
+    {
+      "if": { "properties": { "locked_sections": { "contains": { "const": "philosophical_aesthetic" } } } },
+      "then": {
+        "properties": {
+          "dimensions": { "properties": { "philosophical_aesthetic": { "properties": { "locked": { "const": true } } } } },
+          "rerun_targets": { "not": { "contains": { "const": "philosophical_aesthetic" } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "dimensions": { "properties": { "philosophical_aesthetic": { "properties": { "locked": { "const": true } } } } } } },
+      "then": { "properties": { "locked_sections": { "contains": { "const": "philosophical_aesthetic" } } } }
+    },
+    {
+      "if": { "properties": { "rerun_targets": { "contains": { "const": "philosophical_aesthetic" } } } },
+      "then": { "properties": { "dimensions": { "properties": { "philosophical_aesthetic": { "properties": { "locked": { "const": false } } } } } } }
+    }
+  ],
+
+  "$defs": {
+    "DimensionEntry": {
+      "type": "object",
+      "required": ["goal", "constraints", "evidence_refs", "status", "locked", "confidence"],
+      "additionalProperties": false,
+      "properties": {
+        "goal": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Evaluation goal for this layer"
+        },
+        "constraints": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Evaluation constraints"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "References to supporting evidence"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "generated", "confirmed", "rejected"],
+          "description": "State-machine status of this dimension"
+        },
+        "locked": {
+          "type": "boolean",
+          "description": "Whether the user has locked this dimension"
+        },
+        "content": {
+          "oneOf": [
+            { "type": "object" },
+            { "type": "null" }
+          ],
+          "description": "Generated evaluation content (null before generation)"
+        },
+        "model_used": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "null" }
+          ],
+          "description": "Model identifier used for generation"
+        },
+        "prompt_hash": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            { "type": "null" }
+          ],
+          "description": "SHA-256 hash of the prompt used"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Confidence score [0, 1]"
+        },
+        "score": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            { "type": "null" }
+          ],
+          "description": "Evaluation score [0, 100] or null if not yet scored"
+        }
+      }
+    },
+
+    "Dimensions": {
+      "type": "object",
+      "required": [
+        "visual_perception",
+        "technical_analysis",
+        "cultural_context",
+        "critical_interpretation",
+        "philosophical_aesthetic"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "visual_perception": {
+          "$ref": "#/$defs/DimensionEntry",
+          "description": "L1: Visual Perception — basic visual element recognition"
+        },
+        "technical_analysis": {
+          "$ref": "#/$defs/DimensionEntry",
+          "description": "L2: Technical Analysis — medium, technique, composition"
+        },
+        "cultural_context": {
+          "$ref": "#/$defs/DimensionEntry",
+          "description": "L3: Cultural Context — historical and cultural grounding"
+        },
+        "critical_interpretation": {
+          "$ref": "#/$defs/DimensionEntry",
+          "description": "L4: Critical Interpretation — deeper meaning, symbolism"
+        },
+        "philosophical_aesthetic": {
+          "$ref": "#/$defs/DimensionEntry",
+          "description": "L5: Philosophical & Aesthetic — worldview, aesthetic theory"
+        }
+      }
+    },
+
+    "Checkpoint": {
+      "type": "object",
+      "required": ["checkpoint_id", "parent_id", "round", "created_at"],
+      "additionalProperties": false,
+      "properties": {
+        "checkpoint_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "This checkpoint's UUID"
+        },
+        "parent_id": {
+          "oneOf": [
+            { "type": "string", "format": "uuid" },
+            { "type": "null" }
+          ],
+          "description": "Parent checkpoint UUID (null for round 1)"
+        },
+        "round": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Evaluation round number (starts at 1)"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Checkpoint creation timestamp"
+        }
+      }
+    },
+
+    "SampleMatch": {
+      "type": "object",
+      "required": ["sample_id", "similarity", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "sample_id": {
+          "type": "string",
+          "description": "VULCA-Bench sample identifier"
+        },
+        "similarity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Cosine similarity score"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source dataset or collection"
+        }
+      }
+    },
+
+    "TerminologyHit": {
+      "type": "object",
+      "required": ["term", "matched", "confidence", "dictionary_ref"],
+      "additionalProperties": false,
+      "properties": {
+        "term": {
+          "type": "string",
+          "description": "Query term"
+        },
+        "matched": {
+          "type": "boolean",
+          "description": "Whether a match was found"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Match confidence"
+        },
+        "dictionary_ref": {
+          "type": "string",
+          "description": "Reference to the terminology dictionary"
+        }
+      }
+    },
+
+    "TabooViolation": {
+      "type": "object",
+      "required": ["rule_id", "description", "severity"],
+      "additionalProperties": false,
+      "properties": {
+        "rule_id": {
+          "type": "string",
+          "description": "Taboo rule identifier"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable violation description"
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "description": "Violation severity level"
+        }
+      }
+    },
+
+    "RubricScores": {
+      "type": "object",
+      "required": ["l4_score", "l5_score", "rubric_version"],
+      "additionalProperties": false,
+      "properties": {
+        "l4_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "L4 rubric score"
+        },
+        "l5_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "L5 rubric score"
+        },
+        "rubric_version": {
+          "type": "string",
+          "description": "Rubric version identifier"
+        }
+      }
+    },
+
+    "Evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sample_matches": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/SampleMatch" },
+          "description": "VULCA-Bench sample retrieval results"
+        },
+        "terminology_hits": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TerminologyHit" },
+          "description": "Terminology dictionary lookup results"
+        },
+        "taboo_violations": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TabooViolation" },
+          "description": "Cultural taboo rule violations"
+        },
+        "rubric_scores": {
+          "$ref": "#/$defs/RubricScores",
+          "description": "L4/L5 rubric-based scores"
+        }
+      }
+    },
+
+    "Metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "total_cost_usd": {
+          "oneOf": [
+            { "type": "number", "minimum": 0 },
+            { "type": "null" }
+          ],
+          "description": "Total API cost in USD"
+        },
+        "latency_ms": {
+          "oneOf": [
+            { "type": "integer", "minimum": 0 },
+            { "type": "null" }
+          ],
+          "description": "End-to-end latency in milliseconds"
+        },
+        "models_used": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of model identifiers used"
+        },
+        "algorithm_version": {
+          "type": "string",
+          "description": "Algorithm version identifier"
+        }
+      }
+    }
+  }
+}

@@ -108,6 +108,8 @@ class Settings(BaseSettings):
     QWEN_API_KEY: str = ""
     XAI_API_KEY: str = ""
     OPENROUTER_API_KEY: str = ""
+    TOGETHER_API_KEY: str = ""
+    GOOGLE_API_KEY: str = ""
     
     # Cost Control
     ENABLE_COST_CONTROL: bool = True

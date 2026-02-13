@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "task_id": "not-a-uuid",
+  "created_at": "2026-02-08T10:00:00",
+  "updated_at": "2026-13-08T11:05:00Z",
+  "locale": "zh-Hans-CN",
+  "cultural_tradition": "chinese_xieyi",
+  "subject": "格式校验异常样例",
+  "dimensions": {
+    "visual_perception": {
+      "goal": "校验 L1",
+      "constraints": [],
+      "evidence_refs": [],
+      "status": "generated",
+      "locked": false,
+      "confidence": 0.8
+    },
+    "technical_analysis": {
+      "goal": "校验 L2",
+      "constraints": [],
+      "evidence_refs": [],
+      "status": "generated",
+      "locked": false,
+      "confidence": 0.8
+    },
+    "cultural_context": {
+      "goal": "校验 L3",
+      "constraints": [],
+      "evidence_refs": [],
+      "status": "generated",
+      "locked": false,
+      "confidence": 0.8
+    },
+    "critical_interpretation": {
+      "goal": "校验 L4",
+      "constraints": [],
+      "evidence_refs": [],
+      "status": "generated",
+      "locked": false,
+      "confidence": 0.8
+    },
+    "philosophical_aesthetic": {
+      "goal": "校验 L5",
+      "constraints": [],
+      "evidence_refs": [],
+      "status": "generated",
+      "locked": false,
+      "confidence": 0.8
+    }
+  },
+  "checkpoint": {
+    "checkpoint_id": "bad-checkpoint-id",
+    "parent_id": null,
+    "round": 1,
+    "created_at": "2026-02-08T10:00:00Z"
+  },
+  "locked_sections": [],
+  "rerun_targets": [],
+  "workflow_stage": "intent"
+}

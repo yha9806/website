@@ -10,7 +10,12 @@ import logging
 from typing import Optional
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import aiosmtplib
+try:
+    import aiosmtplib
+    HAS_AIOSMTPLIB = True
+except ImportError:
+    HAS_AIOSMTPLIB = False
+
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
@@ -46,6 +51,10 @@ class EmailService:
         Returns True if sent successfully, False otherwise.
         Failures are logged but do not raise exceptions.
         """
+        if not HAS_AIOSMTPLIB:
+            logger.warning("aiosmtplib not installed, email sending disabled")
+            return False
+
         if not self.enabled:
             logger.debug("Email sending is disabled")
             return False
@@ -83,13 +92,13 @@ class EmailService:
             logger.info(f"Email sent successfully to {to_email}")
             return True
 
-        except aiosmtplib.SMTPAuthenticationError as e:
-            logger.error(f"SMTP authentication failed: {e}")
-            return False
-        except aiosmtplib.SMTPException as e:
-            logger.error(f"SMTP error: {e}")
-            return False
         except Exception as e:
+            if HAS_AIOSMTPLIB and isinstance(e, aiosmtplib.SMTPAuthenticationError):
+                logger.error(f"SMTP authentication failed: {e}")
+                return False
+            if HAS_AIOSMTPLIB and isinstance(e, aiosmtplib.SMTPException):
+                logger.error(f"SMTP error: {e}")
+                return False
             logger.error(f"Failed to send email: {e}")
             return False
 

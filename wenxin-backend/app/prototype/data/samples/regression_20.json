@@ -1,0 +1,126 @@
+{
+  "version": "v2-regression-20",
+  "description": "20 representative samples from VULCA-Bench covering 8 traditions x L1-L5",
+  "samples": [
+    {
+      "id": "reg-001",
+      "subject": "Mountain landscape with misty peaks in ink wash style",
+      "cultural_tradition": "chinese_xieyi",
+      "expected_emphasis": "L5_philosophical"
+    },
+    {
+      "id": "reg-002",
+      "subject": "Detailed court painting of a garden with peonies and birds",
+      "cultural_tradition": "chinese_gongbi",
+      "expected_emphasis": "L2_technique"
+    },
+    {
+      "id": "reg-003",
+      "subject": "Oil painting of a cathedral interior with dramatic chiaroscuro",
+      "cultural_tradition": "western_academic",
+      "expected_emphasis": "L4_interpretation"
+    },
+    {
+      "id": "reg-004",
+      "subject": "Abstract geometric pattern inspired by Alhambra tilework",
+      "cultural_tradition": "islamic_geometric",
+      "expected_emphasis": "L1_visual"
+    },
+    {
+      "id": "reg-005",
+      "subject": "Ukiyo-e woodblock print of a wave and Mount Fuji",
+      "cultural_tradition": "japanese_traditional",
+      "expected_emphasis": "L5_philosophical"
+    },
+    {
+      "id": "reg-006",
+      "subject": "African ceremonial mask with intricate scarification patterns",
+      "cultural_tradition": "african_traditional",
+      "expected_emphasis": "L3_cultural"
+    },
+    {
+      "id": "reg-007",
+      "subject": "Watercolor landscape of rolling English countryside",
+      "cultural_tradition": "watercolor",
+      "expected_emphasis": "L2_technique"
+    },
+    {
+      "id": "reg-008",
+      "subject": "Miniature painting of Krishna playing flute in a garden",
+      "cultural_tradition": "south_asian",
+      "expected_emphasis": "L3_cultural"
+    },
+    {
+      "id": "reg-009",
+      "subject": "Bamboo forest rendered in spontaneous ink splash technique",
+      "cultural_tradition": "chinese_xieyi",
+      "expected_emphasis": "L5_philosophical"
+    },
+    {
+      "id": "reg-010",
+      "subject": "Precise silk painting of lotus flowers and dragonflies",
+      "cultural_tradition": "chinese_gongbi",
+      "expected_emphasis": "L2_technique"
+    },
+    {
+      "id": "reg-011",
+      "subject": "Neo-classical sculpture study with anatomical precision",
+      "cultural_tradition": "western_academic",
+      "expected_emphasis": "L2_technique"
+    },
+    {
+      "id": "reg-012",
+      "subject": "Muqarnas ceiling vault design with 8-fold rotational symmetry",
+      "cultural_tradition": "islamic_geometric",
+      "expected_emphasis": "L1_visual"
+    },
+    {
+      "id": "reg-013",
+      "subject": "Zen garden stone arrangement suggesting mountain and ocean",
+      "cultural_tradition": "japanese_traditional",
+      "expected_emphasis": "L5_philosophical"
+    },
+    {
+      "id": "reg-014",
+      "subject": "West African Adinkra cloth with wisdom symbols",
+      "cultural_tradition": "african_traditional",
+      "expected_emphasis": "L3_cultural"
+    },
+    {
+      "id": "reg-015",
+      "subject": "Plein air watercolor of a Mediterranean harbor at sunset",
+      "cultural_tradition": "watercolor",
+      "expected_emphasis": "L1_visual"
+    },
+    {
+      "id": "reg-016",
+      "subject": "Mughal-era floral arabesque border decoration",
+      "cultural_tradition": "south_asian",
+      "expected_emphasis": "L2_technique"
+    },
+    {
+      "id": "reg-017",
+      "subject": "Calligraphic landscape combining poetry and painting",
+      "cultural_tradition": "chinese_xieyi",
+      "expected_emphasis": "L5_philosophical"
+    },
+    {
+      "id": "reg-018",
+      "subject": "Portrait study in academic realist tradition",
+      "cultural_tradition": "default",
+      "expected_emphasis": "L2_technique"
+    },
+    {
+      "id": "reg-019",
+      "subject": "Traditional Japanese tea ceremony room with wabi-sabi aesthetics",
+      "cultural_tradition": "japanese_traditional",
+      "expected_emphasis": "L5_philosophical"
+    },
+    {
+      "id": "reg-020",
+      "subject": "Contemporary fusion of African mask motifs with digital art",
+      "cultural_tradition": "default",
+      "expected_emphasis": "L3_cultural"
+    }
+  ]
+}

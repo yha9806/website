@@ -1,0 +1,77 @@
+{
+  "version": "1.0",
+  "description": "Ground-truth annotations for FAISS Recall@5 evaluation (Phase B Gate)",
+  "total_queries": 10,
+  "queries": [
+    {
+      "id": "gt-001",
+      "query": "Dong Yuan ink wash landscape, hemp-fiber strokes",
+      "tradition": "chinese_xieyi",
+      "relevant_sample_ids": ["vulca-bench-0001", "vulca-bench-0023"],
+      "relevant_term_ids": ["term-chinese_xieyi-001"]
+    },
+    {
+      "id": "gt-002",
+      "query": "bold expressive brushwork, literati tradition",
+      "tradition": "chinese_xieyi",
+      "relevant_sample_ids": ["vulca-bench-0002", "vulca-bench-0003", "vulca-bench-0004"],
+      "relevant_term_ids": ["term-chinese_xieyi-006"]
+    },
+    {
+      "id": "gt-003",
+      "query": "dramatic lighting and shadow in Baroque religious painting",
+      "tradition": "western_academic",
+      "relevant_sample_ids": ["vulca-bench-0005", "vulca-bench-0024"],
+      "relevant_term_ids": ["term-western_academic-001"]
+    },
+    {
+      "id": "gt-004",
+      "query": "Impressionist light effects on water and nature",
+      "tradition": "western_academic",
+      "relevant_sample_ids": ["vulca-bench-0008", "vulca-bench-0007"],
+      "relevant_term_ids": []
+    },
+    {
+      "id": "gt-005",
+      "query": "meticulous court painting with fine brushwork",
+      "tradition": "chinese_gongbi",
+      "relevant_sample_ids": ["vulca-bench-0013", "vulca-bench-0014"],
+      "relevant_term_ids": ["term-chinese_gongbi-001"]
+    },
+    {
+      "id": "gt-006",
+      "query": "Islamic geometric patterns and tessellation",
+      "tradition": "islamic_geometric",
+      "relevant_sample_ids": ["vulca-bench-0015", "vulca-bench-0016"],
+      "relevant_term_ids": ["term-islamic_geometric-001"]
+    },
+    {
+      "id": "gt-007",
+      "query": "atmospheric watercolor landscape",
+      "tradition": "watercolor",
+      "relevant_sample_ids": ["vulca-bench-0017", "vulca-bench-0018"],
+      "relevant_term_ids": ["term-watercolor-001"]
+    },
+    {
+      "id": "gt-008",
+      "query": "African court metalwork and symbolic textile",
+      "tradition": "african_traditional",
+      "relevant_sample_ids": ["vulca-bench-0019", "vulca-bench-0020"],
+      "relevant_term_ids": ["term-african_traditional-002"]
+    },
+    {
+      "id": "gt-009",
+      "query": "Buddhist cave painting with narrative scenes",
+      "tradition": "south_asian",
+      "relevant_sample_ids": ["vulca-bench-0022", "vulca-bench-0021"],
+      "relevant_term_ids": ["term-south_asian-003"]
+    },
+    {
+      "id": "gt-010",
+      "query": "cross-cultural comparison of spatial depth",
+      "tradition": "default",
+      "relevant_sample_ids": ["vulca-bench-0009", "vulca-bench-0010"],
+      "relevant_term_ids": ["term-default-003"]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "task_id": "bench-001",
+    "subject": "Dong Yuan landscape with hemp-fiber texture strokes",
+    "cultural_tradition": "chinese_xieyi"
+  },
+  {
+    "task_id": "bench-002",
+    "subject": "Song Huizong flower-and-bird meticulous painting",
+    "cultural_tradition": "chinese_gongbi"
+  },
+  {
+    "task_id": "bench-003",
+    "subject": "Caravaggio dramatic chiaroscuro scene",
+    "cultural_tradition": "western_academic"
+  },
+  {
+    "task_id": "bench-004",
+    "subject": "Vermeer domestic interior with light from window",
+    "cultural_tradition": "western_academic"
+  },
+  {
+    "task_id": "bench-005",
+    "subject": "Alhambra tessellation geometric pattern",
+    "cultural_tradition": "islamic_geometric"
+  },
+  {
+    "task_id": "bench-006",
+    "subject": "Benin Bronze royal commemorative plaque",
+    "cultural_tradition": "african_traditional"
+  },
+  {
+    "task_id": "bench-007",
+    "subject": "Mughal miniature court scene with fine details",
+    "cultural_tradition": "south_asian"
+  },
+  {
+    "task_id": "bench-008",
+    "subject": "Turner atmospheric landscape with dramatic light",
+    "cultural_tradition": "watercolor"
+  },
+  {
+    "task_id": "bench-009",
+    "subject": "Cross-cultural contemporary art composition",
+    "cultural_tradition": "default"
+  },
+  {
+    "task_id": "bench-010",
+    "subject": "primitive art tribal art savage exotic",
+    "cultural_tradition": "western_academic"
+  }
+]

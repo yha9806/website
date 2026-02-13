@@ -1,0 +1,89 @@
+"""Critic Agent data types — CritiqueInput, DimensionScore, CandidateScore, CritiqueOutput."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+
+
+@dataclass
+class CritiqueInput:
+    """Input for the Critic Agent — derived from DraftOutput + ScoutEvidence."""
+
+    task_id: str
+    subject: str
+    cultural_tradition: str
+    evidence: dict                    # ScoutEvidence.to_dict()
+    candidates: list[dict] = field(default_factory=list)  # [DraftCandidate.to_dict(), ...]
+
+    def to_dict(self) -> dict:
+        return {
+            "task_id": self.task_id,
+            "subject": self.subject,
+            "cultural_tradition": self.cultural_tradition,
+            "evidence": self.evidence,
+            "candidates": self.candidates,
+        }
+
+
+@dataclass
+class DimensionScore:
+    """Score for a single L1-L5 dimension."""
+
+    dimension: str    # "visual_perception" | ... | "philosophical_aesthetic"
+    score: float      # [0.0, 1.0]
+    rationale: str    # scoring rationale
+
+    def to_dict(self) -> dict:
+        return {
+            "dimension": self.dimension,
+            "score": round(self.score, 4),
+            "rationale": self.rationale,
+        }
+
+
+@dataclass
+class CandidateScore:
+    """Scored candidate with L1-L5 dimensions, risk tags, and gate decision."""
+
+    candidate_id: str
+    dimension_scores: list[DimensionScore] = field(default_factory=list)
+    weighted_total: float = 0.0
+    risk_tags: list[str] = field(default_factory=list)
+    gate_passed: bool = False
+    rejected_reasons: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict:
+        return {
+            "candidate_id": self.candidate_id,
+            "dimension_scores": [d.to_dict() for d in self.dimension_scores],
+            "weighted_total": round(self.weighted_total, 4),
+            "risk_tags": self.risk_tags,
+            "gate_passed": self.gate_passed,
+            "rejected_reasons": self.rejected_reasons,
+        }
+
+
+@dataclass
+class CritiqueOutput:
+    """Output of the Critic Agent — scored candidates with gate decisions."""
+
+    task_id: str
+    scored_candidates: list[CandidateScore] = field(default_factory=list)
+    best_candidate_id: str | None = None
+    rerun_hint: list[str] = field(default_factory=list)
+    created_at: str = ""              # ISO 8601
+    latency_ms: int = 0
+    success: bool = True
+    error: str | None = None
+
+    def to_dict(self) -> dict:
+        return {
+            "task_id": self.task_id,
+            "scored_candidates": [s.to_dict() for s in self.scored_candidates],
+            "best_candidate_id": self.best_candidate_id,
+            "rerun_hint": self.rerun_hint,
+            "created_at": self.created_at,
+            "latency_ms": self.latency_ms,
+            "success": self.success,
+            "error": self.error,
+        }

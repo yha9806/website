@@ -1,0 +1,39 @@
+# VULCA Prototype dependencies (on top of requirements.render.txt)
+# Install: pip install -r requirements.prototype.txt
+
+# === P0: Orchestration & Gateway ===
+crewai>=0.80.0
+litellm>=1.50.0
+langgraph>=0.2.0
+langgraph-checkpoint>=2.0.0
+
+# === P0: Observability ===
+langfuse>=2.50.0
+
+# === P0: Scoring Engine ===
+deepeval>=1.0.0
+
+# === P1: Image Generation (txt2img + inpaint + ControlNet) ===
+diffusers>=0.36.0
+accelerate>=0.30.0
+safetensors>=0.4.0
+peft>=0.17.0
+
+# === P1: Vector Retrieval (local) ===
+faiss-cpu>=1.8.0
+sentence-transformers>=2.2.2
+
+# === P1: Demo UI ===
+gradio>=5.0.0
+
+# === P1: HTTP Client (Together.ai) ===
+requests>=2.31.0
+
+# === P1: GalleryGPT 4-bit quantization ===
+bitsandbytes>=0.42.0
+
+# === P1: ControlNet preprocessing ===
+opencv-python-headless>=4.8.0
+
+# === P1: Evaluation ===
+# promptfoo - CLI tool, install via: npm install -g promptfoo

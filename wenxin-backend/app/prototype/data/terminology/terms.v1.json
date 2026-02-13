@@ -1,0 +1,348 @@
+{
+  "version": "1.0",
+  "description": "VULCA Cultural Terminology Dictionary v1",
+  "traditions": {
+    "chinese_xieyi": {
+      "terms": [
+        {
+          "id": "term-chinese_xieyi-001",
+          "term_zh": "披麻皴",
+          "term_en": "hemp-fiber texture stroke",
+          "definition": "A landscape painting texture technique using long, flowing, hemp-like brushstrokes to depict earth and rock surfaces, originated by Dong Yuan in the Five Dynasties period.",
+          "category": "technique",
+          "l_levels": ["L2", "L3"],
+          "aliases": ["pima cun", "hemp-fiber stroke"],
+          "source": "VULCA-Bench-v1 terminology annotations"
+        },
+        {
+          "id": "term-chinese_xieyi-002",
+          "term_zh": "气韵生动",
+          "term_en": "spirit resonance and vitality",
+          "definition": "The first of Xie He's Six Principles of Chinese Painting, requiring artworks to convey living spirit and rhythmic vitality beyond mere formal likeness.",
+          "category": "aesthetics",
+          "l_levels": ["L4", "L5"],
+          "aliases": ["qiyun shengdong", "spirit consonance", "rhythmic vitality"],
+          "source": "Xie He, Six Principles (六法论), 5th century"
+        },
+        {
+          "id": "term-chinese_xieyi-003",
+          "term_zh": "意在笔先",
+          "term_en": "intention before brush",
+          "definition": "The principle that the artist's conceptual vision and emotional intent must be fully formed before the brush touches paper, emphasizing mental preparation over technical execution.",
+          "category": "philosophy",
+          "l_levels": ["L4", "L5"],
+          "aliases": ["yi zai bi xian", "concept precedes execution"],
+          "source": "Wang Wei (Tang Dynasty), Discourse on Landscape Painting"
+        },
+        {
+          "id": "term-chinese_xieyi-004",
+          "term_zh": "留白",
+          "term_en": "reserved white space",
+          "definition": "The deliberate use of unpainted areas in a composition, functioning as clouds, mist, water, or spiritual breathing space rather than empty background.",
+          "category": "composition",
+          "l_levels": ["L2", "L3", "L5"],
+          "aliases": ["liu bai", "negative space", "blank space"],
+          "source": "VULCA-Bench-v1 terminology annotations"
+        },
+        {
+          "id": "term-chinese_xieyi-005",
+          "term_zh": "六法论",
+          "term_en": "Six Principles of Painting",
+          "definition": "Xie He's foundational criteria for evaluating Chinese painting: spirit resonance, bone method, correspondence to object, suitability to type, division and planning, transmission by copying.",
+          "category": "aesthetics",
+          "l_levels": ["L3", "L4", "L5"],
+          "aliases": ["liu fa lun", "Six Laws", "Six Canons"],
+          "source": "Xie He, Record of the Classification of Old Painters, c. 550 CE"
+        },
+        {
+          "id": "term-chinese_xieyi-006",
+          "term_zh": "泼墨",
+          "term_en": "splashed ink",
+          "definition": "A freehand ink technique involving bold, spontaneous application of diluted ink to create atmospheric, abstract landscape effects, pioneered by Wang Mo in the Tang Dynasty.",
+          "category": "technique",
+          "l_levels": ["L2", "L4"],
+          "aliases": ["po mo", "splash ink", "flung ink"],
+          "source": "VULCA-Bench-v1 terminology annotations"
+        }
+      ]
+    },
+    "chinese_gongbi": {
+      "terms": [
+        {
+          "id": "term-chinese_gongbi-001",
+          "term_zh": "工笔重彩",
+          "term_en": "meticulous heavy-color painting",
+          "definition": "A refined painting style combining precise brushwork with richly layered mineral pigments, producing vivid and detailed representations of subjects.",
+          "category": "technique",
+          "l_levels": ["L2", "L3"],
+          "aliases": ["gongbi zhongcai", "fine brushwork with heavy colors"],
+          "source": "VULCA-Bench-v1 terminology annotations"
+        },
+        {
+          "id": "term-chinese_gongbi-002",
+          "term_zh": "三矾九染",
+          "term_en": "triple alum nine washes",
+          "definition": "A layering technique applying alum fixative between successive translucent color washes to build depth and luminosity in gongbi painting.",
+          "category": "technique",
+          "l_levels": ["L2"],
+          "aliases": ["sanfan jiuran", "alum and wash layering"],
+          "source": "Traditional gongbi painting manuals"
+        },
+        {
+          "id": "term-chinese_gongbi-003",
+          "term_zh": "白描",
+          "term_en": "plain line drawing",
+          "definition": "A monochrome ink-line technique using only varying line weights without color or shading to delineate forms, fundamental to gongbi painting.",
+          "category": "technique",
+          "l_levels": ["L1", "L2"],
+          "aliases": ["bai miao", "line drawing", "outline drawing"],
+          "source": "Li Gonglin (Song Dynasty), originator of baimiao style"
+        }
+      ]
+    },
+    "western_academic": {
+      "terms": [
+        {
+          "id": "term-western_academic-001",
+          "term_zh": "明暗对照法",
+          "term_en": "chiaroscuro",
+          "definition": "The use of strong contrasts between light and dark to model three-dimensional forms and create dramatic atmosphere, perfected by Caravaggio and Rembrandt.",
+          "category": "technique",
+          "l_levels": ["L1", "L2"],
+          "aliases": ["light and shadow", "tenebrism"],
+          "source": "Western art history canon"
+        },
+        {
+          "id": "term-western_academic-002",
+          "term_zh": "对立式平衡",
+          "term_en": "contrapposto",
+          "definition": "A pose in which the human figure stands with weight shifted to one leg, creating asymmetric balance through opposing axes of shoulders and hips.",
+          "category": "composition",
+          "l_levels": ["L1", "L2"],
+          "aliases": ["counterpoise", "weight shift pose"],
+          "source": "Classical Greek sculpture tradition"
+        },
+        {
+          "id": "term-western_academic-003",
+          "term_zh": "厚涂法",
+          "term_en": "impasto",
+          "definition": "A technique of applying paint thickly so that brushstrokes or palette knife marks remain visible, creating surface texture and tactile quality.",
+          "category": "technique",
+          "l_levels": ["L2"],
+          "aliases": ["thick paint", "textured application"],
+          "source": "Western oil painting tradition"
+        },
+        {
+          "id": "term-western_academic-004",
+          "term_zh": "晕涂法",
+          "term_en": "sfumato",
+          "definition": "A painting technique of blending tones and colors so subtly that there are no perceptible transitions, creating a smoky, atmospheric softness. Perfected by Leonardo da Vinci.",
+          "category": "technique",
+          "l_levels": ["L2", "L3"],
+          "aliases": ["smoky blending", "soft shading"],
+          "source": "Leonardo da Vinci, Renaissance painting tradition"
+        },
+        {
+          "id": "term-western_academic-005",
+          "term_zh": "错视画法",
+          "term_en": "trompe-l'oeil",
+          "definition": "An illusionistic painting technique designed to trick the eye into perceiving a painted surface as three-dimensional reality.",
+          "category": "technique",
+          "l_levels": ["L1", "L2"],
+          "aliases": ["eye-deceiving painting", "optical illusion painting"],
+          "source": "Western art history, originating in Classical antiquity"
+        }
+      ]
+    },
+    "islamic_geometric": {
+      "terms": [
+        {
+          "id": "term-islamic_geometric-001",
+          "term_zh": "密铺",
+          "term_en": "tessellation",
+          "definition": "The tiling of a plane using geometric shapes with no overlaps or gaps, central to Islamic decorative arts as an expression of infinite divine order.",
+          "category": "composition",
+          "l_levels": ["L1", "L2", "L5"],
+          "aliases": ["tiling", "geometric tiling"],
+          "source": "Islamic geometric art tradition"
+        },
+        {
+          "id": "term-islamic_geometric-002",
+          "term_zh": "蔓藤花纹",
+          "term_en": "arabesque",
+          "definition": "Flowing, interlacing vegetal ornament based on rhythmic linear patterns, symbolizing the infinite nature of creation in Islamic art.",
+          "category": "aesthetics",
+          "l_levels": ["L2", "L3", "L5"],
+          "aliases": ["vegetal scroll", "rumi pattern"],
+          "source": "Islamic decorative arts tradition"
+        },
+        {
+          "id": "term-islamic_geometric-003",
+          "term_zh": "蜂窝拱",
+          "term_en": "muqarnas",
+          "definition": "Three-dimensional stalactite-like ornamental vaulting composed of tiers of niche-like elements, used in domes, arches, and cornices in Islamic architecture.",
+          "category": "technique",
+          "l_levels": ["L2", "L3"],
+          "aliases": ["stalactite vault", "honeycomb vault"],
+          "source": "Islamic architectural tradition"
+        }
+      ]
+    },
+    "watercolor": {
+      "terms": [
+        {
+          "id": "term-watercolor-001",
+          "term_zh": "湿画法",
+          "term_en": "wet-on-wet",
+          "definition": "A watercolor technique of applying wet paint to a wet surface, allowing colors to bleed and blend naturally, creating soft edges and atmospheric effects.",
+          "category": "technique",
+          "l_levels": ["L2"],
+          "aliases": ["wet-in-wet", "alla prima watercolor"],
+          "source": "Watercolor painting tradition"
+        },
+        {
+          "id": "term-watercolor-002",
+          "term_zh": "罩染法",
+          "term_en": "glazing",
+          "definition": "The application of thin, transparent color washes over dried layers to modify hue, value, or intensity while preserving underlying detail.",
+          "category": "technique",
+          "l_levels": ["L2"],
+          "aliases": ["color glazing", "transparent layering"],
+          "source": "Watercolor painting tradition"
+        },
+        {
+          "id": "term-watercolor-003",
+          "term_zh": "提白法",
+          "term_en": "lifting",
+          "definition": "A technique of removing wet or re-wetted paint from the paper surface to recover whites or lighten areas, creating highlights and texture.",
+          "category": "technique",
+          "l_levels": ["L2"],
+          "aliases": ["paint lifting", "blotting technique"],
+          "source": "Watercolor painting tradition"
+        }
+      ]
+    },
+    "african_traditional": {
+      "terms": [
+        {
+          "id": "term-african_traditional-001",
+          "term_zh": "刻痕装饰",
+          "term_en": "scarification",
+          "definition": "The practice of intentionally scarring the skin in culturally specific patterns serving as markers of identity, status, beauty, and spiritual protection.",
+          "category": "technique",
+          "l_levels": ["L2", "L3", "L5"],
+          "aliases": ["cicatrization", "skin marking"],
+          "source": "African body art traditions"
+        },
+        {
+          "id": "term-african_traditional-002",
+          "term_zh": "肯特布纹样",
+          "term_en": "kente patterns",
+          "definition": "Woven strip-cloth patterns from the Asante and Ewe peoples of Ghana, where specific color combinations and geometric motifs carry symbolic meanings.",
+          "category": "material",
+          "l_levels": ["L2", "L3"],
+          "aliases": ["kente cloth", "kente weaving"],
+          "source": "Asante and Ewe textile traditions, Ghana"
+        },
+        {
+          "id": "term-african_traditional-003",
+          "term_zh": "阿丁克拉符号",
+          "term_en": "adinkra",
+          "definition": "Visual symbols originating from the Akan people of Ghana, each encoding philosophical concepts, proverbs, or historical events through abstract geometric forms.",
+          "category": "aesthetics",
+          "l_levels": ["L3", "L4", "L5"],
+          "aliases": ["adinkra symbols", "Akan symbols"],
+          "source": "Akan cultural tradition, Ghana"
+        }
+      ]
+    },
+    "south_asian": {
+      "terms": [
+        {
+          "id": "term-south_asian-001",
+          "term_zh": "拉萨/味",
+          "term_en": "rasa",
+          "definition": "In Indian aesthetics, the essence of emotional flavor evoked in the audience through artistic expression, systematized into nine fundamental rasas (navarasas).",
+          "category": "aesthetics",
+          "l_levels": ["L4", "L5"],
+          "aliases": ["rasa theory", "navarasa", "aesthetic flavor"],
+          "source": "Bharata Muni, Natya Shastra, c. 200 BCE - 200 CE"
+        },
+        {
+          "id": "term-south_asian-002",
+          "term_zh": "曼陀罗",
+          "term_en": "mandala",
+          "definition": "A geometric configuration of symbols representing the cosmos or spiritual universe, used as a meditation aid and architectural plan in Hindu and Buddhist traditions.",
+          "category": "composition",
+          "l_levels": ["L3", "L5"],
+          "aliases": ["sacred diagram", "cosmic diagram"],
+          "source": "Hindu and Buddhist religious art traditions"
+        },
+        {
+          "id": "term-south_asian-003",
+          "term_zh": "细密画",
+          "term_en": "miniature painting",
+          "definition": "Small-scale, highly detailed paintings on paper or ivory, encompassing Mughal, Rajput, Pahari, and Deccan traditions with distinct stylistic vocabularies.",
+          "category": "technique",
+          "l_levels": ["L2", "L3"],
+          "aliases": ["Indian miniature", "Mughal miniature", "Rajput painting"],
+          "source": "South Asian painting traditions, 7th-19th century"
+        }
+      ]
+    },
+    "default": {
+      "terms": [
+        {
+          "id": "term-default-001",
+          "term_zh": "构图",
+          "term_en": "composition",
+          "definition": "The arrangement of visual elements within a picture plane, including balance, rhythm, focal points, and the relationship between positive and negative space.",
+          "category": "composition",
+          "l_levels": ["L1", "L2"],
+          "aliases": ["visual arrangement", "pictorial structure"],
+          "source": "Cross-cultural art theory"
+        },
+        {
+          "id": "term-default-002",
+          "term_zh": "色彩理论",
+          "term_en": "color theory",
+          "definition": "The body of practical guidance for color mixing, harmony, and psychological effects, encompassing hue, saturation, value, temperature, and complementary relationships.",
+          "category": "aesthetics",
+          "l_levels": ["L1", "L2"],
+          "aliases": ["chromatics", "color harmony"],
+          "source": "Cross-cultural art theory"
+        },
+        {
+          "id": "term-default-003",
+          "term_zh": "透视法",
+          "term_en": "perspective",
+          "definition": "Systems for representing three-dimensional space on a two-dimensional surface, including linear, atmospheric, and isometric approaches across different cultural traditions.",
+          "category": "technique",
+          "l_levels": ["L1", "L2", "L3"],
+          "aliases": ["spatial representation", "depth rendering"],
+          "source": "Cross-cultural art theory"
+        },
+        {
+          "id": "term-default-004",
+          "term_zh": "图像学",
+          "term_en": "iconography",
+          "definition": "The study and interpretation of symbolic imagery, motifs, and visual conventions within specific cultural and historical contexts.",
+          "category": "aesthetics",
+          "l_levels": ["L3", "L4"],
+          "aliases": ["symbolic imagery", "visual symbolism"],
+          "source": "Erwin Panofsky, Studies in Iconology"
+        },
+        {
+          "id": "term-default-005",
+          "term_zh": "媒材",
+          "term_en": "medium",
+          "definition": "The material and technique used to create an artwork, including oil paint, ink, watercolor, bronze, marble, digital media, and mixed media.",
+          "category": "material",
+          "l_levels": ["L1", "L2"],
+          "aliases": ["artistic medium", "material"],
+          "source": "Cross-cultural art theory"
+        }
+      ]
+    }
+  }
+}

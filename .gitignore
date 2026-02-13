@@ -154,6 +154,12 @@ wenxin-backend/tmp/
 wenxin-backend/venv/
 wenxin-backend/=*
 
+# Prototype runtime artifacts (images + checkpoints + trajectories)
+wenxin-backend/app/prototype/checkpoints/
+wenxin-backend/app/prototype/data/trajectories/
+wenxin-backend/app/prototype/data/generated/
+wenxin-backend/app/prototype/blind_eval/results/
+
 # LaTeX artifacts
 *.aux
 *.synctex.gz

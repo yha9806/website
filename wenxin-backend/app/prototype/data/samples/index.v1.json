@@ -1,0 +1,248 @@
+{
+  "version": "1.0",
+  "description": "VULCA-Bench Sample Index v1 (seed subset)",
+  "source": "VULCA-Bench-v1 (arXiv:2601.07986)",
+  "total_samples": 24,
+  "samples": [
+    {
+      "sample_id": "vulca-bench-0001",
+      "cultural_tradition": "chinese_xieyi",
+      "subject_zh": "董源《潇湘图》— 南方山水画派开山之作，披麻皴技法范本",
+      "subject_en": "Dong Yuan, Xiao and Xiang Rivers — foundational work of the Southern landscape school, exemplar of hemp-fiber texture strokes",
+      "l_levels_covered": ["L1", "L2", "L3", "L4", "L5"],
+      "tags": ["landscape", "Five_Dynasties", "ink_wash", "pima_cun", "Southern_school"],
+      "difficulty": "hard",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0002",
+      "cultural_tradition": "chinese_xieyi",
+      "subject_zh": "齐白石《虾》— 文人画传统中的写意花鸟杰作",
+      "subject_en": "Qi Baishi, Shrimps — masterpiece of xieyi flower-and-bird painting in the literati tradition",
+      "l_levels_covered": ["L1", "L2", "L4"],
+      "tags": ["flower_and_bird", "modern", "ink_wash", "literati", "xieyi"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0003",
+      "cultural_tradition": "chinese_xieyi",
+      "subject_zh": "徐渭《墨葡萄图》— 大写意泼墨技法的极致表达",
+      "subject_en": "Xu Wei, Ink Grapes — extreme expression of bold xieyi splashed-ink technique",
+      "l_levels_covered": ["L2", "L3", "L4", "L5"],
+      "tags": ["flower_and_bird", "Ming_dynasty", "splash_ink", "literati", "expressionist"],
+      "difficulty": "hard",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0004",
+      "cultural_tradition": "chinese_xieyi",
+      "subject_zh": "八大山人《荷花水鸟图》— 遗民画家的象征主义表达",
+      "subject_en": "Bada Shanren, Lotus and Waterfowl — symbolist expression of a Ming loyalist painter",
+      "l_levels_covered": ["L1", "L3", "L4", "L5"],
+      "tags": ["flower_and_bird", "Qing_dynasty", "symbolism", "literati", "ink_wash"],
+      "difficulty": "hard",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0005",
+      "cultural_tradition": "western_academic",
+      "subject_zh": "卡拉瓦乔《圣马太蒙召》— 明暗对照法（chiaroscuro）的巅峰运用",
+      "subject_en": "Caravaggio, The Calling of Saint Matthew — pinnacle use of chiaroscuro and tenebrism",
+      "l_levels_covered": ["L1", "L2", "L3", "L4"],
+      "tags": ["religious", "Baroque", "chiaroscuro", "oil_painting", "narrative"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0006",
+      "cultural_tradition": "western_academic",
+      "subject_zh": "维米尔《戴珍珠耳环的少女》— 室内光线与色彩的精妙处理",
+      "subject_en": "Vermeer, Girl with a Pearl Earring — exquisite handling of interior light and color",
+      "l_levels_covered": ["L1", "L2", "L3"],
+      "tags": ["portrait", "Dutch_Golden_Age", "light", "oil_painting", "genre"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0007",
+      "cultural_tradition": "western_academic",
+      "subject_zh": "透纳《雨、蒸汽和速度》— 从学院派向现代主义的过渡",
+      "subject_en": "Turner, Rain, Steam, and Speed — transition from academic tradition toward modernism",
+      "l_levels_covered": ["L1", "L2", "L3", "L4", "L5"],
+      "tags": ["landscape", "Romanticism", "atmosphere", "oil_painting", "industrial"],
+      "difficulty": "hard",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0008",
+      "cultural_tradition": "western_academic",
+      "subject_zh": "莫奈《睡莲》系列 — 印象派光影捕捉与连作方法",
+      "subject_en": "Monet, Water Lilies series — Impressionist light capture and serial painting method",
+      "l_levels_covered": ["L1", "L2", "L4", "L5"],
+      "tags": ["landscape", "Impressionism", "series", "oil_painting", "nature"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0009",
+      "cultural_tradition": "default",
+      "subject_zh": "跨文化对比：中国山水画与西方风景画的空间表现差异",
+      "subject_en": "Cross-cultural comparison: spatial representation in Chinese shanshui vs. Western landscape painting",
+      "l_levels_covered": ["L1", "L2", "L3", "L4", "L5"],
+      "tags": ["cross_cultural", "landscape", "spatial_representation", "comparison"],
+      "difficulty": "hard",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0010",
+      "cultural_tradition": "default",
+      "subject_zh": "通用构图分析：黄金分割与三分法在不同文化中的应用",
+      "subject_en": "General composition analysis: golden ratio and rule of thirds across cultures",
+      "l_levels_covered": ["L1", "L2"],
+      "tags": ["composition", "golden_ratio", "cross_cultural", "formal_analysis"],
+      "difficulty": "easy",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0011",
+      "cultural_tradition": "default",
+      "subject_zh": "色彩理论应用：暖色调与冷色调在情绪传达中的跨文化共性与差异",
+      "subject_en": "Color theory application: cross-cultural commonalities and differences in warm/cool color emotional conveyance",
+      "l_levels_covered": ["L1", "L2", "L3"],
+      "tags": ["color_theory", "emotion", "cross_cultural", "psychology"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0012",
+      "cultural_tradition": "default",
+      "subject_zh": "当代混合媒介：蔡国强火药艺术的跨文化解读",
+      "subject_en": "Contemporary mixed media: cross-cultural interpretation of Cai Guo-Qiang's gunpowder art",
+      "l_levels_covered": ["L2", "L3", "L4", "L5"],
+      "tags": ["contemporary", "mixed_media", "cross_cultural", "performance", "installation"],
+      "difficulty": "hard",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0013",
+      "cultural_tradition": "chinese_gongbi",
+      "subject_zh": "宋徽宗《瑞鹤图》— 宫廷工笔花鸟画的至高成就",
+      "subject_en": "Emperor Huizong, Auspicious Cranes — supreme achievement of court gongbi flower-and-bird painting",
+      "l_levels_covered": ["L1", "L2", "L3", "L4"],
+      "tags": ["flower_and_bird", "Song_dynasty", "gongbi", "court_painting", "imperial"],
+      "difficulty": "hard",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0014",
+      "cultural_tradition": "chinese_gongbi",
+      "subject_zh": "张萱《虢国夫人游春图》— 唐代仕女画的叙事与构图",
+      "subject_en": "Zhang Xuan, Spring Outing of the Lady Guoguo — narrative and composition in Tang dynasty court figure painting",
+      "l_levels_covered": ["L1", "L2", "L3"],
+      "tags": ["figure", "Tang_dynasty", "gongbi", "court_painting", "narrative"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0015",
+      "cultural_tradition": "islamic_geometric",
+      "subject_zh": "阿尔罕布拉宫几何装饰 — 伊斯兰密铺艺术的集大成者",
+      "subject_en": "Alhambra Palace geometric decoration — masterwork of Islamic tessellation art",
+      "l_levels_covered": ["L1", "L2", "L3", "L5"],
+      "tags": ["geometric", "architecture", "tessellation", "Nasrid", "Spain"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0016",
+      "cultural_tradition": "islamic_geometric",
+      "subject_zh": "蓝色清真寺伊兹尼克瓷砖 — 植物纹样与几何纹样的融合",
+      "subject_en": "Blue Mosque Iznik tiles — fusion of vegetal arabesque and geometric patterns",
+      "l_levels_covered": ["L1", "L2", "L3"],
+      "tags": ["ceramic", "architecture", "arabesque", "Ottoman", "Turkey"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0017",
+      "cultural_tradition": "watercolor",
+      "subject_zh": "透纳水彩风景 — 大气效果与光线的水彩表现",
+      "subject_en": "Turner watercolor landscapes — atmospheric effects and light rendered in watercolor",
+      "l_levels_covered": ["L1", "L2", "L4"],
+      "tags": ["landscape", "Romanticism", "atmosphere", "watercolor", "British"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0018",
+      "cultural_tradition": "watercolor",
+      "subject_zh": "萨金特水彩肖像与风景 — 写生速度与色彩准确性的典范",
+      "subject_en": "Sargent watercolor portraits and landscapes — exemplar of plein-air speed and color accuracy",
+      "l_levels_covered": ["L1", "L2"],
+      "tags": ["portrait", "landscape", "plein_air", "watercolor", "American"],
+      "difficulty": "easy",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0019",
+      "cultural_tradition": "african_traditional",
+      "subject_zh": "贝宁青铜头像 — 非洲宫廷金属铸造艺术的杰作",
+      "subject_en": "Benin Bronze head — masterpiece of African court metalwork casting",
+      "l_levels_covered": ["L1", "L2", "L3", "L4"],
+      "tags": ["sculpture", "bronze", "Benin_Kingdom", "court_art", "portraiture"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0020",
+      "cultural_tradition": "african_traditional",
+      "subject_zh": "肯特织物 — 阿散蒂符号系统与织造技艺",
+      "subject_en": "Kente cloth — Asante symbolic system and weaving craftsmanship",
+      "l_levels_covered": ["L2", "L3", "L5"],
+      "tags": ["textile", "weaving", "Asante", "Ghana", "symbolism"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0021",
+      "cultural_tradition": "south_asian",
+      "subject_zh": "莫卧儿细密画 — 宫廷叙事与波斯-印度风格融合",
+      "subject_en": "Mughal miniature painting — court narrative and Persian-Indian stylistic fusion",
+      "l_levels_covered": ["L1", "L2", "L3", "L4"],
+      "tags": ["miniature", "Mughal", "court_painting", "narrative", "illustration"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0022",
+      "cultural_tradition": "south_asian",
+      "subject_zh": "阿旃陀石窟壁画 — 早期佛教叙事绘画与色彩运用",
+      "subject_en": "Ajanta cave paintings — early Buddhist narrative painting and color application",
+      "l_levels_covered": ["L1", "L2", "L3", "L5"],
+      "tags": ["mural", "Buddhist", "cave_painting", "ancient", "narrative"],
+      "difficulty": "hard",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0023",
+      "cultural_tradition": "chinese_xieyi",
+      "subject_zh": "黄公望《富春山居图》— 元代文人山水画的里程碑",
+      "subject_en": "Huang Gongwang, Dwelling in the Fuchun Mountains — milestone of Yuan dynasty literati landscape painting",
+      "l_levels_covered": ["L1", "L2", "L3", "L4", "L5"],
+      "tags": ["landscape", "Yuan_dynasty", "literati", "ink_wash", "masterpiece"],
+      "difficulty": "hard",
+      "source": "VULCA-Bench-v1"
+    },
+    {
+      "sample_id": "vulca-bench-0024",
+      "cultural_tradition": "western_academic",
+      "subject_zh": "达芬奇《蒙娜丽莎》— sfumato 技法与文艺复兴肖像的典范",
+      "subject_en": "Leonardo da Vinci, Mona Lisa — exemplar of sfumato technique and Renaissance portraiture",
+      "l_levels_covered": ["L1", "L2", "L3", "L4", "L5"],
+      "tags": ["portrait", "Renaissance", "sfumato", "oil_painting", "masterpiece"],
+      "difficulty": "medium",
+      "source": "VULCA-Bench-v1"
+    }
+  ]
+}

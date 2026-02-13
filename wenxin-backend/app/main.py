@@ -9,6 +9,7 @@ from app.core.config import settings
 from app.core.database import init_db
 from app.api.v1 import api_router
 from app.vulca import vulca_router
+from app.prototype.api import get_prototype_router
 # Temporarily disabled - requires sentence-transformers
 # from app.exhibition.api import router as exhibition_router
 
@@ -67,6 +68,16 @@ async def add_security_headers(request: Request, call_next):
         response.headers["Content-Security-Policy"] = "default-src 'self'"
     return response
 
+# Mount prototype draft images first (more specific route).
+prototype_draft_dir = os.path.join(os.path.dirname(__file__), "prototype", "checkpoints", "draft")
+os.makedirs(prototype_draft_dir, exist_ok=True)
+app.mount(
+    "/static/prototype/draft",
+    StaticFiles(directory=prototype_draft_dir),
+    name="prototype-draft-static",
+)
+print(f"Prototype draft static mounted at /static/prototype/draft from {prototype_draft_dir}")
+
 # Mount static files for generated images
 static_dir = os.path.join(os.path.dirname(__file__), "..", "static")
 if os.path.exists(static_dir):
@@ -80,6 +91,9 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 
 # Include VULCA router
 app.include_router(vulca_router)
+
+# Include Prototype pipeline router
+app.include_router(get_prototype_router())
 
 # Include Exhibition router (Echoes and Returns)
 # Temporarily disabled - requires sentence-transformers
