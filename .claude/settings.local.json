@@ -2246,7 +2246,11 @@
       "Bash(# Check if dxg device exists ls -la /dev/dxg # Check if any nvidia libs are present ls /usr/lib/wsl/lib/libcuda*)",
       "Bash(/mnt/c/Windows/System32/nvidia-smi.exe:*)",
       "Bash(powershell.exe:*)",
-      "Bash(./run_prototype.sh:*)"
+      "Bash(./run_prototype.sh:*)",
+      "Bash(while IFS= read -r file)",
+      "Bash(do git add -- \"$file\")",
+      "Bash(while IFS= read -r f)",
+      "Bash(do git add -- \"$f\")"
     ],
     "deny": []
   },
