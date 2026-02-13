@@ -8,6 +8,13 @@ NOTE: This module avoids importing from app.prototype.orchestrator
 at module level to prevent circular imports. It uses duck-typed
 event objects (any object with event_type, stage, round_num, payload).
 
+Langfuse SDK v3 API pattern:
+  - Root span: span = client.start_span(name=...)
+  - Child span: child = root_span.start_span(name=...)
+  - Generation: gen = parent_span.start_generation(name=..., model=...)
+  - Event: parent_span.create_event(name=..., metadata=...)
+  - No trace_id parameter — use parent-child nesting instead.
+
 Usage:
     from app.prototype.observability.langfuse_observer import LangfuseObserver
 
@@ -68,14 +75,15 @@ class LangfuseObserver:
       2. LANGFUSE_PUBLIC_KEY and LANGFUSE_SECRET_KEY env vars set
 
     If either is missing, all methods become no-ops.
+
+    Uses Langfuse SDK v3 parent-child span nesting pattern.
     """
 
     def __init__(self) -> None:
         self._client: Any = None
         self._available = False
-        self._trace: Any = None
+        self._root_span: Any = None
         self._spans: dict[str, Any] = {}  # stage_key -> span
-        self._trace_id: str | None = None
 
         LangfuseCls, can_import = _try_import_langfuse()
         public_key = os.environ.get("LANGFUSE_PUBLIC_KEY", "")
@@ -111,30 +119,37 @@ class LangfuseObserver:
         provider: str = "mock",
         metadata: dict | None = None,
     ) -> None:
-        """Start a new Langfuse trace for a pipeline run."""
+        """Start a new Langfuse trace for a pipeline run.
+
+        Creates a root span that serves as the trace container.
+        All subsequent stage spans are children of this root span.
+        """
         if not self._available:
             return
 
         try:
-            self._trace = self._client.trace(
+            trace_meta = {
+                "task_id": task_id,
+                "subject": subject,
+                "tradition": tradition,
+                "provider": provider,
+                **(metadata or {}),
+            }
+
+            # v3 API: start_span() without trace_context creates a root span
+            self._root_span = self._client.start_span(
                 name=f"pipeline/{task_id}",
-                metadata={
-                    "task_id": task_id,
-                    "subject": subject,
-                    "tradition": tradition,
-                    "provider": provider,
-                    **(metadata or {}),
-                },
-                tags=["vulca-prototype", tradition, provider],
+                metadata=trace_meta,
+                input={"subject": subject, "tradition": tradition},
             )
-            self._trace_id = task_id
             self._spans.clear()
         except Exception as exc:
             logger.warning("Failed to start Langfuse trace: %s", exc)
+            self._root_span = None
 
     def on_event(self, event: _EventLike) -> None:
         """Process a single pipeline event."""
-        if not self._available or self._trace is None:
+        if not self._available or self._root_span is None:
             return
 
         try:
@@ -172,7 +187,8 @@ class LangfuseObserver:
 
     def _on_stage_started(self, event: _EventLike) -> None:
         span_key = f"{event.stage}_{event.round_num}"
-        span = self._trace.span(
+        # Create child span under the root span
+        span = self._root_span.start_span(
             name=f"{event.stage}/round-{event.round_num}",
             metadata={"round": event.round_num},
         )
@@ -212,14 +228,15 @@ class LangfuseObserver:
                 },
                 metadata={"latency_ms": latency_ms},
             )
-            # If LLM critic was used, record as a generation
+            # If LLM critic was used, record as a generation under this span
             model_ref = critique.get("model_ref")
             if model_ref:
-                self._trace.generation(
+                gen = span.start_generation(
                     name=f"critic-llm/round-{event.round_num}",
                     model=model_ref,
                     metadata={"best_score": best_score},
                 )
+                gen.end()
         elif event.stage == "queen":
             decision = payload.get("decision", {})
             span.update(
@@ -238,7 +255,8 @@ class LangfuseObserver:
         span.end()
 
     def _on_decision(self, event: _EventLike) -> None:
-        self._trace.event(
+        # Create event under root span
+        self._root_span.create_event(
             name="queen_decision",
             metadata={
                 "round": event.round_num,
@@ -249,24 +267,28 @@ class LangfuseObserver:
 
     def _on_pipeline_completed(self, event: _EventLike) -> None:
         payload = event.payload
-        self._trace.update(
-            output={
-                "final_decision": payload.get("final_decision", ""),
-                "total_rounds": payload.get("total_rounds", 0),
-                "total_latency_ms": payload.get("total_latency_ms", 0),
-                "total_cost_usd": payload.get("total_cost_usd", 0.0),
-                "success": True,
-            },
-        )
+        if self._root_span:
+            self._root_span.update(
+                output={
+                    "final_decision": payload.get("final_decision", ""),
+                    "total_rounds": payload.get("total_rounds", 0),
+                    "total_latency_ms": payload.get("total_latency_ms", 0),
+                    "total_cost_usd": payload.get("total_cost_usd", 0.0),
+                    "success": True,
+                },
+            )
+            self._root_span.end()
 
     def _on_pipeline_failed(self, event: _EventLike) -> None:
-        self._trace.update(
-            output={
-                "success": False,
-                "error": event.payload.get("error", "unknown"),
-            },
-            level="ERROR",
-        )
+        if self._root_span:
+            self._root_span.update(
+                output={
+                    "success": False,
+                    "error": event.payload.get("error", "unknown"),
+                },
+                level="ERROR",
+            )
+            self._root_span.end()
 
 
 def _safe_summary(payload: dict, keys: list[str]) -> dict:
