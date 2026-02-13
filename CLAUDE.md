@@ -2,6 +2,21 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Owner Information
+
+**Owner**: 于浩睿 (Yu Haorui)
+**Username**: yhryzy
+**Email**: yuhaorui48@gmail.com
+
+### Related Research (First Author)
+
+| Paper | Status | Core Contribution |
+|-------|--------|-------------------|
+| **VULCA Framework** | EMNLP 2025 Findings | 五维度评测框架 |
+| **VULCA-Bench** | arXiv:2601.07986 | L1-L5 五层定义 + 7,410 样本 |
+| **火意象研究** | WiNLP 2025 | 火文化符号推理 |
+| **Art Critique** | arXiv:2601.07984 | 跨文化评论评测 |
+
 ## Project Overview
 
 VULCA (Visual Understanding and Linguistic Cultural Assessment) - AI model benchmarking platform testing 42 models from 15 organizations across 47 evaluation dimensions and 8 cultural perspectives. Features React 19 frontend with iOS design system, FastAPI backend with async SQLAlchemy, and production GCP deployment.
@@ -307,3 +322,68 @@ Secrets are injected from GCP Secret Manager:
 - `DATABASE_URL`: Supabase connection string
 - `SECRET_KEY`: JWT signing key
 - `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`: AI provider keys
+
+## Post-Plan Validation Hook
+
+Every plan execution **must** pass automated validation before completion. A `Stop` hook is configured at `.claude/settings.local.json` that runs `.claude/hooks/post-plan-validate.sh` after each Claude response.
+
+### What the Hook Validates
+
+| Check | Scope | Failure Action |
+|-------|-------|----------------|
+| Python syntax (`py_compile`) | Recently changed `.py` files (last 5 min) | Block (exit 2) |
+| Import chain | `email_service`, `cache_service`, `settings`, `app.prototype` | Block (exit 2) |
+| Dependency consistency | `bcrypt` version match between `constraints.txt` and `requirements.render.txt` | Block (exit 2) |
+| passlib+bcrypt compat | Hash generation + verification | Block (exit 2) |
+| TypeScript type check | Recently changed `.ts/.tsx` files | Warning |
+| Report existence | `prototype/reports/*.md` | Info only |
+
+### Hook Behavior
+
+- **Exit 0**: All checks passed, Claude proceeds normally
+- **Exit 2**: Critical failure detected, Claude is blocked and must fix errors before continuing
+- **Warnings**: Reported as `additionalContext` to Claude, non-blocking
+- **Log file**: `/tmp/vulca-post-plan-validate.log`
+
+### Manual Trigger
+
+```bash
+cd /mnt/i/website
+.claude/hooks/post-plan-validate.sh
+echo $?  # 0 = pass, 2 = fail
+cat /tmp/vulca-post-plan-validate.log
+```
+
+### Quality Gate Principle
+
+**Every plan day (D1, D2, ..., D14) must:**
+1. Pass all automated validation checks (hook enforced)
+2. Generate a report at `wenxin-backend/app/prototype/reports/dN-*.md`
+3. Have zero unresolved import/syntax errors before proceeding to next day
+
+## VULCA Prototype Architecture
+
+### Directory Structure
+```
+wenxin-backend/app/prototype/
+├── __init__.py
+├── agents/              # D4-D7: 5 Agent roles (Curator, Historian, Critic, Creator, Anchor)
+├── pipeline/            # D5+: 8-stage evaluation pipeline
+├── checkpoints/         # Rollback checkpoint management
+├── tools/               # External anchoring tools (Wikidata, GND, ULAN)
+├── router/              # Rule-based router + fallback chain
+├── cultural_pipelines/  # Cultural routing variants
+├── ui/                  # Gradio/Daggr demo UI
+├── data/
+│   ├── samples/         # VULCA-Bench sample subset
+│   ├── terminology/     # Cultural terminology dictionaries
+│   └── generated/       # Generated results
+└── reports/             # Daily output reports (d1-*.md, d2-*.md, ...)
+```
+
+### Prototype Dependencies
+```bash
+pip install -r requirements.prototype.txt  # On top of requirements.render.txt
+```
+
+Key packages: crewai, litellm, langgraph, langfuse, deepeval, diffusers, gradio

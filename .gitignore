@@ -117,3 +117,52 @@ wenxin-moyun/tests/e2e/playwright-report/
 wenxin-moyun/tests/e2e/test-results/
 wenxin-moyun/tests/e2e/test-results.json
 ios26_figma_data.json
+
+# Playwright MCP screenshots (debug artifacts)
+.playwright-mcp/
+
+# Root-level temporary/binary files
+*.png
+*.jpg
+*.jpeg
+*.exe
+*.msi
+*.zip
+*.docx
+*.aux
+# Allow specific image assets in subdirectories
+!wenxin-moyun/public/**/*.png
+!wenxin-moyun/public/**/*.jpg
+!wenxin-moyun/public/**/*.svg
+!wenxin-moyun/src/**/*.png
+!wenxin-moyun/src/**/*.jpg
+
+# Root-level one-off files
+*.html
+!wenxin-moyun/**/*.html
+gmail-*.md
+gmail-*.png
+
+# Build/installer artifacts
+*.whl
+cloud_sql_proxy*
+gh.zip
+gh_installer.msi
+
+# Prototype temporary outputs
+wenxin-backend/tmp/
+wenxin-backend/venv/
+wenxin-backend/=*
+
+# LaTeX artifacts
+*.aux
+*.synctex.gz
+
+# Design files
+*.pen
+
+# VULCA intro materials (binary)
+wenxin-moyun/docs/*.pdf
+wenxin-moyun/docs/*.docx
+wenxin-moyun/docs/*.zip
+Didot_exhibition_Dec/*.pdf

@@ -347,15 +347,36 @@ VULCA 平台潜在客户检索与管理系统。
 
 ## 数据存储
 
-所有数据存储在 `.vulca-prospects/` 目录：
+**推荐使用 Markdown 表格格式**（与 wenxin-moyun/docs/ 现有数据兼容）
+
+### 主数据文件位置
+
+```
+wenxin-moyun/docs/
+├── outreach-leads.md        # 主联系人名单 (Markdown 表格)
+├── outreach-leads.csv       # CSV 导出版本
+├── outreach-emails-phase1.md # 邮件草稿
+└── ...
+```
+
+### Markdown 表格格式（推荐）
+
+```markdown
+| # | 姓名 | 职务 | 机构 | 邮箱 | LinkedIn | 相关工作链接 | 为什么是他 | 建议CTA | 优先级 | 状态 |
+|---|------|------|------|------|----------|--------------|------------|---------|--------|------|
+| 1 | Glenn Wong | Interim MD | MIT CSAIL | glennw@mit.edu | - | [CSAIL](url) | 说明 | 10min Call | High | 待联系 |
+```
+
+### 可选：JSON 详细数据（用于复杂验证跟踪）
+
+存储在 `.vulca-prospects/` 目录：
 
 ```
 .vulca-prospects/
 ├── config.json              # 配置文件
 ├── stats.json               # 统计数据
-├── batches/                 # 按批次管理
-│   ├── batch-001.json
-│   └── ...
+├── verification/            # 验证记录
+│   └── {contact-id}.json
 ├── templates/               # 外联模板
 │   ├── academic.md
 │   ├── enterprise.md
@@ -381,14 +402,14 @@ VULCA 平台潜在客户检索与管理系统。
 
   "contact": {
     "name": {
-      "full_name": "Lori Glover",
-      "display_name": "Lori Glover",
+      "full_name": "Glenn Wong",
+      "display_name": "Glenn Wong",
       "format": "western",
       "verified": true
     },
-    "title": "Managing Director, Global Strategic Alliances",
+    "title": "Interim Managing Director, Global Strategic Alliances",
     "email": {
-      "address": "loriglover@csail.mit.edu",
+      "address": "glennw@mit.edu",
       "type": "personal",
       "format_verified": true
     },
@@ -399,7 +420,8 @@ VULCA 平台潜在客户检索与管理系统。
         "type": "generic",
         "note": "部门通用邮箱，回复率较低"
       }
-    ]
+    ],
+    "note": "Lori Glover 于 2026/01 离职加入 Columbia DSI，Glenn Wong 接任"
   },
 
   "verification": {

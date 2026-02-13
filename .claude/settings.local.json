@@ -2170,8 +2170,115 @@
       "Bash(DATABASE_URL=\"postgresql+asyncpg://postgres.rorpznpcwdjnncozlbrf:IcuTm28k36rGtwi3@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres\" python3:*)",
       "Bash(DATABASE_URL=\"postgresql+asyncpg://postgres.rorpznpcwdjnncozlbrf:IcuTm28k36rGtwi3@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres\" python3 -c \"\nimport asyncio\nfrom sqlalchemy.ext.asyncio import create_async_engine\nfrom sqlalchemy import text\n\nasync def reset_db\\(\\):\n    engine = create_async_engine\\(''postgresql+asyncpg://postgres.rorpznpcwdjnncozlbrf:IcuTm28k36rGtwi3@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres''\\)\n    async with engine.begin\\(\\) as conn:\n        # 删除所有表以重新开始\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS evaluation_results CASCADE''\\)\\)\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS evaluation_dimensions CASCADE''\\)\\)\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS evaluation_tasks CASCADE''\\)\\)\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS old_evaluation_tasks CASCADE''\\)\\)\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS works CASCADE''\\)\\)\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS ai_models CASCADE''\\)\\)\n        await conn.execute\\(text\\(''DROP TABLE IF EXISTS users CASCADE''\\)\\)\n        print\\(''所有表已删除''\\)\n    \n    await engine.dispose\\(\\)\n\nasyncio.run\\(reset_db\\(\\)\\)\n\")",
       "Bash(DATABASE_URL=\"postgresql+asyncpg://postgres.rorpznpcwdjnncozlbrf:IcuTm28k36rGtwi3@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres\" python3 -c \"\nimport asyncio\nfrom sqlalchemy.ext.asyncio import create_async_engine\nfrom sqlalchemy import text\n\nasync def reset_db\\(\\):\n    engine = create_async_engine\\(''postgresql+asyncpg://postgres.rorpznpcwdjnncozlbrf:IcuTm28k36rGtwi3@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres''\\)\n    async with engine.begin\\(\\) as conn:\n        await conn.execute\\(text\\(''DROP SCHEMA public CASCADE''\\)\\)\n        await conn.execute\\(text\\(''CREATE SCHEMA public''\\)\\)\n        await conn.execute\\(text\\(''GRANT ALL ON SCHEMA public TO postgres''\\)\\)\n        await conn.execute\\(text\\(''GRANT ALL ON SCHEMA public TO public''\\)\\)\n        print\\(''数据库 schema 已重置''\\)\n    \n    await engine.dispose\\(\\)\n\nasyncio.run\\(reset_db\\(\\)\\)\n\")",
-      "Bash(gsutil ls:*)"
+      "Bash(gsutil ls:*)",
+      "Bash(gsutil -m rsync:*)",
+      "Bash(do curl -s http://localhost:5173)",
+      "Bash(break)",
+      "Bash(file=\"wenxin-moyun/src/pages/$page.tsx\")",
+      "Bash(if [ -f \"$file\" ])",
+      "Bash(then)",
+      "Bash(else)",
+      "Bash(fi)",
+      "Bash(pdftotext:*)",
+      "Bash(/tmp/doc_env/bin/pip install:*)",
+      "Bash(fc-list:*)",
+      "Bash(\"/mnt/c/Program Files/Cavalry/cavalry-cli.exe\" --help)",
+      "Bash(\"/mnt/c/Program Files/Cavalry/cavalry-cli.exe\" -h)",
+      "Bash(\"/mnt/c/Program Files/Cavalry/cavalry-cli.exe\" --version)",
+      "Bash(\"/mnt/c/Program Files/Cavalry/cavalry-cli.exe\")",
+      "Bash(/home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/out/mcp-server-linux-x64:*)",
+      "Bash(# Search for how the extension registers MCP and passes the port/app parameter strings /home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/out/main.js)",
+      "Bash(# Search minified JS for mcp-server references grep -o ''\"\"[^\"\"]*mcp[^\"\"]*\"\"'' /home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/out/main.js)",
+      "Bash(# Search the main extension code for MCP registration logic grep -o ''.\\\\{0,80\\\\}claude.\\\\{0,80\\\\}'' /home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/out/main-wKHMKNGP.js)",
+      "Bash(# Try extracting from the source map instead grep -o ''.\\\\{0,100\\\\}mcp.\\\\{0,100\\\\}'' /home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/out/main-wKHMKNGP.js)",
+      "Bash(# Look at the binary itself for clues about the -app flag strings /home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/out/mcp-server-linux-x64)",
+      "Bash(# Try with a dummy app URL to see what tools it exposes\n\\(echo ''{\"\"jsonrpc\"\":\"\"2.0\"\",\"\"method\"\":\"\"initialize\"\",\"\"params\"\":{\"\"protocolVersion\"\":\"\"2024-11-05\"\",\"\"capabilities\"\":{},\"\"clientInfo\"\":{\"\"name\"\":\"\"claude-code\"\",\"\"version\"\":\"\"1.0\"\"}},\"\"id\"\":1}''; sleep 1; echo ''{\"\"jsonrpc\"\":\"\"2.0\"\",\"\"method\"\":\"\"tools/list\"\",\"\"params\"\":{},\"\"id\"\":2}''; sleep 1\\))",
+      "Bash(# Search for port registration in the extension source grep -o ''.\\\\{0,150\\\\}claude.\\\\{0,150\\\\}'' /home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/out/main-wKHMKNGP.js)",
+      "Bash(# Final verification - test the exact same config Claude Code will use echo ''{\"\"jsonrpc\"\":\"\"2.0\"\",\"\"method\"\":\"\"initialize\"\",\"\"params\"\":{\"\"protocolVersion\"\":\"\"2024-11-05\"\",\"\"capabilities\"\":{},\"\"clientInfo\"\":{\"\"name\"\":\"\"claude-code\"\",\"\"version\"\":\"\"1.0\"\"}},\"\"id\"\":1}'' | /home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/out/mcp-server-linux-x64 --app visual_studio_code | python3 -m json.tool)",
+      "mcp__pencil__open_document",
+      "mcp__pencil__get_editor_state",
+      "Bash(# Check if the extension is actually running - look for any pencil-related processes or ports ss -tlnp)",
+      "Bash(# Check extension kind - does it run on UI side \\(Windows\\) or workspace side \\(WSL\\)? grep -i \"\"extensionKind\\\\|remote\\\\|ui\\\\|workspace\"\" /home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/package.json)",
+      "Bash(# Look for any runtime files or port files the extension might create find /home/yhryzy/.vscode-server/ -name \"\"*pencil*\"\" -newer /home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/package.json)",
+      "Bash(# Check how the MCP binary discovers the app - search its strings for websocket/port discovery strings /home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/out/mcp-server-linux-x64)",
+      "Bash(# The binary is likely compiled Go - try different string search strings /home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/out/mcp-server-linux-x64)",
+      "Bash(# Check if the Windows MCP binary can connect echo ''{\"\"jsonrpc\"\":\"\"2.0\"\",\"\"method\"\":\"\"initialize\"\",\"\"params\"\":{\"\"protocolVersion\"\":\"\"2024-11-05\"\",\"\"capabilities\"\":{},\"\"clientInfo\"\":{\"\"name\"\":\"\"test\"\",\"\"version\"\":\"\"1.0\"\"}},\"\"id\"\":1}'' | timeout 5 /home/yhryzy/.vscode-server/extensions/highagency.pencildev-0.6.22/out/mcp-server-windows-x64.exe --app visual_studio_code)",
+      "mcp__pencil__get_guidelines",
+      "mcp__pencil__batch_get",
+      "mcp__pencil__get_screenshot",
+      "mcp__pencil__get_variables",
+      "mcp__pencil__find_empty_space_on_canvas",
+      "mcp__pencil__batch_design",
+      "Bash(google-chrome:*)",
+      "Bash(.:*)",
+      "Bash(nvidia-smi:*)",
+      "Bash(/mnt/i/website/wenxin-backend/venv/bin/python:*)",
+      "Bash(CLAUDE_PROJECT_DIR=/mnt/i/website bash:*)",
+      "Bash(./venv/bin/pip install:*)",
+      "Bash(.claude/hooks/post-plan-validate.sh)",
+      "Bash(bash:*)",
+      "Bash(TOGETHER_API_KEY=9acf7f7dc361a516ee01b69c164ea60a373564f1bec6573c50cfe6196d07d47c python3:*)",
+      "Bash(venv/bin/pip list:*)",
+      "Bash(powershell.exe -Command \"try { $r = Invoke-WebRequest -Uri ''http://localhost:7860/'' -UseBasicParsing -TimeoutSec 5; Write-Host \\(''StatusCode: '' + $r.StatusCode\\) } catch { Write-Host \\(''ERROR: '' + $_.Exception.Message\\) }\")",
+      "Bash(TOGETHER_API_KEY=test venv/bin/python:*)",
+      "Bash(TOGETHER_API_KEY=test PYTHONUNBUFFERED=1 timeout 15 venv/bin/python:*)",
+      "Bash(TOGETHER_API_KEY=9acf7f7dc361a516ee01b69c164ea60a373564f1bec6573c50cfe6196d07d47c curl -s -w \"\\\\nHTTP: %{http_code}\" -X POST http://localhost:8001/api/v1/prototype/runs -H \"Content-Type: application/json\" -d '{\"\"subject\"\":\"\"Dong Yuan landscape\"\",\"\"tradition\"\":\"\"chinese_xieyi\"\",\"\"provider\"\":\"\"together_flux\"\",\"\"n_candidates\"\":1}')",
+      "Bash(DEEPSEEK_API_KEY=sk-f237d537b98a421a88efe35ab822b736 python3:*)",
+      "Bash(DEEPSEEK_API_KEY=sk-f237d537b98a421a88efe35ab822b736 PYTHONPATH=/mnt/i/website/wenxin-backend python3:*)",
+      "Bash(1 <<'PYEOF'\nimport logging, sys\nlogging.basicConfig\\(level=logging.DEBUG, stream=sys.stdout, format='%\\(name\\)s: %\\(message\\)s'\\)\nfor name in ['LiteLLM', 'httpx', 'httpcore', 'openai']:\n    logging.getLogger\\(name\\).setLevel\\(logging.ERROR\\)\n\nfrom app.prototype.agents.critic_llm import CriticLLM\nfrom app.prototype.agents.critic_types import CritiqueInput\n\ncritic = CriticLLM\\(max_escalations=2\\)\ninp = CritiqueInput\\(\n    task_id='debug-2', subject='Chinese xieyi mountain', cultural_tradition='chinese_xieyi',\n    candidates=[{'candidate_id': 'c1', 'prompt': 'mountain xieyi', 'model_ref': 'flux', 'image_url': None}],\n    evidence={'terminology_hits': [{'term': 'xieyi', 'matched': True, 'confidence': 0.9}],\n              'sample_matches': [{'id': 's1', 'score': 0.75}], 'taboo_violations': []},\n\\)\noutput = critic.run\\(inp\\)\nm = critic.get_agent_metrics\\(\\)\nprint\\(f'success={output.success} escalations={m[\"total_escalations\"]} tools={m[\"tool_calls\"]}'\\)\nif output.scored_candidates:\n    for ds in output.scored_candidates[0].dimension_scores:\n        print\\(f'  {ds.dimension}: {ds.score:.4f} | {\\(ds.rationale or \"\"\\)[:90]}'\\)\nPYEOF)",
+      "Bash(1 <<'PYEOF'\nimport logging, sys\nlogging.basicConfig\\(level=logging.DEBUG, stream=sys.stdout, format='%\\(name\\)s: %\\(message\\)s'\\)\nfor name in ['LiteLLM', 'httpx', 'httpcore', 'openai']:\n    logging.getLogger\\(name\\).setLevel\\(logging.ERROR\\)\n\nfrom app.prototype.agents.critic_llm import CriticLLM\nfrom app.prototype.agents.critic_types import CritiqueInput\n\ncritic = CriticLLM\\(max_escalations=2\\)\ninp = CritiqueInput\\(\n    task_id='debug-3', subject='Chinese xieyi mountain', cultural_tradition='chinese_xieyi',\n    candidates=[{'candidate_id': 'c1', 'prompt': 'mountain xieyi', 'model_ref': 'flux', 'image_url': None}],\n    evidence={'terminology_hits': [{'term': 'xieyi', 'matched': True, 'confidence': 0.9}],\n              'sample_matches': [{'id': 's1', 'score': 0.75}], 'taboo_violations': []},\n\\)\noutput = critic.run\\(inp\\)\nm = critic.get_agent_metrics\\(\\)\nprint\\(f'\\\\n=== RESULT ==='\\)\nprint\\(f'success={output.success} escalations={m[\"total_escalations\"]} tools={m[\"tool_calls\"]}'\\)\nif output.scored_candidates:\n    for ds in output.scored_candidates[0].dimension_scores:\n        has_agent = 'agent=' in \\(ds.rationale or ''\\)\n        print\\(f'  {ds.dimension}: {ds.score:.4f} agent={has_agent} | {\\(ds.rationale or \"\"\\)[:90]}'\\)\nPYEOF)",
+      "Bash(PYTHONPATH=/mnt/i/website/wenxin-backend python3:*)",
+      "Bash(1 <<'PYEOF'\nimport asyncio, litellm\n\nasync def test\\(\\):\n    tools = [\n        {\"type\": \"function\", \"function\": {\"name\": \"submit_evaluation\", \"description\": \"Submit score\", \"parameters\": {\"type\": \"object\", \"required\": [\"score\"], \"properties\": {\"score\": {\"type\": \"number\"}}}}},\n        {\"type\": \"function\", \"function\": {\"name\": \"search\", \"description\": \"Search\", \"parameters\": {\"type\": \"object\", \"required\": [\"query\"], \"properties\": {\"query\": {\"type\": \"string\"}}}}},\n    ]\n    msgs = [\n        {\"role\": \"system\", \"content\": \"You are an evaluator.\"},\n        {\"role\": \"user\", \"content\": \"Evaluate this artwork.\"},\n    ]\n    \n    # Test 1: specific function tool_choice\n    print\\(\"Test 1: tool_choice = specific function dict\"\\)\n    try:\n        resp = await litellm.acompletion\\(\n            model=\"deepseek/deepseek-chat\",\n            messages=msgs,\n            tools=tools,\n            tool_choice={\"type\": \"function\", \"function\": {\"name\": \"submit_evaluation\"}},\n            max_tokens=512,\n            temperature=0.3,\n        \\)\n        c = resp.choices[0]\n        print\\(f\"  finish={c.finish_reason}, tool_calls={bool\\(c.message.tool_calls\\)}\"\\)\n        if c.message.tool_calls:\n            for tc in c.message.tool_calls:\n                print\\(f\"  -> {tc.function.name}\"\\)\n    except Exception as e:\n        print\\(f\"  ERROR: {e}\"\\)\n\nasyncio.run\\(test\\(\\)\\)\nPYEOF)",
+      "Bash(1 <<'PYEOF'\nimport logging, sys\nlogging.basicConfig\\(level=logging.DEBUG, stream=sys.stdout, format='%\\(name\\)s: %\\(message\\)s'\\)\nfor name in ['LiteLLM', 'httpx', 'httpcore', 'openai']:\n    logging.getLogger\\(name\\).setLevel\\(logging.ERROR\\)\n\nfrom app.prototype.agents.critic_llm import CriticLLM\nfrom app.prototype.agents.critic_types import CritiqueInput\n\ncritic = CriticLLM\\(max_escalations=2\\)\ninp = CritiqueInput\\(\n    task_id='test-4', subject='Chinese xieyi mountain', cultural_tradition='chinese_xieyi',\n    candidates=[{'candidate_id': 'c1', 'prompt': 'mountain xieyi', 'model_ref': 'flux', 'image_url': None}],\n    evidence={'terminology_hits': [{'term': 'xieyi', 'matched': True, 'confidence': 0.9}],\n              'sample_matches': [{'id': 's1', 'score': 0.75}], 'taboo_violations': []},\n\\)\noutput = critic.run\\(inp\\)\nm = critic.get_agent_metrics\\(\\)\nprint\\(f'\\\\n=== RESULT ==='\\)\nprint\\(f'escalations={m[\"total_escalations\"]} tools={m[\"tool_calls\"]}'\\)\nif output.scored_candidates:\n    for ds in output.scored_candidates[0].dimension_scores:\n        has_agent = 'agent=' in \\(ds.rationale or ''\\)\n        print\\(f'  {ds.dimension}: {ds.score:.4f} agent={has_agent}'\\)\nPYEOF)",
+      "Bash(1 <<'PYEOF'\nimport asyncio, litellm, json\n\nasync def test\\(\\):\n    tools = [\n        {\"type\": \"function\", \"function\": {\"name\": \"submit_evaluation\", \"description\": \"Submit score\", \"parameters\": {\"type\": \"object\", \"required\": [\"score\"], \"properties\": {\"score\": {\"type\": \"number\"}}}}},\n        {\"type\": \"function\", \"function\": {\"name\": \"read_layer_analysis\", \"description\": \"Read layer analysis\", \"parameters\": {\"type\": \"object\", \"required\": [\"layer\"], \"properties\": {\"layer\": {\"type\": \"string\"}}}}},\n    ]\n    \n    # Simulate the multi-turn conversation with tool results\n    msgs = [\n        {\"role\": \"system\", \"content\": \"You are an art critic evaluating L5. Read prior layer analyses with read_layer_analysis. When ready, call submit_evaluation.\"},\n        {\"role\": \"user\", \"content\": \"Evaluate Chinese xieyi. Score: [0,1], confidence: [0,1].\"},\n        # assistant calls read_layer_analysis\n        {\"role\": \"assistant\", \"content\": None, \"tool_calls\": [{\"id\": \"tc1\", \"type\": \"function\", \"function\": {\"name\": \"read_layer_analysis\", \"arguments\": '{\"layer\":\"L4\"}'}}]},\n        {\"role\": \"tool\", \"tool_call_id\": \"tc1\", \"content\": '{\"layer\":\"L4\",\"status\":\"not_yet_evaluated\",\"hint\":\"No prior analysis. Use other tools or submit.\"}'},\n        # assistant calls read_layer_analysis again\n        {\"role\": \"assistant\", \"content\": None, \"tool_calls\": [{\"id\": \"tc2\", \"type\": \"function\", \"function\": {\"name\": \"read_layer_analysis\", \"arguments\": '{\"layer\":\"L3\"}'}}]},\n        {\"role\": \"tool\", \"tool_call_id\": \"tc2\", \"content\": '{\"layer\":\"L3\",\"status\":\"not_yet_evaluated\",\"hint\":\"No prior analysis. Use other tools or submit.\"}'},\n    ]\n    \n    print\\(\"Test: specific function tool_choice with multi-turn history\"\\)\n    tc = {\"type\": \"function\", \"function\": {\"name\": \"submit_evaluation\"}}\n    resp = await litellm.acompletion\\(\n        model=\"deepseek/deepseek-chat\",\n        messages=msgs,\n        tools=tools,\n        tool_choice=tc,\n        max_tokens=512,\n        temperature=0.3,\n    \\)\n    c = resp.choices[0]\n    if c.message.tool_calls:\n        for t in c.message.tool_calls:\n            print\\(f\"  Called: {t.function.name} args={t.function.arguments[:100]}\"\\)\n    else:\n        print\\(f\"  No tool calls, content={c.message.content[:200] if c.message.content else None}\"\\)\n\nasyncio.run\\(test\\(\\)\\)\nPYEOF)",
+      "Bash(1 <<'PYEOF'\nimport logging, sys\nlogging.basicConfig\\(level=logging.DEBUG, stream=sys.stdout, format='%\\(name\\)s: %\\(message\\)s'\\)\nfor name in ['LiteLLM', 'httpx', 'httpcore', 'openai']:\n    logging.getLogger\\(name\\).setLevel\\(logging.ERROR\\)\n\nfrom app.prototype.agents.critic_llm import CriticLLM\nfrom app.prototype.agents.critic_types import CritiqueInput\n\ncritic = CriticLLM\\(max_escalations=2\\)\ninp = CritiqueInput\\(\n    task_id='test-5', subject='Chinese xieyi mountain', cultural_tradition='chinese_xieyi',\n    candidates=[{'candidate_id': 'c1', 'prompt': 'mountain xieyi', 'model_ref': 'flux', 'image_url': None}],\n    evidence={'terminology_hits': [{'term': 'xieyi', 'matched': True, 'confidence': 0.9}],\n              'sample_matches': [{'id': 's1', 'score': 0.75}], 'taboo_violations': []},\n\\)\noutput = critic.run\\(inp\\)\nm = critic.get_agent_metrics\\(\\)\nprint\\(f'\\\\n=== RESULT ==='\\)\nprint\\(f'escalations={m[\"total_escalations\"]} tools={m[\"tool_calls\"]}'\\)\nif output.scored_candidates:\n    for ds in output.scored_candidates[0].dimension_scores:\n        has_agent = 'agent=' in \\(ds.rationale or ''\\)\n        print\\(f'  {ds.dimension}: {ds.score:.4f} agent={has_agent}'\\)\nPYEOF)",
+      "Bash(1 <<'PYEOF'\nimport logging, sys\nlogging.basicConfig\\(level=logging.DEBUG, stream=sys.stdout, format='%\\(name\\)s: %\\(message\\)s'\\)\nfor name in ['LiteLLM', 'httpx', 'httpcore', 'openai']:\n    logging.getLogger\\(name\\).setLevel\\(logging.ERROR\\)\n\nfrom app.prototype.agents.critic_llm import CriticLLM\nfrom app.prototype.agents.critic_types import CritiqueInput\n\ncritic = CriticLLM\\(max_escalations=2\\)\ninp = CritiqueInput\\(\n    task_id='test-6', subject='Chinese xieyi mountain', cultural_tradition='chinese_xieyi',\n    candidates=[{'candidate_id': 'c1', 'prompt': 'mountain xieyi', 'model_ref': 'flux', 'image_url': None}],\n    evidence={'terminology_hits': [{'term': 'xieyi', 'matched': True, 'confidence': 0.9}],\n              'sample_matches': [{'id': 's1', 'score': 0.75}], 'taboo_violations': []},\n\\)\noutput = critic.run\\(inp\\)\nm = critic.get_agent_metrics\\(\\)\nprint\\(f'\\\\n=== RESULT ==='\\)\nprint\\(f'escalations={m[\"total_escalations\"]} tools={m[\"tool_calls\"]}'\\)\nif output.scored_candidates:\n    for ds in output.scored_candidates[0].dimension_scores:\n        has_agent = 'agent=' in \\(ds.rationale or ''\\)\n        print\\(f'  {ds.dimension}: {ds.score:.4f} agent={has_agent} | {\\(ds.rationale or \"\"\\)[:80]}'\\)\nPYEOF)",
+      "Bash(PYTHONPATH=. python3 -m pytest:*)",
+      "Bash(/home/yhryzy/.venvs/wenxin-backend-v2-venv/bin/python3:*)",
+      "Bash(ldconfig:*)",
+      "Bash(/mnt/c/Users/MyhrDyzy/AppData/Local/Microsoft/WindowsApps/winget.exe --version)",
+      "Bash(/mnt/c/Users/MyhrDyzy/AppData/Local/Microsoft/WindowsApps/winget.exe list:*)",
+      "Bash(/mnt/c/Users/MyhrDyzy/AppData/Local/Microsoft/WindowsApps/winget.exe upgrade --all --include-unknown)",
+      "Bash(/mnt/c/Users/MyhrDyzy/AppData/Local/Microsoft/WindowsApps/winget.exe search nvidia)",
+      "Bash(/home/yhryzy/.venvs/wenxin-backend-v2-venv/bin/pip install:*)",
+      "Bash(/usr/lib/wsl/lib/nvidia-smi)",
+      "Bash(# Check dmesg for dxg status dmesg)",
+      "Bash(# Check if dxg device exists ls -la /dev/dxg # Check if any nvidia libs are present ls /usr/lib/wsl/lib/libcuda*)",
+      "Bash(/mnt/c/Windows/System32/nvidia-smi.exe:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(./run_prototype.sh:*)"
     ],
     "deny": []
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/post-plan-validate.sh",
+            "timeout": 60
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/post-task-sync-docs.sh",
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/post-update-plan-next.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
   }
 }
