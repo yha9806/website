@@ -27,7 +27,7 @@ from pathlib import Path
 _ROOT = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(_ROOT))
 
-from app.prototype.blind_eval.experiment_config import build_default_config
+from app.prototype.blind_eval.experiment_config import BlindTask, build_default_config
 from app.prototype.blind_eval.task_sampler import sample_tasks
 from app.prototype.blind_eval.experiment_runner import ExperimentRunner
 from app.prototype.blind_eval.blind_exporter import BlindExporter
@@ -80,6 +80,10 @@ def main() -> None:
         "--tasks-subset", type=int, default=None,
         help="Limit tasks per category (for quick testing)",
     )
+    parser.add_argument(
+        "--n-seeds", type=int, default=1,
+        help="Number of seeds per task for statistical replication (default: 1)",
+    )
 
     args = parser.parse_args()
 
@@ -93,10 +97,25 @@ def main() -> None:
         print(report)
         return
 
-    # Sample tasks
-    n_per_cat = args.tasks_subset or 10
+    # Sample tasks — use all available when tasks_subset not specified
+    n_per_cat = args.tasks_subset if args.tasks_subset else 100  # default: all
     tasks = sample_tasks(n_per_category=n_per_cat)
-    logger.info("Sampled %d tasks (%d per category)", len(tasks), n_per_cat)
+    logger.info("Sampled %d tasks (up to %d per category)", len(tasks), n_per_cat)
+
+    # Replicate tasks with multiple seeds
+    if args.n_seeds > 1:
+        base_tasks = tasks[:]
+        tasks = []
+        for seed_idx in range(args.n_seeds):
+            for bt in base_tasks:
+                tasks.append(BlindTask(
+                    task_id=f"{bt.task_id}_s{seed_idx}",
+                    subject=bt.subject,
+                    tradition=bt.tradition,
+                    category=bt.category,
+                    expected_emphasis=bt.expected_emphasis,
+                ))
+        logger.info("Replicated to %d tasks (%d seeds × %d base)", len(tasks), args.n_seeds, len(base_tasks))
 
     # Build config
     provider = args.provider if args.mode == "real" else "mock"
