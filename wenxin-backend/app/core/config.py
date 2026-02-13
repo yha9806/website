@@ -111,6 +111,11 @@ class Settings(BaseSettings):
     TOGETHER_API_KEY: str = ""
     GOOGLE_API_KEY: str = ""
     
+    # Langfuse Observability
+    LANGFUSE_PUBLIC_KEY: str = ""
+    LANGFUSE_SECRET_KEY: str = ""
+    LANGFUSE_HOST: str = "https://cloud.langfuse.com"
+
     # Cost Control
     ENABLE_COST_CONTROL: bool = True
     DAILY_COST_LIMIT: float = 10.0
