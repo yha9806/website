@@ -104,9 +104,13 @@ def _get_provider(name: str, config: DraftConfig | None = None) -> AbstractProvi
         return _KoalaProviderAdapter(kp, config)
     if name == "nb2":
         import os
-        api_key = (config.api_key if config else "") or os.environ.get("GOOGLE_API_KEY", "")
+        api_key = (
+            (config.api_key if config else "")
+            or os.environ.get("GOOGLE_API_KEY", "")
+            or os.environ.get("GEMINI_API_KEY", "")
+        )
         if not api_key:
-            raise ValueError("GOOGLE_API_KEY required for nb2 provider")
+            raise ValueError("GOOGLE_API_KEY (or GEMINI_API_KEY) required for nb2 provider")
         return NB2Provider(api_key=api_key)
     raise ValueError(f"Unknown provider: {name!r} (available: mock, together_flux, diffusers, koala, nb2)")
 

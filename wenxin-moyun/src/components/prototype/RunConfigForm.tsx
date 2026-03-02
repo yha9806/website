@@ -97,6 +97,7 @@ export default function RunConfigForm({ onSubmit, disabled }: Props) {
           >
             <option value="mock">Mock (instant)</option>
             <option value="together_flux">FLUX ($0.003/img)</option>
+            <option value="nb2">NB2 / Gemini Image (best, $0.067/img)</option>
           </select>
         </div>
 
