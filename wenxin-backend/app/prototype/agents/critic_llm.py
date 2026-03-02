@@ -654,10 +654,15 @@ class CriticLLM:
     @staticmethod
     def _check_api_keys() -> bool:
         """One-time check for available LLM API keys."""
+        from app.core.config import settings as _settings
         return any(os.environ.get(k) for k in (
             "GLOBALAI_API_KEY", "DEEPSEEK_API_KEY",
             "GOOGLE_API_KEY", "GEMINI_API_KEY", "OPENAI_API_KEY",
-        ))
+        )) or bool(
+            _settings.GLOBALAI_API_KEY
+            or _settings.GOOGLE_API_KEY
+            or _settings.GEMINI_API_KEY
+        )
 
     def _escalate_dimensions(
         self,

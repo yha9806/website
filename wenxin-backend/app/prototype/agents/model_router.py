@@ -28,10 +28,12 @@ _GLOBALAI_BASE = "https://globalai.vip/v1"
 
 
 def _globalai_key() -> str:
-    """Get the globalai.vip API key from environment."""
+    """Get the globalai.vip API key from environment or settings."""
+    from app.core.config import settings as _settings
     return (
         os.environ.get("GLOBALAI_API_KEY")
         or os.environ.get("DEEPSEEK_API_KEY")
+        or _settings.GLOBALAI_API_KEY
         or ""
     )
 
