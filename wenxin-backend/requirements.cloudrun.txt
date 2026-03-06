@@ -37,27 +37,27 @@ anthropic==0.64.0
 google-generativeai==0.5.4
 
 # --- Prototype: LLM Gateway (Gemini via LiteLLM) ---
-litellm>=1.50.0
+litellm==1.81.9
 
 # --- Prototype: NB2 Image Generation (Gemini native) ---
-google-genai>=1.21.0
+google-genai==1.21.1
 
 # --- Prototype: LangGraph Pipeline ---
-langgraph>=0.2.0
-langgraph-checkpoint>=2.0.0
+langgraph==0.2.76
+langgraph-checkpoint==2.0.26
 
 # --- Prototype: Observability ---
-langfuse>=2.50.0
+langfuse==2.60.10
 
 # --- Configuration ---
-PyYAML>=6.0
+PyYAML==6.0.1
 
 # --- Image Processing ---
-Pillow>=10.0.0
-numpy>=1.24.0
+Pillow==11.0.0
+numpy==2.1.3
 
 # --- Scientific Computing (VULCA core) ---
-pandas>=2.0.0
+pandas==2.3.0
 
 # --- Production Server ---
 gunicorn==21.2.0
@@ -66,7 +66,7 @@ gunicorn==21.2.0
 cloud-sql-python-connector[asyncpg]==1.18.3
 google-cloud-secret-manager==2.18.1
 google-cloud-logging==3.8.0
-google-cloud-storage>=2.14.0
+google-cloud-storage==2.19.0
 
 # --- Security ---
 cryptography==42.0.0
