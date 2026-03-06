@@ -1,0 +1,85 @@
+{
+  "nav": {
+    "home": "首页",
+    "leaderboard": "排行榜",
+    "battle": "对战",
+    "about": "关于",
+    "pricing": "定价",
+    "prototype": "创作台",
+    "knowledgeBase": "知识库",
+    "gallery": "作品集"
+  },
+  "home": {
+    "title": "VULCA",
+    "subtitle": "视觉理解与语言文化评估",
+    "description": "跨文化维度的 AI 艺术评测平台",
+    "cta": "开始使用"
+  },
+  "knowledgeBase": {
+    "title": "文化知识库",
+    "subtitle": "浏览 9 个文化传统的术语体系、禁忌规则和评估权重",
+    "search": "搜索术语...",
+    "filterByTradition": "按传统筛选",
+    "allTraditions": "全部传统",
+    "terms": "术语",
+    "taboos": "禁忌规则",
+    "weights": "L1-L5 权重",
+    "pipelineVariant": "管线变体",
+    "severity": "严重度",
+    "category": "类别",
+    "definition": "定义",
+    "layers": "层级",
+    "stats": {
+      "totalTerms": "总术语数",
+      "totalTaboos": "总禁忌规则",
+      "totalTraditions": "文化传统"
+    }
+  },
+  "gallery": {
+    "title": "作品展廊",
+    "subtitle": "AI 生成的文化艺术作品及 L1-L5 评估得分",
+    "filterByTradition": "按传统筛选",
+    "filterByScore": "最低分数",
+    "noArtworks": "暂无作品",
+    "noArtworksHint": "运行管线生成你的第一件作品",
+    "score": "评分",
+    "tradition": "传统",
+    "template": "模板"
+  },
+  "traditions": {
+    "chinese_xieyi": "中国写意",
+    "chinese_gongbi": "中国工笔",
+    "western_academic": "西方学院派",
+    "islamic_geometric": "伊斯兰几何",
+    "japanese_traditional": "日本传统",
+    "watercolor": "水彩画",
+    "african_traditional": "非洲传统",
+    "south_asian": "南亚传统",
+    "default": "通用 / 跨文化"
+  },
+  "dimensions": {
+    "L1": "视觉感知",
+    "L2": "技术分析",
+    "L3": "文化语境",
+    "L4": "批评阐释",
+    "L5": "哲学美学",
+    "visual_perception": "视觉感知",
+    "technical_analysis": "技术分析",
+    "cultural_context": "文化语境",
+    "critical_interpretation": "批评阐释",
+    "philosophical_aesthetic": "哲学美学"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "发生错误",
+    "retry": "重试",
+    "close": "关闭",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "search": "搜索",
+    "filter": "筛选",
+    "noResults": "未找到结果",
+    "language": "语言"
+  }
+}

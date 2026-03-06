@@ -1,0 +1,85 @@
+{
+  "nav": {
+    "home": "Home",
+    "leaderboard": "Leaderboard",
+    "battle": "Battle",
+    "about": "About",
+    "pricing": "Pricing",
+    "prototype": "Playground",
+    "knowledgeBase": "Knowledge Base",
+    "gallery": "Gallery"
+  },
+  "home": {
+    "title": "VULCA",
+    "subtitle": "Visual Understanding & Linguistic Cultural Assessment",
+    "description": "AI art evaluation platform testing models across cultural dimensions",
+    "cta": "Get Started"
+  },
+  "knowledgeBase": {
+    "title": "Cultural Knowledge Base",
+    "subtitle": "Browse terminology, taboo rules, and evaluation weights across 9 cultural traditions",
+    "search": "Search terms...",
+    "filterByTradition": "Filter by tradition",
+    "allTraditions": "All Traditions",
+    "terms": "Terms",
+    "taboos": "Taboo Rules",
+    "weights": "L1-L5 Weights",
+    "pipelineVariant": "Pipeline Variant",
+    "severity": "Severity",
+    "category": "Category",
+    "definition": "Definition",
+    "layers": "Layers",
+    "stats": {
+      "totalTerms": "Total Terms",
+      "totalTaboos": "Total Taboo Rules",
+      "totalTraditions": "Cultural Traditions"
+    }
+  },
+  "gallery": {
+    "title": "Artwork Gallery",
+    "subtitle": "AI-generated cultural artworks with L1-L5 evaluation scores",
+    "filterByTradition": "Filter by tradition",
+    "filterByScore": "Min score",
+    "noArtworks": "No artworks yet",
+    "noArtworksHint": "Run a pipeline to generate your first artwork",
+    "score": "Score",
+    "tradition": "Tradition",
+    "template": "Template"
+  },
+  "traditions": {
+    "chinese_xieyi": "Chinese Xieyi (Freehand)",
+    "chinese_gongbi": "Chinese Gongbi (Meticulous)",
+    "western_academic": "Western Academic",
+    "islamic_geometric": "Islamic Geometric",
+    "japanese_traditional": "Japanese Traditional",
+    "watercolor": "Watercolor",
+    "african_traditional": "African Traditional",
+    "south_asian": "South Asian",
+    "default": "General / Cross-Cultural"
+  },
+  "dimensions": {
+    "L1": "Visual Perception",
+    "L2": "Technical Analysis",
+    "L3": "Cultural Context",
+    "L4": "Critical Interpretation",
+    "L5": "Philosophical Aesthetic",
+    "visual_perception": "Visual Perception",
+    "technical_analysis": "Technical Analysis",
+    "cultural_context": "Cultural Context",
+    "critical_interpretation": "Critical Interpretation",
+    "philosophical_aesthetic": "Philosophical Aesthetic"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "search": "Search",
+    "filter": "Filter",
+    "noResults": "No results found",
+    "language": "Language"
+  }
+}

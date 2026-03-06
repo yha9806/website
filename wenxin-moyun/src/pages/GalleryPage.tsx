@@ -1,498 +1,287 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { MoreHorizontal, Heart, Share2, Eye } from 'lucide-react';
-import { IOSButton, IOSCard, IOSCardContent, IOSSegmentedControl } from '../components/ios';
-import { galleryApi, handleApiError, isNetworkError } from '../services/api';
+import { useState, useMemo } from 'react';
+import { Filter, Palette, Layers } from 'lucide-react';
+import {
+  IOSButton,
+  IOSCard,
+  IOSCardContent,
+  IOSCardGrid,
+} from '../components/ios';
 
-interface Artwork {
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+interface ArtworkItem {
   id: string;
-  type: 'poem' | 'painting' | 'story' | 'music';
-  title: string;
-  content?: string;
-  image_url?: string;
-  model_id: string;
-  model_name?: string;  // From backend relationship
-  likes: number;
-  views: number;
-  created_at: string;
-  prompt: string;
-  score?: number;
-  extra_metadata?: Record<string, unknown>;
+  subject: string;
+  tradition: string;
+  tradition_label: string;
+  template: string;
+  scores: { L1: number; L2: number; L3: number; L4: number; L5: number };
+  overall: number;
+  gradient: string;            // CSS gradient used as image placeholder
+  generated_at: string;
 }
 
-interface ArtworkResponse {
-  artworks: Artwork[];
-  total: number;
-  page: number;
-  page_size: number;
-}
+// ---------------------------------------------------------------------------
+// Mock data (6-8 sample artworks with gradient placeholders)
+// ---------------------------------------------------------------------------
 
-export default function GalleryPage() {
-  const [filter, setFilter] = useState<string>('all');
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const [artworks, setArtworks] = useState<Artwork[]>([]);
-  const [likedItems, setLikedItems] = useState<Set<string>>(new Set());
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
-  const [isOffline, setIsOffline] = useState<boolean>(false);
-  const cachedArtworksRef = useRef<Artwork[]>([]);
+const MOCK_ARTWORKS: ArtworkItem[] = [
+  {
+    id: 'art-001',
+    subject: 'Misty Mountains at Dawn',
+    tradition: 'chinese_ink',
+    tradition_label: 'Chinese Ink',
+    template: 'ink_wash_pipeline',
+    scores: { L1: 0.91, L2: 0.88, L3: 0.95, L4: 0.93, L5: 0.90 },
+    overall: 0.914,
+    gradient: 'linear-gradient(135deg, #2c3e50 0%, #bdc3c7 50%, #ecf0f1 100%)',
+    generated_at: '2026-03-05',
+  },
+  {
+    id: 'art-002',
+    subject: 'The Great Wave Reimagined',
+    tradition: 'japanese_ukiyoe',
+    tradition_label: 'Japanese Ukiyo-e',
+    template: 'ukiyoe_pipeline',
+    scores: { L1: 0.89, L2: 0.85, L3: 0.92, L4: 0.88, L5: 0.87 },
+    overall: 0.882,
+    gradient: 'linear-gradient(135deg, #1a3a5c 0%, #5b8fb9 40%, #f5e6ca 100%)',
+    generated_at: '2026-03-04',
+  },
+  {
+    id: 'art-003',
+    subject: 'Garden of Paradise',
+    tradition: 'persian_miniature',
+    tradition_label: 'Persian Miniature',
+    template: 'persian_miniature_pipeline',
+    scores: { L1: 0.87, L2: 0.83, L3: 0.90, L4: 0.92, L5: 0.86 },
+    overall: 0.876,
+    gradient: 'linear-gradient(135deg, #1a472a 0%, #c5a03f 50%, #8b2942 100%)',
+    generated_at: '2026-03-04',
+  },
+  {
+    id: 'art-004',
+    subject: 'Court of the Mughal Emperor',
+    tradition: 'indian_mughal',
+    tradition_label: 'Mughal Painting',
+    template: 'mughal_pipeline',
+    scores: { L1: 0.86, L2: 0.84, L3: 0.88, L4: 0.90, L5: 0.85 },
+    overall: 0.866,
+    gradient: 'linear-gradient(135deg, #8b4513 0%, #daa520 50%, #cd5c5c 100%)',
+    generated_at: '2026-03-03',
+  },
+  {
+    id: 'art-005',
+    subject: 'Longevity Symbols',
+    tradition: 'korean_minhwa',
+    tradition_label: 'Korean Minhwa',
+    template: 'minhwa_pipeline',
+    scores: { L1: 0.84, L2: 0.82, L3: 0.89, L4: 0.86, L5: 0.91 },
+    overall: 0.864,
+    gradient: 'linear-gradient(135deg, #b22222 0%, #ffd700 40%, #228b22 100%)',
+    generated_at: '2026-03-03',
+  },
+  {
+    id: 'art-006',
+    subject: 'Alhambra Tessellation',
+    tradition: 'islamic_geometric',
+    tradition_label: 'Islamic Geometric',
+    template: 'islamic_geo_pipeline',
+    scores: { L1: 0.93, L2: 0.91, L3: 0.88, L4: 0.85, L5: 0.83 },
+    overall: 0.880,
+    gradient: 'linear-gradient(135deg, #0c3547 0%, #1e6f5c 40%, #d4a437 100%)',
+    generated_at: '2026-03-02',
+  },
+  {
+    id: 'art-007',
+    subject: 'Theotokos of Compassion',
+    tradition: 'byzantine_icon',
+    tradition_label: 'Byzantine Icon',
+    template: 'byzantine_pipeline',
+    scores: { L1: 0.85, L2: 0.87, L3: 0.86, L4: 0.92, L5: 0.88 },
+    overall: 0.876,
+    gradient: 'linear-gradient(135deg, #8b6914 0%, #daa520 30%, #4a0e0e 100%)',
+    generated_at: '2026-03-01',
+  },
+  {
+    id: 'art-008',
+    subject: 'Medicine Buddha Mandala',
+    tradition: 'tibetan_thangka',
+    tradition_label: 'Tibetan Thangka',
+    template: 'thangka_pipeline',
+    scores: { L1: 0.82, L2: 0.84, L3: 0.87, L4: 0.93, L5: 0.91 },
+    overall: 0.874,
+    gradient: 'linear-gradient(135deg, #1a237e 0%, #c62828 40%, #f9a825 100%)',
+    generated_at: '2026-02-28',
+  },
+];
 
-  const filterOptions = ['All', 'Poetry', 'Painting', 'Story', 'Music'];
-  const filterValues = ['all', 'poem', 'painting', 'story', 'music'];
+// Unique traditions for filter
+const ALL_TRADITIONS = Array.from(new Set(MOCK_ARTWORKS.map((a) => a.tradition)));
 
-  type GalleryQueryParams = {
-    type?: string;
-  };
+// ---------------------------------------------------------------------------
+// Score bar
+// ---------------------------------------------------------------------------
 
-  // Fetch artworks from API
-  const fetchArtworks = useCallback(async (type?: string) => {
-    try {
-      setLoading(true);
-      setError('');
-      
-      const params: GalleryQueryParams = {};
-      if (type && type !== 'all') {
-        params.type = type;
-      }
-      
-      const response = await galleryApi.getArtworks(params);
-      const data: ArtworkResponse = response.data;
-      
-      setArtworks(data.artworks || []);
-      cachedArtworksRef.current = data.artworks || [];
-      setIsOffline(false);
-    } catch (err) {
-      const errorMessage = handleApiError(err);
-      setError(errorMessage);
-      console.error('Error fetching artworks:', err);
-      
-      // Check if this is a network error and we have cached data
-      if (isNetworkError(err)) {
-        setIsOffline(true);
-        if (cachedArtworksRef.current.length > 0) {
-          setArtworks(cachedArtworksRef.current);
-          setError(''); // Clear error when showing cached data
-        }
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  // Load artworks on component mount and when filter changes
-  useEffect(() => {
-    fetchArtworks(filter);
-  }, [fetchArtworks, filter]);
-
-  const filteredArtworks = artworks; // No need for client-side filtering as API handles it
-
-  const handleFilterChange = (index: number) => {
-    setSelectedIndex(index);
-    setFilter(filterValues[index]);
-  };
-
-  const handleLike = async (id: string) => {
-    try {
-      // Optimistic update
-      const newLikedItems = new Set(likedItems);
-      const wasLiked = likedItems.has(id);
-      
-      if (wasLiked) {
-        newLikedItems.delete(id);
-        setArtworks(prev => prev.map(item => 
-          item.id === id ? { ...item, likes: Math.max(0, item.likes - 1) } : item
-        ));
-      } else {
-        newLikedItems.add(id);
-        setArtworks(prev => prev.map(item => 
-          item.id === id ? { ...item, likes: item.likes + 1 } : item
-        ));
-      }
-      setLikedItems(newLikedItems);
-
-      // Call API (for now we only increment, no unlike functionality in backend)
-      if (!wasLiked) {
-        const response = await galleryApi.likeArtwork(id);
-        
-        // Update with actual count from server
-        if (response.data.new_likes !== undefined) {
-          setArtworks(prev => prev.map(item => 
-            item.id === id ? { ...item, likes: response.data.new_likes } : item
-          ));
-        }
-      }
-    } catch (err) {
-      // Revert optimistic update on error
-      console.error('Error liking artwork:', err);
-      
-      // Show user-friendly error for offline mode
-      if (isNetworkError(err)) {
-        setIsOffline(true);
-        // Keep the optimistic update in offline mode
-        return;
-      }
-      
-      // Revert the like state for other errors
-      const newLikedItems = new Set(likedItems);
-      const wasLiked = likedItems.has(id);
-      if (!wasLiked) {
-        newLikedItems.delete(id);
-      } else {
-        newLikedItems.add(id);
-      }
-      setLikedItems(newLikedItems);
-      
-      // Refresh artworks to get correct count
-      fetchArtworks(filter);
-    }
-  };
-
-  const handleShare = async (artwork: Artwork) => {
-    try {
-      // Call share API for analytics
-      await galleryApi.shareArtwork(artwork.id);
-      
-      if (navigator.share) {
-        await navigator.share({
-          title: artwork.title,
-          text: `Check out this ${artwork.type} created by ${artwork.model_name || 'AI'}`,
-          url: window.location.href
-        });
-      } else {
-        // Fallback to clipboard
-        await navigator.clipboard.writeText(`${artwork.title} - ${window.location.href}`);
-        // Could show toast notification here
-      }
-    } catch (err) {
-      console.error('Error sharing artwork:', err);
-      
-      // Handle offline sharing gracefully
-      if (isNetworkError(err)) {
-        // Skip API call but still try local sharing
-        try {
-          if (navigator.share) {
-            await navigator.share({
-              title: artwork.title,
-              text: `Check out this ${artwork.type} created by ${artwork.model_name || 'AI'}`,
-              url: window.location.href
-            });
-          } else {
-            await navigator.clipboard.writeText(`${artwork.title} - ${window.location.href}`);
-          }
-        } catch (localErr) {
-          console.error('Local sharing failed:', localErr);
-        }
-        return;
-      }
-      
-      // Still try clipboard as fallback for other errors
-      try {
-        await navigator.clipboard.writeText(`${artwork.title} - ${window.location.href}`);
-      } catch (clipboardErr) {
-        console.error('Clipboard fallback failed:', clipboardErr);
-      }
-    }
-  };
-
-  const getTypeEmoji = (type: string) => {
-    switch (type) {
-      case 'poem': return '📝';
-      case 'painting': return '🎨';
-      case 'story': return '📚';
-      case 'music': return '🎵';
-      default: return '✨';
-    }
-  };
-
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'poem': return 'text-slate-700 dark:text-slate-500';
-      case 'painting': return 'text-amber-700 dark:text-amber-500';
-      case 'story': return 'text-green-600 dark:text-green-400';
-      case 'music': return 'text-orange-600 dark:text-orange-400';
-      default: return 'text-gray-600 dark:text-gray-400';
-    }
-  };
+function ScoreBar({ label, value }: { label: string; value: number }) {
+  const pct = Math.round(value * 100);
+  const barColor =
+    value >= 0.9 ? 'bg-green-500 dark:bg-green-400' :
+    value >= 0.8 ? 'bg-blue-500 dark:bg-blue-400' :
+    'bg-amber-500 dark:bg-amber-400';
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white 
-                    dark:from-black dark:via-gray-900 dark:to-black">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <motion.div 
-          className="text-center mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-slate-700 to-amber-700 
-                         bg-clip-text text-transparent">
-            🎨 Community Gallery
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-            Discover amazing artworks created by AI models from our community
-          </p>
-          
-          {/* Filter Tabs */}
-          <div className="flex justify-center mb-8">
-            <IOSSegmentedControl
-              segments={filterOptions}
-              selectedIndex={selectedIndex}
-              onChange={handleFilterChange}
-              style="filled"
-            />
-          </div>
-        </motion.div>
+    <div className="flex items-center gap-1.5">
+      <span className="w-5 text-[10px] font-mono text-gray-400">{label}</span>
+      <div className="flex-1 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+        <div className={`h-full rounded-full ${barColor} transition-all duration-300`} style={{ width: `${pct}%` }} />
+      </div>
+      <span className="w-8 text-[10px] text-right font-mono text-gray-500 dark:text-gray-400">{pct}%</span>
+    </div>
+  );
+}
 
-        {/* Offline Banner */}
-        {isOffline && (
-          <motion.div 
-            className="text-center mb-6"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="bg-orange-100 dark:bg-orange-900 border border-orange-300 dark:border-orange-700 rounded-lg p-4">
-              <p className="text-orange-800 dark:text-orange-200 font-medium">
-                📡 You're currently offline. Showing cached content.
-              </p>
-              <button 
-                onClick={() => fetchArtworks(filter)}
-                className="mt-2 text-orange-600 dark:text-orange-400 underline hover:no-underline text-sm"
-              >
-                Try to reconnect
-              </button>
-            </div>
-          </motion.div>
-        )}
+// ---------------------------------------------------------------------------
+// Artwork card
+// ---------------------------------------------------------------------------
 
-        {/* Error State */}
-        {error && !isOffline && (
-          <motion.div 
-            className="text-center mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="bg-red-100 dark:bg-red-900 border border-red-300 dark:border-red-700 rounded-lg p-4">
-              <p className="text-red-700 dark:text-red-300">
-                ❌ Error loading artworks: {error}
-              </p>
-              <button 
-                onClick={() => fetchArtworks(filter)}
-                className="mt-2 text-red-600 dark:text-red-400 underline hover:no-underline"
-              >
-                Try again
-              </button>
-            </div>
-          </motion.div>
-        )}
+function ArtworkCard({ artwork }: { artwork: ArtworkItem }) {
+  const overallPct = Math.round(artwork.overall * 100);
+  const overallColor =
+    artwork.overall >= 0.9 ? 'text-green-600 dark:text-green-400' :
+    artwork.overall >= 0.85 ? 'text-blue-600 dark:text-blue-400' :
+    'text-amber-600 dark:text-amber-400';
 
-        {/* Loading State */}
-        {loading && (
-          <motion.div 
-            className="text-center mb-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <div className="flex items-center justify-center space-x-2">
-              <div className="w-4 h-4 bg-slate-600 rounded-full animate-bounce"></div>
-              <div className="w-4 h-4 bg-amber-600 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-              <div className="w-4 h-4 bg-pink-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-            </div>
-            <p className="mt-2 text-gray-600 dark:text-gray-400">Loading amazing artworks...</p>
-          </motion.div>
-        )}
+  return (
+    <IOSCard variant="elevated" padding="none" className="overflow-hidden h-full flex flex-col">
+      {/* Gradient placeholder image */}
+      <div
+        className="w-full aspect-[4/3] relative"
+        style={{ background: artwork.gradient }}
+      >
+        {/* Tradition label overlay */}
+        <span className="absolute top-2 left-2 text-[10px] font-medium px-2 py-0.5 rounded-full bg-black/40 text-white backdrop-blur-sm">
+          {artwork.tradition_label}
+        </span>
+        {/* Overall score badge */}
+        <span className={`absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm ${overallColor}`}>
+          {overallPct}%
+        </span>
+      </div>
 
-        {/* Empty State */}
-        {!loading && !error && !isOffline && filteredArtworks.length === 0 && (
-          <motion.div 
-            className="text-center mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="text-6xl mb-4">🎨</div>
-            <h3 className="text-xl font-semibold mb-2">No artworks found</h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              {filter === 'all' 
-                ? 'No artworks have been created yet. Create an evaluation task to generate some!'
-                : `No ${filter} artworks found. Try a different filter or create some ${filter} tasks!`}
-            </p>
-          </motion.div>
-        )}
+      {/* Content */}
+      <IOSCardContent className="p-4 flex-1 flex flex-col">
+        <h3 className="font-semibold text-sm text-gray-900 dark:text-white mb-1 line-clamp-2">
+          {artwork.subject}
+        </h3>
+        <p className="text-[11px] text-gray-400 dark:text-gray-500 mb-3">
+          {artwork.template} &middot; {artwork.generated_at}
+        </p>
 
-        {/* Offline Empty State */}
-        {!loading && error && isOffline && filteredArtworks.length === 0 && (
-          <motion.div 
-            className="text-center mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="text-6xl mb-4">📱</div>
-            <h3 className="text-xl font-semibold mb-2">Offline Mode</h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              No cached artworks available. Connect to the internet to load content.
-            </p>
-            <IOSButton 
-              variant="primary" 
-              className="mt-4"
-              onClick={() => fetchArtworks(filter)}
-            >
-              🔄 Try to Connect
-            </IOSButton>
-          </motion.div>
-        )}
-
-        {/* Gallery Grid */}
-        {!loading && filteredArtworks.length > 0 && (
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-          {filteredArtworks.map((artwork, index) => (
-            <motion.div
-              key={artwork.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <IOSCard
-                variant="elevated"
-                interactive
-                animate
-                className="h-full overflow-hidden group"
-              >
-                {/* Artwork Content */}
-                {artwork.type === 'painting' && artwork.image_url && (
-                  <div className="relative overflow-hidden">
-                    <img 
-                      src={artwork.image_url} 
-                      alt={artwork.title}
-                      className="w-full h-48 object-cover transition-transform duration-300 
-                               group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent 
-                                  opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute top-2 right-2">
-                      <span className={`text-2xl ${getTypeColor(artwork.type)}`}>
-                        {getTypeEmoji(artwork.type)}
-                      </span>
-                    </div>
-                  </div>
-                )}
-                
-                {artwork.type !== 'painting' && (
-                  <div className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 
-                                dark:from-gray-800 dark:to-gray-700">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className={`text-2xl ${getTypeColor(artwork.type)}`}>
-                        {getTypeEmoji(artwork.type)}
-                      </span>
-                      <span className={`text-xs font-medium px-2 py-1 rounded-full 
-                                     bg-white dark:bg-gray-600 ${getTypeColor(artwork.type)}`}>
-                        {artwork.type}
-                      </span>
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
-                      {artwork.content}
-                    </div>
-                  </div>
-                )}
-
-                <IOSCardContent className="p-4">
-                  {/* Title */}
-                  <h3 className="font-semibold text-lg mb-2 line-clamp-2">
-                    {artwork.title}
-                  </h3>
-
-                  {/* Model Info */}
-                  <div className="flex items-center gap-2 mb-3 text-sm text-gray-600 dark:text-gray-400">
-                    <span className="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-blue-200 
-                                   px-2 py-1 rounded-full text-xs font-medium">
-                      {artwork.model_name}
-                    </span>
-                    <span>•</span>
-                    <span>{artwork.created_at}</span>
-                  </div>
-
-                  {/* Stats */}
-                  <div className="flex items-center gap-4 mb-4 text-sm text-gray-500 dark:text-gray-400">
-                    <div className="flex items-center gap-1">
-                      <Heart className="w-4 h-4" />
-                      <span>{artwork.likes}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Eye className="w-4 h-4" />
-                      <span>{artwork.views}</span>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center justify-between">
-                    <IOSButton
-                      variant={likedItems.has(artwork.id) ? "primary" : "secondary"}
-                      size="sm"
-                      onClick={() => handleLike(artwork.id)}
-                      className="flex items-center gap-2"
-                    >
-                      <Heart className={`w-4 h-4 ${likedItems.has(artwork.id) ? 'fill-current' : ''}`} />
-                      Like
-                    </IOSButton>
-
-                    <div className="flex items-center gap-2">
-                      <IOSButton
-                        variant="text"
-                        size="sm"
-                        onClick={() => handleShare(artwork)}
-                      >
-                        <Share2 className="w-4 h-4" />
-                      </IOSButton>
-                      <IOSButton variant="text" size="sm">
-                        <MoreHorizontal className="w-4 h-4" />
-                      </IOSButton>
-                    </div>
-                  </div>
-                </IOSCardContent>
-              </IOSCard>
-            </motion.div>
+        {/* L1-L5 score bars */}
+        <div className="space-y-1 mt-auto">
+          {Object.entries(artwork.scores).map(([k, v]) => (
+            <ScoreBar key={k} label={k} value={v} />
           ))}
-        </motion.div>
-        )}
+        </div>
+      </IOSCardContent>
+    </IOSCard>
+  );
+}
 
-        {/* Load More */}
-        {!loading && filteredArtworks.length > 0 && !isOffline && (
-          <motion.div 
-            className="text-center mt-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
-            <IOSButton variant="secondary" size="lg">
-              Load More Artworks
-            </IOSButton>
-          </motion.div>
-        )}
+// ---------------------------------------------------------------------------
+// Page Component
+// ---------------------------------------------------------------------------
 
-        {/* Offline Load More */}
-        {!loading && filteredArtworks.length > 0 && isOffline && (
-          <motion.div 
-            className="text-center mt-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
-            <div className="text-gray-500 dark:text-gray-400 text-sm">
-              📱 Offline mode - Showing cached content
-            </div>
-            <IOSButton 
-              variant="glass" 
-              size="md" 
-              className="mt-2"
-              onClick={() => fetchArtworks(filter)}
+export default function GalleryPage() {
+  const [selectedTradition, setSelectedTradition] = useState<string>('all');
+  const [minScore, setMinScore] = useState<number>(0);
+
+  const filtered = useMemo(() => {
+    return MOCK_ARTWORKS.filter((a) => {
+      if (selectedTradition !== 'all' && a.tradition !== selectedTradition) return false;
+      if (a.overall < minScore) return false;
+      return true;
+    });
+  }, [selectedTradition, minScore]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white dark:from-black dark:via-gray-900 dark:to-black">
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
+
+        {/* Page header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-slate-700 to-amber-700 bg-clip-text text-transparent">
+            Pipeline Gallery
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Generated cultural artworks from the VULCA evaluation pipeline, scored across L1-L5 dimensions.
+          </p>
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-col sm:flex-row gap-3 mb-6 items-start sm:items-center">
+          <div className="flex items-center gap-2">
+            <Filter className="w-4 h-4 text-gray-400" />
+            <select
+              value={selectedTradition}
+              onChange={(e) => setSelectedTradition(e.target.value)}
+              className="px-3 py-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition"
             >
-              🔄 Check for Updates
+              <option value="all">All Traditions</option>
+              {ALL_TRADITIONS.map((t) => {
+                const label = MOCK_ARTWORKS.find((a) => a.tradition === t)?.tradition_label ?? t;
+                return (
+                  <option key={t} value={t}>{label}</option>
+                );
+              })}
+            </select>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Layers className="w-4 h-4 text-gray-400" />
+            <select
+              value={String(minScore)}
+              onChange={(e) => setMinScore(Number(e.target.value))}
+              className="px-3 py-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition"
+            >
+              <option value="0">Min Score: Any</option>
+              <option value="0.80">Min Score: 80%</option>
+              <option value="0.85">Min Score: 85%</option>
+              <option value="0.90">Min Score: 90%</option>
+            </select>
+          </div>
+
+          {(selectedTradition !== 'all' || minScore > 0) && (
+            <IOSButton variant="text" size="sm" onClick={() => { setSelectedTradition('all'); setMinScore(0); }}>
+              Reset
             </IOSButton>
-          </motion.div>
+          )}
+
+          <span className="text-xs text-gray-400 dark:text-gray-500 sm:ml-auto">
+            {filtered.length} artwork{filtered.length !== 1 ? 's' : ''}
+          </span>
+        </div>
+
+        {/* Gallery grid */}
+        {filtered.length > 0 ? (
+          <IOSCardGrid columns={4} gap="md">
+            {filtered.map((artwork) => (
+              <ArtworkCard key={artwork.id} artwork={artwork} />
+            ))}
+          </IOSCardGrid>
+        ) : (
+          <div className="text-center py-24">
+            <Palette className="w-14 h-14 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              No artworks yet
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+              No artworks yet — run a pipeline to generate your first artwork.
+            </p>
+          </div>
         )}
       </div>
     </div>

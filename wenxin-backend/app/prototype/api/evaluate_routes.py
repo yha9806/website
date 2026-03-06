@@ -11,6 +11,7 @@ import json
 import logging
 import time
 import uuid
+from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -21,7 +22,13 @@ from app.prototype.api.evaluate_schemas import (
     EvaluateResponse,
     IdentifyTraditionRequest,
     IdentifyTraditionResponse,
+    KnowledgeBaseResponse,
+    KnowledgeBaseSummary,
+    PipelineVariantInfo,
+    TabooRuleItem,
     TraditionAlternative,
+    TraditionEntry,
+    TermItem,
 )
 import httpx
 
@@ -47,6 +54,111 @@ _TRADITIONS = [
     "islamic_geometric", "japanese_traditional", "watercolor",
     "african_traditional", "south_asian",
 ]
+
+
+# ── GET /api/v1/knowledge-base ─────────────────────────────────
+
+# Pre-load JSON data once at module level
+_DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "terminology"
+
+
+def _load_terms_json() -> dict:
+    """Load terms.v1.json, returning the 'traditions' mapping."""
+    path = _DATA_DIR / "terms.v1.json"
+    with open(path, encoding="utf-8") as f:
+        return json.load(f).get("traditions", {})
+
+
+def _load_taboo_json() -> list[dict]:
+    """Load taboo_rules.v1.json, returning the 'rules' list."""
+    path = _DATA_DIR / "taboo_rules.v1.json"
+    with open(path, encoding="utf-8") as f:
+        return json.load(f).get("rules", [])
+
+
+@evaluate_router.get(
+    "/knowledge-base",
+    response_model=KnowledgeBaseResponse,
+    summary="Browse cultural knowledge base",
+    description=(
+        "Returns the complete cultural knowledge base: terminology, taboo rules, "
+        "L1-L5 weights, and pipeline variant info for all 9 traditions. "
+        "Public read-only endpoint — no API key required."
+    ),
+)
+async def get_knowledge_base() -> KnowledgeBaseResponse:
+    """Assemble knowledge-base data from existing modules (no side effects)."""
+    from app.prototype.cultural_pipelines.cultural_weights import get_all_weight_tables
+    from app.prototype.cultural_pipelines.pipeline_router import (
+        CulturalPipelineRouter,
+        _TRADITION_TO_VARIANT,
+        _VARIANTS,
+    )
+
+    # 1. Load raw data
+    terms_by_tradition = _load_terms_json()
+    taboo_rules_raw = _load_taboo_json()
+    weight_tables = get_all_weight_tables()
+
+    # 2. Index taboo rules by tradition
+    taboo_by_tradition: dict[str, list[dict]] = {}
+    for rule in taboo_rules_raw:
+        trad = rule.get("cultural_tradition", "*")
+        taboo_by_tradition.setdefault(trad, []).append(rule)
+
+    # Universal rules (tradition == "*") apply to every tradition
+    universal_taboos = taboo_by_tradition.get("*", [])
+
+    # 3. Build per-tradition entries
+    total_terms = 0
+    total_taboos = 0
+    tradition_entries: list[TraditionEntry] = []
+
+    for tradition in _TRADITIONS:
+        # Terms
+        tradition_terms_raw = terms_by_tradition.get(tradition, {}).get("terms", [])
+        term_items = [TermItem(**t) for t in tradition_terms_raw]
+        total_terms += len(term_items)
+
+        # Taboo rules: tradition-specific + universal
+        tradition_taboos_raw = taboo_by_tradition.get(tradition, []) + universal_taboos
+        taboo_items = [TabooRuleItem(**r) for r in tradition_taboos_raw]
+        total_taboos += len(taboo_items)
+
+        # Weights
+        weights = weight_tables.get(tradition, weight_tables.get("default", {}))
+
+        # Pipeline variant
+        variant_name = _TRADITION_TO_VARIANT.get(tradition, "default")
+        variant = _VARIANTS.get(variant_name, _VARIANTS["default"])
+        pipeline_info = PipelineVariantInfo(
+            variant_name=variant.name,
+            description=variant.description,
+            scout_focus_layers=variant.scout_focus_layers,
+            allow_local_rerun=variant.allow_local_rerun,
+            critic_stages=variant.critic_stages,
+        )
+
+        tradition_entries.append(
+            TraditionEntry(
+                tradition=tradition,
+                terms=term_items,
+                taboo_rules=taboo_items,
+                weights=weights,
+                pipeline_variant=pipeline_info,
+            )
+        )
+
+    # Deduplicate universal taboos from total count (counted once per tradition)
+    unique_taboo_count = len(taboo_rules_raw)
+
+    summary = KnowledgeBaseSummary(
+        total_traditions=len(_TRADITIONS),
+        total_terms=total_terms,
+        total_taboo_rules=unique_taboo_count,
+    )
+
+    return KnowledgeBaseResponse(traditions=tradition_entries, summary=summary)
 
 
 # ── POST /api/v1/evaluate ───────────────────────────────────────

@@ -74,3 +74,69 @@ class IdentifyTraditionResponse(BaseModel):
         description="Recommended L1-L5 weights for the identified tradition",
     )
     latency_ms: int
+
+
+# ── Knowledge-base browse schemas ─────────────────────────────────
+
+
+class TermItem(BaseModel):
+    """A single cultural terminology entry."""
+
+    id: str
+    term_zh: str
+    term_en: str
+    definition: str
+    category: str
+    l_levels: list[str]
+    aliases: list[str] = Field(default_factory=list)
+    source: str = ""
+
+
+class TabooRuleItem(BaseModel):
+    """A single cultural taboo rule."""
+
+    rule_id: str
+    cultural_tradition: str = Field(description="Tradition id or '*' for universal")
+    description: str
+    severity: str
+    trigger_patterns: list[str] = Field(default_factory=list)
+    explanation: str = ""
+    l_levels: list[str] = Field(default_factory=list)
+    source: str = ""
+
+
+class PipelineVariantInfo(BaseModel):
+    """Pipeline variant summary for a tradition."""
+
+    variant_name: str
+    description: str
+    scout_focus_layers: list[str] = Field(default_factory=list)
+    allow_local_rerun: bool = True
+    critic_stages: list[list[str]] = Field(default_factory=list)
+
+
+class TraditionEntry(BaseModel):
+    """Full knowledge-base entry for one cultural tradition."""
+
+    tradition: str
+    terms: list[TermItem] = Field(default_factory=list)
+    taboo_rules: list[TabooRuleItem] = Field(default_factory=list)
+    weights: dict[str, float] = Field(
+        description="L1-L5 weights (dim_id → weight), sums to 1.0",
+    )
+    pipeline_variant: PipelineVariantInfo
+
+
+class KnowledgeBaseSummary(BaseModel):
+    """Aggregate statistics for the knowledge base."""
+
+    total_traditions: int
+    total_terms: int
+    total_taboo_rules: int
+
+
+class KnowledgeBaseResponse(BaseModel):
+    """GET /api/v1/knowledge-base — full cultural knowledge-base browse response."""
+
+    traditions: list[TraditionEntry]
+    summary: KnowledgeBaseSummary

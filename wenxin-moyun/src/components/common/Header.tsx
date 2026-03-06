@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Calendar, FileText, Database, FlaskConical, Trophy, Image, Building2, GraduationCap, Palette } from 'lucide-react';
+import { Menu, X, ChevronDown, Calendar, FileText, Database, FlaskConical, Trophy, Image, Building2, GraduationCap, Palette, BookOpen, LayoutGrid } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { IOSButton } from '../ios';
 import { HeaderControls } from './ThemeToggle';
@@ -51,6 +51,8 @@ export default function Header() {
     { name: 'Models', href: '/models', icon: Trophy },
     { name: 'VULCA Demo', href: '/vulca', icon: FlaskConical },
     { name: 'Exhibitions', href: '/exhibitions', icon: Image },
+    { name: 'Knowledge Base', href: '/knowledge-base', icon: BookOpen },
+    { name: 'Gallery', href: '/gallery', icon: LayoutGrid },
   ];
 
   const isActive = (path: string) => {

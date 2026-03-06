@@ -51,6 +51,9 @@ const SOPPage = lazy(() => import('./pages/SOPPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
 
+// Knowledge Base page - lazy loaded
+const KnowledgeBasePage = lazy(() => import('./pages/KnowledgeBasePage'));
+
 // Report page - lazy loaded
 const ModelReportPage = lazy(() => import('./pages/ModelReportPage'));
 
@@ -309,6 +312,11 @@ function App() {
               <Route path="/gallery" element={
                 <Suspense fallback={<PageLoader text="Loading Gallery..." />}>
                   <GalleryPage />
+                </Suspense>
+              } />
+              <Route path="/knowledge-base" element={
+                <Suspense fallback={<PageLoader text="Loading Knowledge Base..." />}>
+                  <KnowledgeBasePage />
                 </Suspense>
               } />
 

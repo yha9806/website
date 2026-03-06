@@ -1,0 +1,85 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "leaderboard": "ランキング",
+    "battle": "バトル",
+    "about": "概要",
+    "pricing": "料金",
+    "prototype": "プレイグラウンド",
+    "knowledgeBase": "知識ベース",
+    "gallery": "ギャラリー"
+  },
+  "home": {
+    "title": "VULCA",
+    "subtitle": "視覚理解と言語文化評価",
+    "description": "文化的次元でAIアートを評価するプラットフォーム",
+    "cta": "始める"
+  },
+  "knowledgeBase": {
+    "title": "文化知識ベース",
+    "subtitle": "9つの文化伝統における用語体系、タブー規則、評価重みを閲覧",
+    "search": "用語を検索...",
+    "filterByTradition": "伝統で絞り込み",
+    "allTraditions": "すべての伝統",
+    "terms": "用語",
+    "taboos": "タブー規則",
+    "weights": "L1-L5 重み",
+    "pipelineVariant": "パイプライン変種",
+    "severity": "重大度",
+    "category": "カテゴリ",
+    "definition": "定義",
+    "layers": "レイヤー",
+    "stats": {
+      "totalTerms": "総用語数",
+      "totalTaboos": "総タブー規則数",
+      "totalTraditions": "文化伝統"
+    }
+  },
+  "gallery": {
+    "title": "作品ギャラリー",
+    "subtitle": "AI生成の文化芸術作品とL1-L5評価スコア",
+    "filterByTradition": "伝統で絞り込み",
+    "filterByScore": "最低スコア",
+    "noArtworks": "作品がありません",
+    "noArtworksHint": "パイプラインを実行して最初の作品を生成してください",
+    "score": "スコア",
+    "tradition": "伝統",
+    "template": "テンプレート"
+  },
+  "traditions": {
+    "chinese_xieyi": "中国写意",
+    "chinese_gongbi": "中国工筆",
+    "western_academic": "西洋アカデミック",
+    "islamic_geometric": "イスラム幾何学",
+    "japanese_traditional": "日本伝統",
+    "watercolor": "水彩画",
+    "african_traditional": "アフリカ伝統",
+    "south_asian": "南アジア伝統",
+    "default": "一般 / 異文化"
+  },
+  "dimensions": {
+    "L1": "視覚認知",
+    "L2": "技術分析",
+    "L3": "文化的文脈",
+    "L4": "批評的解釈",
+    "L5": "哲学的美学",
+    "visual_perception": "視覚認知",
+    "technical_analysis": "技術分析",
+    "cultural_context": "文化的文脈",
+    "critical_interpretation": "批評的解釈",
+    "philosophical_aesthetic": "哲学的美学"
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "retry": "再試行",
+    "close": "閉じる",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "search": "検索",
+    "filter": "フィルター",
+    "noResults": "結果が見つかりません",
+    "language": "言語"
+  }
+}
