@@ -7,7 +7,8 @@ import {
   Sparkles,
   Zap,
   Building2,
-  HelpCircle
+  HelpCircle,
+  Code2
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
@@ -75,6 +76,29 @@ const plans = [
     ],
   },
   {
+    name: 'API',
+    price: '$0.25',
+    period: 'per evaluation',
+    billingNote: 'Pay-as-you-go, 100 free credits',
+    description: 'For developers integrating cultural compliance',
+    icon: Code2,
+    color: 'emerald',
+    cta: 'Get API Key',
+    ctaLink: '/demo',
+    ctaVariant: 'primary' as const,
+    deliverables: ['REST API access', 'L1-L5 scoring', 'Cultural tradition detection', '30 req/min'],
+    features: [
+      { name: 'REST API (evaluate + identify)', included: true },
+      { name: 'L1-L5 cultural scoring', included: true },
+      { name: 'Auto tradition detection', included: true },
+      { name: '9 cultural traditions', included: true },
+      { name: 'Scout evidence gathering', included: true },
+      { name: 'Risk & taboo detection', included: true },
+      { name: '30 requests/minute', included: true },
+      { name: 'OpenAPI/Swagger docs', included: true },
+    ],
+  },
+  {
     name: 'Enterprise',
     price: 'From $15,000',
     period: 'annual',
@@ -86,11 +110,11 @@ const plans = [
     ctaVariant: 'secondary' as const,
     deliverables: ['Unlimited evaluations', 'Custom benchmarks', 'API access', 'Regression monitoring'],
     features: [
-      { name: 'Everything in Pilot', included: true },
+      { name: 'Everything in API', included: true },
       { name: 'Unlimited evaluations', included: true },
       { name: 'Custom benchmark upload', included: true },
       { name: 'Private workspace & RBAC', included: true },
-      { name: 'API & SDK access', included: true },
+      { name: 'Dedicated API endpoint', included: true },
       { name: 'Regression monitoring', included: true },
       { name: 'SLA & priority support', included: true },
       { name: 'Custom integrations', included: true },
@@ -118,6 +142,10 @@ const faqs = [
   {
     q: 'What citation formats are supported?',
     a: 'We support BibTeX, RIS, CSL JSON, APA, MLA, Chicago, and Harvard formats for all evaluation results.',
+  },
+  {
+    q: 'How does the API pricing work?',
+    a: 'The API plan is pay-per-evaluation at $0.25 per image. You get 100 free credits to start. Each evaluation returns L1-L5 cultural scores, rationales, risk flags, and improvement recommendations. Rate limit is 30 requests per minute per API key.',
   },
   {
     q: 'Do you offer academic discounts?',
@@ -149,7 +177,7 @@ export default function PricingPage() {
 
       {/* Pricing Cards */}
       <section>
-        <IOSCardGrid columns={3} gap="lg">
+        <IOSCardGrid columns={4} gap="lg">
           {plans.map((plan, index) => (
             <motion.div
               key={plan.name}
@@ -381,26 +409,28 @@ export default function PricingPage() {
                 <th className="py-4 px-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Feature</th>
                 <th className="py-4 px-4 text-center text-sm font-semibold text-gray-900 dark:text-white">Free</th>
                 <th className="py-4 px-4 text-center text-sm font-semibold text-gray-900 dark:text-white">Pilot</th>
+                <th className="py-4 px-4 text-center text-sm font-semibold text-gray-900 dark:text-white">API</th>
                 <th className="py-4 px-4 text-center text-sm font-semibold text-gray-900 dark:text-white">Enterprise</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {[
-                ['Public leaderboard', true, true, true],
-                ['Demo evaluations', '5/month', 'Unlimited', 'Unlimited'],
-                ['Models per engagement', 'N/A', '1', '1-3+'],
-                ['Benchmark datasets', 'Pre-curated', 'Pre-curated', 'Custom upload'],
-                ['47D diagnostics', false, true, true],
-                ['8 cultural perspectives', false, true, true],
-                ['PDF reports', false, true, true],
-                ['API access', false, false, true],
-                ['Custom benchmarks', false, false, true],
-                ['RBAC & workspace', false, false, true],
-                ['SLA support', false, false, true],
-              ].map(([feature, free, pilot, enterprise], index) => (
+                ['Public leaderboard', true, true, true, true],
+                ['Demo evaluations', '5/month', 'Unlimited', 'Pay-per-use', 'Unlimited'],
+                ['L1-L5 cultural scoring', false, true, true, true],
+                ['47D diagnostics', false, true, true, true],
+                ['8 cultural perspectives', false, true, true, true],
+                ['PDF reports', false, true, false, true],
+                ['REST API access', false, false, true, true],
+                ['Tradition auto-detection', false, false, true, true],
+                ['Scout evidence', false, true, true, true],
+                ['Custom benchmarks', false, false, false, true],
+                ['RBAC & workspace', false, false, false, true],
+                ['SLA support', false, false, false, true],
+              ].map(([feature, free, pilot, api, enterprise], index) => (
                 <tr key={index}>
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{feature as string}</td>
-                  {[free, pilot, enterprise].map((value, i) => (
+                  {[free, pilot, api, enterprise].map((value, i) => (
                     <td key={i} className="py-3 px-4 text-center">
                       {typeof value === 'boolean' ? (
                         value ? (
@@ -417,6 +447,68 @@ export default function PricingPage() {
               ))}
             </tbody>
           </table>
+        </div>
+      </section>
+
+      {/* API Code Example */}
+      <section className="py-16">
+        <motion.div {...fadeInUp} className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            Developer-Friendly API
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Integrate cultural compliance scoring in minutes with our REST API
+          </p>
+        </motion.div>
+
+        <div className="max-w-3xl mx-auto grid md:grid-cols-2 gap-6">
+          <IOSCard variant="elevated">
+            <IOSCardHeader
+              emoji={<Code2 className="w-6 h-6 text-emerald-500" />}
+              title="Evaluate Artwork"
+              subtitle="POST /api/v1/evaluate"
+            />
+            <IOSCardContent>
+              <pre className="text-xs bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto whitespace-pre">
+{`curl -X POST /api/v1/evaluate \\
+  -H "Authorization: Bearer YOUR_KEY" \\
+  -d '{
+    "image_url": "https://...",
+    "tradition": "chinese_xieyi",
+    "subject": "ink landscape",
+    "include_evidence": true
+  }'`}
+              </pre>
+              <p className="text-xs text-gray-500 mt-3">
+                Returns L1-L5 scores, rationales, risk flags, and cultural diagnosis
+              </p>
+            </IOSCardContent>
+          </IOSCard>
+
+          <IOSCard variant="elevated">
+            <IOSCardHeader
+              emoji={<Code2 className="w-6 h-6 text-emerald-500" />}
+              title="Identify Tradition"
+              subtitle="POST /api/v1/identify-tradition"
+            />
+            <IOSCardContent>
+              <pre className="text-xs bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto whitespace-pre">
+{`curl -X POST /api/v1/identify-tradition \\
+  -H "Authorization: Bearer YOUR_KEY" \\
+  -d '{
+    "image_url": "https://..."
+  }'
+
+// Response:
+// { "tradition": "chinese_xieyi",
+//   "confidence": 0.87,
+//   "recommended_weights": {...} }`}
+              </pre>
+              <p className="text-xs text-gray-500 mt-3">
+                Auto-detect tradition from 9 cultural categories with confidence scores
+              </p>
+            </IOSCardContent>
+          </IOSCard>
         </div>
       </section>
 

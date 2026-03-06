@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 import os
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -190,13 +191,12 @@ class DraftAgent:
         candidates: list[DraftCandidate] = []
         errors: list[str] = []
 
-        for i in range(config.n_candidates):
+        def _generate_one(i: int) -> DraftCandidate | None:
+            """Generate a single candidate (thread-safe)."""
             seed = config.seed_base + i
             candidate_id = f"draft-{safe_task_id}-{i}"
-            image_path = self._image_path(safe_task_id, candidate_id)
+            img_path = self._image_path(safe_task_id, candidate_id)
 
-            ok = False
-            actual_path = image_path
             for attempt in range(1 + config.max_retries):
                 try:
                     actual_path = provider.generate(
@@ -207,18 +207,9 @@ class DraftAgent:
                         height=config.height,
                         steps=config.steps,
                         sampler=config.sampler,
-                        output_path=image_path,
+                        output_path=img_path,
                     )
-                    ok = True
-                    break
-                except Exception as exc:  # noqa: BLE001
-                    errors.append(
-                        f"{candidate_id} attempt {attempt}: {exc}"
-                    )
-
-            if ok:
-                candidates.append(
-                    DraftCandidate(
+                    return DraftCandidate(
                         candidate_id=candidate_id,
                         prompt=prompt,
                         negative_prompt=negative_prompt,
@@ -230,7 +221,24 @@ class DraftAgent:
                         model_ref=provider.model_ref,
                         image_path=actual_path,
                     )
-                )
+                except Exception as exc:  # noqa: BLE001
+                    errors.append(f"{candidate_id} attempt {attempt}: {exc}")
+            return None
+
+        # Parallel generation: each candidate is an independent HTTP call
+        max_workers = min(config.n_candidates, 4)
+        with ThreadPoolExecutor(max_workers=max_workers) as pool:
+            futures = {pool.submit(_generate_one, i): i for i in range(config.n_candidates)}
+            results: dict[int, DraftCandidate | None] = {}
+            for future in as_completed(futures):
+                idx = futures[future]
+                results[idx] = future.result()
+
+        # Collect in deterministic order (by candidate index)
+        for i in range(config.n_candidates):
+            cand = results.get(i)
+            if cand is not None:
+                candidates.append(cand)
 
         elapsed_ms = int((time.monotonic() - t0) * 1000)
         success = len(candidates) == config.n_candidates

@@ -141,6 +141,8 @@ class NB2Provider(AbstractProvider):
         full_prompt = _build_nb2_prompt(prompt, negative_prompt)
 
         image_size, aspect_ratio = _resolve_image_size(width, height)
+        # Inject size/aspect into prompt since ImageConfig was removed in google-genai v1.21+
+        full_prompt = f"{full_prompt}\n\nOutput image aspect ratio: {aspect_ratio}, resolution: {image_size}"
 
         out = Path(output_path).with_suffix(".png")
         out.parent.mkdir(parents=True, exist_ok=True)
@@ -188,16 +190,18 @@ class NB2Provider(AbstractProvider):
             ) from exc
 
         if self._client is None:
-            self._client = genai.Client(api_key=self._api_key)
+            self._client = genai.Client(
+                api_key=self._api_key,
+                http_options={"timeout": self._timeout * 1000},  # ms
+            )
         client = self._client
+        # google-genai v1.21+: ImageConfig removed; image generation is
+        # triggered by response_modalities=["IMAGE"]. Aspect ratio and size
+        # are conveyed via the prompt text instead.
         config = types.GenerateContentConfig(
             response_modalities=["TEXT", "IMAGE"],
-            image_config=types.ImageConfig(
-                aspect_ratio=aspect_ratio,
-                image_size=image_size,
-            ),
             thinking_config=types.ThinkingConfig(
-                thinking_level=self._thinking_level,
+                thinking_budget=1024,
                 include_thoughts=True,
             ),
         )
@@ -211,7 +215,12 @@ class NB2Provider(AbstractProvider):
         thinking_text = ""
         result_image_bytes: bytes | None = None
 
-        for part in response.parts:
+        # google-genai v1.21+: response.parts removed; access via candidates
+        parts = []
+        if response.candidates and response.candidates[0].content:
+            parts = response.candidates[0].content.parts or []
+
+        for part in parts:
             # Use explicit None check — part.text can be "" for non-text parts
             if part.text is not None:
                 thinking_text += part.text
@@ -237,7 +246,7 @@ class NB2Provider(AbstractProvider):
         if result_image_bytes is None:
             raise OSError(
                 f"NB2 response contained no image. Parts: "
-                f"{[type(p).__name__ for p in response.parts]}"
+                f"{[type(p).__name__ for p in parts]}"
             )
 
         return result_image_bytes, thinking_text

@@ -12,6 +12,7 @@ based on Critic feedback (NeedMoreEvidence).
 
 from __future__ import annotations
 
+import copy
 import json
 import logging
 from pathlib import Path
@@ -75,11 +76,19 @@ class ScoutService:
         self._terminology_loader = TerminologyLoader(faiss_service=self._faiss_service)
         self._taboo_engine = TabooRuleEngine()
 
+        # Instance-level evidence cache: "subject::tradition" -> ScoutEvidence
+        self._evidence_cache: dict[str, ScoutEvidence] = {}
+
     def gather_evidence(
         self,
         subject: str,
         cultural_tradition: str,
     ) -> ScoutEvidence:
+        cache_key = f"{subject}::{cultural_tradition}"
+        if cache_key in self._evidence_cache:
+            logger.debug("Scout cache HIT: %s", cache_key)
+            return copy.deepcopy(self._evidence_cache[cache_key])
+
         sample_matches = self._sample_matcher.match(
             subject=subject,
             cultural_tradition=cultural_tradition,
@@ -95,11 +104,18 @@ class ScoutService:
             text=subject,
             cultural_tradition=cultural_tradition,
         )
-        return ScoutEvidence(
+        evidence = ScoutEvidence(
             sample_matches=sample_matches,
             terminology_hits=terminology_hits,
             taboo_violations=taboo_violations,
         )
+        self._evidence_cache[cache_key] = evidence
+        logger.debug("Scout cache MISS, stored: %s", cache_key)
+        return copy.deepcopy(evidence)
+
+    def clear_cache(self) -> None:
+        """Clear the evidence cache."""
+        self._evidence_cache.clear()
 
     def search_visual_references(
         self,
@@ -387,6 +403,25 @@ def _get_style_constraints(tradition: str) -> list[StyleConstraint]:
         )
         for e in entries
     ]
+
+
+# ---------------------------------------------------------------------------
+# Singleton factory — avoids re-initializing FAISS/terminology on each run
+# ---------------------------------------------------------------------------
+_singleton: ScoutService | None = None
+
+
+def get_scout_service(search_mode: str = "auto") -> ScoutService:
+    """Return a cached ScoutService singleton.
+
+    The ScoutService loads FAISS indices and terminology dictionaries on init,
+    which takes ~3-5s.  Reusing a singleton across pipeline rounds avoids this
+    repeated cost.
+    """
+    global _singleton  # noqa: PLW0603
+    if _singleton is None:
+        _singleton = ScoutService(search_mode=search_mode)
+    return _singleton
 
 
 def _category_to_usage_hint(category: str) -> str:

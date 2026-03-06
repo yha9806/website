@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+import logging
 import time
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 from app.prototype.agents.critic_config import CriticConfig
 from app.prototype.agents.critic_risk import RiskTagger
@@ -65,9 +69,8 @@ def build_critique_output(
         save_critic_checkpoint(output)
         return output
 
-    scored: list[CandidateScore] = []
-
-    for candidate in candidates:
+    def _score_one(candidate: dict[str, Any]) -> CandidateScore:
+        """Score a single candidate (thread-safe)."""
         dim_scores = score_fn(
             candidate=candidate,
             evidence=evidence,
@@ -104,14 +107,35 @@ def build_critique_output(
                 if severity == "critical":
                     rejected_reasons.append(f"critical risk: {tag_name}")
 
-        scored.append(CandidateScore(
+        return CandidateScore(
             candidate_id=candidate.get("candidate_id", "unknown"),
             dimension_scores=dim_scores,
             weighted_total=weighted_total,
             risk_tags=risk_tag_names,
             gate_passed=len(rejected_reasons) == 0,
             rejected_reasons=rejected_reasons,
-        ))
+        )
+
+    # Parallel scoring: each candidate scored independently via VLM/rule calls
+    scored: list[CandidateScore] = []
+    max_workers = min(len(candidates), 4)
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        future_to_idx = {
+            pool.submit(_score_one, cand): i
+            for i, cand in enumerate(candidates)
+        }
+        results: dict[int, CandidateScore] = {}
+        for future in as_completed(future_to_idx):
+            idx = future_to_idx[future]
+            try:
+                results[idx] = future.result()
+            except Exception as exc:
+                logger.error("Critic scoring failed for candidate %d: %s", idx, exc)
+
+    # Collect in deterministic order
+    for i in range(len(candidates)):
+        if i in results:
+            scored.append(results[i])
 
     scored.sort(key=lambda s: s.weighted_total, reverse=True)
     scored = scored[:cfg.top_k]

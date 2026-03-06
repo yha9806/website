@@ -37,14 +37,14 @@ class ScoutNode(BaseAgent):
         metadata_info = None
 
     def execute(self, state: dict[str, Any]) -> dict[str, Any]:
-        from app.prototype.tools.scout_service import ScoutService
+        from app.prototype.tools.scout_service import get_scout_service
 
         t0 = time.monotonic()
         task_id = state["task_id"]
         subject = state["subject"]
         tradition = state["cultural_tradition"]
 
-        scout_svc = ScoutService()
+        scout_svc = get_scout_service()
         evidence = scout_svc.gather_evidence(
             subject=subject,
             cultural_tradition=tradition,

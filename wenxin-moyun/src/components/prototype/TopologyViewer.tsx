@@ -4,6 +4,10 @@
  * Renders nodes as rounded rectangles in a horizontal flexbox row with
  * SVG arrow connectors. Supports both static template names and dynamic
  * node lists from the API.
+ *
+ * Enhancements:
+ * - HITL 'waiting' state with amber pulsing indicator
+ * - Optional per-stage duration display on completed nodes
  */
 
 import { useMemo } from 'react';
@@ -49,9 +53,11 @@ interface Props {
   templateNodes?: string[];
   /** Whether this template supports loops (overrides template-based lookup) */
   enableLoop?: boolean;
+  /** Per-stage durations in ms, displayed under completed nodes */
+  stageDurations?: Record<string, number>;
 }
 
-type NodeStatus = 'inactive' | 'pending' | 'active' | 'completed';
+type NodeStatus = 'inactive' | 'pending' | 'active' | 'waiting' | 'completed';
 
 function getNodeStatus(
   node: string,
@@ -62,6 +68,7 @@ function getNodeStatus(
 ): NodeStatus {
   if (!templateNodes.has(node)) return 'inactive';
   if (completedStages.has(node)) return 'completed';
+  if (node === currentStage && pipelineStatus === 'waiting_human') return 'waiting';
   if (node === currentStage && (pipelineStatus === 'running' || pipelineStatus === 'waiting_human')) return 'active';
   return 'pending';
 }
@@ -75,9 +82,16 @@ function nodeClasses(status: NodeStatus): string {
       return `${base} border-blue-200 dark:border-blue-800 bg-white dark:bg-gray-800`;
     case 'active':
       return `${base} border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 ring-2 ring-blue-400/50 animate-pulse`;
+    case 'waiting':
+      return `${base} border-amber-400 dark:border-amber-500 bg-amber-50 dark:bg-amber-900/20 ring-2 ring-amber-400/50 animate-pulse`;
     case 'completed':
       return `${base} border-green-400 dark:border-green-600 bg-green-50 dark:bg-green-900/20`;
   }
+}
+
+function formatDuration(ms: number): string {
+  if (ms < 1000) return `${ms}ms`;
+  return `${(ms / 1000).toFixed(1)}s`;
 }
 
 function ArrowSvg({ active }: { active: boolean }) {
@@ -126,6 +140,7 @@ export default function TopologyViewer({
   completedStages,
   templateNodes,
   enableLoop,
+  stageDurations,
 }: Props) {
   // Use dynamic templateNodes if provided, otherwise fall back to static map
   const activeNodeList = templateNodes ?? TEMPLATE_NODE_MAP[template] ?? TEMPLATE_NODE_MAP.default;
@@ -144,6 +159,7 @@ export default function TopologyViewer({
           const showArrow = idx < ALL_NODES.length - 1;
           // Arrow is active if this node is completed and next is in template
           const arrowActive = nodeStatus === 'completed' && !!nextNode && activeNodes.has(nextNode);
+          const dur = stageDurations?.[node];
 
           return (
             <div key={node} className="flex items-center">
@@ -154,6 +170,12 @@ export default function TopologyViewer({
                 </span>
                 {nodeStatus === 'completed' && (
                   <span className="text-[9px] text-green-600 dark:text-green-400">done</span>
+                )}
+                {nodeStatus === 'waiting' && (
+                  <span className="text-[9px] text-amber-600 dark:text-amber-400 font-medium">HITL</span>
+                )}
+                {nodeStatus === 'completed' && dur !== undefined && (
+                  <span className="text-[8px] font-mono text-gray-400 mt-0.5">{formatDuration(dur)}</span>
                 )}
               </div>
               {showArrow && <ArrowSvg active={arrowActive} />}

@@ -1,8 +1,13 @@
 /**
  * Run configuration form for creating new pipeline runs.
+ *
+ * Features:
+ * - Template-driven field visibility (e.g. fast_draft hides max_rounds)
+ * - Cultural preset buttons for one-click form fill
+ * - TemplateSelector always visible (not gated on Graph Mode)
  */
 
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import TemplateSelector from './TemplateSelector';
 
 const TRADITIONS = [
@@ -17,22 +22,59 @@ const TRADITIONS = [
   { value: 'default', label: 'Default' },
 ];
 
-interface Props {
-  onSubmit: (params: {
-    subject: string;
-    tradition: string;
-    provider: string;
-    n_candidates: number;
-    max_rounds: number;
-    enable_hitl: boolean;
-    enable_agent_critic: boolean;
-    use_graph: boolean;
-    template: string;
-  }) => void;
-  disabled?: boolean;
+// --- Template-driven field config ---
+interface FieldConfig {
+  hideMaxRounds?: boolean;
+  hideHitl?: boolean;
+  hideSubject?: boolean;
+  autoHitl?: boolean;
+  subjectMultiline?: boolean;
 }
 
-export default function RunConfigForm({ onSubmit, disabled }: Props) {
+const TEMPLATE_FIELD_CONFIG: Record<string, FieldConfig> = {
+  fast_draft: { hideMaxRounds: true, hideHitl: true },
+  critique_only: { hideSubject: true },
+  interactive_full: { autoHitl: true },
+  batch_eval: { subjectMultiline: true },
+};
+
+// --- Cultural presets ---
+interface Preset {
+  label: string;
+  subject: string;
+  tradition: string;
+}
+
+const PRESETS: Preset[] = [
+  { label: '水墨山水', subject: 'Misty mountain landscape with pine trees and a winding river', tradition: 'chinese_xieyi' },
+  { label: '工笔花鸟', subject: 'Meticulous peony and crane in traditional mineral pigments', tradition: 'chinese_gongbi' },
+  { label: 'Ukiyo-e Wave', subject: 'Great wave crashing against rocky shore under moonlight', tradition: 'default' },
+  { label: 'Persian Garden', subject: 'Walled paradise garden with flowing water channels and cypress trees', tradition: 'islamic_geometric' },
+  { label: 'African Mask', subject: 'Ceremonial mask with bold geometric patterns and spiritual symbols', tradition: 'african_traditional' },
+  { label: 'Miniature Court', subject: 'Royal court scene with detailed figures and gold leaf ornaments', tradition: 'south_asian' },
+];
+
+export interface RunConfigParams {
+  subject: string;
+  tradition: string;
+  provider: string;
+  n_candidates: number;
+  max_rounds: number;
+  enable_hitl: boolean;
+  enable_agent_critic: boolean;
+  enable_parallel_critic: boolean;
+  use_graph: boolean;
+  template: string;
+}
+
+interface Props {
+  onSubmit: (params: RunConfigParams) => void;
+  disabled?: boolean;
+  /** Pre-fill form with values from a previous run (for "adjust and rerun"). */
+  initialValues?: Partial<RunConfigParams>;
+}
+
+export default function RunConfigForm({ onSubmit, disabled, initialValues }: Props) {
   const [subject, setSubject] = useState('');
   const [tradition, setTradition] = useState('chinese_xieyi');
   const [provider, setProvider] = useState('mock');
@@ -41,11 +83,43 @@ export default function RunConfigForm({ onSubmit, disabled }: Props) {
   const [enableHitl, setEnableHitl] = useState(false);
   const [enableAgentCritic, setEnableAgentCritic] = useState(false);
   const [useGraph, setUseGraph] = useState(false);
+  const [enableParallelCritic, setEnableParallelCritic] = useState(true);
   const [template, setTemplate] = useState('default');
+
+  // Apply initialValues when they change (e.g. after "adjust and rerun")
+  useEffect(() => {
+    if (!initialValues) return;
+    if (initialValues.subject !== undefined) setSubject(initialValues.subject);
+    if (initialValues.tradition !== undefined) setTradition(initialValues.tradition);
+    if (initialValues.provider !== undefined) setProvider(initialValues.provider);
+    if (initialValues.n_candidates !== undefined) setNCandidates(initialValues.n_candidates);
+    if (initialValues.max_rounds !== undefined) setMaxRounds(initialValues.max_rounds);
+    if (initialValues.enable_hitl !== undefined) setEnableHitl(initialValues.enable_hitl);
+    if (initialValues.enable_agent_critic !== undefined) setEnableAgentCritic(initialValues.enable_agent_critic);
+    if (initialValues.enable_parallel_critic !== undefined) setEnableParallelCritic(initialValues.enable_parallel_critic);
+    if (initialValues.use_graph !== undefined) setUseGraph(initialValues.use_graph);
+    if (initialValues.template !== undefined) setTemplate(initialValues.template);
+  }, [initialValues]);
+
+  // Derive field config from current template
+  const fieldCfg = TEMPLATE_FIELD_CONFIG[template] || {};
+
+  // Template data callback: auto-apply HITL if template demands it
+  const handleTemplateData = useCallback((data: { value: string } | undefined) => {
+    if (!data) return;
+    const cfg = TEMPLATE_FIELD_CONFIG[data.value];
+    if (cfg?.autoHitl) setEnableHitl(true);
+  }, []);
+
+  // Preset click handler
+  const applyPreset = (p: Preset) => {
+    setSubject(p.subject);
+    setTradition(p.tradition);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!subject.trim()) return;
+    if (!subject.trim() && !fieldCfg.hideSubject) return;
     onSubmit({
       subject: subject.trim(),
       tradition,
@@ -54,6 +128,7 @@ export default function RunConfigForm({ onSubmit, disabled }: Props) {
       max_rounds: maxRounds,
       enable_hitl: enableHitl,
       enable_agent_critic: enableAgentCritic,
+      enable_parallel_critic: enableParallelCritic,
       use_graph: useGraph,
       template,
     });
@@ -61,28 +136,45 @@ export default function RunConfigForm({ onSubmit, disabled }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Subject
-        </label>
-        <textarea
-          value={subject}
-          onChange={e => setSubject(e.target.value)}
-          placeholder="e.g., Dong Yuan landscape with hemp-fiber texture strokes"
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-          rows={2}
-          disabled={disabled}
-        />
+      {/* Preset buttons */}
+      <div className="flex flex-wrap gap-2">
+        {PRESETS.map(p => (
+          <button
+            key={p.label}
+            type="button"
+            onClick={() => applyPreset(p)}
+            disabled={disabled}
+            className="px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
+          >
+            {p.label}
+          </button>
+        ))}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {useGraph && (
-          <TemplateSelector
-            value={template}
-            onChange={setTemplate}
+      {/* Subject */}
+      {!fieldCfg.hideSubject && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Subject
+          </label>
+          <textarea
+            value={subject}
+            onChange={e => setSubject(e.target.value)}
+            placeholder="e.g., Dong Yuan landscape with hemp-fiber texture strokes"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            rows={fieldCfg.subjectMultiline ? 4 : 2}
             disabled={disabled}
           />
-        )}
+        </div>
+      )}
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <TemplateSelector
+          value={template}
+          onChange={setTemplate}
+          onTemplateData={handleTemplateData}
+          disabled={disabled}
+        />
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Tradition
@@ -109,9 +201,8 @@ export default function RunConfigForm({ onSubmit, disabled }: Props) {
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             disabled={disabled}
           >
-            <option value="mock">Mock (instant)</option>
-            <option value="together_flux">FLUX ($0.003/img)</option>
-            <option value="nb2">NB2 / Gemini Image (best, $0.067/img)</option>
+            <option value="mock">Mock (instant, free)</option>
+            <option value="nb2">NB2 / Gemini Image ($0.067/img)</option>
           </select>
         </div>
 
@@ -129,19 +220,21 @@ export default function RunConfigForm({ onSubmit, disabled }: Props) {
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Max Rounds
-          </label>
-          <input
-            type="number"
-            value={maxRounds}
-            onChange={e => setMaxRounds(Number(e.target.value))}
-            min={1} max={5}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-            disabled={disabled}
-          />
-        </div>
+        {!fieldCfg.hideMaxRounds && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Max Rounds
+            </label>
+            <input
+              type="number"
+              value={maxRounds}
+              onChange={e => setMaxRounds(Number(e.target.value))}
+              min={1} max={5}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+              disabled={disabled}
+            />
+          </div>
+        )}
       </div>
 
       <div className="flex items-center justify-between flex-wrap gap-3">
@@ -156,18 +249,33 @@ export default function RunConfigForm({ onSubmit, disabled }: Props) {
             />
             <span>
               Agent Critic (LLM)
-              <span className="ml-1 text-xs text-gray-400">uses DeepSeek for scoring + FixItPlan</span>
+              <span className="ml-1 text-xs text-gray-400">uses Gemini for scoring + FixItPlan</span>
             </span>
           </label>
+          {!fieldCfg.hideHitl && (
+            <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+              <input
+                type="checkbox"
+                checked={enableHitl}
+                onChange={e => setEnableHitl(e.target.checked)}
+                className="rounded border-gray-300 dark:border-gray-600"
+                disabled={disabled}
+              />
+              Human-in-the-Loop
+            </label>
+          )}
           <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
             <input
               type="checkbox"
-              checked={enableHitl}
-              onChange={e => setEnableHitl(e.target.checked)}
+              checked={enableParallelCritic}
+              onChange={e => setEnableParallelCritic(e.target.checked)}
               className="rounded border-gray-300 dark:border-gray-600"
-              disabled={disabled}
+              disabled={disabled || useGraph}
             />
-            Human-in-the-Loop
+            <span>
+              Parallel Critic
+              <span className="ml-1 text-xs text-gray-400">5x faster L1-L5</span>
+            </span>
           </label>
           <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
             <input
@@ -186,7 +294,7 @@ export default function RunConfigForm({ onSubmit, disabled }: Props) {
 
         <button
           type="submit"
-          disabled={disabled || !subject.trim()}
+          disabled={disabled || (!subject.trim() && !fieldCfg.hideSubject)}
           className="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {disabled ? 'Running...' : 'Run Pipeline'}

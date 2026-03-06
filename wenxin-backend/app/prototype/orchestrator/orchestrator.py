@@ -15,7 +15,7 @@ from pathlib import Path
 
 from app.prototype.agents.archivist_agent import ArchivistAgent
 from app.prototype.agents.archivist_types import ArchivistInput
-from app.prototype.agents.critic_agent import CriticAgent
+from app.prototype.agents.critic_agent import CriticAgent, build_critique_output
 from app.prototype.agents.critic_config import CriticConfig, DIMENSIONS
 from app.prototype.agents.critic_types import CandidateScore, CritiqueInput, CritiqueOutput
 from app.prototype.agents.draft_agent import DraftAgent
@@ -42,7 +42,7 @@ from app.prototype.pipeline.pipeline_types import (
 from app.prototype.cultural_pipelines.dynamic_weights import compute_dynamic_weights
 from app.prototype.cultural_pipelines.pipeline_router import CulturalPipelineRouter
 from app.prototype.agents.prompt_enhancer import PromptEnhancer
-from app.prototype.tools.scout_service import ScoutService
+from app.prototype.tools.scout_service import ScoutService, get_scout_service
 from app.prototype.trajectory.trajectory_recorder import TrajectoryRecorder
 from app.prototype.trajectory.trajectory_types import (
     CriticFindings,
@@ -93,6 +93,7 @@ class PipelineOrchestrator:
         enable_fix_it_plan: bool = True,
         enable_llm_queen: bool = False,
         enable_prompt_enhancer: bool = False,
+        enable_parallel_critic: bool = False,
     ) -> None:
         self.d_cfg = draft_config or DraftConfig(provider="mock", n_candidates=4, seed_base=42)
         self.cr_cfg = critic_config or CriticConfig()
@@ -104,6 +105,7 @@ class PipelineOrchestrator:
         self.enable_fix_it_plan = enable_fix_it_plan
         self.enable_llm_queen = enable_llm_queen
         self.enable_prompt_enhancer = enable_prompt_enhancer
+        self.enable_parallel_critic = enable_parallel_critic
 
         # Lazy import to avoid circular dependency
         from app.prototype.observability.langfuse_observer import LangfuseObserver
@@ -209,7 +211,7 @@ class PipelineOrchestrator:
             if resume_from and resume_from in _STAGE_ORDER and _STAGE_ORDER.index(resume_from) > 0:
                 # Skip scout — load from checkpoint
                 evidence_dict = load_pipeline_stage(task_id, "scout") or {}
-                scout_svc = ScoutService()  # needed for supplementary evidence loop
+                scout_svc = get_scout_service()  # needed for supplementary evidence loop
                 # Reconstruct evidence_pack from checkpoint (E-2 fix)
                 if "evidence_pack" in evidence_dict:
                     try:
@@ -226,7 +228,7 @@ class PipelineOrchestrator:
                 run_state.current_stage = "scout"
 
                 st = time.monotonic()
-                scout_svc = ScoutService()
+                scout_svc = get_scout_service()
                 evidence = scout_svc.gather_evidence(
                     subject=pipeline_input.subject,
                     cultural_tradition=pipeline_input.cultural_tradition,
@@ -258,6 +260,22 @@ class PipelineOrchestrator:
                     "latency_ms": scout_ms,
                     "evidence": evidence_dict,
                 })
+
+                # HITL: Scout — let human review/edit evidence before Draft
+                if self.enable_hitl:
+                    yield self._event(EventType.HUMAN_REQUIRED, "scout", 0, t0, {
+                        "stage": "scout",
+                        "evidence": evidence_dict,
+                    })
+                    human_action = run_state.wait_for_human(timeout=300)
+                    if human_action is not None:
+                        yield self._event(EventType.HUMAN_RECEIVED, "scout", 0, t0, {
+                            "action": human_action.action,
+                            "reason": human_action.reason,
+                        })
+                        # Merge human edits into evidence (via reason field as JSON or free text)
+                        if human_action.reason:
+                            evidence_dict["human_notes"] = human_action.reason
 
             # Layer 2: Start trajectory recording
             trajectory_recorder.start(
@@ -417,6 +435,27 @@ class PipelineOrchestrator:
                         "candidates": draft_candidates,
                     })
 
+                    # HITL: Draft — let human select/reject candidates
+                    if self.enable_hitl:
+                        yield self._event(EventType.HUMAN_REQUIRED, "draft", round_num, t0, {
+                            "stage": "draft",
+                            "candidates": draft_candidates,
+                        })
+                        human_action = run_state.wait_for_human(timeout=300)
+                        if human_action is not None:
+                            yield self._event(EventType.HUMAN_RECEIVED, "draft", round_num, t0, {
+                                "action": human_action.action,
+                                "candidate_id": human_action.candidate_id,
+                                "reason": human_action.reason,
+                            })
+                            # Filter candidates if human selected specific ones
+                            if human_action.candidate_id:
+                                selected_ids = {cid.strip() for cid in human_action.candidate_id.split(",")}
+                                draft_candidates = [
+                                    c for c in draft_candidates
+                                    if c.get("candidate_id") in selected_ids
+                                ]
+
                     # Layer 2: Record draft in trajectory
                     if draft_output.candidates:
                         first_cand = draft_output.candidates[0]
@@ -451,20 +490,43 @@ class PipelineOrchestrator:
                 if self.enable_agent_critic:
                     from app.prototype.agents.critic_llm import CriticLLM
                     critic = CriticLLM(config=routed_critic_cfg)
+                    critique_input = CritiqueInput(
+                        task_id=task_id,
+                        subject=pipeline_input.subject,
+                        cultural_tradition=pipeline_input.cultural_tradition,
+                        evidence=evidence_dict,
+                        candidates=draft_candidates,
+                    )
+                    critique_output = critic.run(critique_input)
+                elif self.enable_parallel_critic:
+                    # Parallel L1-L5 scoring via ThreadPoolExecutor
+                    from app.prototype.agents.parallel_scorer import ParallelDimensionScorer
+                    scorer = ParallelDimensionScorer(max_workers=5)
+                    critique_output = build_critique_output(
+                        task_id=task_id,
+                        candidates=draft_candidates,
+                        evidence=evidence_dict,
+                        cultural_tradition=pipeline_input.cultural_tradition,
+                        subject=pipeline_input.subject,
+                        cfg=routed_critic_cfg,
+                        score_fn=scorer.score_all_dimensions,
+                        t0=st,
+                    )
+                    critic = None  # no CriticAgent instance in parallel path
                 else:
                     critic = CriticAgent(config=routed_critic_cfg)
-                critique_input = CritiqueInput(
-                    task_id=task_id,
-                    subject=pipeline_input.subject,
-                    cultural_tradition=pipeline_input.cultural_tradition,
-                    evidence=evidence_dict,
-                    candidates=draft_candidates,
-                )
-                critique_output = critic.run(critique_input)
+                    critique_input = CritiqueInput(
+                        task_id=task_id,
+                        subject=pipeline_input.subject,
+                        cultural_tradition=pipeline_input.cultural_tradition,
+                        evidence=evidence_dict,
+                        candidates=draft_candidates,
+                    )
+                    critique_output = critic.run(critique_input)
                 # R7-2: Replace (not extend) cross_layer_signals each round
                 # to prevent stale signals from prior rounds distorting
                 # dynamic weight modulation.
-                if hasattr(critic, "cross_layer_signals") and critic.cross_layer_signals:
+                if critic is not None and hasattr(critic, "cross_layer_signals") and critic.cross_layer_signals:
                     plan_state.cross_layer_signals = critic.cross_layer_signals[:]
                     critic.cross_layer_signals = []  # consumed
                 else:
@@ -553,6 +615,24 @@ class PipelineOrchestrator:
                     critic_event_payload["need_more_evidence"] = critic.need_more_evidence.to_dict()
                 yield self._event(EventType.STAGE_COMPLETED, "critic", round_num, t0,
                                   critic_event_payload)
+
+                # HITL: Critic — let human override scores or adjust dimensions
+                if self.enable_hitl:
+                    yield self._event(EventType.HUMAN_REQUIRED, "critic", round_num, t0, {
+                        "stage": "critic",
+                        "scored_candidates": [sc.to_dict() for sc in critique_output.scored_candidates],
+                    })
+                    human_action = run_state.wait_for_human(timeout=300)
+                    if human_action is not None:
+                        yield self._event(EventType.HUMAN_RECEIVED, "critic", round_num, t0, {
+                            "action": human_action.action,
+                            "locked_dimensions": human_action.locked_dimensions,
+                            "reason": human_action.reason,
+                        })
+                        # Apply score overrides from human (locked dimensions preserve scores)
+                        for dim in human_action.locked_dimensions:
+                            if dim and dim not in plan_state.human_locked_dimensions:
+                                plan_state.human_locked_dimensions.append(dim)
 
                 # Layer 1c: Supplementary evidence retrieval if Critic detected gaps
                 if (self.enable_agent_critic

@@ -165,6 +165,9 @@ class Settings(BaseSettings):
             return [str(origin).rstrip('/') for origin in v]
         raise ValueError(v)
     
+    # M4 B2B API Keys (comma-separated, used by evaluate API auth)
+    VULCA_API_KEYS: str = ""
+
     class Config:
         env_file = ".env"
         case_sensitive = True

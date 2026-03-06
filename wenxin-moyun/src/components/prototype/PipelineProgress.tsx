@@ -1,11 +1,16 @@
 /**
- * Pipeline stage progress indicator with per-step timing and event log.
+ * Pipeline stage progress indicator with per-step timing and card-style event log.
+ *
+ * Features:
+ * - Dynamic stage list via optional `templateNodes` prop
+ * - Colour-coded agent event cards with expandable details
+ * - Per-stage duration badges computed from event timestamps
  */
 
 import { useState } from 'react';
 import type { PipelineEvent } from '../../hooks/usePrototypePipeline';
 
-const STAGES = ['scout', 'draft', 'critic', 'queen', 'archivist'];
+const DEFAULT_STAGES = ['scout', 'draft', 'critic', 'queen', 'archivist'];
 
 const STAGE_LABELS: Record<string, string> = {
   scout: 'Scout',
@@ -15,15 +20,28 @@ const STAGE_LABELS: Record<string, string> = {
   archivist: 'Archive',
 };
 
+// Agent colour theme for event cards
+const AGENT_COLORS: Record<string, { border: string; bg: string; text: string; emoji: string }> = {
+  scout:     { border: 'border-l-blue-500',   bg: 'bg-blue-50 dark:bg-blue-900/20',     text: 'text-blue-600 dark:text-blue-400',   emoji: '\u{1F50D}' },
+  draft:     { border: 'border-l-purple-500',  bg: 'bg-purple-50 dark:bg-purple-900/20',  text: 'text-purple-600 dark:text-purple-400', emoji: '\u{1F3A8}' },
+  critic:    { border: 'border-l-orange-500',  bg: 'bg-orange-50 dark:bg-orange-900/20',  text: 'text-orange-600 dark:text-orange-400', emoji: '\u{1F4CA}' },
+  queen:     { border: 'border-l-yellow-500',  bg: 'bg-yellow-50 dark:bg-yellow-900/20',  text: 'text-yellow-600 dark:text-yellow-400', emoji: '\u{1F451}' },
+  archivist: { border: 'border-l-gray-400',    bg: 'bg-gray-50 dark:bg-gray-800/40',      text: 'text-gray-500 dark:text-gray-400',    emoji: '\u{1F4BE}' },
+};
+
+const DEFAULT_COLOR = AGENT_COLORS.archivist;
+
 interface Props {
   currentStage: string;
   currentRound: number;
   status: string;
   events: PipelineEvent[];
+  /** Dynamic stage list from template (overrides default 5-stage pipeline) */
+  templateNodes?: string[];
 }
 
 /** Compute per-stage duration from events. */
-function stageDurations(events: PipelineEvent[]): Record<string, number> {
+function computeStageDurations(events: PipelineEvent[]): Record<string, number> {
   const starts: Record<string, number> = {};
   const durations: Record<string, number> = {};
   for (const e of events) {
@@ -41,21 +59,48 @@ function formatMs(ms: number): string {
   return `${(ms / 1000).toFixed(1)}s`;
 }
 
-export default function PipelineProgress({ currentStage, currentRound, status, events }: Props) {
+/** Extract a short detail string from event payload. */
+function eventDetail(e: PipelineEvent): string | null {
+  const p = e.payload;
+  if (!p) return null;
+  if (e.stage === 'scout' && e.event_type.includes('completed')) {
+    const n = (p.sample_count as number) || (p.n_samples as number) || 0;
+    const t = (p.term_count as number) || (p.n_terms as number) || 0;
+    if (n || t) return `${n} samples, ${t} terms`;
+  }
+  if (e.stage === 'draft' && e.event_type.includes('completed')) {
+    const n = (p.n_candidates as number) || (p.candidate_count as number) || 0;
+    const prov = (p.provider as string) || '';
+    if (n) return `${n} candidates${prov ? ` (${prov})` : ''}`;
+  }
+  if (e.stage === 'critic' && e.event_type.includes('completed')) {
+    const best = (p.best_score as number) || (p.weighted_total as number) || 0;
+    if (best) return `best: ${best.toFixed(3)}`;
+  }
+  if (e.stage === 'queen' && e.event_type.includes('completed')) {
+    const action = (p.action as string) || (p.decision as string) || '';
+    if (action) return action;
+  }
+  return null;
+}
+
+export default function PipelineProgress({ currentStage, currentRound, status, events, templateNodes }: Props) {
   const [showLog, setShowLog] = useState(false);
+
+  const stages = templateNodes ?? DEFAULT_STAGES;
 
   const completedStages = new Set(
     events
       .filter(e => e.event_type === 'stage_completed')
       .map(e => e.stage)
   );
-  const durations = stageDurations(events);
+  const durations = computeStageDurations(events);
 
   return (
     <div>
       {/* Stage pipeline */}
       <div className="flex items-center gap-2 py-4 overflow-x-auto">
-        {STAGES.map((stage, i) => {
+        {stages.map((stage, i) => {
           const isActive = stage === currentStage && status === 'running';
           const isCompleted = completedStages.has(stage);
           const isPending = !isActive && !isCompleted;
@@ -76,7 +121,7 @@ export default function PipelineProgress({ currentStage, currentRound, status, e
                     ${isPending ? 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400' : ''}
                   `}
                 >
-                  {isCompleted ? '✓' : i + 1}
+                  {isCompleted ? '\u2713' : i + 1}
                 </div>
                 <span className={`text-xs ${isActive ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'text-gray-500 dark:text-gray-400'}`}>
                   {STAGE_LABELS[stage] || stage}
@@ -102,34 +147,62 @@ export default function PipelineProgress({ currentStage, currentRound, status, e
         )}
       </div>
 
-      {/* Event log toggle */}
+      {/* Card-style event log */}
       {events.length > 0 && (
         <div className="mt-2">
           <button
             onClick={() => setShowLog(!showLog)}
             className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
           >
-            {showLog ? '▼ Hide' : '▶ Show'} event log ({events.length} events)
+            {showLog ? '\u25BC Hide' : '\u25B6 Show'} event log ({events.length} events)
           </button>
 
           {showLog && (
-            <div className="mt-2 max-h-48 overflow-y-auto bg-gray-50 dark:bg-gray-900 rounded-lg p-2 space-y-1 text-xs font-mono">
-              {events.map((e, i) => (
-                <div key={i} className="flex gap-2 text-gray-600 dark:text-gray-400">
-                  <span className="shrink-0 text-gray-400 w-12 text-right">
-                    {e.round_num > 0 ? `R${e.round_num}` : '  '}
-                  </span>
-                  <span className={`shrink-0 w-20 ${
-                    e.event_type.includes('completed') ? 'text-green-600 dark:text-green-400' :
-                    e.event_type.includes('failed') ? 'text-red-600 dark:text-red-400' :
-                    e.event_type.includes('human') ? 'text-orange-600 dark:text-orange-400' :
-                    'text-blue-600 dark:text-blue-400'
-                  }`}>
-                    {e.stage || '—'}
-                  </span>
-                  <span className="truncate">{e.event_type}</span>
-                </div>
-              ))}
+            <div className="mt-2 max-h-64 overflow-y-auto space-y-1.5">
+              {events.map((e, i) => {
+                const color = AGENT_COLORS[e.stage] || DEFAULT_COLOR;
+                const detail = eventDetail(e);
+                const isComplete = e.event_type.includes('completed');
+                const isFailed = e.event_type.includes('failed');
+                const isHuman = e.event_type.includes('human');
+
+                return (
+                  <div
+                    key={i}
+                    className={`flex items-start gap-2 px-3 py-1.5 rounded-lg border-l-4 ${color.border} ${color.bg}`}
+                  >
+                    <span className="text-sm shrink-0">{color.emoji}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className={`text-xs font-semibold ${color.text}`}>
+                          {STAGE_LABELS[e.stage] || e.stage}
+                        </span>
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
+                          isComplete ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400' :
+                          isFailed ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400' :
+                          isHuman ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400' :
+                          'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                        }`}>
+                          {e.event_type.replace('stage_', '').replace('_', ' ')}
+                        </span>
+                        {e.round_num > 0 && (
+                          <span className="text-[10px] text-gray-400">R{e.round_num}</span>
+                        )}
+                        {durations[e.stage] !== undefined && isComplete && (
+                          <span className="text-[10px] font-mono text-gray-400">
+                            {formatMs(durations[e.stage])}
+                          </span>
+                        )}
+                      </div>
+                      {detail && (
+                        <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 truncate">
+                          {detail}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

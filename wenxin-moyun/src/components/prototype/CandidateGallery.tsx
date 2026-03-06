@@ -1,8 +1,14 @@
 /**
  * Draft candidate image gallery with selectable candidates.
+ *
+ * Enhancements:
+ * - Score badge overlay on each candidate (from Critic scored data)
+ * - Round tab switcher when multiple rounds are available
+ * - Best candidate badge shows score
  */
 
-import type { DraftCandidate } from '../../hooks/usePrototypePipeline';
+import { useState } from 'react';
+import type { DraftCandidate, ScoredCandidate, RoundData } from '../../hooks/usePrototypePipeline';
 import { API_BASE_URL } from '../../config/api';
 
 interface Props {
@@ -10,6 +16,10 @@ interface Props {
   bestCandidateId: string | null;
   selectedCandidateId?: string | null;
   onSelect?: (candidateId: string) => void;
+  /** Scored candidates from Critic for score badge overlay */
+  scoredCandidates?: ScoredCandidate[];
+  /** Historical round data for round tab switcher */
+  rounds?: RoundData[];
 }
 
 function toBackendStaticUrl(path: string): string {
@@ -29,8 +39,37 @@ function imageUrl(candidate: DraftCandidate): string | null {
   return null;
 }
 
-export default function CandidateGallery({ candidates, bestCandidateId, selectedCandidateId, onSelect }: Props) {
-  if (candidates.length === 0) {
+/** Build a score lookup from scored candidates. */
+function buildScoreMap(scored?: ScoredCandidate[]): Map<string, number> {
+  const map = new Map<string, number>();
+  if (!scored) return map;
+  for (const sc of scored) {
+    map.set(sc.candidate_id, sc.weighted_total);
+  }
+  return map;
+}
+
+export default function CandidateGallery({
+  candidates,
+  bestCandidateId,
+  selectedCandidateId,
+  onSelect,
+  scoredCandidates,
+  rounds,
+}: Props) {
+  const [selectedRound, setSelectedRound] = useState<number | null>(null);
+
+  // Determine which data to show based on round selection
+  const hasMultipleRounds = rounds && rounds.length > 1;
+  const activeRoundIdx = selectedRound ?? (rounds ? rounds.length - 1 : 0);
+  const activeRound = hasMultipleRounds ? rounds![activeRoundIdx] : null;
+
+  const displayCandidates = activeRound?.candidates ?? candidates;
+  const displayScored = activeRound?.scoredCandidates ?? scoredCandidates;
+  const displayBestId = activeRound?.bestCandidateId ?? bestCandidateId;
+  const scoreMap = buildScoreMap(displayScored);
+
+  if (displayCandidates.length === 0) {
     return (
       <div className="py-8 text-center text-gray-400 dark:text-gray-500">
         No candidates generated yet
@@ -39,76 +78,108 @@ export default function CandidateGallery({ candidates, bestCandidateId, selected
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {candidates.map((c) => {
-        const isBest = c.candidate_id === bestCandidateId;
-        const isSelected = c.candidate_id === selectedCandidateId;
-        const shortId = c.candidate_id.split('-').pop() || c.candidate_id;
-        const imgSrc = imageUrl(c);
-
-        return (
-          <div
-            key={c.candidate_id}
-            onClick={() => onSelect?.(c.candidate_id)}
-            className={`
-              relative rounded-xl overflow-hidden border-2 transition-all
-              ${onSelect ? 'cursor-pointer hover:shadow-md' : ''}
-              ${isSelected
-                ? 'border-blue-500 dark:border-blue-400 ring-2 ring-blue-200 dark:ring-blue-800'
-                : isBest
-                  ? 'border-yellow-400 dark:border-yellow-500 ring-2 ring-yellow-200 dark:ring-yellow-800'
-                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
-            `}
-          >
-            {isSelected && (
-              <div className="absolute top-2 right-2 z-10 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow">
-                ✓
-              </div>
-            )}
-
-            <div className="aspect-square bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-              {imgSrc ? (
-                <img
-                  src={imgSrc}
-                  alt={`Candidate ${shortId}`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                    (e.target as HTMLImageElement).parentElement!.innerHTML = '<span class="text-4xl">🎨</span>';
-                  }}
-                />
-              ) : (c.image_url || c.image_path) ? (
-                <div className="w-full h-full bg-gradient-to-br from-blue-200 to-purple-200 dark:from-blue-900 dark:to-purple-900 flex items-center justify-center text-4xl">
-                  🎨
-                </div>
-              ) : (
-                <span className="text-gray-400 text-sm">No image</span>
+    <div>
+      {/* Round tab switcher */}
+      {hasMultipleRounds && (
+        <div className="flex gap-1 mb-3">
+          {rounds!.map((r, i) => (
+            <button
+              key={r.round}
+              onClick={() => setSelectedRound(i)}
+              className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${
+                i === activeRoundIdx
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              R{r.round}
+              {r.weightedTotal != null && (
+                <span className="ml-1 opacity-75">{r.weightedTotal.toFixed(2)}</span>
               )}
-            </div>
+            </button>
+          ))}
+        </div>
+      )}
 
-            <div className="p-2 bg-white dark:bg-gray-800">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono text-gray-500">#{shortId}</span>
-                <div className="flex items-center gap-1">
-                  {isBest && (
-                    <span className="text-xs bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-400 px-2 py-0.5 rounded-full">
-                      Best
-                    </span>
-                  )}
-                  {isSelected && !isBest && (
-                    <span className="text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded-full">
-                      Selected
-                    </span>
-                  )}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {displayCandidates.map((c) => {
+          const isBest = c.candidate_id === displayBestId;
+          const isSelected = c.candidate_id === selectedCandidateId;
+          const shortId = c.candidate_id.split('-').pop() || c.candidate_id;
+          const imgSrc = imageUrl(c);
+          const score = scoreMap.get(c.candidate_id);
+
+          return (
+            <div
+              key={c.candidate_id}
+              onClick={() => onSelect?.(c.candidate_id)}
+              className={`
+                relative rounded-xl overflow-hidden border-2 transition-all
+                ${onSelect ? 'cursor-pointer hover:shadow-md' : ''}
+                ${isSelected
+                  ? 'border-blue-500 dark:border-blue-400 ring-2 ring-blue-200 dark:ring-blue-800'
+                  : isBest
+                    ? 'border-yellow-400 dark:border-yellow-500 ring-2 ring-yellow-200 dark:ring-yellow-800'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
+              `}
+            >
+              {isSelected && (
+                <div className="absolute top-2 right-2 z-10 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow">
+                  ✓
+                </div>
+              )}
+
+              {/* Score badge overlay */}
+              {score != null && (
+                <div className="absolute bottom-12 right-2 z-10 bg-black/60 text-white text-xs rounded px-1.5 py-0.5 font-mono">
+                  {score.toFixed(3)}
+                </div>
+              )}
+
+              <div className="aspect-square bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                {imgSrc ? (
+                  <img
+                    src={imgSrc}
+                    alt={`Candidate ${shortId}`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                      (e.target as HTMLImageElement).parentElement!.innerHTML = '<span class="text-4xl">\u{1F3A8}</span>';
+                    }}
+                  />
+                ) : (c.image_url || c.image_path) ? (
+                  <div className="w-full h-full bg-gradient-to-br from-blue-200 to-purple-200 dark:from-blue-900 dark:to-purple-900 flex items-center justify-center text-4xl">
+                    🎨
+                  </div>
+                ) : (
+                  <span className="text-gray-400 text-sm">No image</span>
+                )}
+              </div>
+
+              <div className="p-2 bg-white dark:bg-gray-800">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono text-gray-500">#{shortId}</span>
+                  <div className="flex items-center gap-1">
+                    {isBest && (
+                      <span className="text-xs bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-400 px-2 py-0.5 rounded-full">
+                        Best{score != null ? ` ${score.toFixed(2)}` : ''}
+                      </span>
+                    )}
+                    {isSelected && !isBest && (
+                      <span className="text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded-full">
+                        Selected
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="text-xs text-gray-400 mt-1 truncate">
+                  seed: {c.seed} | {c.model_ref}
                 </div>
               </div>
-              <div className="text-xs text-gray-400 mt-1 truncate">
-                seed: {c.seed} | {c.model_ref}
-              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }

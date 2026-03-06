@@ -14,6 +14,7 @@ Key design:
 from __future__ import annotations
 
 import logging
+import threading
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -88,12 +89,15 @@ class ImageScorer:
     """
 
     _instance: ImageScorer | None = None
+    _lock: threading.Lock = threading.Lock()
 
     @classmethod
     def get(cls) -> ImageScorer:
-        """Get or create singleton instance."""
+        """Get or create singleton instance (thread-safe)."""
         if cls._instance is None:
-            cls._instance = cls()
+            with cls._lock:
+                if cls._instance is None:
+                    cls._instance = cls()
         return cls._instance
 
     def __init__(self) -> None:
@@ -118,11 +122,14 @@ class ImageScorer:
     def _load_model(self) -> None:
         if self._model is not None:
             return
-        from sentence_transformers import SentenceTransformer
+        with self._lock:
+            if self._model is not None:
+                return  # Another thread loaded while we waited
+            from sentence_transformers import SentenceTransformer
 
-        logger.info("Loading CLIP ViT-B/32 for image scoring...")
-        self._model = SentenceTransformer("clip-ViT-B-32")
-        logger.info("CLIP ViT-B/32 loaded for image scoring")
+            logger.info("Loading CLIP ViT-B/32 for image scoring...")
+            self._model = SentenceTransformer("clip-ViT-B-32")
+            logger.info("CLIP ViT-B/32 loaded for image scoring")
 
     def score_image(
         self,
