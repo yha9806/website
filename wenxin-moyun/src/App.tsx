@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/common/Layout';
 import ErrorBoundary from './components/common/ErrorBoundary';
@@ -17,14 +17,11 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Marketing pages - lazy loaded (Scale.com style)
-const ProductPage = lazy(() => import('./pages/ProductPage'));
 const PricingPage = lazy(() => import('./pages/PricingPage'));
 const CustomersPage = lazy(() => import('./pages/CustomersPage'));
 const TrustPage = lazy(() => import('./pages/TrustPage'));
 const BookDemoPage = lazy(() => import('./pages/BookDemoPage'));
 const DemoConfirmationPage = lazy(() => import('./pages/DemoConfirmationPage'));
-const PilotPage = lazy(() => import('./pages/PilotPage'));
-const ChangelogPage = lazy(() => import('./pages/ChangelogPage'));
 
 // Solutions pages - lazy loaded
 const SolutionsPage = lazy(() => import('./pages/solutions/SolutionsPage'));
@@ -123,11 +120,7 @@ function App() {
             <Route element={<Layout />}>
               {/* Marketing pages (Scale.com style) */}
               <Route path="/" element={<HomePage />} />
-              <Route path="/product" element={
-                <Suspense fallback={<PageLoader text="Loading Product..." />}>
-                  <ProductPage />
-                </Suspense>
-              } />
+              <Route path="/product" element={<Navigate to="/" replace />} />
               <Route path="/pricing" element={
                 <Suspense fallback={<PageLoader text="Loading Pricing..." />}>
                   <PricingPage />
@@ -153,16 +146,7 @@ function App() {
                   <DemoConfirmationPage />
                 </Suspense>
               } />
-              <Route path="/pilot" element={
-                <Suspense fallback={<PageLoader text="Loading Pilot..." />}>
-                  <PilotPage />
-                </Suspense>
-              } />
-              <Route path="/changelog" element={
-                <Suspense fallback={<PageLoader text="Loading Changelog..." />}>
-                  <ChangelogPage />
-                </Suspense>
-              } />
+              <Route path="/pilot" element={<Navigate to="/demo" replace />} />
 
               {/* Solutions pages */}
               <Route path="/solutions" element={
