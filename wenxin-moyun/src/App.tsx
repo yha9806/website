@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/common/Layout';
 import ErrorBoundary from './components/common/ErrorBoundary';
@@ -39,6 +39,7 @@ const ExhibitionDetailPage = lazy(() => import('./pages/exhibitions/ExhibitionDe
 const ArtworkPage = lazy(() => import('./pages/exhibitions/ArtworkPage'));
 
 // Academic/Research pages - lazy loaded
+const ResearchPage = lazy(() => import('./pages/ResearchPage'));
 const MethodologyPage = lazy(() => import('./pages/MethodologyPage'));
 const DatasetPage = lazy(() => import('./pages/DatasetPage'));
 const PapersPage = lazy(() => import('./pages/PapersPage'));
@@ -258,21 +259,15 @@ function App() {
               } />
 
               {/* Academic/Research Routes */}
-              <Route path="/methodology" element={
-                <Suspense fallback={<PageLoader text="Loading Methodology..." />}>
-                  <MethodologyPage />
+              <Route path="/research" element={
+                <Suspense fallback={<PageLoader text="Loading Research..." />}>
+                  <ResearchPage />
                 </Suspense>
               } />
-              <Route path="/dataset" element={
-                <Suspense fallback={<PageLoader text="Loading Dataset..." />}>
-                  <DatasetPage />
-                </Suspense>
-              } />
-              <Route path="/papers" element={
-                <Suspense fallback={<PageLoader text="Loading Papers..." />}>
-                  <PapersPage />
-                </Suspense>
-              } />
+              {/* Legacy redirects to unified /research page */}
+              <Route path="/methodology" element={<Navigate to="/research?tab=methodology" replace />} />
+              <Route path="/dataset" element={<Navigate to="/research?tab=dataset" replace />} />
+              <Route path="/papers" element={<Navigate to="/research?tab=papers" replace />} />
 
               {/* Trust & Ethics Routes */}
               <Route path="/data-ethics" element={
