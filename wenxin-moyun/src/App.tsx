@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/common/Layout';
 import ErrorBoundary from './components/common/ErrorBoundary';
@@ -233,12 +233,14 @@ function App() {
                 </Suspense>
               } />
 
-              {/* Prototype Pipeline */}
-              <Route path="/prototype" element={
-                <Suspense fallback={<PageLoader text="Loading Prototype..." />}>
+              {/* Canvas (formerly Prototype Pipeline) */}
+              <Route path="/canvas" element={
+                <Suspense fallback={<PageLoader text="Loading Canvas..." />}>
                   <PrototypePage />
                 </Suspense>
               } />
+              {/* Legacy redirect: /prototype -> /canvas */}
+              <Route path="/prototype" element={<Navigate to="/canvas" replace />} />
 
               {/* Exhibition Routes */}
               <Route path="/exhibitions" element={
