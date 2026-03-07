@@ -26,7 +26,14 @@ async def lifespan(app: FastAPI):
     # Startup
     print("Starting up...")
     # init_db is idempotent: create_all + seed only if empty
-    await init_db()
+    try:
+        await init_db()
+        print("Database initialized successfully")
+    except Exception as e:
+        # In production, don't block startup if DB init fails (tables may already exist)
+        print(f"WARNING: init_db failed: {type(e).__name__}: {e}")
+        if not IS_PRODUCTION:
+            raise
     yield
     # Shutdown
     print("Shutting down...")

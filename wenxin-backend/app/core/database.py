@@ -50,6 +50,17 @@ def get_database_url():
 # Get the actual database URL
 database_url = get_database_url()
 
+# Log connection info (mask password)
+_masked = database_url
+if "@" in _masked and "://" in _masked:
+    _prefix = _masked.split("://")[0] + "://"
+    _rest = _masked.split("://", 1)[1]
+    if "@" in _rest:
+        _user_pass, _host_rest = _rest.split("@", 1)
+        _user = _user_pass.split(":")[0] if ":" in _user_pass else _user_pass
+        _masked = f"{_prefix}{_user}:***@{_host_rest}"
+print(f"Database URL: {_masked}")
+
 # Create async engine with appropriate settings
 if database_url.startswith("sqlite"):
     # SQLite specific settings
@@ -63,9 +74,17 @@ else:
     # PostgreSQL settings
     connect_args = {}
 
-    # Supabase and most cloud PostgreSQL providers require SSL
-    if os.getenv("ENVIRONMENT") == "production" and "/cloudsql/" not in database_url:
-        connect_args["ssl"] = "require"
+    # For Supabase/cloud PostgreSQL: if URL contains sslmode param, asyncpg handles it.
+    # Only add explicit SSL if production and no sslmode in URL.
+    if (os.getenv("ENVIRONMENT") == "production"
+            and "/cloudsql/" not in database_url
+            and "sslmode=" not in database_url
+            and "ssl=" not in database_url):
+        import ssl as _ssl
+        ssl_ctx = _ssl.create_default_context()
+        ssl_ctx.check_hostname = False
+        ssl_ctx.verify_mode = _ssl.CERT_NONE
+        connect_args["ssl"] = ssl_ctx
     
     # Only pass connect_args if it has actual configuration
     if connect_args:
@@ -115,12 +134,16 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 
 async def init_db():
-    """Initialize database tables and data"""
+    """Initialize database tables and data (idempotent)"""
+    import asyncio
     # Ensure all models are registered in Base.metadata
     import app.models  # noqa: F401
 
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    print("init_db: creating tables...")
+    async with asyncio.timeout(30):
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+    print("init_db: tables created")
 
     # Import here to avoid circular imports
     from app.models import AIModel
