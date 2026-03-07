@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import RouterLink from '../components/common/RouterLink';
 import { Breadcrumb } from '../components/common/Breadcrumb';
-import { Loader2, Cpu, FileText, ExternalLink, Quote, Share2 } from 'lucide-react';
+import { Loader2, Cpu, FileText, ExternalLink, Quote, Share2, Sparkles } from 'lucide-react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { mockModels } from '../data/mockData';
 import { motion } from 'framer-motion';
@@ -140,6 +140,12 @@ export default function ModelDetailPage() {
                   <IOSButton variant="primary" size="sm">
                     <ExternalLink className="w-4 h-4 mr-1.5" />
                     View Report
+                  </IOSButton>
+                </RouterLink>
+                <RouterLink to={`/evaluate`}>
+                  <IOSButton variant="secondary" size="sm">
+                    <Sparkles className="w-4 h-4 mr-1.5" />
+                    Quick Evaluate
                   </IOSButton>
                 </RouterLink>
                 <IOSButton variant="secondary" size="sm" onClick={() => setShowCiteModal(true)}>

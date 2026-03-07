@@ -46,6 +46,40 @@ class EvaluateResponse(BaseModel):
     cost_usd: float = 0.0
 
 
+class NoCodeEvaluateRequest(BaseModel):
+    """POST /api/v1/evaluate/nocode — NoCode evaluation request.
+
+    Uses natural language intent for full auto-orchestration.
+    """
+
+    intent: str = Field(description="Natural language evaluation intent")
+    image_url: str | None = Field(default=None, description="HTTP(S) image URL")
+    image_base64: str | None = Field(default=None, description="Base64-encoded image data")
+    subject: str = Field(default="", description="Optional subject description")
+
+    @model_validator(mode="after")
+    def _require_image(self) -> NoCodeEvaluateRequest:
+        if not self.image_url and not self.image_base64:
+            raise ValueError("Either image_url or image_base64 must be provided")
+        return self
+
+
+class NoCodeEvaluateResponse(BaseModel):
+    """POST /api/v1/evaluate/nocode — NoCode evaluation result."""
+
+    result_card: dict = Field(description="Frontend-friendly result card")
+    scores: dict[str, float] = Field(description="L1-L5 scores")
+    weighted_total: float
+    tradition_used: str
+    risk_flags: list[str] = Field(default_factory=list)
+    recommendations: list[str] = Field(default_factory=list)
+    intent_resolved: dict | None = Field(default=None)
+    skills_used: list[str] = Field(default_factory=list)
+    extra_skill_results: list[dict] = Field(default_factory=list)
+    latency_ms: int
+    cost_usd: float = 0.0
+
+
 class IdentifyTraditionRequest(BaseModel):
     """POST /api/v1/identify-tradition — auto-detect cultural tradition."""
 

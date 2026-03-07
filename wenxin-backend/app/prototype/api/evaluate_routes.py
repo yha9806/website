@@ -24,6 +24,7 @@ from app.prototype.api.evaluate_schemas import (
     IdentifyTraditionResponse,
     KnowledgeBaseResponse,
     KnowledgeBaseSummary,
+    NoCodeEvaluateRequest,
     PipelineVariantInfo,
     TabooRuleItem,
     TraditionAlternative,
@@ -186,7 +187,7 @@ async def evaluate_image(
         if req.intent and req.tradition == "default":
             try:
                 from app.prototype.intent.intent_agent import IntentAgent
-                agent = IntentAgent.get_instance()
+                agent = IntentAgent.get()
                 intent_result = await agent.resolve(req.intent)
                 if intent_result and intent_result.tradition != "default":
                     tradition_override = intent_result.tradition
@@ -319,6 +320,52 @@ async def evaluate_image(
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
         logger.exception("Evaluate API error")
+        raise HTTPException(status_code=500, detail=f"Internal error: {type(exc).__name__}") from exc
+    finally:
+        if tmp_path:
+            cleanup_temp_image(tmp_path)
+
+
+# ── POST /api/v1/evaluate/nocode ───────────────────────────────
+
+@evaluate_router.post(
+    "/evaluate/nocode",
+    response_model=None,
+    summary="NoCode evaluation — full intent-driven orchestration",
+    description=(
+        "Send natural language intent + image for fully automated evaluation. "
+        "The system parses intent, selects skills, runs pipeline, and returns a result card."
+    ),
+)
+async def evaluate_nocode(
+    req: NoCodeEvaluateRequest,
+    api_key: str = Depends(verify_api_key),
+) -> dict:
+    from app.prototype.intent.meta_orchestrator import MetaOrchestrator
+
+    t0 = time.monotonic()
+    tmp_path: str | None = None
+
+    try:
+        tmp_path = await resolve_image_input(req.image_url, req.image_base64)
+
+        orch = MetaOrchestrator.get_instance()
+        result = await orch.run(
+            user_input=req.intent,
+            image_path=tmp_path,
+            subject=req.subject,
+        )
+
+        return result.to_dict()
+
+    except HTTPException:
+        raise
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(status_code=400, detail=f"Image download failed: {exc.response.status_code}") from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        logger.exception("NoCode evaluate API error")
         raise HTTPException(status_code=500, detail=f"Internal error: {type(exc).__name__}") from exc
     finally:
         if tmp_path:

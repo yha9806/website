@@ -190,12 +190,8 @@ function App() {
                 </Suspense>
               } />
 
-              {/* VULCA Demo */}
-              <Route path="/vulca" element={
-                <Suspense fallback={<PageLoader text="Loading VULCA Demo..." />}>
-                  <VULCADemoPage />
-                </Suspense>
-              } />
+              {/* VULCA Demo → merged into /evaluate */}
+              <Route path="/vulca" element={<Navigate to="/evaluate" replace />} />
 
               {/* Canvas (renamed from prototype) */}
               <Route path="/canvas" element={
