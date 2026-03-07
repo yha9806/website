@@ -180,11 +180,22 @@ async def evaluate_image(
         # 1. Resolve image to temp file
         tmp_path = await resolve_image_input(req.image_url, req.image_base64)
 
+        # 1b. Intent resolution: if intent is provided and tradition is default,
+        #     use IntentAgent to resolve the tradition from natural language.
+        intent_result = None
+        tradition_to_use = req.tradition
+        if req.intent and req.tradition == "default":
+            from app.prototype.intent import IntentAgent
+
+            intent_result = await IntentAgent.get().resolve(req.intent)
+            if intent_result.tradition != "default" and intent_result.confidence > 0:
+                tradition_to_use = intent_result.tradition
+
         # 2. Route tradition → weights
         from app.prototype.cultural_pipelines.pipeline_router import CulturalPipelineRouter
 
         router = CulturalPipelineRouter()
-        route = router.route(req.tradition)
+        route = router.route(tradition_to_use)
         cfg = route.critic_config
         tradition_used = route.tradition
 
@@ -255,7 +266,14 @@ async def evaluate_image(
 
         elapsed_ms = int((time.monotonic() - t0) * 1000)
 
-        return EvaluateResponse(
+        # Build intent_resolved dict if intent was used
+        from dataclasses import asdict
+
+        intent_resolved_dict = None
+        if intent_result is not None:
+            intent_resolved_dict = asdict(intent_result)
+
+        response = EvaluateResponse(
             scores=scores,
             rationales=rationales,
             weighted_total=round(weighted_total, 4),
@@ -264,8 +282,18 @@ async def evaluate_image(
             recommendations=recommendations,
             risk_flags=risk_flags,
             evidence_summary=evidence_summary,
+            intent_resolved=intent_resolved_dict,
+            result_card=None,
             latency_ms=elapsed_ms,
         )
+
+        # Build ResultCard for frontend
+        from app.prototype.intent import ResultFormatter
+
+        card = ResultFormatter.format(response, intent_result)
+        response.result_card = asdict(card)
+
+        return response
 
     except HTTPException:
         raise
