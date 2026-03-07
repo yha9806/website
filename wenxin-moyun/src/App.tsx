@@ -63,6 +63,9 @@ const CompareModelsPage = lazy(() => import('./pages/CompareModelsPage'));
 // Prototype pipeline - lazy loaded
 const PrototypePage = lazy(() => import('./pages/prototype/PrototypePage'));
 
+// NoCode evaluate page - lazy loaded
+const EvaluatePage = lazy(() => import('./pages/EvaluatePage'));
+
 // Reusable loading component
 function PageLoader({ text = 'Loading...' }: { text?: string }) {
   return (
@@ -317,6 +320,13 @@ function App() {
               <Route path="/knowledge-base" element={
                 <Suspense fallback={<PageLoader text="Loading Knowledge Base..." />}>
                   <KnowledgeBasePage />
+                </Suspense>
+              } />
+
+              {/* NoCode Evaluate */}
+              <Route path="/evaluate" element={
+                <Suspense fallback={<PageLoader text="Loading Evaluate..." />}>
+                  <EvaluatePage />
                 </Suspense>
               } />
 
