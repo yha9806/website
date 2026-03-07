@@ -11,6 +11,7 @@ from app.api.v1 import api_router
 from app.vulca import vulca_router
 from app.prototype.api import get_prototype_router
 from app.prototype.api.evaluate_routes import evaluate_router
+from app.prototype.feedback.feedback_routes import feedback_router
 # Temporarily disabled - requires sentence-transformers
 # from app.exhibition.api import router as exhibition_router
 
@@ -106,6 +107,9 @@ app.include_router(get_prototype_router())
 
 # Include B2B Evaluate API (M4)
 app.include_router(evaluate_router)
+
+# Include Feedback router
+app.include_router(feedback_router)
 
 # Include Exhibition router (Echoes and Returns)
 # Temporarily disabled - requires sentence-transformers
