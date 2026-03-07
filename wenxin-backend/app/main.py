@@ -25,9 +25,8 @@ async def lifespan(app: FastAPI):
     """Handle startup and shutdown events"""
     # Startup
     print("Starting up...")
-    # Skip init_db in production - database is initialized via migrations
-    if not IS_PRODUCTION:
-        await init_db()
+    # init_db is idempotent: create_all + seed only if empty
+    await init_db()
     yield
     # Shutdown
     print("Shutting down...")
@@ -122,6 +121,16 @@ async def health_check():
 async def deep_health_check():
     """Deep health check — reports component availability for monitoring."""
     components = {}
+
+    # Database connectivity
+    try:
+        from app.core.database import AsyncSessionLocal
+        from sqlalchemy import text
+        async with AsyncSessionLocal() as session:
+            await session.execute(text("SELECT 1"))
+        components["database"] = "connected"
+    except Exception as e:
+        components["database"] = f"error: {type(e).__name__}: {e}"
 
     # VLM Critic availability
     try:

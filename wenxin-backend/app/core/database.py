@@ -62,9 +62,9 @@ if database_url.startswith("sqlite"):
 else:
     # PostgreSQL settings
     connect_args = {}
-    
-    # Add SSL configuration for Cloud SQL if needed
-    if os.getenv("USE_CLOUD_SQL") == "true" and "/cloudsql/" not in database_url:
+
+    # Supabase and most cloud PostgreSQL providers require SSL
+    if os.getenv("ENVIRONMENT") == "production" and "/cloudsql/" not in database_url:
         connect_args["ssl"] = "require"
     
     # Only pass connect_args if it has actual configuration
@@ -116,9 +116,12 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 async def init_db():
     """Initialize database tables and data"""
+    # Ensure all models are registered in Base.metadata
+    import app.models  # noqa: F401
+
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    
+
     # Import here to avoid circular imports
     from app.models import AIModel
     from sqlalchemy import select
