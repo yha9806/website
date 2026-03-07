@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/common/Layout';
 import ErrorBoundary from './components/common/ErrorBoundary';
@@ -43,9 +43,7 @@ const MethodologyPage = lazy(() => import('./pages/MethodologyPage'));
 const DatasetPage = lazy(() => import('./pages/DatasetPage'));
 const PapersPage = lazy(() => import('./pages/PapersPage'));
 
-// Trust & Ethics pages - lazy loaded
-const DataEthicsPage = lazy(() => import('./pages/DataEthicsPage'));
-const SOPPage = lazy(() => import('./pages/SOPPage'));
+// Trust & Ethics pages - merged into TrustPage via tabs
 
 // Legal pages - lazy loaded
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
@@ -274,17 +272,9 @@ function App() {
                 </Suspense>
               } />
 
-              {/* Trust & Ethics Routes */}
-              <Route path="/data-ethics" element={
-                <Suspense fallback={<PageLoader text="Loading Data & Ethics..." />}>
-                  <DataEthicsPage />
-                </Suspense>
-              } />
-              <Route path="/sop" element={
-                <Suspense fallback={<PageLoader text="Loading SOP..." />}>
-                  <SOPPage />
-                </Suspense>
-              } />
+              {/* Trust & Ethics Routes - redirect to unified Trust page */}
+              <Route path="/data-ethics" element={<Navigate to="/trust?tab=data-ethics" replace />} />
+              <Route path="/sop" element={<Navigate to="/trust?tab=sop" replace />} />
 
               {/* Legal Pages */}
               <Route path="/privacy" element={
