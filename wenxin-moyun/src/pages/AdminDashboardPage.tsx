@@ -2,59 +2,65 @@
  * AdminDashboardPage - Self-Evolution System Dashboard
  *
  * Displays agent status, feedback statistics, skill ecosystem overview,
- * and evolution timeline. Uses mock data since the API may not exist yet.
+ * and evolution timeline. Fetches live data from /api/v1/feedback/stats
+ * and /api/v1/skills, with graceful fallback to defaults.
  */
 
+import { useState, useEffect } from 'react';
 import { IOSCard, IOSCardHeader, IOSCardContent, IOSCardGrid } from '../components/ios';
+import { API_PREFIX } from '../config/api';
 
 // ---------------------------------------------------------------------------
-// Mock data (replace with real API calls when backend endpoints are ready)
+// Types
 // ---------------------------------------------------------------------------
 
-const AGENTS = [
-  {
-    name: 'EvolutionAgent',
-    status: 'healthy' as const,
-    lastRun: '2026-03-07 14:30 UTC',
-    description: 'Drives weight adjustments and principle extraction',
-    principlesDistilled: 8,
-  },
-  {
-    name: 'QualityAgent',
-    status: 'healthy' as const,
-    lastRun: '2026-03-07 14:30 UTC',
-    description: 'Monitors evaluation quality and detects drift',
-    avgScore: 3.72,
-  },
-  {
-    name: 'AdminAgent',
-    status: 'healthy' as const,
-    lastRun: '2026-03-07 14:30 UTC',
-    description: 'Orchestrates sub-agents and generates weekly reports',
-    lastReport: 'weekly_2026-03-07.md',
-  },
-];
+interface FeedbackStatsData {
+  total: number;
+  thumbsUp: number;
+  thumbsDown: number;
+  ratio: number;
+  recentComments: string[];
+}
 
-const FEEDBACK_STATS = {
-  total: 247,
-  thumbsUp: 189,
-  thumbsDown: 58,
-  ratio: 0.765,
+interface SkillEcosystemData {
+  totalSkills: number;
+  totalVotes: number;
+  topSkill: { name: string; score: number };
+}
+
+// ---------------------------------------------------------------------------
+// Types for agent data
+// ---------------------------------------------------------------------------
+
+interface AgentData {
+  name: string;
+  status: string;
+  lastRun: string | null;
+  description: string;
+  principlesDistilled?: number;
+  avgScore?: number | null;
+  lastReport?: string;
+}
+
+interface TimelineEntry {
+  date: string;
+  event: string;
+  status: string;
+}
+
+const DEFAULT_FEEDBACK: FeedbackStatsData = {
+  total: 0,
+  thumbsUp: 0,
+  thumbsDown: 0,
+  ratio: 0,
+  recentComments: [],
 };
 
-const SKILL_ECOSYSTEM = {
-  totalSkills: 14,
-  totalVotes: 1823,
-  topSkill: { name: 'cultural_context_analysis', score: 4.6 },
+const DEFAULT_SKILLS: SkillEcosystemData = {
+  totalSkills: 0,
+  totalVotes: 0,
+  topSkill: { name: 'N/A', score: 0 },
 };
-
-const EVOLUTION_TIMELINE = [
-  { date: '2026-03-07', event: 'Evolved 8 principles, adjusted 5 tradition weights', status: 'healthy' as const },
-  { date: '2026-03-06', event: 'Quality drift detected in East Asian tradition scoring', status: 'warning' as const },
-  { date: '2026-03-05', event: 'Baseline reset after pipeline update', status: 'healthy' as const },
-  { date: '2026-03-04', event: 'Evolved 6 principles, no drift detected', status: 'healthy' as const },
-  { date: '2026-03-03', event: '3 anomalies flagged in L5 evaluations', status: 'warning' as const },
-];
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -79,6 +85,80 @@ function StatusBadge({ status }: { status: string }) {
 // ---------------------------------------------------------------------------
 
 export default function AdminDashboardPage() {
+  const [agents, setAgents] = useState<AgentData[]>([]);
+  const [timeline, setTimeline] = useState<TimelineEntry[]>([]);
+  const [feedbackStats, setFeedbackStats] = useState<FeedbackStatsData>(DEFAULT_FEEDBACK);
+  const [skillEcosystem, setSkillEcosystem] = useState<SkillEcosystemData>(DEFAULT_SKILLS);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    // Fetch evolution status (agents + timeline)
+    (async () => {
+      try {
+        const res = await fetch(`${API_PREFIX}/evolution/status`);
+        if (!res.ok) throw new Error('API unavailable');
+        const data = await res.json();
+        if (cancelled) return;
+        if (Array.isArray(data.agents)) setAgents(data.agents);
+        if (Array.isArray(data.timeline) && data.timeline.length > 0) setTimeline(data.timeline);
+      } catch {
+        // keep empty defaults
+      }
+    })();
+
+    // Fetch feedback stats
+    (async () => {
+      try {
+        const res = await fetch(`${API_PREFIX}/feedback/stats`);
+        if (!res.ok) throw new Error('API unavailable');
+        const data = await res.json();
+        if (cancelled) return;
+        const up = data.thumbs_up ?? 0;
+        const down = data.thumbs_down ?? 0;
+        const total = data.total_feedback ?? (up + down);
+        setFeedbackStats({
+          total,
+          thumbsUp: up,
+          thumbsDown: down,
+          ratio: total > 0 ? up / total : 0,
+          recentComments: data.recent_comments ?? [],
+        });
+      } catch {
+        // keep defaults
+      }
+    })();
+
+    // Fetch skills for ecosystem stats
+    (async () => {
+      try {
+        const res = await fetch(`${API_PREFIX}/skills`);
+        if (!res.ok) throw new Error('API unavailable');
+        const skills = await res.json();
+        if (cancelled || !Array.isArray(skills) || skills.length === 0) return;
+        const totalVotes = skills.reduce(
+          (sum: number, s: { upvotes?: number; downvotes?: number }) =>
+            sum + (s.upvotes ?? 0) + (s.downvotes ?? 0),
+          0
+        );
+        const topSkill = skills.reduce(
+          (best: { upvotes: number; name: string }, s: { upvotes?: number; name?: string }) =>
+            (s.upvotes ?? 0) > best.upvotes ? { upvotes: s.upvotes ?? 0, name: s.name ?? '' } : best,
+          { upvotes: 0, name: '' }
+        );
+        setSkillEcosystem({
+          totalSkills: skills.length,
+          totalVotes,
+          topSkill: { name: topSkill.name || 'N/A', score: topSkill.upvotes },
+        });
+      } catch {
+        // keep defaults
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, []);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
@@ -96,43 +176,51 @@ export default function AdminDashboardPage() {
         <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
           Agent Status
         </h2>
-        <IOSCardGrid columns={3} gap="md">
-          {AGENTS.map((agent) => (
-            <IOSCard key={agent.name} variant="elevated" padding="lg">
-              <IOSCardHeader
-                title={agent.name}
-                subtitle={agent.description}
-                action={<StatusBadge status={agent.status} />}
-              />
-              <IOSCardContent>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-500 dark:text-gray-400">Last run</span>
-                    <span className="font-mono text-gray-700 dark:text-gray-300">{agent.lastRun}</span>
+        {agents.length > 0 ? (
+          <IOSCardGrid columns={3} gap="md">
+            {agents.map((agent) => (
+              <IOSCard key={agent.name} variant="elevated" padding="lg">
+                <IOSCardHeader
+                  title={agent.name}
+                  subtitle={agent.description}
+                  action={<StatusBadge status={agent.status} />}
+                />
+                <IOSCardContent>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-500 dark:text-gray-400">Last run</span>
+                      <span className="font-mono text-gray-700 dark:text-gray-300">
+                        {agent.lastRun ?? 'Never'}
+                      </span>
+                    </div>
+                    {agent.principlesDistilled != null && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-500 dark:text-gray-400">Principles</span>
+                        <span className="font-semibold text-gray-700 dark:text-gray-300">{agent.principlesDistilled}</span>
+                      </div>
+                    )}
+                    {agent.avgScore != null && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-500 dark:text-gray-400">Avg Score</span>
+                        <span className="font-semibold text-gray-700 dark:text-gray-300">{agent.avgScore}</span>
+                      </div>
+                    )}
+                    {agent.lastReport && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-500 dark:text-gray-400">Last report</span>
+                        <span className="font-mono text-xs text-gray-700 dark:text-gray-300">{agent.lastReport}</span>
+                      </div>
+                    )}
                   </div>
-                  {'principlesDistilled' in agent && (
-                    <div className="flex justify-between">
-                      <span className="text-gray-500 dark:text-gray-400">Principles</span>
-                      <span className="font-semibold text-gray-700 dark:text-gray-300">{agent.principlesDistilled}</span>
-                    </div>
-                  )}
-                  {'avgScore' in agent && (
-                    <div className="flex justify-between">
-                      <span className="text-gray-500 dark:text-gray-400">Avg Score</span>
-                      <span className="font-semibold text-gray-700 dark:text-gray-300">{agent.avgScore}</span>
-                    </div>
-                  )}
-                  {'lastReport' in agent && (
-                    <div className="flex justify-between">
-                      <span className="text-gray-500 dark:text-gray-400">Last report</span>
-                      <span className="font-mono text-xs text-gray-700 dark:text-gray-300">{agent.lastReport}</span>
-                    </div>
-                  )}
-                </div>
-              </IOSCardContent>
-            </IOSCard>
-          ))}
-        </IOSCardGrid>
+                </IOSCardContent>
+              </IOSCard>
+            ))}
+          </IOSCardGrid>
+        ) : (
+          <div className="text-center py-8 text-gray-400 dark:text-gray-500 text-sm">
+            No agent data available. Run an evolution cycle to populate.
+          </div>
+        )}
       </section>
 
       {/* Feedback Stats + Skill Ecosystem */}
@@ -148,25 +236,25 @@ export default function AdminDashboardPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-500 dark:text-gray-400">Total feedback</span>
-                  <span className="text-2xl font-bold text-gray-900 dark:text-white">{FEEDBACK_STATS.total}</span>
+                  <span className="text-2xl font-bold text-gray-900 dark:text-white">{feedbackStats.total}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-gray-500 dark:text-gray-400">Positive / Negative</span>
                   <span className="font-medium text-gray-700 dark:text-gray-300">
-                    {FEEDBACK_STATS.thumbsUp} / {FEEDBACK_STATS.thumbsDown}
+                    {feedbackStats.thumbsUp} / {feedbackStats.thumbsDown}
                   </span>
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm text-gray-500 dark:text-gray-400">Approval ratio</span>
                     <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                      {(FEEDBACK_STATS.ratio * 100).toFixed(1)}%
+                      {(feedbackStats.ratio * 100).toFixed(1)}%
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div
                       className="bg-green-500 h-2 rounded-full transition-all duration-500"
-                      style={{ width: `${FEEDBACK_STATS.ratio * 100}%` }}
+                      style={{ width: `${feedbackStats.ratio * 100}%` }}
                     />
                   </div>
                 </div>
@@ -188,20 +276,20 @@ export default function AdminDashboardPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-500 dark:text-gray-400">Active skills</span>
-                  <span className="text-2xl font-bold text-gray-900 dark:text-white">{SKILL_ECOSYSTEM.totalSkills}</span>
+                  <span className="text-2xl font-bold text-gray-900 dark:text-white">{skillEcosystem.totalSkills}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-gray-500 dark:text-gray-400">Total votes</span>
-                  <span className="font-medium text-gray-700 dark:text-gray-300">{SKILL_ECOSYSTEM.totalVotes.toLocaleString()}</span>
+                  <span className="font-medium text-gray-700 dark:text-gray-300">{skillEcosystem.totalVotes.toLocaleString()}</span>
                 </div>
                 <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                   <div className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">Top Skill</div>
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-sm text-gray-800 dark:text-gray-200">
-                      {SKILL_ECOSYSTEM.topSkill.name}
+                      {skillEcosystem.topSkill.name}
                     </span>
                     <span className="text-sm font-bold text-blue-700 dark:text-blue-300">
-                      {SKILL_ECOSYSTEM.topSkill.score}
+                      {skillEcosystem.topSkill.score}
                     </span>
                   </div>
                 </div>
@@ -218,33 +306,39 @@ export default function AdminDashboardPage() {
         </h2>
         <IOSCard variant="elevated" padding="lg">
           <IOSCardContent>
-            <div className="space-y-0">
-              {EVOLUTION_TIMELINE.map((entry, idx) => (
-                <div
-                  key={idx}
-                  className={`flex items-start gap-4 py-3 ${
-                    idx < EVOLUTION_TIMELINE.length - 1 ? 'border-b border-gray-100 dark:border-gray-800' : ''
-                  }`}
-                >
-                  <div className="flex-shrink-0 mt-0.5">
-                    <div
-                      className={`w-2.5 h-2.5 rounded-full ${
-                        entry.status === 'healthy'
-                          ? 'bg-green-500'
-                          : entry.status === 'warning'
-                          ? 'bg-yellow-500'
-                          : 'bg-red-500'
-                      }`}
-                    />
+            {timeline.length > 0 ? (
+              <div className="space-y-0">
+                {timeline.map((entry, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex items-start gap-4 py-3 ${
+                      idx < timeline.length - 1 ? 'border-b border-gray-100 dark:border-gray-800' : ''
+                    }`}
+                  >
+                    <div className="flex-shrink-0 mt-0.5">
+                      <div
+                        className={`w-2.5 h-2.5 rounded-full ${
+                          entry.status === 'healthy'
+                            ? 'bg-green-500'
+                            : entry.status === 'warning'
+                            ? 'bg-yellow-500'
+                            : 'bg-red-500'
+                        }`}
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-800 dark:text-gray-200">{entry.event}</p>
+                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{entry.date}</p>
+                    </div>
+                    <StatusBadge status={entry.status} />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-800 dark:text-gray-200">{entry.event}</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{entry.date}</p>
-                  </div>
-                  <StatusBadge status={entry.status} />
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-6 text-gray-400 dark:text-gray-500 text-sm">
+                No evolution events yet. Timeline will populate after the first evolution cycle.
+              </div>
+            )}
           </IOSCardContent>
         </IOSCard>
       </section>

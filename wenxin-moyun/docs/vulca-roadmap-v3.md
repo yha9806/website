@@ -493,3 +493,11 @@
 | 2026-03-06 | v3.9 | M7.1 TRADITION.yaml ✅: 10 YAML文件(9传统+default) + JSON Schema + tradition_loader.py + _template.yaml; cultural_weights.py YAML-first加载+hardcoded fallback; PyYAML加入render/cloudrun依赖; 全量回归通过 |
 | 2026-03-06 | v3.10 | M7.2-7.4+7.6 全部完成 ✅: TraditionBuilder+TraditionExplorer+ComparePanel 3前端组件; PrototypePage 五模式(edit/run/build/explore/compare); HF Space+CLI+Discord Bot 3入口; CONTRIBUTING.md+validate-traditions.yml CI; TypeScript 0 error |
 | 2026-03-06 | v3.11 | 产品原则确立 + M8 画布产品化里程碑: 画布+节点=核心范式; TTFV<=10s; 预设模板(Quick Evaluate 3节点); 报告节点人话展示(红黄绿+一句话); 5场景模板库; 竞品分析(6家); `product-principles.md` 新建 |
+| 2026-03-07 | v3.12 | **战略转向**: NoCode + 自进化质量智能; M0-M8 全部完成归档; 后续工作转入 `implementation-strategy-v4.md` (Phase 1-5: Intent Layer → Skill System → Self-Evolution → Community); 详见 `strategic-pivot-nocode-2026-03-07.md` |
+
+---
+
+> **NOTE**: M0-M8 全部完成。后续 Phase 1-5 的开发路线图和实施策略已转移到:
+> - **实施策略**: `implementation-strategy-v4.md` (Phase 1-5 路线图 + 文件清单 + 代码架构)
+> - **战略愿景**: `strategic-pivot-nocode-2026-03-07.md` (NoCode + Skill + 自进化)
+> - **竞品分析**: `competitive-analysis-2026.md` (20+ 竞品)

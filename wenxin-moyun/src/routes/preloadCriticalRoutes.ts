@@ -4,21 +4,16 @@ type LazyPageModule = { default: ComponentType<object> };
 type RouteLoader = () => Promise<LazyPageModule>;
 
 export const loadModelsPage: RouteLoader = () => import('../pages/LeaderboardPage');
-export const loadVulcaDemoPage: RouteLoader = () => import('../pages/vulca/VULCADemoPage');
 
 const criticalRouteLoaders: Record<string, RouteLoader> = {
   '/models': loadModelsPage,
-  '/vulca': loadVulcaDemoPage,
 };
 
 const preloaded = new Set<string>();
 
-function normalizeCriticalRoute(pathname: string): '/models' | '/vulca' | null {
+function normalizeCriticalRoute(pathname: string): '/models' | null {
   if (pathname.startsWith('/models') || pathname.startsWith('/leaderboard') || pathname.startsWith('/model/')) {
     return '/models';
-  }
-  if (pathname.startsWith('/vulca')) {
-    return '/vulca';
   }
   return null;
 }
@@ -43,7 +38,6 @@ export function preloadCriticalRoute(pathname: string): void {
 
 export function preloadCriticalRoutes(): void {
   preloadCriticalRoute('/models');
-  preloadCriticalRoute('/vulca');
 }
 
 function preloadFromEvent(event: Event): void {

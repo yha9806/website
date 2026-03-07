@@ -88,6 +88,12 @@ jobs:
           DATABASE_URL: sqlite+aiosqlite:///./test.db
           SECRET_KEY: test-secret-key-for-ci-at-least-32-chars
 
+      - name: Seed prototype data
+        if: github.event_name != 'pull_request'
+        working-directory: wenxin-backend
+        run: |
+          python seed_prototype.py
+
       - name: Start backend test server
         if: github.event_name != 'pull_request'
         working-directory: wenxin-backend
@@ -104,7 +110,7 @@ jobs:
         if: github.event_name != 'pull_request'
         working-directory: wenxin-moyun
         run: |
-          npx playwright test tests/e2e/specs/auth-fixed.spec.ts tests/e2e/specs/homepage.spec.ts tests/e2e/specs/ai-models.spec.ts --config=tests/e2e/playwright.config.ts
+          npx playwright test tests/e2e/specs/auth-fixed.spec.ts tests/e2e/specs/homepage.spec.ts tests/e2e/specs/ai-models.spec.ts tests/e2e/specs/evaluate-page.spec.ts tests/e2e/specs/skills-page.spec.ts tests/e2e/specs/research-page.spec.ts tests/e2e/specs/admin-page.spec.ts --config=tests/e2e/playwright.config.ts
         env:
           CI: true
           VITE_API_BASE_URL: http://localhost:8001

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Search, Plus, Package } from 'lucide-react';
 import {
   IOSButton,
@@ -10,12 +10,13 @@ import SkillCard from '../components/skills/SkillCard';
 import type { SkillItem } from '../components/skills/SkillCard';
 import SkillDetail from '../components/skills/SkillDetail';
 import CreateSkillWizard from '../components/skills/CreateSkillWizard';
+import { API_PREFIX } from '../config/api';
 
 // ---------------------------------------------------------------------------
-// Mock data
+// Fallback data (used when API is unavailable)
 // ---------------------------------------------------------------------------
 
-const mockSkills: SkillItem[] = [
+const FALLBACK_SKILLS: SkillItem[] = [
   { id: '1', name: 'Brand Consistency', description: 'Evaluate visual consistency with brand guidelines including logo usage, typography, and color palette adherence.', tags: ['brand', 'design'], author: 'vulca', version: '1.0.0', upvotes: 42, downvotes: 3 },
   { id: '2', name: 'Audience Fit', description: 'Score content for target demographic appeal across 12 audience segments with cultural sensitivity.', tags: ['audience', 'marketing'], author: 'vulca', version: '1.0.0', upvotes: 38, downvotes: 5 },
   { id: '3', name: 'Trend Alignment', description: 'Match against current aesthetic trends with weekly sync from design trend databases.', tags: ['trends', 'design'], author: 'vulca', version: '1.0.0', upvotes: 29, downvotes: 2 },
@@ -35,22 +36,42 @@ const TAG_FILTERS = ['All', 'brand', 'design', 'audience', 'marketing', 'trends'
 // ---------------------------------------------------------------------------
 
 export default function SkillsPage() {
+  const [skills, setSkills] = useState<SkillItem[]>(FALLBACK_SKILLS);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [tagFilterIndex, setTagFilterIndex] = useState(0);
   const [selectedSkill, setSelectedSkill] = useState<SkillItem | null>(null);
   const [showCreate, setShowCreate] = useState(false);
 
+  // Fetch skills from API on mount
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`${API_PREFIX}/skills`);
+        if (!res.ok) throw new Error('API unavailable');
+        const data = (await res.json()) as SkillItem[];
+        if (!cancelled && data.length > 0) {
+          setSkills(data);
+        }
+      } catch {
+        // API unavailable — keep fallback data
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
   const activeTag = TAG_FILTERS[tagFilterIndex];
 
   const filteredSkills = useMemo(() => {
-    let result = mockSkills;
+    let result = skills;
 
-    // Filter by tag
     if (activeTag !== 'All') {
       result = result.filter((s) => s.tags.includes(activeTag));
     }
 
-    // Filter by search
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       result = result.filter(
@@ -63,7 +84,7 @@ export default function SkillsPage() {
     }
 
     return result;
-  }, [activeTag, searchQuery]);
+  }, [skills, activeTag, searchQuery]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white dark:from-black dark:via-gray-900 dark:to-black">
@@ -109,7 +130,11 @@ export default function SkillsPage() {
         </div>
 
         {/* Skills grid */}
-        {filteredSkills.length > 0 ? (
+        {loading ? (
+          <div className="flex justify-center py-16">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-600" />
+          </div>
+        ) : filteredSkills.length > 0 ? (
           <IOSCardGrid columns={3} gap="md">
             {filteredSkills.map((skill) => (
               <SkillCard

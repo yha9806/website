@@ -2,9 +2,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/common/Layout';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import RequireAdmin from './components/common/RequireAdmin';
 import { cacheUtils } from './services/api';
 import { useEffect, Suspense, lazy } from 'react';
-import { loadModelsPage, loadVulcaDemoPage, setupCriticalRoutePreload } from './routes/preloadCriticalRoutes';
+import { loadModelsPage, setupCriticalRoutePreload } from './routes/preloadCriticalRoutes';
 
 // Core pages - eagerly loaded
 import HomePage from './pages/HomePage';
@@ -26,8 +27,7 @@ const DemoConfirmationPage = lazy(() => import('./pages/DemoConfirmationPage'));
 // Solutions pages - lazy loaded
 const SolutionsPage = lazy(() => import('./pages/solutions/SolutionsPage'));
 
-// VULCA and Exhibitions - lazy loaded
-const VULCADemoPage = lazy(loadVulcaDemoPage);
+// Exhibitions - lazy loaded
 const ExhibitionsPage = lazy(() => import('./pages/exhibitions/ExhibitionsPage'));
 const ExhibitionDetailPage = lazy(() => import('./pages/exhibitions/ExhibitionDetailPage'));
 const ArtworkPage = lazy(() => import('./pages/exhibitions/ArtworkPage'));
@@ -223,9 +223,11 @@ function App() {
 
               {/* Admin Dashboard */}
               <Route path="/admin" element={
-                <Suspense fallback={<PageLoader text="Loading Admin..." />}>
-                  <AdminDashboardPage />
-                </Suspense>
+                <RequireAdmin>
+                  <Suspense fallback={<PageLoader text="Loading Admin..." />}>
+                    <AdminDashboardPage />
+                  </Suspense>
+                </RequireAdmin>
               } />
 
               {/* Exhibition Routes */}

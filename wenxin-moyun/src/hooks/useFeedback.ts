@@ -14,13 +14,6 @@ interface UseFeedbackReturn {
   reset: () => void;
 }
 
-/**
- * Custom hook for submitting evaluation feedback.
- *
- * Currently uses a mock implementation (resolves after 500ms) since the
- * backend endpoint may not be deployed yet. Once `/api/v1/feedback` is
- * available, remove the mock and uncomment the fetch call below.
- */
 export function useFeedback(): UseFeedbackReturn {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -37,36 +30,23 @@ export function useFeedback(): UseFeedbackReturn {
       setError(null);
 
       try {
-        // --- Mock implementation (remove when backend is ready) ---
-        await new Promise((resolve) => setTimeout(resolve, 500));
-
-        // Log for debugging during development
-        if (import.meta.env.DEV) {
-          // eslint-disable-next-line no-console
-          console.log('[useFeedback] submitted', {
-            url: `${API_PREFIX}/feedback`,
-            evaluationId,
+        const response = await fetch(`${API_PREFIX}/feedback`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer demo-key',
+          },
+          body: JSON.stringify({
+            evaluation_id: evaluationId,
             rating,
-            comment,
-            feedbackType,
-          });
-        }
+            comment: comment || '',
+            feedback_type: feedbackType || 'explicit',
+          }),
+        });
 
-        // --- Real implementation (uncomment when backend is ready) ---
-        // const response = await fetch(`${API_PREFIX}/feedback`, {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({
-        //     evaluation_id: evaluationId,
-        //     rating,
-        //     comment,
-        //     feedback_type: feedbackType,
-        //   }),
-        // });
-        //
-        // if (!response.ok) {
-        //   throw new Error(`Failed to submit feedback: ${response.statusText}`);
-        // }
+        if (!response.ok) {
+          throw new Error(`Failed to submit feedback: ${response.statusText}`);
+        }
 
         setIsSubmitted(true);
       } catch (err) {
