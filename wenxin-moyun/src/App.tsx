@@ -63,6 +63,9 @@ const CompareModelsPage = lazy(() => import('./pages/CompareModelsPage'));
 // Prototype pipeline - lazy loaded
 const PrototypePage = lazy(() => import('./pages/prototype/PrototypePage'));
 
+// Admin dashboard - lazy loaded
+const AdminDashboardPage = lazy(() => import('./pages/AdminDashboardPage'));
+
 // Reusable loading component
 function PageLoader({ text = 'Loading...' }: { text?: string }) {
   return (
@@ -317,6 +320,13 @@ function App() {
               <Route path="/knowledge-base" element={
                 <Suspense fallback={<PageLoader text="Loading Knowledge Base..." />}>
                   <KnowledgeBasePage />
+                </Suspense>
+              } />
+
+              {/* Admin Dashboard */}
+              <Route path="/admin" element={
+                <Suspense fallback={<PageLoader text="Loading Admin..." />}>
+                  <AdminDashboardPage />
                 </Suspense>
               } />
 
