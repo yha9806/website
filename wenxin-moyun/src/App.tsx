@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/common/Layout';
 import ErrorBoundary from './components/common/ErrorBoundary';
@@ -26,11 +26,8 @@ const DemoConfirmationPage = lazy(() => import('./pages/DemoConfirmationPage'));
 const PilotPage = lazy(() => import('./pages/PilotPage'));
 const ChangelogPage = lazy(() => import('./pages/ChangelogPage'));
 
-// Solutions pages - lazy loaded
+// Solutions pages - lazy loaded (sub-pages now rendered inline via tabs)
 const SolutionsPage = lazy(() => import('./pages/solutions/SolutionsPage'));
-const AILabSolutionPage = lazy(() => import('./pages/solutions/AILabSolutionPage'));
-const ResearchSolutionPage = lazy(() => import('./pages/solutions/ResearchSolutionPage'));
-const MuseumSolutionPage = lazy(() => import('./pages/solutions/MuseumSolutionPage'));
 
 // VULCA and Exhibitions - lazy loaded
 const VULCADemoPage = lazy(loadVulcaDemoPage);
@@ -170,21 +167,9 @@ function App() {
                   <SolutionsPage />
                 </Suspense>
               } />
-              <Route path="/solutions/ai-labs" element={
-                <Suspense fallback={<PageLoader text="Loading AI Labs Solution..." />}>
-                  <AILabSolutionPage />
-                </Suspense>
-              } />
-              <Route path="/solutions/research" element={
-                <Suspense fallback={<PageLoader text="Loading Research Solution..." />}>
-                  <ResearchSolutionPage />
-                </Suspense>
-              } />
-              <Route path="/solutions/museums" element={
-                <Suspense fallback={<PageLoader text="Loading Museums Solution..." />}>
-                  <MuseumSolutionPage />
-                </Suspense>
-              } />
+              <Route path="/solutions/ai-labs" element={<Navigate to="/solutions?tab=ai-labs" replace />} />
+              <Route path="/solutions/research" element={<Navigate to="/solutions?tab=research" replace />} />
+              <Route path="/solutions/museums" element={<Navigate to="/solutions?tab=museums" replace />} />
 
               {/* Public Demo / Models */}
               <Route path="/models" element={
