@@ -119,7 +119,7 @@ jobs:
             --min-instances 0 \
             --max-instances 3 \
             --set-env-vars "ENVIRONMENT=production,ENABLE_API_DOCS=true" \
-            --set-secrets "SECRET_KEY=secret-key:latest,DATABASE_URL=database-url:latest,GOOGLE_API_KEY=gemini-api-key:latest,VULCA_API_KEYS=vulca-api-keys:latest"
+            --set-secrets "SECRET_KEY=secret-key:latest,DATABASE_URL=supabase-database-url:latest,GOOGLE_API_KEY=gemini-api-key:latest,VULCA_API_KEYS=vulca-api-keys:latest"
 
       - name: Verify deployment
         run: |
