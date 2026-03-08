@@ -124,7 +124,7 @@ jobs:
           CI: true
           VITE_API_BASE_URL: http://localhost:8001
           VITE_ROUTER_MODE: hash
-        timeout-minutes: 10
+        timeout-minutes: 20
 
   # Job 2: Deploy frontend to Firebase Hosting
   # Backend is deployed automatically by Render on push
