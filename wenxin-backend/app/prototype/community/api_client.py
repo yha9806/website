@@ -112,6 +112,55 @@ class VulcaAPIClient:
             return resp.json()
 
     # ------------------------------------------------------------------
+    # Unified Create API
+    # ------------------------------------------------------------------
+
+    async def create_session(
+        self,
+        intent: str,
+        tradition: str = "default",
+        subject: str = "",
+        provider: str = "nb2",
+        user_type: str = "human",
+    ) -> dict:
+        """Call POST /api/v1/create (synchronous mode) and return the JSON response.
+
+        Falls back to POST /api/v1/evaluate/nocode if /create is unavailable.
+        """
+        body: dict = {
+            "intent": intent,
+            "tradition": tradition,
+            "subject": subject or intent,
+            "provider": provider,
+            "stream": False,
+            "user_type": user_type,
+        }
+
+        async with httpx.AsyncClient(timeout=120) as client:
+            try:
+                resp = await client.post(
+                    f"{self.base_url}/api/v1/create",
+                    json=body,
+                    headers=self._auth_headers(),
+                )
+                resp.raise_for_status()
+                return resp.json()
+            except (httpx.HTTPStatusError, httpx.ConnectError) as exc:
+                logger.debug("POST /create failed (%s), falling back to /evaluate/nocode", exc)
+                # Fallback: use nocode evaluate endpoint
+                fallback_body = {
+                    "intent": intent,
+                    "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/1280px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
+                }
+                resp = await client.post(
+                    f"{self.base_url}/api/v1/evaluate/nocode",
+                    json=fallback_body,
+                    headers=self._auth_headers(),
+                )
+                resp.raise_for_status()
+                return resp.json()
+
+    # ------------------------------------------------------------------
     # Skills API
     # ------------------------------------------------------------------
 

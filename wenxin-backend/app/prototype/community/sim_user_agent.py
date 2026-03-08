@@ -19,6 +19,7 @@ from dataclasses import dataclass, field
 
 from app.prototype.community.api_client import VulcaAPIClient
 from app.prototype.community.base_agent import BaseAgent
+from app.prototype.community.intent_templates import get_intents_for_tradition
 from app.prototype.community.personas import PERSONAS, Persona
 
 logger = logging.getLogger(__name__)
@@ -75,10 +76,16 @@ class SimUserAgent(BaseAgent):
         self.image_url = image_url
 
     # ------------------------------------------------------------------
-    # Core cycle
+    # Core cycles
     # ------------------------------------------------------------------
 
     async def run_cycle(self) -> dict:
+        """Execute one cycle — randomly picks evaluate or create mode (50/50)."""
+        if random.random() < 0.5:
+            return await self.run_create_cycle()
+        return await self._run_evaluate_cycle()
+
+    async def _run_evaluate_cycle(self) -> dict:
         """Execute one evaluate + feedback cycle."""
         intent = random.choice(self.persona.sample_intents)
         tradition = self.persona.evaluation_preferences.get("tradition", "default")
@@ -108,13 +115,13 @@ class SimUserAgent(BaseAgent):
                 feedback_type="implicit",
             )
         except Exception as exc:
-            # Feedback API (WU-08) may not be deployed yet — non-fatal.
-            logger.debug("Feedback submission failed (WU-08 may not be deployed): %s", exc)
+            logger.debug("Feedback submission failed: %s", exc)
             feedback_result = {"status": "skipped", "reason": str(exc)}
 
         # 4. Log & return
         summary = {
             "status": "ok",
+            "mode": "evaluate",
             "persona": self.persona.name,
             "intent": intent,
             "tradition": tradition,
@@ -123,5 +130,56 @@ class SimUserAgent(BaseAgent):
             "weighted_total": eval_result.get("weighted_total"),
             "feedback": feedback_result,
         }
-        self.log_action("run_cycle", summary)
+        self.log_action("run_evaluate_cycle", summary)
+        return summary
+
+    async def run_create_cycle(self) -> dict:
+        """Execute one full creation session via POST /api/v1/create."""
+        tradition = self.persona.evaluation_preferences.get("tradition", "default")
+        intents = get_intents_for_tradition(tradition)
+        intent = random.choice(intents)
+
+        # 1. Create session (mark as agent user)
+        try:
+            create_result = await self.client.create_session(
+                intent=intent,
+                tradition=tradition,
+                user_type="agent",
+            )
+        except Exception as exc:
+            self.log_action("create_error", {"intent": intent, "error": str(exc)})
+            return {"status": "error", "phase": "create", "error": str(exc)}
+
+        session_id = create_result.get("session_id", "unknown")
+
+        # 2. Decide rating based on persona tendency
+        rating = _pick_rating(self.persona.feedback_tendency)
+
+        # 3. Submit feedback (non-fatal if unavailable)
+        try:
+            feedback_result = await self.client.submit_feedback(
+                evaluation_id=session_id,
+                rating=rating,
+                comment=f"[sim-create] {intent}",
+                feedback_type="implicit",
+            )
+        except Exception as exc:
+            logger.debug("Feedback submission failed: %s", exc)
+            feedback_result = {"status": "skipped", "reason": str(exc)}
+
+        # 4. Log & return
+        summary = {
+            "status": "ok",
+            "mode": "create",
+            "persona": self.persona.name,
+            "intent": intent,
+            "tradition": tradition,
+            "session_id": session_id,
+            "rating": rating,
+            "weighted_total": create_result.get("weighted_total"),
+            "best_candidate_id": create_result.get("best_candidate_id"),
+            "total_rounds": create_result.get("total_rounds"),
+            "feedback": feedback_result,
+        }
+        self.log_action("run_create_cycle", summary)
         return summary

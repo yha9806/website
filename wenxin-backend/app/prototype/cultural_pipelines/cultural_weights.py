@@ -12,12 +12,18 @@ Hardcoded fallback retained for environments without PyYAML.
 
 from __future__ import annotations
 
+import json
 import logging
+import os
 
 from app.prototype.agents.critic_config import DIMENSIONS
 
 logger = logging.getLogger(__name__)
 
+# Path to the evolved context file produced by ContextEvolver
+_EVOLVED_CONTEXT_PATH = os.path.join(
+    os.path.dirname(__file__), os.pardir, "data", "evolved_context.json"
+)
 
 # ---------------------------------------------------------------------------
 # Hardcoded fallback (used only if YAML loading fails)
@@ -107,12 +113,48 @@ def _try_load_from_yaml() -> dict[str, dict[str, float]] | None:
     return None
 
 
+def _try_load_from_evolved_context() -> dict[str, dict[str, float]] | None:
+    """Attempt to load tradition weights from evolved_context.json.
+
+    Only returns data if the file has the ``tradition_weights`` key
+    (produced by ContextEvolver). Legacy formats are ignored.
+    """
+    try:
+        if not os.path.exists(_EVOLVED_CONTEXT_PATH):
+            return None
+        with open(_EVOLVED_CONTEXT_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        tw = data.get("tradition_weights")
+        if not isinstance(tw, dict) or not tw:
+            return None
+        logger.info(
+            "cultural_weights: loaded evolved weights for %d traditions (evolution #%d)",
+            len(tw), data.get("evolutions", 0),
+        )
+        return tw
+    except Exception as e:
+        logger.debug("cultural_weights: evolved_context loading failed (%s)", e)
+        return None
+
+
 def _get_weight_tables() -> dict[str, dict[str, float]]:
-    """Get weight tables, preferring YAML over hardcoded fallback."""
+    """Get weight tables: evolved_context > YAML > hardcoded fallback.
+
+    Evolved context weights are merged on top of base tables so that
+    traditions not yet evolved still have their base weights.
+    """
+    # Start with base tables (YAML or fallback)
     yaml_tables = _try_load_from_yaml()
-    if yaml_tables:
-        return yaml_tables
-    return _FALLBACK_WEIGHTS
+    base = yaml_tables if yaml_tables else dict(_FALLBACK_WEIGHTS)
+
+    # Overlay evolved weights if available
+    evolved = _try_load_from_evolved_context()
+    if evolved:
+        for tradition, weights in evolved.items():
+            if isinstance(weights, dict) and weights:
+                base[tradition] = weights
+
+    return base
 
 
 # All traditions that have weight tables

@@ -13,6 +13,7 @@
 import { useState, useCallback } from 'react';
 import { usePrototypePipeline } from '../../hooks/usePrototypePipeline';
 import type { CreateRunParams } from '../../hooks/usePrototypePipeline';
+import { API_PREFIX } from '../../config/api';
 import { IOSCard, IOSCardContent, IOSButton, IOSSegmentedControl, IOSAlert } from '../../components/ios';
 import { PROTOTYPE_DIM_LABELS } from '../../utils/vulca-dimensions';
 import type { PrototypeDimension } from '../../utils/vulca-dimensions';
@@ -30,6 +31,7 @@ import TopologyViewer from '../../components/prototype/TopologyViewer';
 
 // Newly extracted components
 import PlaygroundHeader from '../../components/prototype/PlaygroundHeader';
+import IntentBar from '../../components/prototype/IntentBar';
 import ScoutEvidenceCard from '../../components/prototype/ScoutEvidenceCard';
 import FixItPlanCard from '../../components/prototype/FixItPlanCard';
 import CriticRationaleCard from '../../components/prototype/CriticRationaleCard';
@@ -45,6 +47,8 @@ import ComparePanel from '../../components/prototype/ComparePanel';
 import TraditionBuilder from '../../components/prototype/TraditionBuilder';
 import TraditionExplorer from '../../components/prototype/TraditionExplorer';
 
+const PROTO_AUTH = { Authorization: 'Bearer demo-key' } as const;
+
 type PlaygroundMode = 'edit' | 'run' | 'build' | 'explore' | 'compare';
 
 function formatDimension(dim: string): string {
@@ -58,6 +62,10 @@ export default function PrototypePage() {
   const [mobileTab, setMobileTab] = useState(0);
   const [lastRunParams, setLastRunParams] = useState<RunConfigParams | null>(null);
 
+  // Evaluate result from IntentBar image upload
+  const [evaluateResult, setEvaluateResult] = useState<Record<string, unknown> | null>(null);
+  const [evaluateLoading, setEvaluateLoading] = useState(false);
+
   // M3: playground mode
   const [playgroundMode, setPlaygroundMode] = useState<PlaygroundMode>('edit');
   const [editorNodeParams, setEditorNodeParams] = useState<Record<string, Record<string, unknown>>>({});
@@ -69,6 +77,50 @@ export default function PrototypePage() {
       [nodeId]: { ...prev[nodeId], [paramId]: value },
     }));
   }, []);
+
+  const handleIntentSubmit = useCallback(async (intent: string, imageFile?: File) => {
+    setEvaluateResult(null);
+    if (imageFile) {
+      // Image provided → evaluate mode via POST /api/v1/create
+      setEvaluateLoading(true);
+      try {
+        const reader = new FileReader();
+        const base64 = await new Promise<string>((resolve, reject) => {
+          reader.onload = () => resolve((reader.result as string).split(',')[1] ?? '');
+          reader.onerror = reject;
+          reader.readAsDataURL(imageFile);
+        });
+        const res = await fetch(`${API_PREFIX}/create`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...PROTO_AUTH },
+          body: JSON.stringify({ intent, image_base64: base64, tradition: lastRunParams?.tradition || 'default' }),
+        });
+        if (res.ok) {
+          setEvaluateResult(await res.json());
+          setPlaygroundMode('run');
+        }
+      } finally {
+        setEvaluateLoading(false);
+      }
+    } else {
+      // No image → creation mode: fill subject and auto-start
+      const params: CreateRunParams = {
+        subject: intent,
+        tradition: lastRunParams?.tradition || 'default',
+        provider: lastRunParams?.provider || 'mock',
+        n_candidates: lastRunParams?.n_candidates || 4,
+        max_rounds: lastRunParams?.max_rounds || 3,
+        enable_hitl: false,
+        enable_agent_critic: true,
+        enable_parallel_critic: false,
+        use_graph: false,
+        template: 'default',
+      };
+      setLastRunParams({ ...params, template: 'default' } as RunConfigParams);
+      setPlaygroundMode('run');
+      startRun(params);
+    }
+  }, [lastRunParams, startRun]);
 
   const isRunning = state.status === 'running' || state.status === 'waiting_human';
   const isDone = state.status === 'completed' || state.status === 'failed';
@@ -149,6 +201,7 @@ export default function PrototypePage() {
 
   const handleReset = () => {
     setSelectedCandidateId(null);
+    setEvaluateResult(null);
     reset();
   };
 
@@ -184,15 +237,24 @@ export default function PrototypePage() {
         </div>
       </div>
 
-      <IOSCard variant="elevated" padding="md" animate={false}>
-        <IOSCardContent>
-          <RunConfigForm
-            onSubmit={handleStartRun}
-            disabled={isRunning}
-            initialValues={isDone ? lastRunParams ?? undefined : undefined}
-          />
-        </IOSCardContent>
-      </IOSCard>
+      {/* Quick intent bar */}
+      <IntentBar onSubmit={handleIntentSubmit} disabled={isRunning || evaluateLoading} />
+
+      {/* Detailed config (collapsible) */}
+      <details className="group">
+        <summary className="cursor-pointer text-xs font-medium text-gray-500 dark:text-gray-400 px-1 py-1 select-none">
+          Advanced Config
+        </summary>
+        <IOSCard variant="elevated" padding="md" animate={false}>
+          <IOSCardContent>
+            <RunConfigForm
+              onSubmit={handleStartRun}
+              disabled={isRunning}
+              initialValues={isDone ? lastRunParams ?? undefined : undefined}
+            />
+          </IOSCardContent>
+        </IOSCard>
+      </details>
 
       {state.taskId && (
         <IOSCard variant="elevated" padding="sm" animate={false}>
@@ -245,6 +307,45 @@ export default function PrototypePage() {
 
   const centerPanelContent = (
     <>
+      {/* Evaluate result (from IntentBar image upload) */}
+      {evaluateResult && (
+        <IOSCard variant="elevated" padding="md" animate={false}>
+          <IOSCardContent>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Evaluation Result</h3>
+            <div className="space-y-2 text-sm">
+              {evaluateResult.weighted_total != null && (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Weighted Total</span>
+                  <span className="font-mono font-semibold">{Number(evaluateResult.weighted_total).toFixed(2)}</span>
+                </div>
+              )}
+              {evaluateResult.summary ? (
+                <p className="text-gray-600 dark:text-gray-400 text-xs">{String(evaluateResult.summary)}</p>
+              ) : null}
+              {evaluateResult.scores && typeof evaluateResult.scores === 'object' ? (
+                <div className="grid grid-cols-2 gap-1 text-xs">
+                  {Object.entries(evaluateResult.scores as Record<string, number>).map(([dim, score]) => (
+                    <div key={dim} className="flex justify-between px-2 py-1 bg-gray-50 dark:bg-gray-800 rounded">
+                      <span className="text-gray-500">{dim.replace(/_/g, ' ')}</span>
+                      <span className="font-mono">{Number(score).toFixed(2)}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+              {evaluateResult.risk_level ? (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Risk</span>
+                  <span>{String(evaluateResult.risk_level)}</span>
+                </div>
+              ) : null}
+              <IOSButton variant="secondary" size="sm" onClick={() => setEvaluateResult(null)}>
+                Clear
+              </IOSButton>
+            </div>
+          </IOSCardContent>
+        </IOSCard>
+      )}
+
       {/* Candidate Gallery */}
       {state.candidates.length > 0 ? (
         <IOSCard variant="elevated" padding="md" animate={false}>

@@ -28,7 +28,7 @@ class DraftConfig:
     timeout_seconds: int = 120
     max_retries: int = 2
     seed_base: int = 42
-    provider: str = "mock"  # "mock" | "nb2" | "diffusers" | "koala"
+    provider: str = "nb2"  # "mock" | "nb2" | "diffusers" | "koala"
     api_key: str = ""  # Provider API key (e.g. GOOGLE_API_KEY)
     provider_model: str = ""  # Model ID override (e.g. "black-forest-labs/FLUX.1-schnell")
 

@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from datetime import datetime
+import asyncio
+import logging
 import os
 
 from app.core.config import settings
@@ -16,6 +18,8 @@ from app.prototype.skills.api.skill_routes import skill_api_router
 from app.prototype.skills.api.discussion_routes import discussion_router
 from app.prototype.skills.api.version_routes import version_router
 from app.prototype.evolution.evolution_routes import evolution_router
+from app.prototype.api.create_routes import create_router
+from app.prototype.digestion.routes import digestion_router
 # Temporarily disabled - requires sentence-transformers
 # from app.exhibition.api import router as exhibition_router
 
@@ -23,6 +27,29 @@ from app.prototype.evolution.evolution_routes import evolution_router
 IS_PRODUCTION = os.getenv("ENVIRONMENT") == "production"
 # B2B API clients need docs even in production — opt-in via env var
 ENABLE_API_DOCS = os.getenv("ENABLE_API_DOCS", "false").lower() in ("true", "1", "yes")
+
+# Digestion interval (default: 1 hour)
+DIGESTION_INTERVAL_SECONDS = int(os.getenv("DIGESTION_INTERVAL_SECONDS", "3600"))
+
+_digestion_logger = logging.getLogger("vulca.digestion")
+
+
+async def _periodic_digestion() -> None:
+    """Background task: run ContextEvolver.evolve() periodically."""
+    await asyncio.sleep(30)  # Initial delay to let the app fully start
+    while True:
+        try:
+            from app.prototype.digestion.context_evolver import ContextEvolver
+            evolver = ContextEvolver()
+            result = evolver.evolve()
+            _digestion_logger.info(
+                "Periodic digestion: %d actions, %d patterns, %d sessions (%s)",
+                len(result.actions), result.patterns_found,
+                result.sessions_analyzed, result.skipped_reason or "ok",
+            )
+        except Exception:
+            _digestion_logger.exception("Periodic digestion failed")
+        await asyncio.sleep(DIGESTION_INTERVAL_SECONDS)
 
 
 @asynccontextmanager
@@ -39,9 +66,20 @@ async def lifespan(app: FastAPI):
         print(f"WARNING: init_db failed: {type(e).__name__}: {e}")
         if not IS_PRODUCTION:
             raise
+
+    # Start periodic digestion background task
+    digestion_task = asyncio.create_task(_periodic_digestion())
+    print(f"Periodic digestion started (interval={DIGESTION_INTERVAL_SECONDS}s)")
+
     yield
+
     # Shutdown
     print("Shutting down...")
+    digestion_task.cancel()
+    try:
+        await digestion_task
+    except asyncio.CancelledError:
+        pass
 
 
 # Create FastAPI app with conditional API docs
@@ -122,6 +160,12 @@ app.include_router(version_router)
 
 # Include Evolution/Self-Evolution API
 app.include_router(evolution_router)
+
+# Include Unified Create API (creation + evaluation entry point)
+app.include_router(create_router)
+
+# Include Digestion System API
+app.include_router(digestion_router)
 
 # Include Exhibition router (Echoes and Returns)
 # Temporarily disabled - requires sentence-transformers

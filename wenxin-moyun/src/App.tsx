@@ -32,8 +32,8 @@ const ExhibitionsPage = lazy(() => import('./pages/exhibitions/ExhibitionsPage')
 const ExhibitionDetailPage = lazy(() => import('./pages/exhibitions/ExhibitionDetailPage'));
 const ArtworkPage = lazy(() => import('./pages/exhibitions/ArtworkPage'));
 
-// New integrated pages
-const EvaluatePage = lazy(() => import('./pages/EvaluatePage'));
+// EvaluatePage — superseded by /canvas (PrototypePage); kept for reference
+// const EvaluatePage = lazy(() => import('./pages/EvaluatePage'));
 const ResearchPage = lazy(() => import('./pages/ResearchPage'));
 const SkillsPage = lazy(() => import('./pages/SkillsPage'));
 const AdminDashboardPage = lazy(() => import('./pages/AdminDashboardPage'));
@@ -53,6 +53,9 @@ const CompareModelsPage = lazy(() => import('./pages/CompareModelsPage'));
 
 // Prototype pipeline - lazy loaded
 const PrototypePage = lazy(() => import('./pages/prototype/PrototypePage'));
+
+// CreatePage — superseded by /canvas (PrototypePage); kept for reference
+// const CreatePage = lazy(() => import('./pages/CreatePage'));
 
 // Reusable loading component
 function PageLoader({ text = 'Loading...' }: { text?: string }) {
@@ -190,22 +193,17 @@ function App() {
                 </Suspense>
               } />
 
-              {/* VULCA Demo → merged into /evaluate */}
-              <Route path="/vulca" element={<Navigate to="/evaluate" replace />} />
-
-              {/* Canvas (renamed from prototype) */}
+              {/* Canvas — unified creation/evaluation entry point */}
               <Route path="/canvas" element={
                 <Suspense fallback={<PageLoader text="Loading Canvas..." />}>
                   <PrototypePage />
                 </Suspense>
               } />
 
-              {/* Evaluate (NoCode) */}
-              <Route path="/evaluate" element={
-                <Suspense fallback={<PageLoader text="Loading Evaluate..." />}>
-                  <EvaluatePage />
-                </Suspense>
-              } />
+              {/* All creation/evaluation routes redirect to /canvas */}
+              <Route path="/create" element={<Navigate to="/canvas" replace />} />
+              <Route path="/evaluate" element={<Navigate to="/canvas" replace />} />
+              <Route path="/vulca" element={<Navigate to="/canvas" replace />} />
 
               {/* Research (merged academic pages) */}
               <Route path="/research" element={

@@ -16,6 +16,7 @@ class EventType(Enum):
     HUMAN_RECEIVED = "human_received"
     PIPELINE_COMPLETED = "pipeline_completed"
     PIPELINE_FAILED = "pipeline_failed"
+    SESSION_DIGEST = "session_digest"
 
 
 @dataclass
