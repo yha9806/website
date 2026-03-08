@@ -6,7 +6,7 @@ export default defineConfig({
   testDir: './specs',
   fullyParallel: false,  // CI标准：禁用并行以确保稳定性
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 1,  // CI标准：增加重试次数
+  retries: process.env.CI ? 0 : 1,  // CI: fail fast, no retries
   workers: 1,  // CI标准：单worker确保稳定性
   timeout: 60000,  // 增加到60秒以提高稳定性
   expect: {
