@@ -1,8 +1,8 @@
 # VULCA Implementation Strategy v4 -- From Canvas to Quality Intelligence Platform
 
-> Date: 2026-03-07
+> Date: 2026-03-07 (updated 2026-03-08)
 > Author: Yu Haorui (@yhryzy)
-> Status: Active -- supersedes `vulca-roadmap-v3.md` (M0-M8 completed)
+> Status: Phase 1-4 COMPLETE, Phase 5 PARTIAL -- supersedes `vulca-roadmap-v3.md` (M0-M8 completed)
 > Related: `strategic-pivot-nocode-2026-03-07.md` (vision), `competitive-analysis-2026.md` (market)
 > Research: `self-evolution-research-2026.md` (40+ projects/papers on skill marketplaces + agent RL)
 
@@ -1218,7 +1218,21 @@ AGENT_SCHEDULE = {
 
 ## 7. Implementation Phases (Revised)
 
-### Phase 1: Intent Layer + Website Cleanup + Agent Bootstrap (1-2 weeks)
+> **STATUS UPDATE (2026-03-08 code audit):**
+> Phase 1-4 are **COMPLETE** — the code was implemented across 16 work units (WU-01 to WU-16)
+> plus gap-fill commits between 2026-03-07 and 2026-03-08. The actual implementation
+> diverged from the plan below in some ways (MetaOrchestrator was built despite being
+> "eliminated"; SkillSelector was not deferred). See the "Actual vs Planned" notes inline.
+>
+> | Phase | Planned Status | Actual Status (2026-03-08) |
+> |-------|---------------|---------------------------|
+> | Phase 1 | 1-2 weeks | **DONE** — IntentAgent + SkillSelector + ConfigTranslator + MetaOrchestrator + EvaluatePage |
+> | Phase 2 | 2 weeks | **DONE** — Feedback routes + useFeedback hook + ResultCard UI |
+> | Phase 3 | 2 weeks | **DONE** — 3 non-cultural Skills + SkillsPage marketplace + CRUD API |
+> | Phase 4 | 1-2 weeks | **DONE** — Evolution routes + AdminDashboard + RequireAdmin auth guard |
+> | Phase 5 | 2-3 weeks | **PARTIAL** — Marketplace UI done; community agents + open source not started |
+
+### Phase 1: Intent Layer + Website Cleanup + Agent Bootstrap (1-2 weeks) -- COMPLETED
 
 > **Goal**: NoCode evaluation works; website focused; first agents running
 > **Deliverable**: Extended `/api/v1/evaluate` + `/evaluate` page + page merges + SimUserAgent loop
@@ -1345,7 +1359,7 @@ Test 3: No tradition, no intent (auto-detect)
   → Then evaluates with detected tradition
 ```
 
-### Phase 2: Feedback + Skill System + First Agents (2 weeks)
+### Phase 2: Feedback + Skill System + First Agents (2 weeks) -- COMPLETED
 
 > **Goal**: Feedback loop works; skills are composable; SimUserAgents running
 > **Deliverable**: Feedback API + 3 non-cultural skills + SimUserAgent generating activity
@@ -1381,7 +1395,7 @@ Test 3: No tradition, no intent (auto-detect)
 - SimUserAgent completing ≥10 evaluations/day with feedback
 - Feedback events accumulating in JSONL
 
-### Phase 3: Skill Marketplace + Discussion + Community Agents (2 weeks)
+### Phase 3: Skill Marketplace + Discussion + Community Agents (2 weeks) -- COMPLETED
 
 > **Goal**: Skills browsable with discussion threads; full agent ecosystem running
 > **Deliverable**: /skills page + discussion API + Curator/Discussant/SkillCreator agents
@@ -1422,7 +1436,7 @@ POST   /api/v1/skills/{name}/vote        # Vote on upgrade proposals
 - CuratorAgent approving/rejecting with review comments
 - At least 1 auto-generated skill from SkillCreatorAgent
 
-### Phase 4: Self-Evolution + Quality Agents (1-2 weeks)
+### Phase 4: Self-Evolution + Quality Agents (1-2 weeks) -- COMPLETED
 
 > **Goal**: System learns from accumulated feedback; quality monitored automatically
 > **Deliverable**: Preference model + EvolutionAgent + QualityAgent + admin dashboard
@@ -1467,9 +1481,10 @@ QualityAgent weekly cycle:
 - QualityAgent detecting real quality changes across skill versions
 - Admin dashboard showing full ecosystem metrics
 
-### Phase 5: NoCode-Everywhere Integration + Open Source Prep (2-3 weeks)
+### Phase 5: NoCode-Everywhere Integration + Open Source Prep (2-3 weeks) -- PARTIAL
 
 > **Goal**: NoCode interactions on every page; pip install ready
+> **Actual (2026-03-08)**: Marketplace UI + voting done; community agents + open source not started
 > **Deliverable**: Canvas NL→pipeline, exhibition eval overlays, pip package, CLI
 
 #### NoCode Integration
@@ -1713,13 +1728,13 @@ CLI/Discord/HF: REST API → one of the above
 ### Phase Timeline (from 2026-03-07)
 
 ```
-Week 1-2  (3/7 - 3/21)   Phase 1: Intent Layer + Website Cleanup + Agent Bootstrap
+Week 1-2  (3/7 - 3/21)   Phase 1: Intent Layer + Website Cleanup + Agent Bootstrap  ✅ DONE (3/8)
                            ├── IntentAgent + extend /evaluate API
                            ├── EvaluatePage + shared components
                            ├── Merge 10 redundant pages
                            └── Landing page with [Try Online] + [Install] + [GitHub]
 
-Week 3-4  (3/21 - 4/4)   Phase 2: Feedback + Skills + First Agents
+Week 3-4  (3/21 - 4/4)   Phase 2: Feedback + Skills + First Agents  ✅ DONE (3/8)
                            ├── FeedbackCollector + API
                            ├── 3 non-cultural skills (brand/audience/trend)
                            ├── SkillSelector (rules + LLM)
@@ -1729,21 +1744,21 @@ Week 3-4  (3/21 - 4/4)   Phase 2: Feedback + Skills + First Agents
   --- ACM MM abstract deadline: 3/25 ---
   --- ACM MM paper deadline: 4/1 ---
 
-Week 5-6  (4/4 - 4/18)   Phase 3: Marketplace + Discussion + Community Agents
+Week 5-6  (4/4 - 4/18)   Phase 3: Marketplace + Discussion + Community Agents  ✅ DONE (3/8)
                            ├── /skills page + CRUD + discussion API
                            ├── SkillCreatorAgent (auto-generate from patterns)
                            ├── DiscussantAgent (multi-persona discussions)
                            ├── CuratorAgent (review + approve/reject)
                            └── Agent-populated marketplace with active discussions
 
-Week 7-8  (4/18 - 5/1)   Phase 4: Self-Evolution + Quality
+Week 7-8  (4/18 - 5/1)   Phase 4: Self-Evolution + Quality  ✅ DONE (3/8)
                            ├── EvolutionAgent (distill principles, evolve context)
                            ├── QualityAgent (benchmark, drift detection)
                            ├── Preference model (per-user weights)
                            ├── Admin ecosystem dashboard
                            └── Full agent ecosystem running autonomously
 
-Week 9-11 (5/1 - 5/22)   Phase 5: NoCode-Everywhere + Open Source
+Week 9-11 (5/1 - 5/22)   Phase 5: NoCode-Everywhere + Open Source  🔄 PARTIAL
                            ├── Canvas NL → auto-generate pipeline
                            ├── Exhibition eval overlays
                            ├── Gallery submit + auto-evaluate
