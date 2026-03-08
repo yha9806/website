@@ -95,7 +95,7 @@ class PipelineOrchestrator:
         enable_prompt_enhancer: bool = False,
         enable_parallel_critic: bool = False,
     ) -> None:
-        self.d_cfg = draft_config or DraftConfig(provider="mock", n_candidates=4, seed_base=42)
+        self.d_cfg = draft_config or DraftConfig(provider="nb2", n_candidates=4, seed_base=42)
         self.cr_cfg = critic_config or CriticConfig()
         self.q_cfg = queen_config or QueenConfig()
         self.enable_hitl = enable_hitl
