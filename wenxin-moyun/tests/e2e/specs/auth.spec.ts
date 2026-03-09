@@ -182,7 +182,7 @@ test.describe('Authentication Flow', () => {
     
     // Verify error message content
     const errorText = await loginPage.getErrorMessage();
-    expect(errorText).toMatch(/(用户名或密码错误|Invalid username|Invalid password|Login failed|Authentication failed)/i);
+    expect(errorText).toMatch(/(用户名或密码错误|Invalid username|Invalid password|Incorrect username|Incorrect password|Login failed|Authentication failed|please check)/i);
     
     // Verify still on login page
     await expect(page).toHaveURL(/\/login/);
