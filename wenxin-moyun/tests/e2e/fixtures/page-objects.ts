@@ -129,7 +129,7 @@ export class LoginPage extends BasePage {
     this.usernameInput = page.locator('input[name="username"], input[id="username"], input[placeholder*="username"], input[placeholder*="Username"]');
     this.passwordInput = page.locator('input[name="password"], input[id="password"], input[type="password"], input[placeholder*="password"], input[placeholder*="Password"]');
     this.submitButton = page.locator('button[type="submit"], button:has-text("Sign In"), button:has-text("Signing in"), button:has-text("Login")');
-    this.errorMessage = page.locator('.bg-red-50.border.border-red-200, .text-red-700, .error-message, div:has-text("failed")');
+    this.errorMessage = page.locator('[role="alert"], .bg-red-50.border.border-red-200, .text-red-700, .error-message, div:has-text("failed")');
     this.guestModeButton = page.locator('button:has-text("Guest"), button:has-text("Continue as Guest"), button:has-text("Use admin account")');
     this.loginForm = page.locator('form, .glass-effect form');
     this.successMessage = page.locator('.success-message, text=/successfully/i, text=/signed in/i');
