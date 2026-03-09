@@ -579,6 +579,18 @@ export default function PrototypePage() {
         <FeedbackCollector
           sessionId={state.taskId}
           evaluationId={state.taskId}
+          candidateId={state.bestCandidateId ?? undefined}
+          tradition={lastRunParams?.tradition}
+          scoresSnapshot={
+            state.scoredCandidates.length > 0
+              ? Object.fromEntries(
+                  (state.scoredCandidates.find(sc => sc.candidate_id === state.bestCandidateId)
+                    ?? state.scoredCandidates[0]
+                  ).dimension_scores.map(ds => [ds.dimension, ds.score])
+                )
+              : undefined
+          }
+          onCreateAnother={handleReset}
         />
       )}
     </>

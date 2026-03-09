@@ -34,6 +34,9 @@ async def submit_feedback(
         feedback_type=req.feedback_type,
         timestamp=datetime.now(timezone.utc).isoformat(),
         api_key_hash=_hash_key(api_key),
+        candidate_id=req.candidate_id,
+        tradition=req.tradition,
+        scores_snapshot=req.scores_snapshot,
     )
     store = FeedbackStore.get()
     store.append(record)

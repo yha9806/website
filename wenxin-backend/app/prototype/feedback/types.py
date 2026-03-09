@@ -11,6 +11,9 @@ class FeedbackSubmit(BaseModel):
         default="explicit",
         description="implicit|explicit|knowledge|create",
     )
+    candidate_id: str = ""
+    tradition: str = ""
+    scores_snapshot: dict[str, float] | None = None
 
 
 class FeedbackRecord(BaseModel):
@@ -21,6 +24,9 @@ class FeedbackRecord(BaseModel):
     feedback_type: str
     timestamp: str
     api_key_hash: str = ""  # hashed for privacy
+    candidate_id: str = ""
+    tradition: str = ""
+    scores_snapshot: dict[str, float] | None = None
 
 
 class FeedbackStats(BaseModel):

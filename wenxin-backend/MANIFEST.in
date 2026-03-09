@@ -1,0 +1,12 @@
+include init_db.py
+include seed_prototype.py
+include README.md
+include LICENSE
+recursive-include app *.py *.yaml *.json *.jsonl *.txt
+recursive-include vulca *.py *.yaml
+recursive-include frontend/dist *
+prune tests
+prune scripts
+prune __pycache__
+global-exclude *.pyc
+global-exclude .DS_Store

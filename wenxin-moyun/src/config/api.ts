@@ -7,13 +7,23 @@
 
 const PRODUCTION_API_URL = 'https://wenxin-moyun-api-229980166599.asia-east1.run.app';
 
-const isProduction =
-  typeof window !== 'undefined' && window.location.hostname !== 'localhost';
+// Detect environment:
+// 1. Local app mode: served from backend (localhost but NOT Vite dev ports)
+// 2. Production: non-localhost hostname
+// 3. Vite dev: localhost on Vite ports (5173-5175)
+const isLocalApp = typeof window !== 'undefined'
+  && window.location.hostname === 'localhost'
+  && !['5173', '5174', '5175'].includes(window.location.port);
+
+const isProduction = typeof window !== 'undefined'
+  && window.location.hostname !== 'localhost';
 
 /** Base URL for the backend API (no trailing slash) */
-export const API_BASE_URL = isProduction
-  ? PRODUCTION_API_URL
-  : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001');
+export const API_BASE_URL = isLocalApp
+  ? `${window.location.protocol}//${window.location.host}`  // same-origin
+  : isProduction
+    ? PRODUCTION_API_URL
+    : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001');
 
 /** API version path segment */
 export const API_VERSION = import.meta.env.VITE_API_VERSION || 'v1';

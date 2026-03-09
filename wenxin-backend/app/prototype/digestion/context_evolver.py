@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -173,9 +174,19 @@ class ContextEvolver:
         return {"tradition_weights": {}, "version": 1, "evolutions": 0}
 
     def _save_context(self, context: dict) -> None:
-        """Save evolved context to JSON file."""
+        """Atomically save evolved context to avoid corruption on crash."""
         context["evolutions"] = context.get("evolutions", 0) + 1
         self._context_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(self._context_path, "w", encoding="utf-8") as f:
-            json.dump(context, f, indent=2, ensure_ascii=False)
+        dir_name = str(self._context_path.parent)
+        fd, tmp_path = tempfile.mkstemp(dir=dir_name, suffix=".tmp")
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                json.dump(context, f, indent=2, ensure_ascii=False)
+            os.replace(tmp_path, str(self._context_path))  # atomic on POSIX
+        except BaseException:
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+            raise
         logger.info("ContextEvolver: saved evolved context (evolution #%d)", context["evolutions"])

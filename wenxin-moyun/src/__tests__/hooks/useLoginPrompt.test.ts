@@ -8,9 +8,9 @@ const mockGetRemainingUsage = vi.fn(() => 3)
 const mockIsGuestMode = vi.fn(() => true)
 
 vi.mock('../../utils/guestSession', () => ({
-  hasReachedDailyLimit: (...args: unknown[]) => mockHasReachedDailyLimit(...args),
-  getRemainingUsage: (...args: unknown[]) => mockGetRemainingUsage(...args),
-  isGuestMode: (...args: unknown[]) => mockIsGuestMode(...args),
+  hasReachedDailyLimit: (...args: unknown[]) => mockHasReachedDailyLimit(...(args as [])),
+  getRemainingUsage: (...args: unknown[]) => mockGetRemainingUsage(...(args as [])),
+  isGuestMode: (...args: unknown[]) => mockIsGuestMode(...(args as [])),
 }))
 
 // Mock storageUtils

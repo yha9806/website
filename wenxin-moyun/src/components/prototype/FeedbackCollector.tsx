@@ -19,12 +19,16 @@ import { API_PREFIX } from '../../config/api';
 interface FeedbackCollectorProps {
   sessionId: string;
   evaluationId: string;
+  candidateId?: string;
+  tradition?: string;
+  scoresSnapshot?: Record<string, number>;
   onSubmit?: () => void;
+  onCreateAnother?: () => void;
 }
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 
-export default function FeedbackCollector({ sessionId, evaluationId, onSubmit }: FeedbackCollectorProps) {
+export default function FeedbackCollector({ sessionId, evaluationId, candidateId, tradition, scoresSnapshot, onSubmit, onCreateAnother }: FeedbackCollectorProps) {
   const [rating, setRating] = useState(0);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [comment, setComment] = useState('');
@@ -59,6 +63,9 @@ export default function FeedbackCollector({ sessionId, evaluationId, onSubmit }:
           rating: ratingLabel,
           comment: enrichedComment,
           feedback_type: 'explicit',
+          candidate_id: candidateId || '',
+          tradition: tradition || '',
+          scores_snapshot: scoresSnapshot || null,
         }),
       });
 
@@ -73,7 +80,7 @@ export default function FeedbackCollector({ sessionId, evaluationId, onSubmit }:
       setStatus('error');
       setErrorMessage(err instanceof Error ? err.message : 'Failed to submit feedback');
     }
-  }, [rating, comment, evaluationId, onSubmit]);
+  }, [rating, comment, evaluationId, candidateId, tradition, scoresSnapshot, onSubmit]);
 
   if (status === 'success') {
     return (
@@ -87,6 +94,13 @@ export default function FeedbackCollector({ sessionId, evaluationId, onSubmit }:
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               Thank you for your feedback!
             </p>
+            {onCreateAnother && (
+              <div className="mt-3">
+                <IOSButton variant="primary" size="sm" onClick={onCreateAnother}>
+                  Create Another
+                </IOSButton>
+              </div>
+            )}
           </div>
         </IOSCardContent>
       </IOSCard>

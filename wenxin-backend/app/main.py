@@ -1,5 +1,8 @@
+from pathlib import Path
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from datetime import datetime
@@ -240,59 +243,105 @@ async def deep_health_check():
         "components": components,
     }
 
-@app.get("/")
-async def root():
-    """Root endpoint - redirect to frontend"""
-    from fastapi.responses import HTMLResponse
-    html_content = f"""
-    <!DOCTYPE html>
-    <html lang="zh-CN">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>文心墨韵 - AI艺术创作评测平台</title>
-        <style>
-            body {{ 
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                margin: 0; padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white; text-align: center; min-height: 100vh; display: flex;
-                flex-direction: column; justify-content: center; align-items: center;
-            }}
-            .container {{ background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 1rem;
-                -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); max-width: 500px; }}
-            .logo {{ font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem; }}
-            .subtitle {{ font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; }}
-            .btn {{ display: inline-block; padding: 1rem 2rem; background: rgba(255,255,255,0.2);
-                color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600;
-                transition: all 0.3s; margin: 0.5rem; }}
-            .btn:hover {{ background: rgba(255,255,255,0.3); transform: translateY(-2px); }}
-            .api-info {{ margin-top: 2rem; font-size: 0.9rem; opacity: 0.8; }}
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="logo">🎨 文心墨韵</div>
-            <div class="subtitle">AI艺术创作评测平台</div>
-            <p>您正在访问后端API服务器</p>
-            
-            <a href="http://localhost:5173" class="btn">🚀 访问前端应用</a>
-            <a href="/docs" class="btn">📖 API文档</a>
-            
-            <div class="api-info">
-                <p><strong>API信息</strong></p>
-                <p>版本: {settings.APP_VERSION}</p>
-                <p>API根路径: {settings.API_V1_STR}</p>
-                <p>前端地址: <a href="http://localhost:5173" style="color: #FFD700;">http://localhost:5173</a></p>
+# --- Frontend Serving ---
+_frontend_dist = Path(__file__).parent.parent / "frontend" / "dist"
+
+if _frontend_dist.exists() and (_frontend_dist / "index.html").exists():
+    # SPA mode: serve React frontend (for `vulca serve` local app mode)
+    _assets_dir = _frontend_dist / "assets"
+    if _assets_dir.exists():
+        app.mount(
+            "/_assets",
+            StaticFiles(directory=str(_assets_dir)),
+            name="frontend-assets",
+        )
+
+    @app.get("/", include_in_schema=False)
+    async def spa_root():
+        return FileResponse(
+            str(_frontend_dist / "index.html"), media_type="text/html"
+        )
+
+    @app.get("/favicon.ico", include_in_schema=False)
+    async def favicon():
+        fav = _frontend_dist / "favicon.ico"
+        if fav.exists():
+            return FileResponse(str(fav), media_type="image/x-icon")
+        return Response(content=b"", media_type="image/x-icon")
+
+    @app.api_route("/{path:path}", methods=["GET"], include_in_schema=False)
+    async def spa_catchall(request: Request, path: str):
+        # Don't intercept API routes, docs, health, or static files
+        if path.startswith((
+            "api/", "docs", "redoc", "openapi", "health",
+            "static", "_assets", "favicon.ico",
+        )):
+            return JSONResponse({"detail": "Not Found"}, status_code=404)
+
+        # Try to serve the exact file if it exists (e.g., images, fonts)
+        file_path = _frontend_dist / path
+        if file_path.is_file() and ".." not in path:
+            return FileResponse(str(file_path))
+
+        # Otherwise serve index.html for SPA routing
+        return FileResponse(
+            str(_frontend_dist / "index.html"), media_type="text/html"
+        )
+
+    print(f"SPA frontend mounted from {_frontend_dist}")
+
+else:
+    # API-only mode: show info page
+    @app.get("/")
+    async def root():
+        """Root endpoint - redirect to frontend"""
+        html_content = f"""
+        <!DOCTYPE html>
+        <html lang="zh-CN">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>VULCA - AI Art Evaluation Platform</title>
+            <style>
+                body {{
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    margin: 0; padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white; text-align: center; min-height: 100vh; display: flex;
+                    flex-direction: column; justify-content: center; align-items: center;
+                }}
+                .container {{ background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 1rem;
+                    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); max-width: 500px; }}
+                .logo {{ font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem; }}
+                .subtitle {{ font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; }}
+                .btn {{ display: inline-block; padding: 1rem 2rem; background: rgba(255,255,255,0.2);
+                    color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600;
+                    transition: all 0.3s; margin: 0.5rem; }}
+                .btn:hover {{ background: rgba(255,255,255,0.3); transform: translateY(-2px); }}
+                .api-info {{ margin-top: 2rem; font-size: 0.9rem; opacity: 0.8; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="logo">VULCA</div>
+                <div class="subtitle">AI Art Evaluation Platform</div>
+                <p>You are accessing the backend API server</p>
+
+                <a href="http://localhost:5173" class="btn">Frontend App</a>
+                <a href="/docs" class="btn">API Docs</a>
+
+                <div class="api-info">
+                    <p><strong>API Info</strong></p>
+                    <p>Version: {settings.APP_VERSION}</p>
+                    <p>API Root: {settings.API_V1_STR}</p>
+                    <p>Frontend: <a href="http://localhost:5173" style="color: #FFD700;">http://localhost:5173</a></p>
+                </div>
             </div>
-        </div>
-    </body>
-    </html>
-    """
-    return HTMLResponse(content=html_content, status_code=200)
+        </body>
+        </html>
+        """
+        return HTMLResponse(content=html_content, status_code=200)
 
-
-@app.get("/favicon.ico")
-async def favicon():
-    """Return empty favicon to avoid 404 errors"""
-    from fastapi.responses import Response
-    return Response(content=b"", media_type="image/x-icon")
+    @app.get("/favicon.ico")
+    async def favicon():
+        """Return empty favicon to avoid 404 errors"""
+        return Response(content=b"", media_type="image/x-icon")
