@@ -21,6 +21,8 @@ logger = logging.getLogger(__name__)
 
 __all__ = [
     "ImageScorer",
+    "_get_references_dynamic",
+    "_LEGACY_TRADITION_REFERENCES",
 ]
 
 # CLIP cosine similarity typically ranges [0.15, 0.35] for art images.
@@ -30,7 +32,7 @@ _CLIP_HIGH = 0.35  # maps to 1.0
 
 # Tradition-specific reference texts for CLIP scoring.
 # English descriptions capturing visual essence (CLIP trained on EN image-text pairs).
-_TRADITION_REFERENCES: dict[str, dict[str, str]] = {
+_LEGACY_TRADITION_REFERENCES: dict[str, dict[str, str]] = {
     "chinese_xieyi": {
         "L1": "Chinese ink wash painting with mountains mist and pine trees",
         "L3": "traditional Chinese shanshui landscape art with calligraphy seal",
@@ -75,6 +77,45 @@ _TRADITION_REFERENCES: dict[str, dict[str, str]] = {
 
 # Quality reference text for L2 technical assessment
 _QUALITY_REF = "high quality detailed professional artwork, sharp clear well-composed"
+
+
+def _get_references_dynamic(tradition: str) -> dict[str, str]:
+    """Dynamic CLIP reference text lookup: YAML → Legacy fallback."""
+    try:
+        from app.prototype.cultural_pipelines.tradition_loader import get_tradition
+
+        tc = get_tradition(tradition)
+        if tc and tc.terminology:
+            # Group terms by L-level
+            by_level: dict[str, list[str]] = {"L1": [], "L3": [], "L5": []}
+            for term in tc.terminology:
+                for lvl in term.l_levels:
+                    if lvl in by_level:
+                        by_level[lvl].append(term.term)
+
+            # Build reference texts if we have enough data
+            refs: dict[str, str] = {}
+            display_name = tc.display_name.get("en", tradition.replace("_", " "))
+            if by_level["L1"]:
+                refs["L1"] = f"{display_name} artwork with {', '.join(by_level['L1'][:4])}"
+            if by_level["L3"]:
+                refs["L3"] = f"traditional {display_name} art with {', '.join(by_level['L3'][:4])}"
+            if by_level["L5"]:
+                refs["L5"] = f"{display_name} art with {', '.join(by_level['L5'][:4])} and spiritual depth"
+
+            if len(refs) >= 2:  # Need at least L1 + one other
+                # Fill in missing levels with defaults
+                if "L1" not in refs:
+                    refs["L1"] = f"{display_name} artwork"
+                if "L3" not in refs:
+                    refs["L3"] = f"traditional {display_name} cultural art"
+                if "L5" not in refs:
+                    refs["L5"] = f"{display_name} art with aesthetic depth"
+                return refs
+    except Exception:
+        pass
+
+    return _LEGACY_TRADITION_REFERENCES.get(tradition, _LEGACY_TRADITION_REFERENCES["default"])
 
 
 def _normalize_clip(raw: float) -> float:
@@ -153,9 +194,7 @@ class ImageScorer:
             logger.debug("Image not found for scoring: %s", image_path)
             return None
 
-        refs = _TRADITION_REFERENCES.get(
-            cultural_tradition, _TRADITION_REFERENCES["default"]
-        )
+        refs = _get_references_dynamic(cultural_tradition)
 
         try:
             from PIL import Image

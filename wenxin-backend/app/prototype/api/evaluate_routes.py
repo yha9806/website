@@ -49,12 +49,28 @@ _DIM_TO_LABEL: dict[str, str] = {
 }
 _LABEL_TO_DIM = {v: k for k, v in _DIM_TO_LABEL.items()}
 
-# 9 known traditions
-_TRADITIONS = [
+# Legacy static tradition list (fallback)
+_LEGACY_TRADITIONS = [
     "default", "chinese_xieyi", "chinese_gongbi", "western_academic",
     "islamic_geometric", "japanese_traditional", "watercolor",
     "african_traditional", "south_asian",
 ]
+
+
+def _get_traditions() -> list[str]:
+    """Dynamic tradition list: YAML loader -> Legacy fallback."""
+    try:
+        from app.prototype.cultural_pipelines.tradition_loader import get_all_traditions
+        traditions = sorted(get_all_traditions().keys())
+        if traditions:
+            return traditions
+    except Exception:
+        pass
+    return _LEGACY_TRADITIONS
+
+
+# Keep _TRADITIONS as a backward-compatible reference
+_TRADITIONS = _LEGACY_TRADITIONS
 
 
 # ── GET /api/v1/knowledge-base ─────────────────────────────────
@@ -94,6 +110,7 @@ async def get_knowledge_base() -> KnowledgeBaseResponse:
         CulturalPipelineRouter,
         _TRADITION_TO_VARIANT,
         _VARIANTS,
+        _get_variant_dynamic,
     )
 
     # 1. Load raw data
@@ -115,7 +132,7 @@ async def get_knowledge_base() -> KnowledgeBaseResponse:
     total_taboos = 0
     tradition_entries: list[TraditionEntry] = []
 
-    for tradition in _TRADITIONS:
+    for tradition in _get_traditions():
         # Terms
         tradition_terms_raw = terms_by_tradition.get(tradition, {}).get("terms", [])
         term_items = [TermItem(**t) for t in tradition_terms_raw]
@@ -130,7 +147,7 @@ async def get_knowledge_base() -> KnowledgeBaseResponse:
         weights = weight_tables.get(tradition, weight_tables.get("default", {}))
 
         # Pipeline variant
-        variant_name = _TRADITION_TO_VARIANT.get(tradition, "default")
+        variant_name = _get_variant_dynamic(tradition)
         variant = _VARIANTS.get(variant_name, _VARIANTS["default"])
         pipeline_info = PipelineVariantInfo(
             variant_name=variant.name,
@@ -154,7 +171,7 @@ async def get_knowledge_base() -> KnowledgeBaseResponse:
     unique_taboo_count = len(taboo_rules_raw)
 
     summary = KnowledgeBaseSummary(
-        total_traditions=len(_TRADITIONS),
+        total_traditions=len(_get_traditions()),
         total_terms=total_terms,
         total_taboo_rules=unique_taboo_count,
     )
@@ -397,7 +414,7 @@ async def identify_tradition(
             raise HTTPException(status_code=503, detail="VLM service unavailable")
 
         # Direct VLM call with tradition-identification prompt (not score_image)
-        tradition_list = ", ".join(t for t in _TRADITIONS if t != "default")
+        tradition_list = ", ".join(t for t in _get_traditions() if t != "default")
         try:
             result_text = await _call_vlm_tradition(vlm, tmp_path, tradition_list)
         except Exception:
@@ -422,9 +439,9 @@ async def identify_tradition(
                 )
 
         # Validate tradition is known
-        if tradition not in _TRADITIONS:
+        if tradition not in _get_traditions():
             tradition_lower = tradition.lower().replace(" ", "_")
-            for t in _TRADITIONS:
+            for t in _get_traditions():
                 if tradition_lower in t or t in tradition_lower:
                     tradition = t
                     break

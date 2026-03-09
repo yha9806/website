@@ -31,6 +31,8 @@ class SkillDef:
     input_types: list[str] = field(default_factory=lambda: ["image"])
     output_schema: dict = field(default_factory=dict)
     config: dict = field(default_factory=dict)  # skill-specific config
+    skill_type: str = "evaluation"  # "evaluation" | "tradition" | "custom"
+    tradition_config: dict = field(default_factory=dict)  # only for tradition-type skills
 
 
 @dataclass

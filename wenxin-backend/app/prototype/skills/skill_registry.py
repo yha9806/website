@@ -120,6 +120,53 @@ class SkillRegistry:
             if self.load_from_yaml(path) is not None:
                 count += 1
 
+        # Also discover tradition YAML configs as skills
+        tradition_count = self.auto_discover_traditions()
+        count += tradition_count
+
         self._loaded = True
         logger.info("Auto-discovered %d skills from %s", count, target)
         return count
+
+    def auto_discover_traditions(self) -> int:
+        """Load tradition YAML configs and register them as tradition-type Skills.
+
+        Returns the number of tradition skills registered.
+        """
+        try:
+            from app.prototype.cultural_pipelines.tradition_loader import get_all_traditions
+            traditions = get_all_traditions()
+        except Exception as e:
+            logger.warning("Could not load traditions for skill registry: %s", e)
+            return 0
+
+        count = 0
+        for name, tc in traditions.items():
+            display = tc.display_name.get("en", name)
+            skill = SkillDef(
+                name=f"tradition_{name}",
+                description=f"Cultural tradition: {display}",
+                version="1.0.0",
+                author="vulca-traditions",
+                tags=["tradition", "cultural", name],
+                input_types=["image"],
+                config={"weights": tc.weights_l},
+                skill_type="tradition",
+                tradition_config={
+                    "name": name,
+                    "display_name": tc.display_name,
+                    "weights": tc.weights_l,
+                    "term_count": len(tc.terminology),
+                    "taboo_count": len(tc.taboos),
+                    "pipeline_variant": tc.pipeline.variant,
+                },
+            )
+            self.register(skill)
+            count += 1
+
+        logger.info("Registered %d tradition skills", count)
+        return count
+
+    def list_by_type(self, skill_type: str) -> list[SkillDef]:
+        """Return all skills of a given type."""
+        return [s for s in self._skills.values() if s.skill_type == skill_type]

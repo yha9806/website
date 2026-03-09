@@ -57,6 +57,15 @@ class SessionDigest:
     # Feedback (filled post-session)
     feedback: list[dict] = field(default_factory=list)
 
+    # Cultural features (extracted post-session)
+    cultural_features: dict[str, float] = field(default_factory=dict)
+    critic_insights: list[str] = field(default_factory=list)
+
+    # Implicit feedback signals
+    candidate_choice_index: int = -1
+    time_to_select_ms: int = 0
+    downloaded: bool = False
+
     # Metadata
     total_rounds: int = 0
     total_latency_ms: int = 0
@@ -79,6 +88,11 @@ class SessionDigest:
             "risk_flags": self.risk_flags,
             "recommendations": self.recommendations,
             "feedback": self.feedback,
+            "cultural_features": self.cultural_features,
+            "critic_insights": self.critic_insights,
+            "candidate_choice_index": self.candidate_choice_index,
+            "time_to_select_ms": self.time_to_select_ms,
+            "downloaded": self.downloaded,
             "total_rounds": self.total_rounds,
             "total_latency_ms": self.total_latency_ms,
             "total_cost_usd": self.total_cost_usd,

@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
-from datetime import datetime
+from datetime import datetime, timezone
 import asyncio
 import logging
 import os
@@ -180,7 +180,7 @@ async def health_check():
     """Health check endpoint for deployment readiness"""
     return {
         "status": "healthy",
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "service": "wenxin-backend",
         "version": settings.APP_VERSION,
         "environment": os.getenv("ENVIRONMENT", "development"),
@@ -236,7 +236,7 @@ async def deep_health_check():
 
     return {
         "status": "healthy" if all_ok else "degraded",
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "service": "wenxin-backend",
         "version": settings.APP_VERSION,
         "environment": os.getenv("ENVIRONMENT", "development"),

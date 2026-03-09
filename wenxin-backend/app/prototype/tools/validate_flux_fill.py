@@ -15,6 +15,7 @@ Usage:
   # With live API (needs FAL_KEY)
   python3 -m app.prototype.tools.validate_flux_fill --with-api
 """
+# DEPRECATED: FLUX Fill removed in M0 Gemini migration. Tests retained for reference.
 
 from __future__ import annotations
 

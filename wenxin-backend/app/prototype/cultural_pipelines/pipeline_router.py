@@ -81,7 +81,7 @@ _VARIANTS: dict[str, PipelineVariant] = {
 # Tradition → pipeline variant mapping
 # ---------------------------------------------------------------------------
 
-_TRADITION_TO_VARIANT: dict[str, str] = {
+_LEGACY_TRADITION_TO_VARIANT: dict[str, str] = {
     "default": "default",
     "chinese_xieyi": "chinese_xieyi",
     "chinese_gongbi": "default",       # gongbi uses full pipeline with its own weights
@@ -92,6 +92,22 @@ _TRADITION_TO_VARIANT: dict[str, str] = {
     "african_traditional": "default",
     "south_asian": "default",
 }
+
+# Backward-compatible alias — test_cultural_router.py and evaluate_routes.py
+# import _TRADITION_TO_VARIANT directly.
+_TRADITION_TO_VARIANT = _LEGACY_TRADITION_TO_VARIANT
+
+
+def _get_variant_dynamic(tradition: str) -> str:
+    """Dynamic variant lookup: YAML → Legacy fallback."""
+    try:
+        from app.prototype.cultural_pipelines.tradition_loader import get_tradition
+        tc = get_tradition(tradition)
+        if tc and tc.pipeline:
+            return tc.pipeline.variant
+    except Exception:
+        pass
+    return _LEGACY_TRADITION_TO_VARIANT.get(tradition, "default")
 
 
 # ---------------------------------------------------------------------------
@@ -112,7 +128,7 @@ class CulturalPipelineRouter:
 
     def route(self, tradition: str) -> PipelineRoute:
         """Determine the pipeline route for a given tradition."""
-        variant_name = _TRADITION_TO_VARIANT.get(tradition, "default")
+        variant_name = _get_variant_dynamic(tradition)
         variant = _VARIANTS.get(variant_name, _VARIANTS["default"])
 
         weights = get_weights(tradition)
@@ -139,7 +155,13 @@ class CulturalPipelineRouter:
     @staticmethod
     def list_traditions() -> list[str]:
         """Return all traditions with explicit routing rules."""
-        return sorted(_TRADITION_TO_VARIANT.keys())
+        try:
+            from app.prototype.cultural_pipelines.tradition_loader import get_all_traditions
+            dynamic = set(get_all_traditions().keys())
+        except Exception:
+            dynamic = set()
+        static = set(_LEGACY_TRADITION_TO_VARIANT.keys())
+        return sorted(static | dynamic)
 
 
 @dataclass

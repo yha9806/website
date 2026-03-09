@@ -11,6 +11,8 @@ Usage::
 
 Exit code 0 = ALL CHECKS PASSED, 1 = failures detected.
 """
+# DEPRECATED: M0 Gemini migration complete. TogetherFluxProvider tests retained
+# for reference. New provider validation should use NB2Provider.
 
 from __future__ import annotations
 

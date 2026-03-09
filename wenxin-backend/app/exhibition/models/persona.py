@@ -2,7 +2,7 @@
 Persona data model for AI dialogue generation
 """
 from typing import List, Dict, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class Persona(BaseModel):
@@ -19,28 +19,27 @@ class Persona(BaseModel):
     sample_phrases: List[str] = Field(default_factory=list)
     system_prompt: str
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "id": "su_shi",
-                "name": "Su Shi",
-                "name_cn": "苏轼",
-                "type": "real",
-                "era": "Northern Song Dynasty (1037-1101)",
-                "region": "China",
-                "description": "Renowned Chinese poet, writer, painter, and calligrapher",
-                "style": "Values spiritual resonance over physical likeness",
-                "attributes": {
-                    "philosophy": 0.9,
-                    "emotion": 0.85,
-                    "tradition": 0.8
-                },
-                "sample_phrases": [
-                    "The form may be imperfect, but the spirit must be whole."
-                ],
-                "system_prompt": "You are Su Shi, evaluating contemporary art..."
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "id": "su_shi",
+            "name": "Su Shi",
+            "name_cn": "苏轼",
+            "type": "real",
+            "era": "Northern Song Dynasty (1037-1101)",
+            "region": "China",
+            "description": "Renowned Chinese poet, writer, painter, and calligrapher",
+            "style": "Values spiritual resonance over physical likeness",
+            "attributes": {
+                "philosophy": 0.9,
+                "emotion": 0.85,
+                "tradition": 0.8
+            },
+            "sample_phrases": [
+                "The form may be imperfect, but the spirit must be whole."
+            ],
+            "system_prompt": "You are Su Shi, evaluating contemporary art..."
         }
+    })
 
 
 # Predefined personas from EMNLP2025-VULCA project

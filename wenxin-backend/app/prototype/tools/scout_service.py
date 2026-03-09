@@ -320,7 +320,7 @@ class ScoutService:
 # Tradition-specific mappings for EvidencePack construction
 # ---------------------------------------------------------------------------
 
-_COMPOSITION_MAP: dict[str, list[dict]] = {
+_LEGACY_COMPOSITION_MAP: dict[str, list[dict]] = {
     "chinese_xieyi": [
         {"description": "留白 — intentional empty space for qi flow",
          "spatial_strategy": "asymmetric_balance",
@@ -353,7 +353,7 @@ _COMPOSITION_MAP: dict[str, list[dict]] = {
     ],
 }
 
-_STYLE_MAP: dict[str, list[dict]] = {
+_LEGACY_SCOUT_STYLE_MAP: dict[str, list[dict]] = {
     "chinese_xieyi": [
         {"attribute": "brush_texture", "value": "dry brush with visible fiber strokes on rice paper"},
         {"attribute": "color_palette", "value": "monochrome ink wash with subtle grey gradations"},
@@ -381,8 +381,51 @@ _STYLE_MAP: dict[str, list[dict]] = {
 }
 
 
+def _get_composition_dynamic(tradition: str) -> list[dict]:
+    """Dynamic composition lookup with 2-tier fallback: YAML → Legacy."""
+    try:
+        from app.prototype.cultural_pipelines.tradition_loader import get_tradition
+        tc = get_tradition(tradition)
+        if tc and tc.terminology:
+            comps = []
+            for term in tc.terminology:
+                if term.category in ("composition", "form"):
+                    defn = term.definition if isinstance(term.definition, str) else str(term.definition)
+                    comps.append({
+                        "description": f"{term.term_zh or term.term} — {defn[:80]}",
+                        "spatial_strategy": "dynamic",
+                        "example_prompt_fragment": f"{term.term}, {defn[:60]}",
+                    })
+            if comps:
+                return comps
+    except Exception:
+        pass
+    return _LEGACY_COMPOSITION_MAP.get(tradition, [])
+
+
+def _get_style_dynamic(tradition: str) -> list[dict]:
+    """Dynamic style constraint lookup with 2-tier fallback: YAML → Legacy."""
+    try:
+        from app.prototype.cultural_pipelines.tradition_loader import get_tradition
+        tc = get_tradition(tradition)
+        if tc and tc.terminology:
+            styles = []
+            for term in tc.terminology:
+                if term.category in ("technique", "material", "color"):
+                    defn = term.definition if isinstance(term.definition, str) else str(term.definition)
+                    styles.append({
+                        "attribute": term.category,
+                        "value": f"{term.term}: {defn[:80]}",
+                    })
+            if styles:
+                return styles
+    except Exception:
+        pass
+    return _LEGACY_SCOUT_STYLE_MAP.get(tradition, [])
+
+
 def _get_composition_references(tradition: str) -> list[CompositionReference]:
-    entries = _COMPOSITION_MAP.get(tradition, [])
+    entries = _get_composition_dynamic(tradition)
     return [
         CompositionReference(
             description=e["description"],
@@ -394,7 +437,7 @@ def _get_composition_references(tradition: str) -> list[CompositionReference]:
 
 
 def _get_style_constraints(tradition: str) -> list[StyleConstraint]:
-    entries = _STYLE_MAP.get(tradition, [])
+    entries = _get_style_dynamic(tradition)
     return [
         StyleConstraint(
             attribute=e["attribute"],

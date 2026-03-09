@@ -2,11 +2,11 @@
 # Daily validation runner for Step 2 VULCA prototype.
 #
 # Usage:
-#   TOGETHER_API_KEY=... bash tools/run_daily.sh together_flux d01
+#   GOOGLE_API_KEY=... bash tools/run_daily.sh nb2 d01
 #   bash tools/run_daily.sh mock d00
 #
 # Arguments:
-#   $1  provider   "mock" or "together_flux" (default: mock)
+#   $1  provider   "mock" or "nb2" (default: mock)
 #   $2  day_label  e.g. "d01", "d02" (default: d00)
 
 set -euo pipefail
@@ -31,9 +31,9 @@ FAIL=0
 # --- Step 1: Provider validation ---
 echo ""
 echo "[1/4] Provider validation..."
-if [ "$PROVIDER" = "together_flux" ]; then
-    if [ -z "${TOGETHER_API_KEY:-}" ]; then
-        echo "  ERROR: TOGETHER_API_KEY not set"
+if [ "$PROVIDER" = "nb2" ]; then
+    if [ -z "${GOOGLE_API_KEY:-}" ]; then
+        echo "  ERROR: GOOGLE_API_KEY not set"
         exit 1
     fi
     if ! python3 "$SCRIPT_DIR/validate_provider_real.py" 2>&1 | tail -5; then
@@ -61,7 +61,7 @@ echo ""
 echo "[3/4] Benchmark run..."
 OUTPUT_JSON="$REPORTS_DIR/bench-$DAY-$PROVIDER.json"
 BENCH_ARGS="--provider $PROVIDER --output $OUTPUT_JSON"
-if [ "$PROVIDER" = "together_flux" ]; then
+if [ "$PROVIDER" = "nb2" ]; then
     BENCH_ARGS="$BENCH_ARGS --steps 4 --width 256 --height 256"
 fi
 if ! python3 "$SCRIPT_DIR/run_benchmark.py" $BENCH_ARGS 2>&1; then

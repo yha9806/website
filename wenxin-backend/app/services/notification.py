@@ -8,7 +8,7 @@ Supports:
 """
 import httpx
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from app.core.config import settings
 
@@ -97,7 +97,7 @@ class LeadNotificationService:
             }.get(source_page, source_page)
 
             # Build message content
-            timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+            timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
             # Determine if it's Discord or Slack based on URL pattern
             is_discord = "discord" in self.webhook_url.lower()

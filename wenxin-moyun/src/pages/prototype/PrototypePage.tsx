@@ -115,6 +115,7 @@ export default function PrototypePage() {
       const params: CreateRunParams = {
         subject: intent,
         tradition: lastRunParams?.tradition || 'default',
+        cultural_intent: lastRunParams?.cultural_intent || '',
         provider: lastRunParams?.provider || 'mock',
         n_candidates: lastRunParams?.n_candidates || 4,
         max_rounds: lastRunParams?.max_rounds || 3,

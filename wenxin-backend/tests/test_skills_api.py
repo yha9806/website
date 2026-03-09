@@ -420,3 +420,42 @@ class TestAuthEdgeCases:
         # GET single — 404 is expected (no skill exists), not 401
         resp_single = client.get("/api/v1/skills/nonexistent")
         assert resp_single.status_code == 404
+
+
+# ===========================================================================
+# Tests: Tradition Skills (WU-13)
+# ===========================================================================
+
+class TestTraditionSkills:
+    """Test tradition auto-discovery as skills."""
+
+    def test_skill_type_field_default(self):
+        from app.prototype.skills.types import SkillDef
+        skill = SkillDef(name="test", description="test")
+        assert skill.skill_type == "evaluation"
+        assert skill.tradition_config == {}
+
+    def test_tradition_skill_type(self):
+        from app.prototype.skills.types import SkillDef
+        skill = SkillDef(
+            name="tradition_chinese_xieyi",
+            description="Chinese Xieyi",
+            skill_type="tradition",
+            tradition_config={"name": "chinese_xieyi", "weights": {"L1": 0.1}},
+        )
+        assert skill.skill_type == "tradition"
+        assert skill.tradition_config["name"] == "chinese_xieyi"
+
+    def test_list_by_type(self):
+        from app.prototype.skills.skill_registry import SkillRegistry
+        from app.prototype.skills.types import SkillDef
+
+        reg = SkillRegistry()
+        reg.register(SkillDef(name="eval1", description="e1", skill_type="evaluation"))
+        reg.register(SkillDef(name="trad1", description="t1", skill_type="tradition"))
+        reg.register(SkillDef(name="trad2", description="t2", skill_type="tradition"))
+
+        traditions = reg.list_by_type("tradition")
+        assert len(traditions) == 2
+        evals = reg.list_by_type("evaluation")
+        assert len(evals) == 1

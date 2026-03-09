@@ -5,7 +5,7 @@ from jose import JWTError, jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from app.core.config import settings
 from app.core.database import get_db
@@ -128,8 +128,8 @@ class GuestSession:
         self.daily_limit = 3  # Daily evaluation limit for guests
         self.usage_count = usage_count
         self.remaining_uses = max(0, self.daily_limit - usage_count)
-        self.created_at = first_activity or datetime.utcnow()
-        self.session_duration = int((datetime.utcnow() - self.created_at).total_seconds() / 60)  # minutes
+        self.created_at = first_activity or datetime.now(timezone.utc)
+        self.session_duration = int((datetime.now(timezone.utc) - self.created_at).total_seconds() / 60)  # minutes
         self.evaluations_created = usage_count
         self.trigger_scenarios = self._check_trigger_scenarios()
         

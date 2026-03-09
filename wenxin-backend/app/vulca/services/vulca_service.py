@@ -5,7 +5,7 @@ Handles VULCA evaluation operations and database interactions
 
 from typing import List, Dict, Optional, Any
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 import numpy as np
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -54,7 +54,7 @@ class VULCAService:
                 'scores_6d': scores_6d,
                 'scores_47d': scores_47d,
                 'cultural_perspectives': cultural_scores,
-                'evaluation_date': datetime.utcnow().isoformat(),
+                'evaluation_date': datetime.now(timezone.utc).isoformat(),
                 'metadata': {
                     'algorithm_version': '2.0',
                     'expansion_method': 'correlation_matrix',
@@ -155,7 +155,7 @@ class VULCAService:
                     'dimension_statistics': {},
                     'cultural_analysis': {}
                 },
-                'comparison_date': datetime.utcnow().isoformat()
+                'comparison_date': datetime.now(timezone.utc).isoformat()
             }
                 
         # Calculate difference matrix
@@ -171,7 +171,7 @@ class VULCAService:
             ],
             'difference_matrix': np.nan_to_num(diff_matrix, nan=0.0, posinf=999.0, neginf=-999.0).tolist(),
             'summary': summary,
-            'comparison_date': datetime.utcnow().isoformat()
+            'comparison_date': datetime.now(timezone.utc).isoformat()
         }
         
         return comparison_result

@@ -6,7 +6,7 @@ import json
 import sys
 import os
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Any
 import uuid
 
@@ -173,7 +173,7 @@ class BenchmarkDataImporter:
             model.scoring_details = json.dumps(data.get('scoring_details', {}))
             model.score_highlights = json.dumps(data.get('score_highlights', []))
             model.score_weaknesses = json.dumps(data.get('score_weaknesses', []))
-            model.last_benchmark_at = datetime.utcnow()
+            model.last_benchmark_at = datetime.now(timezone.utc)
             
             # Calculate benchmark score from responses
             if data.get('benchmark_responses'):

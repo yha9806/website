@@ -123,8 +123,8 @@ def test_fallback_chain_integration():
 
     _check("koala in DEFAULT_DRAFT_FALLBACK", "koala" in DEFAULT_DRAFT_FALLBACK)
     _check(
-        "koala after together_flux",
-        DEFAULT_DRAFT_FALLBACK.index("koala") > DEFAULT_DRAFT_FALLBACK.index("together_flux"),
+        "koala after nb2",
+        DEFAULT_DRAFT_FALLBACK.index("koala") > DEFAULT_DRAFT_FALLBACK.index("nb2"),
     )
     _check(
         "koala before mock",

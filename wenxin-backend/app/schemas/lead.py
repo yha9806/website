@@ -1,5 +1,5 @@
 """Pydantic schemas for Lead API."""
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from typing import Optional
 from datetime import datetime
 from enum import Enum
@@ -45,19 +45,18 @@ class LeadCreate(BaseModel):
     message: Optional[str] = Field(None, max_length=2000, description="Additional message")
     source_page: LeadSourceEnum = Field(LeadSourceEnum.BOOK_DEMO, description="Source page")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "name": "Dr. Jane Smith",
-                "email": "jane.smith@university.edu",
-                "organization": "Stanford University",
-                "role": "Research Scientist",
-                "use_case": "research",
-                "timeline": "1-3 months",
-                "message": "Interested in evaluating LLMs for cultural understanding research.",
-                "source_page": "book_demo"
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "name": "Dr. Jane Smith",
+            "email": "jane.smith@university.edu",
+            "organization": "Stanford University",
+            "role": "Research Scientist",
+            "use_case": "research",
+            "timeline": "1-3 months",
+            "message": "Interested in evaluating LLMs for cultural understanding research.",
+            "source_page": "book_demo"
         }
+    })
 
 
 class LeadResponse(BaseModel):
@@ -75,8 +74,7 @@ class LeadResponse(BaseModel):
     created_at: datetime
     updated_at: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class LeadSubmitResponse(BaseModel):
@@ -85,14 +83,13 @@ class LeadSubmitResponse(BaseModel):
     message: str = "Thank you for your interest! We'll be in touch within 24 hours."
     lead_id: str
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "success": True,
-                "message": "Thank you for your interest! We'll be in touch within 24 hours.",
-                "lead_id": "550e8400-e29b-41d4-a716-446655440000"
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "success": True,
+            "message": "Thank you for your interest! We'll be in touch within 24 hours.",
+            "lead_id": "550e8400-e29b-41d4-a716-446655440000"
         }
+    })
 
 
 class LeadUpdate(BaseModel):
@@ -100,13 +97,12 @@ class LeadUpdate(BaseModel):
     status: Optional[LeadStatusEnum] = None
     contacted_at: Optional[datetime] = None
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "status": "contacted",
-                "contacted_at": "2025-01-12T10:30:00Z"
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "status": "contacted",
+            "contacted_at": "2025-01-12T10:30:00Z"
         }
+    })
 
 
 class LeadListResponse(BaseModel):

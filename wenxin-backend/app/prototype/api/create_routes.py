@@ -30,6 +30,39 @@ logger = logging.getLogger("vulca")
 
 create_router = APIRouter(prefix="/api/v1", tags=["create"])
 
+
+def _extract_cultural_features(tradition: str, final_scores: dict[str, float], risk_flags: list[str]) -> dict[str, float]:
+    """Extract cultural features from session results (rule-based, no LLM call)."""
+    features: dict[str, float] = {}
+
+    if not final_scores:
+        return features
+
+    # Tradition specificity: how specific is this tradition (non-default = more specific)
+    features["tradition_specificity"] = 0.3 if tradition == "default" else 0.8
+
+    # L5 emphasis: ratio of L5 to max score
+    score_values = [v for v in final_scores.values() if isinstance(v, (int, float)) and v > 0]
+    if score_values:
+        max_score = max(score_values)
+        l5 = final_scores.get("L5", final_scores.get("philosophical_aesthetic", 0.0))
+        if isinstance(l5, (int, float)) and max_score > 0:
+            features["l5_emphasis"] = round(l5 / max_score, 4)
+
+        # Overall quality
+        features["avg_score"] = round(sum(score_values) / len(score_values), 4)
+
+    # Risk level
+    features["risk_level"] = round(min(1.0, len(risk_flags) * 0.25), 4)
+
+    # Cultural depth: based on L3 score
+    l3 = final_scores.get("L3", final_scores.get("cultural_context", 0.0))
+    if isinstance(l3, (int, float)):
+        features["cultural_depth"] = round(l3, 4)
+
+    return features
+
+
 # In-memory event buffers for SSE (mirrors routes.py pattern)
 _create_event_buffers: dict[str, list[PipelineEvent]] = {}
 _create_buffer_lock = threading.Lock()
@@ -148,6 +181,11 @@ async def _run_evaluate_mode(
             recommendations=result.recommendations,
             total_latency_ms=elapsed_ms,
             total_cost_usd=result.cost_usd,
+        )
+        digest.cultural_features = _extract_cultural_features(
+            tradition=result.tradition_used,
+            final_scores=result.scores,
+            risk_flags=result.risk_flags if result.risk_flags else [],
         )
         SessionStore.get().append(digest)
 
@@ -275,6 +313,11 @@ async def _run_create_mode_sync(
         total_latency_ms=elapsed_ms,
         total_cost_usd=total_cost,
     )
+    digest.cultural_features = _extract_cultural_features(
+        tradition=req.tradition,
+        final_scores=final_scores,
+        risk_flags=[],
+    )
     SessionStore.get().append(digest)
 
     return CreateResponse(
@@ -328,6 +371,7 @@ def _run_create_mode_stream(
         _create_event_buffers[session_id] = []
 
     def _run_in_background() -> None:
+        t0 = time.monotonic()
         rounds: list[RoundSnapshot] = []
         best_candidate_id = ""
         best_image_url = ""
@@ -369,6 +413,7 @@ def _run_create_mode_stream(
             best_image_url = candidate_image_urls[best_candidate_id]
 
         # Store digest after pipeline completes
+        elapsed_ms = int((time.monotonic() - t0) * 1000)
         digest = SessionDigest(
             session_id=session_id,
             mode="create",
@@ -380,7 +425,13 @@ def _run_create_mode_stream(
             final_scores=final_scores,
             best_image_url=best_image_url,
             total_rounds=len(rounds),
+            total_latency_ms=elapsed_ms,
             total_cost_usd=total_cost,
+        )
+        digest.cultural_features = _extract_cultural_features(
+            tradition=req.tradition,
+            final_scores=final_scores,
+            risk_flags=[],
         )
         SessionStore.get().append(digest)
 

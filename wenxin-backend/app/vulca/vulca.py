@@ -67,7 +67,7 @@ async def evaluate_model(
         # Evaluate the model
         result = await service.evaluate_model(
             model_id=request.model_id,
-            scores_6d=request.scores_6d.dict(),
+            scores_6d=request.scores_6d.model_dump(),
             model_name=request.model_name
         )
         

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
@@ -44,7 +45,7 @@ logger = logging.getLogger(__name__)
 # Cultural tradition → style keyword mapping
 # ---------------------------------------------------------------------------
 
-_STYLE_MAP: dict[str, dict[str, str]] = {
+_LEGACY_STYLE_MAP: dict[str, dict[str, str]] = {
     "chinese_xieyi": {
         "style": "Chinese xieyi ink wash painting, traditional brush strokes, rice paper texture",
         "negative": "photorealistic, 3D render",
@@ -79,6 +80,81 @@ _STYLE_MAP: dict[str, dict[str, str]] = {
     },
 }
 
+# ---------------------------------------------------------------------------
+# Dynamic style lookup with 3-tier fallback: YAML → LLM → Legacy
+# ---------------------------------------------------------------------------
+
+_llm_style_cache: dict[str, dict[str, str]] = {}
+
+_SAFE_TASK_ID_RE = re.compile(r"[^A-Za-z0-9._-]+")
+
+
+def _get_style_for_tradition(tradition: str, intent: str = "") -> dict[str, str]:
+    """Dynamic style lookup with 3-tier fallback: YAML → LLM → Legacy."""
+    # Tier 1: YAML tradition config
+    try:
+        from app.prototype.cultural_pipelines.tradition_loader import get_tradition
+        tc = get_tradition(tradition)
+        if tc and tc.terminology:
+            style_parts: list[str] = []
+            negative_parts: list[str] = []
+            for term in tc.terminology:
+                if term.category in ("technique", "material", "color"):
+                    style_parts.append(term.term)
+                    if isinstance(term.definition, str) and term.definition:
+                        style_parts.append(term.definition[:80])
+            for taboo in tc.taboos:
+                negative_parts.append(taboo.rule)
+            if style_parts:
+                return {
+                    "style": ", ".join(style_parts[:8]),
+                    "negative": ", ".join(negative_parts[:4]) if negative_parts else "low quality, blurry",
+                }
+    except Exception:
+        pass
+
+    # Tier 2: LLM (with cache)
+    if tradition in _llm_style_cache:
+        return _llm_style_cache[tradition]
+    try:
+        import litellm
+        response = litellm.completion(
+            model="gemini/gemini-2.0-flash",
+            messages=[{
+                "role": "user",
+                "content": (
+                    f"For the art tradition '{tradition}', provide style keywords for image generation. "
+                    f"Return ONLY a JSON object: {{\"style\": \"comma-separated style keywords\", \"negative\": \"things to avoid\"}}"
+                ),
+            }],
+            max_tokens=200,
+            temperature=0.1,
+            timeout=10,
+        )
+        import json
+        text = response.choices[0].message.content or ""
+        # Try to parse JSON
+        for marker in ["```json", "```"]:
+            if marker in text:
+                start = text.index(marker) + len(marker)
+                end = text.find("```", start)
+                text = text[start:end].strip() if end != -1 else text[start:].strip()
+                break
+        brace_start = text.find("{")
+        brace_end = text.rfind("}")
+        if brace_start != -1 and brace_end > brace_start:
+            text = text[brace_start:brace_end + 1]
+        parsed = json.loads(text)
+        result = {"style": str(parsed.get("style", "")), "negative": str(parsed.get("negative", "low quality, blurry"))}
+        if not result["style"].strip():
+            raise ValueError("empty style from LLM")
+        _llm_style_cache[tradition] = result
+        return result
+    except Exception:
+        logger.debug("LLM style generation failed for %s, using legacy", tradition)
+
+    # Tier 3: Legacy fallback
+    return _LEGACY_STYLE_MAP.get(tradition, _LEGACY_STYLE_MAP["default"])
 
 
 
@@ -87,7 +163,7 @@ def _get_provider(name: str, config: DraftConfig | None = None) -> AbstractProvi
     if name == "mock":
         return MockProvider()
     if name == "together_flux":
-        # M0 compat alias: together_flux → nb2 (Together.ai removed in Gemini migration)
+        # M0 Gemini migration complete (2026-03). Compat alias retained for ablation replay.
         logger.warning("together_flux is deprecated, redirecting to nb2 provider")
         return _get_provider("nb2", config)
     if name == "diffusers":
@@ -509,7 +585,7 @@ class DraftAgent:
 
         # No base image — full regeneration with enhanced prompt
         provider = _get_provider(config.provider, config)
-        style_entry = _STYLE_MAP["default"]
+        style_entry = _get_style_for_tradition("default")
         negative = style_entry["negative"]
         if negative_additions:
             negative = f"{negative}, {', '.join(negative_additions)}"
@@ -559,7 +635,7 @@ class DraftAgent:
         Uses terminology anchors with usage hints, composition fragments,
         style constraints, and taboo constraints for negative prompt.
         """
-        style_entry = _STYLE_MAP.get(tradition, _STYLE_MAP["default"])
+        style_entry = _get_style_for_tradition(tradition)
         style_kw = style_entry["style"]
         base_neg = style_entry["negative"]
 
@@ -601,7 +677,7 @@ class DraftAgent:
         evidence: dict,
     ) -> tuple[str, str]:
         """Assemble generation prompt from subject, tradition, and evidence."""
-        style_entry = _STYLE_MAP.get(tradition, _STYLE_MAP["default"])
+        style_entry = _get_style_for_tradition(tradition)
         style_kw = style_entry["style"]
         base_neg = style_entry["negative"]
 

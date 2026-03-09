@@ -6,6 +6,8 @@ aesthetically rich vs aesthetically poor prompts for the same subject.
 
 Uses CLIP similarity to cultural reference concepts as a proxy for quality.
 """
+# DEPRECATED: FLUX sensitivity tests. Together.ai removed in M0 Gemini migration.
+# Tests retained for historical reference (paper Route C validation).
 
 from __future__ import annotations
 

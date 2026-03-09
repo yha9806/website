@@ -52,7 +52,7 @@ def build_fallback_provider(
             continue
         seen.add(name)
         if name == "together_flux":
-            # M0 compat: redirect to nb2
+            # M0 Gemini migration complete (2026-03). Compat alias retained for ablation replay.
             logger.warning("together_flux deprecated, skipping in fallback chain (use nb2)")
         elif name == "nb2":
             try:

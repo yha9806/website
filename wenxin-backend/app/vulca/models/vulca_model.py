@@ -5,7 +5,7 @@ SQLAlchemy models for VULCA evaluation data
 
 from sqlalchemy import Column, Integer, String, Float, JSON, DateTime, ForeignKey, Text, Index
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, timezone
 
 from ...core.database import Base
 
@@ -35,9 +35,9 @@ class VULCAEvaluation(Base):
     # Example: {"algorithm_version": "2.0", "expansion_method": "correlation_matrix"}
     
     # Timestamps
-    evaluation_date = Column(DateTime, default=datetime.utcnow, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    evaluation_date = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     
     # Indexes for performance
     __table_args__ = (
@@ -82,8 +82,8 @@ class VULCADimension(Base):
     # Example: {"western": 0.8, "eastern": 0.6, ...}
     
     # Metadata
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     
     def to_dict(self) -> dict:
         """Convert model to dictionary"""
@@ -122,8 +122,8 @@ class VULCAComparison(Base):
     # Includes: most_similar, most_different, average_difference, etc.
     
     # Metadata
-    comparison_date = Column(DateTime, default=datetime.utcnow, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    comparison_date = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     
     def to_dict(self) -> dict:
         """Convert model to dictionary"""

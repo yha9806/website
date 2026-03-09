@@ -5,7 +5,7 @@ import asyncio
 import time
 import json
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Any, Optional, Tuple
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update, or_
@@ -49,7 +49,7 @@ class BenchmarkRunner:
             suite_id=suite_id,
             model_id=model_id,
             status=BenchmarkStatus.RUNNING,
-            started_at=datetime.utcnow()
+            started_at=datetime.now(timezone.utc)
         )
         self.session.add(run)
         await self.session.commit()
@@ -81,7 +81,7 @@ class BenchmarkRunner:
                         'result': result,
                         'scores': scores,
                         'response_time': response_time,
-                        'timestamp': datetime.utcnow().isoformat()
+                        'timestamp': datetime.now(timezone.utc).isoformat()
                     })
                     
                     logger.info(f"Test case {i+1}/{len(suite.test_cases)} completed in {response_time:.2f}s")
@@ -91,7 +91,7 @@ class BenchmarkRunner:
                     error_details.append({
                         'test_case_id': i,
                         'error': str(e),
-                        'timestamp': datetime.utcnow().isoformat()
+                        'timestamp': datetime.now(timezone.utc).isoformat()
                     })
                     logger.error(f"Test case {i} failed: {e}")
                     
@@ -104,7 +104,7 @@ class BenchmarkRunner:
                 .where(BenchmarkRun.id == run.id)
                 .values(
                     status=BenchmarkStatus.COMPLETED,
-                    completed_at=datetime.utcnow(),
+                    completed_at=datetime.now(timezone.utc),
                     duration_seconds=time.time() - start_time,
                     test_results=test_results,
                     scores_by_criteria=scores_by_criteria,
@@ -137,10 +137,10 @@ class BenchmarkRunner:
                 .where(BenchmarkRun.id == run.id)
                 .values(
                     status=BenchmarkStatus.FAILED,
-                    completed_at=datetime.utcnow(),
+                    completed_at=datetime.now(timezone.utc),
                     error_details=[{
                         'error': str(e),
-                        'timestamp': datetime.utcnow().isoformat()
+                        'timestamp': datetime.now(timezone.utc).isoformat()
                     }]
                 )
             )
@@ -333,7 +333,7 @@ class BenchmarkRunner:
             .where(AIModel.id == model_id)
             .values(
                 benchmark_score=score,
-                last_benchmark_at=datetime.utcnow(),
+                last_benchmark_at=datetime.now(timezone.utc),
                 data_source='benchmark',
                 verification_count=new_count,
                 confidence_level=new_confidence
@@ -355,7 +355,7 @@ class BenchmarkRunner:
             update(BenchmarkSuite)
             .where(BenchmarkSuite.id == suite_id)
             .values(
-                last_run_at=datetime.utcnow(),
+                last_run_at=datetime.now(timezone.utc),
                 run_count=current_run_count + 1,
                 success_count=current_success_count + 1
             )
@@ -395,7 +395,7 @@ class BenchmarkRunner:
         while True:
             try:
                 # Get suites that need to run
-                now = datetime.utcnow()
+                now = datetime.now(timezone.utc)
                 suites_result = await self.session.execute(
                     select(BenchmarkSuite).where(
                         BenchmarkSuite.is_active.is_(True),

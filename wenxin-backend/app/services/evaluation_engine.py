@@ -1,6 +1,6 @@
 import asyncio
 import traceback
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -63,7 +63,7 @@ class EvaluationEngine:
                 
             # Update status to running
             task.status = TaskStatus.RUNNING
-            task.started_at = datetime.utcnow()
+            task.started_at = datetime.now(timezone.utc)
             task.progress = 0.0
             await self.db.commit()
             
@@ -135,7 +135,7 @@ class EvaluationEngine:
             task.status = TaskStatus.COMPLETED
             task.progress = 100.0
             task.current_stage = "已完成"
-            task.completed_at = datetime.utcnow()
+            task.completed_at = datetime.now(timezone.utc)
             task.result = result["content"]
             task.raw_response = result["raw"]
             task.auto_score = result["score"]
@@ -160,7 +160,7 @@ class EvaluationEngine:
                 task = result.scalar_one_or_none()
                 if task:
                     task.status = TaskStatus.FAILED
-                    task.completed_at = datetime.utcnow()
+                    task.completed_at = datetime.now(timezone.utc)
                     task.error_message = str(e)
                     await self.db.commit()
             except:
@@ -289,7 +289,7 @@ class EvaluationEngine:
                 "type": task.task_type,
                 "prompt": task.prompt,
                 "score": result.get("score", 0.0),
-                "created_at": datetime.utcnow()
+                "created_at": datetime.now(timezone.utc)
             }
             
             # Type-specific content handling

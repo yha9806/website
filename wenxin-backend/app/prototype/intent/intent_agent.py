@@ -20,21 +20,36 @@ logger = logging.getLogger(__name__)
 
 __all__ = ["IntentAgent"]
 
-_KNOWN_TRADITIONS = [
+_LEGACY_KNOWN_TRADITIONS = [
     "default", "chinese_xieyi", "chinese_gongbi", "western_academic",
     "islamic_geometric", "japanese_traditional", "watercolor",
     "african_traditional", "south_asian",
 ]
 
-_SYSTEM_PROMPT = (
+
+def _get_known_traditions() -> list[str]:
+    """Dynamic tradition list from YAML loader with legacy fallback."""
+    try:
+        from app.prototype.cultural_pipelines.tradition_loader import get_all_traditions
+        traditions = sorted(get_all_traditions().keys())
+        if traditions:
+            return traditions
+    except Exception:
+        pass
+    return _LEGACY_KNOWN_TRADITIONS
+
+
+# Deprecated: use _get_known_traditions()
+_KNOWN_TRADITIONS = _LEGACY_KNOWN_TRADITIONS
+
+_SYSTEM_PROMPT_TEMPLATE = (
     "You are a cultural art evaluation assistant. "
     "Parse the user's intent to determine which cultural tradition and context "
     "to use for evaluation.\n\n"
-    "Known traditions: " + ", ".join(_KNOWN_TRADITIONS) + "\n\n"
+    "Known traditions: {traditions}\n\n"
     "Respond ONLY with valid JSON:\n"
-    '{"tradition": "<tradition_id>", "context": "<brief context>", "confidence": 0.XX}'
+    '{{"tradition": "<tradition_id>", "context": "<brief context>", "confidence": 0.XX}}'
 )
-
 
 class IntentAgent:
     """Resolves natural language intent into an IntentResult."""
@@ -54,6 +69,11 @@ class IntentAgent:
         Falls back to tradition='default' if parsing fails.
         """
         try:
+            traditions = _get_known_traditions()
+            system_prompt = _SYSTEM_PROMPT_TEMPLATE.format(
+                traditions=", ".join(traditions),
+            )
+
             spec = MODELS.get("gemini_direct")
             if spec is None:
                 logger.warning("IntentAgent: gemini_direct model not configured, using default")
@@ -70,7 +90,7 @@ class IntentAgent:
             response = await litellm.acompletion(
                 model=spec.litellm_id,
                 messages=[
-                    {"role": "system", "content": _SYSTEM_PROMPT},
+                    {"role": "system", "content": system_prompt},
                     {"role": "user", "content": intent},
                 ],
                 max_tokens=256,
@@ -85,7 +105,7 @@ class IntentAgent:
                 return self._fallback(intent)
 
             tradition = parsed.get("tradition", "default")
-            if tradition not in _KNOWN_TRADITIONS:
+            if tradition not in traditions:
                 tradition = "default"
 
             return IntentResult(

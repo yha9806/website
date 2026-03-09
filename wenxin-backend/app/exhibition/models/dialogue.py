@@ -3,8 +3,8 @@ Multi-Agent Dialogue Models for Art Discussion
 Each persona is represented by an independent agent
 """
 from typing import List, Dict, Any, Optional
-from pydantic import BaseModel, Field
-from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field
+from datetime import datetime, timezone
 import uuid
 
 
@@ -19,21 +19,20 @@ class DialogueTurn(BaseModel):
     stance: str = "neutral"            # agree/disagree/neutral/challenge/elaborate
     responds_to: Optional[str] = None  # Which turn_id this responds to
     references: List[str] = Field(default_factory=list)  # Informal references/quotes
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "turn_id": "uuid",
-                "speaker_id": "su_shi",
-                "speaker_name": "苏轼",
-                "content": "观此作品，神韵胜于形似...",
-                "language": "zh",
-                "chain_of_thought": "此作融合传统与现代...",
-                "stance": "elaborate",
-                "references": ["《东坡题跋》"]
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "turn_id": "uuid",
+            "speaker_id": "su_shi",
+            "speaker_name": "苏轼",
+            "content": "观此作品，神韵胜于形似...",
+            "language": "zh",
+            "chain_of_thought": "此作融合传统与现代...",
+            "stance": "elaborate",
+            "references": ["《东坡题跋》"]
         }
+    })
 
 
 class VisualTags(BaseModel):
@@ -86,7 +85,7 @@ class MultiAgentDialogue(BaseModel):
     model_used: str = ""
     temperature: float = 1.0
     perturbation_config: Optional[PerturbationConfig] = None  # Perturbation settings
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     def add_turn(self, turn: DialogueTurn):
         """Add a turn and update metadata"""
@@ -97,18 +96,17 @@ class MultiAgentDialogue(BaseModel):
         if turn.stance in ["disagree", "challenge"]:
             self.conflict_moments += 1
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "id": "uuid",
-                "artwork_id": 1759494368418,
-                "artwork_url": "/api/v1/exhibition/artworks/1759494368418",
-                "participants": ["su_shi", "john_ruskin", "dr_aris_thorne"],
-                "topic": "传统与现代的融合",
-                "total_turns": 6,
-                "conflict_moments": 2
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "id": "uuid",
+            "artwork_id": 1759494368418,
+            "artwork_url": "/api/v1/exhibition/artworks/1759494368418",
+            "participants": ["su_shi", "john_ruskin", "dr_aris_thorne"],
+            "topic": "传统与现代的融合",
+            "total_turns": 6,
+            "conflict_moments": 2
         }
+    })
 
 
 class DialogueCreate(BaseModel):

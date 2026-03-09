@@ -1,6 +1,6 @@
 import uuid
 from enum import Enum
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, Text, Float, DateTime, JSON, ForeignKey, Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
@@ -41,7 +41,7 @@ class EvaluationTask(Base):
     status = Column(SQLEnum(TaskStatus), default=TaskStatus.PENDING)
     progress = Column(Float, default=0.0)  # Progress percentage (0-100)
     current_stage = Column(String, nullable=True)  # Current processing stage description
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     started_at = Column(DateTime, nullable=True)
     completed_at = Column(DateTime, nullable=True)
     

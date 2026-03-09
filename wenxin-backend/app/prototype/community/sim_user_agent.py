@@ -183,3 +183,76 @@ class SimUserAgent(BaseAgent):
         }
         self.log_action("run_create_cycle", summary)
         return summary
+
+    # ------------------------------------------------------------------
+    # Digest parity verification (WU-11)
+    # ------------------------------------------------------------------
+
+    async def verify_digest_parity(self) -> dict:
+        """Verify that agent sessions produce digests with the same schema as human sessions.
+
+        Checks that all SessionDigest fields (including WU-07 extensions) are present.
+        Returns a dict with parity status.
+        """
+        from app.prototype.session.types import SessionDigest
+        import dataclasses
+
+        # Get expected fields from SessionDigest
+        expected_fields = {f.name for f in dataclasses.fields(SessionDigest)}
+
+        # Run a create cycle to get a real session
+        try:
+            result = await self.run_create_cycle()
+        except Exception as exc:
+            return {
+                "status": "error",
+                "error": str(exc),
+                "parity": False,
+            }
+
+        session_id = result.get("session_id", "")
+        if not session_id or result.get("status") != "ok":
+            return {
+                "status": "no_session",
+                "parity": False,
+                "result": result,
+            }
+
+        # Check SessionStore for this session's digest
+        from app.prototype.session.store import SessionStore
+        store = SessionStore.get()
+        all_sessions = store.get_all()
+
+        session_data = None
+        for s in all_sessions:
+            if s.get("session_id") == session_id:
+                session_data = s
+                break
+
+        if session_data is None:
+            return {
+                "status": "session_not_found",
+                "session_id": session_id,
+                "parity": False,
+            }
+
+        # Check field coverage
+        present_fields = set(session_data.keys())
+        missing_fields = expected_fields - present_fields
+        extra_fields = present_fields - expected_fields
+
+        # Check cultural_features (WU-07)
+        has_cultural_features = "cultural_features" in present_fields
+
+        parity = len(missing_fields) == 0
+
+        return {
+            "status": "ok",
+            "session_id": session_id,
+            "parity": parity,
+            "expected_fields": len(expected_fields),
+            "present_fields": len(present_fields),
+            "missing_fields": sorted(missing_fields),
+            "extra_fields": sorted(extra_fields),
+            "has_cultural_features": has_cultural_features,
+        }

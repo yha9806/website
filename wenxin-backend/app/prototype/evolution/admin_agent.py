@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -90,7 +90,7 @@ class AdminAgent(BaseAgent):
         status: str,
     ) -> Path:
         """Generate a weekly ecosystem report in markdown."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         date_str = now.strftime("%Y-%m-%d")
         timestamp = now.strftime("%Y-%m-%d %H:%M:%S UTC")
 

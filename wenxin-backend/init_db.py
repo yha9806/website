@@ -21,7 +21,7 @@ from app.models.artwork import Artwork, ArtworkType
 from app.models.evaluation_task import EvaluationTask, TaskStatus
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import random
 
 AsyncSessionLocal = sessionmaker(
@@ -1081,7 +1081,7 @@ async def init_evaluation_tasks(session: AsyncSession, models):
             "prompt": "Create a cyberpunk-style future city",
             "parameters": {"style": "cyberpunk"},
             "status": TaskStatus.RUNNING,
-            "started_at": datetime.utcnow()
+            "started_at": datetime.now(timezone.utc)
         },
         {
             "model_id": models[3].id,  # ERNIE 4.0
@@ -1095,13 +1095,13 @@ async def init_evaluation_tasks(session: AsyncSession, models):
     for task_data in tasks_data:
         # Handle datetime fields
         if task_data["status"] == TaskStatus.COMPLETED:
-            task_data["completed_at"] = datetime.utcnow() - timedelta(hours=random.randint(1, 48))
+            task_data["completed_at"] = datetime.now(timezone.utc) - timedelta(hours=random.randint(1, 48))
             task_data["started_at"] = task_data["completed_at"] - timedelta(minutes=random.randint(1, 10))
             task_data["created_at"] = task_data["started_at"] - timedelta(minutes=random.randint(1, 30))
         elif "started_at" not in task_data and task_data["status"] == TaskStatus.RUNNING:
-            task_data["created_at"] = datetime.utcnow() - timedelta(minutes=random.randint(5, 60))
+            task_data["created_at"] = datetime.now(timezone.utc) - timedelta(minutes=random.randint(5, 60))
         else:
-            task_data["created_at"] = datetime.utcnow() - timedelta(hours=random.randint(1, 24))
+            task_data["created_at"] = datetime.now(timezone.utc) - timedelta(hours=random.randint(1, 24))
         
         task = EvaluationTask(**task_data)
         session.add(task)

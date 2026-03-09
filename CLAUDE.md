@@ -144,6 +144,14 @@ app/vulca/schemas/                    # Pydantic schemas
 app/vulca/vulca.py                    # FastAPI endpoints (8 routes)
 ```
 
+## Code Quality & Auditing
+
+When auditing or fixing files, always scope searches to active/current files only — exclude archived, deprecated, or backup directories to avoid false positives.
+
+## Workflow Rules
+
+After any migration or multi-file refactoring, always run a final audit pass for dead code, stale references, and untracked files before considering the task complete.
+
 ## Critical Development Patterns
 
 ### VULCA 47D Dimension Names Issue
@@ -184,6 +192,10 @@ interface VULCAScore6D {
 // Image models have intentional NULL scores
 {score != null ? score.toFixed(1) : 'N/A'}
 ```
+
+## Git / Deployment
+
+Before deploying or committing, verify all new/modified files are git-tracked (`git status`). This is a recurring issue with untracked component files breaking deploys.
 
 ## Common Deployment Issues
 
@@ -317,6 +329,10 @@ npm run build
 firebase deploy --only hosting
 ```
 
+## Environment
+
+When working with Python in this project, always use the virtualenv Python (not system Python). Check which python/pip is active before installing packages.
+
 ### Environment Variables (Cloud Run)
 Secrets are injected from GCP Secret Manager:
 - `DATABASE_URL`: Supabase connection string
@@ -387,3 +403,7 @@ pip install -r requirements.prototype.txt  # On top of requirements.render.txt
 ```
 
 Key packages: crewai, litellm, langgraph, langfuse, deepeval, diffusers, gradio
+
+## Academic Paper Workflow
+
+For academic paper edits: always verify terminology/naming against the user's most recent instructions before making global changes. Do not assume prior names are correct — ask if ambiguous (e.g., CPD vs CPSR vs CPC).

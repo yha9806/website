@@ -95,7 +95,7 @@ class AblationCondition:
 
     name: str
     label: str
-    provider: str           # "mock" | "diffusers" | "together_flux"
+    provider: str           # "mock" | "diffusers" | "together_flux"  # "together_flux" preserved for v1-v3 historical data compatibility
     enable_agent_critic: bool
     max_rounds: int
     use_cultural_routing: bool  # If False, override tradition→"default"
@@ -125,6 +125,8 @@ def _make_conditions(mode: str) -> dict[str, AblationCondition]:
     mode='real' uses diffusers for SD1.5 and together_flux for FLUX.
     """
     sd_provider = "diffusers" if mode == "real" else "mock"
+    # M0 note: together_flux kept for v1-v3 ablation conditions (480 recorded runs).
+    # New v4+ conditions use nb2_provider. Do NOT rename — breaks result analysis.
     flux_provider = "together_flux" if mode == "real" else "mock"
     nb2_provider = "nb2" if mode == "real" else "mock"
 
@@ -736,6 +738,7 @@ def main() -> None:
     logger.info("Mode: %s", args.mode)
 
     # Cost estimate (accounting for per-condition skips)
+    # M0 note: together_flux cost retained for historical v1-v3 cost analysis.
     cost_per_image = {"mock": 0.0, "diffusers": 0.0, "together_flux": 0.003}
     est_images = sum(
         max(0, len(tasks) - skip_per_condition.get(ck, 0)) * args.n_candidates * c.max_rounds

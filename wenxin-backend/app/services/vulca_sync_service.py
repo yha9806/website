@@ -6,7 +6,7 @@ Handles real-time and batch synchronization between VULCA evaluations and ai_mod
 import asyncio
 import logging
 from typing import Dict, Any, List, Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -64,7 +64,7 @@ class VULCASyncService:
             # Update model with VULCA data
             ai_model.vulca_scores_47d = vulca_evaluation.get("scores_47d")
             ai_model.vulca_cultural_perspectives = vulca_evaluation.get("cultural_perspectives")
-            ai_model.vulca_evaluation_date = datetime.utcnow()
+            ai_model.vulca_evaluation_date = datetime.now(timezone.utc)
             ai_model.vulca_sync_status = "completed"
             
             # Update overall score if VULCA provides better data
@@ -176,7 +176,7 @@ class VULCASyncService:
                 status_counts = dict(result.fetchall())
                 
                 # Find stale syncs (older than 7 days)
-                stale_date = datetime.utcnow() - timedelta(days=7)
+                stale_date = datetime.now(timezone.utc) - timedelta(days=7)
                 stale_result = await db.execute(
                     select(func.count(AIModel.id))
                     .where(AIModel.vulca_evaluation_date < stale_date)
@@ -195,7 +195,7 @@ class VULCASyncService:
                     "sync_status_counts": status_counts,
                     "stale_evaluations": stale_count,
                     "never_synced": never_synced,
-                    "last_check": datetime.utcnow().isoformat()
+                    "last_check": datetime.now(timezone.utc).isoformat()
                 }
                 
             except Exception as e:
@@ -203,7 +203,7 @@ class VULCASyncService:
                 return {
                     "status": "error",
                     "error": str(e),
-                    "last_check": datetime.utcnow().isoformat()
+                    "last_check": datetime.now(timezone.utc).isoformat()
                 }
 
 

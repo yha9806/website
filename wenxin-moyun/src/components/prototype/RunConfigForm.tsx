@@ -8,19 +8,23 @@
  */
 
 import { useState, useCallback, useEffect } from 'react';
+import { API_PREFIX } from '../../config/api';
 import TemplateSelector from './TemplateSelector';
 
-const TRADITIONS = [
-  { value: 'chinese_xieyi', label: 'Chinese Xieyi' },
-  { value: 'chinese_gongbi', label: 'Chinese Gongbi' },
-  { value: 'chinese_guohua', label: 'Chinese Guohua' },
-  { value: 'western_academic', label: 'Western Academic' },
-  { value: 'islamic_geometric', label: 'Islamic Geometric' },
-  { value: 'watercolor', label: 'Watercolor' },
-  { value: 'african_traditional', label: 'African Traditional' },
-  { value: 'south_asian', label: 'South Asian' },
-  { value: 'default', label: 'Default' },
+// Static fallback traditions (used when API is unavailable)
+const STATIC_TRADITIONS = [
+  'default', 'chinese_xieyi', 'chinese_gongbi', 'western_academic',
+  'islamic_geometric', 'japanese_traditional', 'watercolor',
+  'african_traditional', 'south_asian',
 ];
+
+/** Convert snake_case tradition key to human-readable label */
+function traditionLabel(key: string): string {
+  return key
+    .split('_')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
 
 // --- Template-driven field config ---
 interface FieldConfig {
@@ -57,6 +61,7 @@ const PRESETS: Preset[] = [
 export interface RunConfigParams {
   subject: string;
   tradition: string;
+  cultural_intent: string;
   provider: string;
   n_candidates: number;
   max_rounds: number;
@@ -77,6 +82,7 @@ interface Props {
 export default function RunConfigForm({ onSubmit, disabled, initialValues }: Props) {
   const [subject, setSubject] = useState('');
   const [tradition, setTradition] = useState('chinese_xieyi');
+  const [culturalIntent, setCulturalIntent] = useState('');
   const [provider, setProvider] = useState('mock');
   const [nCandidates, setNCandidates] = useState(4);
   const [maxRounds, setMaxRounds] = useState(3);
@@ -86,11 +92,45 @@ export default function RunConfigForm({ onSubmit, disabled, initialValues }: Pro
   const [enableParallelCritic, setEnableParallelCritic] = useState(true);
   const [template, setTemplate] = useState('default');
 
+  // Dynamic tradition list (falls back to STATIC_TRADITIONS)
+  const [traditions, setTraditions] = useState<string[]>(STATIC_TRADITIONS);
+  // Emerged cultural concepts from the digestion system
+  const [emergedConcepts, setEmergedConcepts] = useState<Array<{ name: string; description: string }>>([]);
+
+  // Load dynamic traditions + emerged concepts on mount
+  useEffect(() => {
+    // Load traditions from knowledge-base API
+    fetch(`${API_PREFIX}/knowledge-base`)
+      .then(res => (res.ok ? res.json() : null))
+      .then(data => {
+        if (data?.traditions) {
+          const names = data.traditions.map((t: { tradition: string }) => t.tradition);
+          if (names.length > 0) setTraditions(names);
+        }
+      })
+      .catch(() => {}); // Silently fall back to static
+
+    // Load emerged concepts from digestion system
+    fetch(`${API_PREFIX}/digestion/status`)
+      .then(res => (res.ok ? res.json() : null))
+      .then(data => {
+        if (data?.cultures) {
+          const concepts = Object.values(data.cultures).map((c: Record<string, unknown>) => ({
+            name: (c.name as string) || '',
+            description: (c.description as string) || '',
+          }));
+          setEmergedConcepts(concepts);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Apply initialValues when they change (e.g. after "adjust and rerun")
   useEffect(() => {
     if (!initialValues) return;
     if (initialValues.subject !== undefined) setSubject(initialValues.subject);
     if (initialValues.tradition !== undefined) setTradition(initialValues.tradition);
+    if (initialValues.cultural_intent !== undefined) setCulturalIntent(initialValues.cultural_intent);
     if (initialValues.provider !== undefined) setProvider(initialValues.provider);
     if (initialValues.n_candidates !== undefined) setNCandidates(initialValues.n_candidates);
     if (initialValues.max_rounds !== undefined) setMaxRounds(initialValues.max_rounds);
@@ -123,6 +163,7 @@ export default function RunConfigForm({ onSubmit, disabled, initialValues }: Pro
     onSubmit({
       subject: subject.trim(),
       tradition,
+      cultural_intent: culturalIntent.trim(),
       provider,
       n_candidates: nCandidates,
       max_rounds: maxRounds,
@@ -168,6 +209,44 @@ export default function RunConfigForm({ onSubmit, disabled, initialValues }: Pro
         </div>
       )}
 
+      {/* Cultural Intent (free text) */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Cultural Intent <span className="text-xs text-gray-400 font-normal">(optional)</span>
+        </label>
+        <input
+          type="text"
+          value={culturalIntent}
+          onChange={e => setCulturalIntent(e.target.value)}
+          placeholder="Describe your cultural vision freely, e.g. 'wabi-sabi minimalism meets Bauhaus'"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          disabled={disabled}
+        />
+      </div>
+
+      {/* Emerged cultural concepts (clickable tags) */}
+      {emergedConcepts.length > 0 && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Emerged Concepts
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {emergedConcepts.map(c => (
+              <button
+                key={c.name}
+                type="button"
+                onClick={() => setCulturalIntent(c.name)}
+                title={c.description}
+                disabled={disabled}
+                className="px-3 py-1 text-xs font-medium rounded-full border border-purple-300 dark:border-purple-600 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-800/40 disabled:opacity-50 transition-colors"
+              >
+                {c.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <TemplateSelector
           value={template}
@@ -185,8 +264,8 @@ export default function RunConfigForm({ onSubmit, disabled, initialValues }: Pro
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             disabled={disabled}
           >
-            {TRADITIONS.map(t => (
-              <option key={t.value} value={t.value}>{t.label}</option>
+            {traditions.map(t => (
+              <option key={t} value={t}>{traditionLabel(t)}</option>
             ))}
           </select>
         </div>

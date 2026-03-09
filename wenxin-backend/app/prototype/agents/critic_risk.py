@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from app.prototype.agents.critic_rules import _CULTURE_KEYWORDS
+from app.prototype.agents.critic_rules import _get_cultural_keywords
 
 __all__ = [
     "RiskTagger",
@@ -43,9 +43,7 @@ class RiskTagger:
             tags.append(("no_terminology_match", "low"))
 
         # style_mismatch: prompt lacks tradition-specific style keywords
-        style_keywords = _CULTURE_KEYWORDS.get(
-            cultural_tradition, _CULTURE_KEYWORDS["default"]
-        )
+        style_keywords = _get_cultural_keywords(cultural_tradition)
         if not any(kw in prompt_lower for kw in style_keywords):
             tags.append(("style_mismatch", "medium"))
 

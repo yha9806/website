@@ -293,6 +293,55 @@ class TestAgentScheduler:
 
 
 # ---------------------------------------------------------------------------
+# 7. Digest Parity (WU-11)
+# ---------------------------------------------------------------------------
+
+class TestDigestParity:
+    """Test that agent sessions produce digests with full schema parity."""
+
+    def test_session_digest_has_cultural_features_field(self):
+        """SessionDigest must have the cultural_features field (WU-07)."""
+        import dataclasses
+        from app.prototype.session.types import SessionDigest
+
+        field_names = {f.name for f in dataclasses.fields(SessionDigest)}
+        assert "cultural_features" in field_names
+        assert "critic_insights" in field_names
+        assert "candidate_choice_index" in field_names
+        assert "time_to_select_ms" in field_names
+        assert "downloaded" in field_names
+
+    def test_agent_digest_serializes_cultural_features(self):
+        """Agent-created digest should serialize cultural_features correctly."""
+        from app.prototype.session.types import SessionDigest
+
+        digest = SessionDigest(
+            session_id="agent-test-001",
+            mode="create",
+            user_type="agent",
+            tradition="chinese_xieyi",
+            cultural_features={"l5_emphasis": 0.85, "tradition_specificity": 0.8},
+            critic_insights=["strong L5 presence"],
+        )
+        d = digest.to_dict()
+        assert d["user_type"] == "agent"
+        assert d["cultural_features"]["l5_emphasis"] == 0.85
+        assert d["critic_insights"] == ["strong L5 presence"]
+
+    def test_human_and_agent_digest_same_schema(self):
+        """Human and agent digests should have identical field sets."""
+        from app.prototype.session.types import SessionDigest
+
+        human = SessionDigest(user_type="human", tradition="default")
+        agent = SessionDigest(user_type="agent", tradition="chinese_xieyi")
+
+        human_keys = set(human.to_dict().keys())
+        agent_keys = set(agent.to_dict().keys())
+
+        assert human_keys == agent_keys, f"Schema mismatch: {human_keys ^ agent_keys}"
+
+
+# ---------------------------------------------------------------------------
 # Standalone runner
 # ---------------------------------------------------------------------------
 

@@ -3,7 +3,7 @@ Real-time ranking algorithm that combines multiple data sources
 """
 import math
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Any, Optional, Tuple
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
@@ -118,7 +118,7 @@ class RealTimeRanker:
                 'battle': battle_confidence,
                 'overall': overall_confidence
             },
-            'last_updated': datetime.utcnow().isoformat()
+            'last_updated': datetime.now(timezone.utc).isoformat()
         }
         
     async def _get_benchmark_score(self, model_id: str) -> Tuple[float, float]:
@@ -126,7 +126,7 @@ class RealTimeRanker:
         Get weighted average of benchmark test scores
         """
         # Get recent benchmark runs (last 30 days)
-        cutoff_date = datetime.utcnow() - timedelta(days=30)
+        cutoff_date = datetime.now(timezone.utc) - timedelta(days=30)
         
         benchmark_runs_result = await self.session.execute(
             select(BenchmarkRun)
@@ -269,7 +269,7 @@ class RealTimeRanker:
         if not model.last_benchmark_at:
             return 0.0
             
-        days_since_update = (datetime.utcnow() - model.last_benchmark_at).days
+        days_since_update = (datetime.now(timezone.utc) - model.last_benchmark_at).days
         
         if days_since_update <= 7:
             return 5.0      # Recent activity bonus
@@ -333,7 +333,7 @@ class RealTimeRanker:
         )
         
         return [{
-            'date': datetime.utcnow().date().isoformat(),
+            'date': datetime.now(timezone.utc).date().isoformat(),
             'rank': current_ranking['rank'] if 'rank' in current_ranking else None,
             'score': current_ranking['total_score'],
             'confidence': current_ranking['confidence_level']

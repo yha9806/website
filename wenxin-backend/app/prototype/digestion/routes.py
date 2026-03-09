@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import json
 import logging
+from pathlib import Path
 
 from fastapi import APIRouter
 
@@ -24,9 +26,28 @@ async def digestion_status() -> dict:
     aggregator = DigestAggregator(store)
 
     stats = aggregator.aggregate()
+
+    # Load evolved context for v2 data
+    context_path = Path(__file__).resolve().parent.parent / "data" / "evolved_context.json"
+    cultures: dict = {}
+    prompt_contexts: dict = {}
+    feature_space: dict = {}
+    if context_path.exists():
+        try:
+            with open(context_path, "r", encoding="utf-8") as f:
+                ctx = json.load(f)
+            cultures = ctx.get("cultures", {})
+            prompt_contexts = ctx.get("prompt_contexts", {})
+            feature_space = ctx.get("feature_space", {})
+        except Exception:
+            pass
+
     return {
         "total_sessions": store.count(),
         "traditions": {k: v.to_dict() for k, v in stats.items()},
+        "cultures": cultures,
+        "prompt_contexts": prompt_contexts,
+        "feature_space": feature_space,
     }
 
 

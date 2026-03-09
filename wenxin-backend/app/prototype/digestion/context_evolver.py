@@ -24,6 +24,15 @@ logger = logging.getLogger("vulca")
 
 _MAX_DELTA = 0.05
 _MIN_SESSIONS_TO_EVOLVE = 10
+
+# Seed sessions use L1-L5 shorthand; weights use full dimension names.
+_DIM_ALIASES: dict[str, str] = {
+    "L1": "visual_perception",
+    "L2": "technical_analysis",
+    "L3": "cultural_context",
+    "L4": "critical_interpretation",
+    "L5": "philosophical_aesthetic",
+}
 _DEFAULT_CONTEXT_PATH = os.path.join(
     os.path.dirname(__file__), os.pardir, "data", "evolved_context.json"
 )
@@ -97,6 +106,16 @@ class ContextEvolver:
         # Load current context
         context = self._load_context()
 
+        # Initialize empty tradition_weights from cultural_weights fallback
+        if not context.get("tradition_weights"):
+            try:
+                from app.prototype.cultural_pipelines.cultural_weights import get_all_weight_tables
+                context["tradition_weights"] = get_all_weight_tables()
+                logger.info("ContextEvolver: initialized tradition_weights from cultural_weights (%d traditions)",
+                            len(context["tradition_weights"]))
+            except Exception:
+                logger.warning("ContextEvolver: could not initialize tradition_weights from cultural_weights")
+
         # Generate evolution actions from patterns
         actions: list[EvolutionAction] = []
         for pattern in patterns:
@@ -108,20 +127,124 @@ class ContextEvolver:
                 # Don't auto-adjust for feedback patterns; log only
                 logger.info("Feedback pattern detected for %s: %s", pattern.tradition, pattern.description)
 
-        # Apply and save
-        if actions:
+        # Consume preference learner output (WU-10)
+        try:
+            preferences = self._learner.learn()
+            for tradition, profile in preferences.items():
+                weights = context.get("tradition_weights", {}).get(tradition)
+                if not weights:
+                    continue
+                # Boost preferred dimensions slightly (within ±0.05 guardrail)
+                for dim in profile.preferred_dimensions:
+                    if dim in weights:
+                        old_val = weights[dim]
+                        delta = min(_MAX_DELTA * 0.5, 0.025)  # Half of max delta for preferences
+                        new_val = min(1.0, old_val + delta)
+                        if new_val != old_val:
+                            weights[dim] = new_val
+                            actions.append(EvolutionAction(
+                                tradition=tradition,
+                                dimension=dim,
+                                old_value=old_val,
+                                new_value=new_val,
+                                reason=f"preference_boost ({profile.total_positive} positive signals)",
+                            ))
+                # Normalize after preference adjustments
+                total = sum(weights.values())
+                if total > 0 and abs(total - 1.0) > 0.001:
+                    for d in weights:
+                        weights[d] = weights[d] / total
+        except Exception as exc:
+            logger.debug("Preference learning skipped: %s", exc)
+
+        # Consume avoided dimensions from preference learner (C3)
+        try:
+            for tradition, profile in preferences.items():
+                weights = context.get("tradition_weights", {}).get(tradition)
+                if not weights:
+                    continue
+                for dim in profile.avoided_dimensions:
+                    if dim in weights:
+                        old_val = weights[dim]
+                        delta = min(_MAX_DELTA * 0.5, 0.025)
+                        new_val = max(0.05, old_val - delta)
+                        if new_val != old_val:
+                            weights[dim] = new_val
+                            actions.append(EvolutionAction(
+                                tradition=tradition,
+                                dimension=dim,
+                                old_value=old_val,
+                                new_value=new_val,
+                                reason=f"preference_reduce ({profile.total_negative} negative signals)",
+                            ))
+                # Re-normalize after avoided adjustments
+                total = sum(weights.values())
+                if total > 0 and abs(total - 1.0) > 0.001:
+                    for d in weights:
+                        weights[d] = weights[d] / total
+        except Exception:
+            pass  # preferences may not be defined if learner failed
+
+        # --- Phase 1: Four metabolisms (WU-09) ---
+        all_sessions = [s for s in (self._store.get_all() if hasattr(self._store, 'get_all') else [])]
+
+        # Catabolic: Cultural clustering
+        try:
+            from app.prototype.digestion.cultural_clusterer import CulturalClusterer
+            clusterer = CulturalClusterer()
+            clusters = clusterer.cluster(all_sessions)
+            if clusters:
+                context.setdefault("feature_space", {})["clusters"] = [c.to_dict() for c in clusters]
+        except Exception as exc:
+            logger.debug("Cultural clustering skipped: %s", exc)
+            clusters = []
+
+        # Anabolic: Prompt distillation
+        try:
+            from app.prototype.digestion.prompt_distiller import PromptDistiller
+            distiller = PromptDistiller()
+            archetypes = distiller.distill(all_sessions)
+            if archetypes:
+                context.setdefault("prompt_contexts", {})["archetypes"] = [a.to_dict() for a in archetypes]
+        except Exception as exc:
+            logger.debug("Prompt distillation skipped: %s", exc)
+
+        # Growth: Concept crystallization
+        try:
+            from app.prototype.digestion.concept_crystallizer import ConceptCrystallizer
+            crystallizer = ConceptCrystallizer()
+            concepts = crystallizer.crystallize(clusters, all_sessions)
+            if concepts:
+                for concept in concepts:
+                    context.setdefault("cultures", {})[concept.name] = concept.to_dict()
+        except Exception as exc:
+            logger.debug("Concept crystallization skipped: %s", exc)
+
+        # Save if any actions or new data was added (C2: unified save point)
+        has_new_data = bool(
+            context.get("feature_space", {}).get("clusters")
+            or context.get("prompt_contexts", {}).get("archetypes")
+            or context.get("cultures")
+        )
+        if actions or has_new_data:
             self._save_context(context)
 
-        return EvolutionResult(
+        result = EvolutionResult(
             actions=actions,
             patterns_found=len(patterns),
             sessions_analyzed=session_count,
         )
 
+        # Audit log
+        if actions:
+            self._log_evolution(result)
+
+        return result
+
     def _boost_dimension(self, context: dict, pattern: Pattern) -> EvolutionAction | None:
         """Boost a systematically low dimension's weight, keeping sum=1.0."""
         tradition = pattern.tradition
-        dim = pattern.dimension
+        dim = _DIM_ALIASES.get(pattern.dimension, pattern.dimension)
 
         weights = context.get("tradition_weights", {}).get(tradition, {})
         if not weights or dim not in weights:
@@ -164,14 +287,31 @@ class ContextEvolver:
         )
 
     def _load_context(self) -> dict:
-        """Load evolved context or return default structure."""
+        """Load evolved context or return default v2 structure."""
         if self._context_path.exists():
             try:
                 with open(self._context_path, "r", encoding="utf-8") as f:
-                    return json.load(f)
+                    context = json.load(f)
+                # v1 → v2 auto-upgrade
+                if "cultures" not in context:
+                    context["cultures"] = {}
+                if "prompt_contexts" not in context:
+                    context["prompt_contexts"] = {}
+                if "feature_space" not in context:
+                    context["feature_space"] = {}
+                if context.get("version", 1) < 2:
+                    context["version"] = 2
+                return context
             except (json.JSONDecodeError, ValueError):
                 pass
-        return {"tradition_weights": {}, "version": 1, "evolutions": 0}
+        return {
+            "tradition_weights": {},
+            "cultures": {},
+            "prompt_contexts": {},
+            "feature_space": {},
+            "version": 2,
+            "evolutions": 0,
+        }
 
     def _save_context(self, context: dict) -> None:
         """Atomically save evolved context to avoid corruption on crash."""
@@ -190,3 +330,21 @@ class ContextEvolver:
                 pass
             raise
         logger.info("ContextEvolver: saved evolved context (evolution #%d)", context["evolutions"])
+
+    def _log_evolution(self, result: EvolutionResult) -> None:
+        """Append evolution result to evolution_log.jsonl for audit trail."""
+        import time as _time
+
+        log_path = self._context_path.parent / "evolution_log.jsonl"
+        entry = {
+            "timestamp": _time.time(),
+            "sessions_analyzed": result.sessions_analyzed,
+            "patterns_found": result.patterns_found,
+            "actions": [a.to_dict() for a in result.actions],
+        }
+        try:
+            log_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(log_path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        except OSError as exc:
+            logger.warning("ContextEvolver: failed to write audit log: %s", exc)

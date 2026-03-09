@@ -2,7 +2,7 @@
 Pydantic Schemas for Exhibition API
 """
 from typing import List, Dict, Any, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
 
 
@@ -43,18 +43,17 @@ class ArtworkResponse(BaseModel):
     thumbnail_url: str = ""
     preview_url: str = ""
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "id": 1759494368418,
-                "title": "The Whistled Valley",
-                "description": "A 20-minute Ambisonic sound composition...",
-                "chapter_name": "Cultural Transmission & Regeneration",
-                "image_urls": ["https://..."],
-                "thumbnail_url": "https://...?x-oss-process=image/resize/w_300",
-                "artist_id": 1759487975031
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "id": 1759494368418,
+            "title": "The Whistled Valley",
+            "description": "A 20-minute Ambisonic sound composition...",
+            "chapter_name": "Cultural Transmission & Regeneration",
+            "image_urls": ["https://..."],
+            "thumbnail_url": "https://...?x-oss-process=image/resize/w_300",
+            "artist_id": 1759487975031
         }
+    })
 
 
 class ArtworkListResponse(BaseModel):
@@ -82,17 +81,16 @@ class ArtistResponse(BaseModel):
     email: str = ""
     avatar_url: str = ""
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "id": 1759487975031,
-                "first_name": "Jiaye",
-                "last_name": "Wang",
-                "full_name": "Jiaye Wang",
-                "school": "UCL",
-                "major": "Designing Audio Experience"
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "id": 1759487975031,
+            "first_name": "Jiaye",
+            "last_name": "Wang",
+            "full_name": "Jiaye Wang",
+            "school": "UCL",
+            "major": "Designing Audio Experience"
         }
+    })
 
 
 class ArtistListResponse(BaseModel):
@@ -115,25 +113,24 @@ class ConversationResponse(BaseModel):
     model_used: str = ""
     image_analyzed: bool = False
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "id": "uuid-string",
-                "artwork_id": 1759494368418,
-                "persona_id": "su_shi",
-                "persona_name": "Su Shi",
-                "text_segments": [
-                    "This sound composition resonates deeply with the principles of 神韵...",
-                    "The artist's approach to capturing intangible heritage..."
-                ],
-                "structured_analysis": {
-                    "artwork_identifier": "The Whistled Valley",
-                    "evaluative_stance": {
-                        "overall_assessment": "positive"
-                    }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "id": "uuid-string",
+            "artwork_id": 1759494368418,
+            "persona_id": "su_shi",
+            "persona_name": "Su Shi",
+            "text_segments": [
+                "This sound composition resonates deeply with the principles of 神韵...",
+                "The artist's approach to capturing intangible heritage..."
+            ],
+            "structured_analysis": {
+                "artwork_identifier": "The Whistled Valley",
+                "evaluative_stance": {
+                    "overall_assessment": "positive"
                 }
             }
         }
+    })
 
 
 class ConversationListResponse(BaseModel):
@@ -158,18 +155,17 @@ class PersonaResponse(BaseModel):
     attributes: Dict[str, float] = Field(default_factory=dict)
     sample_phrases: List[str] = Field(default_factory=list)
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "id": "su_shi",
-                "name": "Su Shi",
-                "name_cn": "苏轼",
-                "type": "real",
-                "era": "Northern Song Dynasty",
-                "description": "Renowned Chinese poet, writer, and painter",
-                "style": "Values spiritual resonance over physical likeness"
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "id": "su_shi",
+            "name": "Su Shi",
+            "name_cn": "苏轼",
+            "type": "real",
+            "era": "Northern Song Dynasty",
+            "description": "Renowned Chinese poet, writer, and painter",
+            "style": "Values spiritual resonance over physical likeness"
         }
+    })
 
 
 # ==================== Chapter ====================
@@ -180,14 +176,13 @@ class ChapterResponse(BaseModel):
     name: str
     count: int
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "id": 10001,
-                "name": "Cultural Transmission & Regeneration",
-                "count": 26
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "id": 10001,
+            "name": "Cultural Transmission & Regeneration",
+            "count": 26
         }
+    })
 
 
 # ==================== Stats ====================
@@ -200,18 +195,17 @@ class ExhibitionStatsResponse(BaseModel):
     chapters: List[ChapterResponse]
     personas_count: int
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "artworks_count": 87,
-                "artists_count": 85,
-                "conversations_count": 783,
-                "chapters": [
-                    {"id": 10001, "name": "Cultural Transmission", "count": 26}
-                ],
-                "personas_count": 9
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "artworks_count": 87,
+            "artists_count": 85,
+            "conversations_count": 783,
+            "chapters": [
+                {"id": 10001, "name": "Cultural Transmission", "count": 26}
+            ],
+            "personas_count": 9
         }
+    })
 
 
 # ==================== Multi-Agent Dialogue ====================

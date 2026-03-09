@@ -5,7 +5,7 @@ Usage::
 
     cd wenxin-backend
     python3 app/prototype/tools/run_benchmark.py [--tasks path/to/tasks.json]
-    python3 app/prototype/tools/run_benchmark.py --provider together_flux --steps 4 --width 256 --height 256
+    python3 app/prototype/tools/run_benchmark.py --provider nb2 --steps 4 --width 256 --height 256
 """
 
 from __future__ import annotations
@@ -98,8 +98,8 @@ def compute_statistics(results: list[dict]) -> dict:
     sorted_latencies = sorted(latencies)
     p95_idx = min(int(0.95 * n), n - 1)
 
-    # Cost model: mock=$0.00/image, together=$0.003/image
-    cost_per_image = {"mock": 0.00, "together": 0.003, "unknown": 0.00}
+    # Cost model: mock=$0.00/image, nb2=$0.039/image (Gemini)
+    cost_per_image = {"mock": 0.00, "nb2": 0.039, "unknown": 0.00}
     costs = []
     for r in results:
         pt = r.get("provider_type", "mock")
@@ -170,10 +170,10 @@ def main() -> None:
     default_tasks = Path(__file__).resolve().parent.parent / "data" / "benchmarks" / "tasks-10.json"
     parser.add_argument("--tasks", default=str(default_tasks), help="Path to tasks JSON")
     parser.add_argument(
-        "--provider", default="mock", choices=["mock", "together_flux"],
+        "--provider", default="mock", choices=["mock", "nb2"],
         help="Image generation provider (default: mock)",
     )
-    parser.add_argument("--api-key", default="", help="Provider API key (fallback: $TOGETHER_API_KEY)")
+    parser.add_argument("--api-key", default="", help="Provider API key (fallback: $GOOGLE_API_KEY)")
     parser.add_argument("--width", type=int, default=512, help="Image width (default: 512)")
     parser.add_argument("--height", type=int, default=512, help="Image height (default: 512)")
     parser.add_argument("--steps", type=int, default=4, help="Inference steps (default: 4)")
@@ -182,9 +182,9 @@ def main() -> None:
     args = parser.parse_args()
 
     # Resolve API key
-    api_key = args.api_key or os.environ.get("TOGETHER_API_KEY", "")
-    if args.provider == "together_flux" and not api_key:
-        print("ERROR: together_flux requires --api-key or $TOGETHER_API_KEY", file=sys.stderr)
+    api_key = args.api_key or os.environ.get("GOOGLE_API_KEY", "")
+    if args.provider == "nb2" and not api_key:
+        print("ERROR: nb2 requires --api-key or $GOOGLE_API_KEY", file=sys.stderr)
         sys.exit(1)
 
     d_cfg = DraftConfig(

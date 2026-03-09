@@ -1,5 +1,5 @@
 from typing import List, Union
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import field_validator
 import os
 import json
@@ -110,8 +110,6 @@ class Settings(BaseSettings):
     QWEN_API_KEY: str = ""
     XAI_API_KEY: str = ""
     OPENROUTER_API_KEY: str = ""
-    TOGETHER_API_KEY: str = ""  # deprecated: M0 Gemini migration
-    FAL_KEY: str = ""  # deprecated: M0 Gemini migration
     GOOGLE_API_KEY: str = ""
     
     # Langfuse Observability
@@ -168,9 +166,7 @@ class Settings(BaseSettings):
     # M4 B2B API Keys (comma-separated, used by evaluate API auth)
     VULCA_API_KEYS: str = ""
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
 
 
 settings = Settings()

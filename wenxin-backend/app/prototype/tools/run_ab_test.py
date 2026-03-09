@@ -10,8 +10,8 @@ Both arms use the same orchestrator for the agent arm.
 Usage::
 
     cd wenxin-backend
-    TOGETHER_API_KEY=... python3 app/prototype/tools/run_ab_test.py \
-        --provider together_flux --tasks .../tasks-20.json \
+    GOOGLE_API_KEY=... python3 app/prototype/tools/run_ab_test.py \
+        --provider nb2 --tasks .../tasks-20.json \
         --output reports/ab-test.json
 """
 
@@ -234,7 +234,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="VULCA A/B Blind Test: one-shot vs agent")
     default_tasks = Path(__file__).resolve().parent.parent / "data" / "benchmarks" / "tasks-20.json"
     parser.add_argument("--tasks", default=str(default_tasks), help="Path to tasks JSON")
-    parser.add_argument("--provider", default="mock", choices=["mock", "together_flux"])
+    parser.add_argument("--provider", default="mock", choices=["mock", "nb2"])
     parser.add_argument("--api-key", default="")
     parser.add_argument("--width", type=int, default=512)
     parser.add_argument("--height", type=int, default=512)
@@ -243,9 +243,9 @@ def main() -> None:
     parser.add_argument("--output", default="", help="Path to save JSON results")
     args = parser.parse_args()
 
-    api_key = args.api_key or os.environ.get("TOGETHER_API_KEY", "")
-    if args.provider == "together_flux" and not api_key:
-        print("ERROR: together_flux requires --api-key or $TOGETHER_API_KEY", file=sys.stderr)
+    api_key = args.api_key or os.environ.get("GOOGLE_API_KEY", "")
+    if args.provider == "nb2" and not api_key:
+        print("ERROR: nb2 requires --api-key or $GOOGLE_API_KEY", file=sys.stderr)
         sys.exit(1)
 
     d_cfg = DraftConfig(

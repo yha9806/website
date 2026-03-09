@@ -77,10 +77,41 @@ class PreferenceLearner:
                             if isinstance(score, (int, float)):
                                 neg_dim_scores[dim].append(score)
 
+            # Implicit feedback signals (WU-10)
+            for s in sess_list:
+                scores = s.get("final_scores", {})
+
+                # Downloaded = implicit positive
+                if s.get("downloaded", False):
+                    profile.total_positive += 1
+                    for dim, score in scores.items():
+                        if isinstance(score, (int, float)):
+                            pos_dim_scores[dim].append(score)
+
+                # Fast selection (< 5s) = strong preference signal
+                time_ms = s.get("time_to_select_ms", 0)
+                if time_ms > 0 and time_ms < 5000:
+                    profile.total_positive += 1
+                    for dim, score in scores.items():
+                        if isinstance(score, (int, float)):
+                            pos_dim_scores[dim].append(score * 1.1)  # slight boost for fast picks
+
+                # Slow selection (> 30s) = indecision, slight negative signal
+                elif time_ms > 30000:
+                    profile.total_negative += 1
+                    for dim, score in scores.items():
+                        if isinstance(score, (int, float)):
+                            neg_dim_scores[dim].append(score)
+
             # Find dimensions that are higher in positive-rated sessions
+            MIN_SAMPLES = 3
             for dim in set(pos_dim_scores) | set(neg_dim_scores):
-                pos_avg = sum(pos_dim_scores.get(dim, [0])) / max(len(pos_dim_scores.get(dim, [1])), 1)
-                neg_avg = sum(neg_dim_scores.get(dim, [0])) / max(len(neg_dim_scores.get(dim, [1])), 1)
+                pos_list = pos_dim_scores.get(dim, [])
+                neg_list = neg_dim_scores.get(dim, [])
+                if len(pos_list) + len(neg_list) < MIN_SAMPLES:
+                    continue
+                pos_avg = sum(pos_list) / len(pos_list) if pos_list else 0.0
+                neg_avg = sum(neg_list) / len(neg_list) if neg_list else 0.0
                 if pos_avg > neg_avg + 0.1:
                     profile.preferred_dimensions.append(dim)
                 elif neg_avg > pos_avg + 0.1:

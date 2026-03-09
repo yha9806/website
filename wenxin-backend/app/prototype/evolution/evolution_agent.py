@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from app.prototype.evolution.base_agent import BaseAgent
@@ -62,7 +62,7 @@ class EvolutionAgent(BaseAgent):
         evolved_context = {
             "weight_adjustments": adjustments,
             "principles": principles,
-            "last_evolved": datetime.utcnow().isoformat(),
+            "last_evolved": datetime.now(timezone.utc).isoformat(),
             "feedback_count": len(records),
         }
         _DATA_DIR.mkdir(parents=True, exist_ok=True)

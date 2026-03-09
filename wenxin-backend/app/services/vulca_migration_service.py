@@ -5,7 +5,7 @@ Handles migration of VULCA evaluation data to ai_models table
 
 import logging
 from typing import List, Dict, Optional, Any
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
@@ -145,7 +145,7 @@ class VULCAMigrationService:
             # Update with VULCA data
             ai_model.vulca_scores_47d = evaluation.get("scores_47d")
             ai_model.vulca_cultural_perspectives = evaluation.get("cultural_perspectives")
-            ai_model.vulca_evaluation_date = datetime.utcnow()
+            ai_model.vulca_evaluation_date = datetime.now(timezone.utc)
             ai_model.vulca_sync_status = "completed"
             
             await self.db.commit()

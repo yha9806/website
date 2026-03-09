@@ -191,6 +191,7 @@ const INITIAL_STATE: PipelineState = {
 export interface CreateRunParams {
   subject: string;
   tradition: string;
+  cultural_intent?: string;
   provider?: string;
   n_candidates?: number;
   max_rounds?: number;

@@ -23,7 +23,7 @@ from app.prototype.agents.parallel_scorer import ParallelDimensionScorer  # noqa
 logger = logging.getLogger(__name__)
 
 # Cultural style keywords per tradition (subset of DraftAgent._STYLE_MAP keys)
-_CULTURE_KEYWORDS: dict[str, list[str]] = {
+_LEGACY_CULTURE_KEYWORDS: dict[str, list[str]] = {
     "chinese_xieyi": ["ink", "brush", "xieyi", "rice paper", "wash", "shanshui", "shan shui"],
     "chinese_gongbi": ["gongbi", "meticulous", "mineral", "fine lines"],
     "western_academic": ["oil", "chiaroscuro", "perspective", "classical", "academic", "realism"],
@@ -33,6 +33,32 @@ _CULTURE_KEYWORDS: dict[str, list[str]] = {
     "south_asian": ["miniature", "narrative", "south asian"],
     "default": ["art", "fine art", "museum"],
 }
+# Backward-compatible alias (test_critic_rules.py imports _CULTURE_KEYWORDS directly)
+_CULTURE_KEYWORDS = _LEGACY_CULTURE_KEYWORDS
+
+
+def _get_cultural_keywords(tradition: str) -> list[str]:
+    """Dynamic cultural keyword lookup: Legacy base + YAML augmentation."""
+    # Start with legacy keywords as base
+    keywords = list(_LEGACY_CULTURE_KEYWORDS.get(tradition, _LEGACY_CULTURE_KEYWORDS["default"]))
+
+    # Augment with YAML tradition terminology
+    try:
+        from app.prototype.cultural_pipelines.tradition_loader import get_tradition
+        tc = get_tradition(tradition)
+        if tc and tc.terminology:
+            for term in tc.terminology:
+                kw = term.term.lower()
+                if kw not in keywords:
+                    keywords.append(kw)
+                for alias in term.aliases:
+                    a = alias.lower()
+                    if a not in keywords:
+                        keywords.append(a)
+    except Exception:
+        pass
+
+    return keywords
 
 # How much to trust image-based CLIP score vs rule-based score per dimension.
 # Higher = more image influence. L4 is 0 because taboo detection is metadata.
@@ -76,9 +102,7 @@ class CriticRules:
         sample_matches = evidence.get("sample_matches", [])
         taboo_violations = evidence.get("taboo_violations", [])
 
-        style_keywords = _CULTURE_KEYWORDS.get(
-            cultural_tradition, _CULTURE_KEYWORDS["default"]
-        )
+        style_keywords = _get_cultural_keywords(cultural_tradition)
         has_style = any(kw in prompt_lower for kw in style_keywords)
         has_terms = len(term_hits) > 0
         has_samples = len(sample_matches) > 0
