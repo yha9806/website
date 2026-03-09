@@ -4,26 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-WenXin MoYun - Modern AI art evaluation platform with **complete iOS design system**. Full-stack application with React 19 frontend featuring **pure iOS-style interface**, and FastAPI backend with dual authentication (JWT + guest mode), async AI evaluation engine, and real-time progress visualization.
+VULCA — AI art creation & evaluation platform. React 19 frontend with **Art Professional design system**, FastAPI backend with async AI evaluation engine, and production GCP deployment.
 
-### Complete iOS Design System Migration (2025-08-11) ✨
+### Art Professional Design System (Updated 2026-03-09)
 
-🎉 **MIGRATION COMPLETE**: Successfully completed **total transformation** from traditional Chinese aesthetics to **modern iOS design system**:
+Gallery-inspired warm color palette replacing the original iOS blue/purple:
 
-- ✅ **Typography System**: iOS San Francisco font stack, iOS spacing ratios, modern readability
-- ✅ **Component System**: Complete IOSButton, IOSCard, IOSToggle, IOSSlider, IOSAlert integration
-- ✅ **Color System**: Pure iOS system colors (Blue #007AFF, Green #34C759, Orange #FF9500)
-- ✅ **Layout & Backgrounds**: iOS-style glass morphism, clean gradients, subtle textures
-- ✅ **Homepage Redesign**: Modern English interface with iOS visual language
-- ✅ **Legacy Cleanup**: Removed Chinese fonts, traditional animations, decorative elements
-
-**Current Design Philosophy** (Updated 2025-08-16):
-- **Pure iOS Visual Language**: Authentic Apple design system implementation
-- **Modern International Interface**: English-first, globally accessible design
-- **Clean Minimalism**: Removed ornamental elements, focused on functionality
-- **Glass Morphism**: Native iOS-style transparency and backdrop blur effects
+- **Color System**: Warm art-professional tones (墨石灰 #334155, 暖铜棕 #C87F4A, 鼠尾草绿 #5F8A50, 琥珀金 #B8923D, 珊瑚红 #C65D4D)
+- **Typography**: iOS San Francisco font stack with art-professional sizing
+- **Component System**: IOSButton, IOSCard, IOSToggle, IOSSlider, IOSAlert (retained naming)
+- **Glass Morphism**: Liquid Glass effects with warm tint (bg-base: #FAF7F2 奶油白)
+- **Dark Mode**: Full dark palette (暖铜棕亮 #DDA574, 鼠尾草绿亮 #87A878)
+- **Prototype Components**: 28 files fully aligned to Art Professional palette (zero blue/purple/indigo)
 - **60+ Fluent Emojis**: Semantic emoji system for intuitive interactions
-- **Performance Optimized**: Removed heavy animations, optimized for smooth experience
 
 ## Essential Commands
 
@@ -194,14 +187,15 @@ Layout (wraps all pages with Header/Footer)
 
 ### Theme System
 
-**iOS Design Tokens** (`src/components/ios/utils/iosTheme.ts`)
+**Art Professional Design Tokens** (`src/components/ios/utils/iosTheme.ts`)
 ```typescript
 export const iosColors = {
-  blue: '#007AFF',      // Primary iOS blue
-  green: '#34C759',     // Success green
-  orange: '#FF9500',    // Warning orange
-  red: '#FF3B30',       // Destructive red
-  gray: '#8E8E93',      // Neutral gray
+  blue: '#334155',      // 墨石灰 (slate) — primary
+  green: '#5F8A50',     // 鼠尾草绿 — success
+  orange: '#B8923D',    // 琥珀金 — warning
+  purple: '#C87F4A',    // 暖铜棕 (bronze) — accent
+  red: '#C65D4D',       // 珊瑚红 — destructive
+  teal: '#6B8E7A',      // 青铜绿 — info
 }
 
 export const iosShadows = {
