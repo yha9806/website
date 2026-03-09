@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 
 logger = logging.getLogger("vulca")
 
-_MIN_CLUSTER_SIZE = 5  # Minimum sessions to crystallize a concept
+_MIN_CLUSTER_SIZE = 3  # Minimum sessions to crystallize a concept
 
 
 @dataclass

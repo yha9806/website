@@ -25,8 +25,8 @@ if str(_PROJECT_ROOT) not in sys.path:
 
 from app.prototype.agents.critic_config import CriticConfig, DIMENSIONS
 from app.prototype.cultural_pipelines.cultural_weights import (
-    KNOWN_TRADITIONS,
     get_all_weight_tables,
+    get_known_traditions,
     get_weights,
 )
 from app.prototype.cultural_pipelines.pipeline_router import (

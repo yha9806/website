@@ -58,7 +58,9 @@ class SessionDigest:
     feedback: list[dict] = field(default_factory=list)
 
     # Cultural features (extracted post-session)
-    cultural_features: dict[str, float] = field(default_factory=dict)
+    # Tier-1 (rule-based): float values — tradition_specificity, l5_emphasis, etc.
+    # Tier-2 (LLM): list[str] values — style_elements, emotional_tone, etc.
+    cultural_features: dict = field(default_factory=dict)
     critic_insights: list[str] = field(default_factory=list)
 
     # Implicit feedback signals

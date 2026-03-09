@@ -59,10 +59,19 @@ def _compute_centroid(features_list: list[dict[str, float]]) -> dict[str, float]
     return centroid
 
 
+def _numeric_features(features: dict) -> dict[str, float]:
+    """Extract only numeric-valued keys from a features dict.
+
+    Tier-2 LLM features (lists/strings) are excluded so clustering
+    operates purely on the numeric Tier-1 feature space.
+    """
+    return {k: v for k, v in features.items() if isinstance(v, (int, float))}
+
+
 class CulturalClusterer:
     """Cluster sessions by cultural features using greedy centroid-based clustering."""
 
-    def __init__(self, similarity_threshold: float = 0.85) -> None:
+    def __init__(self, similarity_threshold: float = 0.80) -> None:
         self._threshold = similarity_threshold
 
     def cluster(self, sessions: list[dict]) -> list[CulturalCluster]:
@@ -94,8 +103,11 @@ class CulturalClusterer:
             if sid in assigned:
                 continue
 
-            features = session["cultural_features"]
+            features = _numeric_features(session["cultural_features"])
             tradition = session.get("tradition", "default")
+
+            if not features:
+                continue
 
             # Try to find an existing cluster to join
             best_cluster = None
@@ -109,9 +121,9 @@ class CulturalClusterer:
             if best_cluster is not None:
                 best_cluster.session_ids.append(sid)
                 best_cluster.size += 1
-                # Recompute centroid
+                # Recompute centroid (numeric features only)
                 cluster_features = [
-                    s["cultural_features"] for s in valid
+                    _numeric_features(s["cultural_features"]) for s in valid
                     if s.get("session_id", "") in set(best_cluster.session_ids)
                 ]
                 best_cluster.feature_centroid = _compute_centroid(cluster_features)
@@ -120,7 +132,7 @@ class CulturalClusterer:
                 cluster_id = f"cluster-{len(clusters):03d}"
                 clusters.append(CulturalCluster(
                     cluster_id=cluster_id,
-                    feature_centroid=dict(features),
+                    feature_centroid=dict(features),  # already numeric-only
                     session_ids=[sid],
                     size=1,
                     tradition=tradition,

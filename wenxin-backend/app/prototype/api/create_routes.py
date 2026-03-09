@@ -31,9 +31,12 @@ logger = logging.getLogger("vulca")
 create_router = APIRouter(prefix="/api/v1", tags=["create"])
 
 
-def _extract_cultural_features(tradition: str, final_scores: dict[str, float], risk_flags: list[str]) -> dict[str, float]:
-    """Extract cultural features from session results (rule-based, no LLM call)."""
-    features: dict[str, float] = {}
+def _extract_cultural_features(tradition: str, final_scores: dict[str, float], risk_flags: list[str]) -> dict:
+    """Tier-1: Extract cultural features from session results (rule-based, no LLM call).
+
+    Returns numeric features only. Zero-latency, synchronous.
+    """
+    features: dict = {}
 
     if not final_scores:
         return features
@@ -61,6 +64,105 @@ def _extract_cultural_features(tradition: str, final_scores: dict[str, float], r
         features["cultural_depth"] = round(l3, 4)
 
     return features
+
+
+async def _extract_cultural_features_async(intent: str, tradition: str = "default") -> dict:
+    """Tier-2: Extract semantic cultural features via LLM.
+
+    Uses litellm.acompletion() with gemini-2.0-flash to extract:
+    - style_elements: list of style elements (e.g., "水墨留白", "geometric patterns")
+    - emotional_tone: list of emotional tones (e.g., "serene", "dramatic")
+    - technique_markers: list of technique markers (e.g., "wet-on-wet", "impasto")
+    - cultural_references: list of cultural references (e.g., "宋代山水", "Art Nouveau")
+
+    On any failure, returns empty dict (graceful degradation to Tier-1 only).
+    """
+    if not intent or not intent.strip():
+        return {}
+
+    try:
+        import litellm
+
+        prompt = (
+            "You are a cultural art analyst. Given the following creation intent and cultural tradition, "
+            "extract semantic cultural features as JSON.\n\n"
+            f"Intent: {intent}\n"
+            f"Tradition: {tradition}\n\n"
+            "Return ONLY a JSON object with these four keys (each value is a list of short strings):\n"
+            '{\n'
+            '  "style_elements": ["...", "..."],\n'
+            '  "emotional_tone": ["...", "..."],\n'
+            '  "technique_markers": ["...", "..."],\n'
+            '  "cultural_references": ["...", "..."]\n'
+            '}\n\n'
+            "Rules:\n"
+            "- Each list should have 1-5 items\n"
+            "- Items can be in any language (Chinese, English, Japanese, etc.)\n"
+            "- If a category doesn't apply, use an empty list []\n"
+            "- Return ONLY the JSON, no markdown fences, no explanation"
+        )
+
+        response = await litellm.acompletion(
+            model="gemini/gemini-2.0-flash",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.3,
+            max_tokens=300,
+        )
+
+        raw = response.choices[0].message.content.strip()
+        # Strip markdown fences if present
+        if raw.startswith("```"):
+            raw = raw.split("\n", 1)[-1]
+            if raw.endswith("```"):
+                raw = raw[:-3].strip()
+            elif "```" in raw:
+                raw = raw[:raw.rfind("```")].strip()
+
+        parsed = json.loads(raw)
+
+        # Validate structure — only accept expected keys with list values
+        valid_keys = {"style_elements", "emotional_tone", "technique_markers", "cultural_references"}
+        result: dict = {}
+        for key in valid_keys:
+            val = parsed.get(key)
+            if isinstance(val, list):
+                # Ensure all items are strings
+                result[key] = [str(item) for item in val if item]
+            else:
+                result[key] = []
+
+        return result
+
+    except Exception as exc:
+        logger.warning("Tier-2 cultural feature extraction failed (graceful degradation): %s", exc)
+        return {}
+
+
+async def _enrich_cultural_features_background(
+    digest: SessionDigest,
+    intent: str,
+    tradition: str = "default",
+) -> None:
+    """Fire-and-forget background task: enrich session's cultural_features with LLM tier.
+
+    Merges Tier-2 (LLM) features into the existing Tier-1 (rule-based) features
+    already stored on the digest. On failure, digest retains Tier-1 features only.
+    """
+    try:
+        tier2 = await _extract_cultural_features_async(intent, tradition)
+        if tier2:
+            digest.cultural_features.update(tier2)
+            logger.info(
+                "Tier-2 cultural features enriched for session %s: %s",
+                digest.session_id,
+                list(tier2.keys()),
+            )
+    except Exception as exc:
+        logger.warning(
+            "Background cultural feature enrichment failed for %s: %s",
+            digest.session_id,
+            exc,
+        )
 
 
 # In-memory event buffers for SSE (mirrors routes.py pattern)
@@ -188,6 +290,11 @@ async def _run_evaluate_mode(
             risk_flags=result.risk_flags if result.risk_flags else [],
         )
         SessionStore.get().append(digest)
+
+        # Fire-and-forget Tier-2 LLM enrichment
+        asyncio.ensure_future(_enrich_cultural_features_background(
+            digest, intent=req.intent, tradition=result.tradition_used,
+        ))
 
         return CreateResponse(
             session_id=session_id,
@@ -320,6 +427,11 @@ async def _run_create_mode_sync(
     )
     SessionStore.get().append(digest)
 
+    # Fire-and-forget Tier-2 LLM enrichment
+    asyncio.ensure_future(_enrich_cultural_features_background(
+        digest, intent=req.intent, tradition=req.tradition,
+    ))
+
     return CreateResponse(
         session_id=session_id,
         mode="create",
@@ -434,6 +546,16 @@ def _run_create_mode_stream(
             risk_flags=[],
         )
         SessionStore.get().append(digest)
+
+        # Tier-2 LLM enrichment (within background thread, need new event loop)
+        try:
+            loop = asyncio.new_event_loop()
+            loop.run_until_complete(_enrich_cultural_features_background(
+                digest, intent=req.intent, tradition=req.tradition,
+            ))
+            loop.close()
+        except Exception as exc:
+            logger.warning("Streaming mode Tier-2 enrichment failed: %s", exc)
 
     thread = Thread(target=_run_in_background, daemon=True)
     thread.start()

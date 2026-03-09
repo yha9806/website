@@ -41,6 +41,9 @@ class TestCoreImports:
         assert hasattr(mod, "get_weights")
         assert hasattr(mod, "get_all_weight_tables")
         assert hasattr(mod, "KNOWN_TRADITIONS")
+        assert hasattr(mod, "get_known_traditions")
+        # Dynamic version must return a list
+        assert isinstance(mod.get_known_traditions(), list)
 
     def test_tradition_loader(self):
         mod = importlib.import_module("app.prototype.cultural_pipelines.tradition_loader")

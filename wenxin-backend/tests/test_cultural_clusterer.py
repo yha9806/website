@@ -46,6 +46,11 @@ class TestCulturalClusterer:
         clusters = CulturalClusterer(similarity_threshold=0.9).cluster(sessions)
         assert len(clusters) == 2
 
+    def test_default_threshold_is_080(self):
+        """WU-02: default similarity_threshold lowered from 0.85 to 0.80."""
+        c = CulturalClusterer()
+        assert c._threshold == 0.80
+
     def test_cluster_to_dict(self):
         c = CulturalCluster(cluster_id="c1", feature_centroid={"x": 0.5}, session_ids=["s1"], size=1)
         d = c.to_dict()

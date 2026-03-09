@@ -223,6 +223,19 @@ class VLMCritic:
                 taboo_strs = [v.get("description", "") for v in taboos[:3]]
                 evidence_section += f"\nKnown taboos: {'; '.join(taboo_strs)}"
 
+        # Append prompt archetypes from PromptDistiller (WU-01)
+        try:
+            from app.prototype.cultural_pipelines.cultural_weights import get_prompt_archetypes
+            archetypes = get_prompt_archetypes(tradition, top_n=5)
+            if archetypes:
+                pattern_strs = [
+                    f"{a.get('pattern', '?')} (avg {a.get('avg_score', 0):.2f})"
+                    for a in archetypes[:5]
+                ]
+                evidence_section += f"\nSuccessful patterns: {', '.join(pattern_strs)}"
+        except Exception:
+            pass  # Graceful degradation — archetypes are optional context
+
         user_text = _USER_TEMPLATE.format(
             subject=subject,
             tradition=tradition.replace("_", " "),

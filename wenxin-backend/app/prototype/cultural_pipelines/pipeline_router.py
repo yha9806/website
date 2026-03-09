@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 
 from app.prototype.agents.critic_config import CriticConfig, DIMENSIONS
 from app.prototype.cultural_pipelines.cultural_weights import (
-    KNOWN_TRADITIONS,
+    get_known_traditions,
     get_weights,
 )
 

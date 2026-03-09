@@ -20,7 +20,6 @@ from app.prototype.feedback.feedback_routes import feedback_router
 from app.prototype.skills.api.skill_routes import skill_api_router
 from app.prototype.skills.api.discussion_routes import discussion_router
 from app.prototype.skills.api.version_routes import version_router
-from app.prototype.evolution.evolution_routes import evolution_router
 from app.prototype.api.create_routes import create_router
 from app.prototype.digestion.routes import digestion_router
 # Temporarily disabled - requires sentence-transformers
@@ -160,9 +159,6 @@ app.include_router(feedback_router)
 app.include_router(skill_api_router)
 app.include_router(discussion_router)
 app.include_router(version_router)
-
-# Include Evolution/Self-Evolution API
-app.include_router(evolution_router)
 
 # Include Unified Create API (creation + evaluation entry point)
 app.include_router(create_router)

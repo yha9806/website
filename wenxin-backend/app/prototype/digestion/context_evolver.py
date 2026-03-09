@@ -331,6 +331,54 @@ class ContextEvolver:
             raise
         logger.info("ContextEvolver: saved evolved context (evolution #%d)", context["evolutions"])
 
+    def generate_report(self) -> dict:
+        """Generate a summary report of the current evolved context.
+
+        Replaces the old AdminAgent weekly report with a simpler,
+        digestion-native summary.
+
+        Returns
+        -------
+        dict with keys: traditions_count, total_sessions, last_evolution,
+        evolutions_count, top_patterns.
+        """
+        context = self._load_context()
+        traditions_count = len(context.get("tradition_weights", {}))
+        evolutions_count = context.get("evolutions", 0)
+
+        # Determine last evolution timestamp from audit log
+        log_path = self._context_path.parent / "evolution_log.jsonl"
+        last_evolution: float | None = None
+        if log_path.exists():
+            try:
+                last_line = ""
+                with open(log_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line:
+                            last_line = line
+                if last_line:
+                    entry = json.loads(last_line)
+                    last_evolution = entry.get("timestamp")
+            except (json.JSONDecodeError, OSError):
+                pass
+
+        # Detect current patterns
+        top_patterns: list[dict] = []
+        try:
+            patterns = self._detector.detect()
+            top_patterns = [p.to_dict() for p in patterns[:10]]
+        except Exception:
+            pass
+
+        return {
+            "traditions_count": traditions_count,
+            "total_sessions": self._store.count(),
+            "last_evolution": last_evolution,
+            "evolutions_count": evolutions_count,
+            "top_patterns": top_patterns,
+        }
+
     def _log_evolution(self, result: EvolutionResult) -> None:
         """Append evolution result to evolution_log.jsonl for audit trail."""
         import time as _time

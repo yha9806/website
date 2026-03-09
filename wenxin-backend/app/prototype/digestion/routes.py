@@ -51,6 +51,17 @@ async def digestion_status() -> dict:
     }
 
 
+@digestion_router.get("/report")
+async def digestion_report() -> dict:
+    """Return a summary report of the evolved context state.
+
+    Replaces the old evolution/ AdminAgent weekly report with a
+    lightweight, digestion-native summary.
+    """
+    evolver = ContextEvolver()
+    return evolver.generate_report()
+
+
 @digestion_router.post("/run")
 async def run_digestion() -> dict:
     """Trigger a full digestion + evolution cycle."""

@@ -15,7 +15,7 @@ from app.prototype.skills import SkillDef, SkillRegistry
 
 logger = logging.getLogger(__name__)
 
-__all__ = ["SkillSelector", "SkillPlan"]
+__all__ = ["SkillSelector", "SkillPlan", "_get_culture_keywords", "invalidate_culture_keywords_cache"]
 
 
 @dataclass
@@ -45,10 +45,65 @@ class SkillPlan:
 _BRAND_KEYWORDS = {"brand", "logo", "branding", "corporate", "identity", "guideline"}
 _AUDIENCE_KEYWORDS = {"audience", "demographic", "target", "market", "user", "consumer"}
 _TREND_KEYWORDS = {"trend", "trendy", "modern", "aesthetic", "style", "popular", "current"}
-_CULTURE_KEYWORDS = {
+_CULTURE_KEYWORDS_BASE_EN = {
     "culture", "cultural", "tradition", "traditional", "taboo", "religious",
     "appropriate", "sensitivity", "ethnic", "heritage",
+    "ritual", "ceremony", "sacred", "folklore",
+    "indigenous", "ancestral", "mythological",
 }
+
+_CULTURE_KEYWORDS_BASE_ZH = {
+    "文化", "传统", "禁忌", "遗产", "仪式",
+    "民俗", "民族", "神话", "图腾", "风俗",
+}
+
+_culture_keywords_cache: set[str] | None = None
+
+
+def _get_culture_keywords() -> set[str]:
+    """Dynamically build culture keywords from YAML traditions + base set.
+
+    Caches the result after first call for performance.
+    Base English and Chinese keywords are always included.
+    Additional terms are loaded from YAML tradition terminology entries.
+    """
+    global _culture_keywords_cache
+    if _culture_keywords_cache is not None:
+        return _culture_keywords_cache
+
+    keywords = set(_CULTURE_KEYWORDS_BASE_EN)
+    keywords.update(_CULTURE_KEYWORDS_BASE_ZH)
+
+    # Load from YAML traditions
+    try:
+        from app.prototype.cultural_pipelines.tradition_loader import get_all_traditions
+        traditions = get_all_traditions()
+        for config in traditions.values():
+            if config.terminology:
+                for entry in config.terminology:
+                    # Add the English term
+                    if entry.term and len(entry.term) > 2:
+                        keywords.add(entry.term.lower())
+                    # Add the Chinese term
+                    if entry.term_zh and len(entry.term_zh) > 1:
+                        keywords.add(entry.term_zh)
+                    # Add aliases
+                    for alias in entry.aliases:
+                        if isinstance(alias, str) and len(alias) > 2:
+                            keywords.add(alias.lower())
+    except Exception:
+        logger.debug("Could not load YAML traditions for culture keywords; using base set only")
+
+    _culture_keywords_cache = keywords
+    return keywords
+
+
+def invalidate_culture_keywords_cache() -> None:
+    """Invalidate the culture keywords cache (e.g. after tradition reload)."""
+    global _culture_keywords_cache
+    _culture_keywords_cache = None
+
+
 _RISK_KEYWORDS = {"risk", "safe", "safety", "offensive", "inappropriate", "taboo", "violation"}
 
 
@@ -113,7 +168,7 @@ class SkillSelector:
                 skills.append(trend)
 
         # Rule 5: Culture keywords (even without tradition detected)
-        if _CULTURE_KEYWORDS & set(combined.split()) and not any(
+        if _get_culture_keywords() & set(combined.split()) and not any(
             s.name == "cultural_evaluation" for s in skills
         ):
             cultural = self.registry.get("cultural_evaluation")

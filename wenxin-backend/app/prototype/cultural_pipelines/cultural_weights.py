@@ -157,7 +157,39 @@ def _get_weight_tables() -> dict[str, dict[str, float]]:
     return base
 
 
-# All traditions that have weight tables
+# ---------------------------------------------------------------------------
+# Dynamic tradition discovery
+# ---------------------------------------------------------------------------
+
+def get_known_traditions() -> list[str]:
+    """Dynamically collect traditions from evolved_context + YAML + fallback.
+
+    Merges tradition names from three sources (in priority order):
+    1. evolved_context.json ``tradition_weights`` keys
+    2. YAML tradition loader (``data/traditions/*.yaml``)
+    3. Hardcoded ``_FALLBACK_WEIGHTS`` keys
+
+    Returns a sorted, deduplicated list of tradition identifiers.
+    """
+    traditions: set[str] = set(_FALLBACK_WEIGHTS.keys())
+
+    # Add from evolved_context tradition_weights
+    evolved = _try_load_from_evolved_context()
+    if evolved:
+        traditions.update(evolved.keys())
+
+    # Add from YAML loader
+    try:
+        from app.prototype.cultural_pipelines.tradition_loader import get_all_traditions
+        yaml_traditions = get_all_traditions()
+        traditions.update(yaml_traditions.keys())
+    except (ImportError, Exception):
+        pass
+
+    return sorted(traditions)
+
+
+# Backward compatibility — deprecated; prefer get_known_traditions()
 KNOWN_TRADITIONS: list[str] = sorted(_FALLBACK_WEIGHTS.keys())
 
 
@@ -175,3 +207,49 @@ def get_all_weight_tables() -> dict[str, dict[str, float]]:
     """Return a copy of the full weight table registry."""
     tables = _get_weight_tables()
     return {k: dict(v) for k, v in tables.items()}
+
+
+def get_prompt_archetypes(tradition: str, top_n: int = 5) -> list[dict]:
+    """Return top-N prompt archetypes for a tradition from evolved_context.json.
+
+    Reads the ``prompt_contexts.archetypes`` section written by
+    :class:`~app.prototype.digestion.context_evolver.ContextEvolver` and
+    filters entries whose ``traditions`` list includes *tradition*.
+
+    Parameters
+    ----------
+    tradition:
+        Cultural tradition key (e.g. ``"chinese_xieyi"``).
+    top_n:
+        Maximum number of archetypes to return (default 5).
+
+    Returns
+    -------
+    list[dict]
+        Each dict has at least ``pattern`` (str) and ``avg_score`` (float).
+        Returns an empty list if the file is missing or has no matching data.
+    """
+    try:
+        if not os.path.exists(_EVOLVED_CONTEXT_PATH):
+            return []
+        with open(_EVOLVED_CONTEXT_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        archetypes = data.get("prompt_contexts", {}).get("archetypes")
+        if not isinstance(archetypes, list) or not archetypes:
+            return []
+
+        # Filter by tradition — include archetypes whose traditions list
+        # contains the requested tradition, or that have no traditions
+        # (universal archetypes).
+        filtered = [
+            a for a in archetypes
+            if tradition in a.get("traditions", [])
+            or not a.get("traditions")
+        ]
+
+        # Sort by avg_score descending, take top N
+        filtered.sort(key=lambda a: a.get("avg_score", 0), reverse=True)
+        return filtered[:top_n]
+    except Exception as exc:
+        logger.debug("get_prompt_archetypes: failed to load (%s)", exc)
+        return []

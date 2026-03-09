@@ -12,6 +12,7 @@ from app.prototype.agents.critic_config import DIMENSIONS
 from app.prototype.cultural_pipelines.cultural_weights import (
     KNOWN_TRADITIONS,
     _FALLBACK_WEIGHTS,
+    get_known_traditions,
     get_weights,
     get_all_weight_tables,
 )
@@ -293,7 +294,7 @@ def test_route_to_dict_serializable(router: CulturalPipelineRouter) -> None:
 
 
 # ---------------------------------------------------------------------------
-# 7. KNOWN_TRADITIONS consistency
+# 7. KNOWN_TRADITIONS consistency (static + dynamic)
 # ---------------------------------------------------------------------------
 
 def test_known_traditions_is_sorted() -> None:
@@ -322,3 +323,74 @@ def test_get_all_weight_tables_returns_all() -> None:
     for tradition in KNOWN_TRADITIONS:
         assert tradition in tables
         assert sum(tables[tradition].values()) == pytest.approx(1.0)
+
+
+# ---------------------------------------------------------------------------
+# 8. get_known_traditions() dynamic version
+# ---------------------------------------------------------------------------
+
+def test_get_known_traditions_is_sorted() -> None:
+    """Dynamic traditions list must be sorted."""
+    traditions = get_known_traditions()
+    assert traditions == sorted(traditions)
+
+
+def test_get_known_traditions_superset_of_static() -> None:
+    """Dynamic traditions must be a superset of the static KNOWN_TRADITIONS."""
+    dynamic = set(get_known_traditions())
+    static = set(KNOWN_TRADITIONS)
+    assert static.issubset(dynamic), (
+        f"Static traditions not in dynamic: {static - dynamic}"
+    )
+
+
+def test_get_known_traditions_includes_fallback_keys() -> None:
+    """Dynamic traditions must include all _FALLBACK_WEIGHTS keys."""
+    dynamic = set(get_known_traditions())
+    fallback_keys = set(_FALLBACK_WEIGHTS.keys())
+    assert fallback_keys.issubset(dynamic), (
+        f"Fallback keys not in dynamic: {fallback_keys - dynamic}"
+    )
+
+
+def test_get_known_traditions_includes_evolved_context() -> None:
+    """Dynamic traditions should pick up keys from evolved_context.json."""
+    evolved_data = {
+        "tradition_weights": {
+            "test_emerging_tradition": {
+                "visual_perception": 0.20,
+                "technical_analysis": 0.20,
+                "cultural_context": 0.20,
+                "critical_interpretation": 0.20,
+                "philosophical_aesthetic": 0.20,
+            },
+        },
+        "version": 1,
+        "evolutions": 1,
+    }
+
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".json", delete=False
+    ) as tmp:
+        json.dump(evolved_data, tmp)
+        tmp_path = tmp.name
+
+    try:
+        with patch(
+            "app.prototype.cultural_pipelines.cultural_weights._EVOLVED_CONTEXT_PATH",
+            tmp_path,
+        ):
+            traditions = get_known_traditions()
+            assert "test_emerging_tradition" in traditions, (
+                f"Evolved tradition not found in dynamic list: {traditions}"
+            )
+    finally:
+        os.unlink(tmp_path)
+
+
+def test_get_known_traditions_returns_list_of_strings() -> None:
+    """get_known_traditions must return a list of strings."""
+    traditions = get_known_traditions()
+    assert isinstance(traditions, list)
+    for t in traditions:
+        assert isinstance(t, str)

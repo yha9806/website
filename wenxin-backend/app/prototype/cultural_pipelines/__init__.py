@@ -7,6 +7,7 @@ Hardcoded fallbacks remain for environments without PyYAML.
 from app.prototype.cultural_pipelines.cultural_weights import (
     KNOWN_TRADITIONS,
     get_all_weight_tables,
+    get_known_traditions,
     get_weights,
 )
 from app.prototype.cultural_pipelines.pipeline_router import (
@@ -29,6 +30,7 @@ __all__ = [
     "TraditionConfig",
     "KNOWN_TRADITIONS",
     "get_all_traditions",
+    "get_known_traditions",
     "get_all_weight_tables",
     "get_tradition",
     "get_weights",

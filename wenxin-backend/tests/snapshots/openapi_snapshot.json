@@ -1,5 +1,5 @@
 {
-  "endpoint_count": 87,
+  "endpoint_count": 86,
   "paths": [
     "/",
     "/api/v1/admin/clear-all-mock-models",
@@ -34,6 +34,7 @@
     "/api/v1/benchmarks/test-provider",
     "/api/v1/benchmarks/{suite_id}",
     "/api/v1/create",
+    "/api/v1/digestion/report",
     "/api/v1/digestion/run",
     "/api/v1/digestion/status",
     "/api/v1/evaluate",
@@ -43,8 +44,6 @@
     "/api/v1/evaluations/{task_id}/progress",
     "/api/v1/evaluations/{task_id}/score",
     "/api/v1/evaluations/{task_id}/scoring-advice",
-    "/api/v1/evolution/run",
-    "/api/v1/evolution/status",
     "/api/v1/feedback",
     "/api/v1/feedback/stats",
     "/api/v1/health/",
