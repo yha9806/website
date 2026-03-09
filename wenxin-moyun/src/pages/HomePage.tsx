@@ -23,6 +23,12 @@ import {
   ExternalLink,
   MessageSquare,
   GitFork,
+  Play,
+  Sparkles,
+  Code2,
+  ScanEye,
+  Brain,
+  ImageOff,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
@@ -132,6 +138,68 @@ function OpenSourceInstall() {
   );
 }
 
+function TerminalInstallCard() {
+  const [copied, setCopied] = useState(false);
+  const installCmd = 'pip install vulca';
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(installCmd);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      const textArea = document.createElement('textarea');
+      textArea.value = installCmd;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  return (
+    <motion.div
+      className="rounded-xl overflow-hidden shadow-lg border border-gray-700/50 max-w-md mx-auto"
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+    >
+      {/* Terminal title bar */}
+      <div className="flex items-center gap-2 px-4 py-2.5 bg-[#1A1714]">
+        <div className="flex gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-red-500/80" />
+          <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+          <div className="w-3 h-3 rounded-full bg-green-500/80" />
+        </div>
+        <span className="text-xs text-gray-500 font-mono ml-2">terminal</span>
+      </div>
+      {/* Terminal body */}
+      <div className="bg-[#0F0D0B] px-5 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-green-400 font-mono text-sm select-none">$</span>
+          <code className="font-mono text-sm text-gray-100 select-all tracking-wide">
+            {installCmd}
+          </code>
+        </div>
+        <button
+          onClick={handleCopy}
+          className="p-2 rounded-lg hover:bg-white/10 transition-colors text-gray-400 hover:text-white"
+          aria-label="Copy install command"
+        >
+          {copied ? (
+            <Check className="w-4 h-4 text-green-400" />
+          ) : (
+            <Copy className="w-4 h-4" />
+          )}
+        </button>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function HomePage() {
   const { entries: leaderboard } = useLeaderboard();
 
@@ -190,6 +258,15 @@ export default function HomePage() {
           </motion.p>
 
           <motion.p
+            className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#B0683A] to-slate-600 dark:from-[#B0683A] dark:to-slate-400 mb-3 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+          >
+            Stop guessing. Start measuring.
+          </motion.p>
+
+          <motion.p
             className="text-lg text-gray-500 dark:text-gray-400 mb-10 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -227,6 +304,17 @@ export default function HomePage() {
               <Download className="w-5 h-5" />
               Sample Report
             </IOSButton>
+            <Link to="/canvas">
+              <IOSButton
+                variant="primary"
+                size="lg"
+                className="flex items-center gap-2 min-w-[180px] justify-center !bg-[#B0683A] hover:!bg-[#9A5A32] !border-[#B0683A]"
+                data-testid="hero-try-now"
+              >
+                <Sparkles className="w-5 h-5" />
+                Try It Now
+              </IOSButton>
+            </Link>
             <Link to="/vulca">
               <IOSButton
                 variant="text"
@@ -544,6 +632,162 @@ export default function HomePage() {
                 Receive structured 47D scores, cultural bias analysis, and actionable recommendations in export-ready reports
               </p>
             </motion.div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ============= SEE VULCA IN ACTION ============= */}
+      <section className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900/0 dark:to-gray-900/50 -mx-4 px-4 py-16 rounded-2xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-h1 mb-4">
+            See VULCA in Action
+          </h2>
+          <p className="text-body max-w-2xl mx-auto">
+            Real scenarios where cultural evaluation prevents costly mistakes
+          </p>
+        </motion.div>
+
+        <motion.div
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.1 }}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {[
+              {
+                icon: <ImageOff className="w-6 h-6 text-red-500" />,
+                title: 'Culture Fail',
+                pain: 'Your AI passed every benchmark, but showed a Buddhist monk eating beef. Cultural blind spots cost real money.',
+                solution: 'VULCA catches cultural taboos before they ship.',
+                gradient: 'from-red-500/20 to-orange-500/20',
+              },
+              {
+                icon: <Target className="w-6 h-6 text-slate-600" />,
+                title: 'One Score Problem',
+                pain: 'A single accuracy number hides critical failures. VULCA breaks evaluation into 47 dimensions across 8 cultural perspectives.',
+                solution: 'Multi-dimensional scoring reveals hidden weaknesses.',
+                gradient: 'from-slate-500/20 to-blue-500/20',
+              },
+              {
+                icon: <ScanEye className="w-6 h-6 text-bronze-500" />,
+                title: 'No-Code Audit',
+                pain: 'Upload an image. Get a cultural audit in 60 seconds. No ML expertise required.',
+                solution: 'Accessible evaluation for every team member.',
+                gradient: 'from-bronze-500/20 to-amber-500/20',
+              },
+              {
+                icon: <Globe className="w-6 h-6 text-green-600" />,
+                title: '8 Perspectives',
+                pain: 'Chinese, Japanese, Islamic, Western... same artwork, completely different evaluations. That\'s the point.',
+                solution: 'True cross-cultural assessment, not Western-default.',
+                gradient: 'from-green-500/20 to-teal-500/20',
+              },
+              {
+                icon: <Brain className="w-6 h-6 text-purple-500" />,
+                title: 'Self-Evolution',
+                pain: 'VULCA doesn\'t just evaluate \u2014 it learns. Every session makes the system smarter.',
+                solution: 'Frozen models + evolving context = continuous improvement.',
+                gradient: 'from-purple-500/20 to-pink-500/20',
+              },
+              {
+                icon: <Code2 className="w-6 h-6 text-emerald-600" />,
+                title: 'API Integration',
+                pain: 'pip install vulca. Three lines of code. Full cultural evaluation pipeline.',
+                solution: 'Developer-first design for seamless CI/CD integration.',
+                gradient: 'from-emerald-500/20 to-cyan-500/20',
+              },
+            ].map((scenario, index) => (
+              <motion.div key={scenario.title} variants={fadeInUp}>
+                <IOSCard variant="elevated" className="h-full group">
+                  <IOSCardContent className="p-0">
+                    {/* Video placeholder thumbnail */}
+                    <div
+                      className={`relative bg-gradient-to-br ${scenario.gradient} rounded-t-xl h-40 flex items-center justify-center overflow-hidden`}
+                    >
+                      <div
+                        className="absolute inset-0 opacity-30"
+                        style={{
+                          backdropFilter: 'blur(25px) saturate(180%)',
+                          WebkitBackdropFilter: 'blur(25px) saturate(180%)',
+                        }}
+                      />
+                      <motion.div
+                        className="relative z-10 w-14 h-14 bg-white/90 dark:bg-gray-800/90 rounded-full flex items-center justify-center shadow-lg cursor-pointer"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      >
+                        <Play className="w-6 h-6 text-[#334155] dark:text-white ml-0.5" />
+                      </motion.div>
+                      <span className="absolute bottom-2 right-3 text-xs text-gray-600 dark:text-gray-300 bg-white/70 dark:bg-gray-900/70 px-2 py-0.5 rounded-full">
+                        Coming soon
+                      </span>
+                    </div>
+                    {/* Card content */}
+                    <div className="p-5">
+                      <div className="flex items-center gap-2 mb-3">
+                        {scenario.icon}
+                        <h3 className="text-h3 !text-base font-semibold">{scenario.title}</h3>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">
+                        {scenario.pain}
+                      </p>
+                      <p className="text-xs text-[#B0683A] dark:text-bronze-400 font-medium">
+                        {scenario.solution}
+                      </p>
+                    </div>
+                  </IOSCardContent>
+                </IOSCard>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ============= TERMINAL INSTALL CARD ============= */}
+      <section className="py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          className="max-w-xl mx-auto text-center"
+        >
+          <h2 className="text-h2 mb-3">Get Started in Seconds</h2>
+          <p className="text-body mb-8 text-gray-500 dark:text-gray-400">
+            Install VULCA and run your first cultural evaluation
+          </p>
+          <TerminalInstallCard />
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link to="/canvas">
+              <IOSButton
+                variant="primary"
+                size="md"
+                className="flex items-center gap-2 !bg-[#B0683A] hover:!bg-[#9A5A32] !border-[#B0683A]"
+              >
+                <Sparkles className="w-4 h-4" />
+                Try It Now
+              </IOSButton>
+            </Link>
+            <a
+              href="https://github.com/yha9806/vulca"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <IOSButton
+                variant="secondary"
+                size="md"
+                className="flex items-center gap-2"
+              >
+                <GitFork className="w-4 h-4" />
+                View on GitHub
+              </IOSButton>
+            </a>
           </div>
         </motion.div>
       </section>
