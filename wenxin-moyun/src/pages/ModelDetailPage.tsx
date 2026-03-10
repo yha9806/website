@@ -142,10 +142,10 @@ export default function ModelDetailPage() {
                     View Report
                   </IOSButton>
                 </RouterLink>
-                <RouterLink to={`/evaluate`}>
+                <RouterLink to="/canvas">
                   <IOSButton variant="secondary" size="sm">
                     <Sparkles className="w-4 h-4 mr-1.5" />
-                    Quick Evaluate
+                    Open Canvas
                   </IOSButton>
                 </RouterLink>
                 <IOSButton variant="secondary" size="sm" onClick={() => setShowCiteModal(true)}>

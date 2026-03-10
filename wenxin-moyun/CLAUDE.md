@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-VULCA — AI art creation & evaluation platform. React 19 frontend with **Art Professional design system**, FastAPI backend with async AI evaluation engine, and production GCP deployment.
+VULCA — a **creation organism** where generation, evaluation, refinement, and learning are seamless stages of one creative process. The core product is **Canvas** (unified creation + evaluation), not the leaderboard. React 19 frontend with **Art Professional design system**, FastAPI backend with async AI pipeline (Scout->Draft->Critic->Queen), and production GCP deployment.
 
 ### Art Professional Design System (Updated 2026-03-09)
 
@@ -267,11 +267,29 @@ plugins: [react(), tailwindcss()]
 
 ### Routing Structure
 
-- `/` - Home page with platform overview
-- `/leaderboard[/:category]` - Rankings (overall/poetry/painting/narrative/etc)
+**Core (must work):**
+- `/` - Home page
+- `/canvas` - Creation + evaluation (THE PRODUCT)
+- `/gallery` - Creation results display
+
+**Support:**
+- `/vulca` - 47D visualization
+- `/methodology`, `/about` - How it works
+- `/admin` - System monitoring
+
+**Academic (preserved, deprioritized):**
+- `/leaderboard[/:category]` - Model rankings (paper reference)
+- `/battle` - Model comparison (paper reference)
 - `/model/:id` - Model detail with radar chart and works
-- `/battle` - Head-to-head voting system
-- `/about` - Platform mission and roadmap
+- `/evaluations` - Redirects to `/canvas`
+
+### Product Focus
+
+- **Canvas** is the core product page: users create, evaluate, refine, and learn in one unified session
+- **Gallery** displays Canvas output (creations, evaluations, community works)
+- **Leaderboard** and **Battle** are academic legacy from EMNLP papers — preserved for paper references but not the product focus
+- ~25 of the 80+ backend API endpoints serve the leaderboard system; new development should prioritize Canvas and Gallery endpoints
+- The creation pipeline (Scout -> Draft -> Critic -> Queen) powers Canvas, not the leaderboard
 
 ### Data Flow
 
@@ -316,16 +334,19 @@ Configuration uses `@tailwindcss/postcss` plugin. If CSS errors occur, verify `p
 
 ## Project Goals & Roadmap
 
-**Current Phase**: MVP with static data
-- ✅ Leaderboard system
-- ✅ Model comparison
+**Current Phase**: Canvas-first creation organism
+- ✅ Leaderboard system (academic legacy)
+- ✅ Model comparison (academic legacy)
 - ✅ Responsive design
+- ✅ Art Professional design system
+- ✅ Creation pipeline (Scout -> Draft -> Critic -> Queen)
+- ✅ Multimodal type system (image, video, 3D, sound)
 
 **Next Phases**:
-- API integration
-- User authentication
-- Automated evaluation system
-- Community gallery
+- Canvas page polish and production readiness
+- Gallery with community creation display
+- Digestion system integration (cultural emergence)
+- Evolved context injection into creation pipeline
 
 ## Security Configuration & Credentials
 

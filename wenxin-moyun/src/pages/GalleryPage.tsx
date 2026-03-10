@@ -1,126 +1,117 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Filter, Palette, Layers, Sparkles } from 'lucide-react';
+import { Filter, Palette, Layers, Sparkles, Loader2 } from 'lucide-react';
 import {
   IOSButton,
   IOSCard,
   IOSCardContent,
   IOSCardGrid,
 } from '../components/ios';
+import { API_PREFIX } from '../config/api';
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-interface ArtworkItem {
+interface GalleryItem {
   id: string;
   subject: string;
   tradition: string;
-  tradition_label: string;
-  template: string;
-  scores: { L1: number; L2: number; L3: number; L4: number; L5: number };
+  media_type: string;
+  scores: Record<string, number>;
   overall: number;
-  gradient: string;            // CSS gradient used as image placeholder
-  generated_at: string;
+  best_image_url: string;
+  total_rounds: number;
+  total_latency_ms: number;
+  created_at: number;
+}
+
+interface EvolutionStats {
+  total_sessions: number;
+  traditions_active: string[];
+  evolutions_count: number;
+  emerged_concepts: { name: string; description: string }[];
+  archetypes: string[];
+  last_evolved_at: string | null;
 }
 
 // ---------------------------------------------------------------------------
-// Mock data (6-8 sample artworks with gradient placeholders)
+// Tradition display labels
 // ---------------------------------------------------------------------------
 
-const MOCK_ARTWORKS: ArtworkItem[] = [
+const TRADITION_LABELS: Record<string, string> = {
+  chinese_ink: 'Chinese Ink',
+  chinese_xieyi: 'Chinese Xieyi',
+  japanese_ukiyoe: 'Japanese Ukiyo-e',
+  persian_miniature: 'Persian Miniature',
+  indian_mughal: 'Mughal Painting',
+  korean_minhwa: 'Korean Minhwa',
+  islamic_geometric: 'Islamic Geometric',
+  byzantine_icon: 'Byzantine Icon',
+  tibetan_thangka: 'Tibetan Thangka',
+  default: 'Default',
+};
+
+// Gradient placeholders per tradition (used when no image URL)
+const TRADITION_GRADIENTS: Record<string, string> = {
+  chinese_ink: 'linear-gradient(135deg, #2c3e50 0%, #bdc3c7 50%, #ecf0f1 100%)',
+  chinese_xieyi: 'linear-gradient(135deg, #334155 0%, #94a3b8 50%, #e2e8f0 100%)',
+  japanese_ukiyoe: 'linear-gradient(135deg, #1a3a5c 0%, #5b8fb9 40%, #f5e6ca 100%)',
+  persian_miniature: 'linear-gradient(135deg, #1a472a 0%, #c5a03f 50%, #8b2942 100%)',
+  indian_mughal: 'linear-gradient(135deg, #8b4513 0%, #daa520 50%, #cd5c5c 100%)',
+  korean_minhwa: 'linear-gradient(135deg, #b22222 0%, #ffd700 40%, #228b22 100%)',
+  islamic_geometric: 'linear-gradient(135deg, #0c3547 0%, #1e6f5c 40%, #d4a437 100%)',
+  byzantine_icon: 'linear-gradient(135deg, #8b6914 0%, #daa520 30%, #4a0e0e 100%)',
+  tibetan_thangka: 'linear-gradient(135deg, #6b3a2a 0%, #c62828 40%, #f9a825 100%)',
+  default: 'linear-gradient(135deg, #334155 0%, #C87F4A 50%, #B8923D 100%)',
+};
+
+// ---------------------------------------------------------------------------
+// Mock data (shown when API is unavailable)
+// ---------------------------------------------------------------------------
+
+const MOCK_GALLERY: GalleryItem[] = [
   {
-    id: 'art-001',
-    subject: 'Misty Mountains at Dawn',
-    tradition: 'chinese_ink',
-    tradition_label: 'Chinese Ink',
-    template: 'ink_wash_pipeline',
-    scores: { L1: 0.91, L2: 0.88, L3: 0.95, L4: 0.93, L5: 0.90 },
-    overall: 0.914,
-    gradient: 'linear-gradient(135deg, #2c3e50 0%, #bdc3c7 50%, #ecf0f1 100%)',
-    generated_at: '2026-03-05',
+    id: 'art-001', subject: 'Misty Mountains at Dawn', tradition: 'chinese_ink',
+    media_type: 'image', scores: { L1: 0.91, L2: 0.88, L3: 0.95, L4: 0.93, L5: 0.90 },
+    overall: 0.914, best_image_url: '', total_rounds: 3, total_latency_ms: 12400, created_at: 1741132800,
   },
   {
-    id: 'art-002',
-    subject: 'The Great Wave Reimagined',
-    tradition: 'japanese_ukiyoe',
-    tradition_label: 'Japanese Ukiyo-e',
-    template: 'ukiyoe_pipeline',
-    scores: { L1: 0.89, L2: 0.85, L3: 0.92, L4: 0.88, L5: 0.87 },
-    overall: 0.882,
-    gradient: 'linear-gradient(135deg, #1a3a5c 0%, #5b8fb9 40%, #f5e6ca 100%)',
-    generated_at: '2026-03-04',
+    id: 'art-002', subject: 'The Great Wave Reimagined', tradition: 'japanese_ukiyoe',
+    media_type: 'image', scores: { L1: 0.89, L2: 0.85, L3: 0.92, L4: 0.88, L5: 0.87 },
+    overall: 0.882, best_image_url: '', total_rounds: 2, total_latency_ms: 9800, created_at: 1741046400,
   },
   {
-    id: 'art-003',
-    subject: 'Garden of Paradise',
-    tradition: 'persian_miniature',
-    tradition_label: 'Persian Miniature',
-    template: 'persian_miniature_pipeline',
-    scores: { L1: 0.87, L2: 0.83, L3: 0.90, L4: 0.92, L5: 0.86 },
-    overall: 0.876,
-    gradient: 'linear-gradient(135deg, #1a472a 0%, #c5a03f 50%, #8b2942 100%)',
-    generated_at: '2026-03-04',
+    id: 'art-003', subject: 'Garden of Paradise', tradition: 'persian_miniature',
+    media_type: 'image', scores: { L1: 0.87, L2: 0.83, L3: 0.90, L4: 0.92, L5: 0.86 },
+    overall: 0.876, best_image_url: '', total_rounds: 3, total_latency_ms: 15200, created_at: 1741046400,
   },
   {
-    id: 'art-004',
-    subject: 'Court of the Mughal Emperor',
-    tradition: 'indian_mughal',
-    tradition_label: 'Mughal Painting',
-    template: 'mughal_pipeline',
-    scores: { L1: 0.86, L2: 0.84, L3: 0.88, L4: 0.90, L5: 0.85 },
-    overall: 0.866,
-    gradient: 'linear-gradient(135deg, #8b4513 0%, #daa520 50%, #cd5c5c 100%)',
-    generated_at: '2026-03-03',
+    id: 'art-004', subject: 'Court of the Mughal Emperor', tradition: 'indian_mughal',
+    media_type: 'image', scores: { L1: 0.86, L2: 0.84, L3: 0.88, L4: 0.90, L5: 0.85 },
+    overall: 0.866, best_image_url: '', total_rounds: 2, total_latency_ms: 8400, created_at: 1740960000,
   },
   {
-    id: 'art-005',
-    subject: 'Longevity Symbols',
-    tradition: 'korean_minhwa',
-    tradition_label: 'Korean Minhwa',
-    template: 'minhwa_pipeline',
-    scores: { L1: 0.84, L2: 0.82, L3: 0.89, L4: 0.86, L5: 0.91 },
-    overall: 0.864,
-    gradient: 'linear-gradient(135deg, #b22222 0%, #ffd700 40%, #228b22 100%)',
-    generated_at: '2026-03-03',
+    id: 'art-005', subject: 'Longevity Symbols', tradition: 'korean_minhwa',
+    media_type: 'image', scores: { L1: 0.84, L2: 0.82, L3: 0.89, L4: 0.86, L5: 0.91 },
+    overall: 0.864, best_image_url: '', total_rounds: 3, total_latency_ms: 11600, created_at: 1740960000,
   },
   {
-    id: 'art-006',
-    subject: 'Alhambra Tessellation',
-    tradition: 'islamic_geometric',
-    tradition_label: 'Islamic Geometric',
-    template: 'islamic_geo_pipeline',
-    scores: { L1: 0.93, L2: 0.91, L3: 0.88, L4: 0.85, L5: 0.83 },
-    overall: 0.880,
-    gradient: 'linear-gradient(135deg, #0c3547 0%, #1e6f5c 40%, #d4a437 100%)',
-    generated_at: '2026-03-02',
+    id: 'art-006', subject: 'Alhambra Tessellation', tradition: 'islamic_geometric',
+    media_type: 'image', scores: { L1: 0.93, L2: 0.91, L3: 0.88, L4: 0.85, L5: 0.83 },
+    overall: 0.880, best_image_url: '', total_rounds: 2, total_latency_ms: 7800, created_at: 1740873600,
   },
   {
-    id: 'art-007',
-    subject: 'Theotokos of Compassion',
-    tradition: 'byzantine_icon',
-    tradition_label: 'Byzantine Icon',
-    template: 'byzantine_pipeline',
-    scores: { L1: 0.85, L2: 0.87, L3: 0.86, L4: 0.92, L5: 0.88 },
-    overall: 0.876,
-    gradient: 'linear-gradient(135deg, #8b6914 0%, #daa520 30%, #4a0e0e 100%)',
-    generated_at: '2026-03-01',
+    id: 'art-007', subject: 'Theotokos of Compassion', tradition: 'byzantine_icon',
+    media_type: 'image', scores: { L1: 0.85, L2: 0.87, L3: 0.86, L4: 0.92, L5: 0.88 },
+    overall: 0.876, best_image_url: '', total_rounds: 2, total_latency_ms: 9200, created_at: 1740787200,
   },
   {
-    id: 'art-008',
-    subject: 'Medicine Buddha Mandala',
-    tradition: 'tibetan_thangka',
-    tradition_label: 'Tibetan Thangka',
-    template: 'thangka_pipeline',
-    scores: { L1: 0.82, L2: 0.84, L3: 0.87, L4: 0.93, L5: 0.91 },
-    overall: 0.874,
-    gradient: 'linear-gradient(135deg, #1a237e 0%, #c62828 40%, #f9a825 100%)',
-    generated_at: '2026-02-28',
+    id: 'art-008', subject: 'Medicine Buddha Mandala', tradition: 'tibetan_thangka',
+    media_type: 'image', scores: { L1: 0.82, L2: 0.84, L3: 0.87, L4: 0.93, L5: 0.91 },
+    overall: 0.874, best_image_url: '', total_rounds: 3, total_latency_ms: 14000, created_at: 1740700800,
   },
 ];
-
-// Unique traditions for filter
-const ALL_TRADITIONS = Array.from(new Set(MOCK_ARTWORKS.map((a) => a.tradition)));
 
 // ---------------------------------------------------------------------------
 // Score bar
@@ -145,28 +136,80 @@ function ScoreBar({ label, value }: { label: string; value: number }) {
 }
 
 // ---------------------------------------------------------------------------
+// Evolution banner
+// ---------------------------------------------------------------------------
+
+function EvolutionBanner({ stats }: { stats: EvolutionStats | null }) {
+  if (!stats || stats.total_sessions === 0) return null;
+
+  return (
+    <div className="mb-6 rounded-xl border border-[#5F8A50]/20 dark:border-[#5F8A50]/30 bg-[#5F8A50]/5 dark:bg-[#5F8A50]/10 p-4">
+      <div className="flex flex-wrap items-center gap-4 text-sm">
+        <div className="flex items-center gap-2">
+          <span className="text-[#5F8A50] dark:text-[#87A878] font-semibold">System Evolution</span>
+        </div>
+        <div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
+          <span className="font-mono text-[#C87F4A]">{stats.total_sessions}</span>
+          <span>sessions learned</span>
+        </div>
+        {stats.traditions_active.length > 0 && (
+          <div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
+            <span className="font-mono text-[#C87F4A]">{stats.traditions_active.length}</span>
+            <span>traditions active</span>
+          </div>
+        )}
+        {stats.evolutions_count > 0 && (
+          <div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
+            <span className="font-mono text-[#C87F4A]">{stats.evolutions_count}</span>
+            <span>evolutions</span>
+          </div>
+        )}
+        {stats.emerged_concepts.length > 0 && (
+          <div className="hidden sm:flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
+            <span className="font-mono text-[#C87F4A]">{stats.emerged_concepts.length}</span>
+            <span>emerged concepts</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Artwork card
 // ---------------------------------------------------------------------------
 
-function ArtworkCard({ artwork }: { artwork: ArtworkItem }) {
+function ArtworkCard({ artwork }: { artwork: GalleryItem }) {
   const overallPct = Math.round(artwork.overall * 100);
   const overallColor =
     artwork.overall >= 0.9 ? 'text-green-600 dark:text-green-400' :
     artwork.overall >= 0.85 ? 'text-slate-600 dark:text-slate-400' :
     'text-amber-600 dark:text-amber-400';
 
+  const traditionLabel = TRADITION_LABELS[artwork.tradition] ?? artwork.tradition.replace(/_/g, ' ');
+  const gradient = TRADITION_GRADIENTS[artwork.tradition] ?? TRADITION_GRADIENTS.default;
+  const hasImage = artwork.best_image_url && artwork.best_image_url !== '';
+  const dateStr = artwork.created_at
+    ? new Date(artwork.created_at * 1000).toLocaleDateString()
+    : '';
+
   return (
     <IOSCard variant="elevated" padding="none" className="overflow-hidden h-full flex flex-col">
-      {/* Gradient placeholder image */}
-      <div
-        className="w-full aspect-[4/3] relative"
-        style={{ background: artwork.gradient }}
-      >
-        {/* Tradition label overlay */}
+      {/* Image or gradient placeholder */}
+      <div className="w-full aspect-[4/3] relative">
+        {hasImage ? (
+          <img
+            src={artwork.best_image_url}
+            alt={artwork.subject}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full" style={{ background: gradient }} />
+        )}
         <span className="absolute top-2 left-2 text-[10px] font-medium px-2 py-0.5 rounded-full bg-black/40 text-white backdrop-blur-sm">
-          {artwork.tradition_label}
+          {traditionLabel}
         </span>
-        {/* Overall score badge */}
         <span className={`absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm ${overallColor}`}>
           {overallPct}%
         </span>
@@ -178,10 +221,11 @@ function ArtworkCard({ artwork }: { artwork: ArtworkItem }) {
           {artwork.subject}
         </h3>
         <p className="text-[11px] text-gray-400 dark:text-gray-500 mb-3">
-          {artwork.template} &middot; {artwork.generated_at}
+          {artwork.total_rounds} round{artwork.total_rounds !== 1 ? 's' : ''}
+          {dateStr && <> &middot; {dateStr}</>}
         </p>
 
-        {/* L1-L5 score bars */}
+        {/* Score bars */}
         <div className="space-y-1 mt-auto">
           {Object.entries(artwork.scores).map(([k, v]) => (
             <ScoreBar key={k} label={k} value={v} />
@@ -197,16 +241,65 @@ function ArtworkCard({ artwork }: { artwork: ArtworkItem }) {
 // ---------------------------------------------------------------------------
 
 export default function GalleryPage() {
+  const [artworks, setArtworks] = useState<GalleryItem[]>(MOCK_GALLERY);
+  const [evolutionStats, setEvolutionStats] = useState<EvolutionStats | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isLive, setIsLive] = useState(false);  // true if data came from API
   const [selectedTradition, setSelectedTradition] = useState<string>('all');
   const [minScore, setMinScore] = useState<number>(0);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchGallery() {
+      setLoading(true);
+      try {
+        const res = await fetch(`${API_PREFIX}/prototype/gallery?limit=50`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (!cancelled && Array.isArray(data.items)) {
+          // Use API data if available, otherwise keep mock
+          if (data.items.length > 0) {
+            setArtworks(data.items);
+            setIsLive(true);
+          }
+        }
+      } catch {
+        // API unavailable — keep mock data
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    async function fetchEvolution() {
+      try {
+        const res = await fetch(`${API_PREFIX}/prototype/evolution`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (!cancelled) setEvolutionStats(data);
+      } catch {
+        // Evolution stats unavailable — no banner
+      }
+    }
+
+    fetchGallery();
+    fetchEvolution();
+
+    return () => { cancelled = true; };
+  }, []);
+
+  const traditions = useMemo(
+    () => Array.from(new Set(artworks.map(a => a.tradition))),
+    [artworks],
+  );
+
   const filtered = useMemo(() => {
-    return MOCK_ARTWORKS.filter((a) => {
+    return artworks.filter((a) => {
       if (selectedTradition !== 'all' && a.tradition !== selectedTradition) return false;
       if (a.overall < minScore) return false;
       return true;
     });
-  }, [selectedTradition, minScore]);
+  }, [artworks, selectedTradition, minScore]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white dark:from-black dark:via-gray-900 dark:to-black">
@@ -215,18 +308,28 @@ export default function GalleryPage() {
         {/* Page header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-slate-700 to-amber-700 bg-clip-text text-transparent">
-            Pipeline Gallery
+            Creation Gallery
           </h1>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-4">
-            Generated cultural artworks from the VULCA evaluation pipeline, scored across L1-L5 dimensions.
+            Cultural artworks created through the VULCA pipeline — each scored across L1-L5 dimensions by multi-agent critics.
           </p>
-          <Link to="/evaluate">
-            <IOSButton variant="primary" size="sm" className="inline-flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4" />
-              Evaluate Your Own
-            </IOSButton>
-          </Link>
+          <div className="flex items-center justify-center gap-3">
+            <Link to="/canvas">
+              <IOSButton variant="primary" size="sm" className="inline-flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4" />
+                Create Your Own
+              </IOSButton>
+            </Link>
+            {!isLive && !loading && (
+              <span className="text-[10px] text-gray-400 dark:text-gray-500 px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800">
+                Demo data — start the backend to see live creations
+              </span>
+            )}
+          </div>
         </div>
+
+        {/* Evolution banner (P2) */}
+        <EvolutionBanner stats={evolutionStats} />
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6 items-start sm:items-center">
@@ -238,12 +341,11 @@ export default function GalleryPage() {
               className="px-3 py-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition"
             >
               <option value="all">All Traditions</option>
-              {ALL_TRADITIONS.map((t) => {
-                const label = MOCK_ARTWORKS.find((a) => a.tradition === t)?.tradition_label ?? t;
-                return (
-                  <option key={t} value={t}>{label}</option>
-                );
-              })}
+              {traditions.map((t) => (
+                <option key={t} value={t}>
+                  {TRADITION_LABELS[t] ?? t.replace(/_/g, ' ')}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -267,8 +369,12 @@ export default function GalleryPage() {
             </IOSButton>
           )}
 
-          <span className="text-xs text-gray-400 dark:text-gray-500 sm:ml-auto">
+          <span className="text-xs text-gray-400 dark:text-gray-500 sm:ml-auto flex items-center gap-1.5">
+            {loading && <Loader2 className="w-3 h-3 animate-spin" />}
             {filtered.length} artwork{filtered.length !== 1 ? 's' : ''}
+            {isLive && (
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#5F8A50]" title="Live data" />
+            )}
           </span>
         </div>
 
@@ -285,9 +391,15 @@ export default function GalleryPage() {
             <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
               No artworks yet
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-              No artworks yet — run a pipeline to generate your first artwork.
+            <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-4">
+              Create your first artwork in the Canvas — it will appear here automatically.
             </p>
+            <Link to="/canvas">
+              <IOSButton variant="primary" size="sm" className="inline-flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4" />
+                Open Canvas
+              </IOSButton>
+            </Link>
           </div>
         )}
       </div>

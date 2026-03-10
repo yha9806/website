@@ -22,23 +22,22 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Primary navigation items
+  // Primary navigation — product core
   const primaryNav = [
-    { name: 'Evaluate', href: '/evaluate' },
     { name: 'Canvas', href: '/canvas' },
-    { name: 'Models', href: '/models' },
     { name: 'Gallery', href: '/gallery' },
+    { name: 'About', href: '/methodology' },
   ];
 
-  // "More" dropdown items
+  // "More" dropdown — support + academic reference
   const moreItems = [
+    { name: 'Models', href: '/models' },
+    { name: 'Leaderboard', href: '/leaderboard' },
     { name: 'Exhibitions', href: '/exhibitions' },
-    { name: 'Knowledge Base', href: '/knowledge-base' },
     { name: 'Research', href: '/research' },
     { name: 'Solutions', href: '/solutions' },
-    { name: 'Trust', href: '/trust' },
     { name: 'Pricing', href: '/pricing' },
-    { name: 'Customers', href: '/customers' },
+    { name: 'Trust', href: '/trust' },
   ];
 
   const isActive = (path: string) => {

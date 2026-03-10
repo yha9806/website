@@ -102,10 +102,10 @@ export function ExhibitionsPage() {
           </div>
         </div>
         <div className="mt-6">
-          <Link to="/evaluate">
+          <Link to="/canvas">
             <IOSButton variant="primary" size="sm" className="inline-flex items-center gap-1.5">
               <Sparkles className="w-4 h-4" />
-              Try VULCA Evaluate
+              Open Canvas
             </IOSButton>
           </Link>
         </div>

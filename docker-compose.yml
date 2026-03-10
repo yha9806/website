@@ -1,0 +1,55 @@
+# VULCA Platform — Docker Compose for Local Development
+# Usage: docker-compose up
+#
+# This starts both the backend (FastAPI) and frontend (Vite) in demo mode.
+# No external database or API keys required — SQLite + mock AI responses.
+#
+# Services:
+#   backend  → http://localhost:8001  (FastAPI + uvicorn, hot-reload)
+#   frontend → http://localhost:5173  (Vite dev server, HMR)
+#
+# Demo accounts after init_db.py runs:
+#   demo / demo123
+#   admin / admin123
+
+services:
+  backend:
+    build:
+      context: ./wenxin-backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8001:8001"
+    volumes:
+      # Mount source code for hot-reload; exclude heavy/generated dirs
+      - ./wenxin-backend:/app
+      - /app/__pycache__
+      - /app/.pytest_cache
+    environment:
+      - DEMO_MODE=true
+      - SECRET_KEY=demo-secret-key-for-local-dev-only-32chars
+      - DATABASE_URL=sqlite+aiosqlite:///./wenxin.db
+      - DEBUG=true
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=10080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 15s
+      retries: 3
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      # Mount source code for HMR; keep node_modules inside container
+      - ./wenxin-moyun:/app
+      - /app/node_modules
+    environment:
+      - DEMO_MODE=true
+      - VITE_API_BASE_URL=http://localhost:8001
+    command: sh -c "npm install --legacy-peer-deps && npm run dev -- --host"
+    depends_on:
+      - backend

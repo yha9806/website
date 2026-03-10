@@ -11,8 +11,7 @@ import { loadModelsPage, setupCriticalRoutePreload } from './routes/preloadCriti
 import HomePage from './pages/HomePage';
 const ModelsPage = lazy(loadModelsPage);
 const ModelDetailPage = lazy(() => import('./pages/ModelDetailPage'));
-const EvaluationsPage = lazy(() => import('./pages/EvaluationsPage'));
-const EvaluationDetailPage = lazy(() => import('./pages/EvaluationDetailPage'));
+// EvaluationsPage and EvaluationDetailPage routes redirect to /canvas (see routes below)
 const GalleryPage = lazy(() => import('./pages/GalleryPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
@@ -267,17 +266,9 @@ function App() {
                 </Suspense>
               } />
 
-              {/* User Evaluations */}
-              <Route path="/evaluations" element={
-                <Suspense fallback={<PageLoader text="Loading Evaluations..." />}>
-                  <EvaluationsPage />
-                </Suspense>
-              } />
-              <Route path="/evaluations/:id" element={
-                <Suspense fallback={<PageLoader text="Loading Evaluation..." />}>
-                  <EvaluationDetailPage />
-                </Suspense>
-              } />
+              {/* Evaluations → redirect to Canvas (unified creation+evaluation) */}
+              <Route path="/evaluations" element={<Navigate to="/canvas" replace />} />
+              <Route path="/evaluations/:id" element={<Navigate to="/canvas" replace />} />
               <Route path="/gallery" element={
                 <Suspense fallback={<PageLoader text="Loading Gallery..." />}>
                   <GalleryPage />

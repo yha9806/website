@@ -413,3 +413,101 @@ def _build_status_response(task_id: str) -> RunStatusResponse:
         )
 
     raise HTTPException(404, f"Run {task_id} not found")
+
+
+# ---------------------------------------------------------------------------
+# Gallery & Evolution endpoints
+# ---------------------------------------------------------------------------
+
+@router.get("/gallery")
+async def list_gallery(limit: int = 50, tradition: str | None = None):
+    """Return completed sessions for the Gallery page.
+
+    Returns a list of artworks derived from session digests, newest first.
+    """
+    from app.prototype.session.store import SessionStore
+
+    store = SessionStore.get()
+    sessions = store.get_all()
+
+    gallery_items = []
+    for s in reversed(sessions):  # newest first
+        if not s.get("final_weighted_total") and not s.get("final_scores"):
+            continue
+        if tradition and s.get("tradition") != tradition:
+            continue
+
+        scores = s.get("final_scores", {})
+        gallery_items.append({
+            "id": s.get("session_id", ""),
+            "subject": s.get("subject", s.get("intent", "Untitled")),
+            "tradition": s.get("tradition", "default"),
+            "media_type": s.get("media_type", "image"),
+            "scores": scores,
+            "overall": s.get("final_weighted_total", 0.0),
+            "best_image_url": s.get("best_image_url", ""),
+            "total_rounds": s.get("total_rounds", 0),
+            "total_latency_ms": s.get("total_latency_ms", 0),
+            "created_at": s.get("created_at", 0),
+        })
+
+        if len(gallery_items) >= limit:
+            break
+
+    return {"items": gallery_items, "total": len(gallery_items)}
+
+
+@router.get("/evolution")
+async def get_evolution_stats():
+    """Return evolution/digestion statistics for the UI.
+
+    Shows how many sessions the system has learned from, active traditions,
+    emerged concepts, and latest evolution timestamp.
+    """
+    from pathlib import Path
+
+    data_dir = Path(__file__).parent.parent / "data"
+    evolved_path = data_dir / "evolved_context.json"
+
+    stats: dict = {
+        "total_sessions": 0,
+        "traditions_active": [],
+        "evolutions_count": 0,
+        "emerged_concepts": [],
+        "archetypes": [],
+        "last_evolved_at": None,
+    }
+
+    # Session count
+    from app.prototype.session.store import SessionStore
+    store = SessionStore.get()
+    stats["total_sessions"] = store.count()
+
+    # Active traditions from sessions
+    all_sessions = store.get_all()
+    traditions = set()
+    for s in all_sessions:
+        t = s.get("tradition")
+        if t and t != "default":
+            traditions.add(t)
+    stats["traditions_active"] = sorted(traditions)
+
+    # Evolved context
+    if evolved_path.exists():
+        try:
+            ctx = json.loads(evolved_path.read_text(encoding="utf-8"))
+            stats["evolutions_count"] = ctx.get("evolutions", 0)
+            stats["last_evolved_at"] = ctx.get("last_evolved_at")
+
+            concepts = ctx.get("emerged_concepts", [])
+            stats["emerged_concepts"] = [
+                {"name": c.get("name", ""), "description": c.get("description", "")}
+                for c in concepts[:10]
+            ]
+
+            archetypes = ctx.get("archetypes", {})
+            stats["archetypes"] = list(archetypes.keys())[:10]
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    return stats

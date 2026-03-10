@@ -14,6 +14,15 @@ import { API_PREFIX } from '../config/api';
 // Types
 // ---------------------------------------------------------------------------
 
+interface EvolutionData {
+  total_sessions: number;
+  traditions_active: string[];
+  evolutions_count: number;
+  emerged_concepts: { name: string; description: string }[];
+  archetypes: string[];
+  last_evolved_at: string | null;
+}
+
 interface FeedbackStatsData {
   total: number;
   thumbsUp: number;
@@ -89,6 +98,7 @@ export default function AdminDashboardPage() {
   const [timeline, setTimeline] = useState<TimelineEntry[]>([]);
   const [feedbackStats, setFeedbackStats] = useState<FeedbackStatsData>(DEFAULT_FEEDBACK);
   const [skillEcosystem, setSkillEcosystem] = useState<SkillEcosystemData>(DEFAULT_SKILLS);
+  const [evolution, setEvolution] = useState<EvolutionData | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -156,6 +166,18 @@ export default function AdminDashboardPage() {
       }
     })();
 
+    // Fetch digestion/evolution stats
+    (async () => {
+      try {
+        const res = await fetch(`${API_PREFIX}/prototype/evolution`);
+        if (!res.ok) throw new Error('API unavailable');
+        const data = await res.json();
+        if (!cancelled) setEvolution(data);
+      } catch {
+        // keep null
+      }
+    })();
+
     return () => { cancelled = true; };
   }, []);
 
@@ -170,6 +192,63 @@ export default function AdminDashboardPage() {
           Monitor the autonomous evolution agents, feedback health, and skill ecosystem.
         </p>
       </div>
+
+      {/* Digestion System Overview */}
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+          Digestion System
+        </h2>
+        <IOSCardGrid columns={4} gap="md">
+          <IOSCard variant="elevated" padding="lg">
+            <IOSCardContent>
+              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Sessions Learned</div>
+              <div className="text-3xl font-bold text-[#C87F4A]">{evolution?.total_sessions ?? 0}</div>
+            </IOSCardContent>
+          </IOSCard>
+          <IOSCard variant="elevated" padding="lg">
+            <IOSCardContent>
+              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Traditions Active</div>
+              <div className="text-3xl font-bold text-[#5F8A50]">{evolution?.traditions_active?.length ?? 0}</div>
+              {evolution?.traditions_active && evolution.traditions_active.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {evolution.traditions_active.slice(0, 4).map(t => (
+                    <span key={t} className="text-[10px] px-1.5 py-0.5 rounded bg-[#5F8A50]/10 text-[#5F8A50] dark:text-[#87A878]">
+                      {t.replace(/_/g, ' ')}
+                    </span>
+                  ))}
+                  {evolution.traditions_active.length > 4 && (
+                    <span className="text-[10px] text-gray-400">+{evolution.traditions_active.length - 4}</span>
+                  )}
+                </div>
+              )}
+            </IOSCardContent>
+          </IOSCard>
+          <IOSCard variant="elevated" padding="lg">
+            <IOSCardContent>
+              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Evolution Cycles</div>
+              <div className="text-3xl font-bold text-[#B8923D]">{evolution?.evolutions_count ?? 0}</div>
+              {evolution?.last_evolved_at && (
+                <div className="text-[10px] text-gray-400 mt-1">Last: {evolution.last_evolved_at}</div>
+              )}
+            </IOSCardContent>
+          </IOSCard>
+          <IOSCard variant="elevated" padding="lg">
+            <IOSCardContent>
+              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Emerged Concepts</div>
+              <div className="text-3xl font-bold text-[#C65D4D]">{evolution?.emerged_concepts?.length ?? 0}</div>
+              {evolution?.emerged_concepts && evolution.emerged_concepts.length > 0 && (
+                <div className="mt-2 space-y-0.5">
+                  {evolution.emerged_concepts.slice(0, 3).map(c => (
+                    <div key={c.name} className="text-[10px] text-gray-500 dark:text-gray-400 truncate" title={c.description}>
+                      {c.name}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </IOSCardContent>
+          </IOSCard>
+        </IOSCardGrid>
+      </section>
 
       {/* Agent Status Section */}
       <section className="mb-8">

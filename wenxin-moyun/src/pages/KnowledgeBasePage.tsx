@@ -374,10 +374,10 @@ export default function KnowledgeBasePage() {
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-4">
             Browse terminology, taboo rules, and L1-L5 evaluation weights across 9 cultural art traditions used by the VULCA pipeline.
           </p>
-          <Link to="/evaluate">
+          <Link to="/canvas">
             <IOSButton variant="primary" size="sm" className="inline-flex items-center gap-1.5">
               <Sparkles className="w-4 h-4" />
-              Try Evaluate
+              Open Canvas
             </IOSButton>
           </Link>
         </div>
