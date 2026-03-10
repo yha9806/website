@@ -39,6 +39,24 @@ _DEFAULT_WEIGHTS: dict[str, float] = {
     "philosophical_aesthetic": 0.20,
 }
 
+# Full dimension name → L-label for evaluation_guidance key lookup
+_DIM_TO_L_LABEL: dict[str, str] = {
+    "visual_perception": "L1",
+    "technical_analysis": "L2",
+    "cultural_context": "L3",
+    "critical_interpretation": "L4",
+    "philosophical_aesthetic": "L5",
+}
+
+# Layer dimension → primary agent role (for insight injection)
+_LAYER_TO_AGENT: dict[str, str] = {
+    "visual_perception": "critic",
+    "technical_analysis": "critic",
+    "cultural_context": "scout",
+    "critical_interpretation": "critic",
+    "philosophical_aesthetic": "queen",
+}
+
 _fallback_weights_cache: dict[str, dict[str, float]] | None = None
 
 
@@ -317,6 +335,7 @@ def _load_queen_strategy() -> dict:
 
 _evolved_prompt_cache: dict[str, tuple[float, str]] = {}
 _CACHE_TTL = 300  # 5 minutes
+_MAX_CACHE_ENTRIES = 128
 
 
 def get_evolved_prompt_context(
@@ -343,6 +362,10 @@ def get_evolved_prompt_context(
 
     result = _build_evolved_context(tradition, max_tokens, layer_id)
     _evolved_prompt_cache[cache_key] = (now, result)
+    # Evict oldest entries when cache grows too large
+    if len(_evolved_prompt_cache) > _MAX_CACHE_ENTRIES:
+        oldest_key = min(_evolved_prompt_cache, key=lambda k: _evolved_prompt_cache[k][0])
+        _evolved_prompt_cache.pop(oldest_key, None)
     return result
 
 
@@ -377,8 +400,40 @@ def _build_evolved_context(
                 parts.append(f"Less important here: {', '.join(str(a) for a in anti_focus[:2])}")
 
     # 2. Archetypes / successful patterns from prompt_contexts
-    prompt_contexts = ctx.get("prompt_contexts", {})
-    tradition_prompts = prompt_contexts.get(tradition, prompt_contexts.get("default", {}))
+    archetypes = ctx.get("prompt_contexts", {}).get("archetypes", [])
+    if isinstance(archetypes, list):
+        matching = [
+            a for a in archetypes
+            if isinstance(a, dict)
+            and (tradition in a.get("traditions", []) or not a.get("traditions"))
+        ]
+        for arch in matching[:3]:
+            pattern = arch.get("pattern", "")
+            insights = arch.get("insights", "")
+            if pattern:
+                line = f"Pattern: {pattern}"
+                if insights:
+                    line += f" — {insights}"
+                parts.append(line)
+            # Inject layer-specific evaluation guidance when layer_id matches
+            # Guidance keys may be L-labels (L1-L5) or full dimension names
+            if layer_id:
+                guidance = arch.get("evaluation_guidance", {})
+                layer_hint = guidance.get(layer_id, "")
+                if not layer_hint:
+                    # Reverse lookup: full dimension name → L-label
+                    l_label = _DIM_TO_L_LABEL.get(layer_id, "")
+                    layer_hint = guidance.get(l_label, "")
+                if layer_hint:
+                    parts.append(f"Evaluation hint ({layer_id}): {layer_hint}")
+            # Surface anti-patterns
+            anti = arch.get("anti_patterns", [])
+            if anti:
+                parts.append(f"Avoid: {'; '.join(str(a) for a in anti[:2])}")
+
+    # Legacy: per-tradition top_keywords (pre-LLM format)
+    prompt_contexts_legacy = ctx.get("prompt_contexts", {})
+    tradition_prompts = prompt_contexts_legacy.get(tradition, prompt_contexts_legacy.get("default", {}))
     if isinstance(tradition_prompts, dict):
         top_keywords = tradition_prompts.get("top_keywords", [])[:5]
         if top_keywords:
@@ -425,6 +480,26 @@ def _build_evolved_context(
         top_dims = sorted(weights.items(), key=lambda x: x[1], reverse=True)[:3]
         hints = [f"{d}={v:.2f}" for d, v in top_dims]
         parts.append(f"Priority dimensions: {', '.join(hints)}")
+
+    # 6. Agent-specific insights (LLM-generated)
+    agent_insights = ctx.get("agent_insights", {})
+    if isinstance(agent_insights, dict) and layer_id:
+        agent_role = _LAYER_TO_AGENT.get(layer_id)
+        if agent_role and agent_role in agent_insights:
+            parts.append(f"Agent guidance: {agent_insights[agent_role]}")
+    elif isinstance(agent_insights, dict):
+        # No specific layer — include all agent insights
+        for role in ("scout", "draft", "critic", "queen"):
+            insight = agent_insights.get(role)
+            if insight:
+                parts.append(f"{role.capitalize()} guidance: {insight}")
+
+    # 7. Tradition-specific narrative (LLM-generated)
+    tradition_insights = ctx.get("tradition_insights", {})
+    if isinstance(tradition_insights, dict):
+        narrative = tradition_insights.get(tradition, "")
+        if narrative:
+            parts.append(f"Tradition analysis: {narrative}")
 
     if not parts:
         return ""

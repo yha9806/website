@@ -1,9 +1,13 @@
 """Layer 3: ContextEvolver — safely update evolved_context.json.
 
-Safety guardrails:
-- Single adjustment ≤ ±0.05
-- Weights always sum to 1.0
-- Minimum 10 sessions before evolving
+Two-phase evolution:
+1. **Rule-based** (always runs): Weight adjustments with safety guardrails
+   (single adjustment ≤ ±0.05, weights sum to 1.0, minimum sessions).
+2. **LLM-powered** (when API key available): Generates ``agent_insights``
+   and ``tradition_insights`` — narrative guidance injected into agent
+   system prompts.  This is the MemRL core: frozen model + evolving context.
+
+Falls back to rule-only mode when no API key is configured.
 """
 
 from __future__ import annotations
@@ -24,6 +28,8 @@ logger = logging.getLogger("vulca")
 
 _MAX_DELTA = 0.05
 _MIN_SESSIONS_TO_EVOLVE = 5
+_LLM_TIMEOUT_S = 30
+_AGENT_ROLES = frozenset({"scout", "draft", "critic", "queen"})
 
 # Seed sessions use L1-L5 shorthand; weights use full dimension names.
 # This map normalises *any* known alias → canonical full name so that both
@@ -249,12 +255,27 @@ class ContextEvolver:
         except Exception as exc:
             logger.debug("Queen strategy evolution skipped: %s", exc)
 
+        # --- LLM insights generation (MemRL: evolving context) ---
+        try:
+            insights = self._generate_llm_insights(
+                context, patterns, actions, all_sessions,
+            )
+            if insights:
+                if insights.get("agent_insights"):
+                    context["agent_insights"] = insights["agent_insights"]
+                if insights.get("tradition_insights"):
+                    context["tradition_insights"] = insights["tradition_insights"]
+        except Exception as exc:
+            logger.debug("LLM insights generation skipped: %s", exc)
+
         # Save if any actions or new data was added (C2: unified save point)
         has_new_data = bool(
             context.get("feature_space", {}).get("clusters")
             or context.get("prompt_contexts", {}).get("archetypes")
             or context.get("cultures")
             or context.get("queen_strategy")
+            or context.get("agent_insights")
+            or context.get("tradition_insights")
         )
         if actions or has_new_data:
             self._save_context(context)
@@ -437,6 +458,146 @@ class ContextEvolver:
             logger.warning("ContextEvolver: failed to write audit log: %s", exc)
 
     # ------------------------------------------------------------------
+    # LLM-powered insights generation (MemRL phase)
+    # ------------------------------------------------------------------
+
+    _INSIGHTS_SYSTEM = """\
+You are an expert cultural art evolution analyst for the VULCA system.
+Analyze session patterns and generate actionable insights for AI agents.
+
+Output valid JSON with two keys:
+1. "agent_insights": dict mapping agent role → guidance string
+   - "scout": What the Scout agent should focus on when analyzing subjects
+   - "draft": What the Draft agent should emphasize when generating images
+   - "critic": What the Critic agent should prioritize when evaluating
+   - "queen": What the Queen agent should consider when making final decisions
+2. "tradition_insights": dict mapping tradition name → narrative string
+   Each narrative should describe what's working, what needs improvement,
+   and specific guidance for creating better art in that tradition.
+
+Keep each guidance string under 100 words. Be specific and actionable.
+Output ONLY the JSON object, no markdown fences or explanation."""
+
+    _INSIGHTS_USER = """\
+Evolution context:
+- Sessions analyzed: {session_count}
+- Patterns detected: {pattern_summary}
+- Weight adjustments made: {action_summary}
+- Active traditions: {traditions}
+
+Top session examples:
+{session_examples}
+
+Current weight distribution:
+{weight_summary}
+
+Generate agent insights and tradition-specific guidance based on this data."""
+
+    @staticmethod
+    def _has_api_key() -> bool:
+        """Check if an LLM API key is available."""
+        from app.prototype.digestion.llm_utils import has_llm_api_key
+
+        return has_llm_api_key()
+
+    def _generate_llm_insights(
+        self,
+        context: dict,
+        patterns: list[Pattern],
+        actions: list[EvolutionAction],
+        sessions: list,
+    ) -> dict | None:
+        """Use LLM to generate agent_insights and tradition_insights.
+
+        Returns dict with 'agent_insights' and 'tradition_insights' keys,
+        or None if LLM is unavailable or fails.
+        """
+        if not self._has_api_key():
+            return None
+
+        import litellm
+        from app.prototype.agents.model_router import MODEL_FAST
+
+        # Build context summary for LLM
+        pattern_summary = "; ".join(
+            f"{p.pattern_type} in {p.tradition}/{p.dimension}" for p in patterns[:10]
+        ) or "none detected"
+
+        action_summary = "; ".join(
+            f"{a.dimension} {a.old_value:.2f}→{a.new_value:.2f} ({a.reason})"
+            for a in actions[:5]
+        ) or "none"
+
+        traditions = sorted(context.get("tradition_weights", {}).keys())
+
+        # Session examples
+        examples: list[str] = []
+        for s in sessions[:10]:
+            intent = getattr(s, "intent", "") or getattr(s, "subject", "") or ""
+            tradition = getattr(s, "tradition", "") or ""
+            score = getattr(s, "final_weighted_total", 0) or 0
+            if intent:
+                examples.append(f"- [{tradition}] \"{intent}\" (score: {score:.2f})")
+
+        # Weight summary
+        weight_lines: list[str] = []
+        for t, w in list(context.get("tradition_weights", {}).items())[:5]:
+            top_dims = sorted(w.items(), key=lambda x: x[1], reverse=True)[:3]
+            dims_str = ", ".join(f"{d}={v:.2f}" for d, v in top_dims)
+            weight_lines.append(f"- {t}: {dims_str}")
+
+        user_msg = self._INSIGHTS_USER.format(
+            session_count=len(sessions),
+            pattern_summary=pattern_summary,
+            action_summary=action_summary,
+            traditions=", ".join(traditions[:10]),
+            session_examples="\n".join(examples) or "none",
+            weight_summary="\n".join(weight_lines) or "none",
+        )
+
+        response = litellm.completion(
+            model=MODEL_FAST,
+            messages=[
+                {"role": "system", "content": self._INSIGHTS_SYSTEM},
+                {"role": "user", "content": user_msg},
+            ],
+            temperature=0.3,
+            max_tokens=1500,
+            timeout=_LLM_TIMEOUT_S,
+        )
+
+        from app.prototype.digestion.llm_utils import strip_markdown_fences
+
+        raw = (response.choices[0].message.content or "").strip()
+        content = strip_markdown_fences(raw)
+
+        result = json.loads(content)
+        if not isinstance(result, dict):
+            return None
+
+        parsed: dict = {}
+
+        agent_insights = result.get("agent_insights", {})
+        if isinstance(agent_insights, dict):
+            parsed["agent_insights"] = {
+                k: str(v)[:500] for k, v in agent_insights.items()
+                if k in _AGENT_ROLES and v
+            }
+
+        tradition_insights = result.get("tradition_insights", {})
+        if isinstance(tradition_insights, dict):
+            parsed["tradition_insights"] = {
+                k: str(v)[:500] for k, v in tradition_insights.items() if v
+            }
+
+        logger.info(
+            "ContextEvolver(LLM): generated %d agent insights, %d tradition insights",
+            len(parsed.get("agent_insights", {})),
+            len(parsed.get("tradition_insights", {})),
+        )
+        return parsed if parsed else None
+
+    # ------------------------------------------------------------------
     # Phase 1.4: Layer-specific focus point extraction
     # ------------------------------------------------------------------
 
@@ -502,16 +663,12 @@ class ContextEvolver:
 
                 # Learn from patterns: if a dimension scores consistently high,
                 # the focus points for that tradition are working
+                anti_focus: list[str] = []
                 if scores:
                     avg = sum(scores) / len(scores)
                     if avg >= 0.7 and not focus_points:
                         focus_points.append(f"historically strong ({avg:.2f} avg)")
-
-                anti_focus: list[str] = []
-                if scores:
-                    avg = sum(scores) / len(scores)
                     if avg >= 0.8:
-                        # This dimension doesn't need extra attention
                         anti_focus.append("already well-captured")
 
                 if focus_points:
