@@ -1,514 +1,170 @@
-# WenXin MoYun - AI Art Evaluation Platform
+# VULCA — AI-Native Creation Organism
 
-[![Deploy to GCP](https://github.com/myhr-dev/website/actions/workflows/deploy-gcp.yml/badge.svg)](https://github.com/myhr-dev/website/actions/workflows/deploy-gcp.yml)
+Create, critique, and evolve cultural art through multi-agent AI pipelines.
 
-**Enterprise-grade AI art evaluation platform** supporting **42 AI models** from **15 organizations**. Full-stack application featuring complete iOS design system migration, real AI model benchmarking with **Unified Model Interface**, comprehensive E2E testing infrastructure, and **production Google Cloud Platform deployment**.
+**VULCA** unifies generation, evaluation, and learning into one creative process. A multi-agent pipeline (Scout, Draft, Critic, Queen) creates culturally-aware art, scores it across L1-L5 dimensions, and evolves its understanding through each session.
 
-## 🚀 Quick Start
+**Live:** [vulcaart.art](https://vulcaart.art) | **Papers:** EMNLP 2025, WiNLP 2025, arXiv 2026
 
-### One-click Development Setup
+## Quick Start
 
-**Windows:**
+### Docker (recommended)
+
 ```bash
-start.bat    # Starts backend (:8001) + frontend (:5173)
+docker-compose up
+# Frontend: http://localhost:5173
+# Backend:  http://localhost:8001
+# No API keys needed — uses mock provider
 ```
 
-**Linux/macOS:**
-```bash
-./start.sh   # Starts backend (:8001) + frontend (:5173)
-```
+### Manual
 
-### Manual Setup
-
-**Frontend Development:**
 ```bash
+# Backend
+cd wenxin-backend
+pip install -r requirements.txt -c constraints.txt
+python init_db.py                                    # Seed database
+python -m uvicorn app.main:app --reload --port 8001
+
+# Frontend (separate terminal)
 cd wenxin-moyun
 npm install --legacy-peer-deps
-npm run dev          # http://localhost:5173
+npm run dev
 ```
 
-**Backend Development:**
-```bash
-cd wenxin-backend
-pip install -r requirements.txt
-python init_db.py    # Initialize database with sample data
-python -m uvicorn app.main:app --reload --port 8001
+**Test accounts:** `demo` / `demo123` or `admin` / `admin123`
+
+## Core Product: Canvas
+
+The Canvas page is the product — a unified creation + evaluation playground.
+
+```
+Intent → Scout (cultural research) → Draft (image generation) → Critic (L1-L5 scoring) → Queen (accept/rerun)
 ```
 
-## 🏗️ Architecture Overview
+### Features
 
-### System Architecture
+- **Pipeline Editor** — Visual node graph (React Flow) for editing Scout→Draft→Critic→Queen topology
+- **5 Modes** — Edit, Run, Build, Explore, Compare
+- **12 Templates** — Standard Pipeline, Quick Evaluate, Batch, HITL, Brand Safety, etc.
+- **Mock Provider** — Full pipeline works without API keys (generates placeholder images)
+- **Human-in-the-Loop** — Pause at any stage for human review
+- **SSE Streaming** — Real-time pipeline progress via Server-Sent Events
+- **Cultural Traditions** — 8 traditions (Chinese Xieyi, Japanese Wabi-sabi, Persian Miniature, etc.)
+
+### Key Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/v1/prototype/runs` | POST | Create a pipeline run |
+| `/api/v1/prototype/runs/{id}/events` | GET | SSE event stream |
+| `/api/v1/prototype/runs/{id}/action` | POST | HITL action |
+| `/api/v1/prototype/gallery` | GET | Gallery items (completed sessions) |
+| `/api/v1/prototype/evolution` | GET | System evolution stats |
+| `/api/v1/create` | POST | Quick evaluate (image upload) |
+
+## Architecture
+
 ```
-Frontend (React 19 + iOS Design)  ←→  Backend (FastAPI + SQLAlchemy)  ←→  AI Providers (8 providers)
-        ↓                                       ↓                              ↓
-  iOS Components                         Unified Model Interface          Model Adapters
-  Zustand State                          Evaluation Engine                Provider-specific APIs
-  Playwright Tests                       Real-time WebSockets             Intelligent Scoring
-        ↓                                       ↓                              ↓
-  Cloud Storage (Static)  ←→  Cloud Run (Backend API)  ←→  Secret Manager (API Keys)
-                                        ↓
-                              Cloud SQL (PostgreSQL)
+wenxin-moyun/          React 19 + TypeScript + Vite + Tailwind
+  src/pages/prototype/   Canvas (PrototypePage) — THE PRODUCT
+  src/pages/             Gallery, Home, Admin, Leaderboard (academic)
+  src/components/ios/    Art Professional design system
+  src/hooks/             usePrototypePipeline (SSE), useLeaderboard, etc.
+
+wenxin-backend/         FastAPI + async SQLAlchemy
+  app/prototype/
+    agents/              Scout, Draft, Critic, Queen (+ providers)
+    orchestrator/        PipelineOrchestrator (event-driven loop)
+    session/             JSONL session store
+    digestion/           ContextEvolver, FeatureExtractor, Clusterer
+    cultural_pipelines/  8 tradition configs + weight tables
+    api/                 REST endpoints for runs, gallery, evolution
+  app/                   Auth, models CRUD, battles (academic legacy)
 ```
 
 ### Tech Stack
 
-**Frontend (wenxin-moyun/)**
-- **Framework**: React 19 + TypeScript 5.8 + Vite 7.1
-- **Styling**: Tailwind CSS 4.1 with pure iOS design tokens
-- **State**: Zustand 4.4 + custom hooks
-- **Animation**: Framer Motion 12.23 (iOS spring physics)
-- **Charts**: Recharts 3.1 with D3 integration
-- **Testing**: Playwright E2E (64 test cases across 9 spec files)
+| Layer | Stack |
+|-------|-------|
+| Frontend | React 19, TypeScript 5.8, Vite 7.1, Tailwind 4.1, Framer Motion |
+| Backend | FastAPI, SQLAlchemy (async), LiteLLM, FAISS |
+| Database | SQLite (dev) / PostgreSQL (prod) |
+| Design | Art Professional palette (warm tones, zero blue/purple) |
+| Deployment | Docker, Cloud Run, Firebase Hosting |
+| Testing | Playwright E2E (132 tests), pytest (824 tests) |
 
-**Backend (wenxin-backend/)**
-- **Framework**: FastAPI + SQLAlchemy (async)
-- **Database**: SQLite (dev) / PostgreSQL (production)
-- **AI Integration**: Unified Model Interface with 8 provider adapters
-- **Real-time**: WebSocket for battle updates
-- **Deployment**: Docker + Google Cloud Run
+## Design System
 
-## 🔒 Security Configuration & Credentials
+Art Professional palette — gallery-inspired warm tones:
 
-### Google Cloud Platform Setup
+| Token | Color | Hex |
+|-------|-------|-----|
+| Primary | Slate Gray | `#334155` |
+| Accent | Warm Bronze | `#C87F4A` |
+| Success | Sage Green | `#5F8A50` |
+| Warning | Amber Gold | `#B8923D` |
+| Error | Coral Red | `#C65D4D` |
 
-**Project Information:**
-- **Project Name**: `WenXin MoYun`
-- **Project ID**: `wenxin-moyun-prod-new`
-- **Region**: `asia-east1`
-- **Service Name**: `wenxin-moyun`
-- **Artifact Registry Repository**: `wenxin-images`
+Zero blue/purple/indigo/violet in the entire codebase.
 
-**GitHub Actions Service Account:**
-- **Email**: `github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com`
-- **Purpose**: Automated CI/CD deployment to Google Cloud Platform
+## Navigation
 
-### Required GCP IAM Roles
+**Primary:** Canvas, Gallery, About
+**More dropdown:** Models, Leaderboard, Exhibitions, Research, Solutions, Pricing, Trust
 
-The GitHub Actions service account requires these roles:
+The Leaderboard and Battle pages are academic references from EMNLP papers — preserved but not the product focus.
 
-1. **Artifact Registry Administrator** - Create/manage Docker repositories
-2. **Cloud Run Admin** - Deploy services to Cloud Run  
-3. **Cloud SQL Admin** - Manage database connections and migrations
-4. **Secret Manager Secret Accessor** - Access API keys and secrets
-5. **Storage Admin** - Deploy frontend to Cloud Storage
+## Environment Variables
 
-### GitHub Secrets Configuration
+Copy `.env.example` to `.env`:
 
-**Required Secrets in GitHub Repository Settings:**
-
-| Secret | Description | Source |
-|--------|-------------|---------|
-| `GCP_SA_KEY` | Service account JSON | Google Cloud Console |
-| `OPENAI_API_KEY` | OpenAI API access | https://platform.openai.com/api-keys |
-| `ANTHROPIC_API_KEY` | Anthropic API access | https://console.anthropic.com/ |
-| `GEMINI_API_KEY` | Google Gemini API | Google AI Studio (optional) |
-
-### Google Cloud Secret Manager
-
-**Secrets stored in GCP Secret Manager:**
-
-| Secret Name | Purpose | Example Value |
-|-------------|---------|---------------|
-| `db-password` | Database password for PostgreSQL | `randomSecurePassword123` |
-| `secret-key` | Application secret key for JWT tokens | `longRandomSecretKey456` |
-| `openai-api-key` | OpenAI API key for AI model access | `sk-...` |
-| `anthropic-api-key` | Anthropic API key for Claude models | `sk-ant-...` |
-| `gemini-api-key` | Google Gemini API key | `AIza...` |
-
-### Test Accounts
-
-**Development Environment:**
-- **Demo Account**: Username `demo` / Password `demo123`
-- **Admin Account**: Username `admin` / Password `admin123`
-
-### Database Configuration
-
-**Development (SQLite):**
 ```env
+DEMO_MODE=true                                          # No API keys needed
+SECRET_KEY=demo-secret-key-for-local-dev-only-32chars
 DATABASE_URL=sqlite+aiosqlite:///./wenxin.db
+
+# Optional (for real AI generation)
+OPENAI_API_KEY=
+ANTHROPIC_API_KEY=
+GEMINI_API_KEY=
 ```
 
-**Production (PostgreSQL on Cloud SQL):**
-```env
-DATABASE_URL=postgresql+asyncpg://wenxin:[PASSWORD]@/wenxin_db?host=/cloudsql/wenxin-moyun-prod-new:asia-east1:wenxin-postgres
-```
-
-**Database Instance Details:**
-- **Instance Name**: `wenxin-postgres`
-- **Database Name**: `wenxin_db`  
-- **Username**: `wenxin`
-- **Connection**: Cloud SQL Proxy via Unix socket
-
-## 🛠️ First-time Setup Instructions
-
-### 1. Google Cloud Platform Setup
-
-**Enable Required APIs:**
-```bash
-gcloud services enable cloudbuild.googleapis.com
-gcloud services enable run.googleapis.com
-gcloud services enable sqladmin.googleapis.com
-gcloud services enable secretmanager.googleapis.com
-gcloud services enable storage.googleapis.com
-gcloud services enable artifactregistry.googleapis.com
-```
-
-**Create Service Account:**
-```bash
-gcloud iam service-accounts create github-actions \
-    --description="GitHub Actions CI/CD" \
-    --display-name="GitHub Actions"
-```
-
-**Grant Required Roles:**
-```bash
-# Artifact Registry Administrator
-gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
-    --role="roles/artifactregistry.admin"
-
-# Cloud Run Admin
-gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
-    --role="roles/run.admin"
-
-# Cloud SQL Admin
-gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
-    --role="roles/cloudsql.admin"
-
-# Secret Manager Secret Accessor
-gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
-    --role="roles/secretmanager.secretAccessor"
-
-# Storage Admin
-gcloud projects add-iam-policy-binding wenxin-moyun-prod-new \
-    --member="serviceAccount:github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com" \
-    --role="roles/storage.admin"
-```
-
-**Create Service Account Key:**
-```bash
-gcloud iam service-accounts keys create github-actions-key.json \
-    --iam-account=github-actions@wenxin-moyun-prod-new.iam.gserviceaccount.com
-```
-
-### 2. Create Secrets in Secret Manager
+## Testing
 
 ```bash
-# Database password
-echo -n "your-secure-db-password" | gcloud secrets create db-password --data-file=-
+# Backend (824 tests)
+cd wenxin-backend && pytest tests/ -v
 
-# Application secret key
-echo -n "your-long-random-secret-key" | gcloud secrets create secret-key --data-file=-
+# Frontend type check + build
+cd wenxin-moyun && npm run build
 
-# AI API keys
-echo -n "your-openai-api-key" | gcloud secrets create openai-api-key --data-file=-
-echo -n "your-anthropic-api-key" | gcloud secrets create anthropic-api-key --data-file=-
-echo -n "your-gemini-api-key" | gcloud secrets create gemini-api-key --data-file=-
+# E2E (132 tests)
+cd wenxin-moyun && npm run test:e2e
 ```
 
-### 3. GitHub Repository Secrets
+## Deployment
 
-Go to GitHub repository → Settings → Secrets and variables → Actions:
+Production deploys via GitHub Actions on push to `master`:
 
-1. **GCP_SA_KEY**: Copy contents of `github-actions-key.json`
-2. **OPENAI_API_KEY**: Your OpenAI API key
-3. **ANTHROPIC_API_KEY**: Your Anthropic API key
-4. **GEMINI_API_KEY**: Your Google Gemini API key (optional)
-
-## 🧪 Testing
-
-### E2E Testing (Playwright)
-
-**Run Tests:**
-```bash
-cd wenxin-moyun
-
-# Headless mode (CI)
-npm run test:e2e
-
-# Interactive UI mode
-npm run test:e2e:ui
-
-# Debug mode
-npm run test:e2e:debug
-
-# Headed browser
-npm run test:e2e:headed
-
-# View test report
-npm run test:e2e:report
-```
-
-**Test Coverage (64 tests across 9 spec files):**
-- `homepage.spec.ts` - Homepage functionality and navigation
-- `ai-models.spec.ts` - Leaderboard, NULL score handling, filtering  
-- `ios-components.spec.ts` - iOS design system components
-- `auth.spec.ts`, `battle.spec.ts`, `evaluation.spec.ts` - Core features
-- `performance.spec.ts`, `visual.spec.ts` - Performance and visual regression
-
-### Backend Testing
-
-```bash
-cd wenxin-backend
-
-# Run all tests
-pytest
-
-# Run specific test with verbose output
-pytest tests/test_auth.py -v
-
-# Run tests with coverage
-pytest --cov=app tests/
-```
-
-## 🚀 Deployment
-
-### Automated Deployment (GitHub Actions)
-
-**Trigger**: Push to `main` or `master` branch
-
-**Pipeline Steps:**
-1. **Test Phase**: Frontend build, backend tests, E2E tests
-2. **Deploy Phase**: Docker build/push, database migrations, Cloud Run deployment
-3. **Release Phase**: Automated release notes with service URLs
+1. Test phase: frontend build + backend pytest + Playwright E2E
+2. Backend: Docker build -> Artifact Registry -> Cloud Run
+3. Frontend: Vite build -> Firebase Hosting
 
 **Production URLs:**
-- **Frontend**: https://storage.googleapis.com/wenxin-moyun-prod-new-static/
-- **Backend API**: Deployed to Cloud Run (URL in deployment logs)
-- **API Docs**: `[BACKEND_URL]/docs`
+- Frontend: https://vulcaart.art
+- Backend: https://wenxin-moyun-api-229980166599.asia-east1.run.app
+- API docs: `{backend}/docs`
 
-### Manual Deployment
+## Research
 
-**Backend:**
-```bash
-docker build -f wenxin-backend/Dockerfile.cloud -t asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest wenxin-backend/
-docker push asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest
-gcloud run deploy wenxin-moyun-api --image=asia-east1-docker.pkg.dev/wenxin-moyun-prod-new/wenxin-images/wenxin-backend:latest --region=asia-east1
-```
+| Paper | Venue | Contribution |
+|-------|-------|-------------|
+| VULCA Framework | EMNLP 2025 Findings | 5-dimension evaluation framework |
+| VULCA-Bench | arXiv:2601.07986 | L1-L5 definition + 7,410 samples |
+| Fire Imagery | WiNLP 2025 | Cultural symbol reasoning |
+| Art Critique | arXiv:2601.07984 | Cross-cultural evaluation |
 
-**Frontend:**
-```bash
-cd wenxin-moyun
-npm run build
-gsutil -m rsync -r -d dist/ gs://wenxin-moyun-prod-new-static/
-```
+## License
 
-## 🎨 iOS Design System
-
-The platform features a **complete iOS design system** with authentic Apple design language:
-
-### Core Components
-
-**IOSButton** - Native iOS button with glass morphism
-```tsx
-<IOSButton variant="primary" size="lg" glassMorphism emoji="like">
-  Action
-</IOSButton>
-```
-
-**IOSCard** - Container with structured content
-```tsx
-<IOSCard variant="elevated" interactive animate>
-  <IOSCardHeader title="Title" emoji={<RankEmoji rank={1} />} />
-  <IOSCardContent>Content</IOSCardContent>
-  <IOSCardFooter>
-    <IOSButton>Action</IOSButton>
-  </IOSCardFooter>
-</IOSCard>
-```
-
-**IOSToggle** - iOS-style switches
-```tsx
-<IOSToggle checked={value} onChange={setValue} color="green" />
-```
-
-### Emoji System
-
-60+ Microsoft Fluent Emoji SVGs with semantic categorization:
-
-```tsx
-<StatusEmoji status="completed" animated />  // ✅
-<RankEmoji rank={1} size="lg" />            // 🥇
-<TypeEmoji type="painting" size="md" />     // 🎨
-```
-
-### Theme System
-
-**iOS Colors:**
-- Blue `#007AFF` (Primary)
-- Green `#34C759` (Success)
-- Orange `#FF9500` (Warning)  
-- Red `#FF3B30` (Destructive)
-
-**Glass Morphism Effects:**
-- Native backdrop-blur and transparency
-- iOS-style shadows and surfaces
-- Subtle noise texture for authenticity
-
-## 🛠️ Development Commands
-
-### Frontend (wenxin-moyun/)
-
-```bash
-npm run dev                   # Start dev server (port 5173+)
-npm run build                 # TypeScript check + production build
-npm run lint                  # ESLint validation
-npm run preview               # Preview production build
-
-# E2E Testing (Playwright - 64 test cases)
-npm run test:e2e              # Run tests headless across all browsers
-npm run test:e2e:ui           # Interactive UI mode for debugging
-npm run test:e2e:debug        # Step-by-step debugging mode
-npm run test:e2e:headed       # Run tests in visible browser
-npm run test:e2e:report       # Show HTML test report
-npm run test:e2e -- --grep="auth"  # Run specific test pattern
-
-# Environment validation
-npm run validate-env          # Verify Node.js/Python versions match CI
-```
-
-### Backend (wenxin-backend/)
-
-```bash
-pip install -r requirements.txt                        # Install dependencies
-python -m uvicorn app.main:app --reload --port 8001   # Start API server
-python init_db.py                                     # Reset database with sample data
-
-# Testing
-pytest                        # Run all tests
-pytest tests/test_auth.py -v  # Run specific test verbose
-pytest -k "test_login" -v     # Run tests matching pattern
-pytest --cov=app tests/       # Test coverage
-
-# AI Model Testing
-python test_unified_interface.py  # Verify models use correct APIs
-python openai_benchmark.py        # Run real AI benchmarks
-```
-
-## 🐛 Common Issues & Solutions
-
-### Secret Manager Access Issues
-
-**Problem**: `NOT_FOUND: Secret [projects/8164039155/secrets/db-password] not found`
-
-**Solution**: Ensure project ID (not numeric ID) is used:
-```bash
-# ❌ Wrong (uses numeric ID)
-gcloud secrets versions access latest --secret="db-password"
-
-# ✅ Correct (specifies project ID)
-gcloud secrets versions access latest --secret="db-password" --project=wenxin-moyun-prod-new
-```
-
-### Artifact Registry Permission Denied
-
-**Problem**: `Permission denied` when pushing Docker images
-
-**Solutions**:
-1. Verify service account has `artifactregistry.admin` role
-2. Ensure repository exists:
-   ```bash
-   gcloud artifacts repositories create wenxin-images \
-     --repository-format=docker \
-     --location=asia-east1
-   ```
-
-### Playwright Test Issues
-
-**Strict Mode Violations**:
-```typescript
-// ❌ Wrong: Multiple element matches
-page.locator('[required]')
-
-// ✅ Correct: Use .first() for multiple matches
-page.locator('[required]').first()
-
-// ❌ Wrong: Invalid .or() syntax
-page.locator('text=/error/i, .error-page')
-
-// ✅ Correct: Proper .or() method
-page.locator('text=/error/i').or(page.locator('.error-page'))
-```
-
-### Environment Issues
-
-**Node.js Version**: Must use 20.19.4 for CI compatibility
-```bash
-# Check version
-node --version
-
-# Install correct version (using nvm)
-nvm install 20.19.4
-nvm use 20.19.4
-```
-
-**Port Conflicts**: Frontend auto-increments from 5173 if port is taken
-
-**Windows Compatibility**: Use `del` instead of `rm`, check Windows Defender
-
-## 📊 Monitoring & Health Checks
-
-### Health Endpoints
-
-**Backend Health Check:**
-```bash
-curl -f "[BACKEND_URL]/health"
-```
-
-**Frontend Health Check:**
-```bash
-curl -f "https://storage.googleapis.com/wenxin-moyun-prod-new-static/index.html"
-```
-
-### Database Operations
-
-**Check Model Rankings:**
-```bash
-cd wenxin-backend
-python -c "
-import sqlite3
-conn = sqlite3.connect('wenxin.db')
-cursor = conn.cursor()
-cursor.execute('SELECT name, model_type, overall_score FROM ai_models ORDER BY overall_score DESC NULLS LAST')
-print([f'{row[0]}: {row[2] if row[2] is not None else \"N/A\"}' for row in cursor.fetchall()[:10]])
-conn.close()
-"
-```
-
-**Reset Development Database:**
-```bash
-# Windows
-del wenxin.db
-
-# Linux/macOS  
-rm wenxin.db
-
-# Recreate with sample data
-python init_db.py
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-For issues and questions:
-- GitHub Issues: [Create an issue](https://github.com/myhr-dev/website/issues)
-- Email: support@wenxin-moyun.com
-- Documentation: See `CLAUDE.md` for detailed technical documentation
-
----
-
-**Built with ❤️ using React 19, FastAPI, and Google Cloud Platform**
+MIT License. See [LICENSE](LICENSE).
