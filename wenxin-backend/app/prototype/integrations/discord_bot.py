@@ -77,6 +77,7 @@ async def _gemini_ask(question: str) -> str:
     try:
         import google.generativeai as genai
         genai.configure(api_key=GEMINI_API_KEY)
+        # Note: uses Google SDK directly (not litellm), so MODEL_VLM constant doesn't apply
         model = genai.GenerativeModel("gemini-2.5-flash")
 
         prompt = (
