@@ -164,10 +164,6 @@ def _get_provider(name: str, config: DraftConfig | None = None) -> AbstractProvi
     """Resolve a provider name to an AbstractProvider instance."""
     if name == "mock":
         return MockProvider()
-    if name == "together_flux":
-        # Deprecated (M0 Gemini migration, 2026-03). Redirect to nb2.
-        logger.warning("together_flux is deprecated; use nb2 instead")
-        return _get_provider("nb2", config)
     if name == "diffusers":
         cfg = config or DraftConfig()
         model_id = cfg.provider_model or "runwayml/stable-diffusion-v1-5"

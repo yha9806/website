@@ -130,7 +130,7 @@ function ScoreBar({ label, value }: { label: string; value: number }) {
   const pct = Math.round(value * 100);
   const barColor =
     value >= 0.9 ? 'bg-green-500 dark:bg-green-400' :
-    value >= 0.8 ? 'bg-blue-500 dark:bg-blue-400' :
+    value >= 0.8 ? 'bg-slate-500 dark:bg-slate-400' :
     'bg-amber-500 dark:bg-amber-400';
 
   return (
@@ -152,7 +152,7 @@ function ArtworkCard({ artwork }: { artwork: ArtworkItem }) {
   const overallPct = Math.round(artwork.overall * 100);
   const overallColor =
     artwork.overall >= 0.9 ? 'text-green-600 dark:text-green-400' :
-    artwork.overall >= 0.85 ? 'text-blue-600 dark:text-blue-400' :
+    artwork.overall >= 0.85 ? 'text-slate-600 dark:text-slate-400' :
     'text-amber-600 dark:text-amber-400';
 
   return (

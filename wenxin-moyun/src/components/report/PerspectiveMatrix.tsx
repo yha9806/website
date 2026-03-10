@@ -57,7 +57,7 @@ export function PerspectiveMatrix({
       case 'Western':
         return 'bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-400';
       default:
-        return 'bg-amber-100 dark:bg-purple-900/30 text-purple-700 dark:text-amber-400';
+        return 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400';
     }
   };
 
@@ -96,8 +96,8 @@ export function PerspectiveMatrix({
               </p>
               <p className="text-xs text-gray-500 mt-1">{westernPerspectives.length} perspectives</p>
             </div>
-            <div className="text-center p-4 rounded-xl bg-amber-50 dark:bg-purple-900/20">
-              <p className="text-sm text-purple-700 dark:text-amber-400 mb-1">Gap</p>
+            <div className="text-center p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20">
+              <p className="text-sm text-amber-700 dark:text-amber-400 mb-1">Gap</p>
               <p className={`text-3xl font-bold ${Math.abs(avgEastern - avgWestern) > 0.1 ? 'text-orange-600' : 'text-green-600'}`}>
                 {Math.abs((avgEastern - avgWestern) * 100).toFixed(0)}%
               </p>
@@ -151,7 +151,7 @@ export function PerspectiveMatrix({
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="mt-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/20 border border-blue-200 dark:border-slate-800"
+              className="mt-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/20 border border-slate-200 dark:border-slate-800"
             >
               {(() => {
                 const selected = perspectives.find(p => p.perspective === selectedPerspective);

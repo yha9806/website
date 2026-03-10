@@ -42,7 +42,7 @@ describe('useMediaQuery', () => {
   beforeEach(() => {
     mockMql = createMockMediaQueryList(false)
     mockMatchMedia = vi.fn(() => mockMql as unknown as MediaQueryList)
-    window.matchMedia = mockMatchMedia
+    window.matchMedia = mockMatchMedia as any
   })
 
   afterEach(() => {

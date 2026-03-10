@@ -47,8 +47,8 @@ const VERSION_HISTORY: Record<string, VersionEntry[]> = {
 // ---------------------------------------------------------------------------
 
 const TAG_COLORS: Record<string, string> = {
-  brand: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
-  design: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
+  brand: 'bg-slate-100 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300',
+  design: 'bg-[#C87F4A]/10 text-[#C87F4A] dark:bg-[#C87F4A]/20 dark:text-[#DDA574]',
   audience: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300',
   marketing: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300',
   trends: 'bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300',
@@ -56,7 +56,7 @@ const TAG_COLORS: Record<string, string> = {
   quality: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300',
   accessibility: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300',
   emotion: 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300',
-  performance: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300',
+  performance: 'bg-[#334155]/10 text-[#334155] dark:bg-[#334155]/20 dark:text-slate-300',
 };
 
 function getTagColor(tag: string): string {

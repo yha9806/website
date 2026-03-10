@@ -174,7 +174,7 @@ const EvaluationDetailModal: React.FC<EvaluationDetailModalProps> = ({ evaluatio
               {evaluation.result.analysis && (
                 <div className="p-3 bg-slate-50 dark:bg-slate-900/20 rounded-lg">
                   <h4 className="font-medium text-slate-900 dark:text-slate-400 mb-1">AI分析</h4>
-                  <p className="text-sm text-slate-800 dark:text-blue-200">{evaluation.result.analysis}</p>
+                  <p className="text-sm text-slate-800 dark:text-slate-200">{evaluation.result.analysis}</p>
                 </div>
               )}
             </div>

@@ -362,17 +362,4 @@ class TestHITLActions:
 
 class TestProviderErrors:
     """Test provider configuration error handling."""
-
-    @pytest.mark.asyncio
-    async def test_together_flux_without_key(self, client: httpx.AsyncClient):
-        """together_flux without API key returns 400 (if key not set on server)."""
-        # This test only works if TOGETHER_API_KEY is not set
-        if os.environ.get("TOGETHER_API_KEY"):
-            pytest.skip("TOGETHER_API_KEY is set, skip API key error test")
-
-        res = await client.post(f"{API}/runs", json={
-            "subject": "test",
-            "provider": "together_flux",
-        })
-        # Should be 400 if no key, or 200 if key exists
-        assert res.status_code in (400, 200)
+    pass  # together_flux tests removed (M0 Gemini migration)

@@ -34,9 +34,9 @@ export default function TermsPage() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 dark:bg-purple-900/20 rounded-full mb-6">
-            <Scale className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-            <span className="text-sm font-medium text-purple-700 dark:text-purple-400">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-50 dark:bg-amber-900/20 rounded-full mb-6">
+            <Scale className="w-5 h-5 text-amber-700 dark:text-amber-400" />
+            <span className="text-sm font-medium text-amber-700 dark:text-amber-400">
               Terms of Service
             </span>
           </div>
@@ -54,7 +54,7 @@ export default function TermsPage() {
       </section>
 
       {/* Quick Summary */}
-      <section className="bg-purple-50 dark:bg-purple-900/20 -mx-4 px-4 py-12 rounded-2xl">
+      <section className="bg-amber-50 dark:bg-amber-900/20 -mx-4 px-4 py-12 rounded-2xl">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
             Key Points
@@ -67,8 +67,8 @@ export default function TermsPage() {
               { icon: Scale, title: 'Disputes', desc: 'Good faith resolution process' },
             ].map((item) => (
               <div key={item.title} className="text-center">
-                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <item.icon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <item.icon className="w-6 h-6 text-amber-700 dark:text-amber-400" />
                 </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">{item.desc}</p>
@@ -83,7 +83,7 @@ export default function TermsPage() {
         {/* Section 1: Acceptance */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<FileText className="w-6 h-6 text-purple-500" />}
+            emoji={<FileText className="w-6 h-6 text-[#C87F4A]" />}
             title="1. Acceptance of Terms"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -99,7 +99,7 @@ export default function TermsPage() {
         {/* Section 2: Description of Service */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<CheckCircle2 className="w-6 h-6 text-purple-500" />}
+            emoji={<CheckCircle2 className="w-6 h-6 text-[#C87F4A]" />}
             title="2. Description of Service"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -114,7 +114,7 @@ export default function TermsPage() {
               <li>Enterprise features including custom benchmarks and continuous monitoring</li>
             </ul>
             <p className="text-gray-600 dark:text-gray-400 mt-4">
-              Service features may vary by subscription tier. See our <Link to="/pricing" className="text-purple-600 dark:text-purple-400 hover:underline">Pricing</Link> page for details.
+              Service features may vary by subscription tier. See our <Link to="/pricing" className="text-amber-700 dark:text-amber-400 hover:underline">Pricing</Link> page for details.
             </p>
           </IOSCardContent>
         </IOSCard>
@@ -122,7 +122,7 @@ export default function TermsPage() {
         {/* Section 3: Account Terms */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Users className="w-6 h-6 text-purple-500" />}
+            emoji={<Users className="w-6 h-6 text-[#C87F4A]" />}
             title="3. Account Terms"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -140,7 +140,7 @@ export default function TermsPage() {
         {/* Section 4: Acceptable Use */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Shield className="w-6 h-6 text-purple-500" />}
+            emoji={<Shield className="w-6 h-6 text-[#C87F4A]" />}
             title="4. Acceptable Use"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -162,7 +162,7 @@ export default function TermsPage() {
         {/* Section 5: Prohibited Uses */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Ban className="w-6 h-6 text-purple-500" />}
+            emoji={<Ban className="w-6 h-6 text-[#C87F4A]" />}
             title="5. Prohibited Uses"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -184,7 +184,7 @@ export default function TermsPage() {
         {/* Section 6: Intellectual Property */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<FileText className="w-6 h-6 text-purple-500" />}
+            emoji={<FileText className="w-6 h-6 text-[#C87F4A]" />}
             title="6. Intellectual Property"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -208,12 +208,12 @@ export default function TermsPage() {
         {/* Section 7: Payment Terms */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<CreditCard className="w-6 h-6 text-purple-500" />}
+            emoji={<CreditCard className="w-6 h-6 text-[#C87F4A]" />}
             title="7. Payment Terms"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
             <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-              <li><strong>Pricing:</strong> Current pricing is available at <Link to="/pricing" className="text-purple-600 dark:text-purple-400 hover:underline">vulcaart.art/pricing</Link>. Prices are subject to change with 30 days notice.</li>
+              <li><strong>Pricing:</strong> Current pricing is available at <Link to="/pricing" className="text-amber-700 dark:text-amber-400 hover:underline">vulcaart.art/pricing</Link>. Prices are subject to change with 30 days notice.</li>
               <li><strong>Billing:</strong> Paid plans are billed in advance on a monthly or annual basis.</li>
               <li><strong>Pilot Engagements:</strong> One-time payments are due upon signing the engagement agreement.</li>
               <li><strong>Refunds:</strong> We offer refunds within 14 days of purchase if you are not satisfied, provided no evaluation reports have been generated.</li>
@@ -226,7 +226,7 @@ export default function TermsPage() {
         {/* Section 8: Service Modifications */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<RefreshCw className="w-6 h-6 text-purple-500" />}
+            emoji={<RefreshCw className="w-6 h-6 text-[#C87F4A]" />}
             title="8. Service Modifications & Termination"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -249,7 +249,7 @@ export default function TermsPage() {
         {/* Section 9: Disclaimer & Limitations */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<AlertTriangle className="w-6 h-6 text-purple-500" />}
+            emoji={<AlertTriangle className="w-6 h-6 text-[#C87F4A]" />}
             title="9. Disclaimers & Limitations"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -275,7 +275,7 @@ export default function TermsPage() {
         {/* Section 10: Indemnification */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Shield className="w-6 h-6 text-purple-500" />}
+            emoji={<Shield className="w-6 h-6 text-[#C87F4A]" />}
             title="10. Indemnification"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -294,7 +294,7 @@ export default function TermsPage() {
         {/* Section 11: Governing Law */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Gavel className="w-6 h-6 text-purple-500" />}
+            emoji={<Gavel className="w-6 h-6 text-[#C87F4A]" />}
             title="11. Governing Law & Disputes"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -315,7 +315,7 @@ export default function TermsPage() {
         {/* Section 12: Changes */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Calendar className="w-6 h-6 text-purple-500" />}
+            emoji={<Calendar className="w-6 h-6 text-[#C87F4A]" />}
             title="12. Changes to Terms"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -331,7 +331,7 @@ export default function TermsPage() {
         {/* Section 13: General */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<FileText className="w-6 h-6 text-purple-500" />}
+            emoji={<FileText className="w-6 h-6 text-[#C87F4A]" />}
             title="13. General Provisions"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -347,7 +347,7 @@ export default function TermsPage() {
       </section>
 
       {/* Contact */}
-      <section className="bg-purple-50 dark:bg-purple-900/20 -mx-4 px-4 py-12 rounded-2xl text-center">
+      <section className="bg-amber-50 dark:bg-amber-900/20 -mx-4 px-4 py-12 rounded-2xl text-center">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
           Questions About Terms?
         </h2>

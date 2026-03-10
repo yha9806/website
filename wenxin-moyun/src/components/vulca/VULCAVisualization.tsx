@@ -354,7 +354,7 @@ export const VULCAVisualization: React.FC<VULCAVisualizationProps> = ({
     return (
       <div className="space-y-4">
         {/* Smart dimension selection based on filter */}
-        <div className="flex flex-wrap gap-2 p-4 bg-slate-50 dark:bg-slate-900/20 rounded-lg border border-blue-200 dark:border-slate-800">
+        <div className="flex flex-wrap gap-2 p-4 bg-slate-50 dark:bg-slate-900/20 rounded-lg border border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-slate-700 dark:text-slate-400">
               📊 Showing {topDims.length} dimensions

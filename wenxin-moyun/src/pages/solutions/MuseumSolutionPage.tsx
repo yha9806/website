@@ -180,7 +180,7 @@ export default function MuseumSolutionPage() {
 
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-amber-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                 <Eye className="w-5 h-5 text-amber-600" />
               </div>
               <div>

@@ -17,7 +17,7 @@ const PLACEHOLDER_COLORS = [
   'from-slate-600 to-slate-800',
   'from-amber-700 to-amber-900',
   'from-emerald-700 to-emerald-900',
-  'from-indigo-600 to-indigo-800',
+  'from-[#334155] to-slate-800',
   'from-rose-700 to-rose-900',
   'from-cyan-700 to-cyan-900',
 ];

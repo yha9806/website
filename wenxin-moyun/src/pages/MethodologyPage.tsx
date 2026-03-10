@@ -48,10 +48,10 @@ const MethodologyPage: React.FC = () => {
 
   const levelColors: Record<string, string> = {
     L1: '#22c55e',
-    L2: '#3b82f6',
+    L2: '#334155',
     L3: '#f59e0b',
     L4: '#ef4444',
-    L5: '#8b5cf6',
+    L5: '#C87F4A',
   };
 
   return (
@@ -66,7 +66,7 @@ const MethodologyPage: React.FC = () => {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: 'spring' }}
-          className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-100 dark:bg-purple-900/30 mb-4"
+          className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-100 dark:bg-amber-900/30 mb-4"
         >
           <FlaskConical className="w-8 h-8 text-amber-600" />
         </motion.div>
@@ -285,7 +285,7 @@ const MethodologyPage: React.FC = () => {
       {/* Historical Personas */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-6">
-          <Users className="w-6 h-6 text-indigo-500" />
+          <Users className="w-6 h-6 text-slate-600" />
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
             Art Critic Personas
           </h2>

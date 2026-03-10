@@ -46,7 +46,7 @@ export const IOSAlert: React.FC<IOSAlertProps> = ({
     info: {
       emoji: 'pending',
       titleColor: 'text-slate-900 dark:text-slate-100',
-      borderColor: 'border-blue-200 dark:border-slate-800',
+      borderColor: 'border-slate-200 dark:border-slate-800',
       bgColor: 'bg-slate-50/80 dark:bg-slate-900/20',
     },
     success: {

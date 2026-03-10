@@ -449,7 +449,7 @@ export default function LeaderboardTable({
                   e.stopPropagation();
                   onToggleVulca(modelId);
                 }}
-                className="px-2 py-1 text-sm bg-amber-700 dark:bg-amber-600 text-white rounded-lg hover:bg-purple-700 dark:hover:bg-amber-700 transition-colors flex items-center gap-1"
+                className="px-2 py-1 text-sm bg-amber-700 dark:bg-amber-600 text-white rounded-lg hover:bg-[#C87F4A] dark:hover:bg-amber-700 transition-colors flex items-center gap-1"
                 title="View VULCA 47D Analysis"
               >
                 47D

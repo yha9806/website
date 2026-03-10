@@ -520,7 +520,7 @@ export const IOSFilterPanel: React.FC<IOSFilterPanelProps> = ({
           )}
           
           {values.organizations.slice(0, 3).map((org) => (
-            <span key={org} className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 dark:bg-purple-900/30 text-purple-700 dark:text-amber-400 text-xs rounded-full">
+            <span key={org} className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs rounded-full">
               <EmojiIcon category="content" name="organization" size="xs" />
               {org}
               <button onClick={() => handleChange('organizations', values.organizations.filter(o => o !== org))}>

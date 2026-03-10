@@ -272,7 +272,7 @@ describe('useGuestTracking', () => {
 
   it('should clean up interval on unmount', () => {
     const { unmount } = renderHook(() =>
-      useGuestTracking({ onTrigger })
+      useGuestTracking({ onTrigger: onTrigger as (trigger: string) => void })
     )
 
     unmount()

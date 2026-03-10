@@ -67,7 +67,7 @@ export function ExhibitionsPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 dark:bg-purple-900/30 text-purple-700 dark:text-amber-400 rounded-full text-sm font-medium mb-4"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full text-sm font-medium mb-4"
         >
           <Award className="w-4 h-4" />
           Qualitative Evidence Library
@@ -116,7 +116,7 @@ export function ExhibitionsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
-        className="mb-8 bg-gradient-to-r from-amber-50 to-slate-50 dark:from-amber-900/20 dark:to-slate-900/20 rounded-2xl p-6 border border-purple-200 dark:border-purple-800"
+        className="mb-8 bg-gradient-to-r from-amber-50 to-slate-50 dark:from-amber-900/20 dark:to-slate-900/20 rounded-2xl p-6 border border-amber-200 dark:border-amber-800"
       >
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
@@ -217,7 +217,7 @@ export function ExhibitionsPage() {
                       </span>
                     )}
                     {exhibition.has_dialogues && (
-                      <span className="px-2 py-1 text-xs bg-amber-100 dark:bg-purple-900/30 text-amber-700 dark:text-amber-500 rounded-lg">
+                      <span className="px-2 py-1 text-xs bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-500 rounded-lg">
                         AI Dialogues
                       </span>
                     )}

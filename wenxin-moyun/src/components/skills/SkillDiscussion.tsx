@@ -44,7 +44,7 @@ const MOCK_COMMENTS: Record<string, DiscussionComment[]> = {
 function TypeBadge({ type }: { type: CommentType }) {
   const config: Record<CommentType, { label: string; cls: string }> = {
     comment: { label: 'Comment', cls: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400' },
-    review: { label: 'Review', cls: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' },
+    review: { label: 'Review', cls: 'bg-slate-100 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300' },
     upgrade_proposal: { label: 'Upgrade Proposal', cls: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' },
   };
   const c = config[type];

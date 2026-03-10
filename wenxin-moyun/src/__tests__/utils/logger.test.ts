@@ -16,7 +16,7 @@ describe('logger utility', () => {
 
   describe('in development mode (DEV=true)', () => {
     it('log should call console.log', async () => {
-      vi.stubEnv('DEV', 'true')
+      vi.stubEnv('DEV', true as any)
       // Force import.meta.env.DEV to be true by resetting modules
       const { log } = await import('../../utils/logger')
       log('test message')
@@ -24,28 +24,28 @@ describe('logger utility', () => {
     })
 
     it('warn should call console.warn', async () => {
-      vi.stubEnv('DEV', 'true')
+      vi.stubEnv('DEV', true as any)
       const { warn } = await import('../../utils/logger')
       warn('warning message')
       expect(console.warn).toHaveBeenCalledWith('warning message')
     })
 
     it('error should call console.error', async () => {
-      vi.stubEnv('DEV', 'true')
+      vi.stubEnv('DEV', true as any)
       const { error } = await import('../../utils/logger')
       error('error message')
       expect(console.error).toHaveBeenCalledWith('error message')
     })
 
     it('debug should call console.log with prefix', async () => {
-      vi.stubEnv('DEV', 'true')
+      vi.stubEnv('DEV', true as any)
       const { debug } = await import('../../utils/logger')
       debug('MyModule', 'debug data')
       expect(console.log).toHaveBeenCalledWith('[MyModule]', 'debug data')
     })
 
     it('log should forward multiple arguments', async () => {
-      vi.stubEnv('DEV', 'true')
+      vi.stubEnv('DEV', true as any)
       const { log } = await import('../../utils/logger')
       log('msg', 42, { key: 'val' })
       expect(console.log).toHaveBeenCalledWith('msg', 42, { key: 'val' })
@@ -54,7 +54,7 @@ describe('logger utility', () => {
 
   describe('in production mode (DEV=false)', () => {
     it('log should be a no-op', async () => {
-      vi.stubEnv('DEV', '')
+      vi.stubEnv('DEV', '' as any)
       // In Vite, import.meta.env.DEV is false when DEV env is empty/not set
       // We need to test through dynamic import with reset modules
       const { log } = await import('../../utils/logger')
@@ -65,7 +65,7 @@ describe('logger utility', () => {
     })
 
     it('error should always call console.error regardless of mode', async () => {
-      vi.stubEnv('DEV', '')
+      vi.stubEnv('DEV', '' as any)
       const { error } = await import('../../utils/logger')
       error('critical error')
       expect(console.error).toHaveBeenCalledWith('critical error')
@@ -74,7 +74,7 @@ describe('logger utility', () => {
 
   describe('createLogger', () => {
     it('should create a namespaced logger object', async () => {
-      vi.stubEnv('DEV', 'true')
+      vi.stubEnv('DEV', true as any)
       const { createLogger } = await import('../../utils/logger')
       const logger = createLogger('TestNamespace')
 
@@ -85,7 +85,7 @@ describe('logger utility', () => {
     })
 
     it('should prefix log messages with namespace', async () => {
-      vi.stubEnv('DEV', 'true')
+      vi.stubEnv('DEV', true as any)
       const { createLogger } = await import('../../utils/logger')
       const logger = createLogger('Auth')
 
@@ -94,7 +94,7 @@ describe('logger utility', () => {
     })
 
     it('should prefix warn messages with namespace', async () => {
-      vi.stubEnv('DEV', 'true')
+      vi.stubEnv('DEV', true as any)
       const { createLogger } = await import('../../utils/logger')
       const logger = createLogger('Auth')
 
@@ -103,7 +103,7 @@ describe('logger utility', () => {
     })
 
     it('should prefix error messages with namespace', async () => {
-      vi.stubEnv('DEV', 'true')
+      vi.stubEnv('DEV', true as any)
       const { createLogger } = await import('../../utils/logger')
       const logger = createLogger('Auth')
 
@@ -112,7 +112,7 @@ describe('logger utility', () => {
     })
 
     it('should prefix debug messages with namespace', async () => {
-      vi.stubEnv('DEV', 'true')
+      vi.stubEnv('DEV', true as any)
       const { createLogger } = await import('../../utils/logger')
       const logger = createLogger('API')
 
@@ -121,7 +121,7 @@ describe('logger utility', () => {
     })
 
     it('error should always work in the namespaced logger', async () => {
-      vi.stubEnv('DEV', '')
+      vi.stubEnv('DEV', '' as any)
       const { createLogger } = await import('../../utils/logger')
       const logger = createLogger('Critical')
 

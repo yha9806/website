@@ -148,7 +148,7 @@ const LoginPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleDemoLogin}
-                className="text-amber-700 dark:text-amber-500 hover:text-purple-700 dark:hover:text-amber-400 font-medium"
+                className="text-amber-700 dark:text-amber-500 hover:text-[#C87F4A] dark:hover:text-amber-400 font-medium"
               >
                 Use admin account (admin/admin123)
               </button>

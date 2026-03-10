@@ -24,7 +24,7 @@ function makeModel(overrides: Partial<Model> = {}): Model {
   } as Model
 }
 
-function makeEntry(overrides: Partial<LeaderboardEntry> & { model?: Partial<Model> } = {}): LeaderboardEntry {
+function makeEntry(overrides: Omit<Partial<LeaderboardEntry>, 'model'> & { model?: Partial<Model> } = {}): LeaderboardEntry {
   const { model: modelOverrides, ...rest } = overrides
   return {
     rank: 1,

@@ -33,8 +33,8 @@ const AVAILABLE_TAGS = [
 ];
 
 const TAG_COLORS: Record<string, string> = {
-  brand: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200 dark:border-blue-800',
-  design: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300 border-violet-200 dark:border-violet-800',
+  brand: 'bg-slate-100 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300 border-slate-200 dark:border-slate-800',
+  design: 'bg-[#C87F4A]/10 text-[#C87F4A] dark:bg-[#C87F4A]/20 dark:text-[#DDA574] border-[#C87F4A]/30 dark:border-[#C87F4A]/40',
   audience: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:border-green-800',
   marketing: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300 border-orange-200 dark:border-orange-800',
   trends: 'bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300 border-pink-200 dark:border-pink-800',
@@ -42,7 +42,7 @@ const TAG_COLORS: Record<string, string> = {
   quality: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300 border-cyan-200 dark:border-cyan-800',
   accessibility: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300 border-teal-200 dark:border-teal-800',
   emotion: 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300 border-rose-200 dark:border-rose-800',
-  performance: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800',
+  performance: 'bg-[#334155]/10 text-[#334155] dark:bg-[#334155]/20 dark:text-slate-300 border-[#334155]/30 dark:border-slate-700',
 };
 
 function getTagColor(tag: string): string {

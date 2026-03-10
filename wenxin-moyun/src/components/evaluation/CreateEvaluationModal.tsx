@@ -136,7 +136,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
                     onClick={() => setFormData(prev => ({ ...prev, taskType: type.value }))}
                     className={`p-4 rounded-lg border-2 transition-all flex items-center gap-3 ${
                       formData.taskType === type.value
-                        ? 'border-amber-600 bg-amber-50 dark:bg-purple-900/20'
+                        ? 'border-amber-600 bg-amber-50 dark:bg-amber-900/20'
                         : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                     }`}
                   >
@@ -144,7 +144,7 @@ const CreateEvaluationModal: React.FC<CreateEvaluationModalProps> = ({ onClose, 
                       formData.taskType === type.value ? 'text-amber-700 dark:text-amber-500' : 'text-gray-600 dark:text-gray-400'
                     }`} />
                     <span className={`font-medium ${
-                      formData.taskType === type.value ? 'text-purple-900 dark:text-amber-400' : 'text-gray-700 dark:text-gray-300'
+                      formData.taskType === type.value ? 'text-amber-900 dark:text-amber-400' : 'text-gray-700 dark:text-gray-300'
                     }`}>
                       {type.label}
                     </span>

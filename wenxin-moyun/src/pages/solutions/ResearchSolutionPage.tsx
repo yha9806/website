@@ -34,7 +34,7 @@ export default function ResearchSolutionPage() {
           className="max-w-4xl mx-auto"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 bg-amber-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
               <GraduationCap className="w-6 h-6 text-amber-600" />
             </div>
             <span className="text-sm font-medium text-amber-700 dark:text-amber-500">
@@ -133,7 +133,7 @@ export default function ResearchSolutionPage() {
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-amber-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
                 <FileText className="w-5 h-5 text-amber-600" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">7 Citation Formats</h3>
@@ -231,7 +231,7 @@ export default function ResearchSolutionPage() {
                 <h3 className="font-medium text-gray-900 dark:text-white">{paper.title}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{paper.venue}</p>
               </div>
-              <span className="px-2 py-1 bg-amber-100 dark:bg-purple-900/30 text-purple-700 dark:text-amber-500 text-xs rounded-full">
+              <span className="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-500 text-xs rounded-full">
                 {paper.badge}
               </span>
             </div>
@@ -249,7 +249,7 @@ export default function ResearchSolutionPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-amber-50 dark:bg-purple-900/20 -mx-4 px-4 py-12 rounded-2xl text-center">
+      <section className="bg-amber-50 dark:bg-amber-900/20 -mx-4 px-4 py-12 rounded-2xl text-center">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
           Academic Discount Available
         </h2>

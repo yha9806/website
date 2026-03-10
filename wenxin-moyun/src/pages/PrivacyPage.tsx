@@ -33,9 +33,9 @@ export default function PrivacyPage() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-full mb-6">
-            <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <span className="text-sm font-medium text-blue-700 dark:text-blue-400">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900/20 rounded-full mb-6">
+            <Shield className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-400">
               Privacy Policy
             </span>
           </div>
@@ -53,7 +53,7 @@ export default function PrivacyPage() {
       </section>
 
       {/* Quick Summary */}
-      <section className="bg-blue-50 dark:bg-blue-900/20 -mx-4 px-4 py-12 rounded-2xl">
+      <section className="bg-slate-50 dark:bg-slate-900/20 -mx-4 px-4 py-12 rounded-2xl">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
             Privacy at a Glance
@@ -66,8 +66,8 @@ export default function PrivacyPage() {
               { icon: Globe, title: 'No Selling', desc: 'We never sell your personal data' },
             ].map((item) => (
               <div key={item.title} className="text-center">
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <item.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900/30 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <item.icon className="w-6 h-6 text-slate-600 dark:text-slate-400" />
                 </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">{item.desc}</p>
@@ -82,7 +82,7 @@ export default function PrivacyPage() {
         {/* Section 1: Information We Collect */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Database className="w-6 h-6 text-blue-500" />}
+            emoji={<Database className="w-6 h-6 text-slate-600" />}
             title="1. Information We Collect"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -106,7 +106,7 @@ export default function PrivacyPage() {
         {/* Section 2: How We Use Your Information */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Eye className="w-6 h-6 text-blue-500" />}
+            emoji={<Eye className="w-6 h-6 text-slate-600" />}
             title="2. How We Use Your Information"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -128,7 +128,7 @@ export default function PrivacyPage() {
         {/* Section 3: Data Sharing */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Globe className="w-6 h-6 text-blue-500" />}
+            emoji={<Globe className="w-6 h-6 text-slate-600" />}
             title="3. Data Sharing"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -147,7 +147,7 @@ export default function PrivacyPage() {
         {/* Section 4: Data Security */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Lock className="w-6 h-6 text-blue-500" />}
+            emoji={<Lock className="w-6 h-6 text-slate-600" />}
             title="4. Data Security"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -161,7 +161,7 @@ export default function PrivacyPage() {
               <li><strong>Monitoring:</strong> Continuous security monitoring and incident response procedures.</li>
             </ul>
             <p className="text-gray-600 dark:text-gray-400 mt-4">
-              For more details, visit our <Link to="/trust" className="text-blue-600 dark:text-blue-400 hover:underline">Trust & Security</Link> page.
+              For more details, visit our <Link to="/trust" className="text-slate-600 dark:text-slate-400 hover:underline">Trust & Security</Link> page.
             </p>
           </IOSCardContent>
         </IOSCard>
@@ -169,7 +169,7 @@ export default function PrivacyPage() {
         {/* Section 5: Your Rights */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<UserCheck className="w-6 h-6 text-blue-500" />}
+            emoji={<UserCheck className="w-6 h-6 text-slate-600" />}
             title="5. Your Rights"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -185,7 +185,7 @@ export default function PrivacyPage() {
               <li><strong>Objection:</strong> Object to certain processing activities.</li>
             </ul>
             <p className="text-gray-600 dark:text-gray-400 mt-4">
-              To exercise these rights, contact us at <a href="mailto:privacy@vulcaart.art" className="text-blue-600 dark:text-blue-400 hover:underline">privacy@vulcaart.art</a>.
+              To exercise these rights, contact us at <a href="mailto:privacy@vulcaart.art" className="text-slate-600 dark:text-slate-400 hover:underline">privacy@vulcaart.art</a>.
             </p>
           </IOSCardContent>
         </IOSCard>
@@ -193,7 +193,7 @@ export default function PrivacyPage() {
         {/* Section 6: Data Retention */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Clock className="w-6 h-6 text-blue-500" />}
+            emoji={<Clock className="w-6 h-6 text-slate-600" />}
             title="6. Data Retention"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -209,7 +209,7 @@ export default function PrivacyPage() {
         {/* Section 7: International Transfers */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Server className="w-6 h-6 text-blue-500" />}
+            emoji={<Server className="w-6 h-6 text-slate-600" />}
             title="7. International Data Transfers"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -227,7 +227,7 @@ export default function PrivacyPage() {
         {/* Section 8: Cookies */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<FileText className="w-6 h-6 text-blue-500" />}
+            emoji={<FileText className="w-6 h-6 text-slate-600" />}
             title="8. Cookies and Tracking"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -248,7 +248,7 @@ export default function PrivacyPage() {
         {/* Section 9: Children's Privacy */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<UserCheck className="w-6 h-6 text-blue-500" />}
+            emoji={<UserCheck className="w-6 h-6 text-slate-600" />}
             title="9. Children's Privacy"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -261,7 +261,7 @@ export default function PrivacyPage() {
         {/* Section 10: Changes */}
         <IOSCard variant="elevated">
           <IOSCardHeader
-            emoji={<Calendar className="w-6 h-6 text-blue-500" />}
+            emoji={<Calendar className="w-6 h-6 text-slate-600" />}
             title="10. Changes to This Policy"
           />
           <IOSCardContent className="prose dark:prose-invert max-w-none">
@@ -273,7 +273,7 @@ export default function PrivacyPage() {
       </section>
 
       {/* Contact */}
-      <section className="bg-blue-50 dark:bg-blue-900/20 -mx-4 px-4 py-12 rounded-2xl text-center">
+      <section className="bg-slate-50 dark:bg-slate-900/20 -mx-4 px-4 py-12 rounded-2xl text-center">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
           Questions About Privacy?
         </h2>

@@ -125,9 +125,9 @@ export default function DataEthicsPage() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 dark:bg-purple-900/20 rounded-full mb-6">
-            <Heart className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-            <span className="text-sm font-medium text-purple-700 dark:text-purple-400">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-50 dark:bg-amber-900/20 rounded-full mb-6">
+            <Heart className="w-5 h-5 text-amber-700 dark:text-amber-400" />
+            <span className="text-sm font-medium text-amber-700 dark:text-amber-400">
               Data & Ethics
             </span>
           </div>
@@ -182,7 +182,7 @@ export default function DataEthicsPage() {
             >
               <IOSCard variant="elevated" className="h-full">
                 <IOSCardHeader
-                  emoji={<principle.icon className="w-6 h-6 text-purple-500" />}
+                  emoji={<principle.icon className="w-6 h-6 text-[#C87F4A]" />}
                   title={principle.title}
                 />
                 <IOSCardContent>
@@ -192,7 +192,7 @@ export default function DataEthicsPage() {
                   <ul className="space-y-2">
                     {principle.items.map((item) => (
                       <li key={item} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                        <CheckCircle2 className="w-4 h-4 text-purple-500 flex-shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-[#C87F4A] flex-shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -230,8 +230,8 @@ export default function DataEthicsPage() {
               viewport={{ once: true }}
               className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm"
             >
-              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center mb-4">
-                <framework.icon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+              <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center mb-4">
+                <framework.icon className="w-6 h-6 text-amber-700 dark:text-amber-400" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 {framework.title}
@@ -242,7 +242,7 @@ export default function DataEthicsPage() {
               <ul className="space-y-2">
                 {framework.principles.map((principle) => (
                   <li key={principle} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
-                    <CheckCircle2 className="w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-[#C87F4A] flex-shrink-0 mt-0.5" />
                     <span>{principle}</span>
                   </li>
                 ))}
@@ -274,8 +274,8 @@ export default function DataEthicsPage() {
               <div className="space-y-6">
                 {modelRights.map((right) => (
                   <div key={right.title} className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Users className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                    <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Users className="w-5 h-5 text-amber-700 dark:text-amber-400" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
@@ -324,7 +324,7 @@ export default function DataEthicsPage() {
                   How to Request Data Deletion
                 </h3>
                 <ol className="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-400">
-                  <li>Send an email to <a href="mailto:privacy@vulcaart.art" className="text-purple-600 dark:text-purple-400 hover:underline">privacy@vulcaart.art</a></li>
+                  <li>Send an email to <a href="mailto:privacy@vulcaart.art" className="text-amber-700 dark:text-amber-400 hover:underline">privacy@vulcaart.art</a></li>
                   <li>Include your account email and the specific data you want deleted</li>
                   <li>Provide verification of account ownership</li>
                   <li>We will process your request within 30 days</li>
@@ -346,7 +346,7 @@ export default function DataEthicsPage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="bg-purple-50 dark:bg-purple-900/20 -mx-4 px-4 py-12 rounded-2xl text-center">
+      <section className="bg-amber-50 dark:bg-amber-900/20 -mx-4 px-4 py-12 rounded-2xl text-center">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
           Questions About Our Ethics Policy?
         </h2>

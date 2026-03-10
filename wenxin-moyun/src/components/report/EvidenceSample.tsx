@@ -208,7 +208,7 @@ export function EvidenceSample({
 
           {/* Expert Comment */}
           {sample.expertComment && (
-            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-900/20 border border-blue-200 dark:border-slate-800">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-900/20 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-2 mb-2">
                 <MessageSquare className="w-4 h-4 text-slate-700" />
                 <span className="text-xs font-medium text-slate-700 dark:text-slate-400">

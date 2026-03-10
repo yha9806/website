@@ -156,6 +156,7 @@ describe('usePrototypePipeline', () => {
       onerror: ((ev: any) => void) | null = null
       close = vi.fn()
       constructor(_url: string) {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         mockESInstance = this
       }
     }

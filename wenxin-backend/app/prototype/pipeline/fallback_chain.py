@@ -51,10 +51,7 @@ def build_fallback_provider(
         if name in seen:
             continue
         seen.add(name)
-        if name == "together_flux":
-            # Deprecated (M0 Gemini migration, 2026-03). Skip silently.
-            logger.warning("together_flux deprecated, skipping in fallback chain (use nb2)")
-        elif name == "nb2":
+        if name == "nb2":
             try:
                 from app.prototype.agents.nb2_provider import NB2Provider
                 from app.core.config import settings as _settings

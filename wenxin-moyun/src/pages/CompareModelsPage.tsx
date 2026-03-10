@@ -257,7 +257,7 @@ export default function CompareModelsPage() {
                   {verdict.winner === 'tie' ? (
                     <span className="text-xs text-gray-500">Tie</span>
                   ) : (
-                    <span className={`text-xs ${verdict.winner === 'A' ? 'text-slate-600' : 'text-blue-600'}`}>
+                    <span className={`text-xs ${verdict.winner === 'A' ? 'text-slate-600' : 'text-[#C87F4A]'}`}>
                       {verdict.winner === 'A' ? dataA.name : dataB.name} wins
                     </span>
                   )}
@@ -289,7 +289,7 @@ export default function CompareModelsPage() {
                     <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all duration-500 ${
-                          verdict.winner === 'B' ? 'bg-blue-600' : 'bg-gray-400'
+                          verdict.winner === 'B' ? 'bg-[#C87F4A]' : 'bg-gray-400'
                         }`}
                         style={{ width: `${(scoreB / 5) * 100}%` }}
                       />

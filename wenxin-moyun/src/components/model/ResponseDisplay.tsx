@@ -32,7 +32,7 @@ const dimensionConfig: Record<string, { color: string; icon: React.ElementType; 
   narrative: { color: 'text-green-600', icon: MessageSquare, label: 'Narrative' },
   emotion: { color: 'text-red-600', icon: Star, label: 'Emotion' },
   creativity: { color: 'text-yellow-600', icon: Lightbulb, label: 'Creativity' },
-  cultural: { color: 'text-indigo-600', icon: Star, label: 'Cultural' },
+  cultural: { color: 'text-slate-600', icon: Star, label: 'Cultural' },
 };
 
 const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
@@ -79,7 +79,7 @@ const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
                     ${score >= 90 
                       ? 'bg-gradient-to-r from-green-200/90 to-emerald-200/90 border border-green-300/50 hover:shadow-sm' 
                       : score >= 85 
-                      ? 'bg-gradient-to-r from-slate-200/90 to-indigo-200/90 border border-slate-400/50 hover:shadow-sm'
+                      ? 'bg-gradient-to-r from-slate-200/90 to-slate-300/90 border border-slate-400/50 hover:shadow-sm'
                       : 'bg-gradient-to-r from-yellow-200/90 to-amber-200/90 border border-yellow-300/50 hover:shadow-sm'
                     }
                     dark:from-opacity-40 dark:to-opacity-40
@@ -235,7 +235,7 @@ const ResponseCard: React.FC<{ detail: ResponseDetail }> = ({ detail }) => {
 
             {/* Suggestions with iOS glass effect */}
             {detail.analysis.suggestions?.length > 0 && (
-              <div className="relative overflow-hidden rounded-xl p-4 bg-gradient-to-br from-slate-50/80 to-indigo-50/80 dark:from-slate-900/20 dark:to-indigo-900/20 backdrop-blur-sm border border-blue-200/50 dark:border-slate-700/50">
+              <div className="relative overflow-hidden rounded-xl p-4 bg-gradient-to-br from-slate-50/80 to-slate-100/80 dark:from-slate-900/20 dark:to-slate-800/20 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50">
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"></div>
                 <div className="relative">
                   <h5 className="text-xs font-semibold text-slate-700 dark:text-slate-500 mb-2 flex items-center">

@@ -120,7 +120,7 @@ export default function ModelDetailPage() {
           </div>
 
           {/* VULCA Report CTA */}
-          <div className="p-4 rounded-xl bg-gradient-to-r from-slate-50 to-amber-50 dark:from-slate-900/20 dark:to-amber-900/20 border border-blue-200 dark:border-slate-800">
+          <div className="p-4 rounded-xl bg-gradient-to-r from-slate-50 to-amber-50 dark:from-slate-900/20 dark:to-amber-900/20 border border-slate-200 dark:border-slate-800">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800">

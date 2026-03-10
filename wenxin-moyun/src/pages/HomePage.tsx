@@ -228,7 +228,7 @@ export default function HomePage() {
               <BarChart3 className="w-3.5 h-3.5" />
               Decision-grade
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-bronze-500/10 dark:bg-bronze-500/20 text-purple-500 dark:text-bronze-400 text-xs font-medium rounded-full">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-bronze-500/10 dark:bg-bronze-500/20 text-[#C87F4A] dark:text-bronze-400 text-xs font-medium rounded-full">
               <Shield className="w-3.5 h-3.5" />
               Enterprise-ready
             </span>
@@ -672,7 +672,7 @@ export default function HomePage() {
                 title: 'One Score Problem',
                 pain: 'A single accuracy number hides critical failures. VULCA breaks evaluation into 47 dimensions across 8 cultural perspectives.',
                 solution: 'Multi-dimensional scoring reveals hidden weaknesses.',
-                gradient: 'from-slate-500/20 to-blue-500/20',
+                gradient: 'from-slate-500/20 to-slate-400/20',
               },
               {
                 icon: <ScanEye className="w-6 h-6 text-bronze-500" />,
@@ -689,11 +689,11 @@ export default function HomePage() {
                 gradient: 'from-green-500/20 to-teal-500/20',
               },
               {
-                icon: <Brain className="w-6 h-6 text-purple-500" />,
+                icon: <Brain className="w-6 h-6 text-[#C87F4A]" />,
                 title: 'Self-Evolution',
                 pain: 'VULCA doesn\'t just evaluate \u2014 it learns. Every session makes the system smarter.',
                 solution: 'Frozen models + evolving context = continuous improvement.',
-                gradient: 'from-purple-500/20 to-pink-500/20',
+                gradient: 'from-[#C87F4A]/20 to-[#C65D4D]/20',
               },
               {
                 icon: <Code2 className="w-6 h-6 text-emerald-600" />,
@@ -702,7 +702,7 @@ export default function HomePage() {
                 solution: 'Developer-first design for seamless CI/CD integration.',
                 gradient: 'from-emerald-500/20 to-cyan-500/20',
               },
-            ].map((scenario, index) => (
+            ].map((scenario) => (
               <motion.div key={scenario.title} variants={fadeInUp}>
                 <IOSCard variant="elevated" className="h-full group">
                   <IOSCardContent className="p-0">
@@ -1073,7 +1073,7 @@ export default function HomePage() {
                   <div className="text-center">
                     <div className="flex justify-center gap-1 mb-2">
                       <div className="w-8 h-8 bg-red-200 dark:bg-red-900/30 rounded text-xs flex items-center justify-center">CN</div>
-                      <div className="w-8 h-8 bg-blue-200 dark:bg-blue-900/30 rounded text-xs flex items-center justify-center">US</div>
+                      <div className="w-8 h-8 bg-slate-200 dark:bg-slate-900/30 rounded text-xs flex items-center justify-center">US</div>
                       <div className="w-8 h-8 bg-green-200 dark:bg-green-900/30 rounded text-xs flex items-center justify-center">EU</div>
                     </div>
                     <p className="text-xs text-gray-500 dark:text-gray-400">Cross-cultural variance</p>

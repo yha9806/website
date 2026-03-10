@@ -202,9 +202,9 @@ function SeverityBadge({ severity }: { severity: string }) {
 
 function LevelBadge({ level }: { level: string }) {
   const colors: Record<string, string> = {
-    L1: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
+    L1: 'bg-slate-100 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300',
     L2: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300',
-    L3: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
+    L3: 'bg-[#C87F4A]/10 text-[#C87F4A] dark:bg-[#C87F4A]/20 dark:text-[#DDA574]',
     L4: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
     L5: 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300',
   };

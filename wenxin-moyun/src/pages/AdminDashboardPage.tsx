@@ -282,13 +282,13 @@ export default function AdminDashboardPage() {
                   <span className="text-gray-500 dark:text-gray-400">Total votes</span>
                   <span className="font-medium text-gray-700 dark:text-gray-300">{skillEcosystem.totalVotes.toLocaleString()}</span>
                 </div>
-                <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                  <div className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">Top Skill</div>
+                <div className="p-3 bg-slate-50 dark:bg-slate-900/20 rounded-lg">
+                  <div className="text-xs text-slate-600 dark:text-slate-400 font-medium mb-1">Top Skill</div>
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-sm text-gray-800 dark:text-gray-200">
                       {skillEcosystem.topSkill.name}
                     </span>
-                    <span className="text-sm font-bold text-blue-700 dark:text-blue-300">
+                    <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
                       {skillEcosystem.topSkill.score}
                     </span>
                   </div>

@@ -181,9 +181,9 @@ export default function SOPPage() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-full mb-6">
-            <ClipboardList className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <span className="text-sm font-medium text-blue-700 dark:text-blue-400">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900/20 rounded-full mb-6">
+            <ClipboardList className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-400">
               Standard Operating Procedures
             </span>
           </div>
@@ -230,7 +230,7 @@ export default function SOPPage() {
         <div className="max-w-4xl mx-auto">
           <div className="relative">
             {/* Connecting line */}
-            <div className="absolute left-8 top-12 bottom-12 w-0.5 bg-blue-200 dark:bg-blue-800 hidden md:block" />
+            <div className="absolute left-8 top-12 bottom-12 w-0.5 bg-slate-200 dark:bg-slate-800 hidden md:block" />
 
             <div className="space-y-8">
               {evaluationSteps.map((step, index) => (
@@ -244,7 +244,7 @@ export default function SOPPage() {
                 >
                   {/* Step number */}
                   <div className="relative z-10 flex-shrink-0">
-                    <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <div className="w-16 h-16 bg-slate-600 rounded-2xl flex items-center justify-center shadow-lg">
                       <span className="text-2xl font-bold text-white">{step.step}</span>
                     </div>
                   </div>
@@ -252,7 +252,7 @@ export default function SOPPage() {
                   {/* Content */}
                   <IOSCard variant="elevated" className="flex-grow">
                     <IOSCardHeader
-                      emoji={<step.icon className="w-6 h-6 text-blue-500" />}
+                      emoji={<step.icon className="w-6 h-6 text-slate-600" />}
                       title={step.title}
                     />
                     <IOSCardContent>
@@ -262,7 +262,7 @@ export default function SOPPage() {
                       <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         {step.details.map((detail) => (
                           <li key={detail} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                            <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                            <CheckCircle2 className="w-4 h-4 text-slate-600 flex-shrink-0" />
                             {detail}
                           </li>
                         ))}
@@ -394,7 +394,7 @@ export default function SOPPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-blue-50 dark:bg-blue-900/20 -mx-4 px-4 py-12 rounded-2xl text-center">
+      <section className="bg-slate-50 dark:bg-slate-900/20 -mx-4 px-4 py-12 rounded-2xl text-center">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
           Ready to Get Started?
         </h2>

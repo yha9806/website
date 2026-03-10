@@ -36,7 +36,7 @@ const ScoreTooltip: React.FC<{ score: number; highlight: string }> = ({ score, h
 const getHighlightStyle = (score: number) => {
   // Using iOS system colors: #34C759 (green), #64748B (blue), #FF9500 (orange)
   if (score >= 90) return 'from-emerald-100/90 to-green-200/90 border-emerald-300/60 dark:from-emerald-900/40 dark:to-green-800/40 dark:border-emerald-600/30'; // 优秀 - iOS Green
-  if (score >= 80) return 'from-slate-100/90 to-indigo-200/90 border-slate-400/60 dark:from-slate-900/40 dark:to-indigo-800/40 dark:border-slate-700/30'; // 良好 - iOS Blue  
+  if (score >= 80) return 'from-slate-100/90 to-slate-200/90 border-slate-400/60 dark:from-slate-900/40 dark:to-slate-800/40 dark:border-slate-700/30'; // 良好 - Art Professional Slate
   if (score >= 70) return 'from-green-50/90 to-emerald-100/90 border-green-200/50 dark:from-green-900/30 dark:to-emerald-900/30 dark:border-green-700/30'; // 合格 - Light Green
   return 'from-orange-100/90 to-amber-200/90 border-orange-300/60 border-dashed dark:from-orange-900/40 dark:to-amber-800/40 dark:border-orange-600/30'; // 待改进 - iOS Orange
 };

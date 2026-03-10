@@ -168,7 +168,7 @@ export const DimensionDrawer: React.FC<DimensionDrawerProps> = ({
             </span>
           )}
           {!is47D && (
-            <span className="inline-block mt-2 px-3 py-1 bg-amber-100 dark:bg-purple-900/30 text-amber-700 dark:text-amber-500 rounded-full text-sm">
+            <span className="inline-block mt-2 px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-500 rounded-full text-sm">
               6D Core Dimension
             </span>
           )}
