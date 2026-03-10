@@ -304,6 +304,7 @@ export default function PrototypePage() {
               currentRound={state.currentRound}
               status={state.status}
               events={state.events}
+              subStages={state.subStages}
             />
           </IOSCardContent>
         </IOSCard>

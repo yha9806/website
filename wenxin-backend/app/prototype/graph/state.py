@@ -67,6 +67,10 @@ class PipelineState(TypedDict, total=False):
     critic_config: dict[str, Any] | None
     queen_config: dict[str, Any] | None
 
+    # --- Multi-modal ---
+    media_type: str  # "image" | "video" | "3d_model" | "sound"
+    sub_stage_results: list[dict[str, Any]]
+
     # --- Error tracking ---
     error: str | None
 
@@ -87,6 +91,7 @@ def make_initial_state(
     draft_config: dict | None = None,
     critic_config: dict | None = None,
     queen_config: dict | None = None,
+    media_type: str = "image",
 ) -> PipelineState:
     """Create the initial state for a new pipeline run."""
     return PipelineState(
@@ -115,6 +120,8 @@ def make_initial_state(
         draft_config=draft_config,
         critic_config=critic_config,
         queen_config=queen_config,
+        media_type=media_type,
+        sub_stage_results=[],
         report_output=None,
         error=None,
         final_decision=None,

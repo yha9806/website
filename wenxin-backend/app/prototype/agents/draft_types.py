@@ -22,6 +22,7 @@ class DraftInput:
     cultural_tradition: str           # cultural tradition key
     evidence: dict                    # ScoutEvidence.to_dict() output
     config: DraftConfig = field(default_factory=DraftConfig)
+    media_type: str = "image"         # "image" | "video" | "3d_model" | "sound"
 
     def to_dict(self) -> dict:
         return {
@@ -30,6 +31,7 @@ class DraftInput:
             "cultural_tradition": self.cultural_tradition,
             "evidence": self.evidence,
             "config": self.config.to_dict(),
+            "media_type": self.media_type,
         }
 
 
@@ -74,6 +76,7 @@ class DraftOutput:
     model_ref: str = ""               # provider identifier
     success: bool = True
     error: str | None = None
+    sub_stage_results: list[dict] = field(default_factory=list)  # SubStageResult.to_dict() list
 
     def to_dict(self) -> dict:
         return {
@@ -84,4 +87,5 @@ class DraftOutput:
             "model_ref": self.model_ref,
             "success": self.success,
             "error": self.error,
+            "sub_stage_results": self.sub_stage_results,
         }

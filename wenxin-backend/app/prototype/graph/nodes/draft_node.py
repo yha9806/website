@@ -57,6 +57,8 @@ class DraftNode(BaseAgent):
         cfg_dict["seed_base"] = base_seed + (current_round - 1) * 100
         d_cfg = DraftConfig(**cfg_dict)
 
+        media_type = state.get("media_type", "image")
+
         draft_agent = DraftAgent(config=d_cfg)
         draft_input = DraftInput(
             task_id=task_id,
@@ -64,6 +66,7 @@ class DraftNode(BaseAgent):
             cultural_tradition=tradition,
             evidence=evidence_dict,
             config=d_cfg,
+            media_type=media_type,
         )
 
         # Reconstruct EvidencePack if available
@@ -91,12 +94,33 @@ class DraftNode(BaseAgent):
         }.get(provider, 0.0)
         new_cost = n_new * cost_per_image
 
+        # Emit sub-stage events if sub-stage results are present
+        sub_stage_events: list[dict] = []
+        sub_stage_results_dicts = draft_output.sub_stage_results or []
+        for ssr in sub_stage_results_dicts:
+            if isinstance(ssr, dict):
+                sub_stage_events.append(
+                    _make_event(EventType.SUBSTAGE_STARTED, "draft", current_round, 0, {
+                        "sub_stage_name": ssr.get("stage_name", ""),
+                    })
+                )
+                sub_stage_events.append(
+                    _make_event(EventType.SUBSTAGE_COMPLETED, "draft", current_round, ssr.get("duration_ms", 0), {
+                        "sub_stage_name": ssr.get("stage_name", ""),
+                        "status": ssr.get("status", ""),
+                        "duration_ms": ssr.get("duration_ms", 0),
+                        "error": ssr.get("error"),
+                    })
+                )
+
         events = [
             _make_event(EventType.STAGE_STARTED, "draft", current_round, 0),
+            *sub_stage_events,
             _make_event(EventType.STAGE_COMPLETED, "draft", current_round, draft_ms, {
                 "latency_ms": draft_ms,
                 "n_candidates": n_new,
                 "candidates": draft_candidates,
+                "sub_stage_results": sub_stage_results_dicts,
             }),
         ]
 
@@ -113,11 +137,13 @@ class DraftNode(BaseAgent):
                 "candidates": draft_candidates,
                 "latency_ms": draft_ms,
                 "model_ref": draft_output.model_ref,
+                "sub_stage_results": sub_stage_results_dicts,
             },
             "current_round": current_round,
             "candidates_generated": prev_generated + n_new,
             "total_cost_usd": prev_cost + new_cost,
             "draft_history": draft_history,
+            "sub_stage_results": sub_stage_results_dicts,
             "events": events,
         }
 

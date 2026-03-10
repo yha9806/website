@@ -405,6 +405,34 @@ pip install -r requirements.prototype.txt  # On top of requirements.render.txt
 
 Key packages: litellm, pydantic, pyyaml, faiss-cpu
 
+## Multimodal Architecture (New)
+
+### Media Types
+The system supports multiple media types through the `MediaType` enum:
+- **Image** (active): Full pipeline support with sub-stages
+- **Video** (coming soon): Keyframe → motion → style → interpolation → render
+- **3D Model** (coming soon): Concept → mesh → texture → lighting → render
+- **Sound** (coming soon): Mood → instruments → melody → arrangement → mix
+
+### Sub-Stage System
+Generation (Draft agent) supports fine-grained sub-stages via `CreationRecipe`:
+```
+CreateRequest → Scout → Router → Draft [sub-stages] → Critic → Queen
+                                   ├─ mood_palette
+                                   ├─ composition_sketch
+                                   ├─ element_studies
+                                   ├─ style_reference
+                                   ├─ storyboard
+                                   └─ final_render
+```
+
+Key files:
+- `app/prototype/media/types.py` — Core type definitions
+- `app/prototype/media/recipes.py` — Creation recipes per media type
+- `app/prototype/media/sub_stage_executor.py` — Sub-stage runtime
+
+Sub-stages are disabled by default (`enable_sub_stages=False`).
+
 ## Academic Paper Workflow
 
 For academic paper edits: always verify terminology/naming against the user's most recent instructions before making global changes. Do not assume prior names are correct — ask if ambiguous (e.g., CPD vs CPSR vs CPC).

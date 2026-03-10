@@ -162,6 +162,10 @@ class CreateRequest(BaseModel):
     max_rounds: int = Field(default=3, ge=1, le=5)
     enable_agent_critic: bool = Field(default=True)
 
+    # Multi-modal config
+    media_type: str = Field(default="image", description="Media type: image | video | 3d_model | sound")
+    recipe_name: str = Field(default="", description="Recipe name override (empty = default for media type)")
+
 
 class CreateResponse(BaseModel):
     """Unified creation response (synchronous mode)."""

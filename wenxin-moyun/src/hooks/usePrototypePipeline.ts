@@ -151,6 +151,9 @@ export interface PipelineState {
   // HITL — multi-stage wait info
   hitlWaitInfo: HitlWaitInfo | null;
 
+  // Sub-stages (e.g. draft sub-steps)
+  subStages: SubStageInfo[];
+
   // Report
   reportOutput: Record<string, unknown> | null;
 
@@ -180,6 +183,7 @@ const INITIAL_STATE: PipelineState = {
   decision: null,
   rounds: [],
   hitlWaitInfo: null,
+  subStages: [],
   reportOutput: null,
   finalDecision: null,
   totalCostUsd: 0,
@@ -187,6 +191,13 @@ const INITIAL_STATE: PipelineState = {
   totalLatencyMs: 0,
   error: null,
 };
+
+export interface SubStageInfo {
+  name: string;
+  displayName: string;
+  status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped';
+  durationMs?: number;
+}
 
 export interface CreateRunParams {
   subject: string;
@@ -200,6 +211,7 @@ export interface CreateRunParams {
   enable_parallel_critic?: boolean;
   use_graph?: boolean;
   template?: string;
+  media_type?: string;
   // M3: custom topology
   custom_nodes?: string[];
   custom_edges?: [string, string][];
@@ -267,6 +279,31 @@ export function usePrototypePipeline() {
             update.agentMode = (payload.agent_mode as string) || null;
           }
           break;
+
+        case 'substage_started': {
+          const subName = (payload.substage as string) || (payload.name as string) || '';
+          const subDisplay = (payload.display_name as string) || subName;
+          // Mark any previously running sub-stage as completed (if backend didn't send explicit complete)
+          const updatedSubs = prev.subStages.map(s =>
+            s.status === 'running' ? { ...s, status: 'completed' as const } : s
+          );
+          update.subStages = [
+            ...updatedSubs,
+            { name: subName, displayName: subDisplay, status: 'running' },
+          ];
+          break;
+        }
+
+        case 'substage_completed': {
+          const completedName = (payload.substage as string) || (payload.name as string) || '';
+          const dur = (payload.duration_ms as number) || undefined;
+          update.subStages = prev.subStages.map(s =>
+            s.name === completedName
+              ? { ...s, status: 'completed' as const, durationMs: dur ?? s.durationMs }
+              : s
+          );
+          break;
+        }
 
         case 'decision_made': {
           const budgetRaw = payload.budget_state as BudgetState | undefined;

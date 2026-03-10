@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
 import re
@@ -164,8 +165,8 @@ def _get_provider(name: str, config: DraftConfig | None = None) -> AbstractProvi
     if name == "mock":
         return MockProvider()
     if name == "together_flux":
-        # M0 Gemini migration complete (2026-03). Compat alias retained for ablation replay.
-        logger.warning("together_flux is deprecated, redirecting to nb2 provider")
+        # Deprecated (M0 Gemini migration, 2026-03). Redirect to nb2.
+        logger.warning("together_flux is deprecated; use nb2 instead")
         return _get_provider("nb2", config)
     if name == "diffusers":
         cfg = config or DraftConfig()
@@ -236,6 +237,11 @@ class DraftAgent:
         """
         t0 = time.monotonic()
         config = draft_input.config or self._default_config
+
+        # Sub-stage path: when enabled, delegate to SubStageExecutor
+        if config.enable_sub_stages:
+            return self._run_with_sub_stages(draft_input, config, t0)
+
         provider = _get_provider(config.provider, config)
         safe_task_id = _sanitize_task_id(draft_input.task_id)
 
@@ -328,6 +334,92 @@ class DraftAgent:
             model_ref=provider.model_ref,
             success=success,
             error="; ".join(errors) if errors else None,
+        )
+
+        save_draft_checkpoint(output)
+        return output
+
+    # ------------------------------------------------------------------
+    # Sub-stage pipeline execution
+    # ------------------------------------------------------------------
+
+    def _run_with_sub_stages(
+        self,
+        draft_input: DraftInput,
+        config: DraftConfig,
+        t0: float,
+    ) -> DraftOutput:
+        """Run the draft pipeline via SubStageExecutor.
+
+        Uses the recipe specified in config.recipe_name (or the default
+        for the media type) and executes all sub-stages in order.
+        """
+        from app.prototype.media.recipes import get_default_recipe, get_recipe
+        from app.prototype.media.sub_stage_executor import SubStageExecutor
+        from app.prototype.media.types import MediaType
+
+        # Resolve recipe
+        recipe = None
+        if config.recipe_name:
+            recipe = get_recipe(config.recipe_name)
+        if recipe is None:
+            try:
+                mt = MediaType(draft_input.media_type)
+            except ValueError:
+                mt = MediaType.IMAGE
+            recipe = get_default_recipe(mt)
+
+        # Resolve handlers based on media type
+        handlers: dict = {}
+        if recipe.media_type == MediaType.IMAGE:
+            from app.prototype.media.image_handlers import get_image_handlers
+            handlers = get_image_handlers()
+
+        executor = SubStageExecutor(recipe=recipe, handlers=handlers)
+
+        initial_context = {
+            "task_id": draft_input.task_id,
+            "subject": draft_input.subject,
+            "cultural_tradition": draft_input.cultural_tradition,
+            "evidence": draft_input.evidence,
+        }
+
+        # Run async executor in sync context
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                import concurrent.futures
+                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+                    results = pool.submit(
+                        lambda: asyncio.run(executor.execute(initial_context))
+                    ).result()
+            else:
+                results = loop.run_until_complete(executor.execute(initial_context))
+        except RuntimeError:
+            results = asyncio.run(executor.execute(initial_context))
+
+        elapsed_ms = int((time.monotonic() - t0) * 1000)
+
+        # Convert sub-stage results to serializable dicts
+        sub_stage_dicts = [r.to_dict() for r in results]
+
+        # Check if all required stages completed
+        all_ok = all(
+            r.status in ("completed", "skipped")
+            for r in results
+        )
+
+        output = DraftOutput(
+            task_id=draft_input.task_id,
+            candidates=[],  # Sub-stage mode doesn't produce DraftCandidates
+            created_at=datetime.now(timezone.utc).isoformat(),
+            latency_ms=elapsed_ms,
+            model_ref=f"sub_stage:{recipe.name}",
+            success=all_ok,
+            error=None if all_ok else "; ".join(
+                f"{r.stage_name}: {r.error}" for r in results if r.error
+            ),
+            sub_stage_results=sub_stage_dicts,
         )
 
         save_draft_checkpoint(output)

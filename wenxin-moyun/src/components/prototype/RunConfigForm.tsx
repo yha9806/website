@@ -10,6 +10,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { API_PREFIX } from '../../config/api';
 import TemplateSelector from './TemplateSelector';
+import MediaTypeSelector from './MediaTypeSelector';
 
 // Static fallback traditions (used when API is unavailable)
 const STATIC_TRADITIONS = [
@@ -167,6 +168,7 @@ export interface RunConfigParams {
   enable_parallel_critic: boolean;
   use_graph: boolean;
   template: string;
+  media_type: string;
 }
 
 interface Props {
@@ -188,6 +190,7 @@ export default function RunConfigForm({ onSubmit, disabled, initialValues }: Pro
   const [useGraph, setUseGraph] = useState(false);
   const [enableParallelCritic, setEnableParallelCritic] = useState(true);
   const [template, setTemplate] = useState('default');
+  const [mediaType, setMediaType] = useState('image');
 
   // Dynamic tradition list (falls back to STATIC_TRADITIONS)
   const [traditions, setTraditions] = useState<string[]>(STATIC_TRADITIONS);
@@ -212,7 +215,7 @@ export default function RunConfigForm({ onSubmit, disabled, initialValues }: Pro
       .then(res => (res.ok ? res.json() : null))
       .then(data => {
         if (data?.cultures) {
-          const concepts = Object.values(data.cultures).map((c: Record<string, unknown>) => ({
+          const concepts = (Object.values(data.cultures) as Record<string, unknown>[]).map((c) => ({
             name: (c.name as string) || '',
             description: (c.description as string) || '',
           }));
@@ -236,6 +239,7 @@ export default function RunConfigForm({ onSubmit, disabled, initialValues }: Pro
     if (initialValues.enable_parallel_critic !== undefined) setEnableParallelCritic(initialValues.enable_parallel_critic);
     if (initialValues.use_graph !== undefined) setUseGraph(initialValues.use_graph);
     if (initialValues.template !== undefined) setTemplate(initialValues.template);
+    if (initialValues.media_type !== undefined) setMediaType(initialValues.media_type);
   }, [initialValues]);
 
   // Derive field config from current template
@@ -269,6 +273,7 @@ export default function RunConfigForm({ onSubmit, disabled, initialValues }: Pro
       enable_parallel_critic: enableParallelCritic,
       use_graph: useGraph,
       template,
+      media_type: mediaType,
     });
   };
 
@@ -288,6 +293,13 @@ export default function RunConfigForm({ onSubmit, disabled, initialValues }: Pro
           </button>
         ))}
       </div>
+
+      {/* Media Type */}
+      <MediaTypeSelector
+        value={mediaType}
+        onChange={setMediaType}
+        disabled={disabled}
+      />
 
       {/* Subject */}
       {!fieldCfg.hideSubject && (

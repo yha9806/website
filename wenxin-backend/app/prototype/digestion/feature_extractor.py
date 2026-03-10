@@ -1,6 +1,7 @@
 """Shared cultural feature extraction — used by both create_routes and bootstrap.
 
 Tier-1 rule-based extraction: numeric features only, zero-latency, synchronous.
+Tier-2 LLM extraction: semantic features via litellm, used during backfill.
 """
 from __future__ import annotations
 
@@ -54,8 +55,85 @@ def extract_cultural_features(
     return features
 
 
-def backfill_missing_features() -> int:
-    """Scan sessions.jsonl for entries with empty cultural_features and backfill them.
+def _extract_semantic_features_llm(intent: str, tradition: str) -> dict[str, Any]:
+    """Tier-2: Extract semantic cultural features via LLM (synchronous).
+
+    Uses litellm.completion() with MODEL_FAST to extract:
+    - style_elements, emotional_tone, technique_markers, cultural_references
+
+    On any failure, returns empty dict (graceful degradation).
+    """
+    if not intent or not intent.strip():
+        return {}
+
+    try:
+        import litellm  # noqa: E402
+
+        prompt = (
+            "You are a cultural art analyst. Given the following creation intent "
+            "and cultural tradition, extract semantic cultural features as JSON.\n\n"
+            f"Intent: {intent}\n"
+            f"Tradition: {tradition}\n\n"
+            "Return ONLY a JSON object with these four keys "
+            "(each value is a list of short strings):\n"
+            '{\n'
+            '  "style_elements": ["...", "..."],\n'
+            '  "emotional_tone": ["...", "..."],\n'
+            '  "technique_markers": ["...", "..."],\n'
+            '  "cultural_references": ["...", "..."]\n'
+            '}\n\n'
+            "Rules:\n"
+            "- Each list should have 1-5 items\n"
+            "- Items can be in any language (Chinese, English, Japanese, etc.)\n"
+            "- If a category doesn't apply, use an empty list []\n"
+            "- Return ONLY the JSON, no markdown fences, no explanation"
+        )
+
+        from app.prototype.agents.model_router import MODEL_FAST
+
+        response = litellm.completion(
+            model=MODEL_FAST,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.3,
+            max_tokens=300,
+        )
+
+        raw = response.choices[0].message.content.strip()
+        # Strip markdown fences if present
+        if raw.startswith("```"):
+            raw = raw.split("\n", 1)[-1]
+            if raw.endswith("```"):
+                raw = raw[:-3].strip()
+            elif "```" in raw:
+                raw = raw[:raw.rfind("```")].strip()
+
+        parsed = json.loads(raw)
+
+        # Validate structure — only accept expected keys with list values
+        valid_keys = {"style_elements", "emotional_tone", "technique_markers", "cultural_references"}
+        result: dict[str, Any] = {}
+        for key in valid_keys:
+            val = parsed.get(key)
+            if isinstance(val, list):
+                result[key] = [str(item) for item in val if item]
+            else:
+                result[key] = []
+
+        return result
+
+    except Exception as exc:
+        logger.debug("Tier-2 LLM feature extraction failed (graceful degradation): %s", exc)
+        return {}
+
+
+def backfill_missing_features(use_llm: bool = True) -> int:
+    """Scan sessions.jsonl for entries with empty/incomplete cultural_features and backfill.
+
+    Two-tier backfill:
+    1. Tier-1 (rule-based): Always applied from final_scores — zero latency.
+    2. Tier-2 (LLM): If *use_llm* is True, enrich with semantic features
+       (style_elements, emotional_tone, etc.) for sessions that have an intent
+       but lack semantic features.
 
     Returns the number of sessions updated.
     """
@@ -78,30 +156,47 @@ def backfill_missing_features() -> int:
             new_lines.append(line)
             continue
 
-        cf = session.get("cultural_features", {})
-        if cf and cf.get("avg_score") is not None:
-            # Already has features
+        cf = session.get("cultural_features") or {}
+        has_tier1 = cf.get("avg_score") is not None
+        has_tier2 = bool(cf.get("style_elements"))
+
+        # Skip if both tiers are already populated
+        if has_tier1 and has_tier2:
             new_lines.append(line)
             continue
 
-        # Extract features from session data
         tradition = session.get("tradition", "default")
+        changed = False
 
-        # Try to get scores from various session fields
-        final_scores = session.get("final_scores") or session.get("dimension_scores") or {}
+        # --- Tier-1: rule-based numeric features ---
+        if not has_tier1:
+            final_scores = session.get("final_scores") or session.get("dimension_scores") or {}
 
-        # Also try round_snapshots for scores
-        if not final_scores:
-            rounds = session.get("round_snapshots", [])
-            if rounds:
-                last_round = rounds[-1] if isinstance(rounds[-1], dict) else {}
-                final_scores = last_round.get("dimension_scores", {})
+            # Also try round_snapshots for scores
+            if not final_scores:
+                rounds = session.get("round_snapshots", [])
+                if rounds:
+                    last_round = rounds[-1] if isinstance(rounds[-1], dict) else {}
+                    final_scores = last_round.get("dimension_scores", {})
 
-        risk_flags = session.get("risk_flags", [])
+            risk_flags = session.get("risk_flags", [])
 
-        new_features = extract_cultural_features(tradition, final_scores, risk_flags)
-        if new_features:
-            session["cultural_features"] = new_features
+            tier1 = extract_cultural_features(tradition, final_scores, risk_flags)
+            if tier1:
+                cf.update(tier1)
+                changed = True
+
+        # --- Tier-2: LLM semantic features ---
+        if use_llm and not has_tier2:
+            intent = session.get("intent", "")
+            if intent:
+                tier2 = _extract_semantic_features_llm(intent, tradition)
+                if tier2:
+                    cf.update(tier2)
+                    changed = True
+
+        if changed:
+            session["cultural_features"] = cf
             new_lines.append(json.dumps(session, ensure_ascii=False))
             updated += 1
         else:

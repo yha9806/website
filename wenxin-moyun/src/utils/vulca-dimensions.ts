@@ -374,9 +374,9 @@ export const PROTOTYPE_DIM_LABELS: Record<PrototypeDimension, {
   layer: string;
   color: string;
 }> = {
-  visual_perception:       { short: 'L1 Visual',    full: 'Visual Perception',       complete: 'L1 Visual Perception',       layer: 'L1', color: 'bg-blue-400' },
+  visual_perception:       { short: 'L1 Visual',    full: 'Visual Perception',       complete: 'L1 Visual Perception',       layer: 'L1', color: 'bg-[#334155]' },
   technical_analysis:      { short: 'L2 Technical', full: 'Technical Analysis',      complete: 'L2 Technical Analysis',      layer: 'L2', color: 'bg-cyan-400' },
   cultural_context:        { short: 'L3 Cultural',  full: 'Cultural Context',        complete: 'L3 Cultural Context',        layer: 'L3', color: 'bg-emerald-400' },
   critical_interpretation: { short: 'L4 Critical',  full: 'Critical Interpretation', complete: 'L4 Critical Interpretation', layer: 'L4', color: 'bg-amber-400' },
-  philosophical_aesthetic: { short: 'L5 Aesthetic',  full: 'Philosophical Aesthetic', complete: 'L5 Philosophical Aesthetic', layer: 'L5', color: 'bg-purple-400' },
+  philosophical_aesthetic: { short: 'L5 Aesthetic',  full: 'Philosophical Aesthetic', complete: 'L5 Philosophical Aesthetic', layer: 'L5', color: 'bg-[#C87F4A]' },
 };

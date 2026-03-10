@@ -13,6 +13,7 @@ class PipelineInput:
     subject: str
     cultural_tradition: str
     resume_from: str | None = None  # "scout" | "draft" | "critic" | "queen" | None
+    media_type: str = "image"       # "image" | "video" | "3d_model" | "sound"
 
     def to_dict(self) -> dict:
         return {
@@ -20,6 +21,7 @@ class PipelineInput:
             "subject": self.subject,
             "cultural_tradition": self.cultural_tradition,
             "resume_from": self.resume_from,
+            "media_type": self.media_type,
         }
 
 

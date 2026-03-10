@@ -14,11 +14,11 @@ import type { RoundData } from '../../hooks/usePrototypePipeline';
 import { PROTOTYPE_DIMENSIONS, PROTOTYPE_DIM_LABELS } from '../../utils/vulca-dimensions';
 
 const ROUND_COLORS = [
-  '#3B82F6', // blue
+  '#334155', // slate (墨石灰)
   '#10B981', // emerald
   '#F59E0B', // amber
   '#EF4444', // red
-  '#8B5CF6', // violet
+  '#C87F4A', // bronze (暖铜棕)
 ];
 
 interface Props {

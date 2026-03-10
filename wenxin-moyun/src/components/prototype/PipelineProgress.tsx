@@ -9,6 +9,8 @@
 
 import { useState } from 'react';
 import type { PipelineEvent } from '../../hooks/usePrototypePipeline';
+import SubStageProgress from './SubStageProgress';
+import type { SubStage } from './SubStageProgress';
 
 const DEFAULT_STAGES = ['scout', 'draft', 'critic', 'queen', 'archivist'];
 
@@ -38,6 +40,8 @@ interface Props {
   events: PipelineEvent[];
   /** Dynamic stage list from template (overrides default 5-stage pipeline) */
   templateNodes?: string[];
+  /** Sub-stage progress for nested display (e.g. Draft sub-steps) */
+  subStages?: SubStage[];
 }
 
 /** Compute per-stage duration from events. */
@@ -84,7 +88,7 @@ function eventDetail(e: PipelineEvent): string | null {
   return null;
 }
 
-export default function PipelineProgress({ currentStage, currentRound, status, events, templateNodes }: Props) {
+export default function PipelineProgress({ currentStage, currentRound, status, events, templateNodes, subStages }: Props) {
   const [showLog, setShowLog] = useState(false);
 
   const stages = templateNodes ?? DEFAULT_STAGES;
@@ -146,6 +150,15 @@ export default function PipelineProgress({ currentStage, currentRound, status, e
           </div>
         )}
       </div>
+
+      {/* Sub-stage progress (shown when Draft is active/completed and subStages exist) */}
+      {subStages && subStages.length > 0 && (
+        currentStage === 'draft' || currentStage === 'draft_refine' || completedStages.has('draft')
+      ) && (
+        <div className="mt-2 ml-12">
+          <SubStageProgress stages={subStages} />
+        </div>
+      )}
 
       {/* Card-style event log */}
       {events.length > 0 && (

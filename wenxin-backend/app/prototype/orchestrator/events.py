@@ -17,6 +17,8 @@ class EventType(Enum):
     PIPELINE_COMPLETED = "pipeline_completed"
     PIPELINE_FAILED = "pipeline_failed"
     SESSION_DIGEST = "session_digest"
+    SUBSTAGE_STARTED = "substage_started"
+    SUBSTAGE_COMPLETED = "substage_completed"
 
 
 @dataclass

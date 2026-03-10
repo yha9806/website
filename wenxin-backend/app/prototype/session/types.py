@@ -45,6 +45,7 @@ class SessionDigest:
     subject: str = ""
     user_type: str = "human"  # "human" | "agent"
     user_id: str = ""
+    media_type: str = "image"  # "image" | "video" | "3d_model" | "sound"
 
     # Pipeline results
     rounds: list[RoundSnapshot] = field(default_factory=list)
@@ -83,6 +84,7 @@ class SessionDigest:
             "subject": self.subject,
             "user_type": self.user_type,
             "user_id": self.user_id,
+            "media_type": self.media_type,
             "rounds": [r.to_dict() for r in self.rounds],
             "final_scores": self.final_scores,
             "final_weighted_total": self.final_weighted_total,
