@@ -33,7 +33,12 @@ function imageUrl(candidate: DraftCandidate): string | null {
   if (!path) return null;
   if (path.startsWith('data:')) return path;
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
-  if (path.startsWith('/static/') || path.startsWith('static/')) {
+  // Any server-relative path (e.g. /static/prototype/draft/...) → prepend API_BASE_URL
+  if (path.startsWith('/')) {
+    return toBackendStaticUrl(path);
+  }
+  // Bare relative path without leading slash (e.g. static/prototype/draft/...)
+  if (path.startsWith('static/') || path.startsWith('prototype/')) {
     return toBackendStaticUrl(path);
   }
   return null;

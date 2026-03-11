@@ -310,7 +310,27 @@ export default function PrototypePage() {
         </IOSCard>
       )}
 
-      {state.evidence && <ScoutEvidenceCard evidence={state.evidence} />}
+      {state.evidence ? (
+        <ScoutEvidenceCard evidence={state.evidence} />
+      ) : state.currentStage === 'scout' && state.status === 'running' ? (
+        <IOSCard variant="elevated" padding="md" animate={false}>
+          <IOSCardContent>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#C87F4A]/10 dark:bg-[#C87F4A]/20 flex items-center justify-center animate-pulse">
+                <span className="text-sm">🔍</span>
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 animate-pulse">
+                  Scout analyzing cultural context...
+                </p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                  Gathering references, terminology, and tradition signals
+                </p>
+              </div>
+            </div>
+          </IOSCardContent>
+        </IOSCard>
+      ) : null}
 
       {/* M3: Batch input panel for batch_eval template in edit mode */}
       {playgroundMode === 'edit' && activeTemplate === 'batch_eval' && (
@@ -390,6 +410,29 @@ export default function PrototypePage() {
               scoredCandidates={state.scoredCandidates}
               rounds={state.rounds}
             />
+          </IOSCardContent>
+        </IOSCard>
+      ) : state.taskId && state.currentStage === 'draft' ? (
+        /* Skeleton loading state during Draft generation */
+        <IOSCard variant="elevated" padding="md" animate={false}>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+              Candidates
+              <span className="ml-2 text-xs font-normal text-gray-500">R{state.currentRound}</span>
+            </h3>
+          </div>
+          <IOSCardContent>
+            <div className="grid grid-cols-2 gap-3">
+              {[0, 1, 2, 3].map(i => (
+                <div key={i} className="animate-pulse">
+                  <div className="aspect-square rounded-xl bg-stone-200 dark:bg-stone-700" />
+                  <div className="mt-2 h-3 w-3/4 rounded bg-stone-200 dark:bg-stone-700" />
+                </div>
+              ))}
+            </div>
+            <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-4">
+              Generating candidates...
+            </p>
           </IOSCardContent>
         </IOSCard>
       ) : (

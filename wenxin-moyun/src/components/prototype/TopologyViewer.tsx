@@ -99,14 +99,14 @@ function ArrowSvg({ active }: { active: boolean }) {
     <svg width="24" height="16" viewBox="0 0 24 16" className="shrink-0 mx-0.5">
       <line
         x1="0" y1="8" x2="18" y2="8"
-        stroke={active ? '#3b82f6' : '#d1d5db'}
+        stroke={active ? '#92400e' : '#d1d5db'}
         strokeWidth="2"
         className="dark:stroke-current"
         style={{ color: active ? '#60a5fa' : '#4b5563' }}
       />
       <polygon
         points="16,4 24,8 16,12"
-        fill={active ? '#3b82f6' : '#d1d5db'}
+        fill={active ? '#92400e' : '#d1d5db'}
         className="dark:fill-current"
         style={{ color: active ? '#60a5fa' : '#4b5563' }}
       />
@@ -120,13 +120,13 @@ function LoopArrow() {
       <path
         d="M 320 4 C 340 4, 340 20, 320 20 L 160 20 C 140 20, 140 4, 160 4"
         fill="none"
-        stroke="#6366f1"
+        stroke="#b45309"
         strokeWidth="1.5"
         strokeDasharray="4 3"
         opacity="0.5"
       />
-      <polygon points="160,1 152,4 160,7" fill="#6366f1" opacity="0.5" />
-      <text x="240" y="18" textAnchor="middle" fill="#6366f1" fontSize="8" opacity="0.6">
+      <polygon points="160,1 152,4 160,7" fill="#b45309" opacity="0.5" />
+      <text x="240" y="18" textAnchor="middle" fill="#b45309" fontSize="8" opacity="0.6">
         rerun loop
       </text>
     </svg>

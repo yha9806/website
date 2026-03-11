@@ -27,7 +27,7 @@ __all__ = [
 
 # === Semantic model constants ===
 # Change these to switch all agents to a different model
-MODEL_VLM = "gemini/gemini-2.5-flash"       # Vision-capable (for image analysis)
+MODEL_VLM = "gemini/gemini-2.5-pro"          # Vision-capable (for Critic image analysis)
 MODEL_FAST = "gemini/gemini-2.5-flash"       # Fast text-only (for generation, crystallization)
 MODEL_DECISION = "gemini/gemini-2.5-flash"   # Decision-making (for routing, queen)
 
@@ -84,7 +84,7 @@ class ModelSpec:
 MODELS = {
     "gemini_direct": ModelSpec(
         litellm_id=MODEL_VLM,
-        display_name="Gemini 2.5 Flash",
+        display_name="Gemini 2.5 Pro",
         cost_per_call_usd=0.001,
         supports_fc=True,
         supports_vlm=True,
