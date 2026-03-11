@@ -123,15 +123,18 @@ async def create_run(req: CreateRunRequest) -> RunStatusResponse:
         api_key = ""
 
     # Auto-enable LLM features when API key is available
+    # Disable LLM-heavy features for mock provider (scoring colored rectangles is pointless)
     has_api_key = bool(api_key)
-    enable_prompt_enhancer = req.enable_prompt_enhancer and has_api_key
-    enable_llm_queen = req.enable_llm_queen and has_api_key
+    is_mock = (provider == "mock")
+    enable_prompt_enhancer = req.enable_prompt_enhancer and has_api_key and not is_mock
+    enable_llm_queen = req.enable_llm_queen and has_api_key and not is_mock
 
     d_cfg = DraftConfig(
         provider=provider, api_key=api_key,
         n_candidates=req.n_candidates, seed_base=42,
     )
-    cr_cfg = CriticConfig()
+    # Disable VLM for mock provider (scoring colored rectangles is pointless)
+    cr_cfg = CriticConfig(use_vlm=(provider != "mock"))
     q_cfg = QueenConfig(max_rounds=req.max_rounds)
 
     # M3: custom topology forces LangGraph path
@@ -176,8 +179,8 @@ async def create_run(req: CreateRunRequest) -> RunStatusResponse:
             queen_config=q_cfg,
             enable_hitl=req.enable_hitl,
             enable_archivist=True,
-            enable_agent_critic=req.enable_agent_critic,
-            enable_fix_it_plan=req.enable_agent_critic,
+            enable_agent_critic=req.enable_agent_critic and not is_mock,
+            enable_fix_it_plan=req.enable_agent_critic and not is_mock,
             enable_parallel_critic=req.enable_parallel_critic,
             enable_prompt_enhancer=enable_prompt_enhancer,
             enable_llm_queen=enable_llm_queen,

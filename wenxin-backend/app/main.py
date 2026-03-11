@@ -36,40 +36,51 @@ DIGESTION_INTERVAL_SECONDS = int(os.getenv("DIGESTION_INTERVAL_SECONDS", "3600")
 _digestion_logger = logging.getLogger("vulca.digestion")
 
 
+def _run_digestion_sync() -> dict:
+    """Run the full digestion pipeline synchronously (called in a thread)."""
+    from app.prototype.digestion.feature_extractor import backfill_missing_features
+    from app.prototype.feedback.feedback_store import FeedbackStore
+    from app.prototype.digestion.context_evolver import ContextEvolver
+
+    try:
+        backfill_missing_features()
+        FeedbackStore.get().sync_from_sessions()
+    except Exception:
+        _digestion_logger.debug("Periodic pre-digestion sync failed (non-fatal)")
+
+    evolver = ContextEvolver()
+    result = evolver.evolve()
+
+    try:
+        from app.prototype.digestion.few_shot_updater import FewShotUpdater
+        FewShotUpdater().update()
+    except Exception:
+        _digestion_logger.debug("Periodic few-shot update failed (non-fatal)")
+
+    return {
+        "actions": len(result.actions),
+        "patterns": result.patterns_found,
+        "sessions": result.sessions_analyzed,
+        "reason": result.skipped_reason or "ok",
+    }
+
+
 async def _periodic_digestion() -> None:
     """Background task: run ContextEvolver.evolve() periodically.
 
     Mirrors the /api/v1/digestion/run endpoint: backfill features + sync
     feedback before evolving, so periodic runs match manual triggers.
+
+    All synchronous work runs in a thread to avoid blocking the event loop.
     """
     await asyncio.sleep(30)  # Initial delay to let the app fully start
     while True:
         try:
-            # Pre-digestion: backfill missing features + sync inline feedback
-            from app.prototype.digestion.feature_extractor import backfill_missing_features
-            from app.prototype.feedback.feedback_store import FeedbackStore
-
-            try:
-                backfill_missing_features()
-                FeedbackStore.get().sync_from_sessions()
-            except Exception:
-                _digestion_logger.debug("Periodic pre-digestion sync failed (non-fatal)")
-
-            from app.prototype.digestion.context_evolver import ContextEvolver
-            evolver = ContextEvolver()
-            result = evolver.evolve()
-
-            # Update few-shot examples from high-scoring sessions
-            try:
-                from app.prototype.digestion.few_shot_updater import FewShotUpdater
-                FewShotUpdater().update()
-            except Exception:
-                _digestion_logger.debug("Periodic few-shot update failed (non-fatal)")
-
+            info = await asyncio.to_thread(_run_digestion_sync)
             _digestion_logger.info(
                 "Periodic digestion: %d actions, %d patterns, %d sessions (%s)",
-                len(result.actions), result.patterns_found,
-                result.sessions_analyzed, result.skipped_reason or "ok",
+                info["actions"], info["patterns"],
+                info["sessions"], info["reason"],
             )
         except Exception:
             _digestion_logger.exception("Periodic digestion failed")

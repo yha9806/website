@@ -485,7 +485,16 @@ class AgentRuntime:
             }
 
         # Local file path — encode as base64
-        path = Path(image_url)
+        # Resolve /static/prototype/draft/... URLs back to filesystem paths
+        resolved = image_url
+        if resolved.startswith("/static/prototype/draft/"):
+            ckpt_root = Path(__file__).resolve().parent.parent / "checkpoints" / "draft"
+            resolved = str(ckpt_root / resolved[len("/static/prototype/draft/"):])
+        elif resolved.startswith("/static/prototype/substages/"):
+            ckpt_root = Path(__file__).resolve().parent.parent / "checkpoints" / "substages"
+            resolved = str(ckpt_root / resolved[len("/static/prototype/substages/"):])
+
+        path = Path(resolved)
         if not path.is_file():
             # Try resolving relative to checkpoints
             ckpt_root = Path(__file__).resolve().parent.parent / "checkpoints" / "draft"

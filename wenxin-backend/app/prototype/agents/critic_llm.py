@@ -805,7 +805,7 @@ class CriticLLM:
             "philosophical_aesthetic",
         ]
         dim_score_map = {ds.dimension: ds for ds in dim_scores}
-        image_url = candidate.get("image_url") or candidate.get("image_path")
+        image_url = candidate.get("image_path") or candidate.get("image_url")
 
         for dim_id in _DIM_ORDER:
             ls = layer_states.get(dim_id)
@@ -921,7 +921,7 @@ class CriticLLM:
             dim_results: dict[str, AgentResult] = {}
             for dim_id in dims_to_escalate:
                 # VLM layers (L1/L2) need image_url
-                image_url = candidate.get("image_url") or candidate.get("image_path")
+                image_url = candidate.get("image_path") or candidate.get("image_url")
                 ctx = AgentContext(
                     task_id=critique_input.task_id,
                     layer_id=dim_id,

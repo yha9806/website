@@ -7,7 +7,7 @@ import {
   IOSCardContent,
   IOSCardGrid,
 } from '../components/ios';
-import { API_PREFIX } from '../config/api';
+import { API_PREFIX, API_BASE_URL } from '../config/api';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -318,7 +318,17 @@ function ArtworkCard({ artwork }: { artwork: GalleryItem }) {
 
   const traditionLabel = TRADITION_LABELS[artwork.tradition] ?? artwork.tradition.replace(/_/g, ' ');
   const gradient = TRADITION_GRADIENTS[artwork.tradition] ?? TRADITION_GRADIENTS.default;
-  const hasImage = artwork.best_image_url && artwork.best_image_url !== '';
+  const resolvedImageUrl = (() => {
+    const url = artwork.best_image_url;
+    if (!url) return null;
+    if (url.startsWith('data:') || url.startsWith('http://') || url.startsWith('https://')) return url;
+    if (url.startsWith('/static/') || url.startsWith('static/')) {
+      const normalized = url.startsWith('/') ? url : `/${url}`;
+      return `${API_BASE_URL}${normalized}`;
+    }
+    return url;
+  })();
+  const hasImage = !!resolvedImageUrl;
   const dateStr = artwork.created_at
     ? new Date(artwork.created_at * 1000).toLocaleDateString()
     : '';
@@ -329,7 +339,7 @@ function ArtworkCard({ artwork }: { artwork: GalleryItem }) {
       <div className="w-full aspect-[4/3] relative">
         {hasImage ? (
           <img
-            src={artwork.best_image_url}
+            src={resolvedImageUrl}
             alt={artwork.subject}
             className="w-full h-full object-cover"
             loading="lazy"
