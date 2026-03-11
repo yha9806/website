@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Check, Plus, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Plus, X, AlertCircle } from 'lucide-react';
 import {
   IOSButton,
   IOSCard,
   IOSCardContent,
 } from '../ios';
+import { API_PREFIX } from '../../config/api';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -66,9 +67,10 @@ const STEPS = [
 
 interface CreateSkillWizardProps {
   onClose: () => void;
+  onCreated?: () => void;
 }
 
-export default function CreateSkillWizard({ onClose }: CreateSkillWizardProps) {
+export default function CreateSkillWizard({ onClose, onCreated }: CreateSkillWizardProps) {
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<SkillDraft>({
     name: '',
@@ -77,6 +79,8 @@ export default function CreateSkillWizard({ onClose }: CreateSkillWizardProps) {
     config: [{ key: '', value: '' }],
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Navigation
   const canNext = () => {
@@ -93,9 +97,45 @@ export default function CreateSkillWizard({ onClose }: CreateSkillWizardProps) {
     if (step > 0) setStep(step - 1);
   };
 
-  const handleSubmit = () => {
-    setSubmitted(true);
-    // In a real app, this would POST to the API
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      // Build config object from key-value entries
+      const configObj: Record<string, string> = {};
+      for (const entry of draft.config) {
+        if (entry.key.trim()) {
+          configObj[entry.key.trim()] = entry.value;
+        }
+      }
+
+      const res = await fetch(`${API_PREFIX}/skills`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer demo-key',
+        },
+        body: JSON.stringify({
+          name: draft.name.trim(),
+          description: draft.description.trim(),
+          tags: draft.tags,
+          config: configObj,
+          author: 'user',
+        }),
+      });
+
+      if (!res.ok) {
+        const errText = await res.text().catch(() => 'Unknown error');
+        throw new Error(`${res.status}: ${errText}`);
+      }
+
+      setSubmitted(true);
+      onCreated?.();
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Failed to create skill');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   // Tag toggle
@@ -341,6 +381,13 @@ export default function CreateSkillWizard({ onClose }: CreateSkillWizardProps) {
                   )}
                 </IOSCardContent>
               </IOSCard>
+
+              {submitError && (
+                <div className="flex items-start gap-2 text-sm text-[#C65D4D] bg-[#C65D4D]/10 rounded-lg px-3 py-2">
+                  <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span>{submitError}</span>
+                </div>
+              )}
             </div>
           )}
         </motion.div>
@@ -372,9 +419,16 @@ export default function CreateSkillWizard({ onClose }: CreateSkillWizardProps) {
             variant="primary"
             size="sm"
             onClick={handleSubmit}
+            disabled={submitting}
           >
-            <Check className="w-4 h-4 mr-1" />
-            Submit
+            {submitting ? (
+              <span className="animate-pulse">Submitting...</span>
+            ) : (
+              <>
+                <Check className="w-4 h-4 mr-1" />
+                Submit
+              </>
+            )}
           </IOSButton>
         )}
       </div>

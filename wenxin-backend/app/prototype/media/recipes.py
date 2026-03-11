@@ -15,7 +15,7 @@ from app.prototype.media.types import CreationRecipe, MediaType, SubStageDef
 
 AVAILABLE_MEDIA_TYPES: dict[MediaType, bool] = {
     MediaType.IMAGE: True,
-    MediaType.VIDEO: False,      # Coming Soon
+    MediaType.VIDEO: True,
     MediaType.MODEL_3D: False,   # Coming Soon
     MediaType.SOUND: False,      # Coming Soon
 }
@@ -95,39 +95,39 @@ VIDEO_RECIPE = CreationRecipe(
     display_name="Standard Video Recipe",
     sub_stages=(
         SubStageDef(
-            name="storyboard",
-            display_name="Storyboard",
-            description="Generate storyboard frames from narrative",
+            name="script",
+            display_name="Script",
+            description="Generate structured video script with scenes, shots, and timing",
             order=0,
             output_artifact_type="json",
-            estimated_latency_ms=3000,
+            estimated_latency_ms=5000,
         ),
         SubStageDef(
-            name="keyframe_generation",
-            display_name="Keyframe Generation",
-            description="Generate key visual frames",
+            name="storyboard",
+            display_name="Storyboard",
+            description="Generate visual keyframe for each scene via NB2",
             order=1,
-            input_artifact_names=("storyboard",),
-            output_artifact_type="image",
-            estimated_latency_ms=10000,
+            input_artifact_names=("script",),
+            output_artifact_type="json",
+            estimated_latency_ms=30000,
         ),
         SubStageDef(
-            name="interpolation",
-            display_name="Frame Interpolation",
-            description="Interpolate between keyframes for smooth motion",
+            name="style_frame",
+            display_name="Style Frame",
+            description="Generate high-quality style reference frame",
             order=2,
-            input_artifact_names=("keyframe_generation",),
-            output_artifact_type="image",
+            input_artifact_names=("script", "storyboard"),
+            output_artifact_type="text",
             estimated_latency_ms=15000,
         ),
         SubStageDef(
             name="final_compose",
             display_name="Final Composition",
-            description="Compose final video with audio sync",
+            description="Video composition plan with transitions, pacing, and audio direction",
             order=3,
-            input_artifact_names=("interpolation",),
-            output_artifact_type="image",
-            estimated_latency_ms=20000,
+            input_artifact_names=("script", "storyboard", "style_frame"),
+            output_artifact_type="text",
+            estimated_latency_ms=8000,
         ),
     ),
     version="1.0.0",

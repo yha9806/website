@@ -141,6 +141,7 @@ export interface PipelineState {
   crossLayerSignals: CrossLayerSignal[] | null;
   fixItPlan: FixItPlan | null;
   agentMode: string | null;  // 'rule_only' | 'agent_llm' | 'agent_fallback_rules'
+  evaluationSummary: string | null;
 
   // Queen
   decision: QueenDecision | null;
@@ -180,6 +181,7 @@ const INITIAL_STATE: PipelineState = {
   crossLayerSignals: null,
   fixItPlan: null,
   agentMode: null,
+  evaluationSummary: null,
   decision: null,
   rounds: [],
   hitlWaitInfo: null,
@@ -197,6 +199,12 @@ export interface SubStageInfo {
   displayName: string;
   status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped';
   durationMs?: number;
+  /** Text/JSON content produced by this sub-stage */
+  data?: string;
+  /** Path to visual artifact (NB2-rendered image) */
+  imagePath?: string;
+  /** Artifact type: "text" | "json" | "image" */
+  artifactType?: string;
 }
 
 export interface CreateRunParams {
@@ -259,6 +267,7 @@ export function usePrototypePipeline() {
             if (critique) {
               update.scoredCandidates = (critique.scored_candidates as ScoredCandidate[]) || [];
               update.bestCandidateId = (critique.best_candidate_id as string) || null;
+              update.evaluationSummary = (critique.evaluation_summary as string) || null;
             }
             const rawConstraints = payload.hitl_constraints as Partial<HitlConstraints> | undefined;
             if (rawConstraints && typeof rawConstraints === 'object' && Object.keys(rawConstraints).length > 0) {
@@ -281,7 +290,7 @@ export function usePrototypePipeline() {
           break;
 
         case 'substage_started': {
-          const subName = (payload.substage as string) || (payload.name as string) || '';
+          const subName = (payload.substage as string) || (payload.sub_stage_name as string) || (payload.name as string) || '';
           const subDisplay = (payload.display_name as string) || subName;
           // Mark any previously running sub-stage as completed (if backend didn't send explicit complete)
           const updatedSubs = prev.subStages.map(s =>
@@ -295,11 +304,22 @@ export function usePrototypePipeline() {
         }
 
         case 'substage_completed': {
-          const completedName = (payload.substage as string) || (payload.name as string) || '';
+          const completedName = (payload.substage as string) || (payload.sub_stage_name as string) || (payload.name as string) || '';
           const dur = (payload.duration_ms as number) || undefined;
+          // Extract artifact data if present
+          const artifactData = (payload.data as string) || undefined;
+          const artifactImagePath = (payload.image_path as string) || undefined;
+          const artifactType = (payload.artifact_type as string) || undefined;
           update.subStages = prev.subStages.map(s =>
             s.name === completedName
-              ? { ...s, status: 'completed' as const, durationMs: dur ?? s.durationMs }
+              ? {
+                  ...s,
+                  status: 'completed' as const,
+                  durationMs: dur ?? s.durationMs,
+                  data: artifactData ?? s.data,
+                  imagePath: artifactImagePath ?? s.imagePath,
+                  artifactType: artifactType ?? s.artifactType,
+                }
               : s
           );
           break;

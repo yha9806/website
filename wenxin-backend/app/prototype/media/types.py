@@ -57,15 +57,19 @@ class SubStageArtifact:
     stage_name: str
     artifact_type: str  # "image"|"text"|"audio"|"mesh"|"json"
     data: Any = None
+    image_path: str = ""  # path to visual artifact (NB2-rendered)
     metadata: dict = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        d = {
             "stage_name": self.stage_name,
             "artifact_type": self.artifact_type,
             "data": str(self.data) if self.data is not None else None,
             "metadata": self.metadata,
         }
+        if self.image_path:
+            d["image_path"] = self.image_path
+        return d
 
 
 @dataclass

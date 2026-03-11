@@ -433,6 +433,9 @@ class DraftAgent:
         if recipe.media_type == MediaType.IMAGE:
             from app.prototype.media.image_handlers import get_image_handlers
             handlers = get_image_handlers()
+        elif recipe.media_type == MediaType.VIDEO:
+            from app.prototype.media.video_handlers import get_video_handlers
+            handlers = get_video_handlers()
 
         executor = SubStageExecutor(recipe=recipe, handlers=handlers)
 

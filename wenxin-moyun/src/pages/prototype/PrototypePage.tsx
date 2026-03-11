@@ -548,6 +548,7 @@ export default function PrototypePage() {
                 scoredCandidates={state.scoredCandidates}
                 bestCandidateId={state.bestCandidateId}
                 crossLayerSignals={state.crossLayerSignals ?? undefined}
+                evaluationSummary={state.evaluationSummary}
               />
             </IOSCardContent>
           </IOSCard>

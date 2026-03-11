@@ -4,6 +4,9 @@ Each handler follows the StageHandler protocol:
     async (stage_def: SubStageDef, context: dict) -> SubStageArtifact
 
 Handlers call ``litellm.acompletion`` via MODEL_FAST for text/JSON generation.
+When NB2 (Gemini image generation) is available, key handlers also produce
+visual artifacts alongside their text outputs.
+
 If the LLM call fails (timeout, missing API key, rate limit, etc.), each handler
 falls back to a deterministic stub so the pipeline never crashes.
 """
@@ -18,6 +21,7 @@ import litellm
 
 from app.prototype.agents.model_router import MODEL_FAST, MODEL_VLM
 from app.prototype.media.types import SubStageArtifact, SubStageDef
+from app.prototype.media.visual_renderer import render_visual, get_substage_output_dir
 
 logger = logging.getLogger(__name__)
 
@@ -188,11 +192,23 @@ async def handle_composition_sketch(stage_def: SubStageDef, context: dict[str, A
 
         content = response.choices[0].message.content
 
+        # Visual rendering: generate a rough pencil sketch
+        task_id = context.get("task_id", "unknown")
+        image_path = await render_visual(
+            prompt=f"Rough pencil composition sketch for: {subject}. {content[:300]}",
+            output_dir=get_substage_output_dir(task_id),
+            filename="composition_sketch.png",
+            width=512,
+            height=512,
+            style_prefix="minimal pencil line drawing, sketch,",
+        )
+
         return SubStageArtifact(
             stage_name=stage_def.name,
             artifact_type="text",
             data=content,
-            metadata={"source": "llm", "model": MODEL_FAST},
+            image_path=image_path,
+            metadata={"source": "llm", "model": MODEL_FAST, "has_visual": bool(image_path)},
         )
 
     except Exception as exc:
@@ -322,11 +338,26 @@ async def handle_style_reference(stage_def: SubStageDef, context: dict[str, Any]
 
         content = response.choices[0].message.content
 
+        # Visual rendering: generate a style reference image
+        task_id = context.get("task_id", "unknown")
+        tradition_display = tradition.replace("_", " ")
+        image_path = await render_visual(
+            prompt=(
+                f"Style reference artwork: {subject} in {tradition_display} style. "
+                f"{content[:200]}"
+            ),
+            output_dir=get_substage_output_dir(task_id),
+            filename="style_reference.png",
+            width=512,
+            height=512,
+        )
+
         return SubStageArtifact(
             stage_name=stage_def.name,
             artifact_type="text",
             data=content,
-            metadata={"source": "llm", "model": MODEL_FAST, "tradition": tradition},
+            image_path=image_path,
+            metadata={"source": "llm", "model": MODEL_FAST, "tradition": tradition, "has_visual": bool(image_path)},
         )
 
     except Exception as exc:
@@ -478,15 +509,27 @@ async def handle_final_render(stage_def: SubStageDef, context: dict[str, Any]) -
 
         content = response.choices[0].message.content
 
+        # Visual rendering: generate the final artwork using the enhanced prompt
+        task_id = context.get("task_id", "unknown")
+        image_path = await render_visual(
+            prompt=content,
+            output_dir=get_substage_output_dir(task_id),
+            filename="final_render.png",
+            width=1024,
+            height=1024,
+        )
+
         return SubStageArtifact(
             stage_name=stage_def.name,
             artifact_type="text",
             data=content,
+            image_path=image_path,
             metadata={
                 "source": "llm",
                 "model": MODEL_FAST,
                 "tradition": tradition,
                 "usage": "enhanced_prompt_for_draft_provider",
+                "has_visual": bool(image_path),
             },
         )
 

@@ -315,7 +315,9 @@ class TestAvailability:
     def test_image_available(self):
         assert AVAILABLE_MEDIA_TYPES[MediaType.IMAGE] is True
 
+    def test_video_available(self):
+        assert AVAILABLE_MEDIA_TYPES[MediaType.VIDEO] is True
+
     def test_others_not_available(self):
-        assert AVAILABLE_MEDIA_TYPES[MediaType.VIDEO] is False
         assert AVAILABLE_MEDIA_TYPES[MediaType.MODEL_3D] is False
         assert AVAILABLE_MEDIA_TYPES[MediaType.SOUND] is False

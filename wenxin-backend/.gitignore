@@ -67,5 +67,9 @@ app/prototype/checkpoints/draft/
 app/prototype/checkpoints/pipeline/
 app/prototype/checkpoints/critique/
 app/prototype/checkpoints/archive/
+app/prototype/checkpoints/substages/
+app/prototype/data/sessions.jsonl
+app/prototype/data/skills_marketplace.jsonl
+app/prototype/data/skills_votes.jsonl
 # Archived scripts (moved out of prototype)
 _archive/

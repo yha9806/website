@@ -65,7 +65,7 @@
     }
   },
   "version": 2,
-  "evolutions": 70,
+  "evolutions": 84,
   "cultures": {
     "chinese_xieyi_l5_emphasis": {
       "name": "chinese_xieyi_l5_emphasis",
@@ -109,25 +109,25 @@
         "High cultural_depth"
       ],
       "l_focus": {
-        "avg_score": 0.772,
-        "cultural_depth": 0.8767,
-        "tradition_specificity": 0.8,
         "l5_emphasis": 0.7992,
-        "risk_level": 0.0
+        "risk_level": 0.0,
+        "tradition_specificity": 0.8,
+        "avg_score": 0.772,
+        "cultural_depth": 0.8767
       },
       "weights": {
-        "avg_score": 0.772,
-        "cultural_depth": 0.8767,
-        "tradition_specificity": 0.8,
         "l5_emphasis": 0.7992,
-        "risk_level": 0.0
+        "risk_level": 0.0,
+        "tradition_specificity": 0.8,
+        "avg_score": 0.772,
+        "cultural_depth": 0.8767
       },
       "reference_sessions": [
         "seed-001",
         "seed-010",
         "seed-013"
       ],
-      "emerged_at": 1773231000.169355,
+      "emerged_at": 1773259031.215848,
       "confidence": 0.15
     },
     "japanese_wabi_sabi_tradition_specificity": {
@@ -137,25 +137,25 @@
         "High tradition_specificity"
       ],
       "l_focus": {
-        "avg_score": 0.754,
-        "cultural_depth": 0.7767,
-        "tradition_specificity": 0.8,
         "l5_emphasis": 0.6615,
-        "risk_level": 0.0
+        "risk_level": 0.0,
+        "tradition_specificity": 0.8,
+        "avg_score": 0.754,
+        "cultural_depth": 0.7767
       },
       "weights": {
-        "avg_score": 0.754,
-        "cultural_depth": 0.7767,
-        "tradition_specificity": 0.8,
         "l5_emphasis": 0.6615,
-        "risk_level": 0.0
+        "risk_level": 0.0,
+        "tradition_specificity": 0.8,
+        "avg_score": 0.754,
+        "cultural_depth": 0.7767
       },
       "reference_sessions": [
         "seed-002",
         "seed-011",
         "seed-015"
       ],
-      "emerged_at": 1773231002.426998,
+      "emerged_at": 1773259033.6419535,
       "confidence": 0.15
     },
     "cross_african_ubuntu+chinese_xieyi+default_l5_emphasis": {
@@ -165,18 +165,18 @@
         "High l5_emphasis"
       ],
       "l_focus": {
-        "avg_score": 0.7304,
-        "cultural_depth": 0.7573,
-        "tradition_specificity": 0.7333,
         "l5_emphasis": 0.7927,
-        "risk_level": 0.0
+        "risk_level": 0.0,
+        "tradition_specificity": 0.7333,
+        "avg_score": 0.7304,
+        "cultural_depth": 0.7573
       },
       "weights": {
-        "avg_score": 0.7304,
-        "cultural_depth": 0.7573,
-        "tradition_specificity": 0.7333,
         "l5_emphasis": 0.7927,
-        "risk_level": 0.0
+        "risk_level": 0.0,
+        "tradition_specificity": 0.7333,
+        "avg_score": 0.7304,
+        "cultural_depth": 0.7573
       },
       "reference_sessions": [
         "seed-001",
@@ -190,7 +190,7 @@
         "seed-009",
         "seed-010"
       ],
-      "emerged_at": 1773231004.745172,
+      "emerged_at": 1773259036.0105395,
       "confidence": 0.75
     },
     "chinese_xieyi_ink_painting": {
@@ -300,11 +300,11 @@
       {
         "cluster_id": "intra-000-000",
         "feature_centroid": {
-          "avg_score": 0.772,
-          "cultural_depth": 0.8767,
-          "tradition_specificity": 0.8,
           "l5_emphasis": 0.7992,
-          "risk_level": 0.0
+          "risk_level": 0.0,
+          "tradition_specificity": 0.8,
+          "avg_score": 0.772,
+          "cultural_depth": 0.8767
         },
         "session_ids": [
           "seed-001",
@@ -318,11 +318,11 @@
       {
         "cluster_id": "intra-001-000",
         "feature_centroid": {
-          "avg_score": 0.754,
-          "cultural_depth": 0.7767,
-          "tradition_specificity": 0.8,
           "l5_emphasis": 0.6615,
-          "risk_level": 0.0
+          "risk_level": 0.0,
+          "tradition_specificity": 0.8,
+          "avg_score": 0.754,
+          "cultural_depth": 0.7767
         },
         "session_ids": [
           "seed-002",
@@ -336,11 +336,11 @@
       {
         "cluster_id": "intra-002-000",
         "feature_centroid": {
-          "avg_score": 0.713,
-          "cultural_depth": 0.67,
-          "tradition_specificity": 0.8,
           "l5_emphasis": 0.9249,
-          "risk_level": 0.0
+          "risk_level": 0.0,
+          "tradition_specificity": 0.8,
+          "avg_score": 0.713,
+          "cultural_depth": 0.67
         },
         "session_ids": [
           "seed-003",
@@ -433,11 +433,11 @@
       {
         "cluster_id": "intra-008-000",
         "feature_centroid": {
-          "avg_score": 0.602,
-          "cultural_depth": 0.695,
-          "tradition_specificity": 0.3,
           "l5_emphasis": 0.8916,
-          "risk_level": 0.0
+          "risk_level": 0.0,
+          "tradition_specificity": 0.3,
+          "avg_score": 0.602,
+          "cultural_depth": 0.695
         },
         "session_ids": [
           "seed-009",
@@ -450,11 +450,11 @@
       {
         "cluster_id": "cross-000",
         "feature_centroid": {
-          "avg_score": 0.7304,
-          "cultural_depth": 0.7573,
-          "tradition_specificity": 0.7333,
           "l5_emphasis": 0.7927,
-          "risk_level": 0.0
+          "risk_level": 0.0,
+          "tradition_specificity": 0.7333,
+          "avg_score": 0.7304,
+          "cultural_depth": 0.7573
         },
         "session_ids": [
           "seed-001",
@@ -491,238 +491,6 @@
     ]
   },
   "layer_focus": {
-    "chinese_gongbi": {
-      "visual_perception": {
-        "focus_points": [
-          "line precision",
-          "color layering",
-          "fine detail rendering"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "technical_analysis": {
-        "focus_points": [
-          "silk/paper preparation",
-          "mineral pigment application",
-          "outline control"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "cultural_context": {
-        "focus_points": [
-          "court painting tradition",
-          "Tang-Song conventions",
-          "decorative symbolism"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "critical_interpretation": {
-        "focus_points": [
-          "auspicious symbolism",
-          "narrative scene reading",
-          "rank/status coding"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "philosophical_aesthetic": {
-        "focus_points": [
-          "beauty through restraint",
-          "order as virtue",
-          "meticulous devotion"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      }
-    },
-    "african_traditional": {
-      "visual_perception": {
-        "focus_points": [
-          "bold pattern rhythms",
-          "symbolic color use",
-          "sculptural form"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "technical_analysis": {
-        "focus_points": [
-          "material authenticity",
-          "textile/carving technique",
-          "natural pigments"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "cultural_context": {
-        "focus_points": [
-          "communal storytelling",
-          "ritual significance",
-          "ancestral symbolism"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "critical_interpretation": {
-        "focus_points": [
-          "spiritual function",
-          "social identity encoding"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "philosophical_aesthetic": {
-        "focus_points": [
-          "art as life force",
-          "collective memory",
-          "spiritual embodiment"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      }
-    },
-    "chinese_xieyi": {
-      "visual_perception": {
-        "focus_points": [
-          "ink wash gradients",
-          "negative space (留白)",
-          "brush rhythm"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "technical_analysis": {
-        "focus_points": [
-          "brushstroke spontaneity",
-          "ink consistency",
-          "rice paper texture"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "cultural_context": {
-        "focus_points": [
-          "literati painting tradition",
-          "Daoist nature philosophy",
-          "poem-painting unity"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "critical_interpretation": {
-        "focus_points": [
-          "qi yun (气韵生动)",
-          "xie yi spirit over form",
-          "scholar aesthetics"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "philosophical_aesthetic": {
-        "focus_points": [
-          "Dao in brushwork",
-          "emptiness as presence",
-          "nature-human unity"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      }
-    },
-    "islamic_geometric": {
-      "visual_perception": {
-        "focus_points": [
-          "geometric symmetry",
-          "tessellation precision",
-          "color harmony"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "technical_analysis": {
-        "focus_points": [
-          "compass-ruler construction",
-          "pattern repetition accuracy",
-          "gilding quality"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "cultural_context": {
-        "focus_points": [
-          "aniconism principles",
-          "mathematical beauty",
-          "spiritual geometry"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "critical_interpretation": {
-        "focus_points": [
-          "infinite pattern meditation",
-          "unity in multiplicity"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "philosophical_aesthetic": {
-        "focus_points": [
-          "divine order through geometry",
-          "transcendence of material form"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      }
-    },
-    "south_asian": {
-      "visual_perception": {
-        "focus_points": [
-          "vivid color saturation",
-          "ornamental density",
-          "narrative composition"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "technical_analysis": {
-        "focus_points": [
-          "miniature painting precision",
-          "natural dye mastery",
-          "gold detailing"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "cultural_context": {
-        "focus_points": [
-          "rasa theory (emotional essence)",
-          "mythological narratives",
-          "devotional art"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "critical_interpretation": {
-        "focus_points": [
-          "rasa identification",
-          "darshan (sacred seeing)",
-          "iconometric rules"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "philosophical_aesthetic": {
-        "focus_points": [
-          "divine beauty manifestation",
-          "cyclical time in art",
-          "sensory transcendence"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      }
-    },
     "japanese_traditional": {
       "visual_perception": {
         "focus_points": [
@@ -859,6 +627,238 @@
         "anti_focus": [],
         "session_count": 0
       }
+    },
+    "chinese_gongbi": {
+      "visual_perception": {
+        "focus_points": [
+          "line precision",
+          "color layering",
+          "fine detail rendering"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "technical_analysis": {
+        "focus_points": [
+          "silk/paper preparation",
+          "mineral pigment application",
+          "outline control"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "cultural_context": {
+        "focus_points": [
+          "court painting tradition",
+          "Tang-Song conventions",
+          "decorative symbolism"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "critical_interpretation": {
+        "focus_points": [
+          "auspicious symbolism",
+          "narrative scene reading",
+          "rank/status coding"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "philosophical_aesthetic": {
+        "focus_points": [
+          "beauty through restraint",
+          "order as virtue",
+          "meticulous devotion"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      }
+    },
+    "chinese_xieyi": {
+      "visual_perception": {
+        "focus_points": [
+          "ink wash gradients",
+          "negative space (留白)",
+          "brush rhythm"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "technical_analysis": {
+        "focus_points": [
+          "brushstroke spontaneity",
+          "ink consistency",
+          "rice paper texture"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "cultural_context": {
+        "focus_points": [
+          "literati painting tradition",
+          "Daoist nature philosophy",
+          "poem-painting unity"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "critical_interpretation": {
+        "focus_points": [
+          "qi yun (气韵生动)",
+          "xie yi spirit over form",
+          "scholar aesthetics"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "philosophical_aesthetic": {
+        "focus_points": [
+          "Dao in brushwork",
+          "emptiness as presence",
+          "nature-human unity"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      }
+    },
+    "islamic_geometric": {
+      "visual_perception": {
+        "focus_points": [
+          "geometric symmetry",
+          "tessellation precision",
+          "color harmony"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "technical_analysis": {
+        "focus_points": [
+          "compass-ruler construction",
+          "pattern repetition accuracy",
+          "gilding quality"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "cultural_context": {
+        "focus_points": [
+          "aniconism principles",
+          "mathematical beauty",
+          "spiritual geometry"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "critical_interpretation": {
+        "focus_points": [
+          "infinite pattern meditation",
+          "unity in multiplicity"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "philosophical_aesthetic": {
+        "focus_points": [
+          "divine order through geometry",
+          "transcendence of material form"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      }
+    },
+    "african_traditional": {
+      "visual_perception": {
+        "focus_points": [
+          "bold pattern rhythms",
+          "symbolic color use",
+          "sculptural form"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "technical_analysis": {
+        "focus_points": [
+          "material authenticity",
+          "textile/carving technique",
+          "natural pigments"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "cultural_context": {
+        "focus_points": [
+          "communal storytelling",
+          "ritual significance",
+          "ancestral symbolism"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "critical_interpretation": {
+        "focus_points": [
+          "spiritual function",
+          "social identity encoding"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "philosophical_aesthetic": {
+        "focus_points": [
+          "art as life force",
+          "collective memory",
+          "spiritual embodiment"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      }
+    },
+    "south_asian": {
+      "visual_perception": {
+        "focus_points": [
+          "vivid color saturation",
+          "ornamental density",
+          "narrative composition"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "technical_analysis": {
+        "focus_points": [
+          "miniature painting precision",
+          "natural dye mastery",
+          "gold detailing"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "cultural_context": {
+        "focus_points": [
+          "rasa theory (emotional essence)",
+          "mythological narratives",
+          "devotional art"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "critical_interpretation": {
+        "focus_points": [
+          "rasa identification",
+          "darshan (sacred seeing)",
+          "iconometric rules"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "philosophical_aesthetic": {
+        "focus_points": [
+          "divine beauty manifestation",
+          "cyclical time in art",
+          "sensory transcendence"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      }
     }
   },
   "queen_strategy": {
@@ -866,7 +866,7 @@
     "prefer_quality_over_speed": true,
     "high_pattern_count": 2,
     "negative_feedback_count": 0,
-    "updated_at": "2026-03-11T12:10:04"
+    "updated_at": "2026-03-11T19:57:16"
   },
   "few_shot_examples": [
     {
@@ -977,7 +977,7 @@
     "western_academic": "To improve, prioritize foundational techniques like anatomy, perspective, and chiaroscuro. Focus on realistic representation and classical compositions, while also exploring opportunities for emotional depth and narrative complexity. Strive for technical mastery combined with compelling storytelling and expressive qualities."
   },
   "trajectory_insights": {
-    "total_trajectories": 420,
+    "total_trajectories": 518,
     "common_weak_dimensions": [
       "visual_perception",
       "cultural_context",
@@ -986,9 +986,9 @@
       "critical_interpretation"
     ],
     "avg_rounds_to_accept": 1.19,
-    "repair_success_rate": 0.161,
+    "repair_success_rate": 0.187,
     "tradition_avg_rounds": {
-      "chinese_xieyi": 1.11,
+      "chinese_xieyi": 1.12,
       "default": 1.02
     }
   }

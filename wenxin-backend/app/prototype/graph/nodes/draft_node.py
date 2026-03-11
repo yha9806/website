@@ -104,13 +104,23 @@ class DraftNode(BaseAgent):
                         "sub_stage_name": ssr.get("stage_name", ""),
                     })
                 )
+                # Extract artifact data for frontend display
+                artifact = ssr.get("artifact") or {}
+                completed_payload: dict = {
+                    "sub_stage_name": ssr.get("stage_name", ""),
+                    "status": ssr.get("status", ""),
+                    "duration_ms": ssr.get("duration_ms", 0),
+                    "error": ssr.get("error"),
+                }
+                if isinstance(artifact, dict):
+                    if artifact.get("data"):
+                        completed_payload["data"] = str(artifact["data"])[:1000]
+                    if artifact.get("image_path"):
+                        completed_payload["image_path"] = _to_static_url(artifact["image_path"])
+                    if artifact.get("artifact_type"):
+                        completed_payload["artifact_type"] = artifact["artifact_type"]
                 sub_stage_events.append(
-                    _make_event(EventType.SUBSTAGE_COMPLETED, "draft", current_round, ssr.get("duration_ms", 0), {
-                        "sub_stage_name": ssr.get("stage_name", ""),
-                        "status": ssr.get("status", ""),
-                        "duration_ms": ssr.get("duration_ms", 0),
-                        "error": ssr.get("error"),
-                    })
+                    _make_event(EventType.SUBSTAGE_COMPLETED, "draft", current_round, ssr.get("duration_ms", 0), completed_payload)
                 )
 
         events = [
@@ -146,6 +156,25 @@ class DraftNode(BaseAgent):
             "sub_stage_results": sub_stage_results_dicts,
             "events": events,
         }
+
+
+def _to_static_url(abs_path: str) -> str:
+    """Convert an absolute filesystem path to a web-accessible /static/ URL.
+
+    Looks for 'checkpoints/substages/' or 'checkpoints/draft/' in the path and
+    maps it to /static/prototype/substages/... or /static/prototype/draft/...
+    """
+    if not abs_path:
+        return ""
+    for segment, prefix in [
+        ("checkpoints/substages/", "/static/prototype/substages/"),
+        ("checkpoints/draft/", "/static/prototype/draft/"),
+    ]:
+        idx = abs_path.find(segment)
+        if idx != -1:
+            return prefix + abs_path[idx + len(segment):]
+    # Fallback: return as-is (may already be a relative URL)
+    return abs_path
 
 
 def _make_event(

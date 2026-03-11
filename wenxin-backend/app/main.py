@@ -180,6 +180,16 @@ app.mount(
 )
 print(f"Prototype draft static mounted at /static/prototype/draft from {prototype_draft_dir}")
 
+# Mount prototype sub-stage visual artifacts (NB2-rendered images).
+prototype_substages_dir = os.path.join(os.path.dirname(__file__), "prototype", "checkpoints", "substages")
+os.makedirs(prototype_substages_dir, exist_ok=True)
+app.mount(
+    "/static/prototype/substages",
+    StaticFiles(directory=prototype_substages_dir),
+    name="prototype-substages-static",
+)
+print(f"Prototype substages static mounted at /static/prototype/substages from {prototype_substages_dir}")
+
 # Mount static files for generated images
 static_dir = os.path.join(os.path.dirname(__file__), "..", "static")
 if os.path.exists(static_dir):

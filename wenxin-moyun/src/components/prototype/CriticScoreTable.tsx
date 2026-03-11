@@ -36,6 +36,7 @@ interface Props {
   bestCandidateId: string | null;
   agentMetrics?: AgentMetrics | null;
   crossLayerSignals?: CrossLayerSignal[];
+  evaluationSummary?: string | null;
 }
 
 const RISK_TAG_COLORS: Record<string, string> = {
@@ -118,7 +119,7 @@ function RationalePanel({ rationale, dimension }: { rationale: string; dimension
   );
 }
 
-export default function CriticScoreTable({ scoredCandidates, bestCandidateId, agentMetrics, crossLayerSignals }: Props) {
+export default function CriticScoreTable({ scoredCandidates, bestCandidateId, agentMetrics, crossLayerSignals, evaluationSummary }: Props) {
   const [expandedCells, setExpandedCells] = useState<Set<string>>(new Set());
   const [expandedRisks, setExpandedRisks] = useState<Set<string>>(new Set());
   const [detailCandidate, setDetailCandidate] = useState<ScoredCandidate | null>(null);
@@ -151,6 +152,13 @@ export default function CriticScoreTable({ scoredCandidates, bestCandidateId, ag
 
   return (
     <div className="space-y-3">
+      {/* Evaluation summary */}
+      {evaluationSummary && (
+        <div className="px-3 py-2 bg-[#FAF7F2] dark:bg-gray-800/40 border-l-2 border-[#5F8A50] rounded-r-lg text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+          {evaluationSummary}
+        </div>
+      )}
+
       {/* Compact table view */}
       <div className="overflow-x-auto">
         <table className="w-full text-sm">

@@ -43,22 +43,28 @@ export default function SkillsPage() {
   const [selectedSkill, setSelectedSkill] = useState<SkillItem | null>(null);
   const [showCreate, setShowCreate] = useState(false);
 
-  // Fetch skills from API on mount
+  // Fetch skills from API
+  const fetchSkills = async () => {
+    try {
+      const res = await fetch(`${API_PREFIX}/skills`);
+      if (!res.ok) throw new Error('API unavailable');
+      const data = (await res.json()) as SkillItem[];
+      if (data.length > 0) {
+        setSkills(data);
+      }
+    } catch {
+      // API unavailable — keep fallback data
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch on mount
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      try {
-        const res = await fetch(`${API_PREFIX}/skills`);
-        if (!res.ok) throw new Error('API unavailable');
-        const data = (await res.json()) as SkillItem[];
-        if (!cancelled && data.length > 0) {
-          setSkills(data);
-        }
-      } catch {
-        // API unavailable — keep fallback data
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
+      await fetchSkills();
+      if (cancelled) return;
     })();
     return () => { cancelled = true; };
   }, []);
@@ -181,7 +187,10 @@ export default function SkillsPage() {
         onClose={() => setShowCreate(false)}
         height="large"
       >
-        <CreateSkillWizard onClose={() => setShowCreate(false)} />
+        <CreateSkillWizard
+          onClose={() => setShowCreate(false)}
+          onCreated={() => { fetchSkills(); }}
+        />
       </IOSSheet>
     </div>
   );
