@@ -63,8 +63,8 @@ _COST_PER_IMAGE: dict[str, float] = {
     "mock": 0.0,
 }
 
-# Hard cost gate per run
-_MAX_COST_PER_RUN_USD = 0.50
+# Hard cost gate per run (NB2 ≈ $0.067/image × 4 candidates × 3 rounds + Critic Pro calls)
+_MAX_COST_PER_RUN_USD = 2.00
 _DRAFT_CHECKPOINT_ROOT = (Path(__file__).resolve().parent.parent / "checkpoints" / "draft").resolve()
 
 

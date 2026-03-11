@@ -4,7 +4,7 @@
  * Strategy: cache-first for static assets, network-first for API calls.
  */
 
-const CACHE_NAME = 'vulca-v1';
+const CACHE_NAME = 'vulca-v2';
 const STATIC_ASSETS = ['/', '/favicon.svg'];
 
 self.addEventListener('install', (event) => {
@@ -25,6 +25,9 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
+
+  // Never intercept cross-origin requests (e.g. API at localhost:8001)
+  if (url.origin !== self.location.origin) return;
 
   // Network-first for API calls
   if (url.pathname.startsWith('/api/')) {

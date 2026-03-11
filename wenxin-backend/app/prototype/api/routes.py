@@ -48,8 +48,11 @@ _GraphOrchestrator = None
 def _get_graph_orchestrator_class():
     global _GraphOrchestrator
     if _GraphOrchestrator is None:
-        from app.prototype.graph.graph_orchestrator import GraphOrchestrator
-        _GraphOrchestrator = GraphOrchestrator
+        try:
+            from app.prototype.graph.graph_orchestrator import GraphOrchestrator
+            _GraphOrchestrator = GraphOrchestrator
+        except ImportError:
+            return None
     return _GraphOrchestrator
 
 router = APIRouter(prefix="/api/v1/prototype", tags=["prototype"])
@@ -141,8 +144,11 @@ async def create_run(req: CreateRunRequest) -> RunStatusResponse:
     use_graph = req.use_graph or req.custom_nodes is not None
 
     # Dual-track: use_graph selects LangGraph-based orchestrator
+    GraphOrchestrator = _get_graph_orchestrator_class() if use_graph else None
+    if use_graph and GraphOrchestrator is None:
+        # langgraph not installed — fall back to standard pipeline
+        use_graph = False
     if use_graph:
-        GraphOrchestrator = _get_graph_orchestrator_class()
         template_name = req.template
 
         # If custom topology provided, register a transient template

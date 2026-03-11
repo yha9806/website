@@ -151,7 +151,7 @@ export default function PrototypePage() {
       enable_hitl: lastRunParams?.enable_hitl || false,
       enable_agent_critic: lastRunParams?.enable_agent_critic ?? true,
       enable_parallel_critic: lastRunParams?.enable_parallel_critic || false,
-      use_graph: true, // M3 custom topology forces graph mode
+      use_graph: lastRunParams?.use_graph || false, // Only use graph mode if explicitly enabled
       template: params.template,
       custom_nodes: params.customNodes,
       custom_edges: params.customEdges,

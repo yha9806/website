@@ -147,12 +147,13 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
+    <!-- SW disabled during development — cross-origin fetch conflicts -->
+    <!-- <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js').catch(() => {});
         });
       }
-    </script>
+    </script> -->
   </body>
 </html>
