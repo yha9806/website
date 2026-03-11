@@ -46,6 +46,12 @@ class CulturalConcept:
 class ConceptCrystallizer:
     """Crystallize cultural concepts from large enough clusters."""
 
+    _SYSTEM_MSG = (
+        "You are a cultural art concept naming expert for the VULCA system. "
+        "You identify and name emerged cultural concepts from art creation session clusters. "
+        "Output ONLY valid JSON, no markdown fences or explanation."
+    )
+
     def __init__(self, min_cluster_size: int = _MIN_CLUSTER_SIZE) -> None:
         self._min_size = min_cluster_size
 
@@ -95,6 +101,7 @@ class ConceptCrystallizer:
     def _try_llm_crystallize(self, cluster, sessions: list[dict]) -> CulturalConcept | None:
         """Use LLM to name and describe the emerged concept, with retry."""
         import json
+        import re
 
         # Build context from cluster (done once, outside retry loop)
         cluster_sessions = [
@@ -106,20 +113,23 @@ class ConceptCrystallizer:
 
         is_cross = getattr(cluster, "source", "") == "cross_tradition"
         if is_cross:
-            tradition_line = f"- Cross-tradition cluster spanning: {', '.join(getattr(cluster, 'traditions', traditions))}"
+            # Cap tradition names to 5 to keep prompt concise
+            cross_traditions = getattr(cluster, "traditions", traditions)[:5]
+            tradition_line = f"- Cross-tradition cluster spanning: {', '.join(cross_traditions)}"
         else:
             tradition_line = f"- Tradition: {cluster.tradition}"
 
+        # Keep prompt concise — top 3 intents, summarized centroid
+        top_intents = [i[:80] for i in intents[:3] if i]
+        centroid_summary = {k: round(v, 2) for k, v in list(cluster.feature_centroid.items())[:6]}
+
         prompt = (
-            "Based on these art creation sessions, identify the emerged cultural concept:\n"
+            "Name the emerged cultural concept from these art sessions:\n"
             f"{tradition_line}\n"
-            f"- Related traditions: {', '.join(traditions)}\n"
-            f"- Sample intents: {'; '.join(intents[:5])}\n"
-            f"- Feature centroid: {cluster.feature_centroid}\n\n"
-            "Respond ONLY with valid JSON:\n"
-            '{"name": "concept_name_snake_case", "description": "brief description", '
-            '"key_principles": ["principle1", "principle2"], '
-            '"l_focus": {"L1": 0.X, "L3": 0.X, "L5": 0.X}}'
+            f"- Sample intents: {'; '.join(top_intents)}\n"
+            f"- Feature centroid: {centroid_summary}\n\n"
+            'Return JSON: {"name": "snake_case_name", "description": "brief", '
+            '"key_principles": ["p1", "p2"], "l_focus": {"L1": 0.X, "L3": 0.X}}'
         )
 
         last_error: Exception | None = None
@@ -130,35 +140,50 @@ class ConceptCrystallizer:
 
                 response = litellm.completion(
                     model=MODEL_FAST,
-                    messages=[{"role": "user", "content": prompt}],
+                    messages=[
+                        {"role": "system", "content": self._SYSTEM_MSG},
+                        {"role": "user", "content": prompt},
+                    ],
                     max_tokens=4096,
                     temperature=0.3,
                     timeout=self._LLM_TIMEOUT_S,
                 )
 
                 raw = response.choices[0].message.content or ""
-                # Strip markdown fences (Gemini wraps in ```json...```)
                 from app.prototype.digestion.llm_utils import strip_markdown_fences
                 text = strip_markdown_fences(raw)
-                # Parse JSON
+
+                # Try JSON parsing
                 brace_start = text.find("{")
                 brace_end = text.rfind("}")
                 if brace_start != -1 and brace_end > brace_start:
-                    parsed = json.loads(text[brace_start:brace_end + 1])
+                    try:
+                        parsed = json.loads(text[brace_start:brace_end + 1])
+                        return CulturalConcept(
+                            name=parsed.get("name", f"concept_{cluster.cluster_id}"),
+                            description=parsed.get("description", ""),
+                            key_principles=parsed.get("key_principles", []),
+                            l_focus=parsed.get("l_focus", {}),
+                            weights=dict(cluster.feature_centroid),
+                            reference_sessions=cluster.session_ids[:10],
+                            confidence=min(1.0, cluster.size / 20),
+                        )
+                    except json.JSONDecodeError:
+                        pass  # Fall through to regex fallback
+
+                # Regex fallback: extract name from text if JSON fails
+                name_match = re.search(r'"name"\s*:\s*"([^"]+)"', text)
+                desc_match = re.search(r'"description"\s*:\s*"([^"]+)"', text)
+                if name_match:
                     return CulturalConcept(
-                        name=parsed.get("name", f"concept_{cluster.cluster_id}"),
-                        description=parsed.get("description", ""),
-                        key_principles=parsed.get("key_principles", []),
-                        l_focus=parsed.get("l_focus", {}),
+                        name=name_match.group(1),
+                        description=desc_match.group(1) if desc_match else "",
                         weights=dict(cluster.feature_centroid),
                         reference_sessions=cluster.session_ids[:10],
-                        confidence=min(1.0, cluster.size / 20),
+                        confidence=min(1.0, cluster.size / 20) * 0.8,  # Lower confidence for regex
                     )
-                else:
-                    # LLM returned text without valid JSON braces
-                    raise ValueError(
-                        f"No valid JSON object in LLM response: {text[:200]}"
-                    )
+
+                raise ValueError(f"No valid JSON in LLM response: {text[:200]}")
             except Exception as e:
                 last_error = e
                 logger.warning(

@@ -65,7 +65,7 @@
     }
   },
   "version": 2,
-  "evolutions": 54,
+  "evolutions": 70,
   "cultures": {
     "chinese_xieyi_l5_emphasis": {
       "name": "chinese_xieyi_l5_emphasis",
@@ -109,17 +109,17 @@
         "High cultural_depth"
       ],
       "l_focus": {
-        "cultural_depth": 0.8767,
         "avg_score": 0.772,
-        "l5_emphasis": 0.7992,
+        "cultural_depth": 0.8767,
         "tradition_specificity": 0.8,
+        "l5_emphasis": 0.7992,
         "risk_level": 0.0
       },
       "weights": {
-        "cultural_depth": 0.8767,
         "avg_score": 0.772,
-        "l5_emphasis": 0.7992,
+        "cultural_depth": 0.8767,
         "tradition_specificity": 0.8,
+        "l5_emphasis": 0.7992,
         "risk_level": 0.0
       },
       "reference_sessions": [
@@ -127,7 +127,7 @@
         "seed-010",
         "seed-013"
       ],
-      "emerged_at": 1773183104.8716931,
+      "emerged_at": 1773231000.169355,
       "confidence": 0.15
     },
     "japanese_wabi_sabi_tradition_specificity": {
@@ -137,17 +137,17 @@
         "High tradition_specificity"
       ],
       "l_focus": {
-        "cultural_depth": 0.7767,
         "avg_score": 0.754,
-        "l5_emphasis": 0.6615,
+        "cultural_depth": 0.7767,
         "tradition_specificity": 0.8,
+        "l5_emphasis": 0.6615,
         "risk_level": 0.0
       },
       "weights": {
-        "cultural_depth": 0.7767,
         "avg_score": 0.754,
-        "l5_emphasis": 0.6615,
+        "cultural_depth": 0.7767,
         "tradition_specificity": 0.8,
+        "l5_emphasis": 0.6615,
         "risk_level": 0.0
       },
       "reference_sessions": [
@@ -155,7 +155,7 @@
         "seed-011",
         "seed-015"
       ],
-      "emerged_at": 1773183107.1612716,
+      "emerged_at": 1773231002.426998,
       "confidence": 0.15
     },
     "cross_african_ubuntu+chinese_xieyi+default_l5_emphasis": {
@@ -165,17 +165,17 @@
         "High l5_emphasis"
       ],
       "l_focus": {
-        "cultural_depth": 0.7573,
         "avg_score": 0.7304,
-        "l5_emphasis": 0.7927,
+        "cultural_depth": 0.7573,
         "tradition_specificity": 0.7333,
+        "l5_emphasis": 0.7927,
         "risk_level": 0.0
       },
       "weights": {
-        "cultural_depth": 0.7573,
         "avg_score": 0.7304,
-        "l5_emphasis": 0.7927,
+        "cultural_depth": 0.7573,
         "tradition_specificity": 0.7333,
+        "l5_emphasis": 0.7927,
         "risk_level": 0.0
       },
       "reference_sessions": [
@@ -190,7 +190,7 @@
         "seed-009",
         "seed-010"
       ],
-      "emerged_at": 1773183109.470633,
+      "emerged_at": 1773231004.745172,
       "confidence": 0.75
     },
     "chinese_xieyi_ink_painting": {
@@ -285,8 +285,8 @@
         "avg_score": 0.76,
         "count": 2,
         "traditions": [
-          "persian_miniature",
-          "japanese_wabi_sabi"
+          "japanese_wabi_sabi",
+          "persian_miniature"
         ],
         "example_prompts": [
           "persian miniature garden scene",
@@ -300,10 +300,10 @@
       {
         "cluster_id": "intra-000-000",
         "feature_centroid": {
-          "cultural_depth": 0.8767,
           "avg_score": 0.772,
-          "l5_emphasis": 0.7992,
+          "cultural_depth": 0.8767,
           "tradition_specificity": 0.8,
+          "l5_emphasis": 0.7992,
           "risk_level": 0.0
         },
         "session_ids": [
@@ -318,10 +318,10 @@
       {
         "cluster_id": "intra-001-000",
         "feature_centroid": {
-          "cultural_depth": 0.7767,
           "avg_score": 0.754,
-          "l5_emphasis": 0.6615,
+          "cultural_depth": 0.7767,
           "tradition_specificity": 0.8,
+          "l5_emphasis": 0.6615,
           "risk_level": 0.0
         },
         "session_ids": [
@@ -336,10 +336,10 @@
       {
         "cluster_id": "intra-002-000",
         "feature_centroid": {
-          "cultural_depth": 0.67,
           "avg_score": 0.713,
-          "l5_emphasis": 0.9249,
+          "cultural_depth": 0.67,
           "tradition_specificity": 0.8,
+          "l5_emphasis": 0.9249,
           "risk_level": 0.0
         },
         "session_ids": [
@@ -433,10 +433,10 @@
       {
         "cluster_id": "intra-008-000",
         "feature_centroid": {
-          "cultural_depth": 0.695,
           "avg_score": 0.602,
-          "l5_emphasis": 0.8916,
+          "cultural_depth": 0.695,
           "tradition_specificity": 0.3,
+          "l5_emphasis": 0.8916,
           "risk_level": 0.0
         },
         "session_ids": [
@@ -450,10 +450,10 @@
       {
         "cluster_id": "cross-000",
         "feature_centroid": {
-          "cultural_depth": 0.7573,
           "avg_score": 0.7304,
-          "l5_emphasis": 0.7927,
+          "cultural_depth": 0.7573,
           "tradition_specificity": 0.7333,
+          "l5_emphasis": 0.7927,
           "risk_level": 0.0
         },
         "session_ids": [
@@ -491,6 +491,99 @@
     ]
   },
   "layer_focus": {
+    "chinese_gongbi": {
+      "visual_perception": {
+        "focus_points": [
+          "line precision",
+          "color layering",
+          "fine detail rendering"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "technical_analysis": {
+        "focus_points": [
+          "silk/paper preparation",
+          "mineral pigment application",
+          "outline control"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "cultural_context": {
+        "focus_points": [
+          "court painting tradition",
+          "Tang-Song conventions",
+          "decorative symbolism"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "critical_interpretation": {
+        "focus_points": [
+          "auspicious symbolism",
+          "narrative scene reading",
+          "rank/status coding"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "philosophical_aesthetic": {
+        "focus_points": [
+          "beauty through restraint",
+          "order as virtue",
+          "meticulous devotion"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      }
+    },
+    "african_traditional": {
+      "visual_perception": {
+        "focus_points": [
+          "bold pattern rhythms",
+          "symbolic color use",
+          "sculptural form"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "technical_analysis": {
+        "focus_points": [
+          "material authenticity",
+          "textile/carving technique",
+          "natural pigments"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "cultural_context": {
+        "focus_points": [
+          "communal storytelling",
+          "ritual significance",
+          "ancestral symbolism"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "critical_interpretation": {
+        "focus_points": [
+          "spiritual function",
+          "social identity encoding"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "philosophical_aesthetic": {
+        "focus_points": [
+          "art as life force",
+          "collective memory",
+          "spiritual embodiment"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      }
+    },
     "chinese_xieyi": {
       "visual_perception": {
         "focus_points": [
@@ -538,35 +631,6 @@
         "session_count": 0
       }
     },
-    "chinese_gongbi": {
-      "visual_perception": {
-        "focus_points": [
-          "line precision",
-          "color layering",
-          "fine detail rendering"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "technical_analysis": {
-        "focus_points": [
-          "silk/paper preparation",
-          "mineral pigment application",
-          "outline control"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      },
-      "cultural_context": {
-        "focus_points": [
-          "court painting tradition",
-          "Tang-Song conventions",
-          "decorative symbolism"
-        ],
-        "anti_focus": [],
-        "session_count": 0
-      }
-    },
     "islamic_geometric": {
       "visual_perception": {
         "focus_points": [
@@ -594,6 +658,206 @@
         ],
         "anti_focus": [],
         "session_count": 0
+      },
+      "critical_interpretation": {
+        "focus_points": [
+          "infinite pattern meditation",
+          "unity in multiplicity"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "philosophical_aesthetic": {
+        "focus_points": [
+          "divine order through geometry",
+          "transcendence of material form"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      }
+    },
+    "south_asian": {
+      "visual_perception": {
+        "focus_points": [
+          "vivid color saturation",
+          "ornamental density",
+          "narrative composition"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "technical_analysis": {
+        "focus_points": [
+          "miniature painting precision",
+          "natural dye mastery",
+          "gold detailing"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "cultural_context": {
+        "focus_points": [
+          "rasa theory (emotional essence)",
+          "mythological narratives",
+          "devotional art"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "critical_interpretation": {
+        "focus_points": [
+          "rasa identification",
+          "darshan (sacred seeing)",
+          "iconometric rules"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "philosophical_aesthetic": {
+        "focus_points": [
+          "divine beauty manifestation",
+          "cyclical time in art",
+          "sensory transcendence"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      }
+    },
+    "japanese_traditional": {
+      "visual_perception": {
+        "focus_points": [
+          "seasonal motifs",
+          "asymmetric balance",
+          "wabi-sabi textures"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "technical_analysis": {
+        "focus_points": [
+          "sumi ink gradation",
+          "woodblock layering",
+          "gold leaf application"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "cultural_context": {
+        "focus_points": [
+          "mono no aware (物の哀れ)",
+          "Zen simplicity",
+          "seasonal awareness"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "critical_interpretation": {
+        "focus_points": [
+          "ma (間) spatial reading",
+          "impermanence as beauty"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "philosophical_aesthetic": {
+        "focus_points": [
+          "wabi-sabi acceptance",
+          "nature-art continuity",
+          "quiet depth"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      }
+    },
+    "western_academic": {
+      "visual_perception": {
+        "focus_points": [
+          "chiaroscuro modeling",
+          "linear perspective",
+          "anatomical proportion"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "technical_analysis": {
+        "focus_points": [
+          "oil layering technique",
+          "color theory application",
+          "canvas preparation"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "cultural_context": {
+        "focus_points": [
+          "classical tradition",
+          "art historical references",
+          "genre conventions"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "critical_interpretation": {
+        "focus_points": [
+          "iconographic analysis",
+          "formal composition critique"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "philosophical_aesthetic": {
+        "focus_points": [
+          "mimesis vs. expression",
+          "beauty and sublimity",
+          "artistic genius"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      }
+    },
+    "watercolor": {
+      "visual_perception": {
+        "focus_points": [
+          "luminous transparency",
+          "wet-on-wet diffusion",
+          "paper white preservation"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "technical_analysis": {
+        "focus_points": [
+          "wash control",
+          "granulation effects",
+          "lifting and blotting"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "cultural_context": {
+        "focus_points": [
+          "plein air tradition",
+          "botanical illustration heritage",
+          "travel sketching"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "critical_interpretation": {
+        "focus_points": [
+          "spontaneity vs. control balance",
+          "light as subject"
+        ],
+        "anti_focus": [],
+        "session_count": 0
+      },
+      "philosophical_aesthetic": {
+        "focus_points": [
+          "ephemerality of the medium",
+          "harmony with accident"
+        ],
+        "anti_focus": [],
+        "session_count": 0
       }
     }
   },
@@ -602,7 +866,7 @@
     "prefer_quality_over_speed": true,
     "high_pattern_count": 2,
     "negative_feedback_count": 0,
-    "updated_at": "2026-03-10T22:51:49"
+    "updated_at": "2026-03-11T12:10:04"
   },
   "few_shot_examples": [
     {
@@ -711,5 +975,21 @@
     "south_asian": "To improve, emphasize the rich cultural narratives, vibrant color palettes, and intricate detailing characteristic of South Asian art. Explore diverse regional styles and their unique iconographies and storytelling traditions, ensuring authenticity and depth in representation.",
     "watercolor": "To improve, leverage the unique properties of watercolor: transparency, luminosity, and fluid washes. Focus on capturing light and atmosphere, experimenting with wet-on-wet techniques and expressive brushwork to create depth and emotion. Emphasize the spontaneous and ethereal qualities inherent to the medium.",
     "western_academic": "To improve, prioritize foundational techniques like anatomy, perspective, and chiaroscuro. Focus on realistic representation and classical compositions, while also exploring opportunities for emotional depth and narrative complexity. Strive for technical mastery combined with compelling storytelling and expressive qualities."
+  },
+  "trajectory_insights": {
+    "total_trajectories": 420,
+    "common_weak_dimensions": [
+      "visual_perception",
+      "cultural_context",
+      "philosophical_aesthetic",
+      "technical_analysis",
+      "critical_interpretation"
+    ],
+    "avg_rounds_to_accept": 1.19,
+    "repair_success_rate": 0.161,
+    "tradition_avg_rounds": {
+      "chinese_xieyi": 1.11,
+      "default": 1.02
+    }
   }
 }

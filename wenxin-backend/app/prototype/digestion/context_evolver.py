@@ -247,6 +247,14 @@ class ContextEvolver:
         except Exception as exc:
             logger.debug("Concept crystallization skipped: %s", exc)
 
+        # --- Trajectory-based learning ---
+        try:
+            trajectory_insights = self._extract_trajectory_insights()
+            if trajectory_insights:
+                context.setdefault("trajectory_insights", {}).update(trajectory_insights)
+        except Exception as exc:
+            logger.debug("Trajectory learning skipped: %s", exc)
+
         # --- Queen strategy evolution ---
         try:
             queen_strategy = self._evolve_queen_strategy(context, patterns)
@@ -276,6 +284,7 @@ class ContextEvolver:
             or context.get("queen_strategy")
             or context.get("agent_insights")
             or context.get("tradition_insights")
+            or context.get("trajectory_insights")
         )
         if actions or has_new_data:
             self._save_context(context)
@@ -625,11 +634,50 @@ Generate agent insights and tradition-specific guidance based on this data."""
             "visual_perception": ["line precision", "color layering", "fine detail rendering"],
             "technical_analysis": ["silk/paper preparation", "mineral pigment application", "outline control"],
             "cultural_context": ["court painting tradition", "Tang-Song conventions", "decorative symbolism"],
+            "critical_interpretation": ["auspicious symbolism", "narrative scene reading", "rank/status coding"],
+            "philosophical_aesthetic": ["beauty through restraint", "order as virtue", "meticulous devotion"],
         },
         "islamic_geometric": {
             "visual_perception": ["geometric symmetry", "tessellation precision", "color harmony"],
             "technical_analysis": ["compass-ruler construction", "pattern repetition accuracy", "gilding quality"],
             "cultural_context": ["aniconism principles", "mathematical beauty", "spiritual geometry"],
+            "critical_interpretation": ["infinite pattern meditation", "unity in multiplicity"],
+            "philosophical_aesthetic": ["divine order through geometry", "transcendence of material form"],
+        },
+        "japanese_traditional": {
+            "visual_perception": ["seasonal motifs", "asymmetric balance", "wabi-sabi textures"],
+            "technical_analysis": ["sumi ink gradation", "woodblock layering", "gold leaf application"],
+            "cultural_context": ["mono no aware (物の哀れ)", "Zen simplicity", "seasonal awareness"],
+            "critical_interpretation": ["ma (間) spatial reading", "impermanence as beauty"],
+            "philosophical_aesthetic": ["wabi-sabi acceptance", "nature-art continuity", "quiet depth"],
+        },
+        "western_academic": {
+            "visual_perception": ["chiaroscuro modeling", "linear perspective", "anatomical proportion"],
+            "technical_analysis": ["oil layering technique", "color theory application", "canvas preparation"],
+            "cultural_context": ["classical tradition", "art historical references", "genre conventions"],
+            "critical_interpretation": ["iconographic analysis", "formal composition critique"],
+            "philosophical_aesthetic": ["mimesis vs. expression", "beauty and sublimity", "artistic genius"],
+        },
+        "african_traditional": {
+            "visual_perception": ["bold pattern rhythms", "symbolic color use", "sculptural form"],
+            "technical_analysis": ["material authenticity", "textile/carving technique", "natural pigments"],
+            "cultural_context": ["communal storytelling", "ritual significance", "ancestral symbolism"],
+            "critical_interpretation": ["spiritual function", "social identity encoding"],
+            "philosophical_aesthetic": ["art as life force", "collective memory", "spiritual embodiment"],
+        },
+        "south_asian": {
+            "visual_perception": ["vivid color saturation", "ornamental density", "narrative composition"],
+            "technical_analysis": ["miniature painting precision", "natural dye mastery", "gold detailing"],
+            "cultural_context": ["rasa theory (emotional essence)", "mythological narratives", "devotional art"],
+            "critical_interpretation": ["rasa identification", "darshan (sacred seeing)", "iconometric rules"],
+            "philosophical_aesthetic": ["divine beauty manifestation", "cyclical time in art", "sensory transcendence"],
+        },
+        "watercolor": {
+            "visual_perception": ["luminous transparency", "wet-on-wet diffusion", "paper white preservation"],
+            "technical_analysis": ["wash control", "granulation effects", "lifting and blotting"],
+            "cultural_context": ["plein air tradition", "botanical illustration heritage", "travel sketching"],
+            "critical_interpretation": ["spontaneity vs. control balance", "light as subject"],
+            "philosophical_aesthetic": ["ephemerality of the medium", "harmony with accident"],
         },
     }
 
@@ -688,6 +736,88 @@ Generate agent insights and tradition-specific guidance based on this data."""
                 result[tradition] = layers
 
         return result
+
+    # ------------------------------------------------------------------
+    # Trajectory-based learning
+    # ------------------------------------------------------------------
+
+    def _extract_trajectory_insights(self) -> dict | None:
+        """Extract learning signals from recorded pipeline trajectories.
+
+        Analyzes trajectory files to learn:
+        - avg_rounds_to_accept: How many rounds successful runs typically take
+        - common_weak_dimensions: Dimensions most frequently flagged by Critic
+        - repair_success_rate: How often rerun improves the flagged dimension
+        - per-tradition efficiency patterns
+        """
+        from collections import Counter, defaultdict
+
+        try:
+            from app.prototype.trajectory.trajectory_recorder import TrajectoryRecorder
+            recorder = TrajectoryRecorder()
+        except Exception:
+            return None
+
+        if recorder.count() < 3:
+            return None  # Not enough data
+
+        records = recorder.load_all()
+        if not records:
+            return None
+
+        # Aggregate stats
+        rounds_per_accept: list[int] = []
+        weak_dims: Counter = Counter()
+        repair_attempts = 0
+        repair_successes = 0
+        tradition_rounds: dict[str, list[int]] = defaultdict(list)
+
+        for rec in records:
+            if rec.final_action == "accept":
+                rounds_per_accept.append(len(rec.rounds))
+            tradition_rounds[rec.tradition].append(len(rec.rounds))
+
+            for i, rnd in enumerate(rec.rounds):
+                if rnd.critic_findings:
+                    # Track weak dimensions (score < 0.5)
+                    for dim, score in rnd.critic_findings.layer_scores.items():
+                        if score < 0.5:
+                            weak_dims[dim] += 1
+
+                    # Track repair success: if rerun improved the weak dim
+                    if (rnd.decision and rnd.decision.action in ("rerun", "rerun_local")
+                            and i + 1 < len(rec.rounds)):
+                        next_rnd = rec.rounds[i + 1]
+                        if next_rnd.critic_findings:
+                            for dim, score in rnd.critic_findings.layer_scores.items():
+                                if score < 0.5:
+                                    repair_attempts += 1
+                                    new_score = next_rnd.critic_findings.layer_scores.get(dim, 0)
+                                    if new_score > score:
+                                        repair_successes += 1
+
+        insights: dict = {
+            "total_trajectories": len(records),
+            "common_weak_dimensions": [d for d, _ in weak_dims.most_common(5)],
+        }
+
+        if rounds_per_accept:
+            insights["avg_rounds_to_accept"] = round(
+                sum(rounds_per_accept) / len(rounds_per_accept), 2
+            )
+
+        if repair_attempts > 0:
+            insights["repair_success_rate"] = round(repair_successes / repair_attempts, 3)
+
+        # Per-tradition efficiency
+        tradition_efficiency: dict[str, float] = {}
+        for t, rounds_list in tradition_rounds.items():
+            if rounds_list:
+                tradition_efficiency[t] = round(sum(rounds_list) / len(rounds_list), 2)
+        if tradition_efficiency:
+            insights["tradition_avg_rounds"] = tradition_efficiency
+
+        return insights
 
     # ------------------------------------------------------------------
     # P2-1: Queen strategy parameter evolution
