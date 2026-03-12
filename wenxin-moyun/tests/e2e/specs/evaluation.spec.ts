@@ -9,6 +9,9 @@ import {
 } from '../helpers/test-utils';
 
 test.describe('Evaluation System', () => {
+  // Skip: /evaluations now redirects to /canvas (Canvas is the unified creation+evaluation page).
+  // These tests target the old standalone evaluation page UI which no longer exists.
+  test.skip();
   // Increase timeout for CI environment
   test.setTimeout(60000);
   

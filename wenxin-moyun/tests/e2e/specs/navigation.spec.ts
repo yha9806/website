@@ -51,7 +51,7 @@ test.describe('Navigation System', () => {
     const routes = [
       { path: '/leaderboard', check: 'leaderboard', urlMatch: '/leaderboard' },
       { path: '/vulca', check: 'vulca', urlMatch: '/(vulca|canvas)' },
-      { path: '/evaluations', check: 'evaluations', urlMatch: '/evaluations' },
+      { path: '/evaluations', check: 'evaluations', urlMatch: '/(evaluations|canvas)' },
       { path: '/', check: 'home', urlMatch: '/$' }
     ];
 
@@ -75,8 +75,8 @@ test.describe('Navigation System', () => {
         const vulcaElements = page.locator('button:has-text("Edit"), button:has-text("Run"), h1, [data-testid*="vulca"], [id="demo-section"]').first();
         await expect(vulcaElements).toBeVisible({ timeout: 15000 });
       } else if (route.check === 'evaluations') {
-        // Check for evaluation page elements
-        const evalElements = page.locator('h1, h2, [data-testid="evaluation"]').first();
+        // /evaluations redirects to /canvas — look for canvas elements
+        const evalElements = page.locator('h1, h2, button:has-text("Edit"), button:has-text("Run"), [data-testid="evaluation"]').first();
         await expect(evalElements).toBeVisible({ timeout: 10000 });
       } else if (route.check === 'home') {
         await expect(homePage.heroTitle).toBeVisible({ timeout: 10000 });
