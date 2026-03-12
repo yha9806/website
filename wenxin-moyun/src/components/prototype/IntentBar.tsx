@@ -15,10 +15,12 @@ export interface IntentBarProps {
   /** Called whenever the intent text changes (for live tradition auto-matching). */
   onIntentChange?: (intent: string) => void;
   disabled?: boolean;
+  /** Pre-fill value (e.g. from Gallery Fork URL params). */
+  initialValue?: string;
 }
 
-export default function IntentBar({ onSubmit, onIntentChange, disabled = false }: IntentBarProps) {
-  const [intent, setIntent] = useState('');
+export default function IntentBar({ onSubmit, onIntentChange, disabled = false, initialValue = '' }: IntentBarProps) {
+  const [intent, setIntent] = useState(initialValue);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);

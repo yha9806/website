@@ -117,35 +117,21 @@ export default function PrototypePage() {
   // Critic Detail Modal state
   const [criticDetailCandidate, setCriticDetailCandidate] = useState<ScoredCandidate | null>(null);
 
+  // Read URL params synchronously for Gallery Fork pre-fill
+  const [searchParams] = useSearchParams();
+  const urlSubjectInit = searchParams.get('subject') || '';
+  const urlTraditionInit = searchParams.get('tradition') || '';
+
   // Lifted state: current subject & tradition from sidebar inputs
   // These track the live IntentBar text and auto-detected (or manually chosen) tradition.
-  const [currentSubject, setCurrentSubject] = useState('');
-  const [currentTradition, setCurrentTradition] = useState('chinese_xieyi');
+  const [currentSubject, setCurrentSubject] = useState(urlSubjectInit);
+  const [currentTradition, setCurrentTradition] = useState(urlTraditionInit || 'chinese_xieyi');
   /** True while the backend is classifying tradition. */
   const [traditionClassifying, setTraditionClassifying] = useState(false);
   /** True if the user explicitly picked a tradition (don't auto-override). */
-  const traditionManuallySet = useRef(false);
+  const traditionManuallySet = useRef(!!urlTraditionInit);
   /** Ref to track the latest debounce timer. */
   const classifyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Read URL params on mount to pre-fill from Gallery Fork
-  const [searchParams] = useSearchParams();
-  const urlParamsRead = useRef(false);
-  useEffect(() => {
-    if (urlParamsRead.current) return;
-    urlParamsRead.current = true;
-
-    const urlSubject = searchParams.get('subject');
-    const urlTradition = searchParams.get('tradition');
-
-    if (urlSubject) {
-      setCurrentSubject(urlSubject);
-    }
-    if (urlTradition) {
-      setCurrentTradition(urlTradition);
-      traditionManuallySet.current = true;
-    }
-  }, [searchParams]);
 
   // Auto-detect tradition when subject text changes (hybrid: local + debounced backend)
   useEffect(() => {
@@ -391,7 +377,7 @@ export default function PrototypePage() {
 
       {/* Quick intent bar */}
       <div data-tour-intent>
-        <IntentBar onSubmit={handleIntentSubmit} onIntentChange={handleIntentChange} disabled={isRunning || evaluateLoading} />
+        <IntentBar onSubmit={handleIntentSubmit} onIntentChange={handleIntentChange} disabled={isRunning || evaluateLoading} initialValue={currentSubject} />
       </div>
 
       {/* Tradition indicator — shows auto-detected tradition with classification status */}
