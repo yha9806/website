@@ -7,7 +7,7 @@
  * - Submit button
  */
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { IOSCard, IOSCardContent, IOSButton } from '../ios';
 
 export interface IntentBarProps {
@@ -21,6 +21,14 @@ export interface IntentBarProps {
 
 export default function IntentBar({ onSubmit, onIntentChange, disabled = false, initialValue = '' }: IntentBarProps) {
   const [intent, setIntent] = useState(initialValue);
+  // Sync when initialValue changes (e.g. Gallery Fork navigation)
+  useEffect(() => {
+    if (initialValue && initialValue !== intent) {
+      setIntent(initialValue);
+      onIntentChange?.(initialValue);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialValue]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
