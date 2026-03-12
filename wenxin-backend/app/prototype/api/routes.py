@@ -5,6 +5,7 @@ Endpoints:
     GET  /api/v1/prototype/runs/{id}         Get run status
     GET  /api/v1/prototype/runs/{id}/events  SSE event stream
     POST /api/v1/prototype/runs/{id}/action  Submit HITL action
+    GET  /api/v1/prototype/classify-tradition  Classify tradition from subject text
 """
 
 from __future__ import annotations
@@ -17,7 +18,9 @@ import time
 import uuid
 from threading import Thread
 
-from fastapi import APIRouter, HTTPException
+import logging
+
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import StreamingResponse
 
 from app.prototype.agents.critic_config import CriticConfig
@@ -516,6 +519,38 @@ async def get_capabilities():
             "llm_queen": has_key,
         },
     }
+
+
+# ---------------------------------------------------------------------------
+# Tradition Classification endpoint
+# ---------------------------------------------------------------------------
+
+@router.get("/classify-tradition")
+async def classify_tradition(
+    subject: str = Query(..., min_length=1, max_length=500, description="Subject text to classify"),
+):
+    """Classify the cultural tradition of a subject description.
+
+    Uses a two-tier approach:
+      1. Fast keyword matching (exact term lookup, instant)
+      2. Rich heuristic scoring with weighted cultural indicators
+
+    Returns tradition, confidence score (0-1), and classification method.
+    """
+    from app.prototype.cultural_pipelines.tradition_classifier import (
+        classify_tradition as _classify,
+    )
+
+    result = _classify(subject)
+    response: dict = {
+        "tradition": result.tradition,
+        "confidence": result.confidence,
+        "method": result.method,
+    }
+    if result.runner_up:
+        response["runner_up"] = result.runner_up
+        response["runner_up_confidence"] = result.runner_up_confidence
+    return response
 
 
 # ---------------------------------------------------------------------------

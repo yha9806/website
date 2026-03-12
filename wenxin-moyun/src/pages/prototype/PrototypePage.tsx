@@ -54,7 +54,7 @@ const PROTO_AUTH = { Authorization: 'Bearer demo-key' } as const;
 
 type PlaygroundMode = 'edit' | 'run' | 'build' | 'explore' | 'compare';
 
-/** Keyword → tradition mapping for auto-detection from subject text. */
+/** Keyword → tradition mapping for auto-detection from subject text (local fast-pass). */
 const TRADITION_KEYWORDS: Array<{ keywords: string[]; tradition: string }> = [
   { keywords: ['japanese', 'zen', 'ukiyo', 'wabi', 'sabi'], tradition: 'japanese_wabi_sabi' },
   { keywords: ['persian', 'islamic', 'miniature', 'arabesque'], tradition: 'persian_miniature' },
@@ -66,13 +66,27 @@ const TRADITION_KEYWORDS: Array<{ keywords: string[]; tradition: string }> = [
   { keywords: ['chinese', 'ink', '水墨', '工笔', 'xieyi'], tradition: 'chinese_xieyi' },
 ];
 
-/** Detect tradition from subject text using keyword matching. Returns null if no match. */
-function detectTradition(subject: string): string | null {
+/** Tier 1: fast local keyword match. Returns tradition or null. */
+function detectTraditionLocal(subject: string): string | null {
   const lower = subject.toLowerCase();
   for (const { keywords, tradition } of TRADITION_KEYWORDS) {
     if (keywords.some(kw => lower.includes(kw))) return tradition;
   }
   return null;
+}
+
+/** Tier 2: backend heuristic classification via GET /api/v1/prototype/classify-tradition. */
+async function classifyTraditionRemote(subject: string): Promise<{ tradition: string; confidence: number; method: string } | null> {
+  try {
+    const res = await fetch(
+      `${API_PREFIX}/prototype/classify-tradition?subject=${encodeURIComponent(subject)}`,
+      { headers: PROTO_AUTH },
+    );
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
 }
 
 function formatDimension(dim: string): string {
@@ -96,19 +110,53 @@ export default function PrototypePage() {
   // These track the live IntentBar text and auto-detected (or manually chosen) tradition.
   const [currentSubject, setCurrentSubject] = useState('');
   const [currentTradition, setCurrentTradition] = useState('chinese_xieyi');
+  /** True while the backend is classifying tradition. */
+  const [traditionClassifying, setTraditionClassifying] = useState(false);
   /** True if the user explicitly picked a tradition (don't auto-override). */
   const traditionManuallySet = useRef(false);
+  /** Ref to track the latest debounce timer. */
+  const classifyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Auto-detect tradition when subject text changes
+  // Auto-detect tradition when subject text changes (hybrid: local + debounced backend)
   useEffect(() => {
     if (traditionManuallySet.current) return;
-    const detected = detectTradition(currentSubject);
-    if (detected) {
-      setCurrentTradition(detected);
-    } else if (!currentSubject.trim()) {
-      // Reset to default when subject is cleared
-      setCurrentTradition('chinese_xieyi');
+
+    // Clear any pending backend classification
+    if (classifyTimerRef.current) {
+      clearTimeout(classifyTimerRef.current);
+      classifyTimerRef.current = null;
     }
+
+    if (!currentSubject.trim()) {
+      setCurrentTradition('chinese_xieyi');
+      setTraditionClassifying(false);
+      return;
+    }
+
+    // Tier 1: instant local keyword match
+    const localResult = detectTraditionLocal(currentSubject);
+    if (localResult) {
+      setCurrentTradition(localResult);
+      setTraditionClassifying(false);
+      return;
+    }
+
+    // Tier 2: debounced backend heuristic classification (500ms after typing stops)
+    setTraditionClassifying(true);
+    classifyTimerRef.current = setTimeout(async () => {
+      const result = await classifyTraditionRemote(currentSubject);
+      // Only apply if the user hasn't manually set tradition in the meantime
+      if (!traditionManuallySet.current && result && result.confidence > 0) {
+        setCurrentTradition(result.tradition);
+      }
+      setTraditionClassifying(false);
+    }, 500);
+
+    return () => {
+      if (classifyTimerRef.current) {
+        clearTimeout(classifyTimerRef.current);
+      }
+    };
   }, [currentSubject]);
 
   // Evaluate result from IntentBar image upload
@@ -305,6 +353,19 @@ export default function PrototypePage() {
 
       {/* Quick intent bar */}
       <IntentBar onSubmit={handleIntentSubmit} onIntentChange={handleIntentChange} disabled={isRunning || evaluateLoading} />
+
+      {/* Tradition indicator — shows auto-detected tradition with classification status */}
+      {currentSubject.trim() && (
+        <div className="flex items-center gap-2 px-1 text-xs">
+          <span className="text-gray-400 dark:text-gray-500">Tradition:</span>
+          <span className="font-medium text-[#C87F4A] dark:text-[#DDA574]">
+            {currentTradition.replace(/_/g, ' ')}
+          </span>
+          {traditionClassifying && (
+            <span className="inline-block w-3 h-3 border-2 border-[#C87F4A]/30 border-t-[#C87F4A] rounded-full animate-spin" />
+          )}
+        </div>
+      )}
 
       {/* HITL toggle */}
       <div className="flex items-center justify-between px-1">
