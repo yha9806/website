@@ -147,13 +147,13 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- SW disabled during development — cross-origin fetch conflicts -->
-    <!-- <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').catch(() => {});
+    <!-- Service Worker: production only (no port = Firebase Hosting / Cloud Run) -->
+    <script>
+      if ('serviceWorker' in navigator && location.port === '') {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js').catch(function() {});
         });
       }
-    </script> -->
+    </script>
   </body>
 </html>

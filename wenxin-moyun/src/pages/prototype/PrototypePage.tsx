@@ -10,7 +10,7 @@
  * The usePrototypePipeline hook and backend API are untouched — only rendering changes.
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { usePrototypePipeline } from '../../hooks/usePrototypePipeline';
 import type { CreateRunParams, ScoredCandidate } from '../../hooks/usePrototypePipeline';
 import { API_PREFIX } from '../../config/api';
@@ -53,6 +53,27 @@ const PROTO_AUTH = { Authorization: 'Bearer demo-key' } as const;
 
 type PlaygroundMode = 'edit' | 'run' | 'build' | 'explore' | 'compare';
 
+/** Keyword → tradition mapping for auto-detection from subject text. */
+const TRADITION_KEYWORDS: Array<{ keywords: string[]; tradition: string }> = [
+  { keywords: ['japanese', 'zen', 'ukiyo', 'wabi', 'sabi'], tradition: 'japanese_wabi_sabi' },
+  { keywords: ['persian', 'islamic', 'miniature', 'arabesque'], tradition: 'persian_miniature' },
+  { keywords: ['african', 'mask', 'ubuntu'], tradition: 'african_ubuntu' },
+  { keywords: ['indian', 'mughal', 'rajput'], tradition: 'indian_miniature' },
+  { keywords: ['korean', 'hangul', 'joseon'], tradition: 'korean_minhwa' },
+  { keywords: ['western', 'oil', 'renaissance', 'baroque'], tradition: 'western_classical' },
+  { keywords: ['aboriginal', 'dreamtime'], tradition: 'aboriginal_dreamtime' },
+  { keywords: ['chinese', 'ink', '水墨', '工笔', 'xieyi'], tradition: 'chinese_xieyi' },
+];
+
+/** Detect tradition from subject text using keyword matching. Returns null if no match. */
+function detectTradition(subject: string): string | null {
+  const lower = subject.toLowerCase();
+  for (const { keywords, tradition } of TRADITION_KEYWORDS) {
+    if (keywords.some(kw => lower.includes(kw))) return tradition;
+  }
+  return null;
+}
+
 function formatDimension(dim: string): string {
   return PROTOTYPE_DIM_LABELS[dim as PrototypeDimension]?.short || dim.replace(/_/g, ' ');
 }
@@ -70,6 +91,25 @@ export default function PrototypePage() {
   // Critic Detail Modal state
   const [criticDetailCandidate, setCriticDetailCandidate] = useState<ScoredCandidate | null>(null);
 
+  // Lifted state: current subject & tradition from sidebar inputs
+  // These track the live IntentBar text and auto-detected (or manually chosen) tradition.
+  const [currentSubject, setCurrentSubject] = useState('');
+  const [currentTradition, setCurrentTradition] = useState('chinese_xieyi');
+  /** True if the user explicitly picked a tradition (don't auto-override). */
+  const traditionManuallySet = useRef(false);
+
+  // Auto-detect tradition when subject text changes
+  useEffect(() => {
+    if (traditionManuallySet.current) return;
+    const detected = detectTradition(currentSubject);
+    if (detected) {
+      setCurrentTradition(detected);
+    } else if (!currentSubject.trim()) {
+      // Reset to default when subject is cleared
+      setCurrentTradition('chinese_xieyi');
+    }
+  }, [currentSubject]);
+
   // Evaluate result from IntentBar image upload
   const [evaluateResult, setEvaluateResult] = useState<Record<string, unknown> | null>(null);
   const [evaluateLoading, setEvaluateLoading] = useState(false);
@@ -86,8 +126,15 @@ export default function PrototypePage() {
     }));
   }, []);
 
+  /** Live intent text change from IntentBar — drives tradition auto-matching. */
+  const handleIntentChange = useCallback((text: string) => {
+    setCurrentSubject(text);
+  }, []);
+
   const handleIntentSubmit = useCallback(async (intent: string, imageFile?: File) => {
     setEvaluateResult(null);
+    // Snapshot subject for downstream use
+    setCurrentSubject(intent);
     if (imageFile) {
       // Image provided → evaluate mode via POST /api/v1/create
       setEvaluateLoading(true);
@@ -101,7 +148,7 @@ export default function PrototypePage() {
         const res = await fetch(`${API_PREFIX}/create`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...PROTO_AUTH },
-          body: JSON.stringify({ intent, image_base64: base64, tradition: lastRunParams?.tradition || 'default' }),
+          body: JSON.stringify({ intent, image_base64: base64, tradition: currentTradition }),
         });
         if (res.ok) {
           setEvaluateResult(await res.json());
@@ -114,7 +161,7 @@ export default function PrototypePage() {
       // No image → creation mode: fill subject and auto-start
       const params: CreateRunParams = {
         subject: intent,
-        tradition: lastRunParams?.tradition || 'default',
+        tradition: currentTradition,
         intent: lastRunParams?.intent || '',
         provider: lastRunParams?.provider || 'auto',
         n_candidates: lastRunParams?.n_candidates || 4,
@@ -129,7 +176,7 @@ export default function PrototypePage() {
       setPlaygroundMode('run');
       startRun(params);
     }
-  }, [lastRunParams, startRun, enableHitl]);
+  }, [lastRunParams, startRun, enableHitl, currentTradition]);
 
   const isRunning = state.status === 'running' || state.status === 'waiting_human';
   const isDone = state.status === 'completed' || state.status === 'failed';
@@ -141,10 +188,12 @@ export default function PrototypePage() {
     customEdges?: [string, string][];
     nodeParams?: Record<string, Record<string, unknown>>;
   }) => {
-    // Build CreateRunParams with custom topology
+    // Build CreateRunParams with custom topology.
+    // Primary source: live sidebar inputs (currentSubject, currentTradition).
+    // Secondary fallback: lastRunParams from a previous run.
     const runParams: CreateRunParams = {
-      subject: lastRunParams?.subject || 'Ink wash landscape with mist and mountains',
-      tradition: lastRunParams?.tradition || 'chinese_xieyi',
+      subject: currentSubject.trim() || lastRunParams?.subject || 'Ink wash landscape with mist and mountains',
+      tradition: currentTradition || lastRunParams?.tradition || 'chinese_xieyi',
       provider: lastRunParams?.provider || 'auto',
       n_candidates: lastRunParams?.n_candidates || 4,
       max_rounds: lastRunParams?.max_rounds || 3,
@@ -160,7 +209,7 @@ export default function PrototypePage() {
     setActiveTemplate(params.template);
     setPlaygroundMode('run');
     startRun(runParams);
-  }, [lastRunParams, startRun]);
+  }, [lastRunParams, startRun, currentSubject, currentTradition]);
 
   const completedStages = state.events
     .filter(e => e.event_type === 'stage_completed')
@@ -205,12 +254,19 @@ export default function PrototypePage() {
   const handleStartRun = (params: RunConfigParams) => {
     setActiveTemplate(params.template || 'default');
     setLastRunParams(params);
+    // Sync lifted state from RunConfigForm submission
+    if (params.subject) setCurrentSubject(params.subject);
+    if (params.tradition) {
+      setCurrentTradition(params.tradition);
+      traditionManuallySet.current = true; // User explicitly chose via Advanced Config
+    }
     startRun(params);
   };
 
   const handleReset = () => {
     setSelectedCandidateId(null);
     setEvaluateResult(null);
+    traditionManuallySet.current = false;
     reset();
   };
 
@@ -247,7 +303,7 @@ export default function PrototypePage() {
       </div>
 
       {/* Quick intent bar */}
-      <IntentBar onSubmit={handleIntentSubmit} disabled={isRunning || evaluateLoading} />
+      <IntentBar onSubmit={handleIntentSubmit} onIntentChange={handleIntentChange} disabled={isRunning || evaluateLoading} />
 
       {/* HITL toggle */}
       <div className="flex items-center justify-between px-1">

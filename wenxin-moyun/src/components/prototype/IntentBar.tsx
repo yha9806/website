@@ -12,10 +12,12 @@ import { IOSCard, IOSCardContent, IOSButton } from '../ios';
 
 export interface IntentBarProps {
   onSubmit: (intent: string, imageFile?: File) => void;
+  /** Called whenever the intent text changes (for live tradition auto-matching). */
+  onIntentChange?: (intent: string) => void;
   disabled?: boolean;
 }
 
-export default function IntentBar({ onSubmit, disabled = false }: IntentBarProps) {
+export default function IntentBar({ onSubmit, onIntentChange, disabled = false }: IntentBarProps) {
   const [intent, setIntent] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
@@ -59,7 +61,7 @@ export default function IntentBar({ onSubmit, disabled = false }: IntentBarProps
           {/* Text input */}
           <textarea
             value={intent}
-            onChange={(e) => setIntent(e.target.value)}
+            onChange={(e) => { setIntent(e.target.value); onIntentChange?.(e.target.value); }}
             onKeyDown={handleKeyDown}
             placeholder="Describe your creation intent..."
             disabled={disabled}
