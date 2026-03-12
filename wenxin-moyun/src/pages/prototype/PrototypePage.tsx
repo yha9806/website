@@ -11,6 +11,7 @@
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { usePrototypePipeline } from '../../hooks/usePrototypePipeline';
 import type { CreateRunParams, ScoredCandidate } from '../../hooks/usePrototypePipeline';
 import { API_PREFIX } from '../../config/api';
@@ -37,6 +38,7 @@ import FixItPlanCard from '../../components/prototype/FixItPlanCard';
 import CriticRationaleCard from '../../components/prototype/CriticRationaleCard';
 import HitlOverlay from '../../components/prototype/HitlOverlay';
 import CriticDetailModal from '../../components/prototype/CriticDetailModal';
+import OnboardingTour from '../../components/prototype/OnboardingTour';
 
 // M3: Pipeline Editor + Batch
 import { PipelineEditor, NodeParamPanel } from '../../components/prototype/editor';
@@ -49,6 +51,12 @@ import FinalResultPanel from '../../components/prototype/FinalResultPanel';
 import ComparePanel from '../../components/prototype/ComparePanel';
 import TraditionBuilder from '../../components/prototype/TraditionBuilder';
 import TraditionExplorer from '../../components/prototype/TraditionExplorer';
+
+// WU-2: Run History
+import RunHistoryPanel from '../../components/prototype/RunHistoryPanel';
+
+// WU-3: Provider Quick Switch
+import ProviderQuickSwitch from '../../components/prototype/ProviderQuickSwitch';
 
 const PROTO_AUTH = { Authorization: 'Bearer demo-key' } as const;
 
@@ -103,6 +111,9 @@ export default function PrototypePage() {
   // HITL toggle state
   const [enableHitl, setEnableHitl] = useState(false);
 
+  // Provider quick switch state (WU-3)
+  const [currentProvider, setCurrentProvider] = useState('mock');
+
   // Critic Detail Modal state
   const [criticDetailCandidate, setCriticDetailCandidate] = useState<ScoredCandidate | null>(null);
 
@@ -116,6 +127,25 @@ export default function PrototypePage() {
   const traditionManuallySet = useRef(false);
   /** Ref to track the latest debounce timer. */
   const classifyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Read URL params on mount to pre-fill from Gallery Fork
+  const [searchParams] = useSearchParams();
+  const urlParamsRead = useRef(false);
+  useEffect(() => {
+    if (urlParamsRead.current) return;
+    urlParamsRead.current = true;
+
+    const urlSubject = searchParams.get('subject');
+    const urlTradition = searchParams.get('tradition');
+
+    if (urlSubject) {
+      setCurrentSubject(urlSubject);
+    }
+    if (urlTradition) {
+      setCurrentTradition(urlTradition);
+      traditionManuallySet.current = true;
+    }
+  }, [searchParams]);
 
   // Auto-detect tradition when subject text changes (hybrid: local + debounced backend)
   useEffect(() => {
@@ -212,7 +242,7 @@ export default function PrototypePage() {
         subject: intent,
         tradition: currentTradition,
         intent: lastRunParams?.intent || '',
-        provider: lastRunParams?.provider || 'auto',
+        provider: currentProvider,
         n_candidates: lastRunParams?.n_candidates || 4,
         max_rounds: lastRunParams?.max_rounds || 3,
         enable_hitl: enableHitl,
@@ -225,7 +255,7 @@ export default function PrototypePage() {
       setPlaygroundMode('run');
       startRun(params);
     }
-  }, [lastRunParams, startRun, enableHitl, currentTradition]);
+  }, [lastRunParams, startRun, enableHitl, currentTradition, currentProvider]);
 
   const isRunning = state.status === 'running' || state.status === 'waiting_human';
   const isDone = state.status === 'completed' || state.status === 'failed';
@@ -243,7 +273,7 @@ export default function PrototypePage() {
     const runParams: CreateRunParams = {
       subject: currentSubject.trim() || lastRunParams?.subject || 'Ink wash landscape with mist and mountains',
       tradition: currentTradition || lastRunParams?.tradition || 'chinese_xieyi',
-      provider: lastRunParams?.provider || 'auto',
+      provider: currentProvider,
       n_candidates: lastRunParams?.n_candidates || 4,
       max_rounds: lastRunParams?.max_rounds || 3,
       enable_hitl: lastRunParams?.enable_hitl || false,
@@ -258,7 +288,7 @@ export default function PrototypePage() {
     setActiveTemplate(params.template);
     setPlaygroundMode('run');
     startRun(runParams);
-  }, [lastRunParams, startRun, currentSubject, currentTradition]);
+  }, [lastRunParams, startRun, currentSubject, currentTradition, currentProvider]);
 
   const completedStages = state.events
     .filter(e => e.event_type === 'stage_completed')
@@ -309,8 +339,16 @@ export default function PrototypePage() {
       setCurrentTradition(params.tradition);
       traditionManuallySet.current = true; // User explicitly chose via Advanced Config
     }
+    if (params.provider) setCurrentProvider(params.provider);
     startRun(params);
   };
+
+  /** WU-2: Fork handler — populates subject + tradition from a past run. */
+  const handleFork = useCallback((params: { subject: string; tradition: string }) => {
+    setCurrentSubject(params.subject);
+    setCurrentTradition(params.tradition);
+    traditionManuallySet.current = true;
+  }, []);
 
   const handleReset = () => {
     setSelectedCandidateId(null);
@@ -327,7 +365,7 @@ export default function PrototypePage() {
         <div className="flex-1">
           <PlaygroundHeader status={state.status} taskId={state.taskId} />
         </div>
-        <div className="flex gap-1 shrink-0">
+        <div data-tour-modes className="flex gap-1 shrink-0">
           {([
             { mode: 'edit' as const, label: 'Edit' },
             { mode: 'run' as const, label: 'Run' },
@@ -352,23 +390,27 @@ export default function PrototypePage() {
       </div>
 
       {/* Quick intent bar */}
-      <IntentBar onSubmit={handleIntentSubmit} onIntentChange={handleIntentChange} disabled={isRunning || evaluateLoading} />
+      <div data-tour-intent>
+        <IntentBar onSubmit={handleIntentSubmit} onIntentChange={handleIntentChange} disabled={isRunning || evaluateLoading} />
+      </div>
 
       {/* Tradition indicator — shows auto-detected tradition with classification status */}
-      {currentSubject.trim() && (
-        <div className="flex items-center gap-2 px-1 text-xs">
-          <span className="text-gray-400 dark:text-gray-500">Tradition:</span>
-          <span className="font-medium text-[#C87F4A] dark:text-[#DDA574]">
-            {currentTradition.replace(/_/g, ' ')}
-          </span>
-          {traditionClassifying && (
-            <span className="inline-block w-3 h-3 border-2 border-[#C87F4A]/30 border-t-[#C87F4A] rounded-full animate-spin" />
-          )}
-        </div>
-      )}
+      <div data-tour-tradition>
+        {currentSubject.trim() && (
+          <div className="flex items-center gap-2 px-1 text-xs">
+            <span className="text-gray-400 dark:text-gray-500">Tradition:</span>
+            <span className="font-medium text-[#C87F4A] dark:text-[#DDA574]">
+              {currentTradition.replace(/_/g, ' ')}
+            </span>
+            {traditionClassifying && (
+              <span className="inline-block w-3 h-3 border-2 border-[#C87F4A]/30 border-t-[#C87F4A] rounded-full animate-spin" />
+            )}
+          </div>
+        )}
+      </div>
 
       {/* HITL toggle */}
-      <div className="flex items-center justify-between px-1">
+      <div data-tour-hitl className="flex items-center justify-between px-1">
         <IOSToggle
           checked={enableHitl}
           onChange={setEnableHitl}
@@ -379,6 +421,14 @@ export default function PrototypePage() {
           description="Pause at each stage for human review"
         />
       </div>
+
+      {/* Provider Quick Switch (WU-3) */}
+      <ProviderQuickSwitch
+        value={currentProvider}
+        onChange={setCurrentProvider}
+        disabled={isRunning}
+        nCandidates={lastRunParams?.n_candidates || 4}
+      />
 
       {/* Detailed config (collapsible) */}
       <details className="group">
@@ -449,6 +499,9 @@ export default function PrototypePage() {
           </IOSCardContent>
         </IOSCard>
       ) : null}
+
+      {/* WU-2: Run History Panel */}
+      <RunHistoryPanel onFork={handleFork} />
 
       {/* M3: Batch input panel for batch_eval template in edit mode */}
       {playgroundMode === 'edit' && activeTemplate === 'batch_eval' && (
@@ -785,7 +838,7 @@ export default function PrototypePage() {
           <aside className="overflow-y-auto space-y-3 pr-1 scrollbar-thin">
             {leftPanelContent}
           </aside>
-          <main className="min-h-0 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden relative">
+          <main data-tour-canvas className="min-h-0 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden relative">
             <PipelineEditor
               onRun={handleEditorRun}
               disabled={isRunning}
@@ -869,6 +922,9 @@ export default function PrototypePage() {
           crossLayerSignals={state.crossLayerSignals ?? undefined}
         />
       )}
+
+      {/* Onboarding tour for first-time visitors */}
+      <OnboardingTour />
 
       {/* Pipeline failure alert */}
       <IOSAlert

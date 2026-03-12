@@ -676,3 +676,56 @@ async def get_evolution_stats():
             pass
 
     return stats
+
+
+@router.get("/evolution/timeline")
+async def get_evolution_timeline():
+    """Return cumulative evolution curve data for charting."""
+    from pathlib import Path
+    import datetime
+
+    data_dir = Path(__file__).parent.parent / "data"
+    evolved_path = data_dir / "evolved_context.json"
+
+    result: dict = {"points": [], "total_evolutions": 0, "total_cultures": 0}
+
+    if not evolved_path.exists():
+        return result
+
+    try:
+        ctx = json.loads(evolved_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return result
+
+    result["total_evolutions"] = ctx.get("evolutions", 0)
+
+    cultures = ctx.get("cultures", {})
+    if not cultures:
+        return result
+
+    entries: list[tuple[float, str]] = []
+    for name, culture in cultures.items():
+        emerged_at = culture.get("emerged_at")
+        if emerged_at is not None:
+            entries.append((float(emerged_at), name))
+
+    if not entries:
+        return result
+
+    entries.sort(key=lambda e: e[0])
+    result["total_cultures"] = len(entries)
+
+    total_evolutions = result["total_evolutions"]
+    points: list[dict] = []
+    for idx, (ts, _name) in enumerate(entries, 1):
+        dt = datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
+        date_str = dt.strftime("%Y-%m-%d %H:%M")
+        approx_evolutions = round(total_evolutions * idx / len(entries))
+        points.append({
+            "date": date_str,
+            "cultures": idx,
+            "evolutions": approx_evolutions,
+        })
+
+    result["points"] = points
+    return result

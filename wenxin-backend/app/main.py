@@ -22,6 +22,7 @@ from app.prototype.skills.api.discussion_routes import discussion_router
 from app.prototype.skills.api.version_routes import version_router
 from app.prototype.api.create_routes import create_router
 from app.prototype.digestion.routes import digestion_router
+from app.prototype.api.gallery_social import gallery_social_router
 # Temporarily disabled - requires sentence-transformers
 # from app.exhibition.api import router as exhibition_router
 
@@ -234,6 +235,9 @@ app.include_router(create_router)
 
 # Include Digestion System API
 app.include_router(digestion_router)
+
+# Include Gallery Social API (like + fork)
+app.include_router(gallery_social_router)
 
 # Include Exhibition router (Echoes and Returns)
 # Temporarily disabled - requires sentence-transformers

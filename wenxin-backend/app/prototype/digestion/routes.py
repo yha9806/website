@@ -34,6 +34,7 @@ async def digestion_status() -> dict:
     feature_space: dict = {}
     agent_insights: dict = {}
     tradition_insights: dict = {}
+    trajectory_insights: dict | None = None
     evolutions: int = 0
     last_evolved_at: str | None = None
     if context_path.exists():
@@ -45,6 +46,7 @@ async def digestion_status() -> dict:
             feature_space = ctx.get("feature_space", {})
             agent_insights = ctx.get("agent_insights", {})
             tradition_insights = ctx.get("tradition_insights", {})
+            trajectory_insights = ctx.get("trajectory_insights")
             evolutions = ctx.get("evolutions", 0)
             last_evolved_at = ctx.get("last_evolved_at")
         except Exception:
@@ -58,6 +60,7 @@ async def digestion_status() -> dict:
         "feature_space": feature_space,
         "agent_insights": agent_insights,
         "tradition_insights": tradition_insights,
+        "trajectory_insights": trajectory_insights,
         "evolutions": evolutions,
         "last_evolved_at": last_evolved_at,
     }

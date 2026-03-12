@@ -8,6 +8,7 @@ import {
   IOSCardGrid,
 } from '../components/ios';
 import { API_PREFIX, API_BASE_URL } from '../config/api';
+import GalleryCardActions from '../components/gallery/GalleryCardActions';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -309,7 +310,7 @@ function EvolutionInsightsPanel({ insights }: { insights: DigestionInsights | nu
 // Artwork card
 // ---------------------------------------------------------------------------
 
-function ArtworkCard({ artwork }: { artwork: GalleryItem }) {
+function ArtworkCard({ artwork, likeCount }: { artwork: GalleryItem; likeCount: number }) {
   const overallPct = Math.round(artwork.overall * 100);
   const overallColor =
     artwork.overall >= 0.9 ? 'text-green-600 dark:text-green-400' :
@@ -371,6 +372,14 @@ function ArtworkCard({ artwork }: { artwork: GalleryItem }) {
             <ScoreBar key={k} label={k} value={v} />
           ))}
         </div>
+
+        {/* Social actions: Like + Fork */}
+        <GalleryCardActions
+          sessionId={artwork.id}
+          subject={artwork.subject}
+          tradition={artwork.tradition}
+          initialLikes={likeCount}
+        />
       </IOSCardContent>
     </IOSCard>
   );
@@ -399,6 +408,7 @@ export default function GalleryPage() {
   const [totalCount, setTotalCount] = useState<number>(MOCK_GALLERY.length);
   const [evolutionStats, setEvolutionStats] = useState<EvolutionStats | null>(null);
   const [digestionInsights, setDigestionInsights] = useState<DigestionInsights | null>(null);
+  const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [isLive, setIsLive] = useState(false);  // true if data came from API
@@ -499,8 +509,22 @@ export default function GalleryPage() {
       }
     }
 
+    async function fetchLikes() {
+      try {
+        const res = await fetch(`${API_PREFIX}/prototype/gallery/likes`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (!cancelled && data && typeof data === 'object') {
+          setLikeCounts(data);
+        }
+      } catch {
+        // Likes unavailable — show zero counts
+      }
+    }
+
     fetchEvolution();
     fetchDigestionInsights();
+    fetchLikes();
 
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -635,7 +659,7 @@ export default function GalleryPage() {
           <>
             <IOSCardGrid columns={4} gap="md">
               {filtered.map((artwork) => (
-                <ArtworkCard key={artwork.id} artwork={artwork} />
+                <ArtworkCard key={artwork.id} artwork={artwork} likeCount={likeCounts[artwork.id] ?? 0} />
               ))}
             </IOSCardGrid>
 

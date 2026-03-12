@@ -9,6 +9,10 @@
 import { useState, useEffect } from 'react';
 import { IOSCard, IOSCardHeader, IOSCardContent, IOSCardGrid } from '../components/ios';
 import { API_PREFIX } from '../config/api';
+import EvolutionCurveChart from '../components/digestion/EvolutionCurveChart';
+import ClusterScatterPlot from '../components/digestion/ClusterScatterPlot';
+import AgentInsightsPanel from '../components/digestion/AgentInsightsPanel';
+import ArchetypePerformanceChart from '../components/digestion/ArchetypePerformanceChart';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -23,14 +27,30 @@ interface EvolutionData {
   last_evolved_at: string | null;
 }
 
+interface ArchetypeData {
+  pattern: string;
+  avg_score: number;
+  count: number;
+  traditions: string[];
+  example_prompts?: string[];
+  insights?: string;
+}
+
 interface DigestionStatusData {
   total_sessions: number;
   traditions: Record<string, unknown>;
   cultures: Record<string, unknown>;
-  prompt_contexts: { archetypes?: unknown[] };
+  prompt_contexts: { archetypes?: ArchetypeData[] };
   feature_space: { clusters?: unknown[] };
   agent_insights: Record<string, string>;
   tradition_insights: Record<string, string>;
+  trajectory_insights?: {
+    total_trajectories: number;
+    common_weak_dimensions: string[];
+    avg_rounds_to_accept: number;
+    repair_success_rate: number;
+    tradition_avg_rounds?: Record<string, number>;
+  };
   evolutions: number;
   last_evolved_at: string | null;
 }
@@ -61,12 +81,6 @@ interface AgentData {
   principlesDistilled?: number;
   avgScore?: number | null;
   lastReport?: string;
-}
-
-interface TimelineEntry {
-  date: string;
-  event: string;
-  status: string;
 }
 
 const DEFAULT_FEEDBACK: FeedbackStatsData = {
@@ -107,7 +121,6 @@ function StatusBadge({ status }: { status: string }) {
 
 export default function AdminDashboardPage() {
   const [agents, setAgents] = useState<AgentData[]>([]);
-  const [timeline, setTimeline] = useState<TimelineEntry[]>([]);
   const [feedbackStats, setFeedbackStats] = useState<FeedbackStatsData>(DEFAULT_FEEDBACK);
   const [skillEcosystem, setSkillEcosystem] = useState<SkillEcosystemData>(DEFAULT_SKILLS);
   const [evolution, setEvolution] = useState<EvolutionData | null>(null);
@@ -124,7 +137,6 @@ export default function AdminDashboardPage() {
         const data = await res.json();
         if (cancelled) return;
         if (Array.isArray(data.agents)) setAgents(data.agents);
-        if (Array.isArray(data.timeline) && data.timeline.length > 0) setTimeline(data.timeline);
       } catch {
         // keep empty defaults
       }
@@ -335,34 +347,22 @@ export default function AdminDashboardPage() {
               </IOSCardContent>
             </IOSCard>
 
-            {/* Agent Insights Summary */}
-            <IOSCard variant="elevated" padding="lg">
-              <IOSCardHeader
-                title="Agent Insights"
-                subtitle="LLM-generated guidance for pipeline agents"
+            {/* Agent Insights — Enhanced Panel */}
+            <div>
+              <AgentInsightsPanel
+                agentInsights={digestionStatus.agent_insights ?? {}}
+                traditionInsights={digestionStatus.tradition_insights ?? {}}
+                trajectoryInsights={digestionStatus.trajectory_insights}
               />
-              <IOSCardContent>
-                {digestionStatus.agent_insights && Object.keys(digestionStatus.agent_insights).length > 0 ? (
-                  <div className="space-y-3">
-                    {Object.entries(digestionStatus.agent_insights).map(([role, insight]) => (
-                      <div key={role} className="p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-semibold text-[#C87F4A] uppercase">{role}</span>
-                        </div>
-                        <p className="text-[11px] text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-3">
-                          {insight}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-6 text-gray-400 dark:text-gray-500 text-sm">
-                    No agent insights yet. Run a digestion cycle with LLM to generate.
-                  </div>
-                )}
-              </IOSCardContent>
-            </IOSCard>
+            </div>
           </IOSCardGrid>
+        </section>
+      )}
+
+      {/* Feature Space Cluster Scatter Plot */}
+      {digestionStatus?.feature_space?.clusters && Array.isArray(digestionStatus.feature_space.clusters) && digestionStatus.feature_space.clusters.length > 0 && (
+        <section className="mb-8">
+          <ClusterScatterPlot clusters={digestionStatus.feature_space.clusters as Parameters<typeof ClusterScatterPlot>[0]['clusters']} />
         </section>
       )}
 
@@ -417,6 +417,16 @@ export default function AdminDashboardPage() {
           </div>
         )}
       </section>
+
+      {/* Prompt Archetypes Chart */}
+      {digestionStatus?.prompt_contexts?.archetypes && digestionStatus.prompt_contexts.archetypes.length > 0 && (
+        <section className="mb-8">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+            Prompt Archetypes
+          </h2>
+          <ArchetypePerformanceChart archetypes={digestionStatus.prompt_contexts.archetypes} />
+        </section>
+      )}
 
       {/* Feedback Stats + Skill Ecosystem */}
       <section className="mb-8">
@@ -494,48 +504,12 @@ export default function AdminDashboardPage() {
         </IOSCardGrid>
       </section>
 
-      {/* Evolution Timeline */}
+      {/* Evolution Timeline Chart */}
       <section>
         <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
           Evolution Timeline
         </h2>
-        <IOSCard variant="elevated" padding="lg">
-          <IOSCardContent>
-            {timeline.length > 0 ? (
-              <div className="space-y-0">
-                {timeline.map((entry, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex items-start gap-4 py-3 ${
-                      idx < timeline.length - 1 ? 'border-b border-gray-100 dark:border-gray-800' : ''
-                    }`}
-                  >
-                    <div className="flex-shrink-0 mt-0.5">
-                      <div
-                        className={`w-2.5 h-2.5 rounded-full ${
-                          entry.status === 'healthy'
-                            ? 'bg-green-500'
-                            : entry.status === 'warning'
-                            ? 'bg-yellow-500'
-                            : 'bg-red-500'
-                        }`}
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-800 dark:text-gray-200">{entry.event}</p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{entry.date}</p>
-                    </div>
-                    <StatusBadge status={entry.status} />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-6 text-gray-400 dark:text-gray-500 text-sm">
-                No evolution events yet. Timeline will populate after the first evolution cycle.
-              </div>
-            )}
-          </IOSCardContent>
-        </IOSCard>
+        <EvolutionCurveChart />
       </section>
     </div>
   );
