@@ -1,7 +1,7 @@
-"""GraphOrchestrator — LangGraph-based pipeline executor (**experimental**).
+"""GraphOrchestrator — LangGraph-based pipeline executor (**production-candidate**).
 
 Orchestrator Architecture Decision (Route B+, 2026-03-10):
-Status: EXPERIMENTAL — not the production default.
+Status: PRODUCTION-CANDIDATE — feature-parity with PipelineOrchestrator.
 Production orchestrator: app.prototype.orchestrator.PipelineOrchestrator
 Unified entry point: app.prototype.orchestrator.get_orchestrator(mode="graph")
 
@@ -13,6 +13,12 @@ instead of the monolithic orchestrator.py while loop. Extra capabilities:
 - Template-based topology definitions (template_registry)
 - Custom node/edge topologies via API
 - Agent plugin registry (@AgentRegistry.register)
+
+Production features (P3, 2026-03-14):
+- Cost gate: hard USD limit per run (_MAX_COST_PER_RUN_USD)
+- Checkpoint resume: resume_from parameter to skip completed stages
+- Dynamic weights: compute_dynamic_weights() integration in critic scoring
+- Trajectory recording: full execution history via TrajectoryRecorder
 """
 
 from __future__ import annotations
@@ -22,23 +28,43 @@ import time
 from collections.abc import Iterator
 from typing import Any
 
+from app.prototype.checkpoints.pipeline_checkpoint import (
+    load_pipeline_stage,
+    save_pipeline_stage,
+)
+from app.prototype.cultural_pipelines.dynamic_weights import compute_dynamic_weights
 from app.prototype.graph.pipeline_graph import build_default_graph
 from app.prototype.graph.state import PipelineState, make_initial_state
 from app.prototype.orchestrator.events import EventType, PipelineEvent
 from app.prototype.orchestrator.run_state import HumanAction, RunState, RunStatus
 from app.prototype.pipeline.pipeline_types import PipelineInput
+from app.prototype.trajectory.trajectory_recorder import TrajectoryRecorder
+from app.prototype.trajectory.trajectory_types import CriticFindings, DecisionLog, DraftPlan, PromptTrace
 
 logger = logging.getLogger(__name__)
+
+# Cost per image for real providers (mirrored from PipelineOrchestrator)
+_COST_PER_IMAGE: dict[str, float] = {
+    "nb2": 0.067,  # Gemini 3.1 Flash image generation (~1K input tokens)
+    "mock": 0.0,
+}
+
+# Hard cost gate per run (NB2 ~$0.067/image x 4 candidates x 3 rounds + Critic Pro calls)
+_MAX_COST_PER_RUN_USD = 2.00
+
+# Stage order for checkpoint resume
+_STAGE_ORDER = ["scout", "draft", "critic", "queen"]
 
 
 class GraphOrchestrator:
     """LangGraph-based orchestrator, API-compatible with PipelineOrchestrator.
 
-    .. deprecated:: Route B+ (2026-03-10)
-        This orchestrator is **experimental** and not used in production.
-        Use :class:`~app.prototype.orchestrator.PipelineOrchestrator` for
-        all production workloads. Access via
-        ``get_orchestrator(mode="graph")`` if needed.
+    .. versionchanged:: P3 (2026-03-14)
+        Upgraded from **experimental** to **production-candidate** status.
+        Added: cost gate, checkpoint resume, dynamic weight integration,
+        and trajectory recording — achieving feature parity with
+        :class:`~app.prototype.orchestrator.PipelineOrchestrator`.
+        Access via ``get_orchestrator(mode="graph")``.
 
     Parameters
     ----------
@@ -97,14 +123,41 @@ class GraphOrchestrator:
 
         Yields PipelineEvent objects for each stage transition, matching
         the exact same protocol as PipelineOrchestrator.run_stream().
+
+        Supports ``resume_from`` via PipelineInput.resume_from to skip
+        completed stages and reload their outputs from checkpoints.
         """
         t0 = time.monotonic()
         task_id = pipeline_input.task_id
+        resume_from = pipeline_input.resume_from
 
         run_state = RunState(task_id=task_id, status=RunStatus.RUNNING)
         self._runs[task_id] = run_state
 
+        # Running cost accumulator
+        run_cost_usd = 0.0
+        images_generated = 0
+
+        # Trajectory recorder
+        trajectory_recorder = TrajectoryRecorder()
+
         try:
+            # ── Checkpoint resume validation ──────────────────────────
+            if resume_from and resume_from in _STAGE_ORDER:
+                resume_idx = _STAGE_ORDER.index(resume_from)
+                for prior_stage in _STAGE_ORDER[:resume_idx]:
+                    ckpt = load_pipeline_stage(task_id, prior_stage)
+                    if ckpt is None:
+                        raise RuntimeError(
+                            f"Cannot resume from '{resume_from}': "
+                            f"checkpoint for '{prior_stage}' not found"
+                        )
+                logger.info(
+                    "Resuming task %s from stage '%s' (skipping %s)",
+                    task_id, resume_from,
+                    _STAGE_ORDER[:resume_idx],
+                )
+
             # Build graph — use template if available, otherwise default
             if self._template is not None:
                 from app.prototype.graph.template_builder import build_graph_from_template
@@ -137,9 +190,37 @@ class GraphOrchestrator:
                 queen_config=self._queen_config,
             )
 
+            # ── Checkpoint resume: pre-populate state from checkpoints ──
+            if resume_from and resume_from in _STAGE_ORDER:
+                resume_idx = _STAGE_ORDER.index(resume_from)
+                for prior_stage in _STAGE_ORDER[:resume_idx]:
+                    ckpt = load_pipeline_stage(task_id, prior_stage)
+                    if ckpt and prior_stage == "scout":
+                        initial_state["scout_output"] = ckpt
+                        initial_state["evidence_pack"] = ckpt.get("evidence_pack")
+                    elif ckpt and prior_stage == "draft":
+                        initial_state["draft_output"] = ckpt
+                        # Account for already-generated images in cost tracking
+                        prev_candidates = ckpt.get("candidates", [])
+                        images_generated += len(prev_candidates)
+                    elif ckpt and prior_stage == "critic":
+                        initial_state["critique_output"] = ckpt
+
             # Config for LangGraph (thread_id needed for checkpointer)
             config = {"configurable": {"thread_id": task_id}}
             self._configs[task_id] = config
+
+            # Start trajectory recording
+            trajectory_recorder.start(
+                subject=pipeline_input.subject,
+                tradition=pipeline_input.cultural_tradition,
+                evidence_pack_dict=initial_state.get("scout_output"),
+            )
+
+            # Determine provider for cost calculation
+            provider = "mock"
+            if self._draft_config and isinstance(self._draft_config, dict):
+                provider = self._draft_config.get("provider", "mock")
 
             # Stream through graph nodes
             seen_events = 0
@@ -151,6 +232,32 @@ class GraphOrchestrator:
 
                     # Update run_state for API queries
                     run_state.current_stage = node_name
+
+                    # ── Cost gate check after draft node ──────────────
+                    if node_name == "draft":
+                        new_candidates = (state_update.get("draft_output") or {}).get("candidates", [])
+                        images_generated += len(new_candidates)
+                        cost_per_image = _COST_PER_IMAGE.get(provider, 0.0)
+                        run_cost_usd = images_generated * cost_per_image
+                        if run_cost_usd > _MAX_COST_PER_RUN_USD:
+                            raise RuntimeError(
+                                f"Cost gate exceeded: ${run_cost_usd:.3f} > ${_MAX_COST_PER_RUN_USD}"
+                            )
+
+                    # ── Dynamic weights after critic node ─────────────
+                    if node_name == "critic" and self._enable_agent_critic:
+                        self._apply_dynamic_weights(state_update, initial_state)
+
+                    # ── Trajectory recording per node ─────────────────
+                    self._record_node_trajectory(
+                        trajectory_recorder, node_name, state_update,
+                        provider=provider,
+                    )
+
+                    # ── Save checkpoint for each completed stage ──────
+                    if node_name in _STAGE_ORDER:
+                        stage_data = state_update.get(f"{node_name}_output") or state_update
+                        save_pipeline_stage(task_id, node_name, stage_data)
 
                     # Extract events emitted by this node
                     new_events = state_update.get("events", [])
@@ -164,17 +271,41 @@ class GraphOrchestrator:
             # Get final state for completion payload
             final_state = compiled.get_state(config).values if self._enable_hitl else {}
 
+            total_cost = run_cost_usd or (
+                round(final_state.get("total_cost_usd", 0.0), 6) if final_state else 0.0
+            )
+            final_decision = final_state.get("final_decision", "stop") if final_state else "stop"
+            final_score = 0.0
+            if final_state:
+                # Extract best score from last critique
+                critique = final_state.get("critique_output") or {}
+                scores = critique.get("scores", [])
+                if scores:
+                    final_score = max(
+                        (s.get("weighted_score", 0.0) for s in scores),
+                        default=0.0,
+                    )
+
             completion_payload = {
                 "task_id": task_id,
-                "final_decision": final_state.get("final_decision", "stop") if final_state else "stop",
+                "final_decision": final_decision,
                 "best_candidate_id": final_state.get("best_candidate_id") if final_state else None,
                 "total_rounds": final_state.get("current_round", 1) if final_state else 1,
                 "total_latency_ms": total_ms,
                 "success": True,
-                "total_cost_usd": round(final_state.get("total_cost_usd", 0.0), 6) if final_state else 0.0,
-                "candidates_generated": final_state.get("candidates_generated", 0) if final_state else 0,
+                "total_cost_usd": round(total_cost, 6),
+                "candidates_generated": final_state.get("candidates_generated", 0) if final_state else images_generated,
                 "stages": [],
             }
+
+            # Finalize trajectory
+            if trajectory_recorder.active:
+                trajectory_recorder.finish(
+                    final_score=final_score,
+                    final_action=final_decision,
+                    total_latency_ms=total_ms,
+                    total_cost=total_cost,
+                )
 
             run_state.status = RunStatus.COMPLETED
             yield PipelineEvent(
@@ -189,6 +320,18 @@ class GraphOrchestrator:
             total_ms = int((time.monotonic() - t0) * 1000)
             run_state.status = RunStatus.FAILED
 
+            # Finalize trajectory on failure too
+            if trajectory_recorder.active:
+                try:
+                    trajectory_recorder.finish(
+                        final_score=0.0,
+                        final_action="failed",
+                        total_latency_ms=total_ms,
+                        total_cost=run_cost_usd,
+                    )
+                except Exception:
+                    logger.warning("Failed to save trajectory on error for %s", task_id)
+
             yield PipelineEvent(
                 event_type=EventType.PIPELINE_FAILED,
                 stage="",
@@ -201,6 +344,122 @@ class GraphOrchestrator:
                     "stages": [],
                 },
                 timestamp_ms=total_ms,
+            )
+
+    # ------------------------------------------------------------------
+    # Dynamic weights integration
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _apply_dynamic_weights(
+        state_update: dict[str, Any],
+        initial_state: dict[str, Any],
+    ) -> None:
+        """Apply dynamic weight modulation to critic output.
+
+        Reads base weights from the pipeline route / critic config,
+        computes modulated weights via compute_dynamic_weights(), and
+        injects them into the critique output for downstream consumers
+        (Queen, radar chart, trajectory).
+        """
+        critique_output = state_update.get("critique_output") or {}
+        route = initial_state.get("pipeline_route") or {}
+        critic_cfg_dict = route.get("critic_config") or initial_state.get("critic_config") or {}
+        base_weights = critic_cfg_dict.get("weights", {})
+
+        if not base_weights:
+            # Fall back to uniform weights
+            from app.prototype.agents.critic_config import DIMENSIONS
+            base_weights = {d: 1.0 / len(DIMENSIONS) for d in DIMENSIONS}
+
+        # Build minimal layer_states from critique scores
+        from app.prototype.agents.layer_state import LayerState
+        layer_states: dict[str, LayerState] = {}
+        for score_entry in critique_output.get("scores", []):
+            dim_scores = score_entry.get("dimension_scores", {})
+            for dim, val in dim_scores.items():
+                if dim not in layer_states:
+                    layer_states[dim] = LayerState(
+                        score=val if isinstance(val, (int, float)) else 0.5,
+                    )
+
+        current_round = initial_state.get("current_round", 1)
+
+        dyn_weights = compute_dynamic_weights(
+            base_weights=base_weights,
+            layer_states=layer_states,
+            round_num=current_round,
+        )
+
+        # Inject dynamic weights into the critique output
+        critique_output["dynamic_weights"] = dyn_weights
+        state_update["critique_output"] = critique_output
+
+    # ------------------------------------------------------------------
+    # Trajectory recording helpers
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _record_node_trajectory(
+        recorder: TrajectoryRecorder,
+        node_name: str,
+        state_update: dict[str, Any],
+        provider: str = "mock",
+    ) -> None:
+        """Record trajectory data for a completed graph node."""
+        if not recorder.active:
+            return
+
+        current_round = state_update.get("current_round", 1)
+
+        if node_name == "draft":
+            draft_out = state_update.get("draft_output") or {}
+            candidates = draft_out.get("candidates", [])
+            prompt_text = draft_out.get("prompt", "")
+            recorder.record_draft(
+                DraftPlan(
+                    prompt_trace=PromptTrace(
+                        raw_prompt=prompt_text,
+                        enhanced_prompt=draft_out.get("enhanced_prompt", prompt_text),
+                        prompt_hash="",
+                        model_ref=provider,
+                    ),
+                    provider=provider,
+                    latency_ms=draft_out.get("latency_ms", 0),
+                    n_candidates=len(candidates),
+                ),
+                round_num=current_round,
+            )
+
+        elif node_name == "critic":
+            critique = state_update.get("critique_output") or {}
+            scores = critique.get("scores", [])
+            layer_scores: dict[str, float] = {}
+            best_weighted = 0.0
+            for s in scores:
+                ws = s.get("weighted_score", 0.0)
+                if ws > best_weighted:
+                    best_weighted = ws
+                for dim, val in s.get("dimension_scores", {}).items():
+                    layer_scores[dim] = val if isinstance(val, (int, float)) else 0.0
+            recorder.record_critic(
+                CriticFindings(
+                    layer_scores=layer_scores,
+                    weighted_score=best_weighted,
+                ),
+                round_num=current_round,
+            )
+
+        elif node_name == "queen":
+            queen_dec = state_update.get("queen_decision") or state_update.get("queen_output") or {}
+            recorder.record_decision(
+                DecisionLog(
+                    action=queen_dec.get("action", "stop"),
+                    reason=queen_dec.get("reason", ""),
+                    round_num=current_round,
+                    threshold=queen_dec.get("threshold", 0.0),
+                ),
+                round_num=current_round,
             )
 
     def submit_action(
