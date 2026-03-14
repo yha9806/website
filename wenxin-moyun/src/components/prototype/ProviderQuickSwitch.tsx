@@ -1,16 +1,25 @@
 /**
- * Provider Quick Switch — segmented control for toggling between Mock and NB2 providers.
+ * Provider Quick Switch — dynamically fetches available providers from the
+ * backend /capabilities endpoint and renders a segmented control.
  *
- * Mock: instant, free (sage-green #5F8A50)
- * NB2:  $0.067/img, real generation (amber-gold #B8923D)
+ * Falls back to hardcoded Mock + NB2 if the fetch fails.
  */
 
+import { useState, useEffect } from 'react';
 import { IOSSegmentedControl } from '../ios';
 import type { SegmentItem } from '../ios';
+import { API_PREFIX } from '@/config/api';
 
-const PROVIDER_SEGMENTS: SegmentItem[] = [
-  { id: 'mock', label: 'Mock', value: 'mock' },
-  { id: 'nb2', label: 'NB2', value: 'nb2' },
+interface ProviderInfo {
+  id: string;
+  label: string;
+  cost: number;
+  available: boolean;
+}
+
+const FALLBACK_PROVIDERS: ProviderInfo[] = [
+  { id: 'mock', label: 'Mock', cost: 0, available: true },
+  { id: 'nb2', label: 'NB2', cost: 0.067, available: true },
 ];
 
 interface ProviderQuickSwitchProps {
@@ -27,73 +36,58 @@ export default function ProviderQuickSwitch({
   disabled = false,
   nCandidates = 4,
 }: ProviderQuickSwitchProps) {
-  const selectedIndex = value === 'nb2' ? 1 : 0;
-  const isNb2 = value === 'nb2';
-  const estCost = (nCandidates * 0.067).toFixed(2);
+  const [providers, setProviders] = useState<ProviderInfo[]>(FALLBACK_PROVIDERS);
+
+  useEffect(() => {
+    fetch(`${API_PREFIX}/prototype/capabilities`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.providers?.length) {
+          setProviders(data.providers.filter((p: ProviderInfo) => p.available));
+        }
+      })
+      .catch(() => {});  // Keep fallback on error
+  }, []);
+
+  const segments: SegmentItem[] = providers.map(p => ({
+    id: p.id,
+    label: p.label,
+    value: p.id,
+  }));
+
+  const selectedIndex = Math.max(0, providers.findIndex(p => p.id === value));
+  const selected = providers[selectedIndex];
+  const estimatedCost = selected ? selected.cost * nCandidates : 0;
 
   return (
-    <div className="px-1 space-y-1.5">
-      {/* Segmented control with custom active-segment colors */}
-      <div className="relative">
-        <IOSSegmentedControl
-          segments={PROVIDER_SEGMENTS}
-          selectedIndex={selectedIndex}
-          onChange={(idx) => {
-            const seg = PROVIDER_SEGMENTS[idx];
-            onChange(String(seg.value ?? seg.id));
-          }}
-          size="compact"
-          style="bordered"
-          disabled={disabled}
-          className="w-full"
-        />
-
-        {/* Color overlay for active segment */}
-        <div
-          className="pointer-events-none absolute inset-y-0 flex"
-          style={{ width: '100%' }}
-        >
-          <div
-            className="flex-1 flex items-center justify-center rounded-md text-xs font-medium transition-colors duration-200"
-            style={{
-              color: selectedIndex === 0 ? '#5F8A50' : undefined,
-              opacity: selectedIndex === 0 ? 1 : 0,
-            }}
-          />
-          <div
-            className="flex-1 flex items-center justify-center rounded-md text-xs font-medium transition-colors duration-200"
-            style={{
-              color: selectedIndex === 1 ? '#B8923D' : undefined,
-              opacity: selectedIndex === 1 ? 1 : 0,
-            }}
-          />
-        </div>
-      </div>
-
-      {/* Descriptive text */}
-      <div className="flex items-center justify-between text-[11px] px-0.5">
-        <span
-          className="transition-colors duration-200"
-          style={{ color: isNb2 ? '#9CA3AF' : '#5F8A50' }}
-        >
-          {isNb2 ? '' : 'Instant, free'}
-        </span>
-        <span
-          className="transition-colors duration-200"
-          style={{ color: isNb2 ? '#B8923D' : '#9CA3AF' }}
-        >
-          {isNb2 ? '$0.067/img' : ''}
-        </span>
-      </div>
-
-      {/* Cost hint when NB2 is selected */}
-      {isNb2 && (
-        <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-[#B8923D]/10 dark:bg-[#B8923D]/15 border border-[#B8923D]/20 dark:border-[#B8923D]/25">
-          <span className="text-[11px] text-[#B8923D] dark:text-[#D4A94E]">
-            Est. ~${estCost} for {nCandidates} candidate{nCandidates !== 1 ? 's' : ''}
+    <div className="space-y-1.5">
+      <div className="flex items-center justify-between px-1">
+        <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Provider</span>
+        {selected && selected.cost > 0 && (
+          <span className="text-[10px] text-gray-400 dark:text-gray-500">
+            ~${estimatedCost.toFixed(3)}/run ({nCandidates} images)
           </span>
-        </div>
-      )}
+        )}
+      </div>
+      <IOSSegmentedControl
+        segments={segments}
+        selectedIndex={selectedIndex}
+        onChange={(idx) => {
+          const p = providers[idx];
+          if (p) onChange(p.id);
+        }}
+        size="compact"
+        disabled={disabled}
+      />
+      <div className="flex items-center gap-1.5 px-1">
+        <span
+          className="w-1.5 h-1.5 rounded-full"
+          style={{ backgroundColor: selected?.cost === 0 ? '#5F8A50' : '#B8923D' }}
+        />
+        <span className="text-[10px] text-gray-400 dark:text-gray-500">
+          {selected?.cost === 0 ? 'Free, instant' : `$${selected?.cost}/image`}
+        </span>
+      </div>
     </div>
   );
 }

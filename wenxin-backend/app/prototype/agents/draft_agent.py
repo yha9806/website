@@ -184,7 +184,22 @@ def _get_provider(name: str, config: DraftConfig | None = None) -> AbstractProvi
         if not api_key:
             raise ValueError("GOOGLE_API_KEY (or GEMINI_API_KEY) required for nb2 provider")
         return NB2Provider(api_key=api_key)
-    raise ValueError(f"Unknown provider: {name!r} (available: mock, nb2, diffusers, koala)")
+    if name == "openai":
+        from app.prototype.agents.openai_provider import OpenAIProvider
+        key = (
+            (config.api_key if config else "")
+            or os.environ.get("OPENAI_API_KEY", "")
+        )
+        return OpenAIProvider(api_key=key)
+    if name in ("replicate", "flux"):
+        from app.prototype.agents.replicate_provider import ReplicateProvider
+        key = (
+            (config.api_key if config else "")
+            or os.environ.get("REPLICATE_API_TOKEN", "")
+        )
+        model_id = (config.provider_model if config else "") or "black-forest-labs/flux-schnell"
+        return ReplicateProvider(api_key=key, model_id=model_id)
+    raise ValueError(f"Unknown provider: {name!r} (available: mock, nb2, diffusers, koala, openai, replicate)")
 
 
 class _KoalaProviderAdapter(AbstractProvider):

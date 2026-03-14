@@ -509,9 +509,19 @@ async def get_capabilities():
     """Report server AI capabilities so the frontend can adapt UI."""
     api_key = os.environ.get("GOOGLE_API_KEY", "") or os.environ.get("GEMINI_API_KEY", "")
     has_key = bool(api_key)
+
+    providers = [
+        {"id": "mock", "label": "Mock", "cost": 0, "available": True},
+        {"id": "nb2", "label": "NB2", "cost": 0.067, "available": has_key},
+        {"id": "diffusers", "label": "Diffusers", "cost": 0, "available": True},
+        {"id": "openai", "label": "DALL-E 3", "cost": 0.04, "available": bool(os.environ.get("OPENAI_API_KEY"))},
+        {"id": "replicate", "label": "Flux", "cost": 0.003, "available": bool(os.environ.get("REPLICATE_API_TOKEN"))},
+    ]
+
     return {
         "has_api_key": has_key,
         "default_provider": "nb2" if has_key else "mock",
+        "providers": providers,
         "features": {
             "real_image_generation": has_key,
             "vlm_critic": has_key,
