@@ -25,13 +25,13 @@ function dimLevel(dim: string): string | null {
   // Check if dimension starts with L1-L5 pattern
   const match = dim.match(/^(L[1-5])/i);
   if (match) return match[1].toUpperCase();
-  // Map known dimension names to levels
+  // Map known dimension names to levels (must match DIMENSIONS in critic_config.py)
   const levelMap: Record<string, string> = {
-    technical_quality: 'L1', composition: 'L1',
-    style_fidelity: 'L2', aesthetic_quality: 'L2',
-    cultural_accuracy: 'L3', cultural_context: 'L3',
-    creative_innovation: 'L4', innovation: 'L4',
-    emotional_resonance: 'L5', cultural_depth: 'L5',
+    visual_perception: 'L1',
+    technical_analysis: 'L2',
+    cultural_context: 'L3',
+    critical_interpretation: 'L4',
+    philosophical_aesthetic: 'L5',
   };
   return levelMap[dim.toLowerCase()] || null;
 }

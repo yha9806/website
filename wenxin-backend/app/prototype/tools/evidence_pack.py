@@ -169,6 +169,58 @@ class EvidencePack:
 
         return "\n".join(sections)
 
+    def filter_by_layers(self, target_layers: list[str]) -> "EvidencePack":
+        """Return a new EvidencePack with only anchors relevant to the given layers.
+
+        Args:
+            target_layers: Layer identifiers (e.g., ["L3", "L5"] or
+                           ["cultural_context", "philosophical_aesthetic"])
+
+        Returns:
+            New EvidencePack with filtered anchors. Non-anchor fields preserved.
+            If filtering leaves no anchors, returns self unchanged (graceful degradation).
+        """
+        from app.prototype.agents.layer_state import LayerID
+
+        # Build normalized set of both L-labels and dimension names
+        _label_to_dim = {lid.name: lid.value for lid in LayerID}
+        _dim_to_label = {lid.value: lid.name for lid in LayerID}
+
+        normalized: set[str] = set()
+        for layer in target_layers:
+            upper = layer.upper()
+            lower = layer.lower()
+            if upper in _label_to_dim:
+                normalized.add(upper)                    # e.g. "L3"
+                normalized.add(_label_to_dim[upper])     # e.g. "cultural_context"
+            elif lower in _dim_to_label:
+                normalized.add(_dim_to_label[lower])     # e.g. "L3"
+                normalized.add(lower)                    # e.g. "cultural_context"
+            else:
+                normalized.add(layer)
+
+        # Filter anchors: keep those whose l_levels intersects with normalized
+        filtered = [
+            a for a in self.anchors
+            if any(lv in normalized or lv.upper() in normalized or lv.lower() in normalized
+                   for lv in a.l_levels)
+        ]
+
+        # Graceful degradation: if no anchors match, return self unchanged
+        if not filtered:
+            return self
+
+        return EvidencePack(
+            subject=self.subject,
+            tradition=self.tradition,
+            anchors=filtered,
+            compositions=self.compositions,
+            styles=self.styles,
+            taboos=self.taboos,
+            coverage=self.coverage,
+            timestamp=self.timestamp,
+        )
+
     def get_negative_prompt_additions(self) -> list[str]:
         """Extract taboo descriptions for negative prompt."""
         return [t.description for t in self.taboos if t.description]

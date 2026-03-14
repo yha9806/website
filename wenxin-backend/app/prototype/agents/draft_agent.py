@@ -35,14 +35,97 @@ from app.prototype.agents.inpaint_provider import (
     MaskGenerator,
     MockInpaintProvider,
 )
-from app.prototype.agents.layer_state import LocalRerunRequest
+from app.prototype.agents.layer_state import LayerID, LocalRerunRequest
 from app.prototype.checkpoints.draft_checkpoint import save_draft_checkpoint
 
 __all__ = [
     "DraftAgent",
+    "_LAYER_REFINEMENT_STRATEGIES",
 ]
 
 logger = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Layer-aware refinement strategies (L1-L5)
+# ---------------------------------------------------------------------------
+
+_LAYER_REFINEMENT_STRATEGIES: dict[str, str] = {
+    "visual_perception": (
+        "Focus on visual composition: improve spatial arrangement, color harmony, "
+        "contrast, line quality, and overall visual balance. Enhance the image's "
+        "immediate visual impact."
+    ),
+    "technical_analysis": (
+        "Improve technical execution: refine brushwork/rendering technique, "
+        "material handling, detail precision, and craftsmanship quality. "
+        "Ensure technical mastery is evident."
+    ),
+    "cultural_context": (
+        "Strengthen cultural authenticity: incorporate tradition-specific symbols, "
+        "motifs, and compositional conventions. Ensure the work reflects deep "
+        "understanding of its cultural tradition's visual language."
+    ),
+    "critical_interpretation": (
+        "Deepen interpretive layers: add narrative depth, symbolic richness, "
+        "and art-historical references. The work should invite critical reading "
+        "beyond surface aesthetics."
+    ),
+    "philosophical_aesthetic": (
+        "Elevate philosophical dimension: embed philosophical concepts through "
+        "visual metaphor, explore beauty/sublimity, and create contemplative depth. "
+        "The work should transcend technique to reach aesthetic meaning."
+    ),
+}
+
+# L-label to dimension name mapping
+_LAYER_NAME_MAP: dict[str, str] = {lid.name: lid.value for lid in LayerID}
+# Also support reverse lookup (dimension name -> L-label)
+_DIM_TO_LABEL: dict[str, str] = {lid.value: lid.name for lid in LayerID}
+
+
+def _resolve_layer_name(layer: str) -> str:
+    """Resolve a layer identifier to a canonical dimension name.
+
+    Accepts 'L1'-'L5' labels or full dimension names like 'cultural_context'.
+    Returns the canonical dimension name (e.g. 'cultural_context').
+    """
+    upper = layer.upper()
+    if upper in _LAYER_NAME_MAP:
+        return _LAYER_NAME_MAP[upper]
+    # Already a dimension name
+    lower = layer.lower()
+    if lower in _LAYER_REFINEMENT_STRATEGIES:
+        return lower
+    return layer
+
+
+def _build_layer_aware_prompt_delta(target_layers: list[str]) -> str:
+    """Build a layer-aware prompt delta from target layer identifiers.
+
+    Instead of generic 'improve cultural_context', this injects specific
+    refinement strategies for each targeted layer.
+
+    Parameters
+    ----------
+    target_layers : list[str]
+        Layer identifiers (e.g. ['L3', 'L5'] or ['cultural_context']).
+
+    Returns
+    -------
+    str
+        Combined refinement strategy text, or a generic fallback if
+        no strategies match.
+    """
+    parts: list[str] = []
+    for layer in target_layers:
+        dim_name = _resolve_layer_name(layer)
+        strategy = _LAYER_REFINEMENT_STRATEGIES.get(dim_name, "")
+        if strategy:
+            parts.append(strategy)
+    if parts:
+        return " ".join(parts)
+    # Fallback: generic improvement request (same as before)
+    return f"improve {', '.join(target_layers)}"
 
 # ---------------------------------------------------------------------------
 # Cultural tradition → style keyword mapping
@@ -577,8 +660,13 @@ class DraftAgent:
             preserve_layers=getattr(local_rerun_request, "preserve_layers", None) or None,
         )
 
-        # 2. Build prompt delta
-        prompt = local_rerun_request.prompt_delta or "refine artistic details"
+        # 2. Build prompt delta — use layer-aware strategies when available
+        if local_rerun_request.prompt_delta:
+            prompt = local_rerun_request.prompt_delta
+        elif local_rerun_request.target_layers:
+            prompt = _build_layer_aware_prompt_delta(local_rerun_request.target_layers)
+        else:
+            prompt = "refine artistic details"
         negative = local_rerun_request.negative_delta or ""
 
         # 3. Determine output path

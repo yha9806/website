@@ -874,12 +874,14 @@ class PipelineOrchestrator:
                             )
                         else:
                             # Legacy path: LocalRerunRequest
+                            # Use layer-aware refinement strategies
+                            from app.prototype.agents.draft_agent import _build_layer_aware_prompt_delta
                             local_rerun = LocalRerunRequest(
                                 base_candidate_id=best_candidate_id,
                                 target_layers=queen_output.decision.rerun_dimensions,
                                 preserve_layers=queen_output.decision.preserve_dimensions,
-                                prompt_delta=(
-                                    f"improve {', '.join(queen_output.decision.rerun_dimensions)}"
+                                prompt_delta=_build_layer_aware_prompt_delta(
+                                    queen_output.decision.rerun_dimensions,
                                 ),
                             )
                             plan_state.local_rerun_request = local_rerun

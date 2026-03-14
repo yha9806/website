@@ -262,6 +262,7 @@ class ScoutService:
         self,
         need: "NeedMoreEvidence",
         existing_pack: EvidencePack,
+        target_layers: list[str] | None = None,
     ) -> EvidencePack:
         """Perform supplementary retrieval to fill evidence gaps.
 
@@ -274,11 +275,15 @@ class ScoutService:
             Critic's request for more evidence.
         existing_pack : EvidencePack
             The current evidence pack to supplement.
+        target_layers : list[str] | None
+            If provided, filter the resulting pack to only include anchors
+            relevant to the specified layers (e.g. ["L3", "L5"]).
 
         Returns
         -------
         EvidencePack
             Updated pack with additional anchors and recalculated coverage.
+            If target_layers is provided, the pack is filtered accordingly.
         """
         from app.prototype.agents.need_more_evidence import NeedMoreEvidence
 
@@ -317,7 +322,7 @@ class ScoutService:
         avg_conf = sum(a.confidence for a in updated_anchors) / n_total
         new_coverage = min(1.0, existing_pack.coverage + 0.1 * len(new_anchors))
 
-        return EvidencePack(
+        result = EvidencePack(
             subject=existing_pack.subject,
             tradition=existing_pack.tradition,
             anchors=updated_anchors,
@@ -327,6 +332,12 @@ class ScoutService:
             coverage=new_coverage,
             timestamp=existing_pack.timestamp,
         )
+
+        # Filter by target layers if specified
+        if target_layers:
+            result = result.filter_by_layers(target_layers)
+
+        return result
 
 
 # ---------------------------------------------------------------------------
