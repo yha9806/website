@@ -333,6 +333,7 @@ class PipelineOrchestrator:
             # ==== CRITIC → QUEEN LOOP ====
             plan_state = PlanState(task_id=task_id)
             queen = create_agent("queen", config=self.q_cfg)
+            queen_output = None  # set after Queen stage each round
             final_decision = "stop"
             best_candidate_id: str | None = None
             draft_candidates: list[dict] = []

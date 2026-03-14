@@ -188,7 +188,7 @@ export default function LeaderboardTable({
     return {
       creativity: scores47D.creativity || scores47D.originality || scores47D.imagination || 0,
       technique: scores47D.technique || scores47D.precision || scores47D.skill_level || 0,
-      emotion: scores47D.emotion || scores47D.emotional_depth || scores47D.emotional_resonance || 0,
+      emotion: scores47D.emotion || scores47D.emotional_depth || scores47D.affective_resonance || 0,
       context: scores47D.context || scores47D.relevance || scores47D.contextual_awareness || 0,
       innovation: scores47D.innovation || scores47D.uniqueness || scores47D.novelty || 0,
       impact: scores47D.impact || scores47D.influence || scores47D.significance || 0

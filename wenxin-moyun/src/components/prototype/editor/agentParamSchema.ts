@@ -111,7 +111,7 @@ export const AGENT_PARAM_SCHEMA: Record<AgentNodeId, ParamDef[]> = {
       min: 0,
       max: 1,
       step: 0.05,
-      description: 'Technique & Composition',
+      description: 'Visual Perception',
     },
     {
       id: 'w_l2',
@@ -121,7 +121,7 @@ export const AGENT_PARAM_SCHEMA: Record<AgentNodeId, ParamDef[]> = {
       min: 0,
       max: 1,
       step: 0.05,
-      description: 'Aesthetic Quality',
+      description: 'Technical Analysis',
     },
     {
       id: 'w_l3',
@@ -131,7 +131,7 @@ export const AGENT_PARAM_SCHEMA: Record<AgentNodeId, ParamDef[]> = {
       min: 0,
       max: 1,
       step: 0.05,
-      description: 'Cultural Authenticity',
+      description: 'Cultural Context',
     },
     {
       id: 'w_l4',
@@ -141,7 +141,7 @@ export const AGENT_PARAM_SCHEMA: Record<AgentNodeId, ParamDef[]> = {
       min: 0,
       max: 1,
       step: 0.05,
-      description: 'Prompt Fidelity',
+      description: 'Critical Interpretation',
     },
     {
       id: 'w_l5',
@@ -151,7 +151,7 @@ export const AGENT_PARAM_SCHEMA: Record<AgentNodeId, ParamDef[]> = {
       min: 0,
       max: 1,
       step: 0.05,
-      description: 'Cultural Depth',
+      description: 'Philosophical Aesthetic',
     },
   ],
 
