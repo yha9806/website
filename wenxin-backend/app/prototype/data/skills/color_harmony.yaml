@@ -1,0 +1,13 @@
+name: color_harmony
+description: "Evaluate color harmony, palette coherence, and emotional impact of color usage in visual content."
+version: "1.0.0"
+author: vulca
+tags: [color, harmony, palette, emotion]
+input_types: [image]
+config:
+  harmony_types: [complementary, analogous, triadic, split-complementary, monochromatic]
+  scoring_rubric:
+    palette_coherence: 0.30
+    contrast_balance: 0.25
+    emotional_resonance: 0.25
+    cultural_appropriateness: 0.20

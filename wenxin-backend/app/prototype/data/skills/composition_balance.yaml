@@ -1,0 +1,13 @@
+name: composition_balance
+description: "Evaluate compositional quality including spatial balance, visual flow, focal points, and depth layering."
+version: "1.0.0"
+author: vulca
+tags: [composition, balance, layout, structure]
+input_types: [image]
+config:
+  composition_types: [rule-of-thirds, centered, diagonal, golden-ratio, radial]
+  scoring_rubric:
+    spatial_balance: 0.30
+    visual_flow: 0.25
+    focal_clarity: 0.25
+    depth_layering: 0.20

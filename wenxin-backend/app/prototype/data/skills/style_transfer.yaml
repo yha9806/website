@@ -1,0 +1,13 @@
+name: style_transfer
+description: "Evaluate how effectively a target artistic style has been applied while preserving content integrity."
+version: "1.0.0"
+author: vulca
+tags: [style, transfer, artistic, technique]
+input_types: [image]
+config:
+  prompt_template: "Analyze this image for style transfer quality. Evaluate style fidelity, content preservation, technique quality, and overall coherence."
+  scoring_rubric:
+    style_fidelity: 0.30
+    content_preservation: 0.25
+    technique_quality: 0.25
+    coherence: 0.20
