@@ -16,6 +16,7 @@ from app.prototype.agents.draft_provider import (
     AbstractProvider,
     DiffusersProvider,
     MockProvider,
+    ProviderRegistry,
 )
 from app.prototype.agents.model_router import MODEL_FAST
 from app.prototype.agents.nb2_provider import (
@@ -160,52 +161,14 @@ def _get_style_for_tradition(tradition: str, intent: str = "") -> dict[str, str]
 
 
 
-def _get_provider(name: str, config: DraftConfig | None = None) -> AbstractProvider:
-    """Resolve a provider name to an AbstractProvider instance."""
-    if name == "mock":
-        return MockProvider()
-    if name == "diffusers":
-        cfg = config or DraftConfig()
-        model_id = cfg.provider_model or "runwayml/stable-diffusion-v1-5"
-        return DiffusersProvider(model_id=model_id)
-    if name == "koala":
-        from app.prototype.agents.koala_provider import KoalaProvider
-        kp = KoalaProvider()
-        return _KoalaProviderAdapter(kp, config)
-    if name == "nb2":
-        from app.core.config import settings as _settings
-        api_key = (
-            (config.api_key if config else "")
-            or os.environ.get("GOOGLE_API_KEY", "")
-            or os.environ.get("GEMINI_API_KEY", "")
-            or _settings.GOOGLE_API_KEY
-            or _settings.GEMINI_API_KEY
-        )
-        if not api_key:
-            raise ValueError("GOOGLE_API_KEY (or GEMINI_API_KEY) required for nb2 provider")
-        return NB2Provider(api_key=api_key)
-    if name == "openai":
-        from app.prototype.agents.openai_provider import OpenAIProvider
-        key = (
-            (config.api_key if config else "")
-            or os.environ.get("OPENAI_API_KEY", "")
-        )
-        return OpenAIProvider(api_key=key)
-    if name in ("replicate", "flux"):
-        from app.prototype.agents.replicate_provider import ReplicateProvider
-        key = (
-            (config.api_key if config else "")
-            or os.environ.get("REPLICATE_API_TOKEN", "")
-        )
-        model_id = (config.provider_model if config else "") or "black-forest-labs/flux-schnell"
-        return ReplicateProvider(api_key=key, model_id=model_id)
-    raise ValueError(f"Unknown provider: {name!r} (available: mock, nb2, diffusers, koala, openai, replicate)")
-
-
+@ProviderRegistry.register("koala")
 class _KoalaProviderAdapter(AbstractProvider):
     """Adapter wrapping KoalaProvider to fit AbstractProvider interface."""
 
-    def __init__(self, koala, config=None):
+    def __init__(self, koala=None, config=None):
+        if koala is None:
+            from app.prototype.agents.koala_provider import KoalaProvider
+            koala = KoalaProvider()
         self._koala = koala
         self._config = config
 
@@ -223,6 +186,79 @@ class _KoalaProviderAdapter(AbstractProvider):
             steps=steps,
             output_path=output_path,
         )
+
+
+# ---------------------------------------------------------------------------
+# Provider auto-discovery
+# ---------------------------------------------------------------------------
+
+_providers_loaded = False
+
+
+def _ensure_providers_loaded():
+    """Import all provider modules to trigger @ProviderRegistry.register() decorators."""
+    global _providers_loaded
+    if _providers_loaded:
+        return
+    _providers_loaded = True
+    # These imports trigger @ProviderRegistry.register() decorators
+    import app.prototype.agents.nb2_provider  # noqa: F401
+    import app.prototype.agents.openai_provider  # noqa: F401
+    import app.prototype.agents.replicate_provider  # noqa: F401
+    try:
+        import app.prototype.agents.koala_provider  # noqa: F401
+    except ImportError:
+        pass  # Optional dependency
+
+
+def _instantiate_provider(
+    provider_cls: type[AbstractProvider],
+    name: str,
+    config: DraftConfig | None,
+) -> AbstractProvider:
+    """Handle provider-specific initialization needs."""
+    if name == "diffusers":
+        cfg = config or DraftConfig()
+        model_id = cfg.provider_model or "runwayml/stable-diffusion-v1-5"
+        return provider_cls(model_id=model_id)
+    if name == "nb2":
+        from app.core.config import settings as _settings
+        api_key = (
+            (config.api_key if config else "")
+            or os.environ.get("GOOGLE_API_KEY", "")
+            or os.environ.get("GEMINI_API_KEY", "")
+            or _settings.GOOGLE_API_KEY
+            or _settings.GEMINI_API_KEY
+        )
+        if not api_key:
+            raise ValueError("GOOGLE_API_KEY (or GEMINI_API_KEY) required for nb2 provider")
+        return provider_cls(api_key=api_key)
+    if name == "openai":
+        key = (
+            (config.api_key if config else "")
+            or os.environ.get("OPENAI_API_KEY", "")
+        )
+        return provider_cls(api_key=key)
+    if name in ("replicate", "flux"):
+        key = (
+            (config.api_key if config else "")
+            or os.environ.get("REPLICATE_API_TOKEN", "")
+        )
+        model_id = (config.provider_model if config else "") or "black-forest-labs/flux-schnell"
+        return provider_cls(api_key=key, model_id=model_id)
+    # Default: no-arg construction (mock, koala, fault_inject, etc.)
+    return provider_cls()
+
+
+def _get_provider(name: str, config: DraftConfig | None = None) -> AbstractProvider:
+    """Resolve a provider name to an AbstractProvider instance."""
+    _ensure_providers_loaded()
+
+    provider_cls = ProviderRegistry.get(name)
+    if provider_cls is None:
+        available = ", ".join(ProviderRegistry.list_names())
+        raise ValueError(f"Unknown provider: {name!r} (available: {available})")
+    return _instantiate_provider(provider_cls, name, config)
 
 
 def _inject_evolved_context(prompt_parts: list[str], tradition: str) -> None:

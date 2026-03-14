@@ -17,6 +17,7 @@ __all__ = [
     "FallbackProvider",
     "FaultInjectProvider",
     "MockProvider",
+    "ProviderRegistry",
     "detect_image_format",
 ]
 
@@ -63,6 +64,35 @@ class AbstractProvider(ABC):
         ...
 
 
+class ProviderRegistry:
+    """Auto-discovery registry for image providers."""
+
+    _providers: dict[str, type["AbstractProvider"]] = {}
+
+    @classmethod
+    def register(cls, name: str, *, aliases: list[str] | None = None):
+        """Decorator to register a provider class under one or more names."""
+        def decorator(provider_cls: type["AbstractProvider"]):
+            cls._providers[name] = provider_cls
+            for alias in (aliases or []):
+                cls._providers[alias] = provider_cls
+            return provider_cls
+        return decorator
+
+    @classmethod
+    def get(cls, name: str) -> type["AbstractProvider"] | None:
+        return cls._providers.get(name)
+
+    @classmethod
+    def list_providers(cls) -> list[str]:
+        return sorted(set(cls._providers.values()), key=lambda c: c.__name__)
+
+    @classmethod
+    def list_names(cls) -> list[str]:
+        return sorted(cls._providers.keys())
+
+
+@ProviderRegistry.register("mock")
 class MockProvider(AbstractProvider):
     """Generate deterministic placeholder PNGs using only stdlib.
 
@@ -95,6 +125,7 @@ class MockProvider(AbstractProvider):
         return str(out)
 
 
+@ProviderRegistry.register("diffusers")
 class DiffusersProvider(AbstractProvider):
     """Local Stable Diffusion 1.5 txt2img via HuggingFace diffusers.
 
@@ -168,6 +199,7 @@ class DiffusersProvider(AbstractProvider):
         return str(out)
 
 
+@ProviderRegistry.register("fault_inject")
 class FaultInjectProvider(AbstractProvider):
     """Programmable fault injection for testing fallback chains.
 
@@ -239,6 +271,7 @@ class AllProvidersFailedError(Exception):
     pass
 
 
+@ProviderRegistry.register("fallback")
 class FallbackProvider(AbstractProvider):
     """Multi-provider fallback chain with retry and exponential backoff.
 

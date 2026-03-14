@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
-from app.prototype.agents.draft_provider import AbstractProvider
+from app.prototype.agents.draft_provider import AbstractProvider, ProviderRegistry
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +77,7 @@ def _resolve_image_size(width: int, height: int) -> tuple[str, str]:
     return size, aspect
 
 
+@ProviderRegistry.register("nb2")
 class NB2Provider(AbstractProvider):
     """Nano Banana 2 (gemini-3.1-flash-image-preview) image generation provider.
 

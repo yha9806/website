@@ -5,11 +5,12 @@ import logging
 import httpx
 from pathlib import Path
 
-from app.prototype.agents.draft_provider import AbstractProvider
+from app.prototype.agents.draft_provider import AbstractProvider, ProviderRegistry
 
 logger = logging.getLogger(__name__)
 
 
+@ProviderRegistry.register("openai")
 class OpenAIProvider(AbstractProvider):
     """Generate images via OpenAI DALL-E 3 API."""
 

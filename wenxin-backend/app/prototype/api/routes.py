@@ -510,6 +510,8 @@ async def get_capabilities():
     api_key = os.environ.get("GOOGLE_API_KEY", "") or os.environ.get("GEMINI_API_KEY", "")
     has_key = bool(api_key)
 
+    # NOTE: ProviderRegistry (draft_provider.py) tracks registered providers,
+    # but this list includes cost/availability metadata the registry doesn't track.
     providers = [
         {"id": "mock", "label": "Mock", "cost": 0, "available": True},
         {"id": "nb2", "label": "NB2", "cost": 0.067, "available": has_key},

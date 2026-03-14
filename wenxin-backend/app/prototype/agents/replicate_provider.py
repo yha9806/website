@@ -5,11 +5,12 @@ import logging
 import httpx
 from pathlib import Path
 
-from app.prototype.agents.draft_provider import AbstractProvider
+from app.prototype.agents.draft_provider import AbstractProvider, ProviderRegistry
 
 logger = logging.getLogger(__name__)
 
 
+@ProviderRegistry.register("replicate", aliases=["flux"])
 class ReplicateProvider(AbstractProvider):
     """Generate images via Replicate (Flux, SD3, etc.)."""
 
