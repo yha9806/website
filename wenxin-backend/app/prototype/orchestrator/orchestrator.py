@@ -681,7 +681,7 @@ class PipelineOrchestrator:
                         evidence_pack = scout_svc.gather_supplementary(
                             need=critic.need_more_evidence,
                             existing_pack=evidence_pack,
-                            target_layers=queen_output.decision.rerun_dimensions if queen_output else None,
+                            target_layers=critic.need_more_evidence.target_layers or None,
                         )
                         evidence_dict["evidence_pack"] = evidence_pack.to_dict()
                         evidence_dict["evidence_coverage"] = evidence_pack.coverage
@@ -876,15 +876,22 @@ class PipelineOrchestrator:
                             )
                         else:
                             # Legacy path: LocalRerunRequest
-                            # Use layer-aware refinement strategies
+                            # Use layer-aware refinement strategies, preserving original prompt context
                             from app.prototype.agents.draft_agent import _build_layer_aware_prompt_delta
+                            best_prompt = next(
+                                (c.get("prompt", "") for c in draft_candidates if c.get("candidate_id") == best_candidate_id),
+                                draft_candidates[0].get("prompt", "") if draft_candidates else pipeline_input.subject,
+                            )
+                            layer_delta = _build_layer_aware_prompt_delta(
+                                queen_output.decision.rerun_dimensions,
+                            )
+                            # Concatenate original prompt with layer delta (matches rerun_with_fix behavior)
+                            combined_prompt = f"{best_prompt}, {layer_delta}" if best_prompt else layer_delta
                             local_rerun = LocalRerunRequest(
                                 base_candidate_id=best_candidate_id,
                                 target_layers=queen_output.decision.rerun_dimensions,
                                 preserve_layers=queen_output.decision.preserve_dimensions,
-                                prompt_delta=_build_layer_aware_prompt_delta(
-                                    queen_output.decision.rerun_dimensions,
-                                ),
+                                prompt_delta=combined_prompt,
                             )
                             plan_state.local_rerun_request = local_rerun
 
