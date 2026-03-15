@@ -33,6 +33,7 @@ import ReportNode from './ReportNode';
 import StickyNote from './StickyNote';
 import CanvasToolbar from './CanvasToolbar';
 import TemplateGallery, { type TemplateInfo } from './TemplateGallery';
+import NodeSearchPopup from './NodeSearchPopup';
 import { useCanvasHistory } from './useCanvasHistory';
 import { useKeyboardShortcuts } from './useKeyboardShortcuts';
 import {
@@ -459,6 +460,37 @@ export default function PipelineEditor({
     setNodes((prev) => [...prev, newNote as Node<AgentNodeData>]);
   }, [nodes, edges, setNodes, pushSnapshot]);
 
+  /* ── Node search popup (Space to open, ComfyUI-style) ── */
+  const [showNodeSearch, setShowNodeSearch] = useState(false);
+
+  const handleDeleteSelected = useCallback(() => {
+    const selectedIds = nodes.filter((n) => n.selected).map((n) => n.id);
+    if (selectedIds.length === 0) return;
+    pushSnapshot(nodes, edges);
+    setNodes((nds) => nds.filter((n) => !n.selected));
+    setEdges((eds) =>
+      eds.filter((e) => !selectedIds.includes(e.source) && !selectedIds.includes(e.target)),
+    );
+  }, [nodes, edges, setNodes, setEdges, pushSnapshot]);
+
+  const handleDuplicateSelected = useCallback(() => {
+    const selected = nodes.filter((n) => n.selected);
+    if (selected.length === 0) return;
+    pushSnapshot(nodes, edges);
+    const newNodes = selected.map((n) => ({
+      ...n,
+      id: `${n.id}-copy-${Date.now()}`,
+      position: { x: n.position.x + 40, y: n.position.y + 40 },
+      selected: false,
+    }));
+    setNodes((prev) => [...prev, ...newNodes]);
+  }, [nodes, edges, setNodes, pushSnapshot]);
+
+  const rfInstance = useRef<{ fitView: () => void } | null>(null);
+  const handleFitView = useCallback(() => {
+    rfInstance.current?.fitView();
+  }, []);
+
   /* ── Run ── */
   const handleRun = useCallback(() => {
     const topo = extractTopology(nodes, edges);
@@ -482,7 +514,7 @@ export default function PipelineEditor({
     onNodeSelect?.(null);
   }, [setNodes, onNodeSelect]);
 
-  /* ── Keyboard shortcuts ── */
+  /* ── Keyboard shortcuts (core + ComfyUI-style) ── */
   useKeyboardShortcuts({
     onUndo: handleUndo,
     onRedo: handleRedo,
@@ -490,6 +522,10 @@ export default function PipelineEditor({
     onRun: handleRun,
     onSelectAll: selectAll,
     onDeselectAll: deselectAll,
+    onOpenNodeSearch: () => setShowNodeSearch(true),
+    onDeleteSelected: handleDeleteSelected,
+    onDuplicateSelected: handleDuplicateSelected,
+    onFitView: handleFitView,
     disabled,
   });
 
@@ -598,6 +634,7 @@ export default function PipelineEditor({
           onNodeClick={onNodeClick}
           onPaneClick={onPaneClick}
           nodeTypes={nodeTypes}
+          onInit={(instance) => { rfInstance.current = instance; }}
           fitView
           fitViewOptions={{ padding: 0.3 }}
           deleteKeyCode="Backspace"
@@ -610,6 +647,13 @@ export default function PipelineEditor({
             className="!bg-white dark:!bg-gray-800 !border-gray-200 dark:!border-gray-700"
           />
         </ReactFlow>
+
+        {/* Node search popup (Space to open) */}
+        <NodeSearchPopup
+          visible={showNodeSearch}
+          onClose={() => setShowNodeSearch(false)}
+          onAddNode={handleAddNode}
+        />
 
         {/* Template Gallery overlay */}
         {showGallery && (

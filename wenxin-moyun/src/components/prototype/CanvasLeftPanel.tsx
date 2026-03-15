@@ -3,7 +3,7 @@
  * Reads shared state from useCanvasStore; pipeline state via props.
  */
 
-import { IOSCard, IOSCardContent, IOSToggle } from '@/components/ios';
+import { IOSCard, IOSCardContent } from '@/components/ios';
 import { useCanvasStore } from '@/store/canvasStore';
 import type { PipelineState } from '@/hooks/usePrototypePipeline';
 import type { RunConfigParams } from '@/components/prototype/RunConfigForm';
@@ -15,8 +15,10 @@ import RunConfigForm from './RunConfigForm';
 import PipelineProgress from './PipelineProgress';
 import TopologyViewer from './TopologyViewer';
 import RunHistoryPanel from './RunHistoryPanel';
-import ProviderQuickSwitch from './ProviderQuickSwitch';
+import CreationModeSelector from './CreationModeSelector';
+import EvolutionInsightsPanel from './EvolutionInsightsPanel';
 import BatchInputPanel from './BatchInputPanel';
+import { formatTradition } from '@/utils/formatTradition';
 
 export interface EditorRunParams {
   template: string;
@@ -58,8 +60,7 @@ export default function CanvasLeftPanel({
   const {
     playgroundMode, setPlaygroundMode,
     currentSubject, currentTradition, traditionClassifying,
-    enableHitl, setEnableHitl,
-    currentProvider, setCurrentProvider,
+    creationMode, setCreationMode,
   } = useCanvasStore();
 
   return (
@@ -101,7 +102,7 @@ export default function CanvasLeftPanel({
           <div className="flex items-center gap-2 px-1 text-xs">
             <span className="text-gray-400 dark:text-gray-500">Tradition:</span>
             <span className="font-medium text-[#C87F4A] dark:text-[#DDA574]">
-              {currentTradition.replace(/_/g, ' ')}
+              {formatTradition(currentTradition)}
             </span>
             {traditionClassifying && (
               <span className="inline-block w-3 h-3 border-2 border-[#C87F4A]/30 border-t-[#C87F4A] rounded-full animate-spin" />
@@ -110,26 +111,15 @@ export default function CanvasLeftPanel({
         )}
       </div>
 
-      {/* HITL toggle */}
-      <div data-tour-hitl className="flex items-center justify-between px-1">
-        <IOSToggle
-          checked={enableHitl}
-          onChange={setEnableHitl}
+      {/* Creation Mode — unified Preview / Guided / Generate selector */}
+      <div data-tour-hitl>
+        <CreationModeSelector
+          value={creationMode}
+          onChange={setCreationMode}
           disabled={isRunning}
-          size="sm"
-          color="orange"
-          label="Human-in-the-Loop"
-          description="Pause at each stage for human review"
+          nCandidates={lastRunParams?.n_candidates || 4}
         />
       </div>
-
-      {/* Provider Quick Switch (WU-3) */}
-      <ProviderQuickSwitch
-        value={currentProvider}
-        onChange={setCurrentProvider}
-        disabled={isRunning}
-        nCandidates={lastRunParams?.n_candidates || 4}
-      />
 
       {/* Detailed config (collapsible) */}
       <details className="group">
@@ -201,8 +191,11 @@ export default function CanvasLeftPanel({
         </IOSCard>
       ) : null}
 
-      {/* WU-2: Run History Panel */}
+      {/* Run History Panel */}
       <RunHistoryPanel onFork={onFork} />
+
+      {/* Self-evolution insights — shows how the system learns */}
+      <EvolutionInsightsPanel />
 
       {/* M3: Batch input panel for batch_eval template in edit mode */}
       {playgroundMode === 'edit' && activeTemplate === 'batch_eval' && (

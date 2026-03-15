@@ -405,7 +405,7 @@ export function usePrototypePipeline() {
         let errorMsg: string;
 
         if (res.status === 400 && typeof detail === 'string' && detail.includes('API_KEY')) {
-          errorMsg = `Provider configuration error: ${detail}. Select "Mock" provider or configure the API key on the server.`;
+          errorMsg = `Provider configuration error: ${detail}. Switch to "Preview" mode or configure the API key on the server.`;
         } else if (res.status === 429) {
           errorMsg = 'Daily run limit reached. Please try again tomorrow.';
         } else if (res.status === 422) {

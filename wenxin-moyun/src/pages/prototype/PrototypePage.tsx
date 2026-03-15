@@ -43,7 +43,7 @@ export default function PrototypePage() {
     playgroundMode, setPlaygroundMode,
     currentSubject, setCurrentSubject,
     currentTradition, setCurrentTradition,
-    enableHitl, currentProvider,
+    currentProvider, enableHitl,
     setTraditionManuallySet,
   } = store;
 

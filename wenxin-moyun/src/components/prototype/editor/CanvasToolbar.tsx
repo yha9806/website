@@ -84,7 +84,7 @@ export default function CanvasToolbar({
         disabled={disabled}
         className="px-2 py-1 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
       >
-        {activeTemplate.startsWith('custom-') ? 'Custom' : activeTemplate.replace(/_/g, ' ')}
+        {activeTemplate.startsWith('custom-') ? 'Custom' : activeTemplate.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
         <span className="ml-1 text-gray-400">▾</span>
       </button>
 
@@ -107,7 +107,7 @@ export default function CanvasToolbar({
           disabled={disabled}
           className="px-2 py-1 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md transition-colors disabled:opacity-50"
         >
-          + Node
+          + Node <span className="text-[9px] text-gray-400 ml-0.5">Space</span>
         </button>
         {showAddMenu && (
           <div className="absolute top-full left-0 mt-1 w-44 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-40 py-1">

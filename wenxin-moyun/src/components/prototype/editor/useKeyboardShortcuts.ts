@@ -1,6 +1,8 @@
 /**
  * useKeyboardShortcuts — canvas keyboard shortcut handler.
- * Registers Ctrl/Cmd shortcuts for undo, redo, save, run, select-all, deselect.
+ *
+ * Core shortcuts: Ctrl+Z, Ctrl+Shift+Z, Ctrl+S, Ctrl+Enter, Ctrl+A, Escape
+ * ComfyUI-style: Space → node search, Delete → remove, D → duplicate, F → fit view
  */
 
 import { useEffect } from 'react';
@@ -12,6 +14,14 @@ interface ShortcutHandlers {
   onRun: () => void;
   onSelectAll: () => void;
   onDeselectAll: () => void;
+  /** Space/Tab opens node search popup */
+  onOpenNodeSearch?: () => void;
+  /** Delete removes selected nodes */
+  onDeleteSelected?: () => void;
+  /** D duplicates selected nodes */
+  onDuplicateSelected?: () => void;
+  /** F fits view */
+  onFitView?: () => void;
   disabled?: boolean;
 }
 
@@ -22,6 +32,10 @@ export function useKeyboardShortcuts({
   onRun,
   onSelectAll,
   onDeselectAll,
+  onOpenNodeSearch,
+  onDeleteSelected,
+  onDuplicateSelected,
+  onFitView,
   disabled,
 }: ShortcutHandlers) {
   useEffect(() => {
@@ -51,10 +65,22 @@ export function useKeyboardShortcuts({
         onSelectAll();
       } else if (e.key === 'Escape') {
         onDeselectAll();
+      } else if (e.key === ' ' && !mod && onOpenNodeSearch) {
+        // Space → open node search (ComfyUI-style)
+        e.preventDefault();
+        onOpenNodeSearch();
+      } else if ((e.key === 'Delete' || e.key === 'Backspace') && !mod && onDeleteSelected) {
+        onDeleteSelected();
+      } else if (e.key === 'd' && !mod && onDuplicateSelected) {
+        e.preventDefault();
+        onDuplicateSelected();
+      } else if (e.key === 'f' && !mod && onFitView) {
+        e.preventDefault();
+        onFitView();
       }
     };
 
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
-  }, [onUndo, onRedo, onSave, onRun, onSelectAll, onDeselectAll, disabled]);
+  }, [onUndo, onRedo, onSave, onRun, onSelectAll, onDeselectAll, onOpenNodeSearch, onDeleteSelected, onDuplicateSelected, onFitView, disabled]);
 }

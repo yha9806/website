@@ -29,13 +29,13 @@ export const TOUR_STEPS: TourStep[] = [
   },
   {
     target: '[data-tour-modes]',
-    title: 'Playground Modes',
-    description: 'Switch between Edit (pipeline designer), Run (creation view), Build (tradition builder), Explore, and Compare modes.',
+    title: 'Workspace Modes',
+    description: 'Edit mode designs the agent pipeline visually. Run mode shows live creation results. Traditions mode lets you explore and customize cultural styles.',
   },
   {
     target: '[data-tour-hitl]',
-    title: 'Human-in-the-Loop',
-    description: 'Enable HITL to pause the pipeline at each stage so you can review, override scores, or guide the next round.',
+    title: 'Creation Mode',
+    description: 'Preview for instant free mockups. Guided pauses at each stage for your review. Generate runs the full pipeline automatically with real AI images.',
   },
   {
     target: '[data-tour-canvas]',

@@ -10,6 +10,7 @@
 
 import { useState } from 'react';
 import { IOSCard, IOSCardHeader, IOSCardContent } from '../ios';
+import { formatTradition } from '@/utils/formatTradition';
 
 interface TerminologyHit {
   term?: string;
@@ -52,7 +53,7 @@ export default function ScoutEvidenceCard({ evidence }: Props) {
     <IOSCard variant="elevated" padding="md" animate={false}>
       <IOSCardHeader
         title="Scout Evidence"
-        subtitle={tradition ? tradition.replace(/_/g, ' ') : undefined}
+        subtitle={tradition ? formatTradition(tradition) : undefined}
       />
       <IOSCardContent>
         {/* Stats grid */}
